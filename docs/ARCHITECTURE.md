@@ -106,7 +106,10 @@ The first authoritative replacement target is a tiny LOLA-derived terrain
 fixture. The PDS Geosciences LRO LOLA page identifies LOLA as the Lunar Orbiter
 Laser Altimeter and points to derived/gridded data products, including GDR and
 SLDEM families. Moonmoon should ingest only a small extracted fixture first, not
-a full global raster. The MoonBit contract should remain:
+a full global raster. Moonmoon now pins the official GDR catalog metadata at
+`data/sources/lro_lola/gdr_ds.cat` and checks its SHA-256 before dossier
+generation, so product selection can proceed from durable evidence rather than
+only a URL in prose. The MoonBit contract should remain:
 
 ```text
 authoritative source file
@@ -128,11 +131,14 @@ point, intended local target path, and next selection/checksum action.
 The current fixture now has a checked source-file boundary:
 
 - `data/fixtures/first_trusted_square_dem.csv`
+- `data/sources/lro_lola/gdr_ds.cat`
 - `scripts/verify_moonmoon_sources.sh`
 
-The source file is still synthetic, but its SHA-256 is pinned in the manifest
-and verified before reproducible outputs are built. The MoonBit fixture mirrors
-this source file through `scripts/generate_moonmoon_fixture.py`, which writes
+The terrain source file is still synthetic, but its SHA-256 is pinned in the
+manifest and verified before reproducible outputs are built. The pinned LOLA
+catalog is official metadata, not terrain evidence. It proves the GDR family
+context for the next selection step. The MoonBit fixture mirrors the synthetic
+CSV through `scripts/generate_moonmoon_fixture.py`, which writes
 `src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
 is now the terrain package's source for the trusted-square elevations. Replacing
 the CSV with a tiny authoritative LOLA-derived extraction should keep the same

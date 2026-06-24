@@ -1,0 +1,111 @@
+PDS_VERSION_ID                    = PDS3
+LABEL_REVISION_NOTE               = "2009-03-18 neumann Original
+                                     2010-03-15 neumann Description Added
+                                     2015-09-15 k.jha Overview revised
+                                     2015-12-15 k.jha Overview revised.
+                                    "
+RECORD_TYPE                       = STREAM
+OBJECT                            = DATA_SET
+ DATA_SET_ID                      = "LRO-L-LOLA-4-GDR-V1.0"
+ OBJECT                           = DATA_SET_INFORMATION
+  DATA_SET_NAME                   = "LRO MOON LASER ALTIMETER 4 GDR V1.0"
+  DATA_SET_COLLECTION_MEMBER_FLG  = "N"
+  DATA_OBJECT_TYPE                = IMAGE
+  START_TIME                      = 2009-07-13T17:33:17.246
+  STOP_TIME                       = 2015-04-16T15:22:08.887
+  DATA_SET_RELEASE_DATE           = 2015-12-15
+  PRODUCER_FULL_NAME              = "GREGORY A. NEUMANN"
+  DETAILED_CATALOG_FLAG           = "N"
+  DATA_SET_TERSE_DESC             = "Resampled (binned), interpolated
+                                     altimetry data products from the 2009
+                                     Lunar Reconnaissance Orbiter mission."
+  CITATION_DESC                   = "Neumann, G.A., 2009 Lunar Orbiter Laser
+                                     Altimeter Raw Data Set,
+                                     LRO-L-LOLA-4-GDR-V1.0,
+                                     NASA Planetary Data System, 2010."
+  ABSTRACT_DESC                   = "
+    This data set contains gridded data products from the Lunar Orbiter
+    Laser Altimeter instrument [SMITHETAL2009]."
+
+  DATA_SET_DESC                   = "
+    Data Set Overview
+    =================
+The LOLA GDR data products consists primarily of raster Digital Elevation
+Models formatted as binary images with detached labels. Ancillary gridded
+(binned, averaged) datasets consist of sample density, surface albedo,
+slope, roughness, geoid height, and 1064-nm surface reflectance.
+The detector noise statistics [BARKERETAL2016, SUNETAL2006] also
+provide a crude radiometric measurement of surface brightness at 1064 nm.
+
+The GDR products in this data set are images in Equidistant Cylindrical map
+projections at resolutions of 4, 16, 64, 128, 256 and 512 pixels per degree,
+as appropriate. Maps at a resolution of 1024 pixels per degree were created
+as a preliminary effort. These maps will be updated in the future but are 
+currently very sparse. Albedo maps are additionally provided at a 10 pixel 
+per degree resolution for consistency with LEMELINETAL2015.  Additional 
+DEMS that coregister LOLA data with Kaguya's Selene Terrain Camera are 
+given in resolutions of 128, 256 and 512 pixels per degree, also in 
+Equidistant Cylindrical map projection.  
+
+In addition, Polar Stereographic projected maps with resolutions from 240
+down to 5 meters per pixel are included for the North and South polar regions 
+of the Moon. Owing to the large size of many of the GDR products, several 
+formats and tiling schemes are employed, as described in the Archive SIS. 
+JPEG2000 compression is also used with geospatial headers as appropriate for 
+the product in question."
+
+  CONFIDENCE_LEVEL_NOTE           = "
+
+    Overview
+    ========
+    Data are edited and selected before averaging so as to maintain
+    good quality. Where necessary, crossover analysis is done prior to
+    averaging so as to minimize discrepancies between individual tracks.
+
+    Data Coverage and Quality
+    =========================
+    Each nominal monthly orbit provides roughly two tracks per degree of
+    longitude at the equator. After each month's data are accumulated,
+    crossover adjustments are made to minimize the difference in elevation
+    between closely registered tracks and to remove along- and across-track
+    orbital errors. The resulting dataset provides better geodetic control
+    than that from individual tracks. The first release (March 15, 2010)
+    does not incorporate these adjustments, and relies on preliminary
+    trajectory solutions. Re-release with better precision and increased
+    density has been occuring periodically.
+
+    Limitations
+    ===========
+    Density of observations increases linearly with time. Higher-resolution
+    GDR products will be provided when data density provides coverage in a
+    majority of pixels of each data product.
+    "
+ END_OBJECT                       = DATA_SET_INFORMATION
+
+ OBJECT                           = DATA_SET_TARGET
+  TARGET_NAME                     = MOON
+ END_OBJECT                       = DATA_SET_TARGET
+
+ OBJECT                           = DATA_SET_HOST
+  INSTRUMENT_HOST_ID              = LRO
+  INSTRUMENT_ID                   = LOLA
+ END_OBJECT                       = DATA_SET_HOST
+
+ OBJECT                           = DATA_SET_MISSION
+  MISSION_NAME                    = "LUNAR RECONNAISSANCE ORBITER"
+ END_OBJECT                       = DATA_SET_MISSION
+
+ OBJECT                           = DATA_SET_REFERENCE_INFORMATION
+  REFERENCE_KEY_ID                = "NEUMANNETAL2003"
+ END_OBJECT                       = DATA_SET_REFERENCE_INFORMATION
+
+ OBJECT                           = DATA_SET_REFERENCE_INFORMATION
+  REFERENCE_KEY_ID                = "SUNETAL2006"
+ END_OBJECT                       = DATA_SET_REFERENCE_INFORMATION
+
+ OBJECT                           = DATA_SET_REFERENCE_INFORMATION
+  REFERENCE_KEY_ID                = "SMITHETAL2009"
+ END_OBJECT                       = DATA_SET_REFERENCE_INFORMATION
+END_OBJECT                        = DATA_SET
+
+END

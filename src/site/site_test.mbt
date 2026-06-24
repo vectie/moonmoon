@@ -32,6 +32,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_true(markdown.contains("## Source Acquisition Plans"))
   assert_true(markdown.contains("lro-lola-gdr-south-pole-selection"))
+  assert_true(markdown.contains("source metadata sha256"))
   assert_true(markdown.contains("Do not replace the synthetic fixture"))
   assert_true(markdown.contains("## Source Validation"))
   assert_true(markdown.contains("verified"))
@@ -57,6 +58,7 @@ test "first trusted square dossier exports machine-readable evidence" {
       "\"product_family_id\": \"lro-lola-gdr-south-pole-selection\"",
     ),
   )
+  assert_true(text.contains("\"source_metadata_bytes\": 5672"))
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"CuratedFixture\""))

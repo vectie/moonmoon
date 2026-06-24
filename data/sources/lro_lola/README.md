@@ -15,8 +15,25 @@ until a small extracted CSV is generated and checked from an official source.
 - Product family: LRO LOLA GDR, selected through ODE/PDS metadata
 - Source family URL: <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/>
 - Source metadata URL: <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat>
+- Source metadata path: `data/sources/lro_lola/gdr_ds.cat`
+- Source metadata SHA-256: `f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8`
+- Source metadata bytes: `5672`
 - Discovery URL: <https://ode.rsl.wustl.edu/moon/>
 - Intended extraction: Shackleton rim rehearsal tile near 89.88S, 0.12E
+
+## Reproduction
+
+Fetch and verify the current pinned catalog:
+
+```bash
+bash scripts/fetch_lola_metadata.sh
+```
+
+Verify all pinned source evidence without network access:
+
+```bash
+bash scripts/verify_moonmoon_sources.sh
+```
 
 ## Trust Gate
 

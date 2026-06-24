@@ -110,6 +110,8 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - discovery: \{plan.discovery_url}\n"
     text += "  - source family: \{plan.source_family_url}\n"
     text += "  - source metadata: \{plan.source_metadata_url}\n"
+    text += "  - source metadata sha256: \{plan.source_metadata_sha256}\n"
+    text += "  - source metadata bytes: \{plan.source_metadata_bytes}\n"
     text += "  - target region: \{plan.target_region}\n"
     text += "  - local source directory: \{plan.local_source_directory}\n"
     text += "  - local metadata path: \{plan.local_metadata_path}\n"

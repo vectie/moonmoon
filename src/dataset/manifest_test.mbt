@@ -62,6 +62,11 @@ test "first trusted square has a concrete LOLA acquisition plan" {
   assert_eq(plan.product_family_id, "lro-lola-gdr-south-pole-selection")
   assert_true(plan.source_family_url.contains("data/lola_gdr/"))
   assert_true(plan.source_metadata_url.has_suffix("catalog/gdr_ds.cat"))
+  assert_eq(
+    plan.source_metadata_sha256,
+    "f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8",
+  )
+  assert_eq(plan.source_metadata_bytes, 5672)
   assert_eq(plan.discovery_url, "https://ode.rsl.wustl.edu/moon/")
   assert_eq(
     plan.extracted_fixture_path,

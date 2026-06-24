@@ -100,6 +100,8 @@ pub(all) struct SourceAcquisitionPlan {
   product_family_id : String
   source_family_url : String
   source_metadata_url : String
+  source_metadata_sha256 : String
+  source_metadata_bytes : Int
   discovery_url : String
   target_region : String
   expected_format : String

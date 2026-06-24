@@ -73,6 +73,8 @@ pub(all) struct SourceAcquisitionPlan {
   product_family_id : String
   source_family_url : String
   source_metadata_url : String
+  source_metadata_sha256 : String
+  source_metadata_bytes : Int
   discovery_url : String
   target_region : String
   expected_format : String
@@ -216,6 +218,8 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
     product_family_id: "lro-lola-gdr-south-pole-selection",
     source_family_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/",
     source_metadata_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat",
+    source_metadata_sha256: "f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8",
+    source_metadata_bytes: 5672,
     discovery_url: "https://ode.rsl.wustl.edu/moon/",
     target_region: "Shackleton rim rehearsal tile near 89.88S, 0.12E",
     expected_format: "PDS LOLA GDR south-polar gridded elevation product selected through ODE/PDS metadata",

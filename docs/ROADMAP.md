@@ -91,6 +91,9 @@ Current implementation status:
 - The current inline fixture fingerprint verifies successfully against its
   manifest, and the checked CSV fixture verifies against its SHA-256, but the
   fixture is still synthetic.
+- `data/sources/lro_lola/gdr_ds.cat` pins the official PDS LOLA GDR catalog
+  metadata, and `scripts/verify_moonmoon_sources.sh` verifies its SHA-256 and
+  byte count alongside the synthetic CSV fixture.
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
