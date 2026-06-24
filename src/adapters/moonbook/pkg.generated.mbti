@@ -45,6 +45,7 @@ pub(all) enum BookEntryKind {
   SourceExtractionCandidate
   DerivedTerrain
   MissionDecision
+  CorridorScan
   RouteAlternative
   IlluminationAssessment
   OpenQuestion

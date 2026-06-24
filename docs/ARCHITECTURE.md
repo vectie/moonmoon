@@ -140,6 +140,9 @@ The current fixture now has a checked source-file boundary:
 - `data/sources/lro_lola/first_trusted_square_dem.csv`
 - `data/sources/lro_lola/first_trusted_square_west_contour_dem.csv`
 - `data/sources/lro_lola/first_trusted_square_north_rim_dem.csv`
+- `data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv`
+- `data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv`
+- `data/sources/lro_lola/first_trusted_square_corridor_scan.csv`
 - `scripts/verify_moonmoon_sources.sh`
 
 The active terrain source file is a LOLA byte-range extraction. Its SHA-256 is
@@ -150,11 +153,14 @@ type, unit, and raw image file name. The extracted LOLA CSV proves bounded IMG
 window reads and records a reproducible checksum. The MoonBit fixture mirrors
 that CSV through
 `scripts/generate_moonmoon_fixture.py`, which writes
-`src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
-is now the terrain package's source for the trusted-square elevations, the first
-adjacent route-window elevations, and the first widened corridor elevations.
-Replacing or extending the CSV set with tiny authoritative LOLA-derived
-extractions should keep the same pipeline shape.
+`src/terrain/generated_first_trusted_square_fixture.mbt`. The ranked corridor
+scan is mirrored separately by `scripts/generate_corridor_scan.py` into
+`src/mission/generated_first_trusted_square_corridor_scan.mbt`. Those generated
+modules are now the terrain and mission packages' source for the
+trusted-square elevations, the first adjacent route-window elevations, the first
+widened corridor elevations, and the 25-window corridor ranking. Replacing or
+extending the CSV set with tiny authoritative LOLA-derived extractions should
+keep the same pipeline shape.
 
 The first measured LOLA patch blocks the conservative rover profile. Moonmoon
 therefore records route alternatives as derived mission-planning claims tied to

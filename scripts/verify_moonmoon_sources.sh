@@ -10,6 +10,7 @@ LOLA_WEST_CONTOUR="$ROOT/data/sources/lro_lola/first_trusted_square_west_contour
 LOLA_NORTH_RIM="$ROOT/data/sources/lro_lola/first_trusted_square_north_rim_dem.csv"
 LOLA_SOUTHWEST_BYPASS="$ROOT/data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv"
 LOLA_SOUTH_STEPOUT="$ROOT/data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv"
+LOLA_CORRIDOR_SCAN="$ROOT/data/sources/lro_lola/first_trusted_square_corridor_scan.csv"
 
 EXPECTED_FIRST_TRUSTED_SQUARE_SHA256="45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7"
 EXPECTED_LOLA_GDR_CATALOG_SHA256="f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8"
@@ -26,6 +27,8 @@ EXPECTED_LOLA_SOUTHWEST_BYPASS_SHA256="c47b837a8ed5bb818c865782396d44dae01b15b03
 EXPECTED_LOLA_SOUTHWEST_BYPASS_BYTES="908"
 EXPECTED_LOLA_SOUTH_STEPOUT_SHA256="dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c"
 EXPECTED_LOLA_SOUTH_STEPOUT_BYTES="860"
+EXPECTED_LOLA_CORRIDOR_SCAN_SHA256="11430a5e4a83040027eaabd7bdcd2706fbbe9cf8c219de0b24787141256f6896"
+EXPECTED_LOLA_CORRIDOR_SCAN_BYTES="4813"
 
 actual="$(shasum -a 256 "$SOURCE" | awk '{print $1}')"
 
@@ -170,3 +173,22 @@ if [[ "$south_csv_bytes" != "$EXPECTED_LOLA_SOUTH_STEPOUT_BYTES" ]]; then
 fi
 
 printf 'verified %s %s\n' "$south_csv_actual" "$LOLA_SOUTH_STEPOUT"
+
+corridor_scan_actual="$(shasum -a 256 "$LOLA_CORRIDOR_SCAN" | awk '{print $1}')"
+corridor_scan_bytes="$(wc -c < "$LOLA_CORRIDOR_SCAN" | tr -d ' ')"
+
+if [[ "$corridor_scan_actual" != "$EXPECTED_LOLA_CORRIDOR_SCAN_SHA256" ]]; then
+  printf 'checksum mismatch for %s\n' "$LOLA_CORRIDOR_SCAN" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_CORRIDOR_SCAN_SHA256" >&2
+  printf 'actual   %s\n' "$corridor_scan_actual" >&2
+  exit 1
+fi
+
+if [[ "$corridor_scan_bytes" != "$EXPECTED_LOLA_CORRIDOR_SCAN_BYTES" ]]; then
+  printf 'byte count mismatch for %s\n' "$LOLA_CORRIDOR_SCAN" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_CORRIDOR_SCAN_BYTES" >&2
+  printf 'actual   %s\n' "$corridor_scan_bytes" >&2
+  exit 1
+fi
+
+printf 'verified %s %s\n' "$corridor_scan_actual" "$LOLA_CORRIDOR_SCAN"

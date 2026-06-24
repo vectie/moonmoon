@@ -9,6 +9,7 @@ pub(all) struct SiteDossier {
   source_extraction_candidates : Array[@dataset.SourceExtractionCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
+  corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
   summary : String
   blockers : Array[String]
@@ -81,8 +82,9 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     source_extraction_candidates: @dataset.first_trusted_square_source_extraction_candidates(),
     terrain,
     traverse,
+    corridor_scan: @mission.first_trusted_square_corridor_scan(),
     route_candidates: @mission.first_trusted_square_route_candidates(),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured widened route-window alternatives.",
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and a reproducible measured 5x5 route-corridor scan.",
     blockers: terrain_blockers(terrain),
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -212,6 +214,28 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   } else {
     for reason in traverse.reasons {
       text += "  - \{reason}\n"
+    }
+  }
+  text += "\n"
+  text += "## Corridor Scan\n\n"
+  let best_window = dossier.corridor_scan[0]
+  text += "- scan: \{best_window.scan_id}\n"
+  text += "- windows ranked: \{dossier.corridor_scan.length()}\n"
+  text += "- best measured window: \{best_window.window_id} (rank \{best_window.rank})\n"
+  text += "- offset: row \{best_window.row_offset}, col \{best_window.col_offset}\n"
+  text += "- selected route: \{best_window.selected_route_id}\n"
+  text += "- decision: \{@mission.corridor_scan_window_status_label(best_window)}\n"
+  text += "- max neighbor grade: \{best_window.max_neighbor_grade}\n"
+  text += "- roughness: \{best_window.roughness_m} m\n"
+  text += "- note: \{best_window.note}\n"
+  text += "- top windows:\n"
+  for window in dossier.corridor_scan {
+    if window.rank <= 5 {
+      text += "  - #\{window.rank} \{window.window_id}: grade \{window.max_neighbor_grade}, roughness \{window.roughness_m} m, decision \{@mission.corridor_scan_window_status_label(window)}"
+      if window.selected_route_id != "" {
+        text += ", route \{window.selected_route_id}"
+      }
+      text += "\n"
     }
   }
   text += "\n"

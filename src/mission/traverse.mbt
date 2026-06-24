@@ -69,6 +69,25 @@ pub(all) struct RouteCandidate {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct CorridorScanWindow {
+  scan_id : String
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  source_row_start : Int
+  source_col_start : Int
+  min_elevation_m : Double
+  max_elevation_m : Double
+  elevation_range_m : Double
+  max_neighbor_grade : Double
+  roughness_m : Double
+  decision : TraverseDecision
+  selected_route_id : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn conservative_rover_profile() -> TraverseProfile {
   {
     profile_id: "conservative-lunar-rover-v1",
@@ -93,6 +112,11 @@ pub fn traverse_decision_label(decision : TraverseDecision) -> String {
 ///|
 pub fn route_candidate_status_label(candidate : RouteCandidate) -> String {
   traverse_decision_label(candidate.decision)
+}
+
+///|
+pub fn corridor_scan_window_status_label(window : CorridorScanWindow) -> String {
+  traverse_decision_label(window.decision)
 }
 
 ///|
@@ -432,4 +456,14 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "continue south corridor extraction and add ephemeris-backed illumination review",
     ),
   ]
+}
+
+///|
+pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow] {
+  generated_first_trusted_square_corridor_scan()
+}
+
+///|
+pub fn first_trusted_square_best_corridor_window() -> CorridorScanWindow {
+  first_trusted_square_corridor_scan()[0]
 }

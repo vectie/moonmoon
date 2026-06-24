@@ -74,6 +74,12 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Blocked)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Block)
+  assert_eq(dossier.corridor_scan.length(), 25)
+  assert_eq(dossier.corridor_scan[0].window_id, "r+8-c-8")
+  assert_eq(dossier.corridor_scan[0].selected_route_id, "southwest-bypass")
+  assert_true(
+    dossier.corridor_scan[0].decision == @mission.TraverseDecision::Block,
+  )
   assert_eq(dossier.route_candidates.length(), 5)
   assert_eq(dossier.route_candidates[0].route_id, "direct-lola-window")
   assert_eq(dossier.route_candidates[1].route_id, "west-contour-detour")
@@ -117,6 +123,10 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Source Validation"))
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
+  assert_true(markdown.contains("## Corridor Scan"))
+  assert_true(markdown.contains("first-trusted-square-5x5-corridor-scan-v1"))
+  assert_true(markdown.contains("r+8-c-8"))
+  assert_true(markdown.contains("selected route: southwest-bypass"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
   assert_true(markdown.contains("north-rim-stepout"))
@@ -175,6 +185,11 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"Authoritative\""))
   assert_true(text.contains("\"profile_id\": \"conservative-lunar-rover-v1\""))
+  assert_true(text.contains("\"corridor_scan\""))
+  assert_true(
+    text.contains("\"scan_id\": \"first-trusted-square-5x5-corridor-scan-v1\""),
+  )
+  assert_true(text.contains("\"window_id\": \"r+8-c-8\""))
   assert_true(text.contains("\"route_candidates\""))
   assert_true(text.contains("\"route_id\": \"west-contour-detour\""))
   assert_true(text.contains("\"route_id\": \"southwest-bypass\""))

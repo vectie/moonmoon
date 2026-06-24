@@ -14,6 +14,12 @@ pub fn conservative_illumination_constraint() -> IlluminationConstraint
 
 pub fn conservative_rover_profile() -> TraverseProfile
 
+pub fn corridor_scan_window_status_label(CorridorScanWindow) -> String
+
+pub fn first_trusted_square_best_corridor_window() -> CorridorScanWindow
+
+pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow]
+
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
 
 pub fn first_trusted_square_traverse_score() -> TraverseScore
@@ -29,6 +35,24 @@ pub fn traverse_decision_label(TraverseDecision) -> String
 // Errors
 
 // Types and methods
+pub(all) struct CorridorScanWindow {
+  scan_id : String
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  source_row_start : Int
+  source_col_start : Int
+  min_elevation_m : Double
+  max_elevation_m : Double
+  elevation_range_m : Double
+  max_neighbor_grade : Double
+  roughness_m : Double
+  decision : TraverseDecision
+  selected_route_id : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct IlluminationAssessment {
   constraint : IlluminationConstraint
   evidence_dataset_id : String

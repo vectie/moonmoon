@@ -8,6 +8,7 @@ pub(all) enum BookEntryKind {
   SourceExtractionCandidate
   DerivedTerrain
   MissionDecision
+  CorridorScan
   RouteAlternative
   IlluminationAssessment
   OpenQuestion
@@ -52,6 +53,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SourceExtractionCandidate => "source-extraction-candidate"
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
+    CorridorScan => "corridor-scan"
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
     OpenQuestion => "open-question"
@@ -222,6 +224,20 @@ fn traverse_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn corridor_scan_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let best = dossier.corridor_scan[0]
+  {
+    entry_id: "corridor/\{dossier.site.site_id}/first-trusted-square-5x5",
+    title: "5x5 LOLA corridor scan for \{dossier.site.name}",
+    kind: CorridorScan,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.75,
+    path: "mission/\{dossier.site.site_id}/corridor-scan.json",
+    summary: "best window \{best.window_id} rank \{best.rank} selects \{best.selected_route_id}: \{@mission.corridor_scan_window_status_label(best)} with grade \{best.max_neighbor_grade} and roughness \{best.roughness_m} m",
+  }
+}
+
+///|
 fn route_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
   let entries : Array[BookEntry] = []
   for route in dossier.route_candidates {
@@ -313,6 +329,15 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       })
     }
   }
+  let best = dossier.corridor_scan[0]
+  if best.decision != @mission.TraverseDecision::Allow {
+    items.push({
+      item_id: "corridor-scan-best-window",
+      severity: decision_severity(best.decision),
+      reason: "best measured corridor window \{best.window_id} selects \{best.selected_route_id} but remains \{@mission.corridor_scan_window_status_label(best)}: \{best.note}",
+      owner: "mission-review",
+    })
+  }
   for index, question in dossier.next_questions {
     items.push({
       item_id: "question-\{index}",
@@ -344,6 +369,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   }
   entries.push(terrain_entry(dossier))
   entries.push(traverse_entry(dossier))
+  entries.push(corridor_scan_entry(dossier))
   for entry in route_candidate_entries(dossier) {
     entries.push(entry)
   }
