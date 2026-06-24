@@ -36,6 +36,8 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - discovery: https://ode.rsl.wustl.edu/moon/
   - source family: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/
   - source metadata: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat
+  - source metadata sha256: f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8
+  - source metadata bytes: 5672
   - target region: Shackleton rim rehearsal tile near 89.88S, 0.12E
   - local source directory: data/sources/lro_lola/
   - local metadata path: data/sources/lro_lola/gdr_ds.cat
