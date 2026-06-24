@@ -118,6 +118,61 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
 }
 
 ///|
+test "first trusted square corridor task names planned 9x9 search gates" {
+  let task = @moonclaw.first_trusted_square_corridor_expansion_task()
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/corridor-expansion-v1/search-task",
+  )
+  assert_eq(
+    task.proposal_id,
+    "moonclaw/first-trusted-square/corridor-expansion-v1",
+  )
+  assert_true(task.priority == @moonclaw.MoonClawJobPriority::High)
+  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
+  assert_eq(task.current_scan_id, "first-trusted-square-5x5-corridor-scan-v1")
+  assert_eq(task.planned_scan_id, "first-trusted-square-9x9-corridor-scan-v2")
+  assert_eq(task.current_window_count, 25)
+  assert_eq(task.planned_window_count, 81)
+  assert_eq(task.planned_radius_cells, 16)
+  assert_eq(task.planned_step_cells, 4)
+  assert_eq(@moonclaw.corridor_task_blocked_artifact_count(task), 3)
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "planned-9x9-search" && artifact.ready
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "widened-scan-csv" &&
+      !artifact.ready &&
+      artifact.blocking_reason.contains("9x9 search")
+    }),
+  )
+  assert_true(
+    task.commands.contains(
+      "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+    ),
+  )
+}
+
+///|
+test "MoonClaw corridor task renderers expose widened search blockers" {
+  let markdown = @moonclaw.first_trusted_square_corridor_tasks_markdown()
+  assert_true(markdown.contains("MoonClaw Corridor Expansion Tasks"))
+  assert_true(markdown.contains("first-trusted-square-9x9-corridor-scan-v2"))
+  assert_true(markdown.contains("81 windows"))
+  assert_true(markdown.contains("widened-scan-csv"))
+  assert_true(markdown.contains("ready: false"))
+  let json = @moonclaw.first_trusted_square_corridor_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"planned_window_count\": 81"))
+  assert_true(json.contains("\"planned_radius_cells\": 16"))
+  assert_true(json.contains("\"blocking_reason\""))
+}
+
+///|
 test "first trusted square route scoring receipt validates blocked evidence" {
   let receipt = @moonclaw.first_trusted_square_route_scoring_receipt()
   assert_eq(

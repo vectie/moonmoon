@@ -241,7 +241,10 @@ and route-scoring receipts. The ephemeris task packet turns the critical
 proposal into an operator/agent checklist: current inputs, required source
 artifacts, readiness booleans, blocker reasons, generator commands, validation
 gates, and the Moonrobo safety condition that must stay blocked until power
-evidence is ready. The first route
+evidence is ready. The corridor task packet does the same for terrain search:
+it names the current 5x5 scan, the planned 9x9/81-window extraction, missing
+source CSV, generated MoonBit update, MoonBook refresh, and the safety condition
+that prevents route promotion before those artifacts are pinned. The first route
 receipt validates the current route-scoring job against route IDs, selected
 route, source checksums, proposal blockers, energy blocker, and Moonrobo
 handoff compatibility. The first corridor receipt validates that the bounded

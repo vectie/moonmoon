@@ -18,6 +18,9 @@ MOONCLAW_JSON = ROOT / "output/moonclaw/first_trusted_square_proposals.json"
 MOONCLAW_EPHEMERIS_TASKS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_ephemeris_tasks.json"
 )
+MOONCLAW_CORRIDOR_TASKS_JSON = (
+  ROOT / "output/moonclaw/first_trusted_square_corridor_tasks.json"
+)
 MOONCLAW_RECEIPTS_JSON = ROOT / "output/moonclaw/first_trusted_square_receipts.json"
 MOONCLAW_EPHEMERIS_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_ephemeris_receipts.json"
@@ -59,6 +62,7 @@ def payload_for_entry(
   site: dict[str, Any],
   moonclaw: list[dict[str, Any]],
   moonclaw_ephemeris_tasks: list[dict[str, Any]],
+  moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
@@ -121,6 +125,11 @@ def payload_for_entry(
       "proposals": moonclaw,
     }
   if kind == "MoonClawTask":
+    if entry_id.endswith("/corridor-expansion-task"):
+      return {
+        "primary_task": moonclaw_corridor_tasks[0],
+        "tasks": moonclaw_corridor_tasks,
+      }
     return {
       "primary_task": moonclaw_ephemeris_tasks[0],
       "tasks": moonclaw_ephemeris_tasks,
@@ -149,6 +158,7 @@ def workspace_files(
   book: dict[str, Any],
   moonclaw: list[dict[str, Any]],
   moonclaw_ephemeris_tasks: list[dict[str, Any]],
+  moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
@@ -186,6 +196,7 @@ def workspace_files(
       "output/moonbook/first_trusted_square_book.json",
       "output/moonclaw/first_trusted_square_proposals.json",
       "output/moonclaw/first_trusted_square_ephemeris_tasks.json",
+      "output/moonclaw/first_trusted_square_corridor_tasks.json",
       "output/moonclaw/first_trusted_square_receipts.json",
       "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
       "output/moonclaw/first_trusted_square_corridor_receipts.json",
@@ -205,6 +216,7 @@ def workspace_files(
       site,
       moonclaw,
       moonclaw_ephemeris_tasks,
+      moonclaw_corridor_tasks,
       moonclaw_receipts,
       moonclaw_ephemeris_receipts,
       moonclaw_corridor_receipts,
@@ -254,6 +266,7 @@ def workspace_files(
     "- Source MoonBook dossier: `output/moonbook/first_trusted_square_book.json`\n"
     "- Source MoonClaw proposals: `output/moonclaw/first_trusted_square_proposals.json`\n"
     "- Source MoonClaw ephemeris tasks: `output/moonclaw/first_trusted_square_ephemeris_tasks.json`\n"
+    "- Source MoonClaw corridor tasks: `output/moonclaw/first_trusted_square_corridor_tasks.json`\n"
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
     "- Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`\n"
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
@@ -317,6 +330,7 @@ def main() -> int:
   book = load_json(BOOK_JSON)
   moonclaw = load_json(MOONCLAW_JSON)
   moonclaw_ephemeris_tasks = load_json(MOONCLAW_EPHEMERIS_TASKS_JSON)
+  moonclaw_corridor_tasks = load_json(MOONCLAW_CORRIDOR_TASKS_JSON)
   moonclaw_receipts = load_json(MOONCLAW_RECEIPTS_JSON)
   moonclaw_ephemeris_receipts = load_json(MOONCLAW_EPHEMERIS_RECEIPTS_JSON)
   moonclaw_corridor_receipts = load_json(MOONCLAW_CORRIDOR_RECEIPTS_JSON)
@@ -326,6 +340,7 @@ def main() -> int:
     book,
     moonclaw,
     moonclaw_ephemeris_tasks,
+    moonclaw_corridor_tasks,
     moonclaw_receipts,
     moonclaw_ephemeris_receipts,
     moonclaw_corridor_receipts,

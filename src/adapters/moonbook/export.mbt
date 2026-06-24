@@ -526,6 +526,20 @@ fn moonclaw_ephemeris_task_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_corridor_task_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let task = @moonclaw.corridor_expansion_task(dossier)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/corridor-expansion-task",
+    title: "MoonClaw corridor expansion task for \{dossier.site.name}",
+    kind: MoonClawTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.65,
+    path: "moonclaw/\{dossier.site.site_id}/corridor-task.json",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task plans \{task.planned_window_count} windows with \{@moonclaw.corridor_task_blocked_artifact_count(task)} blockers before route promotion",
+  }
+}
+
+///|
 fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.route_scoring_receipt(dossier)
   {
@@ -707,6 +721,20 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       ),
     )
   }
+  let corridor_task = @moonclaw.corridor_expansion_task(dossier)
+  let corridor_blocked_artifacts = @moonclaw.corridor_task_blocked_artifact_count(
+    corridor_task,
+  )
+  if corridor_blocked_artifacts > 0 {
+    items.push(
+      review_item(
+        "moonclaw-corridor-task",
+        "high",
+        "MoonClaw corridor task has \{corridor_blocked_artifacts} blocking artifacts before the planned \{corridor_task.planned_window_count}-window search can update route evidence",
+        "moonclaw",
+      ),
+    )
+  }
   for index, question in dossier.next_questions {
     items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }
@@ -745,6 +773,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))
   entries.push(moonclaw_ephemeris_task_entry(dossier))
+  entries.push(moonclaw_corridor_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))

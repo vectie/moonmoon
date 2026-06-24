@@ -85,6 +85,10 @@ Current implementation status:
   commands, validation gates, artifact readiness, blocker reasons, and Moonrobo
   safety condition required before the missing power-window evidence can become
   a reviewed robot-facing input.
+- `src/adapters/moonclaw` now emits a matching corridor expansion task packet
+  for the planned 9x9 search. It preserves the current 5x5 scan as baseline
+  evidence while marking the widened CSV, generated MoonBit scan, and MoonBook
+  workspace refresh as blocking artifacts.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -200,6 +204,10 @@ Current implementation status:
   workspace contains the exact source files, generated files, validation
   commands, artifact blockers, and Moonrobo precondition gate that must move
   from `missing-source` to reviewed evidence.
+- MoonBook now also indexes the corridor expansion task, so the workspace and
+  review queue show that the 81-window `first-trusted-square-9x9-corridor-scan-v2`
+  plan exists while the widened source CSV and downstream generated artifacts
+  remain blocked.
 
 Remaining work:
 

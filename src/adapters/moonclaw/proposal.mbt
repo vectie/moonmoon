@@ -78,6 +78,28 @@ pub(all) struct MoonClawEphemerisAcquisitionTask {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MoonClawCorridorExpansionTask {
+  task_id : String
+  proposal_id : String
+  site_id : @core.SiteId
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  objective : String
+  current_scan_id : String
+  planned_scan_id : String
+  current_window_count : Int
+  planned_window_count : Int
+  planned_radius_cells : Int
+  planned_step_cells : Int
+  inputs : Array[MoonClawJobInput]
+  artifacts : Array[MoonClawTaskArtifact]
+  commands : Array[String]
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct MoonClawReceipt {
   receipt_id : String
   proposal_id : String
@@ -248,6 +270,19 @@ fn task_artifact(
 ///|
 pub fn task_blocked_artifact_count(
   task : MoonClawEphemerisAcquisitionTask,
+) -> Int {
+  let mut count = 0
+  for artifact in task.artifacts {
+    if !artifact.ready {
+      count = count + 1
+    }
+  }
+  count
+}
+
+///|
+pub fn corridor_task_blocked_artifact_count(
+  task : MoonClawCorridorExpansionTask,
 ) -> Int {
   let mut count = 0
   for artifact in task.artifacts {
@@ -693,6 +728,72 @@ pub fn corridor_expansion_proposal(
 }
 
 ///|
+pub fn corridor_expansion_task(
+  dossier : @site.SiteDossier,
+) -> MoonClawCorridorExpansionTask {
+  let proposal = corridor_expansion_proposal(dossier)
+  let best = dossier.corridor_scan[0]
+  {
+    task_id: "moonclaw/\{dossier.site.site_id}/corridor-expansion-v1/search-task",
+    proposal_id: proposal.proposal_id,
+    site_id: dossier.site.site_id,
+    priority: proposal.priority,
+    state: NeedsReview,
+    objective: proposal.objective,
+    current_scan_id: best.scan_id,
+    planned_scan_id: "first-trusted-square-9x9-corridor-scan-v2",
+    current_window_count: dossier.corridor_scan.length(),
+    planned_window_count: 81,
+    planned_radius_cells: 16,
+    planned_step_cells: 4,
+    inputs: proposal.inputs,
+    artifacts: [
+      task_artifact(
+        "current-5x5-scan",
+        "data/sources/lro_lola/first_trusted_square_corridor_scan.csv",
+        "scripts/scan_lola_corridor.py",
+        "verified 5x5 baseline corridor scan remains pinned for comparison",
+        best.scan_id,
+        true,
+        "",
+        "python3 scripts/generate_corridor_scan.py --check",
+      ),
+      task_artifact(
+        "planned-9x9-search", "scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+        "scripts/scan_lola_corridor.py", "offline 9x9 search plan names 81 windows before source-byte extraction",
+        "first-trusted-square-9x9-corridor-scan-v2 / 81 windows", true, "", "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+      ),
+      task_artifact(
+        "widened-scan-csv", "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
+        "scripts/scan_lola_corridor.py", "81-window LOLA byte-range scan is extracted, checksummed, and reviewed",
+        "missing", false, "network byte-range extraction for the 9x9 search has not produced a pinned CSV",
+        "python3 scripts/scan_lola_corridor.py --radius 16 --step 4",
+      ),
+      task_artifact(
+        "generated-corridor-scan", "src/mission/generated_first_trusted_square_corridor_scan.mbt",
+        "scripts/generate_corridor_scan.py", "MoonBit corridor scan mirrors the reviewed widened CSV",
+        "current 5x5 generated scan", false, "generated MoonBit still mirrors the 5x5 scan until the 9x9 CSV is pinned",
+        "python3 scripts/generate_corridor_scan.py --check",
+      ),
+      task_artifact(
+        "moonbook-corridor-workspace", "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/corridor-scan.json",
+        "scripts/build_moonmoon_dossier.sh", "MoonBook workspace carries the widened scan and updated route blockers",
+        "current 5x5 workspace payload", false, "MoonBook workspace still carries the 5x5 scan result",
+        "python3 scripts/materialize_moonbook_workspace.py --check",
+      ),
+    ],
+    commands: [
+      "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4", "python3 scripts/scan_lola_corridor.py --radius 16 --step 4",
+      "python3 scripts/generate_corridor_scan.py --check", "/Users/kq/.moon/bin/moon test src/mission",
+      "python3 scripts/materialize_moonbook_workspace.py --check",
+    ],
+    acceptance_criteria: proposal.acceptance_criteria,
+    safety_gate: "Do not promote a widened route candidate until the 9x9 CSV is pinned, MoonBit generation reads it, and Moonrobo handoffs are regenerated from the updated corridor evidence.",
+    next_action: "Run the 9x9 LOLA byte-range extraction, pin the CSV checksum, regenerate MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.",
+  }
+}
+
+///|
 pub fn route_scoring_proposal(dossier : @site.SiteDossier) -> MoonClawProposal {
   {
     proposal_id: "moonclaw/\{dossier.site.site_id}/route-scoring-v1",
@@ -768,10 +869,22 @@ pub fn first_trusted_square_ephemeris_acquisition_task() -> MoonClawEphemerisAcq
 }
 
 ///|
+pub fn first_trusted_square_corridor_expansion_task() -> MoonClawCorridorExpansionTask {
+  corridor_expansion_task(@site.first_trusted_square_dossier())
+}
+
+///|
 pub fn first_trusted_square_ephemeris_tasks() -> Array[
   MoonClawEphemerisAcquisitionTask,
 ] {
   [first_trusted_square_ephemeris_acquisition_task()]
+}
+
+///|
+pub fn first_trusted_square_corridor_tasks() -> Array[
+  MoonClawCorridorExpansionTask,
+] {
+  [first_trusted_square_corridor_expansion_task()]
 }
 
 ///|
@@ -1040,6 +1153,49 @@ pub fn render_ephemeris_tasks_markdown(
 }
 
 ///|
+pub fn render_corridor_tasks_markdown(
+  tasks : Array[MoonClawCorridorExpansionTask],
+) -> String {
+  let mut text = "# MoonClaw Corridor Expansion Tasks\n\n"
+  for task in tasks {
+    text += "- \{task.task_id}\n"
+    text += "  - proposal: \{task.proposal_id}\n"
+    text += "  - priority: \{priority_label(task.priority)}\n"
+    text += "  - state: \{receipt_status_label(task.state)}\n"
+    text += "  - objective: \{task.objective}\n"
+    text += "  - current scan: \{task.current_scan_id} (\{task.current_window_count} windows)\n"
+    text += "  - planned scan: \{task.planned_scan_id} (\{task.planned_window_count} windows, radius \{task.planned_radius_cells}, step \{task.planned_step_cells})\n"
+    text += "  - safety gate: \{task.safety_gate}\n"
+    text += "  - next action: \{task.next_action}\n"
+    text += "  - inputs:\n"
+    for input in task.inputs {
+      text += "    - \{input.input_id}: \{input.evidence_path} - \{input.summary}\n"
+    }
+    text += "  - artifacts:\n"
+    for artifact in task.artifacts {
+      text += "    - \{artifact.artifact_id}: \{artifact.path}\n"
+      text += "      - producer: \{artifact.producer}\n"
+      text += "      - required: \{artifact.required_state}\n"
+      text += "      - current: \{artifact.current_state}\n"
+      text += "      - ready: \{artifact.ready}\n"
+      if !artifact.ready {
+        text += "      - blocking: \{artifact.blocking_reason}\n"
+      }
+      text += "      - gate: \{artifact.validation_gate}\n"
+    }
+    text += "  - commands:\n"
+    for command in task.commands {
+      text += "    - \{command}\n"
+    }
+    text += "  - acceptance:\n"
+    for acceptance in task.acceptance_criteria {
+      text += "    - \{acceptance.criterion_id}: \{acceptance.description}\n"
+    }
+  }
+  text
+}
+
+///|
 pub fn render_receipts_markdown(
   receipts : Array[MoonClawRouteScoringReceipt],
 ) -> String {
@@ -1141,6 +1297,11 @@ pub fn first_trusted_square_ephemeris_tasks_markdown() -> String {
 }
 
 ///|
+pub fn first_trusted_square_corridor_tasks_markdown() -> String {
+  render_corridor_tasks_markdown(first_trusted_square_corridor_tasks())
+}
+
+///|
 pub fn first_trusted_square_ephemeris_receipts_markdown() -> String {
   render_ephemeris_receipts_markdown(first_trusted_square_ephemeris_receipts())
 }
@@ -1160,6 +1321,13 @@ pub fn render_receipts_json(
 ///|
 pub fn render_ephemeris_tasks_json(
   tasks : Array[MoonClawEphemerisAcquisitionTask],
+) -> Json {
+  tasks.to_json()
+}
+
+///|
+pub fn render_corridor_tasks_json(
+  tasks : Array[MoonClawCorridorExpansionTask],
 ) -> Json {
   tasks.to_json()
 }
@@ -1186,6 +1354,11 @@ pub fn first_trusted_square_receipts_json() -> Json {
 ///|
 pub fn first_trusted_square_ephemeris_tasks_json() -> Json {
   render_ephemeris_tasks_json(first_trusted_square_ephemeris_tasks())
+}
+
+///|
+pub fn first_trusted_square_corridor_tasks_json() -> Json {
+  render_corridor_tasks_json(first_trusted_square_corridor_tasks())
 }
 
 ///|
