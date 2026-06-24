@@ -239,8 +239,9 @@ under `output/moonclaw/`, and MoonBook indexes them as evidence. The first
 proposals request ephemeris-backed power windows, wider LOLA corridor search,
 and route-scoring receipts. The ephemeris task packet turns the critical
 proposal into an operator/agent checklist: current inputs, required source
-artifacts, generator commands, validation gates, and the Moonrobo safety
-condition that must stay blocked until power evidence is ready. The first route
+artifacts, readiness booleans, blocker reasons, generator commands, validation
+gates, and the Moonrobo safety condition that must stay blocked until power
+evidence is ready. The first route
 receipt validates the current route-scoring job against route IDs, selected
 route, source checksums, proposal blockers, energy blocker, and Moonrobo
 handoff compatibility. The first corridor receipt validates that the bounded

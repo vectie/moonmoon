@@ -76,13 +76,14 @@ payloads, review status, and review transitions.
 MoonClaw outputs currently include bounded modeling proposals, a concrete
 ephemeris acquisition task, a deterministic route-scoring receipt, a
 deterministic corridor-expansion receipt, and a needs-review ephemeris receipt.
-The task names the source artifacts, generator commands, validation gates, and
-Moonrobo safety condition required to move the power-window evidence from
-`missing-source` to reviewed robot-facing input. The receipts validate the
-current route set, selected route, measured corridor windows, source checksums,
-proposal blockers, energy blocker, and Moonrobo handoff compatibility. They
-record accepted terrain and route results while the ephemeris receipt keeps the
-power gate in review until a real time-windowed solar source is attached.
+The task names the source artifacts, generator commands, validation gates,
+machine-readable artifact readiness, blocker reasons, and Moonrobo safety
+condition required to move the power-window evidence from `missing-source` to
+reviewed robot-facing input. The receipts validate the current route set,
+selected route, measured corridor windows, source checksums, proposal blockers,
+energy blocker, and Moonrobo handoff compatibility. They record accepted terrain
+and route results while the ephemeris receipt keeps the power gate in review
+until a real time-windowed solar source is attached.
 
 Moonmoon now also records that missing solar source as a typed acquisition
 contract. The first trusted square has a `SPICE kernels` source candidate and a

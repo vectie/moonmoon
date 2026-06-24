@@ -56,6 +56,8 @@ pub(all) struct MoonClawTaskArtifact {
   producer : String
   required_state : String
   current_state : String
+  ready : Bool
+  blocking_reason : String
   validation_gate : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -227,6 +229,8 @@ fn task_artifact(
   producer : String,
   required_state : String,
   current_state : String,
+  ready : Bool,
+  blocking_reason : String,
   validation_gate : String,
 ) -> MoonClawTaskArtifact {
   {
@@ -235,8 +239,23 @@ fn task_artifact(
     producer,
     required_state,
     current_state,
+    ready,
+    blocking_reason,
     validation_gate,
   }
+}
+
+///|
+pub fn task_blocked_artifact_count(
+  task : MoonClawEphemerisAcquisitionTask,
+) -> Int {
+  let mut count = 0
+  for artifact in task.artifacts {
+    if !artifact.ready {
+      count = count + 1
+    }
+  }
+  count
 }
 
 ///|
@@ -567,7 +586,9 @@ pub fn ephemeris_acquisition_task(
       task_artifact(
         "source-discovery-record", "data/sources/lunar_ephemeris/README.md", "operator-or-moonclaw-source-agent",
         "official ephemeris or illumination source family selected with citation",
-        "placeholder source family, exact kernels and checksums pending", "source-acquisition plan must name the exact official files before energy can unblock",
+        "placeholder source family, exact kernels and checksums pending", false,
+        "exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned",
+        "source-acquisition plan must name the exact official files before energy can unblock",
       ),
       task_artifact(
         "power-window-json",
@@ -575,6 +596,8 @@ pub fn ephemeris_acquisition_task(
         "scripts/generate_power_window.py input",
         "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
         evidence.source_status,
+        evidence.has_time_window_ephemeris && evidence.source_status == "ready",
+        "current power-window evidence is \{evidence.source_status}; no time-windowed ephemeris is attached",
         "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check",
       ),
       task_artifact(
@@ -587,6 +610,8 @@ pub fn ephemeris_acquisition_task(
         } else {
           "generated-missing-source-evidence"
         },
+        true,
+        "",
         "moon test src/mission",
       ),
       task_artifact(
@@ -595,12 +620,14 @@ pub fn ephemeris_acquisition_task(
         "scripts/build_moonmoon_dossier.sh",
         "site dossier carries the refreshed energy and illumination decisions",
         @mission.energy_decision_label(dossier.energy),
+        true,
+        "",
         "python3 scripts/materialize_moonbook_workspace.py --check",
       ),
       task_artifact(
         "moonrobo-preconditions", "output/moonrobo/first_trusted_square_handoffs.json",
         "scripts/build_moonmoon_dossier.sh", "Moonrobo handoff keeps source readiness and energy margin as separate preconditions",
-        "blocked until power-window evidence is ready", "moon run cmd/main -- moonrobo handoff json",
+        "blocked until power-window evidence is ready", true, "", "moon run cmd/main -- moonrobo handoff json",
       ),
     ],
     commands: [
@@ -994,6 +1021,10 @@ pub fn render_ephemeris_tasks_markdown(
       text += "      - producer: \{artifact.producer}\n"
       text += "      - required: \{artifact.required_state}\n"
       text += "      - current: \{artifact.current_state}\n"
+      text += "      - ready: \{artifact.ready}\n"
+      if !artifact.ready {
+        text += "      - blocking: \{artifact.blocking_reason}\n"
+      }
       text += "      - gate: \{artifact.validation_gate}\n"
     }
     text += "  - commands:\n"

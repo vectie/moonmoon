@@ -65,17 +65,26 @@ test "first trusted square ephemeris task names executable source gates" {
   assert_true(task.safety_gate.contains("Do not allow Moonrobo simulation"))
   assert_true(task.inputs.length() == 3)
   assert_true(task.artifacts.length() == 5)
+  assert_eq(@moonclaw.task_blocked_artifact_count(task), 2)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "power-window-json" &&
       artifact.current_state == "missing-source" &&
+      !artifact.ready &&
+      artifact.blocking_reason.contains("no time-windowed ephemeris") &&
       artifact.path ==
       "data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
     }),
   )
   assert_true(
     task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "generated-moonbit-window" && artifact.ready
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "moonrobo-preconditions" &&
+      artifact.ready &&
       artifact.validation_gate.contains("moonrobo handoff json")
     }),
   )
@@ -93,6 +102,8 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
   assert_true(markdown.contains("MoonClaw Ephemeris Acquisition Tasks"))
   assert_true(markdown.contains("power-window-json"))
   assert_true(markdown.contains("missing-source"))
+  assert_true(markdown.contains("ready: false"))
+  assert_true(markdown.contains("blocking: current power-window evidence"))
   assert_true(markdown.contains("moonrobo-preconditions"))
   assert_true(markdown.contains("generate_power_window.py --check"))
   let json = @moonclaw.first_trusted_square_ephemeris_tasks_json().stringify(
@@ -100,6 +111,8 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
   )
   assert_true(json.contains("\"MoonClawEphemerisAcquisitionTask\"") == false)
   assert_true(json.contains("\"artifacts\""))
+  assert_true(json.contains("\"ready\": false"))
+  assert_true(json.contains("\"blocking_reason\""))
   assert_true(json.contains("\"safety_gate\""))
   assert_true(json.contains("\"state\": \"NeedsReview\""))
 }

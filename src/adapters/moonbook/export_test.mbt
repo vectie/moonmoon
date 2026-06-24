@@ -3,7 +3,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 41)
-  assert_eq(dossier.review_queue.length(), 24)
+  assert_eq(dossier.review_queue.length(), 25)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -135,7 +135,9 @@ test "first trusted square exports a LunarBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[37].kind),
     "moonclaw-task",
   )
-  assert_true(dossier.entries[37].summary.contains("5 artifacts"))
+  assert_true(
+    dossier.entries[37].summary.contains("5 artifacts with 2 blockers"),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[38].kind),
     "moonclaw-receipt",
@@ -201,6 +203,12 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let moonclaw = dossier.review_queue[20]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
+  let ephemeris_task = dossier.review_queue[21]
+  assert_eq(ephemeris_task.item_id, "moonclaw-ephemeris-task")
+  assert_true(
+    ephemeris_task.status == @moonbook.ReviewItemStatus::NeedsEvidence,
+  )
+  assert_true(ephemeris_task.reason.contains("2 blocking artifacts"))
 }
 
 ///|

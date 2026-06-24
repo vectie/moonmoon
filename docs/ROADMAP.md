@@ -82,8 +82,9 @@ Current implementation status:
   receipt that still keeps Moonrobo blocked.
 - `src/adapters/moonclaw` also emits a concrete ephemeris acquisition task
   packet. It names the current evidence inputs, source artifacts, generator
-  commands, validation gates, and Moonrobo safety condition required before the
-  missing power-window evidence can become a reviewed robot-facing input.
+  commands, validation gates, artifact readiness, blocker reasons, and Moonrobo
+  safety condition required before the missing power-window evidence can become
+  a reviewed robot-facing input.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -193,8 +194,8 @@ Current implementation status:
   contract.
 - MoonBook now also indexes the MoonClaw ephemeris acquisition task, so the
   workspace contains the exact source files, generated files, validation
-  commands, and Moonrobo precondition gate that must move from `missing-source`
-  to reviewed evidence.
+  commands, artifact blockers, and Moonrobo precondition gate that must move
+  from `missing-source` to reviewed evidence.
 
 Remaining work:
 

@@ -521,7 +521,7 @@ fn moonclaw_ephemeris_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.6,
     path: "moonclaw/\{dossier.site.site_id}/ephemeris-task.json",
-    summary: "\{@moonclaw.receipt_status_label(task.state)} task tracks \{task.artifacts.length()} artifacts before Moonrobo power evidence can unblock",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task tracks \{task.artifacts.length()} artifacts with \{@moonclaw.task_blocked_artifact_count(task)} blockers before Moonrobo power evidence can unblock",
   }
 }
 
@@ -695,6 +695,18 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       "moonclaw",
     ),
   )
+  let ephemeris_task = @moonclaw.ephemeris_acquisition_task(dossier)
+  let blocked_artifacts = @moonclaw.task_blocked_artifact_count(ephemeris_task)
+  if blocked_artifacts > 0 {
+    items.push(
+      review_item(
+        "moonclaw-ephemeris-task",
+        "high",
+        "MoonClaw ephemeris task has \{blocked_artifacts} blocking artifacts before power-window evidence can become robot-facing input",
+        "moonclaw",
+      ),
+    )
+  }
   for index, question in dossier.next_questions {
     items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }

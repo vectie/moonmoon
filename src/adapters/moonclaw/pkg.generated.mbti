@@ -92,6 +92,8 @@ pub fn route_scoring_proposal(@site.SiteDossier) -> MoonClawProposal
 
 pub fn route_scoring_receipt(@site.SiteDossier) -> MoonClawRouteScoringReceipt
 
+pub fn task_blocked_artifact_count(MoonClawEphemerisAcquisitionTask) -> Int
+
 // Errors
 
 // Types and methods
@@ -243,6 +245,8 @@ pub(all) struct MoonClawTaskArtifact {
   producer : String
   required_state : String
   current_state : String
+  ready : Bool
+  blocking_reason : String
   validation_gate : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
