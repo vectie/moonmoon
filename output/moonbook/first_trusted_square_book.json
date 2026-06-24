@@ -22,6 +22,15 @@
       "summary": "LOLA GDR/SLDEM derived gridded terrain: Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture."
     },
     {
+      "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
+      "title": "Acquire ldem_875s_20m_float",
+      "kind": "SourceAcquisitionPlan",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
+      "summary": "planned:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: Do not replace the synthetic fixture until product URL, label URL, SHA-256, extraction window, and generated CSV checksum are recorded."
+    },
+    {
       "entry_id": "validation/fixture-first-trusted-square-dem-v1",
       "title": "Source validation for fixture-first-trusted-square-dem-v1",
       "kind": "SourceValidation",

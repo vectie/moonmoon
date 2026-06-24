@@ -15,6 +15,11 @@
   - claim: unknown
   - confidence: 0
   - path: source-candidates/candidate-lro-lola-sldem-first-trusted-square.json
+- source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1: Acquire ldem_875s_20m_float
+  - kind: source-acquisition-plan
+  - claim: unknown
+  - confidence: 0
+  - path: source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json
 - validation/fixture-first-trusted-square-dem-v1: Source validation for fixture-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
