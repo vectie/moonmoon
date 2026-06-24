@@ -121,6 +121,12 @@ Regenerate the ranked 5x5 corridor scan from HTTP byte ranges:
 python3 scripts/scan_lola_corridor.py
 ```
 
+Inspect a wider search plan without network access before fetching byte ranges:
+
+```bash
+python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4
+```
+
 Regenerate MoonBit source tables from checked CSV artifacts:
 
 ```bash

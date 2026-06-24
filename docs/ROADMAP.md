@@ -160,6 +160,10 @@ Current implementation status:
   `scripts/scan_lola_corridor.py`, mirrored into MoonBit by
   `scripts/generate_corridor_scan.py`, and surfaced as a MoonBook
   `corridor-scan` entry.
+- `scripts/scan_lola_corridor.py` can now plan wider scan surfaces offline with
+  explicit `--radius` and `--step` settings. The current pinned artifact remains
+  the 5x5 scan, while the next extraction target is the deterministic 9x9
+  `--radius 16 --step 4` search.
 - Route alternatives now carry MoonBook-visible illumination assessments. The
   current gate is intentionally conservative: it records relief-shadow risk and
   blocks all route candidates until a time-windowed solar ephemeris source is
