@@ -94,9 +94,9 @@ Current implementation status:
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
-- The first LOLA acquisition plan now names a concrete south-polar GDR float
-  product, XML label, local raw/label paths, extracted CSV path, and trust gate
-  before the synthetic fixture can be replaced.
+- The first LOLA acquisition plan now names the reachable south-polar GDR
+  source family, catalog metadata, local source directory, extracted CSV path,
+  and trust gate before the synthetic fixture can be replaced.
 
 Remaining work:
 

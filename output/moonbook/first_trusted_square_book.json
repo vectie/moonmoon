@@ -23,12 +23,12 @@
     },
     {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
-      "title": "Acquire ldem_875s_20m_float",
+      "title": "Acquire lro-lola-gdr-south-pole-selection",
       "kind": "SourceAcquisitionPlan",
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
-      "summary": "planned:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: Do not replace the synthetic fixture until product URL, label URL, SHA-256, extraction window, and generated CSV checksum are recorded."
+      "summary": "planned:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded."
     },
     {
       "entry_id": "validation/fixture-first-trusted-square-dem-v1",

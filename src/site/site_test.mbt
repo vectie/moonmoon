@@ -15,8 +15,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
   assert_eq(dossier.source_acquisition_plans.length(), 1)
   assert_eq(
-    dossier.source_acquisition_plans[0].product_id,
-    "ldem_875s_20m_float",
+    dossier.source_acquisition_plans[0].product_family_id,
+    "lro-lola-gdr-south-pole-selection",
   )
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Caution)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Review)
@@ -31,7 +31,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),
   )
   assert_true(markdown.contains("## Source Acquisition Plans"))
-  assert_true(markdown.contains("ldem_875s_20m_float"))
+  assert_true(markdown.contains("lro-lola-gdr-south-pole-selection"))
   assert_true(markdown.contains("Do not replace the synthetic fixture"))
   assert_true(markdown.contains("## Source Validation"))
   assert_true(markdown.contains("verified"))
@@ -52,7 +52,11 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"validations\""))
   assert_true(text.contains("\"source_candidates\""))
   assert_true(text.contains("\"source_acquisition_plans\""))
-  assert_true(text.contains("\"product_id\": \"ldem_875s_20m_float\""))
+  assert_true(
+    text.contains(
+      "\"product_family_id\": \"lro-lola-gdr-south-pole-selection\"",
+    ),
+  )
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"CuratedFixture\""))

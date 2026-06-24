@@ -97,14 +97,14 @@ pub(all) enum ReviewStatus {
 pub(all) struct SourceAcquisitionPlan {
   plan_id : String
   candidate_id : String
-  product_id : String
-  source_product_url : String
-  source_label_url : String
+  product_family_id : String
+  source_family_url : String
+  source_metadata_url : String
   discovery_url : String
   target_region : String
   expected_format : String
-  local_raw_path : String
-  local_label_path : String
+  local_source_directory : String
+  local_metadata_path : String
   extracted_fixture_path : String
   trust_gate : String
   steps : Array[SourceAcquisitionStep]

@@ -30,20 +30,20 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 ## Source Acquisition Plans
 
-- acquire-lro-lola-gdr-south-pole-20m-v1: ldem_875s_20m_float
+- acquire-lro-lola-gdr-south-pole-20m-v1: lro-lola-gdr-south-pole-selection
   - candidate: candidate-lro-lola-sldem-first-trusted-square
   - progress: planned:5-steps
   - discovery: https://ode.rsl.wustl.edu/moon/
-  - product: https://pds-geosciences.wustl.edu/lro/lro-l-lola-5-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img
-  - label: https://pds-geosciences.wustl.edu/lro/lro-l-lola-5-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml
+  - source family: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/
+  - source metadata: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat
   - target region: Shackleton rim rehearsal tile near 89.88S, 0.12E
-  - local raw path: data/sources/lro_lola/ldem_875s_20m_float.img
-  - local label path: data/sources/lro_lola/ldem_875s_20m_float.xml
+  - local source directory: data/sources/lro_lola/
+  - local metadata path: data/sources/lro_lola/gdr_ds.cat
   - extracted fixture path: data/sources/lro_lola/first_trusted_square_dem.csv
-  - trust gate: Do not replace the synthetic fixture until product URL, label URL, SHA-256, extraction window, and generated CSV checksum are recorded.
+  - trust gate: Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded.
   - steps:
-    - discover: Confirm product family - The source candidate points to a named product family and the acquisition plan names a concrete product id.
-    - label: Fetch label first - The extractor can derive pixel coordinates for the trusted-square bounds without reading the full image into memory.
+    - discover: Confirm product family - The source candidate points to a named product family and the acquisition plan names a reachable PDS family root.
+    - metadata: Fetch metadata first - The extractor can derive pixel coordinates for the trusted-square bounds without reading the full image into memory.
     - extract: Extract tiny tile - scripts/generate_moonmoon_fixture.py can regenerate MoonBit terrain from the authoritative CSV.
     - validate: Verify evidence chain - moon test passes while the dossier marks the authoritative dataset as accepted for software proof.
     - review: Human review before mission claims - The review queue no longer contains the source-upgrade blocker for this site.

@@ -75,7 +75,7 @@ fn source_acquisition_plan_entries(
   for plan in dossier.source_acquisition_plans {
     entries.push({
       entry_id: "source-acquisition/\{plan.plan_id}",
-      title: "Acquire \{plan.product_id}",
+      title: "Acquire \{plan.product_family_id}",
       kind: SourceAcquisitionPlan,
       claim_kind: @core.ClaimKind::Unknown,
       confidence: 0.0,
