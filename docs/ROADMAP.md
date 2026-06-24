@@ -80,6 +80,10 @@ Current implementation status:
   acquisition, widened corridor search, route scoring, and the first accepted
   route-scoring and corridor-expansion receipts plus a needs-review ephemeris
   receipt that still keeps Moonrobo blocked.
+- `src/adapters/moonclaw` also emits a concrete ephemeris acquisition task
+  packet. It names the current evidence inputs, source artifacts, generator
+  commands, validation gates, and Moonrobo safety condition required before the
+  missing power-window evidence can become a reviewed robot-facing input.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -187,6 +191,10 @@ Current implementation status:
   ephemeris receipts, and the materialized workspace carries the validation
   checks, route scoreboard, corridor window proof, and missing ephemeris output
   contract.
+- MoonBook now also indexes the MoonClaw ephemeris acquisition task, so the
+  workspace contains the exact source files, generated files, validation
+  commands, and Moonrobo precondition gate that must move from `missing-source`
+  to reviewed evidence.
 
 Remaining work:
 

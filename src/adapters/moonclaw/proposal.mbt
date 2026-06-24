@@ -50,6 +50,32 @@ pub(all) struct MoonClawProposal {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MoonClawTaskArtifact {
+  artifact_id : String
+  path : String
+  producer : String
+  required_state : String
+  current_state : String
+  validation_gate : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MoonClawEphemerisAcquisitionTask {
+  task_id : String
+  proposal_id : String
+  site_id : @core.SiteId
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  objective : String
+  inputs : Array[MoonClawJobInput]
+  artifacts : Array[MoonClawTaskArtifact]
+  commands : Array[String]
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct MoonClawReceipt {
   receipt_id : String
   proposal_id : String
@@ -192,6 +218,25 @@ fn validation(
   note : String,
 ) -> MoonClawReceiptValidation {
   { validation_id, passed, note }
+}
+
+///|
+fn task_artifact(
+  artifact_id : String,
+  path : String,
+  producer : String,
+  required_state : String,
+  current_state : String,
+  validation_gate : String,
+) -> MoonClawTaskArtifact {
+  {
+    artifact_id,
+    path,
+    producer,
+    required_state,
+    current_state,
+    validation_gate,
+  }
 }
 
 ///|
@@ -499,6 +544,76 @@ pub fn ephemeris_acquisition_proposal(
 }
 
 ///|
+pub fn ephemeris_acquisition_task(
+  dossier : @site.SiteDossier,
+) -> MoonClawEphemerisAcquisitionTask {
+  let proposal = ephemeris_acquisition_proposal(dossier)
+  let evidence = dossier.power_window_evidence
+  let state = if evidence.has_time_window_ephemeris &&
+    evidence.source_status == "ready" {
+    Accepted
+  } else {
+    NeedsReview
+  }
+  {
+    task_id: "moonclaw/\{dossier.site.site_id}/ephemeris-energy-v1/acquisition-task",
+    proposal_id: proposal.proposal_id,
+    site_id: dossier.site.site_id,
+    priority: proposal.priority,
+    state,
+    objective: proposal.objective,
+    inputs: proposal.inputs,
+    artifacts: [
+      task_artifact(
+        "source-discovery-record", "data/sources/lunar_ephemeris/README.md", "operator-or-moonclaw-source-agent",
+        "official ephemeris or illumination source family selected with citation",
+        "placeholder source family, exact kernels and checksums pending", "source-acquisition plan must name the exact official files before energy can unblock",
+      ),
+      task_artifact(
+        "power-window-json",
+        evidence.local_source_path,
+        "scripts/generate_power_window.py input",
+        "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
+        evidence.source_status,
+        "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check",
+      ),
+      task_artifact(
+        "generated-moonbit-window",
+        "src/mission/generated_first_trusted_square_power_window.mbt",
+        "scripts/generate_power_window.py",
+        "MoonBit evidence mirrors the cited power-window JSON without hand edits",
+        if evidence.has_time_window_ephemeris {
+          "generated-time-window-evidence"
+        } else {
+          "generated-missing-source-evidence"
+        },
+        "moon test src/mission",
+      ),
+      task_artifact(
+        "site-energy-output",
+        "output/site/first_trusted_square.json",
+        "scripts/build_moonmoon_dossier.sh",
+        "site dossier carries the refreshed energy and illumination decisions",
+        @mission.energy_decision_label(dossier.energy),
+        "python3 scripts/materialize_moonbook_workspace.py --check",
+      ),
+      task_artifact(
+        "moonrobo-preconditions", "output/moonrobo/first_trusted_square_handoffs.json",
+        "scripts/build_moonmoon_dossier.sh", "Moonrobo handoff keeps source readiness and energy margin as separate preconditions",
+        "blocked until power-window evidence is ready", "moon run cmd/main -- moonrobo handoff json",
+      ),
+    ],
+    commands: [
+      "bash scripts/verify_moonmoon_sources.sh", "python3 scripts/generate_power_window.py --check",
+      "/Users/kq/.moon/bin/moon test src/mission", "python3 scripts/materialize_moonbook_workspace.py --check",
+    ],
+    acceptance_criteria: proposal.acceptance_criteria,
+    safety_gate: "Do not allow Moonrobo simulation until power-window-json is ready, generated MoonBit evidence is current, and Moonrobo preconditions no longer block on power-window-evidence.",
+    next_action: ephemeris_receipt_next_action(),
+  }
+}
+
+///|
 pub fn corridor_expansion_proposal(
   dossier : @site.SiteDossier,
 ) -> MoonClawProposal {
@@ -618,6 +733,18 @@ pub fn first_trusted_square_proposals() -> Array[MoonClawProposal] {
 ///|
 pub fn first_trusted_square_primary_proposal() -> MoonClawProposal {
   first_trusted_square_proposals()[0]
+}
+
+///|
+pub fn first_trusted_square_ephemeris_acquisition_task() -> MoonClawEphemerisAcquisitionTask {
+  ephemeris_acquisition_task(@site.first_trusted_square_dossier())
+}
+
+///|
+pub fn first_trusted_square_ephemeris_tasks() -> Array[
+  MoonClawEphemerisAcquisitionTask,
+] {
+  [first_trusted_square_ephemeris_acquisition_task()]
 }
 
 ///|
@@ -845,6 +972,43 @@ pub fn first_trusted_square_ephemeris_receipts() -> Array[
 }
 
 ///|
+pub fn render_ephemeris_tasks_markdown(
+  tasks : Array[MoonClawEphemerisAcquisitionTask],
+) -> String {
+  let mut text = "# MoonClaw Ephemeris Acquisition Tasks\n\n"
+  for task in tasks {
+    text += "- \{task.task_id}\n"
+    text += "  - proposal: \{task.proposal_id}\n"
+    text += "  - priority: \{priority_label(task.priority)}\n"
+    text += "  - state: \{receipt_status_label(task.state)}\n"
+    text += "  - objective: \{task.objective}\n"
+    text += "  - safety gate: \{task.safety_gate}\n"
+    text += "  - next action: \{task.next_action}\n"
+    text += "  - inputs:\n"
+    for input in task.inputs {
+      text += "    - \{input.input_id}: \{input.evidence_path} - \{input.summary}\n"
+    }
+    text += "  - artifacts:\n"
+    for artifact in task.artifacts {
+      text += "    - \{artifact.artifact_id}: \{artifact.path}\n"
+      text += "      - producer: \{artifact.producer}\n"
+      text += "      - required: \{artifact.required_state}\n"
+      text += "      - current: \{artifact.current_state}\n"
+      text += "      - gate: \{artifact.validation_gate}\n"
+    }
+    text += "  - commands:\n"
+    for command in task.commands {
+      text += "    - \{command}\n"
+    }
+    text += "  - acceptance:\n"
+    for acceptance in task.acceptance_criteria {
+      text += "    - \{acceptance.criterion_id}: \{acceptance.description}\n"
+    }
+  }
+  text
+}
+
+///|
 pub fn render_receipts_markdown(
   receipts : Array[MoonClawRouteScoringReceipt],
 ) -> String {
@@ -941,6 +1105,11 @@ pub fn first_trusted_square_receipts_markdown() -> String {
 }
 
 ///|
+pub fn first_trusted_square_ephemeris_tasks_markdown() -> String {
+  render_ephemeris_tasks_markdown(first_trusted_square_ephemeris_tasks())
+}
+
+///|
 pub fn first_trusted_square_ephemeris_receipts_markdown() -> String {
   render_ephemeris_receipts_markdown(first_trusted_square_ephemeris_receipts())
 }
@@ -955,6 +1124,13 @@ pub fn render_receipts_json(
   receipts : Array[MoonClawRouteScoringReceipt],
 ) -> Json {
   receipts.to_json()
+}
+
+///|
+pub fn render_ephemeris_tasks_json(
+  tasks : Array[MoonClawEphemerisAcquisitionTask],
+) -> Json {
+  tasks.to_json()
 }
 
 ///|
@@ -974,6 +1150,11 @@ pub fn render_corridor_receipts_json(
 ///|
 pub fn first_trusted_square_receipts_json() -> Json {
   render_receipts_json(first_trusted_square_receipts())
+}
+
+///|
+pub fn first_trusted_square_ephemeris_tasks_json() -> Json {
+  render_ephemeris_tasks_json(first_trusted_square_ephemeris_tasks())
 }
 
 ///|

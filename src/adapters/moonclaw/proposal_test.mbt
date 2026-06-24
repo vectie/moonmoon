@@ -49,6 +49,62 @@ test "MoonClaw proposal renderers expose job contracts" {
 }
 
 ///|
+test "first trusted square ephemeris task names executable source gates" {
+  let task = @moonclaw.first_trusted_square_ephemeris_acquisition_task()
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/ephemeris-energy-v1/acquisition-task",
+  )
+  assert_eq(
+    task.proposal_id,
+    "moonclaw/first-trusted-square/ephemeris-energy-v1",
+  )
+  assert_true(task.priority == @moonclaw.MoonClawJobPriority::Critical)
+  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
+  assert_true(task.objective.contains("time-windowed solar ephemeris"))
+  assert_true(task.safety_gate.contains("Do not allow Moonrobo simulation"))
+  assert_true(task.inputs.length() == 3)
+  assert_true(task.artifacts.length() == 5)
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "power-window-json" &&
+      artifact.current_state == "missing-source" &&
+      artifact.path ==
+      "data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "moonrobo-preconditions" &&
+      artifact.validation_gate.contains("moonrobo handoff json")
+    }),
+  )
+  assert_true(
+    task.commands.contains("python3 scripts/generate_power_window.py --check"),
+  )
+  assert_true(
+    task.commands.contains("/Users/kq/.moon/bin/moon test src/mission"),
+  )
+}
+
+///|
+test "MoonClaw ephemeris task renderers expose artifact gates" {
+  let markdown = @moonclaw.first_trusted_square_ephemeris_tasks_markdown()
+  assert_true(markdown.contains("MoonClaw Ephemeris Acquisition Tasks"))
+  assert_true(markdown.contains("power-window-json"))
+  assert_true(markdown.contains("missing-source"))
+  assert_true(markdown.contains("moonrobo-preconditions"))
+  assert_true(markdown.contains("generate_power_window.py --check"))
+  let json = @moonclaw.first_trusted_square_ephemeris_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"MoonClawEphemerisAcquisitionTask\"") == false)
+  assert_true(json.contains("\"artifacts\""))
+  assert_true(json.contains("\"safety_gate\""))
+  assert_true(json.contains("\"state\": \"NeedsReview\""))
+}
+
+///|
 test "first trusted square route scoring receipt validates blocked evidence" {
   let receipt = @moonclaw.first_trusted_square_route_scoring_receipt()
   assert_eq(

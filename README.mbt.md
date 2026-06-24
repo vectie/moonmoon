@@ -52,6 +52,8 @@ moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
 moon run cmd/main -- moonclaw proposals
 moon run cmd/main -- moonclaw proposals json
+moon run cmd/main -- moonclaw ephemeris tasks
+moon run cmd/main -- moonclaw ephemeris tasks json
 moon run cmd/main -- moonclaw receipts
 moon run cmd/main -- moonclaw receipts json
 moon run cmd/main -- moonclaw ephemeris receipts
@@ -71,13 +73,16 @@ written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
 
-MoonClaw outputs currently include bounded modeling proposals, a deterministic
-route-scoring receipt, a deterministic corridor-expansion receipt, and a
-needs-review ephemeris receipt. The receipts validate the current route set,
-selected route, measured corridor windows, source checksums, proposal blockers,
-energy blocker, and Moonrobo handoff compatibility. They record accepted terrain
-and route results while the ephemeris receipt keeps the power gate in review
-until a real time-windowed solar source is attached.
+MoonClaw outputs currently include bounded modeling proposals, a concrete
+ephemeris acquisition task, a deterministic route-scoring receipt, a
+deterministic corridor-expansion receipt, and a needs-review ephemeris receipt.
+The task names the source artifacts, generator commands, validation gates, and
+Moonrobo safety condition required to move the power-window evidence from
+`missing-source` to reviewed robot-facing input. The receipts validate the
+current route set, selected route, measured corridor windows, source checksums,
+proposal blockers, energy blocker, and Moonrobo handoff compatibility. They
+record accepted terrain and route results while the ephemeris receipt keeps the
+power gate in review until a real time-windowed solar source is attached.
 
 Moonmoon now also records that missing solar source as a typed acquisition
 contract. The first trusted square has a `SPICE kernels` source candidate and a

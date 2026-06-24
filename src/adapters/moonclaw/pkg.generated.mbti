@@ -18,6 +18,8 @@ pub fn ephemeris_acquisition_proposal(@site.SiteDossier) -> MoonClawProposal
 
 pub fn ephemeris_acquisition_receipt(@site.SiteDossier) -> MoonClawEphemerisAcquisitionReceipt
 
+pub fn ephemeris_acquisition_task(@site.SiteDossier) -> MoonClawEphemerisAcquisitionTask
+
 pub fn first_trusted_square_corridor_expansion_receipt() -> MoonClawCorridorExpansionReceipt
 
 pub fn first_trusted_square_corridor_receipts() -> Array[MoonClawCorridorExpansionReceipt]
@@ -28,11 +30,19 @@ pub fn first_trusted_square_corridor_receipts_markdown() -> String
 
 pub fn first_trusted_square_ephemeris_acquisition_receipt() -> MoonClawEphemerisAcquisitionReceipt
 
+pub fn first_trusted_square_ephemeris_acquisition_task() -> MoonClawEphemerisAcquisitionTask
+
 pub fn first_trusted_square_ephemeris_receipts() -> Array[MoonClawEphemerisAcquisitionReceipt]
 
 pub fn first_trusted_square_ephemeris_receipts_json() -> Json
 
 pub fn first_trusted_square_ephemeris_receipts_markdown() -> String
+
+pub fn first_trusted_square_ephemeris_tasks() -> Array[MoonClawEphemerisAcquisitionTask]
+
+pub fn first_trusted_square_ephemeris_tasks_json() -> Json
+
+pub fn first_trusted_square_ephemeris_tasks_markdown() -> String
 
 pub fn first_trusted_square_json() -> Json
 
@@ -65,6 +75,10 @@ pub fn render_corridor_receipts_markdown(Array[MoonClawCorridorExpansionReceipt]
 pub fn render_ephemeris_receipts_json(Array[MoonClawEphemerisAcquisitionReceipt]) -> Json
 
 pub fn render_ephemeris_receipts_markdown(Array[MoonClawEphemerisAcquisitionReceipt]) -> String
+
+pub fn render_ephemeris_tasks_json(Array[MoonClawEphemerisAcquisitionTask]) -> Json
+
+pub fn render_ephemeris_tasks_markdown(Array[MoonClawEphemerisAcquisitionTask]) -> String
 
 pub fn render_json(Array[MoonClawProposal]) -> Json
 
@@ -127,6 +141,21 @@ pub(all) struct MoonClawEphemerisAcquisitionReceipt {
   verified_available_energy_wh : Double
   missing_outputs : Array[String]
   validation_checks : Array[MoonClawReceiptValidation]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawEphemerisAcquisitionTask {
+  task_id : String
+  proposal_id : String
+  site_id : String
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  objective : String
+  inputs : Array[MoonClawJobInput]
+  artifacts : Array[MoonClawTaskArtifact]
+  commands : Array[String]
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -206,6 +235,15 @@ pub(all) struct MoonClawRouteScoringReceipt {
   validation_checks : Array[MoonClawReceiptValidation]
   moonrobo_handoff_decision : @mission.TraverseDecision
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawTaskArtifact {
+  artifact_id : String
+  path : String
+  producer : String
+  required_state : String
+  current_state : String
+  validation_gate : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

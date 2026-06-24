@@ -15,6 +15,7 @@ pub(all) enum BookEntryKind {
   EnergyWindow
   MoonroboHandoff
   MoonClawProposal
+  MoonClawTask
   MoonClawReceipt
   MoonClawEphemerisReceipt
   MoonClawCorridorReceipt
@@ -96,6 +97,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     EnergyWindow => "energy-window"
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
+    MoonClawTask => "moonclaw-task"
     MoonClawReceipt => "moonclaw-receipt"
     MoonClawEphemerisReceipt => "moonclaw-ephemeris-receipt"
     MoonClawCorridorReceipt => "moonclaw-corridor-receipt"
@@ -510,6 +512,20 @@ fn moonclaw_proposal_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_ephemeris_task_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let task = @moonclaw.ephemeris_acquisition_task(dossier)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/ephemeris-acquisition-task",
+    title: "MoonClaw ephemeris acquisition task for \{dossier.site.name}",
+    kind: MoonClawTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.6,
+    path: "moonclaw/\{dossier.site.site_id}/ephemeris-task.json",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task tracks \{task.artifacts.length()} artifacts before Moonrobo power evidence can unblock",
+  }
+}
+
+///|
 fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.route_scoring_receipt(dossier)
   {
@@ -716,6 +732,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   entries.push(energy_entry(dossier))
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))
+  entries.push(moonclaw_ephemeris_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))

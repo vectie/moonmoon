@@ -234,17 +234,21 @@ preconditions that must be cleared. It does not command hardware or imply
 physical execution authority.
 
 The current MoonClaw boundary is also one-way: Moonmoon emits bounded modeling
-proposal packets and deterministic receipt packets under `output/moonclaw/`, and
-MoonBook indexes both as evidence. The first proposals request ephemeris-backed
-power windows, wider LOLA corridor search, and route-scoring receipts. The first
-route receipt validates the current route-scoring job against route IDs,
-selected route, source checksums, proposal blockers, energy blocker, and
-Moonrobo handoff compatibility. The first corridor receipt validates that the
-bounded 5x5 LOLA search ran, that 25 sampled windows are present, and that every
+proposal packets, executable task packets, and deterministic receipt packets
+under `output/moonclaw/`, and MoonBook indexes them as evidence. The first
+proposals request ephemeris-backed power windows, wider LOLA corridor search,
+and route-scoring receipts. The ephemeris task packet turns the critical
+proposal into an operator/agent checklist: current inputs, required source
+artifacts, generator commands, validation gates, and the Moonrobo safety
+condition that must stay blocked until power evidence is ready. The first route
+receipt validates the current route-scoring job against route IDs, selected
+route, source checksums, proposal blockers, energy blocker, and Moonrobo
+handoff compatibility. The first corridor receipt validates that the bounded
+5x5 LOLA search ran, that 25 sampled windows are present, and that every
 sampled window remains blocked. The first ephemeris receipt validates the
 current absence of time-windowed solar evidence, records the missing output
-contract, and keeps the power gate in review. Together these receipts separate
-agent progress from physical execution authority.
+contract, and keeps the power gate in review. Together these task and receipt
+packets separate agent progress from physical execution authority.
 
 ## Old Terrain Project Lessons
 
