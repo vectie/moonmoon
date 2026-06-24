@@ -109,7 +109,10 @@ SLDEM families. Moonmoon should ingest only a small extracted fixture first, not
 a full global raster. Moonmoon now pins the official GDR catalog metadata at
 `data/sources/lro_lola/gdr_ds.cat` and checks its SHA-256 before dossier
 generation, so product selection can proceed from durable evidence rather than
-only a URL in prose. The MoonBit contract should remain:
+only a URL in prose. It also pins the selected
+`ldem_875s_20m_float.xml` product label, whose metadata covers the first
+trusted square with south-polar 20 m/pixel polar stereographic LOLA DEM data.
+The MoonBit contract should remain:
 
 ```text
 authoritative source file
@@ -132,13 +135,18 @@ The current fixture now has a checked source-file boundary:
 
 - `data/fixtures/first_trusted_square_dem.csv`
 - `data/sources/lro_lola/gdr_ds.cat`
+- `data/sources/lro_lola/ldem_875s_20m_float.xml`
 - `scripts/verify_moonmoon_sources.sh`
 
 The terrain source file is still synthetic, but its SHA-256 is pinned in the
 manifest and verified before reproducible outputs are built. The pinned LOLA
 catalog is official metadata, not terrain evidence. It proves the GDR family
-context for the next selection step. The MoonBit fixture mirrors the synthetic
-CSV through `scripts/generate_moonmoon_fixture.py`, which writes
+context for the next selection step. The pinned product label is stronger: it
+records the exact product LID, projection, bounds, resolution, array shape,
+data type, unit, and raw image file name. It still is not terrain evidence
+until Moonmoon reads a bounded window from the matching IMG and records the
+extracted CSV checksum. The MoonBit fixture mirrors the synthetic CSV through
+`scripts/generate_moonmoon_fixture.py`, which writes
 `src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
 is now the terrain package's source for the trusted-square elevations. Replacing
 the CSV with a tiny authoritative LOLA-derived extraction should keep the same

@@ -21,6 +21,24 @@ until a small extracted CSV is generated and checked from an official source.
 - Discovery URL: <https://ode.rsl.wustl.edu/moon/>
 - Intended extraction: Shackleton rim rehearsal tile near 89.88S, 0.12E
 
+## First Product Selection
+
+- Product id: `ldem_875s_20m_float`
+- Product LID: `urn:nasa:pds:lro_lola_rdr:data_gridded:ldem_875s_20m_float`
+- Image URL: <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img>
+- XML label URL: <https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml>
+- XML label path: `data/sources/lro_lola/ldem_875s_20m_float.xml`
+- XML label SHA-256: `10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53`
+- XML label bytes: `11629`
+- Image bytes from PDS listing: `230068224`
+- Projection: Polar Stereographic
+- Resolution: 20 m/pixel
+- Bounds: 90S to 87.5S, 0E to 360E
+- Shape: 7584 lines x 7584 samples
+- Data type: `IEEE754LSBSingle`
+- Unit: `KILOMETER`
+- Value offset: `1737.4` km
+
 ## Reproduction
 
 Fetch and verify the current pinned catalog:

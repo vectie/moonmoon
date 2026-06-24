@@ -86,6 +86,34 @@ pub(all) struct SourceAcquisitionPlan {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SourceProductSelection {
+  selection_id : String
+  plan_id : String
+  product_id : String
+  product_lid : String
+  image_url : String
+  label_url : String
+  local_label_path : String
+  label_sha256 : String
+  label_bytes : Int
+  image_bytes : Int
+  projection : String
+  resolution_m : Double
+  west_deg : Double
+  east_deg : Double
+  south_deg : Double
+  north_deg : Double
+  lines : Int
+  samples : Int
+  data_type : String
+  unit : String
+  value_offset_km : Double
+  selection_reason : String
+  extraction_risk : String
+  review_status : ReviewStatus
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct DatasetManifest {
   dataset_id : @core.DatasetId
   title : String
@@ -114,6 +142,13 @@ pub fn source_candidate_status_label(candidate : SourceCandidate) -> String {
 ///|
 pub fn acquisition_plan_progress_label(plan : SourceAcquisitionPlan) -> String {
   "planned:\{plan.steps.length()}-steps"
+}
+
+///|
+pub fn product_selection_status_label(
+  selection : SourceProductSelection,
+) -> String {
+  review_status_label(selection.review_status)
 }
 
 ///|
@@ -277,6 +312,43 @@ pub fn first_trusted_square_source_acquisition_plans() -> Array[
   SourceAcquisitionPlan,
 ] {
   [first_trusted_square_lola_acquisition_plan()]
+}
+
+///|
+pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection {
+  {
+    selection_id: "select-ldem-875s-20m-float-v1",
+    plan_id: "acquire-lro-lola-gdr-south-pole-20m-v1",
+    product_id: "ldem_875s_20m_float",
+    product_lid: "urn:nasa:pds:lro_lola_rdr:data_gridded:ldem_875s_20m_float",
+    image_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    label_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml",
+    local_label_path: "data/sources/lro_lola/ldem_875s_20m_float.xml",
+    label_sha256: "10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53",
+    label_bytes: 11629,
+    image_bytes: 230068224,
+    projection: "Polar Stereographic",
+    resolution_m: 20.0,
+    west_deg: 0.0,
+    east_deg: 360.0,
+    south_deg: -90.0,
+    north_deg: -87.5,
+    lines: 7584,
+    samples: 7584,
+    data_type: "IEEE754LSBSingle",
+    unit: "KILOMETER",
+    value_offset_km: 1737.4,
+    selection_reason: "Covers the first trusted square near 89.88S with south-polar 20 m/pixel LOLA DEM data and has a small pinned XML label for extractor development.",
+    extraction_risk: "The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image.",
+    review_status: NeedsHumanReview,
+  }
+}
+
+///|
+pub fn first_trusted_square_source_product_selections() -> Array[
+  SourceProductSelection,
+] {
+  [first_trusted_square_lola_product_selection()]
 }
 
 ///|

@@ -16,11 +16,17 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan
 
 pub fn first_trusted_square_lola_candidate() -> SourceCandidate
 
+pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection
+
 pub fn first_trusted_square_manifest() -> DatasetManifest
 
 pub fn first_trusted_square_source_acquisition_plans() -> Array[SourceAcquisitionPlan]
 
 pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
+
+pub fn first_trusted_square_source_product_selections() -> Array[SourceProductSelection]
+
+pub fn product_selection_status_label(SourceProductSelection) -> String
 
 pub fn review_status_label(ReviewStatus) -> String
 
@@ -134,6 +140,33 @@ pub(all) struct SourceCandidate {
   next_action : String
   review_status : ReviewStatus
   notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SourceProductSelection {
+  selection_id : String
+  plan_id : String
+  product_id : String
+  product_lid : String
+  image_url : String
+  label_url : String
+  local_label_path : String
+  label_sha256 : String
+  label_bytes : Int
+  image_bytes : Int
+  projection : String
+  resolution_m : Double
+  west_deg : Double
+  east_deg : Double
+  south_deg : Double
+  north_deg : Double
+  lines : Int
+  samples : Int
+  data_type : String
+  unit : String
+  value_offset_km : Double
+  selection_reason : String
+  extraction_risk : String
+  review_status : ReviewStatus
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

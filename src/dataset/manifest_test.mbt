@@ -78,3 +78,40 @@ test "first trusted square has a concrete LOLA acquisition plan" {
     1,
   )
 }
+
+///|
+test "first trusted square selects a concrete LOLA product label" {
+  let selection = @dataset.first_trusted_square_lola_product_selection()
+  assert_eq(selection.selection_id, "select-ldem-875s-20m-float-v1")
+  assert_eq(selection.product_id, "ldem_875s_20m_float")
+  assert_true(selection.product_lid.contains("ldem_875s_20m_float"))
+  assert_true(selection.image_url.has_suffix("ldem_875s_20m_float.img"))
+  assert_true(selection.label_url.has_suffix("ldem_875s_20m_float.xml"))
+  assert_eq(
+    selection.local_label_path,
+    "data/sources/lro_lola/ldem_875s_20m_float.xml",
+  )
+  assert_eq(
+    selection.label_sha256,
+    "10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53",
+  )
+  assert_eq(selection.label_bytes, 11629)
+  assert_eq(selection.image_bytes, 230068224)
+  assert_eq(selection.projection, "Polar Stereographic")
+  assert_eq(selection.resolution_m, 20.0)
+  assert_eq(selection.south_deg, -90.0)
+  assert_eq(selection.north_deg, -87.5)
+  assert_eq(selection.lines, 7584)
+  assert_eq(selection.samples, 7584)
+  assert_eq(selection.data_type, "IEEE754LSBSingle")
+  assert_eq(selection.unit, "KILOMETER")
+  assert_eq(selection.value_offset_km, 1737.4)
+  assert_eq(
+    @dataset.product_selection_status_label(selection),
+    "needs-human-review",
+  )
+  assert_eq(
+    @dataset.first_trusted_square_source_product_selections().length(),
+    1,
+  )
+}

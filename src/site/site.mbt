@@ -5,6 +5,7 @@ pub(all) struct SiteDossier {
   validations : Array[@dataset.DatasetValidation]
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
+  source_product_selections : Array[@dataset.SourceProductSelection]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   summary : String
@@ -58,6 +59,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     validations: [@terrain.validate_grid_source(grid)],
     source_candidates: @dataset.first_trusted_square_source_candidates(),
     source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
+    source_product_selections: @dataset.first_trusted_square_source_product_selections(),
     terrain,
     traverse,
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
@@ -121,6 +123,27 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     for step in plan.steps {
       text += "    - \{step.step_id}: \{step.title} - \{step.done_when}\n"
     }
+  }
+  text += "\n"
+  text += "## Source Product Selections\n\n"
+  for selection in dossier.source_product_selections {
+    text += "- \{selection.selection_id}: \{selection.product_id}\n"
+    text += "  - plan: \{selection.plan_id}\n"
+    text += "  - status: \{@dataset.product_selection_status_label(selection)}\n"
+    text += "  - product lid: \{selection.product_lid}\n"
+    text += "  - image: \{selection.image_url}\n"
+    text += "  - label: \{selection.label_url}\n"
+    text += "  - local label path: \{selection.local_label_path}\n"
+    text += "  - label sha256: \{selection.label_sha256}\n"
+    text += "  - label bytes: \{selection.label_bytes}\n"
+    text += "  - image bytes: \{selection.image_bytes}\n"
+    text += "  - projection: \{selection.projection}\n"
+    text += "  - resolution: \{selection.resolution_m} m\n"
+    text += "  - bounds: \{selection.south_deg}..\{selection.north_deg} lat, \{selection.west_deg}..\{selection.east_deg} lon\n"
+    text += "  - shape: \{selection.lines} lines x \{selection.samples} samples\n"
+    text += "  - data: \{selection.data_type} / \{selection.unit}, offset \{selection.value_offset_km} km\n"
+    text += "  - reason: \{selection.selection_reason}\n"
+    text += "  - extraction risk: \{selection.extraction_risk}\n"
   }
   text += "\n"
   text += "## Source Validation\n\n"

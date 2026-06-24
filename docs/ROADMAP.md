@@ -94,12 +94,17 @@ Current implementation status:
 - `data/sources/lro_lola/gdr_ds.cat` pins the official PDS LOLA GDR catalog
   metadata, and `scripts/verify_moonmoon_sources.sh` verifies its SHA-256 and
   byte count alongside the synthetic CSV fixture.
+- `data/sources/lro_lola/ldem_875s_20m_float.xml` pins the selected south-polar
+  20 m/pixel LOLA DEM product label, including projection, bounds, raster
+  shape, unit, and raw image name.
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
 - The first LOLA acquisition plan now names the reachable south-polar GDR
   source family, catalog metadata, local source directory, extracted CSV path,
   and trust gate before the synthetic fixture can be replaced.
+- The first product selection now names `ldem_875s_20m_float` as the concrete
+  label-backed extraction target, while keeping the raw IMG uncommitted.
 
 Remaining work:
 
