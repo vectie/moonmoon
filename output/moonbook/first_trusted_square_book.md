@@ -20,6 +20,11 @@
   - claim: unknown
   - confidence: 0
   - path: source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json
+- source-product/select-ldem-875s-20m-float-v1: Select ldem_875s_20m_float
+  - kind: source-product-selection
+  - claim: unknown
+  - confidence: 0
+  - path: source-products/select-ldem-875s-20m-float-v1.json
 - validation/fixture-first-trusted-square-dem-v1: Source validation for fixture-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived

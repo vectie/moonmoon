@@ -50,6 +50,26 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
     - validate: Verify evidence chain - moon test passes while the dossier marks the authoritative dataset as accepted for software proof.
     - review: Human review before mission claims - The review queue no longer contains the source-upgrade blocker for this site.
 
+## Source Product Selections
+
+- select-ldem-875s-20m-float-v1: ldem_875s_20m_float
+  - plan: acquire-lro-lola-gdr-south-pole-20m-v1
+  - status: needs-human-review
+  - product lid: urn:nasa:pds:lro_lola_rdr:data_gridded:ldem_875s_20m_float
+  - image: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img
+  - label: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml
+  - local label path: data/sources/lro_lola/ldem_875s_20m_float.xml
+  - label sha256: 10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53
+  - label bytes: 11629
+  - image bytes: 230068224
+  - projection: Polar Stereographic
+  - resolution: 20 m
+  - bounds: -90..-87.5 lat, 0..360 lon
+  - shape: 7584 lines x 7584 samples
+  - data: IEEE754LSBSingle / KILOMETER, offset 1737.4 km
+  - reason: Covers the first trusted square near 89.88S with south-polar 20 m/pixel LOLA DEM data and has a small pinned XML label for extractor development.
+  - extraction risk: The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image.
+
 ## Source Validation
 
 - fixture-first-trusted-square-dem-v1: verified

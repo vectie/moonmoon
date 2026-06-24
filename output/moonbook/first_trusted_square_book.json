@@ -31,6 +31,15 @@
       "summary": "planned:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded."
     },
     {
+      "entry_id": "source-product/select-ldem-875s-20m-float-v1",
+      "title": "Select ldem_875s_20m_float",
+      "kind": "SourceProductSelection",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-products/select-ldem-875s-20m-float-v1.json",
+      "summary": "Polar Stereographic 20 m/pixel label pinned at 10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53; The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image."
+    },
+    {
       "entry_id": "validation/fixture-first-trusted-square-dem-v1",
       "title": "Source validation for fixture-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
