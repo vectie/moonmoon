@@ -11,16 +11,22 @@ from reportlab.platypus import Paragraph
 
 from pathlib import Path
 import math
+import os
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "output" / "pdf" / "moonsuite_exhibition_profile.pdf"
-GENERATED_VISUAL = ROOT / "output" / "pdf" / "moonsuite_generated_lunar_ops_visual.png"
+GENERATED_VISUAL = ROOT / "assets" / "exhibition" / "moonsuite_lunar_ops_visual.png"
 
 FONT = "STHeiti"
-pdfmetrics.registerFont(
-    TTFont(FONT, "/System/Library/Fonts/STHeiti Medium.ttc", subfontIndex=0)
+FONT_PATH = Path(
+    os.environ.get("MOONSUITE_EXHIBITION_FONT", "/System/Library/Fonts/STHeiti Medium.ttc")
 )
+if not FONT_PATH.exists():
+    raise SystemExit(
+        "Missing Chinese font. Set MOONSUITE_EXHIBITION_FONT to a local .ttf/.ttc path."
+    )
+pdfmetrics.registerFont(TTFont(FONT, str(FONT_PATH), subfontIndex=0))
 
 COLORS = {
     "ink": colors.HexColor("#142033"),
@@ -545,7 +551,7 @@ def draw_display_page(c):
 
 def build():
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    c = canvas.Canvas(str(OUT), pagesize=A4)
+    c = canvas.Canvas(str(OUT), pagesize=A4, invariant=1)
     c.setTitle("MoonSuite Exhibition Profile")
     c.setAuthor("MoonSuite / 月栖智能项目组")
     draw_cover(c)
