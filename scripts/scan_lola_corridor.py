@@ -96,6 +96,14 @@ def render_plan(*, radius: int, step: int, scan_id: str | None = None) -> str:
     )
 
 
+def resolved_target(target: Path | None) -> Path:
+    if target is None:
+        return TARGET
+    if target.is_absolute():
+        return target
+    return ROOT / target
+
+
 def note(rank: int, route_id: str, shape_label: str) -> str:
     if rank == 1:
         return f"lowest max-neighbor-grade window in this measured {shape_label} scan; still blocked"
@@ -192,6 +200,7 @@ def main() -> None:
     parser.add_argument("--radius", type=int, default=DEFAULT_RADIUS, help="scan radius in raster cells")
     parser.add_argument("--step", type=int, default=DEFAULT_STEP, help="scan stride in raster cells")
     parser.add_argument("--scan-id", help="override generated scan id")
+    parser.add_argument("--target", type=Path, help="optional output CSV path, relative to repository root")
     args = parser.parse_args()
 
     if args.plan:
@@ -199,16 +208,18 @@ def main() -> None:
         return
 
     content = render(args.raw_img, radius=args.radius, step=args.step, scan_id=args.scan_id)
+    target = resolved_target(args.target)
     if args.check:
-        current = TARGET.read_text(encoding="utf-8") if TARGET.exists() else ""
+        current = target.read_text(encoding="utf-8") if target.exists() else ""
         if current != content:
             raise SystemExit(
-                f"{TARGET.relative_to(ROOT)} is stale; run python3 scripts/scan_lola_corridor.py"
+                f"{target.relative_to(ROOT)} is stale; run python3 scripts/scan_lola_corridor.py"
             )
-        print(f"checked {TARGET.relative_to(ROOT)} from selected LOLA byte ranges")
+        print(f"checked {target.relative_to(ROOT)} from selected LOLA byte ranges")
     else:
-        TARGET.write_text(content, encoding="utf-8")
-        print(f"wrote {TARGET.relative_to(ROOT)} from selected LOLA byte ranges")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(content, encoding="utf-8")
+        print(f"wrote {target.relative_to(ROOT)} from selected LOLA byte ranges")
 
 
 if __name__ == "__main__":

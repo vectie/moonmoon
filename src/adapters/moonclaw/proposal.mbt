@@ -767,7 +767,7 @@ pub fn corridor_expansion_task(
         "widened-scan-csv", "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
         "scripts/scan_lola_corridor.py", "81-window LOLA byte-range scan is extracted, checksummed, and reviewed",
         "missing", false, "network byte-range extraction for the 9x9 search has not produced a pinned CSV",
-        "python3 scripts/scan_lola_corridor.py --radius 16 --step 4",
+        "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
       ),
       task_artifact(
         "generated-corridor-scan", "src/mission/generated_first_trusted_square_corridor_scan.mbt",
@@ -783,7 +783,7 @@ pub fn corridor_expansion_task(
       ),
     ],
     commands: [
-      "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4", "python3 scripts/scan_lola_corridor.py --radius 16 --step 4",
+      "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4", "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
       "python3 scripts/generate_corridor_scan.py --check", "/Users/kq/.moon/bin/moon test src/mission",
       "python3 scripts/materialize_moonbook_workspace.py --check",
     ],

@@ -154,6 +154,11 @@ test "first trusted square corridor task names planned 9x9 search gates" {
       "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
     ),
   )
+  assert_true(
+    task.commands.contains(
+      "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
+    ),
+  )
 }
 
 ///|
@@ -162,6 +167,7 @@ test "MoonClaw corridor task renderers expose widened search blockers" {
   assert_true(markdown.contains("MoonClaw Corridor Expansion Tasks"))
   assert_true(markdown.contains("first-trusted-square-9x9-corridor-scan-v2"))
   assert_true(markdown.contains("81 windows"))
+  assert_true(markdown.contains("first_trusted_square_corridor_scan_v2.csv"))
   assert_true(markdown.contains("widened-scan-csv"))
   assert_true(markdown.contains("ready: false"))
   let json = @moonclaw.first_trusted_square_corridor_tasks_json().stringify(

@@ -127,6 +127,13 @@ Inspect a wider search plan without network access before fetching byte ranges:
 python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4
 ```
 
+Generate the planned 9x9 scan into a separate source artifact, leaving the
+current 5x5 baseline untouched:
+
+```bash
+python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
+```
+
 Regenerate MoonBit source tables from checked CSV artifacts:
 
 ```bash
