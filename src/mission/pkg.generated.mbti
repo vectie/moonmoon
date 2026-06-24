@@ -10,7 +10,11 @@ import {
 // Values
 pub fn conservative_rover_profile() -> TraverseProfile
 
+pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
+
 pub fn first_trusted_square_traverse_score() -> TraverseScore
+
+pub fn route_candidate_status_label(RouteCandidate) -> String
 
 pub fn score_traverse(@terrain.TerrainMetrics, TraverseProfile) -> TraverseScore
 
@@ -19,6 +23,19 @@ pub fn traverse_decision_label(TraverseDecision) -> String
 // Errors
 
 // Types and methods
+pub(all) struct RouteCandidate {
+  route_id : String
+  label : String
+  strategy : String
+  expected_max_grade : Double
+  expected_roughness_m : Double
+  confidence : Double
+  decision : TraverseDecision
+  score : Int
+  reasons : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) enum TraverseDecision {
   Allow
   Review

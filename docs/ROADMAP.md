@@ -48,6 +48,9 @@ Current implementation status:
   `--check` mode verifies the generated file is current.
 - `src/mission` scores the fixture against a conservative rover traverse
   profile and returns `allow`, `review`, or `block` with reasons.
+- `src/mission` also proposes route alternatives for the blocked LOLA patch:
+  the direct measured window remains blocked, while west/north detours are
+  review-only hypotheses until neighboring windows and illumination are added.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
@@ -114,8 +117,9 @@ Current implementation status:
 
 Remaining work:
 
-- Add illumination constraints and route alternatives for the blocked measured
-  LOLA terrain.
+- Extract neighboring LOLA windows for the proposed west/north route
+  alternatives.
+- Add illumination constraints for robot energy and thermal feasibility.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export
   summaries.
 - Add accepted/rejected review transitions once MoonBook storage exists.

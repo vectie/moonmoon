@@ -153,6 +153,12 @@ is now the terrain package's source for the trusted-square elevations. Replacing
 the CSV with a tiny authoritative LOLA-derived extraction should keep the same
 pipeline shape.
 
+The first measured LOLA patch blocks the conservative rover profile. Moonmoon
+therefore records route alternatives as mission-planning hypotheses, not as
+measured terrain claims. The direct route preserves the measured blocked result;
+west-contour and north-rim alternatives are marked `review` until adjacent LOLA
+windows and illumination constraints are added.
+
 ## Old Terrain Project Lessons
 
 The old `../tl-2022` project should be treated as a concept reference, not a

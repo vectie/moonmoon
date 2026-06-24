@@ -8,6 +8,7 @@ pub(all) enum BookEntryKind {
   SourceExtractionCandidate
   DerivedTerrain
   MissionDecision
+  RouteAlternative
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -50,6 +51,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SourceExtractionCandidate => "source-extraction-candidate"
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
+    RouteAlternative => "route-alternative"
     OpenQuestion => "open-question"
   }
 }
@@ -218,6 +220,23 @@ fn traverse_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn route_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
+  let entries : Array[BookEntry] = []
+  for route in dossier.route_candidates {
+    entries.push({
+      entry_id: "route/\{dossier.site.site_id}/\{route.route_id}",
+      title: route.label,
+      kind: RouteAlternative,
+      claim_kind: @core.ClaimKind::Assumed,
+      confidence: route.confidence,
+      path: "mission/\{dossier.site.site_id}/routes/\{route.route_id}.json",
+      summary: "\{@mission.route_candidate_status_label(route)} with score \{route.score}: \{route.next_action}",
+    })
+  }
+  entries
+}
+
+///|
 fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   for candidate in dossier.source_candidates {
@@ -257,6 +276,16 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       owner: "mission-review",
     })
   }
+  for route in dossier.route_candidates {
+    if route.decision != @mission.TraverseDecision::Allow {
+      items.push({
+        item_id: "route-\{route.route_id}",
+        severity: decision_severity(route.decision),
+        reason: "\{route.label}: \{route.next_action}",
+        owner: "mission-review",
+      })
+    }
+  }
   for index, question in dossier.next_questions {
     items.push({
       item_id: "question-\{index}",
@@ -288,6 +317,9 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   }
   entries.push(terrain_entry(dossier))
   entries.push(traverse_entry(dossier))
+  for entry in route_candidate_entries(dossier) {
+    entries.push(entry)
+  }
   {
     workspace: "moonbook://moonmoon/first-trusted-square",
     site_id: dossier.site.site_id,

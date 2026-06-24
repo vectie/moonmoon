@@ -9,6 +9,7 @@ pub(all) struct SiteDossier {
   source_extraction_candidates : Array[@dataset.SourceExtractionCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
+  route_candidates : Array[@mission.RouteCandidate]
   summary : String
   blockers : Array[String]
   next_questions : Array[String]
@@ -64,6 +65,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     source_extraction_candidates: @dataset.first_trusted_square_source_extraction_candidates(),
     terrain,
     traverse,
+    route_candidates: @mission.first_trusted_square_route_candidates(),
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
     blockers: terrain_blockers(terrain),
     next_questions: [
@@ -193,6 +195,26 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   } else {
     for reason in traverse.reasons {
       text += "  - \{reason}\n"
+    }
+  }
+  text += "\n"
+  text += "## Route Candidates\n\n"
+  for route in dossier.route_candidates {
+    text += "- \{route.route_id}: \{route.label}\n"
+    text += "  - decision: \{@mission.route_candidate_status_label(route)}\n"
+    text += "  - score: \{route.score}\n"
+    text += "  - strategy: \{route.strategy}\n"
+    text += "  - expected max grade: \{route.expected_max_grade}\n"
+    text += "  - expected roughness: \{route.expected_roughness_m} m\n"
+    text += "  - confidence: \{route.confidence}\n"
+    text += "  - next action: \{route.next_action}\n"
+    text += "  - reasons:\n"
+    if route.reasons.is_empty() {
+      text += "    - none\n"
+    } else {
+      for reason in route.reasons {
+        text += "    - \{reason}\n"
+      }
     }
   }
   text += "\n"

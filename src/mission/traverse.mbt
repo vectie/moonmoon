@@ -26,6 +26,20 @@ pub(all) struct TraverseScore {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RouteCandidate {
+  route_id : String
+  label : String
+  strategy : String
+  expected_max_grade : Double
+  expected_roughness_m : Double
+  confidence : Double
+  decision : TraverseDecision
+  score : Int
+  reasons : Array[String]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn conservative_rover_profile() -> TraverseProfile {
   {
     profile_id: "conservative-lunar-rover-v1",
@@ -45,6 +59,11 @@ pub fn traverse_decision_label(decision : TraverseDecision) -> String {
     Review => "review"
     Block => "block"
   }
+}
+
+///|
+pub fn route_candidate_status_label(candidate : RouteCandidate) -> String {
+  traverse_decision_label(candidate.decision)
 }
 
 ///|
@@ -131,4 +150,109 @@ pub fn first_trusted_square_traverse_score() -> TraverseScore {
     @terrain.first_trusted_square_metrics(),
     conservative_rover_profile(),
   )
+}
+
+///|
+fn route_score(decision : TraverseDecision, confidence : Double) -> Int {
+  let base = match decision {
+    Allow => 88
+    Review => 62
+    Block => 18
+  }
+  let confidence_penalty = if confidence < 0.5 {
+    14
+  } else if confidence < 0.7 {
+    8
+  } else {
+    0
+  }
+  base - confidence_penalty
+}
+
+///|
+fn make_route_candidate(
+  route_id : String,
+  label : String,
+  strategy : String,
+  expected_max_grade : Double,
+  expected_roughness_m : Double,
+  confidence : Double,
+  profile : TraverseProfile,
+  extra_reason : String,
+  next_action : String,
+) -> RouteCandidate {
+  let reasons : Array[String] = []
+  let grade_blocked = expected_max_grade >= profile.max_grade
+  let roughness_blocked = expected_roughness_m >= profile.max_roughness_m
+  let grade_review = expected_max_grade >= profile.caution_grade
+  let roughness_review = expected_roughness_m >= profile.caution_roughness_m
+  let confidence_review = confidence < profile.min_confidence
+  add_reason_if(
+    reasons, grade_blocked, "expected grade exceeds rover hard limit",
+  )
+  add_reason_if(
+    reasons, roughness_blocked, "expected roughness exceeds rover hard limit",
+  )
+  add_reason_if(
+    reasons,
+    !grade_blocked && grade_review,
+    "expected grade needs route review",
+  )
+  add_reason_if(
+    reasons,
+    !roughness_blocked && roughness_review,
+    "expected roughness needs route review",
+  )
+  add_reason_if(reasons, confidence_review, "route confidence below threshold")
+  if extra_reason != "" {
+    reasons.push(extra_reason)
+  }
+  let decision = if grade_blocked || roughness_blocked {
+    Block
+  } else if grade_review || roughness_review || confidence_review {
+    Review
+  } else {
+    Allow
+  }
+  {
+    route_id,
+    label,
+    strategy,
+    expected_max_grade,
+    expected_roughness_m,
+    confidence,
+    decision,
+    score: route_score(decision, confidence),
+    reasons,
+    next_action,
+  }
+}
+
+///|
+pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
+  let metrics = @terrain.first_trusted_square_metrics()
+  let profile = conservative_rover_profile()
+  [
+    make_route_candidate(
+      "direct-lola-window",
+      "Direct traverse across measured LOLA patch",
+      "Use the active 4x4 measured window as-is.",
+      metrics.max_neighbor_grade,
+      metrics.roughness_m,
+      metrics.uncertainty.confidence,
+      profile,
+      "active LOLA patch is blocked",
+      "do not traverse directly; use this as the baseline hazard case",
+    ),
+    make_route_candidate(
+      "west-contour-detour", "West contour detour candidate", "Route around the steepest east-west drop and request adjacent west-side extraction.",
+      0.28, 1.8, 0.55, profile, "detour is a planning hypothesis until adjacent LOLA windows are extracted",
+      "extract neighboring west window and rescore before simulation",
+    ),
+    make_route_candidate(
+      "north-rim-stepout", "North rim step-out candidate", "Step toward the north edge of the product bounds and search for a smoother approach corridor.",
+      0.22, 1.4, 0.50, profile, "north step-out requires neighboring tile evidence and illumination constraints",
+      "extract north-adjacent window and add illumination review",
+    ),
+  ]
 }

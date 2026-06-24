@@ -2,7 +2,7 @@
 test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 8)
+  assert_eq(dossier.entries.length(), 11)
   assert_true(dossier.review_queue.length() >= 5)
   assert_eq(
     dossier.entries[0].entry_id,
@@ -30,6 +30,15 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(
     dossier.entries[7].kind == @moonbook.BookEntryKind::MissionDecision,
   )
+  assert_true(
+    dossier.entries[8].kind == @moonbook.BookEntryKind::RouteAlternative,
+  )
+  assert_true(
+    dossier.entries[9].kind == @moonbook.BookEntryKind::RouteAlternative,
+  )
+  assert_true(
+    dossier.entries[10].kind == @moonbook.BookEntryKind::RouteAlternative,
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[7].kind),
     "mission-decision",
@@ -45,6 +54,7 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("source-product-selection"))
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("source-validation"))
+  assert_true(markdown.contains("route-alternative"))
   assert_true(markdown.contains("## Review Queue"))
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("max neighbor grade exceeds rover hard limit"))
@@ -56,4 +66,5 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(json.contains("\"SourceExtractionCandidate\""))
   assert_true(json.contains("\"SourceValidation\""))
   assert_true(json.contains("\"MissionDecision\""))
+  assert_true(json.contains("\"RouteAlternative\""))
 }
