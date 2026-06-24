@@ -337,6 +337,15 @@
       "summary": "critical ephemeris-acquisition job: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed."
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/ephemeris-acquisition-task",
+      "title": "MoonClaw ephemeris acquisition task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.6,
+      "path": "moonclaw/first-trusted-square/ephemeris-task.json",
+      "summary": "needs-review task tracks 5 artifacts before Moonrobo power evidence can unblock"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
       "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawReceipt",
