@@ -12,7 +12,17 @@ import {
 // Values
 pub fn corridor_expansion_proposal(@site.SiteDossier) -> MoonClawProposal
 
+pub fn corridor_expansion_receipt(@site.SiteDossier) -> MoonClawCorridorExpansionReceipt
+
 pub fn ephemeris_acquisition_proposal(@site.SiteDossier) -> MoonClawProposal
+
+pub fn first_trusted_square_corridor_expansion_receipt() -> MoonClawCorridorExpansionReceipt
+
+pub fn first_trusted_square_corridor_receipts() -> Array[MoonClawCorridorExpansionReceipt]
+
+pub fn first_trusted_square_corridor_receipts_json() -> Json
+
+pub fn first_trusted_square_corridor_receipts_markdown() -> String
 
 pub fn first_trusted_square_json() -> Json
 
@@ -38,6 +48,10 @@ pub fn priority_label(MoonClawJobPriority) -> String
 
 pub fn receipt_status_label(MoonClawReceiptStatus) -> String
 
+pub fn render_corridor_receipts_json(Array[MoonClawCorridorExpansionReceipt]) -> Json
+
+pub fn render_corridor_receipts_markdown(Array[MoonClawCorridorExpansionReceipt]) -> String
+
 pub fn render_json(Array[MoonClawProposal]) -> Json
 
 pub fn render_markdown(Array[MoonClawProposal]) -> String
@@ -56,6 +70,31 @@ pub fn route_scoring_receipt(@site.SiteDossier) -> MoonClawRouteScoringReceipt
 pub(all) struct MoonClawAcceptanceCriterion {
   criterion_id : String
   description : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawCorridorExpansionReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  scan_id : String
+  sampled_window_count : Int
+  best_window_id : String
+  selected_route_id : String
+  window_scores : Array[MoonClawCorridorWindowScore]
+  validation_checks : Array[MoonClawReceiptValidation]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawCorridorWindowScore {
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  decision : @mission.TraverseDecision
+  selected_route_id : String
+  risk_index : Double
+  max_grade : Double
+  roughness_m : Double
+  note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawJobInput {

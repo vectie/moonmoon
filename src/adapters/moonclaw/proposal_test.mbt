@@ -86,6 +86,31 @@ test "first trusted square route scoring receipt validates blocked evidence" {
 }
 
 ///|
+test "first trusted square corridor receipt validates bounded search result" {
+  let receipt = @moonclaw.first_trusted_square_corridor_expansion_receipt()
+  assert_eq(
+    receipt.receipt.proposal_id,
+    "moonclaw/first-trusted-square/corridor-expansion-v1",
+  )
+  assert_true(
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
+  )
+  assert_eq(receipt.sampled_window_count, 25)
+  assert_eq(receipt.best_window_id, "r+8-c-8")
+  assert_eq(receipt.selected_route_id, "southwest-bypass")
+  assert_true(receipt.window_scores.length() == 25)
+  assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("all-sampled-windows-blocked")
+    }),
+  )
+  assert_true(
+    receipt.next_action.contains("every sampled LOLA window remains blocked"),
+  )
+}
+
+///|
 test "MoonClaw receipt renderers expose route scoring result" {
   let markdown = @moonclaw.first_trusted_square_receipts_markdown()
   assert_true(markdown.contains("MoonClaw Modeling Receipts"))
@@ -99,4 +124,20 @@ test "MoonClaw receipt renderers expose route scoring result" {
   assert_true(json.contains("\"route_scores\""))
   assert_true(json.contains("\"Accepted\""))
   assert_true(json.contains("\"moonrobo_handoff_decision\""))
+}
+
+///|
+test "MoonClaw corridor receipt renderers expose bounded search result" {
+  let markdown = @moonclaw.first_trusted_square_corridor_receipts_markdown()
+  assert_true(markdown.contains("MoonClaw Corridor Receipts"))
+  assert_true(markdown.contains("corridor-expansion-v1/current-receipt"))
+  assert_true(markdown.contains("bounded-search-size"))
+  assert_true(markdown.contains("all-sampled-windows-blocked"))
+  assert_true(markdown.contains("r+8-c-8"))
+  let json = @moonclaw.first_trusted_square_corridor_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"window_scores\""))
+  assert_true(json.contains("\"sampled_window_count\""))
+  assert_true(json.contains("\"Accepted\""))
 }

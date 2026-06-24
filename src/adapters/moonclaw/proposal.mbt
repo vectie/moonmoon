@@ -92,6 +92,33 @@ pub(all) struct MoonClawRouteScoringReceipt {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MoonClawCorridorWindowScore {
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  decision : @mission.TraverseDecision
+  selected_route_id : String
+  risk_index : Double
+  max_grade : Double
+  roughness_m : Double
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MoonClawCorridorExpansionReceipt {
+  receipt : MoonClawReceipt
+  site_id : @core.SiteId
+  scan_id : String
+  sampled_window_count : Int
+  best_window_id : String
+  selected_route_id : String
+  window_scores : Array[MoonClawCorridorWindowScore]
+  validation_checks : Array[MoonClawReceiptValidation]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn job_kind_label(kind : MoonClawJobKind) -> String {
   match kind {
     CorridorExpansion => "corridor-expansion"
@@ -259,6 +286,11 @@ fn route_risk_index(route : @mission.RouteCandidate) -> Double {
 }
 
 ///|
+fn corridor_window_risk_index(window : @mission.CorridorScanWindow) -> Double {
+  window.max_neighbor_grade + window.roughness_m / 10.0
+}
+
+///|
 fn route_score(
   route : @mission.RouteCandidate,
   routes : Array[@mission.RouteCandidate],
@@ -276,6 +308,59 @@ fn route_score(
     confidence: route.confidence,
     evidence_path: "mission/\{site_id}/routes/\{route.route_id}.json",
     next_action: route.next_action,
+  }
+}
+
+///|
+fn corridor_window_score(
+  window : @mission.CorridorScanWindow,
+) -> MoonClawCorridorWindowScore {
+  {
+    window_id: window.window_id,
+    rank: window.rank,
+    row_offset: window.row_offset,
+    col_offset: window.col_offset,
+    decision: window.decision,
+    selected_route_id: window.selected_route_id,
+    risk_index: corridor_window_risk_index(window),
+    max_grade: window.max_neighbor_grade,
+    roughness_m: window.roughness_m,
+    note: window.note,
+  }
+}
+
+///|
+fn corridor_window_scores(
+  windows : Array[@mission.CorridorScanWindow],
+) -> Array[MoonClawCorridorWindowScore] {
+  let scores : Array[MoonClawCorridorWindowScore] = []
+  for window in windows {
+    scores.push(corridor_window_score(window))
+  }
+  scores
+}
+
+///|
+fn all_corridor_windows_blocked(
+  windows : Array[@mission.CorridorScanWindow],
+) -> Bool {
+  for window in windows {
+    if window.decision != @mission.TraverseDecision::Block {
+      return false
+    }
+  }
+  true
+}
+
+///|
+fn corridor_receipt_next_action(best : @mission.CorridorScanWindow) -> String {
+  match best.decision {
+    Allow =>
+      "MoonClaw corridor expansion found an allowable measured window; route scoring and Moonrobo preconditions must be recomputed"
+    Review =>
+      "MoonClaw corridor expansion found a reviewable measured window; operator review is required before route scoring changes"
+    Block =>
+      "MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
   }
 }
 
@@ -575,13 +660,85 @@ pub fn route_scoring_receipt(
 }
 
 ///|
+pub fn corridor_expansion_receipt(
+  dossier : @site.SiteDossier,
+) -> MoonClawCorridorExpansionReceipt {
+  let proposal = corridor_expansion_proposal(dossier)
+  let best = dossier.corridor_scan[0]
+  let checks = [
+    validation(
+      "corridor-scan-present",
+      !dossier.corridor_scan.is_empty(),
+      "\{dossier.corridor_scan.length()} measured LOLA corridor windows are available.",
+    ),
+    validation(
+      "bounded-search-size",
+      dossier.corridor_scan.length() == 25,
+      "current corridor expansion receipt covers the reproducible 5x5 LOLA search surface.",
+    ),
+    validation(
+      "best-window-selected-route",
+      best.selected_route_id != "",
+      "best measured window \{best.window_id} selects route \{best.selected_route_id}.",
+    ),
+    validation(
+      "all-sampled-windows-blocked",
+      all_corridor_windows_blocked(dossier.corridor_scan),
+      "all sampled corridor windows remain blocked by conservative rover limits.",
+    ),
+    validation(
+      "source-checksums-verified",
+      all_validations_match_manifests(dossier),
+      "\{verified_validation_count(dossier.validations)} of \{dossier.datasets.length()} dataset source fingerprints match their manifests.",
+    ),
+    validation(
+      "proposal-blockers-current",
+      best.decision == @mission.TraverseDecision::Block,
+      "corridor proposal blocker corridor-scan-best-window remains active.",
+    ),
+  ]
+  let status = if all_checks_pass(checks) { Accepted } else { NeedsReview }
+  {
+    receipt: {
+      receipt_id: "moonclaw/\{dossier.site.site_id}/corridor-expansion-v1/current-receipt",
+      proposal_id: proposal.proposal_id,
+      status,
+      accepted_outputs: [
+        "bounded-corridor-search", "blocked-window-proof", "best-window-summary",
+      ],
+      validation_notes: validation_notes(checks),
+    },
+    site_id: dossier.site.site_id,
+    scan_id: best.scan_id,
+    sampled_window_count: dossier.corridor_scan.length(),
+    best_window_id: best.window_id,
+    selected_route_id: best.selected_route_id,
+    window_scores: corridor_window_scores(dossier.corridor_scan),
+    validation_checks: checks,
+    next_action: corridor_receipt_next_action(best),
+  }
+}
+
+///|
 pub fn first_trusted_square_route_scoring_receipt() -> MoonClawRouteScoringReceipt {
   route_scoring_receipt(@site.first_trusted_square_dossier())
 }
 
 ///|
+pub fn first_trusted_square_corridor_expansion_receipt() -> MoonClawCorridorExpansionReceipt {
+  corridor_expansion_receipt(@site.first_trusted_square_dossier())
+}
+
+///|
 pub fn first_trusted_square_receipts() -> Array[MoonClawRouteScoringReceipt] {
   [first_trusted_square_route_scoring_receipt()]
+}
+
+///|
+pub fn first_trusted_square_corridor_receipts() -> Array[
+  MoonClawCorridorExpansionReceipt,
+] {
+  [first_trusted_square_corridor_expansion_receipt()]
 }
 
 ///|
@@ -610,8 +767,46 @@ pub fn render_receipts_markdown(
 }
 
 ///|
+pub fn render_corridor_receipts_markdown(
+  receipts : Array[MoonClawCorridorExpansionReceipt],
+) -> String {
+  let mut text = "# MoonClaw Corridor Receipts\n\n"
+  for corridor in receipts {
+    text += "- \{corridor.receipt.receipt_id}\n"
+    text += "  - proposal: \{corridor.receipt.proposal_id}\n"
+    text += "  - status: \{receipt_status_label(corridor.receipt.status)}\n"
+    text += "  - scan: \{corridor.scan_id}\n"
+    text += "  - sampled windows: \{corridor.sampled_window_count}\n"
+    text += "  - best window: \{corridor.best_window_id}\n"
+    text += "  - selected route: \{corridor.selected_route_id}\n"
+    text += "  - next action: \{corridor.next_action}\n"
+    text += "  - validation:\n"
+    for check in corridor.validation_checks {
+      let status = if check.passed { "pass" } else { "fail" }
+      text += "    - \{check.validation_id}: \{status} - \{check.note}\n"
+    }
+    text += "  - top windows:\n"
+    for score in corridor.window_scores {
+      if score.rank <= 5 {
+        text += "    - #\{score.rank} \{score.window_id}: \{@mission.traverse_decision_label(score.decision)} risk \{score.risk_index}, grade \{score.max_grade}, roughness \{score.roughness_m} m"
+        if score.selected_route_id != "" {
+          text += ", route \{score.selected_route_id}"
+        }
+        text += "\n"
+      }
+    }
+  }
+  text
+}
+
+///|
 pub fn first_trusted_square_receipts_markdown() -> String {
   render_receipts_markdown(first_trusted_square_receipts())
+}
+
+///|
+pub fn first_trusted_square_corridor_receipts_markdown() -> String {
+  render_corridor_receipts_markdown(first_trusted_square_corridor_receipts())
 }
 
 ///|
@@ -622,8 +817,20 @@ pub fn render_receipts_json(
 }
 
 ///|
+pub fn render_corridor_receipts_json(
+  receipts : Array[MoonClawCorridorExpansionReceipt],
+) -> Json {
+  receipts.to_json()
+}
+
+///|
 pub fn first_trusted_square_receipts_json() -> Json {
   render_receipts_json(first_trusted_square_receipts())
+}
+
+///|
+pub fn first_trusted_square_corridor_receipts_json() -> Json {
+  render_corridor_receipts_json(first_trusted_square_corridor_receipts())
 }
 
 ///|

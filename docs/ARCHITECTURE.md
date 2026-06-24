@@ -210,10 +210,13 @@ The current MoonClaw boundary is also one-way: Moonmoon emits bounded modeling
 proposal packets and deterministic receipt packets under `output/moonclaw/`, and
 MoonBook indexes both as evidence. The first proposals request ephemeris-backed
 power windows, wider LOLA corridor search, and route-scoring receipts. The first
-receipt validates the current route-scoring job against route IDs, selected
-route, source checksums, proposal blockers, energy blocker, and Moonrobo handoff
-compatibility, then records an accepted job result that still keeps Moonrobo
-blocked. That keeps agent progress separate from physical execution authority.
+route receipt validates the current route-scoring job against route IDs,
+selected route, source checksums, proposal blockers, energy blocker, and
+Moonrobo handoff compatibility. The first corridor receipt validates that the
+bounded 5x5 LOLA search ran, that 25 sampled windows are present, and that every
+sampled window remains blocked. Both receipts record accepted job results that
+still keep Moonrobo blocked. That keeps agent progress separate from physical
+execution authority.
 
 ## Old Terrain Project Lessons
 
