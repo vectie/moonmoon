@@ -8,7 +8,7 @@
   - current scan: first-trusted-square-5x5-corridor-scan-v1 (25 windows)
   - planned scan: first-trusted-square-9x9-corridor-scan-v2 (81 windows, radius 16, step 4)
   - safety gate: Do not promote a widened route candidate until the 9x9 CSV is pinned, MoonBit generation reads it, and Moonrobo handoffs are regenerated from the updated corridor evidence.
-  - next action: Run the 9x9 LOLA byte-range extraction, pin the CSV checksum, regenerate MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.
+  - next action: Promote the pinned 9x9 LOLA CSV into generated MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.
   - inputs:
     - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits.
     - selected-route: mission/first-trusted-square/routes/southwest-bypass.json - Lowest-risk route candidate found so far; it is progress evidence, not a safe route.
@@ -29,16 +29,15 @@
     - widened-scan-csv: data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
       - producer: scripts/scan_lola_corridor.py
       - required: 81-window LOLA byte-range scan is extracted, checksummed, and reviewed
-      - current: missing
-      - ready: false
-      - blocking: network byte-range extraction for the 9x9 search has not produced a pinned CSV
+      - current: pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a
+      - ready: true
       - gate: python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
     - generated-corridor-scan: src/mission/generated_first_trusted_square_corridor_scan.mbt
       - producer: scripts/generate_corridor_scan.py
       - required: MoonBit corridor scan mirrors the reviewed widened CSV
       - current: current 5x5 generated scan
       - ready: false
-      - blocking: generated MoonBit still mirrors the 5x5 scan until the 9x9 CSV is pinned
+      - blocking: generated MoonBit still mirrors the 5x5 scan until the pinned 9x9 CSV is promoted
       - gate: python3 scripts/generate_corridor_scan.py --check
     - moonbook-corridor-workspace: output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/corridor-scan.json
       - producer: scripts/build_moonmoon_dossier.sh

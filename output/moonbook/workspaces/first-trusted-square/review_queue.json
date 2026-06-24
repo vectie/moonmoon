@@ -182,7 +182,7 @@
     {
       "item_id": "moonclaw-corridor-task",
       "severity": "high",
-      "reason": "MoonClaw corridor task has 3 blocking artifacts before the planned 81-window search can update route evidence",
+      "reason": "MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence",
       "owner": "moonclaw",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonclaw-corridor-task-request-evidence"

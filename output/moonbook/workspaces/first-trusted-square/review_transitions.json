@@ -185,7 +185,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw corridor task has 3 blocking artifacts before the planned 81-window search can update route evidence"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence"
     },
     {
       "transition_id": "review-question-0-keep-open",

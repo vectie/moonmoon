@@ -364,7 +364,7 @@
       "claim_kind": "Derived",
       "confidence": 0.65,
       "path": "moonclaw/first-trusted-square/corridor-task.json",
-      "summary": "needs-review task plans 81 windows with 3 blockers before route promotion"
+      "summary": "needs-review task plans 81 windows with 2 blockers before route promotion"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
