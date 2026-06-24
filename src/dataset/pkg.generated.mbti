@@ -10,9 +10,15 @@ import {
 // Values
 pub fn checksum_kind_label(ChecksumKind) -> String
 
+pub fn first_trusted_square_lola_candidate() -> SourceCandidate
+
 pub fn first_trusted_square_manifest() -> DatasetManifest
 
+pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
+
 pub fn review_status_label(ReviewStatus) -> String
+
+pub fn source_candidate_status_label(SourceCandidate) -> String
 
 pub fn to_provenance(DatasetManifest) -> @core.Provenance
 
@@ -80,6 +86,22 @@ pub(all) enum ReviewStatus {
   NeedsSourceUpgrade
   NeedsHumanReview
   Rejected
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SourceCandidate {
+  candidate_id : String
+  title : String
+  body : String
+  mission : String
+  instrument : String
+  product_family : String
+  official_source_url : String
+  access_url : String
+  local_target_path : String
+  intended_use : String
+  next_action : String
+  review_status : ReviewStatus
+  notes : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

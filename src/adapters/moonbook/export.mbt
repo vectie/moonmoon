@@ -2,6 +2,7 @@
 pub(all) enum BookEntryKind {
   SourceDataset
   SourceValidation
+  SourceUpgradeCandidate
   DerivedTerrain
   MissionDecision
   OpenQuestion
@@ -40,10 +41,28 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
   match kind {
     SourceDataset => "source-dataset"
     SourceValidation => "source-validation"
+    SourceUpgradeCandidate => "source-upgrade-candidate"
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
     OpenQuestion => "open-question"
   }
+}
+
+///|
+fn source_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
+  let entries : Array[BookEntry] = []
+  for candidate in dossier.source_candidates {
+    entries.push({
+      entry_id: "source-candidate/\{candidate.candidate_id}",
+      title: candidate.title,
+      kind: SourceUpgradeCandidate,
+      claim_kind: @core.ClaimKind::Unknown,
+      confidence: 0.0,
+      path: "source-candidates/\{candidate.candidate_id}.json",
+      summary: "\{candidate.instrument} \{candidate.product_family}: \{candidate.next_action}",
+    })
+  }
+  entries
 }
 
 ///|
@@ -138,6 +157,14 @@ fn traverse_entry(dossier : @site.SiteDossier) -> BookEntry {
 ///|
 fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
+  for candidate in dossier.source_candidates {
+    items.push({
+      item_id: "source-candidate-\{candidate.candidate_id}",
+      severity: "medium",
+      reason: candidate.next_action,
+      owner: "data-review",
+    })
+  }
   for validation in dossier.validations {
     if validation.status != @dataset.DatasetValidationStatus::Verified {
       items.push({
@@ -178,6 +205,9 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
 ///|
 pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   let entries = dataset_entries(dossier)
+  for entry in source_candidate_entries(dossier) {
+    entries.push(entry)
+  }
   for entry in validation_entries(dossier) {
     entries.push(entry)
   }

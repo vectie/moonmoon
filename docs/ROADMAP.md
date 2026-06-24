@@ -91,6 +91,9 @@ Current implementation status:
 - The current inline fixture fingerprint verifies successfully against its
   manifest, and the checked CSV fixture verifies against its SHA-256, but the
   fixture is still synthetic.
+- The first LOLA replacement path is tracked as a typed source-upgrade
+  candidate in the site dossier and MoonBook export, with official PDS and ODE
+  source links.
 
 Remaining work:
 
@@ -152,7 +155,6 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 ## Near-Term Engineering Checklist
 
 - Replace the synthetic trusted-square DEM with a tiny authoritative fixture.
-- Replace the inline fixture fingerprint with a source-file checksum and a
 - Replace the checked synthetic CSV with a tiny authoritative LOLA-derived
   extraction while preserving the same verify/generate/dossier pipeline.
 - Add illumination windows and energy assumptions to the mission score.

@@ -120,6 +120,11 @@ Until that source file is selected and checked in or reproducibly fetched, the
 current trusted-square dataset must remain marked as `simulated` and
 `curated-fixture`.
 
+Moonmoon now also records the LOLA replacement path as a typed source candidate
+inside the site dossier and MoonBook export. The candidate is not evidence yet;
+it is a durable work item that names the official PDS LOLA page, ODE Moon access
+point, intended local target path, and next selection/checksum action.
+
 The current fixture now has a checked source-file boundary:
 
 - `data/fixtures/first_trusted_square_dem.csv`

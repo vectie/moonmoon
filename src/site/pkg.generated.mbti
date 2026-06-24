@@ -30,6 +30,7 @@ pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@dataset.DatasetValidation]
+  source_candidates : Array[@dataset.SourceCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   summary : String

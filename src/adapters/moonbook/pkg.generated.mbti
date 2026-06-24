@@ -39,6 +39,7 @@ pub(all) struct BookEntry {
 pub(all) enum BookEntryKind {
   SourceDataset
   SourceValidation
+  SourceUpgradeCandidate
   DerivedTerrain
   MissionDecision
   OpenQuestion

@@ -11,6 +11,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(
     dossier.validations[0].status == @dataset.DatasetValidationStatus::Verified,
   )
+  assert_eq(dossier.source_candidates.length(), 1)
+  assert_eq(dossier.source_candidates[0].instrument, "LOLA")
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Caution)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Review)
   assert_eq(dossier.blockers.length(), 2)
@@ -19,6 +21,10 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Source Datasets"))
   assert_true(markdown.contains("curated-fixture"))
   assert_true(markdown.contains("source sha256"))
+  assert_true(markdown.contains("## Source Upgrade Candidates"))
+  assert_true(
+    markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),
+  )
   assert_true(markdown.contains("## Source Validation"))
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
@@ -36,6 +42,8 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"source_path\""))
   assert_true(text.contains("\"source_sha256\""))
   assert_true(text.contains("\"validations\""))
+  assert_true(text.contains("\"source_candidates\""))
+  assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"CuratedFixture\""))
   assert_true(text.contains("\"profile_id\": \"conservative-lunar-rover-v1\""))

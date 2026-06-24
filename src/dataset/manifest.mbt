@@ -41,6 +41,23 @@ pub(all) struct DatasetValidation {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SourceCandidate {
+  candidate_id : String
+  title : String
+  body : String
+  mission : String
+  instrument : String
+  product_family : String
+  official_source_url : String
+  access_url : String
+  local_target_path : String
+  intended_use : String
+  next_action : String
+  review_status : ReviewStatus
+  notes : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct DatasetManifest {
   dataset_id : @core.DatasetId
   title : String
@@ -60,6 +77,11 @@ pub(all) struct DatasetManifest {
   review_status : ReviewStatus
   notes : Array[String]
 } derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub fn source_candidate_status_label(candidate : SourceCandidate) -> String {
+  review_status_label(candidate.review_status)
+}
 
 ///|
 pub fn trust_label(trust : DatasetTrust) -> String {
@@ -130,6 +152,34 @@ pub fn verify_checksum(
       UnsupportedChecksum => "checksum kind is not supported by this verifier"
     },
   }
+}
+
+///|
+pub fn first_trusted_square_lola_candidate() -> SourceCandidate {
+  {
+    candidate_id: "candidate-lro-lola-sldem-first-trusted-square",
+    title: "LRO LOLA derived gridded topography candidate",
+    body: "Moon",
+    mission: "Lunar Reconnaissance Orbiter",
+    instrument: "LOLA",
+    product_family: "GDR/SLDEM derived gridded terrain",
+    official_source_url: "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+    access_url: "https://ode.rsl.wustl.edu/moon/",
+    local_target_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
+    intended_use: "Replace the synthetic trusted-square DEM with a tiny authoritative lunar south-pole terrain extraction.",
+    next_action: "Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.",
+    review_status: NeedsSourceUpgrade,
+    notes: [
+      "PDS Geosciences identifies LOLA as the LRO Lunar Orbiter Laser Altimeter for high-resolution lunar topography.",
+      "The PDS page lists derived GDR and SLDEM product families and points recent LOLA data discovery to ODE/LOLA Data Node.",
+      "This candidate is not yet ingested; the active trusted-square dataset remains synthetic until a local source file is verified.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate] {
+  [first_trusted_square_lola_candidate()]
 }
 
 ///|

@@ -33,3 +33,24 @@ test "first trusted square manifest marks fixture evidence clearly" {
     mismatch.status == @dataset.DatasetValidationStatus::ChecksumMismatch,
   )
 }
+
+///|
+test "first trusted square declares an authoritative LOLA upgrade candidate" {
+  let candidate = @dataset.first_trusted_square_lola_candidate()
+  assert_eq(
+    candidate.candidate_id,
+    "candidate-lro-lola-sldem-first-trusted-square",
+  )
+  assert_eq(candidate.instrument, "LOLA")
+  assert_true(candidate.product_family.contains("SLDEM"))
+  assert_eq(
+    candidate.official_source_url,
+    "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+  )
+  assert_eq(candidate.access_url, "https://ode.rsl.wustl.edu/moon/")
+  assert_eq(
+    @dataset.source_candidate_status_label(candidate),
+    "needs-source-upgrade",
+  )
+  assert_eq(@dataset.first_trusted_square_source_candidates().length(), 1)
+}

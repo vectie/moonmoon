@@ -3,6 +3,7 @@ pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@dataset.DatasetValidation]
+  source_candidates : Array[@dataset.SourceCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   summary : String
@@ -54,6 +55,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     site: first_trusted_square_site(),
     datasets: [grid.source_manifest],
     validations: [@terrain.validate_grid_source(grid)],
+    source_candidates: @dataset.first_trusted_square_source_candidates(),
     terrain,
     traverse,
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
@@ -83,6 +85,19 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - extractor: \{manifest.extractor}\n"
     text += "  - checksum kind: \{@dataset.checksum_kind_label(manifest.checksum_kind)}\n"
     text += "  - checksum: \{manifest.checksum}\n"
+  }
+  text += "\n"
+  text += "## Source Upgrade Candidates\n\n"
+  for candidate in dossier.source_candidates {
+    text += "- \{candidate.candidate_id}: \{candidate.title}\n"
+    text += "  - mission: \{candidate.mission}\n"
+    text += "  - instrument: \{candidate.instrument}\n"
+    text += "  - product family: \{candidate.product_family}\n"
+    text += "  - status: \{@dataset.source_candidate_status_label(candidate)}\n"
+    text += "  - official source: \{candidate.official_source_url}\n"
+    text += "  - access: \{candidate.access_url}\n"
+    text += "  - target path: \{candidate.local_target_path}\n"
+    text += "  - next action: \{candidate.next_action}\n"
   }
   text += "\n"
   text += "## Source Validation\n\n"
