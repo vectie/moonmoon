@@ -151,16 +151,21 @@ window reads and records a reproducible checksum. The MoonBit fixture mirrors
 that CSV through
 `scripts/generate_moonmoon_fixture.py`, which writes
 `src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
-is now the terrain package's source for the trusted-square elevations and the
-first adjacent route-window elevations. Replacing or extending the CSV set with
-tiny authoritative LOLA-derived extractions should keep the same pipeline shape.
+is now the terrain package's source for the trusted-square elevations, the first
+adjacent route-window elevations, and the first widened corridor elevations.
+Replacing or extending the CSV set with tiny authoritative LOLA-derived
+extractions should keep the same pipeline shape.
 
 The first measured LOLA patch blocks the conservative rover profile. Moonmoon
 therefore records route alternatives as derived mission-planning claims tied to
 local measured evidence windows, not as safe corridor claims. The direct route
 preserves the measured blocked result; west-contour and north-rim alternatives
 now point at adjacent measured LOLA windows, and both remain `block` because
-their local grade and roughness still exceed the conservative rover limits.
+their local grade and roughness still exceed the conservative rover limits. A
+first 5x5 corridor scan then promotes southwest-bypass and south-stepout
+windows; southwest is the lowest-grade local sample found so far, but it also
+remains `block`, so the system records progress without pretending it found a
+safe route.
 
 Moonmoon now also attaches a conservative illumination/power gate to each route
 candidate. The first version is intentionally limited: it uses local measured
@@ -168,8 +173,8 @@ relief as a shadow-risk proxy and marks the gate `block` when no time-windowed
 solar ephemeris is attached. That keeps Moonmoon honest about the difference
 between "we have a terrain sample" and "a robot can survive this route in a
 specific lunar day/night window." The next modeling step is to widen the route
-corridor search and replace the relief proxy with ephemeris-backed sun/thermal
-windows.
+corridor search beyond the southwest/south samples and replace the relief proxy
+with ephemeris-backed sun/thermal windows.
 
 ## Old Terrain Project Lessons
 

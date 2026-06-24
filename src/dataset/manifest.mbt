@@ -465,6 +465,62 @@ pub fn first_trusted_square_north_rim_lola_extraction_candidate() -> SourceExtra
 }
 
 ///|
+pub fn first_trusted_square_southwest_bypass_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-southwest-bypass-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+    output_sha256: "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+    output_bytes: 908,
+    tile_id: "first-trusted-square-southwest-bypass-lola",
+    center_lat_deg: -89.90,
+    center_lon_deg: 0.04,
+    source_row_start: 3980,
+    source_col_start: 3782,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "Generated from the wider southwest HTTP byte ranges after the first adjacent west/north windows remained blocked.",
+      "This is the lowest-grade window in the first 5x5 corridor scan, but still exceeds the conservative rover traverse limits.",
+      "The local window is still too small for mission-grade corridor planning.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_south_stepout_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-south-stepout-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv",
+    output_sha256: "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
+    output_bytes: 860,
+    tile_id: "first-trusted-square-south-stepout-lola",
+    center_lat_deg: -89.90,
+    center_lon_deg: 0.12,
+    source_row_start: 3980,
+    source_col_start: 3790,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "Generated from the wider south HTTP byte ranges after the first adjacent west/north windows remained blocked.",
+      "This window is smoother than the active patch but still exceeds conservative rover traverse limits.",
+      "The local window is still too small for mission-grade corridor planning.",
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_source_extraction_candidates() -> Array[
   SourceExtractionCandidate,
 ] {
@@ -472,6 +528,8 @@ pub fn first_trusted_square_source_extraction_candidates() -> Array[
     first_trusted_square_lola_extraction_candidate(),
     first_trusted_square_west_contour_lola_extraction_candidate(),
     first_trusted_square_north_rim_lola_extraction_candidate(),
+    first_trusted_square_southwest_bypass_lola_extraction_candidate(),
+    first_trusted_square_south_stepout_lola_extraction_candidate(),
   ]
 }
 
@@ -583,9 +641,73 @@ pub fn first_trusted_square_north_rim_manifest() -> DatasetManifest {
 }
 
 ///|
+pub fn first_trusted_square_southwest_bypass_manifest() -> DatasetManifest {
+  {
+    dataset_id: "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+    title: "LOLA southwest-bypass corridor DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    license: "Apache-2.0",
+    product_type: "lola-gdr-byte-range-corridor-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
+    coverage: {
+      south_deg: -89.92,
+      north_deg: -89.88,
+      west_deg: 0.02,
+      east_deg: 0.06,
+    },
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+    source_sha256: "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    checksum_kind: InlineFixtureFingerprint,
+    checksum: "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, southwest widened corridor byte-range extraction for Moonmoon route evidence.",
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
+      "The window is the best sampled local grade among the first 5x5 scan but remains blocked by conservative rover limits.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_south_stepout_manifest() -> DatasetManifest {
+  {
+    dataset_id: "lro-lola-first-trusted-square-south-stepout-dem-v1",
+    title: "LOLA south-stepout corridor DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    license: "Apache-2.0",
+    product_type: "lola-gdr-byte-range-corridor-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
+    coverage: {
+      south_deg: -89.92,
+      north_deg: -89.88,
+      west_deg: 0.10,
+      east_deg: 0.14,
+    },
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv",
+    source_sha256: "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    checksum_kind: InlineFixtureFingerprint,
+    checksum: "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, south widened corridor byte-range extraction for Moonmoon route evidence.",
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
+      "The window is smoother than the active patch but remains blocked by conservative rover limits.",
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest] {
   [
     first_trusted_square_west_contour_manifest(),
     first_trusted_square_north_rim_manifest(),
+    first_trusted_square_southwest_bypass_manifest(),
+    first_trusted_square_south_stepout_manifest(),
   ]
 }

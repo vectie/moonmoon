@@ -38,6 +38,14 @@ pub fn first_trusted_square_source_extraction_candidates() -> Array[SourceExtrac
 
 pub fn first_trusted_square_source_product_selections() -> Array[SourceProductSelection]
 
+pub fn first_trusted_square_south_stepout_lola_extraction_candidate() -> SourceExtractionCandidate
+
+pub fn first_trusted_square_south_stepout_manifest() -> DatasetManifest
+
+pub fn first_trusted_square_southwest_bypass_lola_extraction_candidate() -> SourceExtractionCandidate
+
+pub fn first_trusted_square_southwest_bypass_manifest() -> DatasetManifest
+
 pub fn first_trusted_square_west_contour_lola_extraction_candidate() -> SourceExtractionCandidate
 
 pub fn first_trusted_square_west_contour_manifest() -> DatasetManifest

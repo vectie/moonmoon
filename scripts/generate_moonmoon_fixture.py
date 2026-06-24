@@ -32,6 +32,22 @@ SOURCES = [
         / "lro_lola"
         / "first_trusted_square_north_rim_dem.csv",
     ),
+    (
+        "first_trusted_square_southwest_bypass",
+        ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_southwest_bypass_dem.csv",
+    ),
+    (
+        "first_trusted_square_south_stepout",
+        ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_south_stepout_dem.csv",
+    ),
 ]
 
 

@@ -86,3 +86,61 @@ fn generated_first_trusted_square_north_rim_elevations() -> Array[Array[Double]]
     [499.505, 487.170, 473.865, 460.176],
   ]
 }
+
+///| Generated from data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv by scripts/generate_moonmoon_fixture.py.
+
+///|
+fn generated_first_trusted_square_southwest_bypass_tile_id() -> String {
+  "first-trusted-square-southwest-bypass-lola"
+}
+
+///|
+fn generated_first_trusted_square_southwest_bypass_rows() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_southwest_bypass_cols() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_southwest_bypass_elevations() -> Array[
+  Array[Double],
+] {
+  [
+    [548.224, 535.255, 524.904, 514.717],
+    [540.188, 530.700, 522.620, 511.091],
+    [532.019, 524.011, 514.191, 507.947],
+    [527.101, 519.189, 510.315, 505.456],
+  ]
+}
+
+///| Generated from data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv by scripts/generate_moonmoon_fixture.py.
+
+///|
+fn generated_first_trusted_square_south_stepout_tile_id() -> String {
+  "first-trusted-square-south-stepout-lola"
+}
+
+///|
+fn generated_first_trusted_square_south_stepout_rows() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_south_stepout_cols() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_south_stepout_elevations() -> Array[
+  Array[Double],
+] {
+  [
+    [453.571, 439.172, 435.336, 422.196],
+    [444.060, 441.784, 432.085, 417.735],
+    [439.913, 437.508, 424.625, 411.136],
+    [439.388, 431.991, 420.269, 409.003],
+  ]
+}

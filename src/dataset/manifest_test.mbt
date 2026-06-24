@@ -147,7 +147,7 @@ test "first trusted square tracks LOLA extraction candidates" {
   )
   assert_eq(
     @dataset.first_trusted_square_source_extraction_candidates().length(),
-    3,
+    5,
   )
   let west = @dataset.first_trusted_square_west_contour_lola_extraction_candidate()
   assert_eq(west.tile_id, "first-trusted-square-west-contour-lola")
@@ -167,8 +167,26 @@ test "first trusted square tracks LOLA extraction candidates" {
     "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
   )
   assert_eq(north.output_bytes, 796)
+  let southwest = @dataset.first_trusted_square_southwest_bypass_lola_extraction_candidate()
+  assert_eq(southwest.tile_id, "first-trusted-square-southwest-bypass-lola")
+  assert_eq(southwest.source_row_start, 3980)
+  assert_eq(southwest.source_col_start, 3782)
+  assert_eq(
+    southwest.output_sha256,
+    "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+  )
+  assert_eq(southwest.output_bytes, 908)
+  let south = @dataset.first_trusted_square_south_stepout_lola_extraction_candidate()
+  assert_eq(south.tile_id, "first-trusted-square-south-stepout-lola")
+  assert_eq(south.source_row_start, 3980)
+  assert_eq(south.source_col_start, 3790)
+  assert_eq(
+    south.output_sha256,
+    "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
+  )
+  assert_eq(south.output_bytes, 860)
   let route_manifests = @dataset.first_trusted_square_route_manifests()
-  assert_eq(route_manifests.length(), 2)
+  assert_eq(route_manifests.length(), 4)
   assert_eq(
     route_manifests[0].dataset_id,
     "lro-lola-first-trusted-square-west-contour-dem-v1",
@@ -176,5 +194,13 @@ test "first trusted square tracks LOLA extraction candidates" {
   assert_eq(
     route_manifests[1].dataset_id,
     "lro-lola-first-trusted-square-north-rim-dem-v1",
+  )
+  assert_eq(
+    route_manifests[2].dataset_id,
+    "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+  )
+  assert_eq(
+    route_manifests[3].dataset_id,
+    "lro-lola-first-trusted-square-south-stepout-dem-v1",
   )
 }

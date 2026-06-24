@@ -413,5 +413,23 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "north-adjacent LOLA window is measured but still blocked at this scale",
       "widen the north corridor extraction and add illumination review",
     ),
+    make_route_candidate(
+      "southwest-bypass",
+      "Southwest widened bypass candidate",
+      "Use the lowest-grade measured window from the first 5x5 corridor scan as a possible bypass direction.",
+      @terrain.first_trusted_square_southwest_bypass_grid(),
+      profile,
+      "southwest widened corridor is measured and lower risk but still blocked",
+      "continue corridor search beyond the southwest bypass before simulation",
+    ),
+    make_route_candidate(
+      "south-stepout",
+      "South step-out candidate",
+      "Use the south measured window from the first 5x5 corridor scan as a second widened route direction.",
+      @terrain.first_trusted_square_south_stepout_grid(),
+      profile,
+      "south widened corridor is measured and smoother than the active patch but still blocked",
+      "continue south corridor extraction and add ephemeris-backed illumination review",
+    ),
   ]
 }

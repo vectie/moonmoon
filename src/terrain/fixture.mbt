@@ -82,9 +82,43 @@ pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics {
 }
 
 ///|
+pub fn first_trusted_square_southwest_bypass_grid() -> TerrainGrid {
+  build_grid(
+    @dataset.first_trusted_square_southwest_bypass_manifest(),
+    generated_first_trusted_square_southwest_bypass_tile_id(),
+    generated_first_trusted_square_southwest_bypass_rows(),
+    generated_first_trusted_square_southwest_bypass_cols(),
+    generated_first_trusted_square_southwest_bypass_elevations(),
+  )
+}
+
+///|
+pub fn first_trusted_square_southwest_bypass_metrics() -> TerrainMetrics {
+  analyze(first_trusted_square_southwest_bypass_grid())
+}
+
+///|
+pub fn first_trusted_square_south_stepout_grid() -> TerrainGrid {
+  build_grid(
+    @dataset.first_trusted_square_south_stepout_manifest(),
+    generated_first_trusted_square_south_stepout_tile_id(),
+    generated_first_trusted_square_south_stepout_rows(),
+    generated_first_trusted_square_south_stepout_cols(),
+    generated_first_trusted_square_south_stepout_elevations(),
+  )
+}
+
+///|
+pub fn first_trusted_square_south_stepout_metrics() -> TerrainMetrics {
+  analyze(first_trusted_square_south_stepout_grid())
+}
+
+///|
 pub fn first_trusted_square_route_grids() -> Array[TerrainGrid] {
   [
     first_trusted_square_west_contour_grid(),
     first_trusted_square_north_rim_grid(),
+    first_trusted_square_southwest_bypass_grid(),
+    first_trusted_square_south_stepout_grid(),
   ]
 }

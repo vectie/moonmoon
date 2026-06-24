@@ -37,20 +37,22 @@ Current implementation status:
 - `src/dataset` defines a dataset manifest contract with coverage, trust,
   checksum kind, checksum, citation, review status, and validation results.
 - `src/terrain` builds one deterministic 4x4 trusted-square fixture plus
-  west/north adjacent route-window fixtures, computes elevation range, neighbor
-  grade, roughness, hazard class, and Markdown/JSON fixture exports.
+  measured route-window fixtures from the adjacent and first widened corridor
+  scans, computes elevation range, neighbor grade, roughness, hazard class, and
+  Markdown/JSON fixture exports.
 - `data/sources/lro_lola/first_trusted_square_dem.csv` and the adjacent
-  west/north route-window CSVs are checked LOLA byte-range source fixtures, and
-  `scripts/verify_moonmoon_sources.sh` validates their SHA-256 before dossier
-  generation.
+  route-window and widened corridor CSVs are checked LOLA byte-range source
+  fixtures, and `scripts/verify_moonmoon_sources.sh` validates their SHA-256
+  before dossier generation.
 - `scripts/generate_moonmoon_fixture.py` regenerates the MoonBit fixture module
   from the checked CSV so terrain code does not hand-mirror source values; its
   `--check` mode verifies the generated file is current.
 - `src/mission` scores the fixture against a conservative rover traverse
   profile and returns `allow`, `review`, or `block` with reasons.
 - `src/mission` also scores route alternatives for the blocked LOLA patch:
-  the direct measured window remains blocked, and the measured west/north
-  adjacent windows are also blocked at this sampling scale.
+  the direct measured window remains blocked, the measured west/north adjacent
+  windows are blocked, and the first widened southwest/south corridor windows
+  are lower risk but still blocked at this sampling scale.
 - `src/mission` adds a conservative south-pole illumination/power gate for each
   route candidate. It uses measured local relief as an early shadow-risk proxy
   and blocks execution until time-windowed solar ephemeris is attached.
@@ -107,8 +109,8 @@ Current implementation status:
   shape, unit, and raw image name.
 - `data/sources/lro_lola/first_trusted_square_dem.csv` is the active tiny 4x4
   extraction generated from HTTP byte ranges against the selected IMG and
-  verified by SHA-256; west-contour and north-rim route-window CSVs use the
-  same extractor and verifier.
+  verified by SHA-256; west-contour, north-rim, southwest-bypass, and
+  south-stepout route-window CSVs use the same extractor and verifier.
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
@@ -118,7 +120,9 @@ Current implementation status:
 - The first product selection now names `ldem_875s_20m_float` as the concrete
   label-backed extraction target, while keeping the raw IMG uncommitted.
 - The first extraction candidates now prove bounded raster access and produce
-  the active fixture-shaped CSV plus adjacent west/north route evidence CSVs.
+  the active fixture-shaped CSV plus adjacent and widened route evidence CSVs.
+- The first 5x5 corridor scan found a lower-risk southwest bypass window, but
+  it still exceeds conservative rover grade and roughness limits.
 - Route alternatives now carry MoonBook-visible illumination assessments. The
   current gate is intentionally conservative: it records relief-shadow risk and
   blocks all route candidates until a time-windowed solar ephemeris source is
@@ -126,8 +130,8 @@ Current implementation status:
 
 Remaining work:
 
-- Widen the route-window corridor search beyond the blocked west/north adjacent
-  LOLA windows.
+- Continue corridor search beyond the blocked southwest/south widened LOLA
+  windows.
 - Replace the relief-shadow proxy with time-windowed solar ephemeris and
   explicit robot energy/thermal budgets.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export

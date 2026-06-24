@@ -29,15 +29,20 @@ test "first trusted square fixture derives deterministic terrain metrics" {
 ///|
 test "first trusted square adjacent route windows derive measured terrain metrics" {
   let route_grids = @terrain.first_trusted_square_route_grids()
-  assert_eq(route_grids.length(), 2)
+  assert_eq(route_grids.length(), 4)
   assert_eq(route_grids[0].tile_id, "first-trusted-square-west-contour-lola")
   assert_eq(route_grids[1].tile_id, "first-trusted-square-north-rim-lola")
+  assert_eq(
+    route_grids[2].tile_id,
+    "first-trusted-square-southwest-bypass-lola",
+  )
+  assert_eq(route_grids[3].tile_id, "first-trusted-square-south-stepout-lola")
   for grid in route_grids {
     let validation = @terrain.validate_grid_source(grid)
     assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
     let metrics = @terrain.analyze(grid)
     assert_true(metrics.hazard_class == Blocked)
-    assert_true(metrics.max_neighbor_grade > 0.7)
+    assert_true(metrics.max_neighbor_grade > 0.6)
     assert_true(metrics.roughness_m > 7.0)
     assert_true(metrics.provenance.claim_kind == Derived)
   }
@@ -47,6 +52,13 @@ test "first trusted square adjacent route windows derive measured terrain metric
   let north = @terrain.first_trusted_square_north_rim_metrics()
   assert_eq(north.min_elevation_m.to_string(), "460.176")
   assert_eq(north.max_elevation_m.to_string(), "506.517")
+  let southwest = @terrain.first_trusted_square_southwest_bypass_metrics()
+  assert_eq(southwest.min_elevation_m.to_string(), "505.456")
+  assert_eq(southwest.max_elevation_m.to_string(), "548.224")
+  assert_true(southwest.max_neighbor_grade < west.max_neighbor_grade)
+  let south = @terrain.first_trusted_square_south_stepout_metrics()
+  assert_eq(south.min_elevation_m.to_string(), "409.003")
+  assert_eq(south.max_elevation_m.to_string(), "453.571")
 }
 
 ///|

@@ -11,7 +11,7 @@ test "first trusted square traverse score blocks measured rough terrain" {
 ///|
 test "first trusted square route candidates use measured adjacent windows" {
   let routes = @mission.first_trusted_square_route_candidates()
-  assert_eq(routes.length(), 3)
+  assert_eq(routes.length(), 5)
   assert_eq(routes[0].route_id, "direct-lola-window")
   assert_true(routes[0].decision == Block)
   assert_true(routes[0].reasons.any(fn(reason) { reason.contains("blocked") }))
@@ -42,6 +42,22 @@ test "first trusted square route candidates use measured adjacent windows" {
   assert_true(routes[2].decision == Block)
   assert_eq(routes[2].evidence_tile_id, "first-trusted-square-north-rim-lola")
   assert_true(routes[2].next_action.contains("illumination"))
+  assert_eq(routes[3].route_id, "southwest-bypass")
+  assert_true(routes[3].decision == Block)
+  assert_eq(
+    routes[3].evidence_dataset_id,
+    "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+  )
+  assert_true(routes[3].expected_max_grade < routes[1].expected_max_grade)
+  assert_true(
+    routes[3].reasons.any(fn(reason) { reason.contains("lower risk") }),
+  )
+  assert_eq(routes[4].route_id, "south-stepout")
+  assert_true(routes[4].decision == Block)
+  assert_eq(
+    routes[4].evidence_tile_id,
+    "first-trusted-square-south-stepout-lola",
+  )
 }
 
 ///|

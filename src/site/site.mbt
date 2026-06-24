@@ -52,6 +52,8 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
   let grid = @terrain.first_trusted_square_grid()
   let west_grid = @terrain.first_trusted_square_west_contour_grid()
   let north_grid = @terrain.first_trusted_square_north_rim_grid()
+  let southwest_grid = @terrain.first_trusted_square_southwest_bypass_grid()
+  let south_grid = @terrain.first_trusted_square_south_stepout_grid()
   let terrain = @terrain.analyze(grid)
   let traverse = @mission.score_traverse(
     terrain,
@@ -63,11 +65,15 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       grid.source_manifest,
       west_grid.source_manifest,
       north_grid.source_manifest,
+      southwest_grid.source_manifest,
+      south_grid.source_manifest,
     ],
     validations: [
       @terrain.validate_grid_source(grid),
       @terrain.validate_grid_source(west_grid),
       @terrain.validate_grid_source(north_grid),
+      @terrain.validate_grid_source(southwest_grid),
+      @terrain.validate_grid_source(south_grid),
     ],
     source_candidates: @dataset.first_trusted_square_source_candidates(),
     source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
@@ -76,11 +82,11 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     terrain,
     traverse,
     route_candidates: @mission.first_trusted_square_route_candidates(),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured route-window alternatives.",
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured widened route-window alternatives.",
     blockers: terrain_blockers(terrain),
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
-      "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
+      "Continue widening the corridor search because the best measured southwest window is still blocked.",
       "Export the dossier into a LunarBook workspace for review.",
     ],
   }

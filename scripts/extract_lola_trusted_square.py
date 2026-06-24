@@ -62,6 +62,26 @@ WINDOWS = [
         row_offset=-WINDOW_ROWS,
         col_offset=0,
     ),
+    ExtractionWindow(
+        tile_id="first-trusted-square-southwest-bypass-lola",
+        target=ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_southwest_bypass_dem.csv",
+        row_offset=WINDOW_ROWS * 2,
+        col_offset=-WINDOW_COLS * 2,
+    ),
+    ExtractionWindow(
+        tile_id="first-trusted-square-south-stepout-lola",
+        target=ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_south_stepout_dem.csv",
+        row_offset=WINDOW_ROWS * 2,
+        col_offset=0,
+    ),
 ]
 
 

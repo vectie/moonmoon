@@ -66,6 +66,22 @@ Route-window evidence:
 - Route candidate: `north-rim-stepout`
 - Current route result: blocked by measured local grade and roughness
 
+Widened corridor evidence:
+
+- Output path: `data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv`
+- Output SHA-256: `c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5`
+- Output bytes: `908`
+- Source window: row `3980`, column `3782`, size `4x4`
+- Route candidate: `southwest-bypass`
+- Current route result: lowest-grade sampled window in the first 5x5 scan, but still blocked
+
+- Output path: `data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv`
+- Output SHA-256: `dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c`
+- Output bytes: `860`
+- Source window: row `3980`, column `3790`, size `4x4`
+- Route candidate: `south-stepout`
+- Current route result: smoother than the active patch, but still blocked
+
 ## Reproduction
 
 Fetch and verify the current pinned catalog:
