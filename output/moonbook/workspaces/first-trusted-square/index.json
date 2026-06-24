@@ -8,6 +8,7 @@
     "output/moonbook/first_trusted_square_book.json",
     "output/moonclaw/first_trusted_square_proposals.json",
     "output/moonclaw/first_trusted_square_receipts.json",
+    "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
     "output/moonrobo/first_trusted_square_handoffs.json"
   ],
@@ -326,6 +327,15 @@
       "confidence": 0.7,
       "path": "moonclaw/first-trusted-square/receipts.json",
       "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
+      "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawEphemerisReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.55,
+      "path": "moonclaw/first-trusted-square/ephemeris-receipts.json",
+      "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/corridor-expansion-receipt",

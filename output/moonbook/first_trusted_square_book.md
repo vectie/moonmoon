@@ -180,6 +180,11 @@
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/receipts.json
+- moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-ephemeris-receipt
+  - claim: derived
+  - confidence: 0.55
+  - path: moonclaw/first-trusted-square/ephemeris-receipts.json
 - moonclaw/first-trusted-square/corridor-expansion-receipt: MoonClaw corridor-expansion receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moonclaw-corridor-receipt
   - claim: derived
