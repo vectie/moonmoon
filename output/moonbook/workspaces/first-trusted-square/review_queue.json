@@ -148,6 +148,14 @@
       "last_transition_id": "review-moonrobo-handoff-request-evidence"
     },
     {
+      "item_id": "moonclaw-proposals",
+      "severity": "high",
+      "reason": "MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-proposals-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",

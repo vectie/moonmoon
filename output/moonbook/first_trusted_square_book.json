@@ -299,6 +299,15 @@
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/handoffs.json",
       "summary": "block primary route southwest-bypass: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
+      "title": "MoonClaw modeling proposals for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawProposal",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/proposals.json",
+      "summary": "critical ephemeris-acquisition job: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed."
     }
   ],
   "review_queue": [
@@ -445,6 +454,14 @@
       "owner": "moonrobo",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonrobo-handoff-request-evidence"
+    },
+    {
+      "item_id": "moonclaw-proposals",
+      "severity": "high",
+      "reason": "MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-proposals-request-evidence"
     },
     {
       "item_id": "question-0",
@@ -615,6 +632,14 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    },
+    {
+      "transition_id": "review-moonclaw-proposals-request-evidence",
+      "item_id": "moonclaw-proposals",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
     },
     {
       "transition_id": "review-question-0-keep-open",

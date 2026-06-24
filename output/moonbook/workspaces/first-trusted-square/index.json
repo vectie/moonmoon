@@ -6,6 +6,7 @@
   "source_files": [
     "output/site/first_trusted_square.json",
     "output/moonbook/first_trusted_square_book.json",
+    "output/moonclaw/first_trusted_square_proposals.json",
     "output/moonrobo/first_trusted_square_handoffs.json"
   ],
   "entries": [
@@ -305,6 +306,15 @@
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/handoffs.json",
       "summary": "block primary route southwest-bypass: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
+      "title": "MoonClaw modeling proposals for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawProposal",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/proposals.json",
+      "summary": "critical ephemeris-acquisition job: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed."
     }
   ],
   "review_queue_path": "review_queue.json",

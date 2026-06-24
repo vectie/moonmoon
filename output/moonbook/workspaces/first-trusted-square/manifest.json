@@ -2,9 +2,9 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 33,
-  "review_queue_count": 21,
-  "review_transition_count": 21,
+  "entry_count": 34,
+  "review_queue_count": 22,
+  "review_transition_count": 22,
   "entry_paths": [
     "datasets/lro-lola-first-trusted-square-dem-v1.json",
     "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json",
@@ -38,7 +38,8 @@
     "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
     "mission/first-trusted-square/routes/south-stepout.illumination.json",
     "mission/first-trusted-square/energy-window.json",
-    "moonrobo/first-trusted-square/handoffs.json"
+    "moonrobo/first-trusted-square/handoffs.json",
+    "moonclaw/first-trusted-square/proposals.json"
   ],
   "review_queue_path": "review_queue.json",
   "review_transitions_path": "review_transitions.json"

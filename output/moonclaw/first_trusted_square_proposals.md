@@ -1,0 +1,57 @@
+# MoonClaw Modeling Proposals
+
+- moonclaw/first-trusted-square/ephemeris-energy-v1
+  - kind: ephemeris-acquisition
+  - priority: critical
+  - title: Attach ephemeris-backed power and thermal windows
+  - objective: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed.
+  - blocked by: energy-window, illumination-southwest-bypass, moonrobo-handoff
+  - inputs:
+    - energy-window: mission/first-trusted-square/energy-window.json - Conservative rover energy budget currently blocks because no verified sunlit power window is attached.
+    - route-illumination: mission/first-trusted-square/routes/*.illumination.json - Per-route illumination gates use measured relief as a shadow-risk proxy and require time-windowed replacement evidence.
+    - lola-product-label: source-products/lola-south-pole-20m-dem.json - Pinned LOLA product label gives the site projection and bounds needed to request matching ephemeris products.
+  - acceptance:
+    - official-source: Name the ephemeris or illumination source family, citation, local evidence path, checksum, and temporal coverage window.
+    - power-budget: Compute sunlit hours, expected generation Wh, dark-survival Wh, and margin for the selected route window.
+    - moonbit-update: Update the MoonBit energy and illumination assessments and add tests that prove Moonrobo remains blocked or becomes reviewable for cited reasons.
+  - expected outputs:
+    - data/sources/lunar_ephemeris/first_trusted_square_power_window.json
+    - src/mission/generated_first_trusted_square_power_window.mbt
+    - output/site/first_trusted_square.json
+    - output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/energy-window.json
+- moonclaw/first-trusted-square/corridor-expansion-v1
+  - kind: corridor-expansion
+  - priority: high
+  - title: Widen the LOLA route-corridor search
+  - objective: Search beyond the current 5x5 corridor ranking to either find a rover-reviewable local window or prove the bounded site remains blocked.
+  - blocked by: corridor-scan-best-window, route-southwest-bypass, moonrobo-handoff
+  - inputs:
+    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits.
+    - selected-route: mission/first-trusted-square/routes/southwest-bypass.json - Lowest-risk route candidate found so far; it is progress evidence, not a safe route.
+    - source-extraction: source-extractions/first-trusted-square-southwest-bypass-20m.json - Existing byte-range extraction pattern for adding adjacent LOLA evidence windows.
+  - acceptance:
+    - bounded-search: Publish the search radius, sampled windows, ordering rule, CSV checksum, and generator command.
+    - route-outcome: Return at least one lower-risk route candidate or a measured proof that every sampled window remains blocked.
+    - workspace-refresh: Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the result as files.
+  - expected outputs:
+    - data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
+    - src/mission/generated_first_trusted_square_corridor_scan.mbt
+    - output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/corridor-scan.json
+- moonclaw/first-trusted-square/route-scoring-v1
+  - kind: route-scoring
+  - priority: high
+  - title: Score route candidates after terrain and power evidence improves
+  - objective: Combine terrain, corridor, illumination, and energy evidence into a route-scoring receipt that Moonmoon can validate before Moonrobo consumes a simulation precondition packet.
+  - blocked by: corridor-scan-best-window, energy-window, moonrobo-handoff
+  - inputs:
+    - route-candidates: mission/first-trusted-square/routes/*.json - All current route alternatives with terrain score, confidence, and next action.
+    - moonrobo-handoff: moonrobo/first-trusted-square/handoffs.json - Robot-facing precondition packets that must remain blocked until Moonmoon evidence clears the gates.
+    - review-queue: review_queue.json - MoonBook review state that records which blockers need evidence or operator attention.
+  - acceptance:
+    - scoring-receipt: Emit a receipt with sorted candidates, decision rationale, rejected assumptions, and exact evidence paths used for each score.
+    - validation: Moonmoon validates the receipt against current route IDs, review items, and source checksums before accepting it.
+    - handoff-compatibility: The accepted scoring result must explain whether the primary Moonrobo handoff remains blocked, moves to review, or becomes allowed.
+  - expected outputs:
+    - output/moonclaw/first_trusted_square_route_scoring_receipt.json
+    - output/moonbook/workspaces/first-trusted-square/review_transitions.json
+

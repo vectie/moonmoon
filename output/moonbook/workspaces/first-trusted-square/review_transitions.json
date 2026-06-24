@@ -148,6 +148,14 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
     },
     {
+      "transition_id": "review-moonclaw-proposals-request-evidence",
+      "item_id": "moonclaw-proposals",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
+    },
+    {
       "transition_id": "review-question-0-keep-open",
       "item_id": "question-0",
       "decision": "KeepOpen",
