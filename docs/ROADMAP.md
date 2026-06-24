@@ -42,6 +42,9 @@ Current implementation status:
 - `data/fixtures/first_trusted_square_dem.csv` is the checked source fixture
   for the current grid, and `scripts/verify_moonmoon_sources.sh` validates its
   SHA-256 before dossier generation.
+- `scripts/generate_moonmoon_fixture.py` regenerates the MoonBit fixture module
+  from the checked CSV so terrain code does not hand-mirror source values; its
+  `--check` mode verifies the generated file is current.
 - `src/mission` scores the fixture against a conservative rover traverse
   profile and returns `allow`, `review`, or `block` with reasons.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
@@ -150,8 +153,8 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 
 - Replace the synthetic trusted-square DEM with a tiny authoritative fixture.
 - Replace the inline fixture fingerprint with a source-file checksum and a
-- Move the MoonBit terrain fixture from mirrored inline values to a generated
-  module or parser driven by the checked source file.
+- Replace the checked synthetic CSV with a tiny authoritative LOLA-derived
+  extraction while preserving the same verify/generate/dossier pipeline.
 - Add illumination windows and energy assumptions to the mission score.
 - Add Rabbita view models for terrain layers, inspector rows, and route
   overlays.

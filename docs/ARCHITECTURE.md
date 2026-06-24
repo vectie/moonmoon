@@ -127,8 +127,11 @@ The current fixture now has a checked source-file boundary:
 
 The source file is still synthetic, but its SHA-256 is pinned in the manifest
 and verified before reproducible outputs are built. The MoonBit fixture mirrors
-this source file for now; replacing it with a parser or generated MoonBit module
-is the next step toward a real LOLA-derived extraction pipeline.
+this source file through `scripts/generate_moonmoon_fixture.py`, which writes
+`src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
+is now the terrain package's source for the trusted-square elevations. Replacing
+the CSV with a tiny authoritative LOLA-derived extraction should keep the same
+pipeline shape.
 
 ## Old Terrain Project Lessons
 

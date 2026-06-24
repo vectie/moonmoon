@@ -50,11 +50,17 @@ moon run cmd/main -- terrain fixture
 moon run cmd/main -- terrain fixture json
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
+python3 scripts/generate_moonmoon_fixture.py --check
 bash scripts/build_moonmoon_dossier.sh
 ```
 
 Reproducible site, terrain, and LunarBook-ready deliverables are written to
 `output/site/`, `output/terrain/`, and `output/moonbook/`.
+
+The current terrain fixture is sourced from
+`data/fixtures/first_trusted_square_dem.csv`, verified by
+`scripts/verify_moonmoon_sources.sh`, and regenerated into MoonBit by
+`scripts/generate_moonmoon_fixture.py`.
 
 The current fixture is synthetic. It is useful for proving the software shape,
 not for mission-grade lunar planning. The next major step is replacing it with a

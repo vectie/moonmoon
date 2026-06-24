@@ -5,15 +5,12 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
   let uncertainty = @core.uncertainty(
     0.72, "Synthetic DEM fixture shaped from lunar south-pole planning assumptions.",
   )
-  let elevations = [
-    [0.0, 0.8, 1.6, 2.1],
-    [0.5, 1.2, 2.4, 3.2],
-    [0.2, 1.4, 3.0, 4.7],
-    [-0.3, 0.9, 2.8, 5.4],
-  ]
+  let rows = generated_first_trusted_square_rows()
+  let cols = generated_first_trusted_square_cols()
+  let elevations = generated_first_trusted_square_elevations()
   let cells : Array[@core.TerrainCell] = []
-  for row in 0..<4 {
-    for col in 0..<4 {
+  for row in 0..<rows {
+    for col in 0..<cols {
       cells.push({
         tile_id: "trusted-square-r\{row}-c\{col}",
         row,
@@ -25,9 +22,9 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
     }
   }
   {
-    tile_id: "first-trusted-square",
-    rows: 4,
-    cols: 4,
+    tile_id: generated_first_trusted_square_tile_id(),
+    rows,
+    cols,
     cell_size_m: 10.0,
     source_manifest,
     cells,

@@ -13,6 +13,7 @@ mkdir -p "$MOONBOOK_OUT"
 cd "$ROOT"
 
 bash scripts/verify_moonmoon_sources.sh
+python3 scripts/generate_moonmoon_fixture.py
 
 /Users/kq/.moon/bin/moon run cmd/main > "$OUT/first_trusted_square.md"
 /Users/kq/.moon/bin/moon run cmd/main -- json > "$OUT/first_trusted_square.json"

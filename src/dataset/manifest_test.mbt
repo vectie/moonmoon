@@ -12,7 +12,7 @@ test "first trusted square manifest marks fixture evidence clearly" {
   )
   assert_eq(
     manifest.extractor,
-    "moonmoon/src/terrain.first_trusted_square_grid.v1",
+    "scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
   )
   assert_eq(
     @dataset.checksum_kind_label(manifest.checksum_kind),
