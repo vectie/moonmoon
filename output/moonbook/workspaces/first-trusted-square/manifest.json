@@ -2,9 +2,9 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 41,
-  "review_queue_count": 25,
-  "review_transition_count": 25,
+  "entry_count": 42,
+  "review_queue_count": 26,
+  "review_transition_count": 26,
   "entry_paths": [
     "datasets/lro-lola-first-trusted-square-dem-v1.json",
     "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json",
@@ -44,6 +44,7 @@
     "moonrobo/first-trusted-square/handoffs.json",
     "moonclaw/first-trusted-square/proposals.json",
     "moonclaw/first-trusted-square/ephemeris-task.json",
+    "moonclaw/first-trusted-square/corridor-task.json",
     "moonclaw/first-trusted-square/receipts.json",
     "moonclaw/first-trusted-square/ephemeris-receipts.json",
     "moonclaw/first-trusted-square/corridor-receipts.json"

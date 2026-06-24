@@ -180,6 +180,14 @@
       "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
     },
     {
+      "item_id": "moonclaw-corridor-task",
+      "severity": "high",
+      "reason": "MoonClaw corridor task has 3 blocking artifacts before the planned 81-window search can update route evidence",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-corridor-task-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",

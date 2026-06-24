@@ -346,6 +346,15 @@
       "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/corridor-expansion-task",
+      "title": "MoonClaw corridor expansion task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/corridor-task.json",
+      "summary": "needs-review task plans 81 windows with 3 blockers before route promotion"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
       "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawReceipt",
@@ -551,6 +560,14 @@
       "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
     },
     {
+      "item_id": "moonclaw-corridor-task",
+      "severity": "high",
+      "reason": "MoonClaw corridor task has 3 blocking artifacts before the planned 81-window search can update route evidence",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-corridor-task-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -751,6 +768,14 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input"
+    },
+    {
+      "transition_id": "review-moonclaw-corridor-task-request-evidence",
+      "item_id": "moonclaw-corridor-task",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw corridor task has 3 blocking artifacts before the planned 81-window search can update route evidence"
     },
     {
       "transition_id": "review-question-0-keep-open",

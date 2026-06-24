@@ -8,6 +8,7 @@
     "output/moonbook/first_trusted_square_book.json",
     "output/moonclaw/first_trusted_square_proposals.json",
     "output/moonclaw/first_trusted_square_ephemeris_tasks.json",
+    "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
@@ -355,6 +356,15 @@
       "confidence": 0.6,
       "path": "moonclaw/first-trusted-square/ephemeris-task.json",
       "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/corridor-expansion-task",
+      "title": "MoonClaw corridor expansion task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/corridor-task.json",
+      "summary": "needs-review task plans 81 windows with 3 blockers before route promotion"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
