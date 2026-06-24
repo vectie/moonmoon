@@ -119,6 +119,23 @@ pub(all) struct MoonClawCorridorExpansionReceipt {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MoonClawEphemerisAcquisitionReceipt {
+  receipt : MoonClawReceipt
+  site_id : @core.SiteId
+  energy_decision : @mission.TraverseDecision
+  has_time_window_ephemeris : Bool
+  route_count : Int
+  blocked_route_count : Int
+  required_sunlit_hours : Double
+  assumed_dark_survival_hours : Double
+  required_energy_wh : Double
+  verified_available_energy_wh : Double
+  missing_outputs : Array[String]
+  validation_checks : Array[MoonClawReceiptValidation]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn job_kind_label(kind : MoonClawJobKind) -> String {
   match kind {
     CorridorExpansion => "corridor-expansion"
@@ -362,6 +379,11 @@ fn corridor_receipt_next_action(best : @mission.CorridorScanWindow) -> String {
     Block =>
       "MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
   }
+}
+
+///|
+fn ephemeris_receipt_next_action() -> String {
+  "MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
 }
 
 ///|
@@ -720,8 +742,69 @@ pub fn corridor_expansion_receipt(
 }
 
 ///|
+pub fn ephemeris_acquisition_receipt(
+  dossier : @site.SiteDossier,
+) -> MoonClawEphemerisAcquisitionReceipt {
+  let proposal = ephemeris_acquisition_proposal(dossier)
+  let energy = dossier.energy
+  let checks = [
+    validation(
+      "energy-window-present",
+      energy.route_count == dossier.route_candidates.length(),
+      "\{energy.route_count} route candidates are represented in the current energy assessment.",
+    ),
+    validation(
+      "time-window-ephemeris-missing",
+      !energy.budget.has_time_window_ephemeris,
+      "current energy budget explicitly has no time-windowed ephemeris attached.",
+    ),
+    validation(
+      "verified-available-energy-zero",
+      energy.available_energy_wh == 0.0,
+      "verified available energy remains zero without a time-windowed power source.",
+    ),
+    validation(
+      "source-checksums-verified",
+      all_validations_match_manifests(dossier),
+      "\{verified_validation_count(dossier.validations)} of \{dossier.datasets.length()} dataset source fingerprints match their manifests.",
+    ),
+    validation(
+      "expected-output-contract-present",
+      proposal.expected_outputs.length() >= 4,
+      "ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs.",
+    ),
+  ]
+  {
+    receipt: {
+      receipt_id: "moonclaw/\{dossier.site.site_id}/ephemeris-energy-v1/current-receipt",
+      proposal_id: proposal.proposal_id,
+      status: NeedsReview,
+      accepted_outputs: [],
+      validation_notes: validation_notes(checks),
+    },
+    site_id: dossier.site.site_id,
+    energy_decision: energy.decision,
+    has_time_window_ephemeris: energy.budget.has_time_window_ephemeris,
+    route_count: energy.route_count,
+    blocked_route_count: energy.blocked_route_count,
+    required_sunlit_hours: energy.budget.required_sunlit_hours,
+    assumed_dark_survival_hours: energy.estimated_dark_survival_hours,
+    required_energy_wh: energy.required_energy_wh,
+    verified_available_energy_wh: energy.available_energy_wh,
+    missing_outputs: proposal.expected_outputs,
+    validation_checks: checks,
+    next_action: ephemeris_receipt_next_action(),
+  }
+}
+
+///|
 pub fn first_trusted_square_route_scoring_receipt() -> MoonClawRouteScoringReceipt {
   route_scoring_receipt(@site.first_trusted_square_dossier())
+}
+
+///|
+pub fn first_trusted_square_ephemeris_acquisition_receipt() -> MoonClawEphemerisAcquisitionReceipt {
+  ephemeris_acquisition_receipt(@site.first_trusted_square_dossier())
 }
 
 ///|
@@ -739,6 +822,13 @@ pub fn first_trusted_square_corridor_receipts() -> Array[
   MoonClawCorridorExpansionReceipt,
 ] {
   [first_trusted_square_corridor_expansion_receipt()]
+}
+
+///|
+pub fn first_trusted_square_ephemeris_receipts() -> Array[
+  MoonClawEphemerisAcquisitionReceipt,
+] {
+  [first_trusted_square_ephemeris_acquisition_receipt()]
 }
 
 ///|
@@ -800,8 +890,43 @@ pub fn render_corridor_receipts_markdown(
 }
 
 ///|
+pub fn render_ephemeris_receipts_markdown(
+  receipts : Array[MoonClawEphemerisAcquisitionReceipt],
+) -> String {
+  let mut text = "# MoonClaw Ephemeris Receipts\n\n"
+  for ephemeris in receipts {
+    text += "- \{ephemeris.receipt.receipt_id}\n"
+    text += "  - proposal: \{ephemeris.receipt.proposal_id}\n"
+    text += "  - status: \{receipt_status_label(ephemeris.receipt.status)}\n"
+    text += "  - energy decision: \{@mission.traverse_decision_label(ephemeris.energy_decision)}\n"
+    text += "  - has time-windowed ephemeris: \{ephemeris.has_time_window_ephemeris}\n"
+    text += "  - routes: \{ephemeris.route_count} total, \{ephemeris.blocked_route_count} blocked\n"
+    text += "  - required sunlit hours: \{ephemeris.required_sunlit_hours}\n"
+    text += "  - dark survival hours: \{ephemeris.assumed_dark_survival_hours}\n"
+    text += "  - required energy: \{ephemeris.required_energy_wh} Wh\n"
+    text += "  - verified available energy: \{ephemeris.verified_available_energy_wh} Wh\n"
+    text += "  - next action: \{ephemeris.next_action}\n"
+    text += "  - validation:\n"
+    for check in ephemeris.validation_checks {
+      let status = if check.passed { "pass" } else { "fail" }
+      text += "    - \{check.validation_id}: \{status} - \{check.note}\n"
+    }
+    text += "  - missing outputs:\n"
+    for output in ephemeris.missing_outputs {
+      text += "    - \{output}\n"
+    }
+  }
+  text
+}
+
+///|
 pub fn first_trusted_square_receipts_markdown() -> String {
   render_receipts_markdown(first_trusted_square_receipts())
+}
+
+///|
+pub fn first_trusted_square_ephemeris_receipts_markdown() -> String {
+  render_ephemeris_receipts_markdown(first_trusted_square_ephemeris_receipts())
 }
 
 ///|
@@ -817,6 +942,13 @@ pub fn render_receipts_json(
 }
 
 ///|
+pub fn render_ephemeris_receipts_json(
+  receipts : Array[MoonClawEphemerisAcquisitionReceipt],
+) -> Json {
+  receipts.to_json()
+}
+
+///|
 pub fn render_corridor_receipts_json(
   receipts : Array[MoonClawCorridorExpansionReceipt],
 ) -> Json {
@@ -826,6 +958,11 @@ pub fn render_corridor_receipts_json(
 ///|
 pub fn first_trusted_square_receipts_json() -> Json {
   render_receipts_json(first_trusted_square_receipts())
+}
+
+///|
+pub fn first_trusted_square_ephemeris_receipts_json() -> Json {
+  render_ephemeris_receipts_json(first_trusted_square_ephemeris_receipts())
 }
 
 ///|

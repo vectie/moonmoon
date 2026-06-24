@@ -16,6 +16,9 @@ SITE_JSON = ROOT / "output/site/first_trusted_square.json"
 BOOK_JSON = ROOT / "output/moonbook/first_trusted_square_book.json"
 MOONCLAW_JSON = ROOT / "output/moonclaw/first_trusted_square_proposals.json"
 MOONCLAW_RECEIPTS_JSON = ROOT / "output/moonclaw/first_trusted_square_receipts.json"
+MOONCLAW_EPHEMERIS_RECEIPTS_JSON = (
+  ROOT / "output/moonclaw/first_trusted_square_ephemeris_receipts.json"
+)
 MOONCLAW_CORRIDOR_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_corridor_receipts.json"
 )
@@ -53,6 +56,7 @@ def payload_for_entry(
   site: dict[str, Any],
   moonclaw: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
+  moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
   lookups: dict[str, dict[str, dict[str, Any]]],
@@ -115,6 +119,11 @@ def payload_for_entry(
       "primary_receipt": moonclaw_receipts[0],
       "receipts": moonclaw_receipts,
     }
+  if kind == "MoonClawEphemerisReceipt":
+    return {
+      "primary_receipt": moonclaw_ephemeris_receipts[0],
+      "receipts": moonclaw_ephemeris_receipts,
+    }
   if kind == "MoonClawCorridorReceipt":
     return {
       "primary_receipt": moonclaw_corridor_receipts[0],
@@ -129,6 +138,7 @@ def workspace_files(
   book: dict[str, Any],
   moonclaw: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
+  moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
 ) -> dict[Path, str]:
@@ -164,6 +174,7 @@ def workspace_files(
       "output/moonbook/first_trusted_square_book.json",
       "output/moonclaw/first_trusted_square_proposals.json",
       "output/moonclaw/first_trusted_square_receipts.json",
+      "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
       "output/moonclaw/first_trusted_square_corridor_receipts.json",
       "output/moonrobo/first_trusted_square_handoffs.json",
     ],
@@ -181,6 +192,7 @@ def workspace_files(
       site,
       moonclaw,
       moonclaw_receipts,
+      moonclaw_ephemeris_receipts,
       moonclaw_corridor_receipts,
       moonrobo,
       lookups,
@@ -228,6 +240,7 @@ def workspace_files(
     "- Source MoonBook dossier: `output/moonbook/first_trusted_square_book.json`\n"
     "- Source MoonClaw proposals: `output/moonclaw/first_trusted_square_proposals.json`\n"
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
+    "- Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`\n"
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
     f"- Entries: {len(entries)}\n"
     f"- Review queue items: {len(review_queue)}\n"
@@ -289,10 +302,17 @@ def main() -> int:
   book = load_json(BOOK_JSON)
   moonclaw = load_json(MOONCLAW_JSON)
   moonclaw_receipts = load_json(MOONCLAW_RECEIPTS_JSON)
+  moonclaw_ephemeris_receipts = load_json(MOONCLAW_EPHEMERIS_RECEIPTS_JSON)
   moonclaw_corridor_receipts = load_json(MOONCLAW_CORRIDOR_RECEIPTS_JSON)
   moonrobo = load_json(MOONROBO_JSON)
   files = workspace_files(
-    site, book, moonclaw, moonclaw_receipts, moonclaw_corridor_receipts, moonrobo,
+    site,
+    book,
+    moonclaw,
+    moonclaw_receipts,
+    moonclaw_ephemeris_receipts,
+    moonclaw_corridor_receipts,
+    moonrobo,
   )
   if args.check:
     return check_workspace(files)

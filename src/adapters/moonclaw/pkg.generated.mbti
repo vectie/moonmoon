@@ -16,6 +16,8 @@ pub fn corridor_expansion_receipt(@site.SiteDossier) -> MoonClawCorridorExpansio
 
 pub fn ephemeris_acquisition_proposal(@site.SiteDossier) -> MoonClawProposal
 
+pub fn ephemeris_acquisition_receipt(@site.SiteDossier) -> MoonClawEphemerisAcquisitionReceipt
+
 pub fn first_trusted_square_corridor_expansion_receipt() -> MoonClawCorridorExpansionReceipt
 
 pub fn first_trusted_square_corridor_receipts() -> Array[MoonClawCorridorExpansionReceipt]
@@ -23,6 +25,14 @@ pub fn first_trusted_square_corridor_receipts() -> Array[MoonClawCorridorExpansi
 pub fn first_trusted_square_corridor_receipts_json() -> Json
 
 pub fn first_trusted_square_corridor_receipts_markdown() -> String
+
+pub fn first_trusted_square_ephemeris_acquisition_receipt() -> MoonClawEphemerisAcquisitionReceipt
+
+pub fn first_trusted_square_ephemeris_receipts() -> Array[MoonClawEphemerisAcquisitionReceipt]
+
+pub fn first_trusted_square_ephemeris_receipts_json() -> Json
+
+pub fn first_trusted_square_ephemeris_receipts_markdown() -> String
 
 pub fn first_trusted_square_json() -> Json
 
@@ -51,6 +61,10 @@ pub fn receipt_status_label(MoonClawReceiptStatus) -> String
 pub fn render_corridor_receipts_json(Array[MoonClawCorridorExpansionReceipt]) -> Json
 
 pub fn render_corridor_receipts_markdown(Array[MoonClawCorridorExpansionReceipt]) -> String
+
+pub fn render_ephemeris_receipts_json(Array[MoonClawEphemerisAcquisitionReceipt]) -> Json
+
+pub fn render_ephemeris_receipts_markdown(Array[MoonClawEphemerisAcquisitionReceipt]) -> String
 
 pub fn render_json(Array[MoonClawProposal]) -> Json
 
@@ -95,6 +109,22 @@ pub(all) struct MoonClawCorridorWindowScore {
   max_grade : Double
   roughness_m : Double
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawEphemerisAcquisitionReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  energy_decision : @mission.TraverseDecision
+  has_time_window_ephemeris : Bool
+  route_count : Int
+  blocked_route_count : Int
+  required_sunlit_hours : Double
+  assumed_dark_survival_hours : Double
+  required_energy_wh : Double
+  verified_available_energy_wh : Double
+  missing_outputs : Array[String]
+  validation_checks : Array[MoonClawReceiptValidation]
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawJobInput {

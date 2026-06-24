@@ -71,8 +71,8 @@ Current implementation status:
   corridor blockers as a pre-physical safety gate.
 - `src/adapters/moonclaw` exports bounded modeling proposals for ephemeris
   acquisition, widened corridor search, route scoring, and the first accepted
-  route-scoring and corridor-expansion receipts that still keep Moonrobo
-  blocked.
+  route-scoring and corridor-expansion receipts plus a needs-review ephemeris
+  receipt that still keeps Moonrobo blocked.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -160,9 +160,10 @@ Current implementation status:
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized
   workspace carries the proposal packet payload with acceptance criteria and
   expected outputs.
-- MoonBook now indexes the first MoonClaw route-scoring and corridor-expansion
-  receipts, and the materialized workspace carries the validation checks, route
-  scoreboard, and corridor window proof.
+- MoonBook now indexes the first MoonClaw route-scoring, corridor-expansion, and
+  ephemeris receipts, and the materialized workspace carries the validation
+  checks, route scoreboard, corridor window proof, and missing ephemeris output
+  contract.
 
 Remaining work:
 
@@ -199,6 +200,8 @@ Current implementation status:
   `output/moonclaw/`.
 - `cmd/main -- moonclaw receipts` emits the current route-scoring receipt under
   `output/moonclaw/`.
+- `cmd/main -- moonclaw ephemeris receipts` emits the current missing-power
+  evidence receipt under `output/moonclaw/`.
 - `cmd/main -- moonclaw corridor receipts` emits the current corridor-expansion
   receipt under `output/moonclaw/`.
 - MoonBook indexes the MoonClaw proposal and receipt packets and includes them

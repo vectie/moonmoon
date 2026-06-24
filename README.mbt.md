@@ -54,6 +54,8 @@ moon run cmd/main -- moonclaw proposals
 moon run cmd/main -- moonclaw proposals json
 moon run cmd/main -- moonclaw receipts
 moon run cmd/main -- moonclaw receipts json
+moon run cmd/main -- moonclaw ephemeris receipts
+moon run cmd/main -- moonclaw ephemeris receipts json
 moon run cmd/main -- moonclaw corridor receipts
 moon run cmd/main -- moonclaw corridor receipts json
 moon run cmd/main -- moonrobo handoff
@@ -70,11 +72,12 @@ written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
 payloads, review status, and review transitions.
 
 MoonClaw outputs currently include bounded modeling proposals, a deterministic
-route-scoring receipt, and a deterministic corridor-expansion receipt. The
-receipts validate the current route set, selected route, measured corridor
-windows, source checksums, proposal blockers, energy blocker, and Moonrobo
-handoff compatibility, then record accepted job results that still keep Moonrobo
-blocked.
+route-scoring receipt, a deterministic corridor-expansion receipt, and a
+needs-review ephemeris receipt. The receipts validate the current route set,
+selected route, measured corridor windows, source checksums, proposal blockers,
+energy blocker, and Moonrobo handoff compatibility. They record accepted terrain
+and route results while the ephemeris receipt keeps the power gate in review
+until a real time-windowed solar source is attached.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by

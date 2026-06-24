@@ -214,9 +214,10 @@ route receipt validates the current route-scoring job against route IDs,
 selected route, source checksums, proposal blockers, energy blocker, and
 Moonrobo handoff compatibility. The first corridor receipt validates that the
 bounded 5x5 LOLA search ran, that 25 sampled windows are present, and that every
-sampled window remains blocked. Both receipts record accepted job results that
-still keep Moonrobo blocked. That keeps agent progress separate from physical
-execution authority.
+sampled window remains blocked. The first ephemeris receipt validates the
+current absence of time-windowed solar evidence, records the missing output
+contract, and keeps the power gate in review. Together these receipts separate
+agent progress from physical execution authority.
 
 ## Old Terrain Project Lessons
 

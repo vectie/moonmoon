@@ -15,6 +15,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonClawProposal
   MoonClawReceipt
+  MoonClawEphemerisReceipt
   MoonClawCorridorReceipt
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
@@ -94,6 +95,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawReceipt => "moonclaw-receipt"
+    MoonClawEphemerisReceipt => "moonclaw-ephemeris-receipt"
     MoonClawCorridorReceipt => "moonclaw-corridor-receipt"
     OpenQuestion => "open-question"
   }
@@ -506,6 +508,20 @@ fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/ephemeris-receipt",
+    title: "MoonClaw ephemeris receipt for \{dossier.site.name}",
+    kind: MoonClawEphemerisReceipt,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.55,
+    path: "moonclaw/\{dossier.site.site_id}/ephemeris-receipts.json",
+    summary: "\{@moonclaw.receipt_status_label(receipt.receipt.status)} receipt keeps energy \{@mission.traverse_decision_label(receipt.energy_decision)} with \{receipt.verified_available_energy_wh} Wh verified available: \{receipt.next_action}",
+  }
+}
+
+///|
 fn moonclaw_corridor_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.corridor_expansion_receipt(dossier)
   {
@@ -673,6 +689,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
+  entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(raw_review_queue)

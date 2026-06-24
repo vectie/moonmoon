@@ -111,6 +111,31 @@ test "first trusted square corridor receipt validates bounded search result" {
 }
 
 ///|
+test "first trusted square ephemeris receipt records missing power evidence" {
+  let receipt = @moonclaw.first_trusted_square_ephemeris_acquisition_receipt()
+  assert_eq(
+    receipt.receipt.proposal_id,
+    "moonclaw/first-trusted-square/ephemeris-energy-v1",
+  )
+  assert_true(
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::NeedsReview,
+  )
+  assert_true(receipt.energy_decision == @mission.TraverseDecision::Block)
+  assert_true(!receipt.has_time_window_ephemeris)
+  assert_eq(receipt.route_count, 5)
+  assert_eq(receipt.blocked_route_count, 5)
+  assert_eq(receipt.verified_available_energy_wh, 0.0)
+  assert_true(receipt.missing_outputs.length() >= 4)
+  assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("time-window-ephemeris-missing")
+    }),
+  )
+  assert_true(receipt.next_action.contains("cannot clear the energy gate"))
+}
+
+///|
 test "MoonClaw receipt renderers expose route scoring result" {
   let markdown = @moonclaw.first_trusted_square_receipts_markdown()
   assert_true(markdown.contains("MoonClaw Modeling Receipts"))
@@ -124,6 +149,22 @@ test "MoonClaw receipt renderers expose route scoring result" {
   assert_true(json.contains("\"route_scores\""))
   assert_true(json.contains("\"Accepted\""))
   assert_true(json.contains("\"moonrobo_handoff_decision\""))
+}
+
+///|
+test "MoonClaw ephemeris receipt renderers expose missing source contract" {
+  let markdown = @moonclaw.first_trusted_square_ephemeris_receipts_markdown()
+  assert_true(markdown.contains("MoonClaw Ephemeris Receipts"))
+  assert_true(markdown.contains("ephemeris-energy-v1/current-receipt"))
+  assert_true(markdown.contains("needs-review"))
+  assert_true(markdown.contains("time-window-ephemeris-missing"))
+  assert_true(markdown.contains("first_trusted_square_power_window.json"))
+  let json = @moonclaw.first_trusted_square_ephemeris_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"missing_outputs\""))
+  assert_true(json.contains("\"NeedsReview\""))
+  assert_true(json.contains("\"has_time_window_ephemeris\""))
 }
 
 ///|
