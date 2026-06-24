@@ -63,6 +63,9 @@ test "first trusted square route scoring receipt validates blocked evidence" {
     receipt.moonrobo_handoff_decision == @mission.TraverseDecision::Block,
   )
   assert_eq(receipt.route_scores.length(), 5)
+  let southwest = receipt.route_scores[3]
+  assert_eq(southwest.route_id, "southwest-bypass")
+  assert_eq(southwest.rank, 1)
   assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {

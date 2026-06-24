@@ -72,6 +72,7 @@ pub(all) struct MoonClawRouteScore {
   route_decision : @mission.TraverseDecision
   illumination_decision : @mission.TraverseDecision
   route_score : Int
+  risk_index : Double
   max_grade : Double
   roughness_m : Double
   confidence : Double
@@ -194,11 +195,16 @@ fn route_rank(
 ) -> Int {
   let mut rank = 1
   for other in routes {
-    if other.score > route.score {
+    if route_risk_index(other) < route_risk_index(route) {
       rank = rank + 1
     }
   }
   rank
+}
+
+///|
+fn route_risk_index(route : @mission.RouteCandidate) -> Double {
+  route.expected_max_grade + route.expected_roughness_m / 10.0
 }
 
 ///|
@@ -213,6 +219,7 @@ fn route_score(
     route_decision: route.decision,
     illumination_decision: route.illumination.decision,
     route_score: route.score,
+    risk_index: route_risk_index(route),
     max_grade: route.expected_max_grade,
     roughness_m: route.expected_roughness_m,
     confidence: route.confidence,
@@ -504,7 +511,7 @@ pub fn render_receipts_markdown(
     }
     text += "  - route scores:\n"
     for score in scoring.route_scores {
-      text += "    - #\{score.rank} \{score.route_id}: \{@mission.traverse_decision_label(score.route_decision)} route score \{score.route_score}, grade \{score.max_grade}, roughness \{score.roughness_m} m\n"
+      text += "    - #\{score.rank} \{score.route_id}: \{@mission.traverse_decision_label(score.route_decision)} route score \{score.route_score}, risk \{score.risk_index}, grade \{score.max_grade}, roughness \{score.roughness_m} m\n"
     }
   }
   text

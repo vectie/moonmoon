@@ -118,6 +118,7 @@ pub(all) struct MoonClawRouteScore {
   route_decision : @mission.TraverseDecision
   illumination_decision : @mission.TraverseDecision
   route_score : Int
+  risk_index : Double
   max_grade : Double
   roughness_m : Double
   confidence : Double
