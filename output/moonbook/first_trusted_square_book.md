@@ -234,6 +234,7 @@
 - energy-window [high/needs-evidence] energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation -> power-thermal-review
 - moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
+- moonclaw-ephemeris-task [high/needs-evidence] MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low/open] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
 - question-2 [low/open] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
@@ -303,6 +304,9 @@
 - review-moonclaw-proposals-request-evidence: request-evidence moonclaw-proposals -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable
+- review-moonclaw-ephemeris-task-request-evidence: request-evidence moonclaw-ephemeris-task -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input
 - review-question-0-keep-open: keep-open question-0 -> open
   - reviewer: moonbook-policy-v1
   - rationale: left open for moonclaw follow-up

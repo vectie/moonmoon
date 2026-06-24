@@ -16,26 +16,33 @@
       - producer: operator-or-moonclaw-source-agent
       - required: official ephemeris or illumination source family selected with citation
       - current: placeholder source family, exact kernels and checksums pending
+      - ready: false
+      - blocking: exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned
       - gate: source-acquisition plan must name the exact official files before energy can unblock
     - power-window-json: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
       - producer: scripts/generate_power_window.py input
       - required: ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh
       - current: missing-source
+      - ready: false
+      - blocking: current power-window evidence is missing-source; no time-windowed ephemeris is attached
       - gate: scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check
     - generated-moonbit-window: src/mission/generated_first_trusted_square_power_window.mbt
       - producer: scripts/generate_power_window.py
       - required: MoonBit evidence mirrors the cited power-window JSON without hand edits
       - current: generated-missing-source-evidence
+      - ready: true
       - gate: moon test src/mission
     - site-energy-output: output/site/first_trusted_square.json
       - producer: scripts/build_moonmoon_dossier.sh
       - required: site dossier carries the refreshed energy and illumination decisions
       - current: block
+      - ready: true
       - gate: python3 scripts/materialize_moonbook_workspace.py --check
     - moonrobo-preconditions: output/moonrobo/first_trusted_square_handoffs.json
       - producer: scripts/build_moonmoon_dossier.sh
       - required: Moonrobo handoff keeps source readiness and energy margin as separate preconditions
       - current: blocked until power-window evidence is ready
+      - ready: true
       - gate: moon run cmd/main -- moonrobo handoff json
   - commands:
     - bash scripts/verify_moonmoon_sources.sh

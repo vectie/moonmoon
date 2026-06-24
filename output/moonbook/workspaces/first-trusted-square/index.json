@@ -354,7 +354,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonclaw/first-trusted-square/ephemeris-task.json",
-      "summary": "needs-review task tracks 5 artifacts before Moonrobo power evidence can unblock"
+      "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",

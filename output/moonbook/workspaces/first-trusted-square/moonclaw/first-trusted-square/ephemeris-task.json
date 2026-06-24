@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.6,
     "path": "moonclaw/first-trusted-square/ephemeris-task.json",
-    "summary": "needs-review task tracks 5 artifacts before Moonrobo power evidence can unblock"
+    "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
   },
   "payload": {
     "primary_task": {
@@ -43,6 +43,8 @@
           "producer": "operator-or-moonclaw-source-agent",
           "required_state": "official ephemeris or illumination source family selected with citation",
           "current_state": "placeholder source family, exact kernels and checksums pending",
+          "ready": false,
+          "blocking_reason": "exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned",
           "validation_gate": "source-acquisition plan must name the exact official files before energy can unblock"
         },
         {
@@ -51,6 +53,8 @@
           "producer": "scripts/generate_power_window.py input",
           "required_state": "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
           "current_state": "missing-source",
+          "ready": false,
+          "blocking_reason": "current power-window evidence is missing-source; no time-windowed ephemeris is attached",
           "validation_gate": "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check"
         },
         {
@@ -59,6 +63,8 @@
           "producer": "scripts/generate_power_window.py",
           "required_state": "MoonBit evidence mirrors the cited power-window JSON without hand edits",
           "current_state": "generated-missing-source-evidence",
+          "ready": true,
+          "blocking_reason": "",
           "validation_gate": "moon test src/mission"
         },
         {
@@ -67,6 +73,8 @@
           "producer": "scripts/build_moonmoon_dossier.sh",
           "required_state": "site dossier carries the refreshed energy and illumination decisions",
           "current_state": "block",
+          "ready": true,
+          "blocking_reason": "",
           "validation_gate": "python3 scripts/materialize_moonbook_workspace.py --check"
         },
         {
@@ -75,6 +83,8 @@
           "producer": "scripts/build_moonmoon_dossier.sh",
           "required_state": "Moonrobo handoff keeps source readiness and energy margin as separate preconditions",
           "current_state": "blocked until power-window evidence is ready",
+          "ready": true,
+          "blocking_reason": "",
           "validation_gate": "moon run cmd/main -- moonrobo handoff json"
         }
       ],
@@ -136,6 +146,8 @@
             "producer": "operator-or-moonclaw-source-agent",
             "required_state": "official ephemeris or illumination source family selected with citation",
             "current_state": "placeholder source family, exact kernels and checksums pending",
+            "ready": false,
+            "blocking_reason": "exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned",
             "validation_gate": "source-acquisition plan must name the exact official files before energy can unblock"
           },
           {
@@ -144,6 +156,8 @@
             "producer": "scripts/generate_power_window.py input",
             "required_state": "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
             "current_state": "missing-source",
+            "ready": false,
+            "blocking_reason": "current power-window evidence is missing-source; no time-windowed ephemeris is attached",
             "validation_gate": "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check"
           },
           {
@@ -152,6 +166,8 @@
             "producer": "scripts/generate_power_window.py",
             "required_state": "MoonBit evidence mirrors the cited power-window JSON without hand edits",
             "current_state": "generated-missing-source-evidence",
+            "ready": true,
+            "blocking_reason": "",
             "validation_gate": "moon test src/mission"
           },
           {
@@ -160,6 +176,8 @@
             "producer": "scripts/build_moonmoon_dossier.sh",
             "required_state": "site dossier carries the refreshed energy and illumination decisions",
             "current_state": "block",
+            "ready": true,
+            "blocking_reason": "",
             "validation_gate": "python3 scripts/materialize_moonbook_workspace.py --check"
           },
           {
@@ -168,6 +186,8 @@
             "producer": "scripts/build_moonmoon_dossier.sh",
             "required_state": "Moonrobo handoff keeps source readiness and energy margin as separate preconditions",
             "current_state": "blocked until power-window evidence is ready",
+            "ready": true,
+            "blocking_reason": "",
             "validation_gate": "moon run cmd/main -- moonrobo handoff json"
           }
         ],

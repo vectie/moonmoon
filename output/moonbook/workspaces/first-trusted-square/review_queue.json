@@ -172,6 +172,14 @@
       "last_transition_id": "review-moonclaw-proposals-request-evidence"
     },
     {
+      "item_id": "moonclaw-ephemeris-task",
+      "severity": "high",
+      "reason": "MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",

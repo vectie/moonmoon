@@ -343,7 +343,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonclaw/first-trusted-square/ephemeris-task.json",
-      "summary": "needs-review task tracks 5 artifacts before Moonrobo power evidence can unblock"
+      "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
@@ -543,6 +543,14 @@
       "last_transition_id": "review-moonclaw-proposals-request-evidence"
     },
     {
+      "item_id": "moonclaw-ephemeris-task",
+      "severity": "high",
+      "reason": "MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -735,6 +743,14 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
+    },
+    {
+      "transition_id": "review-moonclaw-ephemeris-task-request-evidence",
+      "item_id": "moonclaw-ephemeris-task",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input"
     },
     {
       "transition_id": "review-question-0-keep-open",
