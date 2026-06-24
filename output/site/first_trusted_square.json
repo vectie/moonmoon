@@ -160,6 +160,32 @@
       "review_status": "NeedsHumanReview"
     }
   ],
+  "source_extraction_candidates": [
+    {
+      "extraction_id": "extract-ldem-875s-20m-first-trusted-square-v1",
+      "selection_id": "select-ldem-875s-20m-float-v1",
+      "generated_by": "scripts/extract_lola_trusted_square.py",
+      "output_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+      "output_sha256": "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+      "output_bytes": 636,
+      "tile_id": "first-trusted-square-lola",
+      "center_lat_deg": -89.88,
+      "center_lon_deg": 0.12,
+      "source_row_start": 3972,
+      "source_col_start": 3790,
+      "rows": 4,
+      "cols": 4,
+      "cell_size_m": 20,
+      "elevation_unit": "meters relative to 1737.4 km reference radius",
+      "claim_kind": "Measured",
+      "review_status": "NeedsHumanReview",
+      "notes": [
+        "Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.",
+        "This candidate proves bounded extraction mechanics; active terrain remains the synthetic fixture until projection math and values are reviewed.",
+        "The output CSV matches the Moonmoon fixture CSV shape so it can replace the synthetic fixture after review."
+      ]
+    }
+  ],
   "terrain": {
     "min_elevation_m": -0.3,
     "max_elevation_m": 5.4,

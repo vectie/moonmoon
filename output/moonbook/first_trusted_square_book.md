@@ -25,6 +25,11 @@
   - claim: unknown
   - confidence: 0
   - path: source-products/select-ldem-875s-20m-float-v1.json
+- source-extraction/extract-ldem-875s-20m-first-trusted-square-v1: Extract first-trusted-square-lola
+  - kind: source-extraction-candidate
+  - claim: measured
+  - confidence: 0
+  - path: source-extractions/extract-ldem-875s-20m-first-trusted-square-v1.json
 - validation/fixture-first-trusted-square-dem-v1: Source validation for fixture-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
