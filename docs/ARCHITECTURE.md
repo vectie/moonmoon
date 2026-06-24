@@ -51,6 +51,19 @@ The first real implementation can follow this package shape:
 
 The root package can stay a thin facade once `src/` exists.
 
+The current implementation has started this shape with:
+
+- `src/core`
+- `src/dataset`
+- `src/terrain`
+- `src/mission`
+- `src/site`
+- `src/adapters/moonbook`
+- `cmd/main`
+
+Each package owns typed contracts plus deterministic tests. The exported files
+under `output/` are generated artifacts, not hand-maintained source of truth.
+
 ## Core Contracts
 
 The important early types are:
@@ -88,6 +101,34 @@ Moonmoon should start with explicit references to authoritative source families:
 Large raster processing may require sidecars. That is acceptable if the
 MoonBit-owned boundary remains the dataset manifest, derived model contract,
 checksum, provenance, and validation report.
+
+The first authoritative replacement target is a tiny LOLA-derived terrain
+fixture. The PDS Geosciences LRO LOLA page identifies LOLA as the Lunar Orbiter
+Laser Altimeter and points to derived/gridded data products, including GDR and
+SLDEM families. Moonmoon should ingest only a small extracted fixture first, not
+a full global raster. The MoonBit contract should remain:
+
+```text
+authoritative source file
+  -> source manifest with URL, citation, coverage, resolution, checksum
+  -> extracted tiny fixture with reproducible checksum
+  -> derived terrain metrics
+  -> site dossier and LunarBook evidence queue
+```
+
+Until that source file is selected and checked in or reproducibly fetched, the
+current trusted-square dataset must remain marked as `simulated` and
+`curated-fixture`.
+
+The current fixture now has a checked source-file boundary:
+
+- `data/fixtures/first_trusted_square_dem.csv`
+- `scripts/verify_moonmoon_sources.sh`
+
+The source file is still synthetic, but its SHA-256 is pinned in the manifest
+and verified before reproducible outputs are built. The MoonBit fixture mirrors
+this source file for now; replacing it with a parser or generated MoonBit module
+is the next step toward a real LOLA-derived extraction pipeline.
 
 ## Old Terrain Project Lessons
 
@@ -141,3 +182,10 @@ Moonmoon should classify every claim:
 
 Mission-facing decisions should expose blockers and confidence instead of
 collapsing everything into one score.
+
+The current trusted-square fixture deliberately marks its terrain source as
+`simulated` and `curated-fixture`. Derived terrain metrics and mission traverse
+decisions remain separate claims that cite the same dataset id and lower the
+confidence where appropriate. This is the expected pattern: source evidence,
+derived layers, and robot-facing decisions should be inspectable as distinct
+claims.

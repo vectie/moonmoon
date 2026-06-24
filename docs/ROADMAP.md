@@ -30,6 +30,28 @@ Goal: model one small lunar site with explicit provenance.
 Done when Moonmoon can answer: "what do we know about this square, where did
 that claim come from, and how confident is it?"
 
+Current implementation status:
+
+- `src/core` defines site, bounds, coordinate, terrain cell, provenance,
+  uncertainty, and claim-kind labels.
+- `src/dataset` defines a dataset manifest contract with coverage, trust,
+  checksum kind, checksum, citation, review status, and validation results.
+- `src/terrain` builds one deterministic 4x4 trusted-square fixture, computes
+  elevation range, neighbor grade, roughness, hazard class, and Markdown/JSON
+  fixture exports.
+- `data/fixtures/first_trusted_square_dem.csv` is the checked source fixture
+  for the current grid, and `scripts/verify_moonmoon_sources.sh` validates its
+  SHA-256 before dossier generation.
+- `src/mission` scores the fixture against a conservative rover traverse
+  profile and returns `allow`, `review`, or `block` with reasons.
+- `src/site` combines site, dataset, terrain, traverse, blockers, and next
+  questions into a site dossier.
+- `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
+  `moonbook dossier` commands.
+
+The fixture is still synthetic. It proves the software and evidence contracts;
+it does not prove lunar mission validity.
+
 ## Milestone 2: First Rabbita Moonviewer
 
 Goal: make the trusted square inspectable.
@@ -53,6 +75,27 @@ Goal: make Moonmoon outputs durable.
 
 Done when MoonBook can preserve a site model as evidence, not only as a UI
 state.
+
+Current implementation status:
+
+- `src/adapters/moonbook` converts the trusted-square site dossier into
+  MoonBook-ready entries and a review queue, including source validation
+  entries.
+- `scripts/build_moonmoon_dossier.sh` writes stable Markdown/JSON exports under
+  `output/site/`, `output/terrain/`, and `output/moonbook/`.
+- The review queue currently includes fixture blockers, traverse review
+  reasons, and next questions for MoonClaw/operator follow-up.
+- The current inline fixture fingerprint verifies successfully against its
+  manifest, and the checked CSV fixture verifies against its SHA-256, but the
+  fixture is still synthetic.
+
+Remaining work:
+
+- Replace the synthetic manifest with an authoritative LOLA/LROC-backed
+  manifest and checksum.
+- Write actual MoonBook workspace files rather than only MoonBook-ready export
+  summaries.
+- Add accepted/rejected review transitions once MoonBook storage exists.
 
 ## Milestone 4: MoonClaw Modeling Jobs
 
@@ -105,8 +148,13 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 
 ## Near-Term Engineering Checklist
 
-- Add `src/core` with foundational types and tests.
-- Add `src/terrain` with a tiny fixture and deterministic derivations.
-- Add `cmd/main` commands for `site summary` and `terrain fixture`.
-- Run `moon check`, `moon test`, `moon info`, and `moon fmt`.
-- Review `.mbti` diffs to confirm intentional public API changes.
+- Replace the synthetic trusted-square DEM with a tiny authoritative fixture.
+- Replace the inline fixture fingerprint with a source-file checksum and a
+- Move the MoonBit terrain fixture from mirrored inline values to a generated
+  module or parser driven by the checked source file.
+- Add illumination windows and energy assumptions to the mission score.
+- Add Rabbita view models for terrain layers, inspector rows, and route
+  overlays.
+- Add MoonBook workspace materialization and review status transitions.
+- Keep running `moon check`, `moon test`, `moon info`, and `moon fmt` for each
+  proof slice.
