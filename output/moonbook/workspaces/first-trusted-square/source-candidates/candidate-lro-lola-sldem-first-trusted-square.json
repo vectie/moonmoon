@@ -1,0 +1,33 @@
+{
+  "entry": {
+    "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
+    "title": "LRO LOLA derived gridded topography candidate",
+    "kind": "SourceUpgradeCandidate",
+    "claim_kind": "Unknown",
+    "confidence": 0,
+    "path": "source-candidates/candidate-lro-lola-sldem-first-trusted-square.json",
+    "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim."
+  },
+  "payload": {
+    "candidate_id": "candidate-lro-lola-sldem-first-trusted-square",
+    "title": "LRO LOLA derived gridded topography candidate",
+    "body": "Moon",
+    "mission": "Lunar Reconnaissance Orbiter",
+    "instrument": "LOLA",
+    "product_family": "GDR/SLDEM derived gridded terrain",
+    "official_source_url": "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
+    "access_url": "https://ode.rsl.wustl.edu/moon/",
+    "local_target_path": "data/sources/lro_lola/first_trusted_square_dem.csv plus adjacent route-window CSVs",
+    "intended_use": "Replace the synthetic trusted-square DEM with a tiny authoritative lunar south-pole terrain extraction.",
+    "next_action": "Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim.",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "PDS Geosciences identifies LOLA as the LRO Lunar Orbiter Laser Altimeter for high-resolution lunar topography.",
+      "The PDS page lists derived GDR and SLDEM product families and points recent LOLA data discovery to ODE/LOLA Data Node.",
+      "The first trusted-square active fixture now uses a checked LOLA GDR byte-range extraction for software proof."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

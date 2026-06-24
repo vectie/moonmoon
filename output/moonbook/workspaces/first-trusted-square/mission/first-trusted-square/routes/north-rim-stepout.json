@@ -1,0 +1,58 @@
+{
+  "entry": {
+    "entry_id": "route/first-trusted-square/north-rim-stepout",
+    "title": "North rim step-out candidate",
+    "kind": "RouteAlternative",
+    "claim_kind": "Derived",
+    "confidence": 0.7544,
+    "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+    "summary": "block with score 6 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+  },
+  "payload": {
+    "route_id": "north-rim-stepout",
+    "label": "North rim step-out candidate",
+    "strategy": "Test the north-adjacent LOLA window as a possible step-out toward a smoother rim approach.",
+    "evidence_dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
+    "evidence_tile_id": "first-trusted-square-north-rim-lola",
+    "evidence_source_path": "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+    "evidence_summary": "blocked measured window; elevation range 46.34100000000001 m",
+    "expected_max_grade": 0.7280000000000001,
+    "expected_roughness_m": 7.716124999999998,
+    "confidence": 0.7544,
+    "illumination": {
+      "constraint": {
+        "constraint_id": "conservative-south-pole-power-v1",
+        "label": "Conservative South Pole Power/Thermal Gate",
+        "min_sunlit_hours": 4,
+        "max_dark_hours": 2,
+        "max_relief_shadow_risk": 0.22,
+        "caution_relief_shadow_risk": 0.14,
+        "min_confidence": 0.7,
+        "has_time_window_ephemeris": false
+      },
+      "evidence_dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
+      "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "relief_shadow_risk": 0.28963125000000006,
+      "confidence": 0.45263999999999993,
+      "decision": "Block",
+      "reasons": [
+        "no time-windowed solar ephemeris is attached",
+        "local relief shadow proxy exceeds conservative limit",
+        "illumination confidence below power planning threshold"
+      ],
+      "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    "decision": "Block",
+    "score": 6,
+    "reasons": [
+      "expected grade exceeds rover hard limit",
+      "expected roughness exceeds rover hard limit",
+      "north-adjacent LOLA window is measured but still blocked at this scale",
+      "illumination gate is block"
+    ],
+    "next_action": "widen the north corridor extraction and add illumination review"
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

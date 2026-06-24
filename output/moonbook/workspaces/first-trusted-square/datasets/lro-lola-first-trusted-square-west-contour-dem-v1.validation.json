@@ -1,0 +1,22 @@
+{
+  "entry": {
+    "entry_id": "validation/lro-lola-first-trusted-square-west-contour-dem-v1",
+    "title": "Source validation for lro-lola-first-trusted-square-west-contour-dem-v1",
+    "kind": "SourceValidation",
+    "claim_kind": "Derived",
+    "confidence": 1,
+    "path": "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.validation.json",
+    "summary": "verified: source fingerprint matches manifest"
+  },
+  "payload": {
+    "dataset_id": "lro-lola-first-trusted-square-west-contour-dem-v1",
+    "checksum_kind": "InlineFixtureFingerprint",
+    "expected_checksum": "inline-grid-v1:tile=first-trusted-square-west-contour-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=544.454:last=492.629",
+    "actual_checksum": "inline-grid-v1:tile=first-trusted-square-west-contour-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=544.454:last=492.629",
+    "status": "Verified",
+    "note": "source fingerprint matches manifest"
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

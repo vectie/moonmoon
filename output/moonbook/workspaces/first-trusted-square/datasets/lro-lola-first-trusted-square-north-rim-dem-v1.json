@@ -1,0 +1,41 @@
+{
+  "entry": {
+    "entry_id": "dataset/lro-lola-first-trusted-square-north-rim-dem-v1",
+    "title": "LOLA north-rim route-window DEM byte-range fixture",
+    "kind": "SourceDataset",
+    "claim_kind": "Measured",
+    "confidence": 1,
+    "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.json",
+    "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+  },
+  "payload": {
+    "dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
+    "title": "LOLA north-rim route-window DEM byte-range fixture",
+    "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    "license": "Apache-2.0",
+    "product_type": "lola-gdr-byte-range-route-window-dem-fixture",
+    "trust": "Authoritative",
+    "claim_kind": "Measured",
+    "coverage": {
+      "south_deg": -89.86,
+      "north_deg": -89.82,
+      "west_deg": 0.1,
+      "east_deg": 0.14
+    },
+    "resolution_m": 20,
+    "source_path": "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+    "source_sha256": "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
+    "extractor": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_north_rim_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    "checksum_kind": "InlineFixtureFingerprint",
+    "checksum": "inline-grid-v1:tile=first-trusted-square-north-rim-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=506.517:last=460.176",
+    "citation": "LRO LOLA GDR product ldem_875s_20m_float, north-adjacent byte-range extraction for Moonmoon route evidence.",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
+      "Illumination and a wider corridor search are still required before robot planning."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

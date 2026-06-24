@@ -180,5 +180,5 @@
 - corridor-scan-best-window [high] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
 - question-0 [low] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
-- question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
+- question-2 [low] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
 

@@ -1,0 +1,58 @@
+{
+  "entry": {
+    "entry_id": "route/first-trusted-square/southwest-bypass",
+    "title": "Southwest widened bypass candidate",
+    "kind": "RouteAlternative",
+    "claim_kind": "Derived",
+    "confidence": 0.7544,
+    "path": "mission/first-trusted-square/routes/southwest-bypass.json",
+    "summary": "block with score 6 from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
+  },
+  "payload": {
+    "route_id": "southwest-bypass",
+    "label": "Southwest widened bypass candidate",
+    "strategy": "Use the lowest-grade measured window from the first 5x5 corridor scan as a possible bypass direction.",
+    "evidence_dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+    "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+    "evidence_source_path": "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+    "evidence_summary": "blocked measured window; elevation range 42.76800000000003 m",
+    "expected_max_grade": 0.6484500000000025,
+    "expected_roughness_m": 7.056666666666669,
+    "confidence": 0.7544,
+    "illumination": {
+      "constraint": {
+        "constraint_id": "conservative-south-pole-power-v1",
+        "label": "Conservative South Pole Power/Thermal Gate",
+        "min_sunlit_hours": 4,
+        "max_dark_hours": 2,
+        "max_relief_shadow_risk": 0.22,
+        "caution_relief_shadow_risk": 0.14,
+        "min_confidence": 0.7,
+        "has_time_window_ephemeris": false
+      },
+      "evidence_dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "relief_shadow_risk": 0.2673000000000002,
+      "confidence": 0.45263999999999993,
+      "decision": "Block",
+      "reasons": [
+        "no time-windowed solar ephemeris is attached",
+        "local relief shadow proxy exceeds conservative limit",
+        "illumination confidence below power planning threshold"
+      ],
+      "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    "decision": "Block",
+    "score": 6,
+    "reasons": [
+      "expected grade exceeds rover hard limit",
+      "expected roughness exceeds rover hard limit",
+      "southwest widened corridor is measured and lower risk but still blocked",
+      "illumination gate is block"
+    ],
+    "next_action": "continue corridor search beyond the southwest bypass before simulation"
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

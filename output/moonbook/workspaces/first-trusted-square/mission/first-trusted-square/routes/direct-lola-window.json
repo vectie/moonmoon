@@ -1,0 +1,58 @@
+{
+  "entry": {
+    "entry_id": "route/first-trusted-square/direct-lola-window",
+    "title": "Direct traverse across measured LOLA patch",
+    "kind": "RouteAlternative",
+    "claim_kind": "Derived",
+    "confidence": 0.7544,
+    "path": "mission/first-trusted-square/routes/direct-lola-window.json",
+    "summary": "block with score 6 from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case"
+  },
+  "payload": {
+    "route_id": "direct-lola-window",
+    "label": "Direct traverse across measured LOLA patch",
+    "strategy": "Use the active 4x4 measured window as-is.",
+    "evidence_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "evidence_tile_id": "first-trusted-square-lola",
+    "evidence_source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "evidence_summary": "blocked measured window; elevation range 58.17199999999997 m",
+    "expected_max_grade": 1.1593500000000005,
+    "expected_roughness_m": 9.250124999999999,
+    "confidence": 0.7544,
+    "illumination": {
+      "constraint": {
+        "constraint_id": "conservative-south-pole-power-v1",
+        "label": "Conservative South Pole Power/Thermal Gate",
+        "min_sunlit_hours": 4,
+        "max_dark_hours": 2,
+        "max_relief_shadow_risk": 0.22,
+        "caution_relief_shadow_risk": 0.14,
+        "min_confidence": 0.7,
+        "has_time_window_ephemeris": false
+      },
+      "evidence_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "evidence_tile_id": "first-trusted-square-lola",
+      "relief_shadow_risk": 0.3635749999999998,
+      "confidence": 0.45263999999999993,
+      "decision": "Block",
+      "reasons": [
+        "no time-windowed solar ephemeris is attached",
+        "local relief shadow proxy exceeds conservative limit",
+        "illumination confidence below power planning threshold"
+      ],
+      "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    "decision": "Block",
+    "score": 6,
+    "reasons": [
+      "expected grade exceeds rover hard limit",
+      "expected roughness exceeds rover hard limit",
+      "active LOLA patch is blocked",
+      "illumination gate is block"
+    ],
+    "next_action": "do not traverse directly; use this as the baseline hazard case"
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

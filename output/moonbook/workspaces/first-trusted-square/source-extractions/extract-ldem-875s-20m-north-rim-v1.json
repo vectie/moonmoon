@@ -1,0 +1,38 @@
+{
+  "entry": {
+    "entry_id": "source-extraction/extract-ldem-875s-20m-north-rim-v1",
+    "title": "Extract first-trusted-square-north-rim-lola",
+    "kind": "SourceExtractionCandidate",
+    "claim_kind": "Measured",
+    "confidence": 0,
+    "path": "source-extractions/extract-ldem-875s-20m-north-rim-v1.json",
+    "summary": "4x4 window at row 3968, col 3790; 40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28"
+  },
+  "payload": {
+    "extraction_id": "extract-ldem-875s-20m-north-rim-v1",
+    "selection_id": "select-ldem-875s-20m-float-v1",
+    "generated_by": "scripts/extract_lola_trusted_square.py",
+    "output_path": "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+    "output_sha256": "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
+    "output_bytes": 796,
+    "tile_id": "first-trusted-square-north-rim-lola",
+    "center_lat_deg": -89.86,
+    "center_lon_deg": 0.12,
+    "source_row_start": 3968,
+    "source_col_start": 3790,
+    "rows": 4,
+    "cols": 4,
+    "cell_size_m": 20,
+    "elevation_unit": "meters relative to 1737.4 km reference radius",
+    "claim_kind": "Measured",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "Generated from the north-adjacent HTTP byte ranges next to the active trusted-square window.",
+      "This window gives the north-rim route candidate measured terrain evidence before illumination analysis exists.",
+      "The local window is still too small for mission-grade corridor planning."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

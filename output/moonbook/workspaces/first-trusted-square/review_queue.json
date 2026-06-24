@@ -1,0 +1,115 @@
+{
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py",
+  "items": [
+    {
+      "item_id": "blocker-0",
+      "severity": "high",
+      "reason": "terrain exceeds early traverse limits",
+      "owner": "operator"
+    },
+    {
+      "item_id": "blocker-1",
+      "severity": "high",
+      "reason": "requires alternate route or stronger dataset",
+      "owner": "operator"
+    },
+    {
+      "item_id": "traverse-0",
+      "severity": "high",
+      "reason": "max neighbor grade exceeds rover hard limit",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "traverse-1",
+      "severity": "high",
+      "reason": "roughness exceeds rover hard limit",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "route-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "route-west-contour-detour",
+      "severity": "high",
+      "reason": "West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-west-contour-detour",
+      "severity": "high",
+      "reason": "West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "route-north-rim-stepout",
+      "severity": "high",
+      "reason": "North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-north-rim-stepout",
+      "severity": "high",
+      "reason": "North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "route-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "route-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "corridor-scan-best-window",
+      "severity": "high",
+      "reason": "best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "question-0",
+      "severity": "low",
+      "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
+      "owner": "moonclaw"
+    },
+    {
+      "item_id": "question-1",
+      "severity": "low",
+      "reason": "Continue widening the corridor search because the best measured southwest window is still blocked.",
+      "owner": "moonclaw"
+    },
+    {
+      "item_id": "question-2",
+      "severity": "low",
+      "reason": "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
+      "owner": "moonclaw"
+    }
+  ]
+}

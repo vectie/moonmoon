@@ -1,0 +1,41 @@
+{
+  "entry": {
+    "entry_id": "dataset/lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+    "title": "LOLA southwest-bypass corridor DEM byte-range fixture",
+    "kind": "SourceDataset",
+    "claim_kind": "Measured",
+    "confidence": 1,
+    "path": "datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.json",
+    "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+  },
+  "payload": {
+    "dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+    "title": "LOLA southwest-bypass corridor DEM byte-range fixture",
+    "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    "license": "Apache-2.0",
+    "product_type": "lola-gdr-byte-range-corridor-dem-fixture",
+    "trust": "Authoritative",
+    "claim_kind": "Measured",
+    "coverage": {
+      "south_deg": -89.92,
+      "north_deg": -89.88,
+      "west_deg": 0.02,
+      "east_deg": 0.06
+    },
+    "resolution_m": 20,
+    "source_path": "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+    "source_sha256": "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+    "extractor": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    "checksum_kind": "InlineFixtureFingerprint",
+    "checksum": "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
+    "citation": "LRO LOLA GDR product ldem_875s_20m_float, southwest widened corridor byte-range extraction for Moonmoon route evidence.",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
+      "The window is the best sampled local grade among the first 5x5 scan but remains blocked by conservative rover limits."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

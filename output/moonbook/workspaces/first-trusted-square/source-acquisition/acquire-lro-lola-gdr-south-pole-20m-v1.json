@@ -1,0 +1,67 @@
+{
+  "entry": {
+    "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
+    "title": "Acquire lro-lola-gdr-south-pole-selection",
+    "kind": "SourceAcquisitionPlan",
+    "claim_kind": "Unknown",
+    "confidence": 0,
+    "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
+    "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded."
+  },
+  "payload": {
+    "plan_id": "acquire-lro-lola-gdr-south-pole-20m-v1",
+    "candidate_id": "candidate-lro-lola-sldem-first-trusted-square",
+    "product_family_id": "lro-lola-gdr-south-pole-selection",
+    "source_family_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/",
+    "source_metadata_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat",
+    "source_metadata_sha256": "f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8",
+    "source_metadata_bytes": 5672,
+    "discovery_url": "https://ode.rsl.wustl.edu/moon/",
+    "target_region": "Shackleton rim rehearsal tile near 89.88S, 0.12E",
+    "expected_format": "PDS LOLA GDR south-polar gridded elevation product selected through ODE/PDS metadata",
+    "local_source_directory": "data/sources/lro_lola/",
+    "local_metadata_path": "data/sources/lro_lola/gdr_ds.cat",
+    "extracted_fixture_path": "data/sources/lro_lola/first_trusted_square_dem.csv and adjacent route-window CSVs",
+    "trust_gate": "The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded.",
+    "steps": [
+      {
+        "step_id": "discover",
+        "title": "Confirm product family",
+        "action": "Use the PDS LOLA page and Lunar ODE to confirm the south-polar GDR float product is the right first authoritative terrain source.",
+        "expected_evidence": "Official PDS page URL, ODE discovery URL, GDR family URL, and GDR catalog URL.",
+        "done_when": "The source candidate points to a named product family and the acquisition plan names a reachable PDS family root."
+      },
+      {
+        "step_id": "metadata",
+        "title": "Fetch metadata first",
+        "action": "Download the GDR catalog before any large image and record the selected product route, projection assumptions, units, byte order, and map scale.",
+        "expected_evidence": "A local GDR catalog file with SHA-256 recorded in the authoritative dataset manifest draft.",
+        "done_when": "The extractor can derive pixel coordinates for the trusted-square bounds without reading the full image into memory."
+      },
+      {
+        "step_id": "extract",
+        "title": "Extract tiny tile",
+        "action": "Read only the needed south-pole window from the float image and emit a compact CSV for the first trusted square.",
+        "expected_evidence": "A small CSV under data/sources/lro_lola with source product id, bounds, resolution, and SHA-256.",
+        "done_when": "scripts/generate_moonmoon_fixture.py regenerates MoonBit terrain from the authoritative CSV."
+      },
+      {
+        "step_id": "validate",
+        "title": "Verify evidence chain",
+        "action": "Check raw label checksum, raw image checksum when available, extracted CSV checksum, and generated inline grid fingerprint.",
+        "expected_evidence": "A passing source verification script and a DatasetValidation with status verified.",
+        "done_when": "moon test passes while the dossier marks the authoritative dataset as accepted for software proof."
+      },
+      {
+        "step_id": "review",
+        "title": "Human review before mission claims",
+        "action": "Review projection math, elevation units, polar singularity handling, and traverse thresholds before raising claim kind beyond derived software evidence.",
+        "expected_evidence": "MoonBook review notes tied to the dataset, terrain metrics, and traverse decision.",
+        "done_when": "The source-upgrade blocker is closed and remaining review focuses on terrain hazards, illumination, and route alternatives."
+      }
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}
