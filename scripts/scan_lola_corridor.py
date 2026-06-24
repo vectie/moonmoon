@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import struct
 import sys
 from pathlib import Path
 
@@ -28,7 +29,7 @@ ROUTE_IDS = {
 }
 
 
-def metrics_from_content(content: str) -> dict[str, float]:
+def metrics_from_content(content: str, pixel_resolution_m: float) -> dict[str, float]:
     rows = list(csv.DictReader(io.StringIO(content)))
     max_row = max(int(row["row"]) for row in rows)
     max_col = max(int(row["col"]) for row in rows)
@@ -48,7 +49,7 @@ def metrics_from_content(content: str) -> dict[str, float]:
         "min_elevation_m": min(values),
         "max_elevation_m": max(values),
         "elevation_range_m": max(values) - min(values),
-        "max_neighbor_grade": max(deltas) / extractor.read_label_grid().pixel_resolution_m,
+        "max_neighbor_grade": max(deltas) / pixel_resolution_m,
         "roughness_m": sum(deltas) / len(deltas),
     }
 
@@ -104,6 +105,70 @@ def resolved_target(target: Path | None) -> Path:
     return ROOT / target
 
 
+def scan_bounds(
+    base_row: int,
+    base_col: int,
+    offsets: list[int],
+) -> tuple[int, int, int, int]:
+    row_min = base_row + min(offsets)
+    row_max_exclusive = base_row + max(offsets) + extractor.WINDOW_ROWS
+    col_min = base_col + min(offsets)
+    col_max_exclusive = base_col + max(offsets) + extractor.WINDOW_COLS
+    return row_min, row_max_exclusive, col_min, col_max_exclusive
+
+
+def read_scan_rows(
+    grid: extractor.LabelGrid,
+    base_row: int,
+    base_col: int,
+    offsets: list[int],
+    raw_path: Path | None,
+) -> tuple[int, dict[int, list[float]]]:
+    row_min, row_max_exclusive, col_min, col_max_exclusive = scan_bounds(
+        base_row,
+        base_col,
+        offsets,
+    )
+    if row_min < 0 or col_min < 0:
+        raise SystemExit("computed corridor scan starts outside the raster")
+    if row_max_exclusive > grid.lines or col_max_exclusive > grid.samples:
+        raise SystemExit("computed corridor scan ends outside the raster")
+    col_count = col_max_exclusive - col_min
+    rows: dict[int, list[float]] = {}
+    for row in range(row_min, row_max_exclusive):
+        if raw_path is None:
+            data = extractor.read_row_from_url(row, col_min, col_count, grid.samples)
+        else:
+            data = extractor.read_row_from_local(
+                raw_path,
+                row,
+                col_min,
+                col_count,
+                grid.samples,
+            )
+        rows[row] = [
+            value * 1000.0 for value in struct.unpack("<" + "f" * col_count, data)
+        ]
+    return col_min, rows
+
+
+def window_content_from_rows(
+    tile_id: str,
+    row_start: int,
+    col_start: int,
+    col_min: int,
+    rows: dict[int, list[float]],
+) -> str:
+    lines = ["tile_id,row,col,elevation_m"]
+    col_offset = col_start - col_min
+    for row_index in range(extractor.WINDOW_ROWS):
+        values = rows[row_start + row_index]
+        for col_index in range(extractor.WINDOW_COLS):
+            value = values[col_offset + col_index]
+            lines.append(f"{tile_id},{row_index},{col_index},{value:.3f}")
+    return "\n".join(lines) + "\n"
+
+
 def note(rank: int, route_id: str, shape_label: str) -> str:
     if rank == 1:
         return f"lowest max-neighbor-grade window in this measured {shape_label} scan; still blocked"
@@ -124,18 +189,21 @@ def render(
     offsets = offsets_for(radius, step)
     shape_label = scan_shape_label(offsets)
     resolved_scan_id = scan_id if scan_id is not None else scan_id_for(radius, step)
+    col_min, source_rows = read_scan_rows(grid, base_row, base_col, offsets, raw_path)
     rows = []
     for row_offset in offsets:
         for col_offset in offsets:
             window_id = f"r{row_offset:+d}-c{col_offset:+d}"
-            window = extractor.ExtractionWindow(
-                tile_id=f"first-trusted-square-scan-{window_id}",
-                target=ROOT / "unused.csv",
-                row_offset=row_offset,
-                col_offset=col_offset,
+            row_start = base_row + row_offset
+            col_start = base_col + col_offset
+            content = window_content_from_rows(
+                f"first-trusted-square-scan-{window_id}",
+                row_start,
+                col_start,
+                col_min,
+                source_rows,
             )
-            content = extractor.extract_window(window, raw_path)
-            metrics = metrics_from_content(content)
+            metrics = metrics_from_content(content, grid.pixel_resolution_m)
             route_id = ROUTE_IDS.get((row_offset, col_offset), "")
             rows.append({
                 "scan_id": resolved_scan_id,
@@ -143,8 +211,8 @@ def render(
                 "rank": 0,
                 "row_offset": row_offset,
                 "col_offset": col_offset,
-                "source_row_start": base_row + row_offset,
-                "source_col_start": base_col + col_offset,
+                "source_row_start": row_start,
+                "source_col_start": col_start,
                 "min_elevation_m": metrics["min_elevation_m"],
                 "max_elevation_m": metrics["max_elevation_m"],
                 "elevation_range_m": metrics["elevation_range_m"],

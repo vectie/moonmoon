@@ -121,6 +121,10 @@ Regenerate the ranked 5x5 corridor scan from HTTP byte ranges:
 python3 scripts/scan_lola_corridor.py
 ```
 
+The scanner batches each search surface into one contiguous column span per
+source row, then slices all candidate windows from that cache. This keeps the
+9x9 plan practical without changing the checked CSV format.
+
 Inspect a wider search plan without network access before fetching byte ranges:
 
 ```bash
