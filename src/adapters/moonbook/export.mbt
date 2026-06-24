@@ -638,6 +638,17 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       ),
     )
   }
+  if !dossier.power_window_evidence.has_time_window_ephemeris ||
+    dossier.power_window_evidence.source_status != "ready" {
+    items.push(
+      review_item(
+        "power-window-evidence",
+        "high",
+        "power-window evidence \{dossier.power_window_evidence.evidence_id} has source status \{dossier.power_window_evidence.source_status}; pin official ephemeris source, checksum, and time window before energy review",
+        "power-thermal-review",
+      ),
+    )
+  }
   if dossier.energy.decision != @mission.TraverseDecision::Allow {
     items.push(
       review_item(

@@ -3,7 +3,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 40)
-  assert_eq(dossier.review_queue.length(), 23)
+  assert_eq(dossier.review_queue.length(), 24)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -178,13 +178,21 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let corridor = dossier.review_queue[16]
   assert_eq(corridor.item_id, "corridor-scan-best-window")
   assert_true(corridor.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let energy = dossier.review_queue[17]
+  let power = dossier.review_queue[17]
+  assert_eq(power.item_id, "power-window-evidence")
+  assert_true(power.status == @moonbook.ReviewItemStatus::NeedsEvidence)
+  assert_true(power.reason.contains("missing-source"))
+  assert_true(
+    dossier.review_transitions[17].decision ==
+    @moonbook.ReviewDecision::RequestEvidence,
+  )
+  let energy = dossier.review_queue[18]
   assert_eq(energy.item_id, "energy-window")
   assert_true(energy.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let handoff = dossier.review_queue[18]
+  let handoff = dossier.review_queue[19]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let moonclaw = dossier.review_queue[19]
+  let moonclaw = dossier.review_queue[20]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
 }

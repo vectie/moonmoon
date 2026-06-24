@@ -155,7 +155,10 @@ mirrors that JSON into
 energy/illumination gates read the generated evidence instead of hard-coding the
 absence of ephemeris input. MoonBook indexes this generated boundary as a
 standalone `power-window-evidence` entry before the derived energy budget, so
-the source state remains reviewable independently from route scoring.
+the source state remains reviewable independently from route scoring. The
+MoonBook review queue treats that evidence as a high-severity source blocker
+until a real time window, checksum, and source status replace the checked
+missing-source fixture.
 
 The current fixture now has a checked source-file boundary:
 

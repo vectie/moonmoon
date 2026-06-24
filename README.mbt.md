@@ -102,7 +102,9 @@ deliberate `missing-source` fixture: it makes the absent ephemeris input
 machine-readable and reproducible while keeping the energy gate blocked. The
 same evidence is indexed as a standalone MoonBook `power-window-evidence` entry,
 so operators can inspect the source status separately from the derived energy
-budget.
+budget. MoonBook also queues that entry directly while the evidence remains
+`missing-source`, keeping the source-review blocker separate from route and
+energy calculations.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source
