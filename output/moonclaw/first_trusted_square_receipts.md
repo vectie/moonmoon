@@ -9,6 +9,8 @@
   - validation:
     - route-candidates-present: pass - 5 route candidates are available for scoring.
     - selected-route-present: pass - corridor-selected route southwest-bypass exists in the current route candidate set.
+    - source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.
+    - proposal-blockers-current: pass - route-scoring proposal blockers remain active: corridor-scan-best-window, energy-window, moonrobo-handoff.
     - energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.
     - moonrobo-handoff-compatible: pass - primary Moonrobo handoff is block, matching the blocked route-scoring result.
   - route scores:
