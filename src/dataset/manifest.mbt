@@ -262,9 +262,9 @@ pub fn first_trusted_square_lola_candidate() -> SourceCandidate {
     product_family: "GDR/SLDEM derived gridded terrain",
     official_source_url: "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
     access_url: "https://ode.rsl.wustl.edu/moon/",
-    local_target_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
+    local_target_path: "data/sources/lro_lola/first_trusted_square_dem.csv plus adjacent route-window CSVs",
     intended_use: "Replace the synthetic trusted-square DEM with a tiny authoritative lunar south-pole terrain extraction.",
-    next_action: "Use the checked LOLA byte-range fixture for software proof, then add illumination and route alternatives before any rover claim.",
+    next_action: "Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim.",
     review_status: AcceptedForSoftwareProof,
     notes: [
       "PDS Geosciences identifies LOLA as the LRO Lunar Orbiter Laser Altimeter for high-resolution lunar topography.",
@@ -289,8 +289,8 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
     expected_format: "PDS LOLA GDR south-polar gridded elevation product selected through ODE/PDS metadata",
     local_source_directory: "data/sources/lro_lola/",
     local_metadata_path: "data/sources/lro_lola/gdr_ds.cat",
-    extracted_fixture_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
-    trust_gate: "The active software-proof fixture must keep product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum recorded.",
+    extracted_fixture_path: "data/sources/lro_lola/first_trusted_square_dem.csv and adjacent route-window CSVs",
+    trust_gate: "The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded.",
     steps: [
       {
         step_id: "discover",
@@ -409,10 +409,70 @@ pub fn first_trusted_square_lola_extraction_candidate() -> SourceExtractionCandi
 }
 
 ///|
+pub fn first_trusted_square_west_contour_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-west-contour-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_west_contour_dem.csv",
+    output_sha256: "1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6",
+    output_bytes: 844,
+    tile_id: "first-trusted-square-west-contour-lola",
+    center_lat_deg: -89.88,
+    center_lon_deg: 0.08,
+    source_row_start: 3972,
+    source_col_start: 3786,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "Generated from the west-adjacent HTTP byte ranges next to the active trusted-square window.",
+      "This window gives the west-contour route candidate measured terrain evidence rather than a hand-authored estimate.",
+      "The local window is still too small for mission-grade corridor planning.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_north_rim_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-north-rim-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+    output_sha256: "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
+    output_bytes: 796,
+    tile_id: "first-trusted-square-north-rim-lola",
+    center_lat_deg: -89.86,
+    center_lon_deg: 0.12,
+    source_row_start: 3968,
+    source_col_start: 3790,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "Generated from the north-adjacent HTTP byte ranges next to the active trusted-square window.",
+      "This window gives the north-rim route candidate measured terrain evidence before illumination analysis exists.",
+      "The local window is still too small for mission-grade corridor planning.",
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_source_extraction_candidates() -> Array[
   SourceExtractionCandidate,
 ] {
-  [first_trusted_square_lola_extraction_candidate()]
+  [
+    first_trusted_square_lola_extraction_candidate(),
+    first_trusted_square_west_contour_lola_extraction_candidate(),
+    first_trusted_square_north_rim_lola_extraction_candidate(),
+  ]
 }
 
 ///|
@@ -458,4 +518,74 @@ pub fn first_trusted_square_manifest() -> DatasetManifest {
       "Do not use this dataset for mission-grade traverse planning without independent geospatial review.",
     ],
   }
+}
+
+///|
+pub fn first_trusted_square_west_contour_manifest() -> DatasetManifest {
+  {
+    dataset_id: "lro-lola-first-trusted-square-west-contour-dem-v1",
+    title: "LOLA west-contour route-window DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    license: "Apache-2.0",
+    product_type: "lola-gdr-byte-range-route-window-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
+    coverage: {
+      south_deg: -89.90,
+      north_deg: -89.86,
+      west_deg: 0.06,
+      east_deg: 0.10,
+    },
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_west_contour_dem.csv",
+    source_sha256: "1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_west_contour_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    checksum_kind: InlineFixtureFingerprint,
+    checksum: "inline-grid-v1:tile=first-trusted-square-west-contour-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=544.454:last=492.629",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, west-adjacent byte-range extraction for Moonmoon route evidence.",
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
+      "The adjacent window remains a tiny software-proof sample and must be expanded before robot planning.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_north_rim_manifest() -> DatasetManifest {
+  {
+    dataset_id: "lro-lola-first-trusted-square-north-rim-dem-v1",
+    title: "LOLA north-rim route-window DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    license: "Apache-2.0",
+    product_type: "lola-gdr-byte-range-route-window-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
+    coverage: {
+      south_deg: -89.86,
+      north_deg: -89.82,
+      west_deg: 0.10,
+      east_deg: 0.14,
+    },
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+    source_sha256: "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_north_rim_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    checksum_kind: InlineFixtureFingerprint,
+    checksum: "inline-grid-v1:tile=first-trusted-square-north-rim-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=506.517:last=460.176",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, north-adjacent byte-range extraction for Moonmoon route evidence.",
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
+      "Illumination and a wider corridor search are still required before robot planning.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest] {
+  [
+    first_trusted_square_west_contour_manifest(),
+    first_trusted_square_north_rim_manifest(),
+  ]
 }

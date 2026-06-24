@@ -18,7 +18,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LABEL = ROOT / "data" / "sources" / "lro_lola" / "ldem_875s_20m_float.xml"
-TARGET = ROOT / "data" / "sources" / "lro_lola" / "first_trusted_square_dem.csv"
 IMAGE_URL = "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img"
 
 SITE_CENTER_LAT_DEG = -89.88
@@ -26,6 +25,44 @@ SITE_CENTER_LON_DEG = 0.12
 WINDOW_ROWS = 4
 WINDOW_COLS = 4
 TILE_ID = "first-trusted-square-lola"
+
+
+@dataclass(frozen=True)
+class ExtractionWindow:
+    tile_id: str
+    target: Path
+    row_offset: int
+    col_offset: int
+
+
+WINDOWS = [
+    ExtractionWindow(
+        tile_id=TILE_ID,
+        target=ROOT / "data" / "sources" / "lro_lola" / "first_trusted_square_dem.csv",
+        row_offset=0,
+        col_offset=0,
+    ),
+    ExtractionWindow(
+        tile_id="first-trusted-square-west-contour-lola",
+        target=ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_west_contour_dem.csv",
+        row_offset=0,
+        col_offset=-WINDOW_COLS,
+    ),
+    ExtractionWindow(
+        tile_id="first-trusted-square-north-rim-lola",
+        target=ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_north_rim_dem.csv",
+        row_offset=-WINDOW_ROWS,
+        col_offset=0,
+    ),
+]
 
 
 @dataclass(frozen=True)
@@ -122,9 +159,15 @@ def read_row_from_url(row: int, col_start: int, col_count: int, samples: int) ->
     return data
 
 
-def extract(raw_path: Path | None = None) -> str:
+def extract_window(window: ExtractionWindow, raw_path: Path | None = None) -> str:
     grid = read_label_grid()
     row_start, col_start = centered_window(grid)
+    row_start += window.row_offset
+    col_start += window.col_offset
+    if row_start < 0 or col_start < 0:
+        raise SystemExit(f"{window.tile_id} starts outside the raster")
+    if row_start + WINDOW_ROWS > grid.lines or col_start + WINDOW_COLS > grid.samples:
+        raise SystemExit(f"{window.tile_id} ends outside the raster")
     rows: list[list[float]] = []
     for row in range(row_start, row_start + WINDOW_ROWS):
         if raw_path is None:
@@ -136,27 +179,39 @@ def extract(raw_path: Path | None = None) -> str:
     lines = ["tile_id,row,col,elevation_m"]
     for row_index, values in enumerate(rows):
         for col_index, value in enumerate(values):
-            lines.append(f"{TILE_ID},{row_index},{col_index},{value:.3f}")
+            lines.append(f"{window.tile_id},{row_index},{col_index},{value:.3f}")
     return "\n".join(lines) + "\n"
+
+
+def selected_windows(only: str | None) -> list[ExtractionWindow]:
+    if only is None:
+        return WINDOWS
+    matches = [window for window in WINDOWS if window.tile_id == only]
+    if not matches:
+        names = ", ".join(window.tile_id for window in WINDOWS)
+        raise SystemExit(f"unknown --tile-id {only!r}; choose one of: {names}")
+    return matches
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="verify the generated CSV is current")
     parser.add_argument("--raw-img", type=Path, help="optional local raw IMG path")
+    parser.add_argument("--tile-id", help="optional single tile id to extract or check")
     args = parser.parse_args()
 
-    content = extract(args.raw_img)
-    if args.check:
-        current = TARGET.read_text(encoding="utf-8") if TARGET.exists() else ""
-        if current != content:
-            raise SystemExit(
-                f"{TARGET.relative_to(ROOT)} is stale; run python3 scripts/extract_lola_trusted_square.py"
-            )
-        print(f"checked {TARGET.relative_to(ROOT)} from selected LOLA byte ranges")
-    else:
-        TARGET.write_text(content, encoding="utf-8")
-        print(f"wrote {TARGET.relative_to(ROOT)} from selected LOLA byte ranges")
+    for window in selected_windows(args.tile_id):
+        content = extract_window(window, args.raw_img)
+        if args.check:
+            current = window.target.read_text(encoding="utf-8") if window.target.exists() else ""
+            if current != content:
+                raise SystemExit(
+                    f"{window.target.relative_to(ROOT)} is stale; run python3 scripts/extract_lola_trusted_square.py"
+                )
+            print(f"checked {window.target.relative_to(ROOT)} from selected LOLA byte ranges")
+        else:
+            window.target.write_text(content, encoding="utf-8")
+            print(f"wrote {window.target.relative_to(ROOT)} from selected LOLA byte ranges")
 
 
 if __name__ == "__main__":

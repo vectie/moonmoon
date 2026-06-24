@@ -227,10 +227,10 @@ fn route_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
       entry_id: "route/\{dossier.site.site_id}/\{route.route_id}",
       title: route.label,
       kind: RouteAlternative,
-      claim_kind: @core.ClaimKind::Assumed,
+      claim_kind: @core.ClaimKind::Derived,
       confidence: route.confidence,
       path: "mission/\{dossier.site.site_id}/routes/\{route.route_id}.json",
-      summary: "\{@mission.route_candidate_status_label(route)} with score \{route.score}: \{route.next_action}",
+      summary: "\{@mission.route_candidate_status_label(route)} with score \{route.score} from \{route.evidence_dataset_id}: \{route.next_action}",
     })
   }
   entries
@@ -281,7 +281,7 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       items.push({
         item_id: "route-\{route.route_id}",
         severity: decision_severity(route.decision),
-        reason: "\{route.label}: \{route.next_action}",
+        reason: "\{route.label} from \{route.evidence_dataset_id}: \{route.next_action}",
         owner: "mission-review",
       })
     }

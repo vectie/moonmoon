@@ -24,6 +24,12 @@ pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection
 
 pub fn first_trusted_square_manifest() -> DatasetManifest
 
+pub fn first_trusted_square_north_rim_lola_extraction_candidate() -> SourceExtractionCandidate
+
+pub fn first_trusted_square_north_rim_manifest() -> DatasetManifest
+
+pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest]
+
 pub fn first_trusted_square_source_acquisition_plans() -> Array[SourceAcquisitionPlan]
 
 pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
@@ -31,6 +37,10 @@ pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
 pub fn first_trusted_square_source_extraction_candidates() -> Array[SourceExtractionCandidate]
 
 pub fn first_trusted_square_source_product_selections() -> Array[SourceProductSelection]
+
+pub fn first_trusted_square_west_contour_lola_extraction_candidate() -> SourceExtractionCandidate
+
+pub fn first_trusted_square_west_contour_manifest() -> DatasetManifest
 
 pub fn product_selection_status_label(SourceProductSelection) -> String
 

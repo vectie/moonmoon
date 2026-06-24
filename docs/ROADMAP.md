@@ -36,21 +36,21 @@ Current implementation status:
   uncertainty, and claim-kind labels.
 - `src/dataset` defines a dataset manifest contract with coverage, trust,
   checksum kind, checksum, citation, review status, and validation results.
-- `src/terrain` builds one deterministic 4x4 trusted-square fixture, computes
-  elevation range, neighbor grade, roughness, hazard class, and Markdown/JSON
-  fixture exports.
-- `data/sources/lro_lola/first_trusted_square_dem.csv` is the checked LOLA
-  byte-range source fixture for the current grid, and
-  `scripts/verify_moonmoon_sources.sh` validates its SHA-256 before dossier
+- `src/terrain` builds one deterministic 4x4 trusted-square fixture plus
+  west/north adjacent route-window fixtures, computes elevation range, neighbor
+  grade, roughness, hazard class, and Markdown/JSON fixture exports.
+- `data/sources/lro_lola/first_trusted_square_dem.csv` and the adjacent
+  west/north route-window CSVs are checked LOLA byte-range source fixtures, and
+  `scripts/verify_moonmoon_sources.sh` validates their SHA-256 before dossier
   generation.
 - `scripts/generate_moonmoon_fixture.py` regenerates the MoonBit fixture module
   from the checked CSV so terrain code does not hand-mirror source values; its
   `--check` mode verifies the generated file is current.
 - `src/mission` scores the fixture against a conservative rover traverse
   profile and returns `allow`, `review`, or `block` with reasons.
-- `src/mission` also proposes route alternatives for the blocked LOLA patch:
-  the direct measured window remains blocked, while west/north detours are
-  review-only hypotheses until neighboring windows and illumination are added.
+- `src/mission` also scores route alternatives for the blocked LOLA patch:
+  the direct measured window remains blocked, and the measured west/north
+  adjacent windows are also blocked at this sampling scale.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
@@ -103,7 +103,8 @@ Current implementation status:
   shape, unit, and raw image name.
 - `data/sources/lro_lola/first_trusted_square_dem.csv` is the active tiny 4x4
   extraction generated from HTTP byte ranges against the selected IMG and
-  verified by SHA-256.
+  verified by SHA-256; west-contour and north-rim route-window CSVs use the
+  same extractor and verifier.
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
@@ -112,13 +113,13 @@ Current implementation status:
   and trust gate for the active software-proof fixture.
 - The first product selection now names `ldem_875s_20m_float` as the concrete
   label-backed extraction target, while keeping the raw IMG uncommitted.
-- The first extraction candidate now proves bounded raster access and produces
-  the active fixture-shaped CSV.
+- The first extraction candidates now prove bounded raster access and produce
+  the active fixture-shaped CSV plus adjacent west/north route evidence CSVs.
 
 Remaining work:
 
-- Extract neighboring LOLA windows for the proposed west/north route
-  alternatives.
+- Widen the route-window corridor search beyond the blocked west/north adjacent
+  LOLA windows.
 - Add illumination constraints for robot energy and thermal feasibility.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export
   summaries.

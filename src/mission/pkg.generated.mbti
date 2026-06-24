@@ -27,6 +27,10 @@ pub(all) struct RouteCandidate {
   route_id : String
   label : String
   strategy : String
+  evidence_dataset_id : String
+  evidence_tile_id : String
+  evidence_source_path : String
+  evidence_summary : String
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double

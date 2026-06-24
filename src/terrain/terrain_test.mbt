@@ -27,6 +27,29 @@ test "first trusted square fixture derives deterministic terrain metrics" {
 }
 
 ///|
+test "first trusted square adjacent route windows derive measured terrain metrics" {
+  let route_grids = @terrain.first_trusted_square_route_grids()
+  assert_eq(route_grids.length(), 2)
+  assert_eq(route_grids[0].tile_id, "first-trusted-square-west-contour-lola")
+  assert_eq(route_grids[1].tile_id, "first-trusted-square-north-rim-lola")
+  for grid in route_grids {
+    let validation = @terrain.validate_grid_source(grid)
+    assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
+    let metrics = @terrain.analyze(grid)
+    assert_true(metrics.hazard_class == Blocked)
+    assert_true(metrics.max_neighbor_grade > 0.7)
+    assert_true(metrics.roughness_m > 7.0)
+    assert_true(metrics.provenance.claim_kind == Derived)
+  }
+  let west = @terrain.first_trusted_square_west_contour_metrics()
+  assert_eq(west.min_elevation_m.to_string(), "492.629")
+  assert_eq(west.max_elevation_m.to_string(), "544.454")
+  let north = @terrain.first_trusted_square_north_rim_metrics()
+  assert_eq(north.min_elevation_m.to_string(), "460.176")
+  assert_eq(north.max_elevation_m.to_string(), "506.517")
+}
+
+///|
 test "first trusted square fixture renders terrain evidence markdown" {
   let text = @terrain.first_trusted_square_fixture_markdown()
   assert_true(text.contains("# Terrain Fixture: first-trusted-square-lola"))

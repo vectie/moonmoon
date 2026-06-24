@@ -6,6 +6,8 @@ SOURCE="$ROOT/data/fixtures/first_trusted_square_dem.csv"
 LOLA_GDR_CATALOG="$ROOT/data/sources/lro_lola/gdr_ds.cat"
 LOLA_GDR_SELECTION_LABEL="$ROOT/data/sources/lro_lola/ldem_875s_20m_float.xml"
 LOLA_FIRST_TRUSTED_SQUARE="$ROOT/data/sources/lro_lola/first_trusted_square_dem.csv"
+LOLA_WEST_CONTOUR="$ROOT/data/sources/lro_lola/first_trusted_square_west_contour_dem.csv"
+LOLA_NORTH_RIM="$ROOT/data/sources/lro_lola/first_trusted_square_north_rim_dem.csv"
 
 EXPECTED_FIRST_TRUSTED_SQUARE_SHA256="45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7"
 EXPECTED_LOLA_GDR_CATALOG_SHA256="f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8"
@@ -14,6 +16,10 @@ EXPECTED_LOLA_GDR_SELECTION_LABEL_SHA256="10d62a66364276d544168949a11a93580e748a
 EXPECTED_LOLA_GDR_SELECTION_LABEL_BYTES="11629"
 EXPECTED_LOLA_FIRST_TRUSTED_SQUARE_SHA256="7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c"
 EXPECTED_LOLA_FIRST_TRUSTED_SQUARE_BYTES="636"
+EXPECTED_LOLA_WEST_CONTOUR_SHA256="1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6"
+EXPECTED_LOLA_WEST_CONTOUR_BYTES="844"
+EXPECTED_LOLA_NORTH_RIM_SHA256="40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28"
+EXPECTED_LOLA_NORTH_RIM_BYTES="796"
 
 actual="$(shasum -a 256 "$SOURCE" | awk '{print $1}')"
 
@@ -82,3 +88,41 @@ if [[ "$lola_csv_bytes" != "$EXPECTED_LOLA_FIRST_TRUSTED_SQUARE_BYTES" ]]; then
 fi
 
 printf 'verified %s %s\n' "$lola_csv_actual" "$LOLA_FIRST_TRUSTED_SQUARE"
+
+west_csv_actual="$(shasum -a 256 "$LOLA_WEST_CONTOUR" | awk '{print $1}')"
+west_csv_bytes="$(wc -c < "$LOLA_WEST_CONTOUR" | tr -d ' ')"
+
+if [[ "$west_csv_actual" != "$EXPECTED_LOLA_WEST_CONTOUR_SHA256" ]]; then
+  printf 'checksum mismatch for %s\n' "$LOLA_WEST_CONTOUR" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_WEST_CONTOUR_SHA256" >&2
+  printf 'actual   %s\n' "$west_csv_actual" >&2
+  exit 1
+fi
+
+if [[ "$west_csv_bytes" != "$EXPECTED_LOLA_WEST_CONTOUR_BYTES" ]]; then
+  printf 'byte count mismatch for %s\n' "$LOLA_WEST_CONTOUR" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_WEST_CONTOUR_BYTES" >&2
+  printf 'actual   %s\n' "$west_csv_bytes" >&2
+  exit 1
+fi
+
+printf 'verified %s %s\n' "$west_csv_actual" "$LOLA_WEST_CONTOUR"
+
+north_csv_actual="$(shasum -a 256 "$LOLA_NORTH_RIM" | awk '{print $1}')"
+north_csv_bytes="$(wc -c < "$LOLA_NORTH_RIM" | tr -d ' ')"
+
+if [[ "$north_csv_actual" != "$EXPECTED_LOLA_NORTH_RIM_SHA256" ]]; then
+  printf 'checksum mismatch for %s\n' "$LOLA_NORTH_RIM" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_NORTH_RIM_SHA256" >&2
+  printf 'actual   %s\n' "$north_csv_actual" >&2
+  exit 1
+fi
+
+if [[ "$north_csv_bytes" != "$EXPECTED_LOLA_NORTH_RIM_BYTES" ]]; then
+  printf 'byte count mismatch for %s\n' "$LOLA_NORTH_RIM" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_NORTH_RIM_BYTES" >&2
+  printf 'actual   %s\n' "$north_csv_bytes" >&2
+  exit 1
+fi
+
+printf 'verified %s %s\n' "$north_csv_actual" "$LOLA_NORTH_RIM"

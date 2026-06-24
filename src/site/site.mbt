@@ -50,6 +50,8 @@ fn terrain_blockers(metrics : @terrain.TerrainMetrics) -> Array[String] {
 ///|
 pub fn first_trusted_square_dossier() -> SiteDossier {
   let grid = @terrain.first_trusted_square_grid()
+  let west_grid = @terrain.first_trusted_square_west_contour_grid()
+  let north_grid = @terrain.first_trusted_square_north_rim_grid()
   let terrain = @terrain.analyze(grid)
   let traverse = @mission.score_traverse(
     terrain,
@@ -57,8 +59,16 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
   )
   {
     site: first_trusted_square_site(),
-    datasets: [grid.source_manifest],
-    validations: [@terrain.validate_grid_source(grid)],
+    datasets: [
+      grid.source_manifest,
+      west_grid.source_manifest,
+      north_grid.source_manifest,
+    ],
+    validations: [
+      @terrain.validate_grid_source(grid),
+      @terrain.validate_grid_source(west_grid),
+      @terrain.validate_grid_source(north_grid),
+    ],
     source_candidates: @dataset.first_trusted_square_source_candidates(),
     source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
     source_product_selections: @dataset.first_trusted_square_source_product_selections(),
@@ -66,10 +76,10 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     terrain,
     traverse,
     route_candidates: @mission.first_trusted_square_route_candidates(),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured route-window alternatives.",
     blockers: terrain_blockers(terrain),
     next_questions: [
-      "Add illumination windows for robot energy and thermal constraints.", "Find alternate route candidates around the blocked LOLA terrain patch.",
+      "Add illumination windows for robot energy and thermal constraints.", "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
       "Export the dossier into a LunarBook workspace for review.",
     ],
   }
@@ -204,6 +214,10 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - decision: \{@mission.route_candidate_status_label(route)}\n"
     text += "  - score: \{route.score}\n"
     text += "  - strategy: \{route.strategy}\n"
+    text += "  - evidence dataset: \{route.evidence_dataset_id}\n"
+    text += "  - evidence tile: \{route.evidence_tile_id}\n"
+    text += "  - evidence source: \{route.evidence_source_path}\n"
+    text += "  - evidence summary: \{route.evidence_summary}\n"
     text += "  - expected max grade: \{route.expected_max_grade}\n"
     text += "  - expected roughness: \{route.expected_roughness_m} m\n"
     text += "  - confidence: \{route.confidence}\n"

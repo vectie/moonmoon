@@ -30,6 +30,10 @@ pub(all) struct RouteCandidate {
   route_id : String
   label : String
   strategy : String
+  evidence_dataset_id : String
+  evidence_tile_id : String
+  evidence_source_path : String
+  evidence_summary : String
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double
@@ -174,14 +178,16 @@ fn make_route_candidate(
   route_id : String,
   label : String,
   strategy : String,
-  expected_max_grade : Double,
-  expected_roughness_m : Double,
-  confidence : Double,
+  grid : @terrain.TerrainGrid,
   profile : TraverseProfile,
   extra_reason : String,
   next_action : String,
 ) -> RouteCandidate {
+  let metrics = @terrain.analyze(grid)
   let reasons : Array[String] = []
+  let expected_max_grade = metrics.max_neighbor_grade
+  let expected_roughness_m = metrics.roughness_m
+  let confidence = metrics.uncertainty.confidence
   let grade_blocked = expected_max_grade >= profile.max_grade
   let roughness_blocked = expected_roughness_m >= profile.max_roughness_m
   let grade_review = expected_max_grade >= profile.caution_grade
@@ -218,6 +224,10 @@ fn make_route_candidate(
     route_id,
     label,
     strategy,
+    evidence_dataset_id: grid.source_manifest.dataset_id,
+    evidence_tile_id: grid.tile_id,
+    evidence_source_path: grid.source_manifest.source_path,
+    evidence_summary: "\{@terrain.hazard_label(metrics.hazard_class)} measured window; elevation range \{metrics.elevation_range_m} m",
     expected_max_grade,
     expected_roughness_m,
     confidence,
@@ -230,29 +240,34 @@ fn make_route_candidate(
 
 ///|
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
-  let metrics = @terrain.first_trusted_square_metrics()
   let profile = conservative_rover_profile()
   [
     make_route_candidate(
       "direct-lola-window",
       "Direct traverse across measured LOLA patch",
       "Use the active 4x4 measured window as-is.",
-      metrics.max_neighbor_grade,
-      metrics.roughness_m,
-      metrics.uncertainty.confidence,
+      @terrain.first_trusted_square_grid(),
       profile,
       "active LOLA patch is blocked",
       "do not traverse directly; use this as the baseline hazard case",
     ),
     make_route_candidate(
-      "west-contour-detour", "West contour detour candidate", "Route around the steepest east-west drop and request adjacent west-side extraction.",
-      0.28, 1.8, 0.55, profile, "detour is a planning hypothesis until adjacent LOLA windows are extracted",
-      "extract neighboring west window and rescore before simulation",
+      "west-contour-detour",
+      "West contour detour candidate",
+      "Test the west-adjacent LOLA window as a possible contour route around the active patch.",
+      @terrain.first_trusted_square_west_contour_grid(),
+      profile,
+      "west-adjacent LOLA window is measured but still blocked at this scale",
+      "widen the west corridor extraction before simulation",
     ),
     make_route_candidate(
-      "north-rim-stepout", "North rim step-out candidate", "Step toward the north edge of the product bounds and search for a smoother approach corridor.",
-      0.22, 1.4, 0.50, profile, "north step-out requires neighboring tile evidence and illumination constraints",
-      "extract north-adjacent window and add illumination review",
+      "north-rim-stepout",
+      "North rim step-out candidate",
+      "Test the north-adjacent LOLA window as a possible step-out toward a smoother rim approach.",
+      @terrain.first_trusted_square_north_rim_grid(),
+      profile,
+      "north-adjacent LOLA window is measured but still blocked at this scale",
+      "widen the north corridor extraction and add illumination review",
     ),
   ]
 }

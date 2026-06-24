@@ -3,9 +3,10 @@
 This directory stores reproducible LOLA source evidence for Moonmoon's first
 authoritative lunar terrain fixture.
 
-The current repository does not commit the raw LOLA product. It does commit a
-tiny CSV extracted through HTTP byte ranges. That CSV is now the active
-first-trusted-square terrain source for Moonmoon software proof.
+The current repository does not commit the raw LOLA product. It commits tiny
+CSVs extracted through HTTP byte ranges. Those CSVs are now the active
+first-trusted-square terrain source and the first adjacent route-window sources
+for Moonmoon software proof.
 
 ## First Target
 
@@ -38,7 +39,7 @@ first-trusted-square terrain source for Moonmoon software proof.
 - Unit: `KILOMETER`
 - Value offset: `1737.4` km
 
-## First Extracted Fixture
+## Extracted Fixtures
 
 - Output path: `data/sources/lro_lola/first_trusted_square_dem.csv`
 - Output SHA-256: `7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c`
@@ -48,6 +49,22 @@ first-trusted-square terrain source for Moonmoon software proof.
 - Center: `89.88S`, `0.12E`
 - Cell size: 20 m
 - Status: accepted for Moonmoon software proof
+
+Route-window evidence:
+
+- Output path: `data/sources/lro_lola/first_trusted_square_west_contour_dem.csv`
+- Output SHA-256: `1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6`
+- Output bytes: `844`
+- Source window: row `3972`, column `3786`, size `4x4`
+- Route candidate: `west-contour-detour`
+- Current route result: blocked by measured local grade and roughness
+
+- Output path: `data/sources/lro_lola/first_trusted_square_north_rim_dem.csv`
+- Output SHA-256: `40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28`
+- Output bytes: `796`
+- Source window: row `3968`, column `3790`, size `4x4`
+- Route candidate: `north-rim-stepout`
+- Current route result: blocked by measured local grade and roughness
 
 ## Reproduction
 
@@ -63,7 +80,8 @@ Verify all pinned source evidence without network access:
 bash scripts/verify_moonmoon_sources.sh
 ```
 
-Regenerate only the tiny active extraction from HTTP byte ranges:
+Regenerate the tiny active extraction and adjacent route-window extractions
+from HTTP byte ranges:
 
 ```bash
 python3 scripts/extract_lola_trusted_square.py

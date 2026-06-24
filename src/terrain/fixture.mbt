@@ -1,13 +1,15 @@
 ///|
-pub fn first_trusted_square_grid() -> TerrainGrid {
-  let source_manifest = @dataset.first_trusted_square_manifest()
+fn build_grid(
+  source_manifest : @dataset.DatasetManifest,
+  tile_id : String,
+  rows : Int,
+  cols : Int,
+  elevations : Array[Array[Double]],
+) -> TerrainGrid {
   let provenance = @dataset.to_provenance(source_manifest)
   let uncertainty = @core.uncertainty(
     0.82, "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification.",
   )
-  let rows = generated_first_trusted_square_rows()
-  let cols = generated_first_trusted_square_cols()
-  let elevations = generated_first_trusted_square_elevations()
   let cells : Array[@core.TerrainCell] = []
   for row in 0..<rows {
     for col in 0..<cols {
@@ -22,7 +24,7 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
     }
   }
   {
-    tile_id: generated_first_trusted_square_tile_id(),
+    tile_id,
     rows,
     cols,
     cell_size_m: source_manifest.resolution_m,
@@ -32,6 +34,57 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
 }
 
 ///|
+pub fn first_trusted_square_grid() -> TerrainGrid {
+  build_grid(
+    @dataset.first_trusted_square_manifest(),
+    generated_first_trusted_square_tile_id(),
+    generated_first_trusted_square_rows(),
+    generated_first_trusted_square_cols(),
+    generated_first_trusted_square_elevations(),
+  )
+}
+
+///|
 pub fn first_trusted_square_metrics() -> TerrainMetrics {
   analyze(first_trusted_square_grid())
+}
+
+///|
+pub fn first_trusted_square_west_contour_grid() -> TerrainGrid {
+  build_grid(
+    @dataset.first_trusted_square_west_contour_manifest(),
+    generated_first_trusted_square_west_contour_tile_id(),
+    generated_first_trusted_square_west_contour_rows(),
+    generated_first_trusted_square_west_contour_cols(),
+    generated_first_trusted_square_west_contour_elevations(),
+  )
+}
+
+///|
+pub fn first_trusted_square_west_contour_metrics() -> TerrainMetrics {
+  analyze(first_trusted_square_west_contour_grid())
+}
+
+///|
+pub fn first_trusted_square_north_rim_grid() -> TerrainGrid {
+  build_grid(
+    @dataset.first_trusted_square_north_rim_manifest(),
+    generated_first_trusted_square_north_rim_tile_id(),
+    generated_first_trusted_square_north_rim_rows(),
+    generated_first_trusted_square_north_rim_cols(),
+    generated_first_trusted_square_north_rim_elevations(),
+  )
+}
+
+///|
+pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics {
+  analyze(first_trusted_square_north_rim_grid())
+}
+
+///|
+pub fn first_trusted_square_route_grids() -> Array[TerrainGrid] {
+  [
+    first_trusted_square_west_contour_grid(),
+    first_trusted_square_north_rim_grid(),
+  ]
 }

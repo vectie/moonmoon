@@ -70,7 +70,7 @@ test "first trusted square has a concrete LOLA acquisition plan" {
   assert_eq(plan.discovery_url, "https://ode.rsl.wustl.edu/moon/")
   assert_eq(
     plan.extracted_fixture_path,
-    "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "data/sources/lro_lola/first_trusted_square_dem.csv and adjacent route-window CSVs",
   )
   assert_eq(@dataset.acquisition_plan_progress_label(plan), "recorded:5-steps")
   assert_eq(
@@ -117,7 +117,7 @@ test "first trusted square selects a concrete LOLA product label" {
 }
 
 ///|
-test "first trusted square tracks a LOLA extraction candidate" {
+test "first trusted square tracks LOLA extraction candidates" {
   let extraction = @dataset.first_trusted_square_lola_extraction_candidate()
   assert_eq(
     extraction.extraction_id,
@@ -147,6 +147,34 @@ test "first trusted square tracks a LOLA extraction candidate" {
   )
   assert_eq(
     @dataset.first_trusted_square_source_extraction_candidates().length(),
-    1,
+    3,
+  )
+  let west = @dataset.first_trusted_square_west_contour_lola_extraction_candidate()
+  assert_eq(west.tile_id, "first-trusted-square-west-contour-lola")
+  assert_eq(west.source_row_start, 3972)
+  assert_eq(west.source_col_start, 3786)
+  assert_eq(
+    west.output_sha256,
+    "1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6",
+  )
+  assert_eq(west.output_bytes, 844)
+  let north = @dataset.first_trusted_square_north_rim_lola_extraction_candidate()
+  assert_eq(north.tile_id, "first-trusted-square-north-rim-lola")
+  assert_eq(north.source_row_start, 3968)
+  assert_eq(north.source_col_start, 3790)
+  assert_eq(
+    north.output_sha256,
+    "40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28",
+  )
+  assert_eq(north.output_bytes, 796)
+  let route_manifests = @dataset.first_trusted_square_route_manifests()
+  assert_eq(route_manifests.length(), 2)
+  assert_eq(
+    route_manifests[0].dataset_id,
+    "lro-lola-first-trusted-square-west-contour-dem-v1",
+  )
+  assert_eq(
+    route_manifests[1].dataset_id,
+    "lro-lola-first-trusted-square-north-rim-dem-v1",
   )
 }

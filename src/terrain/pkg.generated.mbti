@@ -19,6 +19,16 @@ pub fn first_trusted_square_grid() -> TerrainGrid
 
 pub fn first_trusted_square_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_north_rim_grid() -> TerrainGrid
+
+pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics
+
+pub fn first_trusted_square_route_grids() -> Array[TerrainGrid]
+
+pub fn first_trusted_square_west_contour_grid() -> TerrainGrid
+
+pub fn first_trusted_square_west_contour_metrics() -> TerrainMetrics
+
 pub fn grid_fingerprint(TerrainGrid) -> String
 
 pub fn hazard_label(HazardClass) -> String

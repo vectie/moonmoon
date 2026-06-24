@@ -9,16 +9,26 @@ test "first trusted square traverse score blocks measured rough terrain" {
 }
 
 ///|
-test "first trusted square route candidates propose reviewable detours" {
+test "first trusted square route candidates use measured adjacent windows" {
   let routes = @mission.first_trusted_square_route_candidates()
   assert_eq(routes.length(), 3)
   assert_eq(routes[0].route_id, "direct-lola-window")
   assert_true(routes[0].decision == Block)
   assert_true(routes[0].reasons.any(fn(reason) { reason.contains("blocked") }))
   assert_eq(routes[1].route_id, "west-contour-detour")
-  assert_true(routes[1].decision == Review)
-  assert_true(routes[1].confidence < 0.7)
-  assert_eq(@mission.route_candidate_status_label(routes[1]), "review")
+  assert_true(routes[1].decision == Block)
+  assert_eq(
+    routes[1].evidence_dataset_id,
+    "lro-lola-first-trusted-square-west-contour-dem-v1",
+  )
+  assert_eq(
+    routes[1].evidence_source_path,
+    "data/sources/lro_lola/first_trusted_square_west_contour_dem.csv",
+  )
+  assert_true(routes[1].expected_max_grade > 0.7)
+  assert_eq(@mission.route_candidate_status_label(routes[1]), "block")
   assert_eq(routes[2].route_id, "north-rim-stepout")
+  assert_true(routes[2].decision == Block)
+  assert_eq(routes[2].evidence_tile_id, "first-trusted-square-north-rim-lola")
   assert_true(routes[2].next_action.contains("illumination"))
 }

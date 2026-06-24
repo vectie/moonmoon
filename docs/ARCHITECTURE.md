@@ -138,6 +138,8 @@ The current fixture now has a checked source-file boundary:
 - `data/sources/lro_lola/gdr_ds.cat`
 - `data/sources/lro_lola/ldem_875s_20m_float.xml`
 - `data/sources/lro_lola/first_trusted_square_dem.csv`
+- `data/sources/lro_lola/first_trusted_square_west_contour_dem.csv`
+- `data/sources/lro_lola/first_trusted_square_north_rim_dem.csv`
 - `scripts/verify_moonmoon_sources.sh`
 
 The active terrain source file is a LOLA byte-range extraction. Its SHA-256 is
@@ -149,15 +151,18 @@ window reads and records a reproducible checksum. The MoonBit fixture mirrors
 that CSV through
 `scripts/generate_moonmoon_fixture.py`, which writes
 `src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
-is now the terrain package's source for the trusted-square elevations. Replacing
-the CSV with a tiny authoritative LOLA-derived extraction should keep the same
-pipeline shape.
+is now the terrain package's source for the trusted-square elevations and the
+first adjacent route-window elevations. Replacing or extending the CSV set with
+tiny authoritative LOLA-derived extractions should keep the same pipeline shape.
 
 The first measured LOLA patch blocks the conservative rover profile. Moonmoon
-therefore records route alternatives as mission-planning hypotheses, not as
-measured terrain claims. The direct route preserves the measured blocked result;
-west-contour and north-rim alternatives are marked `review` until adjacent LOLA
-windows and illumination constraints are added.
+therefore records route alternatives as derived mission-planning claims tied to
+local measured evidence windows, not as safe corridor claims. The direct route
+preserves the measured blocked result; west-contour and north-rim alternatives
+now point at adjacent measured LOLA windows, and both remain `block` because
+their local grade and roughness still exceed the conservative rover limits.
+The next modeling step is to widen the corridor search and add illumination
+constraints.
 
 ## Old Terrain Project Lessons
 
