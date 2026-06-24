@@ -175,6 +175,11 @@
   - claim: derived
   - confidence: 0.65
   - path: moonclaw/first-trusted-square/proposals.json
+- moonclaw/first-trusted-square/route-scoring-receipt: MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-receipt
+  - claim: derived
+  - confidence: 0.7
+  - path: moonclaw/first-trusted-square/receipts.json
 
 ## Review Queue
 

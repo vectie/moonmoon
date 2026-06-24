@@ -7,6 +7,7 @@
     "output/site/first_trusted_square.json",
     "output/moonbook/first_trusted_square_book.json",
     "output/moonclaw/first_trusted_square_proposals.json",
+    "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonrobo/first_trusted_square_handoffs.json"
   ],
   "entries": [
@@ -315,6 +316,15 @@
       "confidence": 0.65,
       "path": "moonclaw/first-trusted-square/proposals.json",
       "summary": "critical ephemeris-acquisition job: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed."
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
+      "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonclaw/first-trusted-square/receipts.json",
+      "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
     }
   ],
   "review_queue_path": "review_queue.json",

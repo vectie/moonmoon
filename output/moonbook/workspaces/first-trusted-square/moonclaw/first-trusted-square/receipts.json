@@ -1,0 +1,240 @@
+{
+  "entry": {
+    "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
+    "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonClawReceipt",
+    "claim_kind": "Derived",
+    "confidence": 0.7,
+    "path": "moonclaw/first-trusted-square/receipts.json",
+    "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+  },
+  "payload": {
+    "primary_receipt": {
+      "receipt": {
+        "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
+        "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
+        "status": "Accepted",
+        "accepted_outputs": [
+          "route-scoreboard",
+          "moonrobo-handoff-compatibility",
+          "blocked-evidence-summary"
+        ],
+        "validation_notes": [
+          "route-candidates-present: pass - 5 route candidates are available for scoring.",
+          "selected-route-present: pass - corridor-selected route southwest-bypass exists in the current route candidate set.",
+          "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
+          "moonrobo-handoff-compatible: pass - primary Moonrobo handoff is block, matching the blocked route-scoring result."
+        ]
+      },
+      "site_id": "first-trusted-square",
+      "selected_route_id": "southwest-bypass",
+      "route_scores": [
+        {
+          "route_id": "direct-lola-window",
+          "rank": 5,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 2.0843625000000006,
+          "max_grade": 1.1593500000000005,
+          "roughness_m": 9.250124999999999,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "next_action": "do not traverse directly; use this as the baseline hazard case"
+        },
+        {
+          "route_id": "west-contour-detour",
+          "rank": 4,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 1.6044916666666684,
+          "max_grade": 0.7517000000000025,
+          "roughness_m": 8.52791666666666,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
+          "next_action": "widen the west corridor extraction before simulation"
+        },
+        {
+          "route_id": "north-rim-stepout",
+          "rank": 3,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 1.4996125,
+          "max_grade": 0.7280000000000001,
+          "roughness_m": 7.716124999999998,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+          "next_action": "widen the north corridor extraction and add illumination review"
+        },
+        {
+          "route_id": "southwest-bypass",
+          "rank": 1,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 1.3541166666666693,
+          "max_grade": 0.6484500000000025,
+          "roughness_m": 7.056666666666669,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+          "next_action": "continue corridor search beyond the southwest bypass before simulation"
+        },
+        {
+          "route_id": "south-stepout",
+          "rank": 2,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 1.4354083333333336,
+          "max_grade": 0.7199500000000001,
+          "roughness_m": 7.154583333333335,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
+          "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+        }
+      ],
+      "validation_checks": [
+        {
+          "validation_id": "route-candidates-present",
+          "passed": true,
+          "note": "5 route candidates are available for scoring."
+        },
+        {
+          "validation_id": "selected-route-present",
+          "passed": true,
+          "note": "corridor-selected route southwest-bypass exists in the current route candidate set."
+        },
+        {
+          "validation_id": "energy-blocker-current",
+          "passed": true,
+          "note": "current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached."
+        },
+        {
+          "validation_id": "moonrobo-handoff-compatible",
+          "passed": true,
+          "note": "primary Moonrobo handoff is block, matching the blocked route-scoring result."
+        }
+      ],
+      "moonrobo_handoff_decision": "Block",
+      "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    },
+    "receipts": [
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
+          "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "route-scoreboard",
+            "moonrobo-handoff-compatibility",
+            "blocked-evidence-summary"
+          ],
+          "validation_notes": [
+            "route-candidates-present: pass - 5 route candidates are available for scoring.",
+            "selected-route-present: pass - corridor-selected route southwest-bypass exists in the current route candidate set.",
+            "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
+            "moonrobo-handoff-compatible: pass - primary Moonrobo handoff is block, matching the blocked route-scoring result."
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "selected_route_id": "southwest-bypass",
+        "route_scores": [
+          {
+            "route_id": "direct-lola-window",
+            "rank": 5,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 2.0843625000000006,
+            "max_grade": 1.1593500000000005,
+            "roughness_m": 9.250124999999999,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+            "next_action": "do not traverse directly; use this as the baseline hazard case"
+          },
+          {
+            "route_id": "west-contour-detour",
+            "rank": 4,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 1.6044916666666684,
+            "max_grade": 0.7517000000000025,
+            "roughness_m": 8.52791666666666,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
+            "next_action": "widen the west corridor extraction before simulation"
+          },
+          {
+            "route_id": "north-rim-stepout",
+            "rank": 3,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 1.4996125,
+            "max_grade": 0.7280000000000001,
+            "roughness_m": 7.716124999999998,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+            "next_action": "widen the north corridor extraction and add illumination review"
+          },
+          {
+            "route_id": "southwest-bypass",
+            "rank": 1,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 1.3541166666666693,
+            "max_grade": 0.6484500000000025,
+            "roughness_m": 7.056666666666669,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+            "next_action": "continue corridor search beyond the southwest bypass before simulation"
+          },
+          {
+            "route_id": "south-stepout",
+            "rank": 2,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 1.4354083333333336,
+            "max_grade": 0.7199500000000001,
+            "roughness_m": 7.154583333333335,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
+            "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+          }
+        ],
+        "validation_checks": [
+          {
+            "validation_id": "route-candidates-present",
+            "passed": true,
+            "note": "5 route candidates are available for scoring."
+          },
+          {
+            "validation_id": "selected-route-present",
+            "passed": true,
+            "note": "corridor-selected route southwest-bypass exists in the current route candidate set."
+          },
+          {
+            "validation_id": "energy-blocker-current",
+            "passed": true,
+            "note": "current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached."
+          },
+          {
+            "validation_id": "moonrobo-handoff-compatible",
+            "passed": true,
+            "note": "primary Moonrobo handoff is block, matching the blocked route-scoring result."
+          }
+        ],
+        "moonrobo_handoff_decision": "Block",
+        "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+      }
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}
