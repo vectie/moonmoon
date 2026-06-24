@@ -18,6 +18,15 @@ pub(all) struct SiteDossier {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+fn pending_label(value : String) -> String {
+  if value == "" {
+    "pending"
+  } else {
+    value
+  }
+}
+
+///|
 pub fn first_trusted_square_site() -> @core.LunarSite {
   {
     site_id: "first-trusted-square",
@@ -141,7 +150,7 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - discovery: \{plan.discovery_url}\n"
     text += "  - source family: \{plan.source_family_url}\n"
     text += "  - source metadata: \{plan.source_metadata_url}\n"
-    text += "  - source metadata sha256: \{plan.source_metadata_sha256}\n"
+    text += "  - source metadata sha256: \{pending_label(plan.source_metadata_sha256)}\n"
     text += "  - source metadata bytes: \{plan.source_metadata_bytes}\n"
     text += "  - target region: \{plan.target_region}\n"
     text += "  - local source directory: \{plan.local_source_directory}\n"
