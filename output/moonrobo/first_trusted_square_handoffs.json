@@ -22,6 +22,13 @@
         "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
       },
       {
+        "precondition_id": "power-window-evidence",
+        "label": "Power-window source evidence gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+        "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+      },
+      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
@@ -59,6 +66,13 @@
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
         "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "power-window-evidence",
+        "label": "Power-window source evidence gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+        "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
       },
       {
         "precondition_id": "energy-window",
@@ -100,6 +114,13 @@
         "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
       },
       {
+        "precondition_id": "power-window-evidence",
+        "label": "Power-window source evidence gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+        "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+      },
+      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
@@ -139,6 +160,13 @@
         "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
       },
       {
+        "precondition_id": "power-window-evidence",
+        "label": "Power-window source evidence gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+        "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+      },
+      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
@@ -176,6 +204,13 @@
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
         "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "power-window-evidence",
+        "label": "Power-window source evidence gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+        "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
       },
       {
         "precondition_id": "energy-window",
