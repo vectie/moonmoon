@@ -37,7 +37,7 @@ The first real implementation can follow this package shape:
 - `src/adapters/moonbook`
   LunarBook dossier and evidence export contracts.
 - `src/adapters/moonclaw`
-  Modeling job packets and result receipts.
+  Modeling job proposal packets and result receipts.
 - `src/adapters/moonrobo`
   Robot simulation preconditions and route/hazard handoff contracts.
 - `src/ui`
@@ -59,6 +59,7 @@ The current implementation has started this shape with:
 - `src/mission`
 - `src/site`
 - `src/adapters/moonbook`
+- `src/adapters/moonclaw`
 - `src/adapters/moonrobo`
 - `cmd/main`
 
@@ -204,6 +205,13 @@ those packets as evidence. A packet names the route candidate, target body, task
 kind, combined decision, and the route, illumination, energy, and corridor
 preconditions that must be cleared. It does not command hardware or imply
 physical execution authority.
+
+The current MoonClaw boundary is also one-way: Moonmoon emits bounded modeling
+proposal packets under `output/moonclaw/`, and MoonBook indexes those proposals
+as evidence. The first proposals request ephemeris-backed power windows, wider
+LOLA corridor search, and route-scoring receipts. A proposal names its inputs,
+blocked review items, acceptance criteria, and expected output paths, so an
+agent job can run without silently changing the mission model.
 
 ## Old Terrain Project Lessons
 

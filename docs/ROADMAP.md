@@ -69,8 +69,11 @@ Current implementation status:
 - `src/adapters/moonrobo` exports robot-facing simulation precondition packets
   for each route candidate, using Moonmoon terrain, illumination, energy, and
   corridor blockers as a pre-physical safety gate.
+- `src/adapters/moonclaw` exports bounded modeling proposals for ephemeris
+  acquisition, widened corridor search, and route scoring.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
-  `moonbook dossier` commands, plus Moonrobo handoff Markdown/JSON.
+  `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
+  Markdown/JSON.
 
 The active fixture is now measured LOLA DEM evidence accepted for Moonmoon
 software proof. It does not prove lunar mission validity; it currently blocks
@@ -152,6 +155,9 @@ Current implementation status:
   budget and review item.
 - MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
   materialized workspace carries the robot-facing handoff payload.
+- MoonBook now indexes MoonClaw modeling proposals, and the materialized
+  workspace carries the proposal packet payload with acceptance criteria and
+  expected outputs.
 
 Remaining work:
 
@@ -175,6 +181,27 @@ Goal: let agents run bounded lunar modeling tasks.
 
 Done when MoonClaw can run a modeling job and Moonmoon can validate and ingest
 the result.
+
+Current implementation status:
+
+- `src/adapters/moonclaw` defines proposal packets with job kind, priority,
+  evidence inputs, blocked review items, acceptance criteria, and expected
+  outputs.
+- The first trusted square exports three bounded proposals: acquire
+  ephemeris-backed power/thermal evidence, widen the LOLA corridor search, and
+  score route candidates after terrain and power evidence improves.
+- `cmd/main -- moonclaw proposals` emits Markdown/JSON proposal packets under
+  `output/moonclaw/`.
+- MoonBook indexes the MoonClaw proposal packet and includes it in the
+  materialized evidence workspace.
+
+Remaining work:
+
+- Add executable MoonClaw job runners or receipts for accepted proposal output.
+- Validate receipts against source checksums, route IDs, and current review
+  items before updating the Moonmoon model.
+- Ingest the first successful receipt back into terrain, mission, and MoonBook
+  outputs.
 
 ## Milestone 5: Moonrobo Simulation Handoff
 

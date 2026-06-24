@@ -54,6 +54,7 @@ pub(all) enum BookEntryKind {
   IlluminationAssessment
   EnergyWindow
   MoonroboHandoff
+  MoonClawProposal
   OpenQuestion
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

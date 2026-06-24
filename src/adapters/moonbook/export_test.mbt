@@ -2,8 +2,8 @@
 test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 33)
-  assert_eq(dossier.review_queue.length(), 21)
+  assert_eq(dossier.entries.length(), 34)
+  assert_eq(dossier.review_queue.length(), 22)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -70,6 +70,9 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(
     dossier.entries[32].kind == @moonbook.BookEntryKind::MoonroboHandoff,
   )
+  assert_true(
+    dossier.entries[33].kind == @moonbook.BookEntryKind::MoonClawProposal,
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[19].kind),
     "mission-decision",
@@ -92,6 +95,11 @@ test "first trusted square exports a LunarBook evidence dossier" {
     "moonrobo-handoff",
   )
   assert_true(dossier.entries[32].summary.contains("southwest-bypass"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[33].kind),
+    "moonclaw-proposal",
+  )
+  assert_true(dossier.entries[33].summary.contains("ephemeris"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -122,6 +130,9 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let handoff = dossier.review_queue[17]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
+  let moonclaw = dossier.review_queue[18]
+  assert_eq(moonclaw.item_id, "moonclaw-proposals")
+  assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
 }
 
 ///|
@@ -138,6 +149,7 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("illumination-assessment"))
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("moonrobo-handoff"))
+  assert_true(markdown.contains("moonclaw-proposal"))
   assert_true(markdown.contains("## Review Queue"))
   assert_true(markdown.contains("workspace-materialized [low/accepted]"))
   assert_true(markdown.contains("route-direct-lola-window [high/rejected]"))
@@ -164,4 +176,5 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(json.contains("\"IlluminationAssessment\""))
   assert_true(json.contains("\"EnergyWindow\""))
   assert_true(json.contains("\"MoonroboHandoff\""))
+  assert_true(json.contains("\"MoonClawProposal\""))
 }

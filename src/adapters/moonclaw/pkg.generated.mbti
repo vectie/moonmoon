@@ -1,0 +1,97 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/adapters/moonclaw"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/site",
+}
+
+// Values
+pub fn corridor_expansion_proposal(@site.SiteDossier) -> MoonClawProposal
+
+pub fn ephemeris_acquisition_proposal(@site.SiteDossier) -> MoonClawProposal
+
+pub fn first_trusted_square_json() -> Json
+
+pub fn first_trusted_square_markdown() -> String
+
+pub fn first_trusted_square_primary_proposal() -> MoonClawProposal
+
+pub fn first_trusted_square_proposals() -> Array[MoonClawProposal]
+
+pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonClawProposal]
+
+pub fn job_kind_label(MoonClawJobKind) -> String
+
+pub fn priority_label(MoonClawJobPriority) -> String
+
+pub fn receipt_status_label(MoonClawReceiptStatus) -> String
+
+pub fn render_json(Array[MoonClawProposal]) -> Json
+
+pub fn render_markdown(Array[MoonClawProposal]) -> String
+
+pub fn route_scoring_proposal(@site.SiteDossier) -> MoonClawProposal
+
+// Errors
+
+// Types and methods
+pub(all) struct MoonClawAcceptanceCriterion {
+  criterion_id : String
+  description : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawJobInput {
+  input_id : String
+  evidence_path : String
+  claim_kind : @core.ClaimKind
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawJobKind {
+  CorridorExpansion
+  EphemerisAcquisition
+  RouteScoring
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawJobPriority {
+  Low
+  Medium
+  High
+  Critical
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawProposal {
+  proposal_id : String
+  site_id : String
+  job_kind : MoonClawJobKind
+  priority : MoonClawJobPriority
+  title : String
+  objective : String
+  inputs : Array[MoonClawJobInput]
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  blocked_by : Array[String]
+  expected_outputs : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawReceipt {
+  receipt_id : String
+  proposal_id : String
+  status : MoonClawReceiptStatus
+  accepted_outputs : Array[String]
+  validation_notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawReceiptStatus {
+  Pending
+  Accepted
+  Rejected
+  NeedsReview
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

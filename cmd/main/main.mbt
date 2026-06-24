@@ -11,6 +11,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- terrain fixture json
     #|  moon run cmd/main -- moonbook dossier
     #|  moon run cmd/main -- moonbook dossier json
+    #|  moon run cmd/main -- moonclaw proposals
+    #|  moon run cmd/main -- moonclaw proposals json
     #|  moon run cmd/main -- moonrobo handoff
     #|  moon run cmd/main -- moonrobo handoff json
     #|
@@ -23,6 +25,12 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("moonclaw") && args.contains("proposals") {
+    if output_json {
+      println(@moonclaw.first_trusted_square_json().stringify(indent=2))
+    } else {
+      println(@moonclaw.first_trusted_square_markdown())
+    }
   } else if args.contains("moonrobo") && args.contains("handoff") {
     if output_json {
       println(@moonrobo.first_trusted_square_json().stringify(indent=2))

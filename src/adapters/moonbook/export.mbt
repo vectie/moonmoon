@@ -13,6 +13,7 @@ pub(all) enum BookEntryKind {
   IlluminationAssessment
   EnergyWindow
   MoonroboHandoff
+  MoonClawProposal
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -89,6 +90,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     IlluminationAssessment => "illumination-assessment"
     EnergyWindow => "energy-window"
     MoonroboHandoff => "moonrobo-handoff"
+    MoonClawProposal => "moonclaw-proposal"
     OpenQuestion => "open-question"
   }
 }
@@ -472,6 +474,20 @@ fn moonrobo_handoff_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_proposal_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let proposal = @moonclaw.ephemeris_acquisition_proposal(dossier)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/modeling-proposals",
+    title: "MoonClaw modeling proposals for \{dossier.site.name}",
+    kind: MoonClawProposal,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.65,
+    path: "moonclaw/\{dossier.site.site_id}/proposals.json",
+    summary: "\{@moonclaw.priority_label(proposal.priority)} \{@moonclaw.job_kind_label(proposal.job_kind)} job: \{proposal.objective}",
+  }
+}
+
+///|
 fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   items.push(
@@ -582,6 +598,12 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       ),
     )
   }
+  items.push(
+    review_item(
+      "moonclaw-proposals", "high", "MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable",
+      "moonclaw",
+    ),
+  )
   for index, question in dossier.next_questions {
     items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }
@@ -617,6 +639,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   }
   entries.push(energy_entry(dossier))
   entries.push(moonrobo_handoff_entry(dossier))
+  entries.push(moonclaw_proposal_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(raw_review_queue)
   {

@@ -2,7 +2,7 @@
 
 > MoonBit-native lunar world model for the Moon suite.
 
-`MoonBit` `Lunar Digital Twin` `Terrain Modeling` `Mission Planning` `Rabbita` `Lepusa` `Moonrobo`
+`MoonBit` `Lunar Digital Twin` `Terrain Modeling` `Mission Planning` `Rabbita` `Lepusa` `MoonClaw` `Moonrobo`
 
 Moonmoon is the hard-world modeling layer for the Moon agent suite. It is the
 place where lunar data, terrain assumptions, uncertainty, illumination,
@@ -50,6 +50,8 @@ moon run cmd/main -- terrain fixture
 moon run cmd/main -- terrain fixture json
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
+moon run cmd/main -- moonclaw proposals
+moon run cmd/main -- moonclaw proposals json
 moon run cmd/main -- moonrobo handoff
 moon run cmd/main -- moonrobo handoff json
 python3 scripts/generate_moonmoon_fixture.py --check
@@ -57,9 +59,9 @@ python3 scripts/materialize_moonbook_workspace.py --check
 bash scripts/build_moonmoon_dossier.sh
 ```
 
-Reproducible site, terrain, MoonBook, and Moonrobo handoff deliverables are
+Reproducible site, terrain, MoonBook, MoonClaw, and Moonrobo handoff deliverables are
 written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
-`output/moonrobo/`. The materialized MoonBook workspace lives at
+`output/moonclaw/`, and `output/moonrobo/`. The materialized MoonBook workspace lives at
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
 
