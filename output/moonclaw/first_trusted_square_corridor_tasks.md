@@ -32,7 +32,7 @@
       - current: missing
       - ready: false
       - blocking: network byte-range extraction for the 9x9 search has not produced a pinned CSV
-      - gate: python3 scripts/scan_lola_corridor.py --radius 16 --step 4
+      - gate: python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
     - generated-corridor-scan: src/mission/generated_first_trusted_square_corridor_scan.mbt
       - producer: scripts/generate_corridor_scan.py
       - required: MoonBit corridor scan mirrors the reviewed widened CSV
@@ -49,7 +49,7 @@
       - gate: python3 scripts/materialize_moonbook_workspace.py --check
   - commands:
     - python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4
-    - python3 scripts/scan_lola_corridor.py --radius 16 --step 4
+    - python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
     - python3 scripts/generate_corridor_scan.py --check
     - /Users/kq/.moon/bin/moon test src/mission
     - python3 scripts/materialize_moonbook_workspace.py --check
