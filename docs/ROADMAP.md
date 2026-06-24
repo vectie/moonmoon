@@ -175,6 +175,9 @@ Current implementation status:
 - MoonBook also raises a dedicated `power-window-evidence` review item while
   the generated evidence reports `missing-source`, separating source readiness
   from the downstream energy-window blocker.
+- Moonrobo simulation-precondition packets now include that same
+  `power-window-evidence` blocker before `energy-window`, keeping source
+  readiness visible at the robot boundary.
 - MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
   materialized workspace carries the robot-facing handoff payload.
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized

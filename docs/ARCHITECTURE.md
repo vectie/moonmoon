@@ -158,7 +158,10 @@ standalone `power-window-evidence` entry before the derived energy budget, so
 the source state remains reviewable independently from route scoring. The
 MoonBook review queue treats that evidence as a high-severity source blocker
 until a real time window, checksum, and source status replace the checked
-missing-source fixture.
+missing-source fixture. Moonrobo handoff packets include the same
+`power-window-evidence` precondition before the derived energy-window gate, so
+robot-facing simulation packets preserve the difference between missing source
+evidence and computed energy margin.
 
 The current fixture now has a checked source-file boundary:
 

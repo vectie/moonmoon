@@ -81,6 +81,24 @@ fn energy_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
 }
 
 ///|
+fn power_window_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
+  let evidence = dossier.power_window_evidence
+  let decision = if evidence.has_time_window_ephemeris &&
+    evidence.source_status == "ready" {
+    @mission.TraverseDecision::Allow
+  } else {
+    @mission.TraverseDecision::Block
+  }
+  {
+    precondition_id: "power-window-evidence",
+    label: "Power-window source evidence gate",
+    decision,
+    evidence_path: "mission/first-trusted-square/power-window-evidence.json",
+    reason: "power-window evidence \{evidence.evidence_id} has source status \{evidence.source_status}",
+  }
+}
+
+///|
 fn corridor_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
   let best = dossier.corridor_scan[0]
   {
@@ -122,6 +140,7 @@ pub fn route_handoff(
   let preconditions = [
     route_precondition(route),
     illumination_precondition(route),
+    power_window_precondition(dossier),
     energy_precondition(dossier),
     corridor_precondition(dossier),
   ]

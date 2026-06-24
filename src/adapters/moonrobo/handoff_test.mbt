@@ -4,7 +4,7 @@ test "first trusted square exports Moonrobo simulation preconditions" {
   assert_eq(handoffs.length(), 5)
   assert_eq(handoffs[0].route_id, "direct-lola-window")
   assert_true(handoffs[0].decision == @mission.TraverseDecision::Block)
-  assert_eq(handoffs[0].preconditions.length(), 4)
+  assert_eq(handoffs[0].preconditions.length(), 5)
   assert_eq(
     handoffs[0].preconditions[0].precondition_id,
     "route-direct-lola-window",
@@ -13,9 +13,13 @@ test "first trusted square exports Moonrobo simulation preconditions" {
     handoffs[0].preconditions[1].precondition_id,
     "illumination-direct-lola-window",
   )
-  assert_eq(handoffs[0].preconditions[2].precondition_id, "energy-window")
   assert_eq(
-    handoffs[0].preconditions[3].precondition_id,
+    handoffs[0].preconditions[2].precondition_id,
+    "power-window-evidence",
+  )
+  assert_eq(handoffs[0].preconditions[3].precondition_id, "energy-window")
+  assert_eq(
+    handoffs[0].preconditions[4].precondition_id,
     "corridor-scan-best-window",
   )
   assert_eq(@moonrobo.handoff_status_label(handoffs[0]), "block")
@@ -29,6 +33,12 @@ test "first trusted square primary Moonrobo handoff follows best corridor route"
   assert_true(handoff.decision == @mission.TraverseDecision::Block)
   assert_eq(handoff.site_id, "first-trusted-square")
   assert_eq(handoff.target_body, "Moon")
+  assert_true(
+    handoff.preconditions.any(fn(precondition) {
+      precondition.precondition_id == "power-window-evidence" &&
+      precondition.reason.contains("missing-source")
+    }),
+  )
   assert_true(
     handoff.preconditions.any(fn(precondition) {
       precondition.precondition_id == "energy-window" &&
@@ -48,11 +58,19 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))
   assert_true(markdown.contains("southwest-bypass"))
+  assert_true(markdown.contains("power-window-evidence"))
+  assert_true(markdown.contains("missing-source"))
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("must not simulate"))
   let json = @moonrobo.first_trusted_square_json().stringify(indent=2)
   assert_true(json.contains("\"task_kind\": \"route-simulation-precondition\""))
   assert_true(json.contains("\"route_id\": \"southwest-bypass\""))
+  assert_true(json.contains("\"precondition_id\": \"power-window-evidence\""))
+  assert_true(
+    json.contains(
+      "\"evidence_path\": \"mission/first-trusted-square/power-window-evidence.json\"",
+    ),
+  )
   assert_true(json.contains("\"precondition_id\": \"energy-window\""))
   assert_true(json.contains("\"Block\""))
 }
