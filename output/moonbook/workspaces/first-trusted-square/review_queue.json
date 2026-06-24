@@ -140,6 +140,14 @@
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
     },
     {
+      "item_id": "power-window-evidence",
+      "severity": "high",
+      "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-power-window-evidence-request-evidence"
+    },
+    {
       "item_id": "energy-window",
       "severity": "high",
       "reason": "energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation",

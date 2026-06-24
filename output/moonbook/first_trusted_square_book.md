@@ -225,6 +225,7 @@
 - route-south-stepout [high/needs-evidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
 - illumination-south-stepout [high/needs-evidence] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
+- power-window-evidence [high/needs-evidence] power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review -> power-thermal-review
 - energy-window [high/needs-evidence] energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation -> power-thermal-review
 - moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
@@ -285,6 +286,9 @@
 - review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- review-power-window-evidence-request-evidence: request-evidence power-window-evidence -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review
 - review-energy-window-request-evidence: request-evidence energy-window -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation

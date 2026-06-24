@@ -140,6 +140,14 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
     },
     {
+      "transition_id": "review-power-window-evidence-request-evidence",
+      "item_id": "power-window-evidence",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review"
+    },
+    {
       "transition_id": "review-energy-window-request-evidence",
       "item_id": "energy-window",
       "decision": "RequestEvidence",
