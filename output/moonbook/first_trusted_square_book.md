@@ -180,6 +180,11 @@
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/receipts.json
+- moonclaw/first-trusted-square/corridor-expansion-receipt: MoonClaw corridor-expansion receipt for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-corridor-receipt
+  - claim: derived
+  - confidence: 0.75
+  - path: moonclaw/first-trusted-square/corridor-receipts.json
 
 ## Review Queue
 

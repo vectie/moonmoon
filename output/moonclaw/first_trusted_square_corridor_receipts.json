@@ -1,0 +1,362 @@
+[
+  {
+    "receipt": {
+      "receipt_id": "moonclaw/first-trusted-square/corridor-expansion-v1/current-receipt",
+      "proposal_id": "moonclaw/first-trusted-square/corridor-expansion-v1",
+      "status": "Accepted",
+      "accepted_outputs": [
+        "bounded-corridor-search",
+        "blocked-window-proof",
+        "best-window-summary"
+      ],
+      "validation_notes": [
+        "corridor-scan-present: pass - 25 measured LOLA corridor windows are available.",
+        "bounded-search-size: pass - current corridor expansion receipt covers the reproducible 5x5 LOLA search surface.",
+        "best-window-selected-route: pass - best measured window r+8-c-8 selects route southwest-bypass.",
+        "all-sampled-windows-blocked: pass - all sampled corridor windows remain blocked by conservative rover limits.",
+        "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+        "proposal-blockers-current: pass - corridor proposal blocker corridor-scan-best-window remains active."
+      ]
+    },
+    "site_id": "first-trusted-square",
+    "scan_id": "first-trusted-square-5x5-corridor-scan-v1",
+    "sampled_window_count": 25,
+    "best_window_id": "r+8-c-8",
+    "selected_route_id": "southwest-bypass",
+    "window_scores": [
+      {
+        "window_id": "r+8-c-8",
+        "rank": 1,
+        "row_offset": 8,
+        "col_offset": -8,
+        "decision": "Block",
+        "selected_route_id": "southwest-bypass",
+        "risk_index": 1.3541167,
+        "max_grade": 0.64845,
+        "roughness_m": 7.056667,
+        "note": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      },
+      {
+        "window_id": "r+4-c-8",
+        "rank": 2,
+        "row_offset": 4,
+        "col_offset": -8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5992875,
+        "max_grade": 0.6913,
+        "roughness_m": 9.079875,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+0-c+8",
+        "rank": 3,
+        "row_offset": 0,
+        "col_offset": 8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5571167000000001,
+        "max_grade": 0.7054,
+        "roughness_m": 8.517167,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-4-c-8",
+        "rank": 4,
+        "row_offset": -4,
+        "col_offset": -8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5203583,
+        "max_grade": 0.7091,
+        "roughness_m": 8.112583,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-4-c+8",
+        "rank": 5,
+        "row_offset": -4,
+        "col_offset": 8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.568775,
+        "max_grade": 0.7125,
+        "roughness_m": 8.56275,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+8-c+0",
+        "rank": 6,
+        "row_offset": 8,
+        "col_offset": 0,
+        "decision": "Block",
+        "selected_route_id": "south-stepout",
+        "risk_index": 1.4354083,
+        "max_grade": 0.71995,
+        "roughness_m": 7.154583,
+        "note": "promoted route evidence window; still blocked"
+      },
+      {
+        "window_id": "r-4-c+0",
+        "rank": 7,
+        "row_offset": -4,
+        "col_offset": 0,
+        "decision": "Block",
+        "selected_route_id": "north-rim-stepout",
+        "risk_index": 1.4996125,
+        "max_grade": 0.728,
+        "roughness_m": 7.716125,
+        "note": "promoted route evidence window; still blocked"
+      },
+      {
+        "window_id": "r-8-c-4",
+        "rank": 8,
+        "row_offset": -8,
+        "col_offset": -4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5389458,
+        "max_grade": 0.73215,
+        "roughness_m": 8.067958,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+8-c+4",
+        "rank": 9,
+        "row_offset": 8,
+        "col_offset": 4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5544083,
+        "max_grade": 0.7439,
+        "roughness_m": 8.105083,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-8-c+0",
+        "rank": 10,
+        "row_offset": -8,
+        "col_offset": 0,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.4896208,
+        "max_grade": 0.74445,
+        "roughness_m": 7.451708,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+0-c-4",
+        "rank": 11,
+        "row_offset": 0,
+        "col_offset": -4,
+        "decision": "Block",
+        "selected_route_id": "west-contour-detour",
+        "risk_index": 1.6044917,
+        "max_grade": 0.7517,
+        "roughness_m": 8.527917,
+        "note": "promoted route evidence window; still blocked"
+      },
+      {
+        "window_id": "r+8-c+8",
+        "rank": 12,
+        "row_offset": 8,
+        "col_offset": 8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.4901875,
+        "max_grade": 0.7622,
+        "roughness_m": 7.279875,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-8-c+8",
+        "rank": 13,
+        "row_offset": -8,
+        "col_offset": 8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.504275,
+        "max_grade": 0.78485,
+        "roughness_m": 7.19425,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+0-c-8",
+        "rank": 14,
+        "row_offset": 0,
+        "col_offset": -8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.6270458,
+        "max_grade": 0.80005,
+        "roughness_m": 8.269958,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+4-c-4",
+        "rank": 15,
+        "row_offset": 4,
+        "col_offset": -4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.5363417,
+        "max_grade": 0.8107,
+        "roughness_m": 7.256417,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+4-c+4",
+        "rank": 16,
+        "row_offset": 4,
+        "col_offset": 4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.7116208,
+        "max_grade": 0.84825,
+        "roughness_m": 8.633708,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-4-c-4",
+        "rank": 17,
+        "row_offset": -4,
+        "col_offset": -4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.7542167,
+        "max_grade": 0.862,
+        "roughness_m": 8.922167,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+0-c+4",
+        "rank": 18,
+        "row_offset": 0,
+        "col_offset": 4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.6734,
+        "max_grade": 0.8758,
+        "roughness_m": 7.976,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+4-c+8",
+        "rank": 19,
+        "row_offset": 4,
+        "col_offset": 8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.7106333,
+        "max_grade": 0.9002,
+        "roughness_m": 8.104333,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-8-c-8",
+        "rank": 20,
+        "row_offset": -8,
+        "col_offset": -8,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.7138458,
+        "max_grade": 0.92835,
+        "roughness_m": 7.854958,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-4-c+4",
+        "rank": 21,
+        "row_offset": -4,
+        "col_offset": 4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.8508708,
+        "max_grade": 0.94925,
+        "roughness_m": 9.016208,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+8-c-4",
+        "rank": 22,
+        "row_offset": 8,
+        "col_offset": -4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 2.0603917000000003,
+        "max_grade": 0.9794,
+        "roughness_m": 10.809917,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r-8-c+4",
+        "rank": 23,
+        "row_offset": -8,
+        "col_offset": 4,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 1.9785833,
+        "max_grade": 0.99285,
+        "roughness_m": 9.857333,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+4-c+0",
+        "rank": 24,
+        "row_offset": 4,
+        "col_offset": 0,
+        "decision": "Block",
+        "selected_route_id": "",
+        "risk_index": 2.0155542,
+        "max_grade": 1.06445,
+        "roughness_m": 9.511042,
+        "note": "measured scan window; not promoted as a route candidate"
+      },
+      {
+        "window_id": "r+0-c+0",
+        "rank": 25,
+        "row_offset": 0,
+        "col_offset": 0,
+        "decision": "Block",
+        "selected_route_id": "direct-lola-window",
+        "risk_index": 2.0843625,
+        "max_grade": 1.15935,
+        "roughness_m": 9.250125,
+        "note": "promoted route evidence window; still blocked"
+      }
+    ],
+    "validation_checks": [
+      {
+        "validation_id": "corridor-scan-present",
+        "passed": true,
+        "note": "25 measured LOLA corridor windows are available."
+      },
+      {
+        "validation_id": "bounded-search-size",
+        "passed": true,
+        "note": "current corridor expansion receipt covers the reproducible 5x5 LOLA search surface."
+      },
+      {
+        "validation_id": "best-window-selected-route",
+        "passed": true,
+        "note": "best measured window r+8-c-8 selects route southwest-bypass."
+      },
+      {
+        "validation_id": "all-sampled-windows-blocked",
+        "passed": true,
+        "note": "all sampled corridor windows remain blocked by conservative rover limits."
+      },
+      {
+        "validation_id": "source-checksums-verified",
+        "passed": true,
+        "note": "5 of 5 dataset source fingerprints match their manifests."
+      },
+      {
+        "validation_id": "proposal-blockers-current",
+        "passed": true,
+        "note": "corridor proposal blocker corridor-scan-best-window remains active."
+      }
+    ],
+    "next_action": "MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
+  }
+]

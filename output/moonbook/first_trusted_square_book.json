@@ -317,6 +317,15 @@
       "confidence": 0.7,
       "path": "moonclaw/first-trusted-square/receipts.json",
       "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/corridor-expansion-receipt",
+      "title": "MoonClaw corridor-expansion receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawCorridorReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.75,
+      "path": "moonclaw/first-trusted-square/corridor-receipts.json",
+      "summary": "accepted receipt covers 25 measured windows and keeps best window r+8-c-8 block: MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
     }
   ],
   "review_queue": [
