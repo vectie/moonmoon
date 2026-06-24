@@ -113,6 +113,7 @@ def workspace_files(
   files: dict[Path, str] = {}
   entries = book["entries"]
   review_queue = book["review_queue"]
+  review_transitions = book["review_transitions"]
   entry_paths: list[str] = []
 
   index = {
@@ -126,6 +127,7 @@ def workspace_files(
     ],
     "entries": entries,
     "review_queue_path": "review_queue.json",
+    "review_transitions_path": "review_transitions.json",
   }
   files[WORKSPACE / "index.json"] = render_json(index)
 
@@ -148,14 +150,23 @@ def workspace_files(
     "items": review_queue,
   })
 
+  files[WORKSPACE / "review_transitions.json"] = render_json({
+    "workspace": book["workspace"],
+    "site_id": book["site_id"],
+    "generated_by": GENERATOR,
+    "items": review_transitions,
+  })
+
   files[WORKSPACE / "manifest.json"] = render_json({
     "workspace": book["workspace"],
     "site_id": book["site_id"],
     "generated_by": GENERATOR,
     "entry_count": len(entries),
     "review_queue_count": len(review_queue),
+    "review_transition_count": len(review_transitions),
     "entry_paths": entry_paths,
     "review_queue_path": "review_queue.json",
+    "review_transitions_path": "review_transitions.json",
   })
 
   files[WORKSPACE / "README.md"] = (
@@ -167,6 +178,7 @@ def workspace_files(
     "- Source MoonBook dossier: `output/moonbook/first_trusted_square_book.json`\n"
     f"- Entries: {len(entries)}\n"
     f"- Review queue items: {len(review_queue)}\n"
+    f"- Review transitions: {len(review_transitions)}\n"
   )
 
   return files

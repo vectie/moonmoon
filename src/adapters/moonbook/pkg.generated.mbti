@@ -23,6 +23,10 @@ pub fn render_json(LunarBookDossier) -> Json
 
 pub fn render_markdown(LunarBookDossier) -> String
 
+pub fn review_decision_label(ReviewDecision) -> String
+
+pub fn review_item_status_label(ReviewItemStatus) -> String
+
 // Errors
 
 // Types and methods
@@ -57,6 +61,21 @@ pub(all) struct LunarBookDossier {
   title : String
   entries : Array[BookEntry]
   review_queue : Array[ReviewQueueItem]
+  review_transitions : Array[ReviewTransition]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum ReviewDecision {
+  KeepOpen
+  Accept
+  Reject
+  RequestEvidence
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum ReviewItemStatus {
+  Open
+  Accepted
+  Rejected
+  NeedsEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct ReviewQueueItem {
@@ -64,6 +83,17 @@ pub(all) struct ReviewQueueItem {
   severity : String
   reason : String
   owner : String
+  status : ReviewItemStatus
+  last_transition_id : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ReviewTransition {
+  transition_id : String
+  item_id : String
+  decision : ReviewDecision
+  resulting_status : ReviewItemStatus
+  reviewer : String
+  rationale : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

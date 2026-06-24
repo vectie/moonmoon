@@ -187,9 +187,11 @@ with ephemeris-backed sun/thermal windows.
 The current MoonBook boundary is a generated workspace tree under
 `output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves
 the aggregate entry list, each entry path contains the full typed payload behind
-that evidence claim, and `review_queue.json` records the current open review
-work. That makes the workspace inspectable as files, while the authoritative
-source remains the MoonBit-generated site and MoonBook dossiers.
+that evidence claim, `review_queue.json` records the current review status
+snapshot, and `review_transitions.json` records the deterministic transition
+log that produced that snapshot. That makes the workspace inspectable as files,
+while the authoritative source remains the MoonBit-generated site and MoonBook
+dossiers.
 
 ## Old Terrain Project Lessons
 

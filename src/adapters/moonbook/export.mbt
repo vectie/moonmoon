@@ -31,6 +31,34 @@ pub(all) struct ReviewQueueItem {
   severity : String
   reason : String
   owner : String
+  status : ReviewItemStatus
+  last_transition_id : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) enum ReviewDecision {
+  KeepOpen
+  Accept
+  Reject
+  RequestEvidence
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) enum ReviewItemStatus {
+  Open
+  Accepted
+  Rejected
+  NeedsEvidence
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct ReviewTransition {
+  transition_id : String
+  item_id : String
+  decision : ReviewDecision
+  resulting_status : ReviewItemStatus
+  reviewer : String
+  rationale : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -40,6 +68,7 @@ pub(all) struct LunarBookDossier {
   title : String
   entries : Array[BookEntry]
   review_queue : Array[ReviewQueueItem]
+  review_transitions : Array[ReviewTransition]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -57,6 +86,26 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
     OpenQuestion => "open-question"
+  }
+}
+
+///|
+pub fn review_decision_label(decision : ReviewDecision) -> String {
+  match decision {
+    KeepOpen => "keep-open"
+    Accept => "accept"
+    Reject => "reject"
+    RequestEvidence => "request-evidence"
+  }
+}
+
+///|
+pub fn review_item_status_label(status : ReviewItemStatus) -> String {
+  match status {
+    Open => "open"
+    Accepted => "accepted"
+    Rejected => "rejected"
+    NeedsEvidence => "needs-evidence"
   }
 }
 
@@ -161,6 +210,111 @@ fn validation_severity(status : @dataset.DatasetValidationStatus) -> String {
     MissingChecksum => "medium"
     UnsupportedChecksum => "medium"
   }
+}
+
+///|
+fn review_item(
+  item_id : String,
+  severity : String,
+  reason : String,
+  owner : String,
+) -> ReviewQueueItem {
+  { item_id, severity, reason, owner, status: Open, last_transition_id: "" }
+}
+
+///|
+fn review_decision_for_item(item : ReviewQueueItem) -> ReviewDecision {
+  if item.item_id == "workspace-materialized" {
+    Accept
+  } else if item.item_id == "route-direct-lola-window" {
+    Reject
+  } else if item.severity == "high" {
+    RequestEvidence
+  } else {
+    KeepOpen
+  }
+}
+
+///|
+fn resulting_status_for_decision(decision : ReviewDecision) -> ReviewItemStatus {
+  match decision {
+    KeepOpen => Open
+    Accept => Accepted
+    Reject => Rejected
+    RequestEvidence => NeedsEvidence
+  }
+}
+
+///|
+fn transition_rationale(
+  item : ReviewQueueItem,
+  decision : ReviewDecision,
+) -> String {
+  match decision {
+    Accept =>
+      "accepted because the materialized workspace is present in generated MoonBook output"
+    Reject =>
+      "rejected for this proof slice because the evidence explicitly says not to traverse directly"
+    RequestEvidence =>
+      "kept in review with a request for stronger measured evidence before mission use: \{item.reason}"
+    KeepOpen => "left open for \{item.owner} follow-up"
+  }
+}
+
+///|
+fn transition_id(item : ReviewQueueItem, decision : ReviewDecision) -> String {
+  "review-\{item.item_id}-\{review_decision_label(decision)}"
+}
+
+///|
+fn make_review_transition(item : ReviewQueueItem) -> ReviewTransition {
+  let decision = review_decision_for_item(item)
+  {
+    transition_id: transition_id(item, decision),
+    item_id: item.item_id,
+    decision,
+    resulting_status: resulting_status_for_decision(decision),
+    reviewer: "moonbook-policy-v1",
+    rationale: transition_rationale(item, decision),
+  }
+}
+
+///|
+fn apply_review_transition(
+  item : ReviewQueueItem,
+  transition : ReviewTransition,
+) -> ReviewQueueItem {
+  {
+    item_id: item.item_id,
+    severity: item.severity,
+    reason: item.reason,
+    owner: item.owner,
+    status: transition.resulting_status,
+    last_transition_id: transition.transition_id,
+  }
+}
+
+///|
+fn review_transitions_for_queue(
+  items : Array[ReviewQueueItem],
+) -> Array[ReviewTransition] {
+  let transitions : Array[ReviewTransition] = []
+  for item in items {
+    transitions.push(make_review_transition(item))
+  }
+  transitions
+}
+
+///|
+fn apply_review_transitions(
+  items : Array[ReviewQueueItem],
+  transitions : Array[ReviewTransition],
+) -> Array[ReviewQueueItem] {
+  let reviewed : Array[ReviewQueueItem] = []
+  for index, item in items {
+    reviewed.push(apply_review_transition(item, transitions[index]))
+  }
+  reviewed
 }
 
 ///|
@@ -272,79 +426,94 @@ fn illumination_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
 }
 
 ///|
-fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
+fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
+  items.push(
+    review_item(
+      "workspace-materialized", "low", "MoonBook workspace files are materialized from the current generated dossier",
+      "moonbook",
+    ),
+  )
   for candidate in dossier.source_candidates {
     if candidate.review_status !=
       @dataset.ReviewStatus::AcceptedForSoftwareProof {
-      items.push({
-        item_id: "source-candidate-\{candidate.candidate_id}",
-        severity: "medium",
-        reason: candidate.next_action,
-        owner: "data-review",
-      })
+      items.push(
+        review_item(
+          "source-candidate-\{candidate.candidate_id}",
+          "medium",
+          candidate.next_action,
+          "data-review",
+        ),
+      )
     }
   }
   for validation in dossier.validations {
     if validation.status != @dataset.DatasetValidationStatus::Verified {
-      items.push({
-        item_id: "validation-\{validation.dataset_id}",
-        severity: validation_severity(validation.status),
-        reason: validation.note,
-        owner: "data-review",
-      })
+      items.push(
+        review_item(
+          "validation-\{validation.dataset_id}",
+          validation_severity(validation.status),
+          validation.note,
+          "data-review",
+        ),
+      )
     }
   }
   for index, blocker in dossier.blockers {
-    items.push({
-      item_id: "blocker-\{index}",
-      severity: decision_severity(dossier.traverse.decision),
-      reason: blocker,
-      owner: "operator",
-    })
+    items.push(
+      review_item(
+        "blocker-\{index}",
+        decision_severity(dossier.traverse.decision),
+        blocker,
+        "operator",
+      ),
+    )
   }
   for index, reason in dossier.traverse.reasons {
-    items.push({
-      item_id: "traverse-\{index}",
-      severity: decision_severity(dossier.traverse.decision),
-      reason,
-      owner: "mission-review",
-    })
+    items.push(
+      review_item(
+        "traverse-\{index}",
+        decision_severity(dossier.traverse.decision),
+        reason,
+        "mission-review",
+      ),
+    )
   }
   for route in dossier.route_candidates {
     if route.decision != @mission.TraverseDecision::Allow {
-      items.push({
-        item_id: "route-\{route.route_id}",
-        severity: decision_severity(route.decision),
-        reason: "\{route.label} from \{route.evidence_dataset_id}: \{route.next_action}",
-        owner: "mission-review",
-      })
+      items.push(
+        review_item(
+          "route-\{route.route_id}",
+          decision_severity(route.decision),
+          "\{route.label} from \{route.evidence_dataset_id}: \{route.next_action}",
+          "mission-review",
+        ),
+      )
     }
     if route.illumination.decision != @mission.TraverseDecision::Allow {
-      items.push({
-        item_id: "illumination-\{route.route_id}",
-        severity: decision_severity(route.illumination.decision),
-        reason: "\{route.label}: \{route.illumination.next_action}",
-        owner: "power-thermal-review",
-      })
+      items.push(
+        review_item(
+          "illumination-\{route.route_id}",
+          decision_severity(route.illumination.decision),
+          "\{route.label}: \{route.illumination.next_action}",
+          "power-thermal-review",
+        ),
+      )
     }
   }
   let best = dossier.corridor_scan[0]
   if best.decision != @mission.TraverseDecision::Allow {
-    items.push({
-      item_id: "corridor-scan-best-window",
-      severity: decision_severity(best.decision),
-      reason: "best measured corridor window \{best.window_id} selects \{best.selected_route_id} but remains \{@mission.corridor_scan_window_status_label(best)}: \{best.note}",
-      owner: "mission-review",
-    })
+    items.push(
+      review_item(
+        "corridor-scan-best-window",
+        decision_severity(best.decision),
+        "best measured corridor window \{best.window_id} selects \{best.selected_route_id} but remains \{@mission.corridor_scan_window_status_label(best)}: \{best.note}",
+        "mission-review",
+      ),
+    )
   }
   for index, question in dossier.next_questions {
-    items.push({
-      item_id: "question-\{index}",
-      severity: "low",
-      reason: question,
-      owner: "moonclaw",
-    })
+    items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }
   items
 }
@@ -376,12 +545,15 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   for entry in illumination_entries(dossier) {
     entries.push(entry)
   }
+  let raw_review_queue = open_review_queue(dossier)
+  let review_transitions = review_transitions_for_queue(raw_review_queue)
   {
     workspace: "moonbook://moonmoon/first-trusted-square",
     site_id: dossier.site.site_id,
     title: "Moonmoon evidence dossier: \{dossier.site.name}",
     entries,
-    review_queue: review_queue(dossier),
+    review_queue: apply_review_transitions(raw_review_queue, review_transitions),
+    review_transitions,
   }
 }
 
@@ -408,7 +580,17 @@ pub fn render_markdown(dossier : LunarBookDossier) -> String {
     text += "- empty\n"
   } else {
     for item in dossier.review_queue {
-      text += "- \{item.item_id} [\{item.severity}] \{item.reason} -> \{item.owner}\n"
+      text += "- \{item.item_id} [\{item.severity}/\{review_item_status_label(item.status)}] \{item.reason} -> \{item.owner}\n"
+    }
+  }
+  text += "\n## Review Transitions\n\n"
+  if dossier.review_transitions.is_empty() {
+    text += "- empty\n"
+  } else {
+    for transition in dossier.review_transitions {
+      text += "- \{transition.transition_id}: \{review_decision_label(transition.decision)} \{transition.item_id} -> \{review_item_status_label(transition.resulting_status)}\n"
+      text += "  - reviewer: \{transition.reviewer}\n"
+      text += "  - rationale: \{transition.rationale}\n"
     }
   }
   text

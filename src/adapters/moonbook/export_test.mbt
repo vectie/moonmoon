@@ -3,7 +3,8 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 31)
-  assert_true(dossier.review_queue.length() >= 5)
+  assert_eq(dossier.review_queue.length(), 19)
+  assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
     "dataset/lro-lola-first-trusted-square-dem-v1",
@@ -77,6 +78,30 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(dossier.entries[22].summary.contains("west-contour"))
   assert_true(dossier.entries[24].summary.contains("southwest"))
   assert_true(dossier.entries[29].summary.contains("relief-shadow risk"))
+  assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
+  assert_true(
+    dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
+  )
+  assert_true(
+    dossier.review_transitions[0].decision == @moonbook.ReviewDecision::Accept,
+  )
+  assert_eq(
+    @moonbook.review_item_status_label(dossier.review_queue[0].status),
+    "accepted",
+  )
+  let direct_route = dossier.review_queue[5]
+  assert_eq(direct_route.item_id, "route-direct-lola-window")
+  assert_true(direct_route.status == @moonbook.ReviewItemStatus::Rejected)
+  assert_true(
+    dossier.review_transitions[5].decision == @moonbook.ReviewDecision::Reject,
+  )
+  assert_eq(
+    @moonbook.review_decision_label(dossier.review_transitions[5].decision),
+    "reject",
+  )
+  let corridor = dossier.review_queue[15]
+  assert_eq(corridor.item_id, "corridor-scan-best-window")
+  assert_true(corridor.status == @moonbook.ReviewItemStatus::NeedsEvidence)
 }
 
 ///|
@@ -92,11 +117,20 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("corridor-scan"))
   assert_true(markdown.contains("illumination-assessment"))
   assert_true(markdown.contains("## Review Queue"))
+  assert_true(markdown.contains("workspace-materialized [low/accepted]"))
+  assert_true(markdown.contains("route-direct-lola-window [high/rejected]"))
+  assert_true(markdown.contains("## Review Transitions"))
+  assert_true(markdown.contains("review-route-direct-lola-window-reject"))
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("max neighbor grade exceeds rover hard limit"))
   assert_true(markdown.contains("power-thermal-review"))
   let json = @moonbook.first_trusted_square_book_json().stringify(indent=2)
   assert_true(json.contains("\"review_queue\""))
+  assert_true(json.contains("\"review_transitions\""))
+  assert_true(json.contains("\"Accepted\""))
+  assert_true(json.contains("\"Rejected\""))
+  assert_true(json.contains("\"NeedsEvidence\""))
+  assert_true(json.contains("\"RequestEvidence\""))
   assert_true(json.contains("\"SourceUpgradeCandidate\""))
   assert_true(json.contains("\"SourceAcquisitionPlan\""))
   assert_true(json.contains("\"SourceProductSelection\""))

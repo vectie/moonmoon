@@ -103,6 +103,9 @@ Current implementation status:
 - `scripts/materialize_moonbook_workspace.py` turns the aggregate site and
   MoonBook JSON dossiers into per-entry workspace files under
   `output/moonbook/workspaces/first-trusted-square/`.
+- MoonBook review work now carries item status and a deterministic transition
+  log, including accepted workspace materialization, rejected direct traverse,
+  and needs-evidence mission blockers.
 - The review queue currently includes fixture blockers, traverse review
   reasons, illumination/power blockers, and next questions for
   MoonClaw/operator follow-up.
@@ -145,9 +148,10 @@ Remaining work:
   windows.
 - Replace the relief-shadow proxy with time-windowed solar ephemeris and
   explicit robot energy/thermal budgets.
-- Extend the materialized MoonBook workspace with accepted/rejected review
+- Extend the materialized MoonBook workspace with operator-authored review
   transitions and append-only review history.
-- Add accepted/rejected review transitions once MoonBook storage exists.
+- Add persisted reviewer identity, timestamps, and manual accepted/rejected
+  transitions once MoonBook storage has an editable layer.
 
 ## Milestone 4: MoonClaw Modeling Jobs
 
@@ -206,6 +210,6 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 - Add illumination windows and energy assumptions to the mission score.
 - Add Rabbita view models for terrain layers, inspector rows, and route
   overlays.
-- Add MoonBook review status transitions.
+- Add persisted MoonBook review history and editable review status transitions.
 - Keep running `moon check`, `moon test`, `moon info`, and `moon fmt` for each
   proof slice.

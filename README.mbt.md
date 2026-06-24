@@ -58,7 +58,8 @@ bash scripts/build_moonmoon_dossier.sh
 Reproducible site, terrain, and MoonBook deliverables are written to
 `output/site/`, `output/terrain/`, and `output/moonbook/`. The materialized
 MoonBook workspace lives at
-`output/moonbook/workspaces/first-trusted-square/`.
+`output/moonbook/workspaces/first-trusted-square/` and includes per-entry
+payloads, review status, and review transitions.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by
