@@ -1,0 +1,87 @@
+{
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "title": "Moonmoon evidence dossier: First Trusted Square / Shackleton Rim rehearsal tile",
+  "entries": [
+    {
+      "entry_id": "dataset/fixture-first-trusted-square-dem-v1",
+      "title": "Synthetic Shackleton Rim DEM fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Simulated",
+      "confidence": 1,
+      "path": "datasets/fixture-first-trusted-square-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "validation/fixture-first-trusted-square-dem-v1",
+      "title": "Source validation for fixture-first-trusted-square-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/fixture-first-trusted-square-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "terrain/first-trusted-square/metrics",
+      "title": "Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "DerivedTerrain",
+      "claim_kind": "Derived",
+      "confidence": 0.6624,
+      "path": "terrain/first-trusted-square/metrics.json",
+      "summary": "caution hazard, 5.7 m elevation range, 0.9291666666666666 m roughness."
+    },
+    {
+      "entry_id": "mission/first-trusted-square/traverse",
+      "title": "Traverse readiness for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MissionDecision",
+      "claim_kind": "Derived",
+      "confidence": 0.6624,
+      "path": "mission/first-trusted-square/traverse.json",
+      "summary": "review with score 54: operator should review route and source confidence before simulation"
+    }
+  ],
+  "review_queue": [
+    {
+      "item_id": "blocker-0",
+      "severity": "medium",
+      "reason": "needs operator review before robot traverse planning",
+      "owner": "operator"
+    },
+    {
+      "item_id": "blocker-1",
+      "severity": "medium",
+      "reason": "fixture confidence is not high enough for physical mission planning",
+      "owner": "operator"
+    },
+    {
+      "item_id": "traverse-0",
+      "severity": "medium",
+      "reason": "max neighbor grade needs route review",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "traverse-1",
+      "severity": "medium",
+      "reason": "terrain confidence below traverse threshold",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "question-0",
+      "severity": "low",
+      "reason": "Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture.",
+      "owner": "moonclaw"
+    },
+    {
+      "item_id": "question-1",
+      "severity": "low",
+      "reason": "Add illumination windows for robot energy and thermal constraints.",
+      "owner": "moonclaw"
+    },
+    {
+      "item_id": "question-2",
+      "severity": "low",
+      "reason": "Export the dossier into a LunarBook workspace for review.",
+      "owner": "moonclaw"
+    }
+  ]
+}

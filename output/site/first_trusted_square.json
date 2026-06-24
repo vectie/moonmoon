@@ -1,0 +1,110 @@
+{
+  "site": {
+    "site_id": "first-trusted-square",
+    "name": "First Trusted Square / Shackleton Rim rehearsal tile",
+    "body": "Moon",
+    "bounds": {
+      "south_deg": -89.9,
+      "north_deg": -89.86,
+      "west_deg": 0.1,
+      "east_deg": 0.14
+    },
+    "center": {
+      "latitude_deg": -89.88,
+      "longitude_deg": 0.12,
+      "radius_m": 1737400
+    },
+    "purpose": "Software proof slice for lunar terrain, uncertainty, and robot traverse reasoning."
+  },
+  "datasets": [
+    {
+      "dataset_id": "fixture-first-trusted-square-dem-v1",
+      "title": "Synthetic Shackleton Rim DEM fixture",
+      "source_url": "repo://fixtures/first-trusted-square",
+      "license": "Apache-2.0",
+      "product_type": "tiny-dem-fixture",
+      "trust": "CuratedFixture",
+      "claim_kind": "Simulated",
+      "coverage": {
+        "south_deg": -89.9,
+        "north_deg": -89.86,
+        "west_deg": 0.1,
+        "east_deg": 0.14
+      },
+      "resolution_m": 10,
+      "source_path": "data/fixtures/first_trusted_square_dem.csv",
+      "source_sha256": "45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7",
+      "extractor": "moonmoon/src/terrain.first_trusted_square_grid.v1",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "checksum": "inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4",
+      "citation": "Moonmoon repository fixture for software proof only.",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "Synthetic elevation values are intentionally small and deterministic.",
+        "This manifest proves the evidence contract before an authoritative LOLA/LROC fixture lands.",
+        "Do not use this dataset for mission-grade traverse planning."
+      ]
+    }
+  ],
+  "validations": [
+    {
+      "dataset_id": "fixture-first-trusted-square-dem-v1",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "expected_checksum": "inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4",
+      "actual_checksum": "inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4",
+      "status": "Verified",
+      "note": "source fingerprint matches manifest"
+    }
+  ],
+  "terrain": {
+    "min_elevation_m": -0.3,
+    "max_elevation_m": 5.4,
+    "elevation_range_m": 5.7,
+    "max_neighbor_grade": 0.26000000000000006,
+    "roughness_m": 0.9291666666666666,
+    "hazard_class": "Caution",
+    "hazard_reason": "terrain needs operator review before traverse planning",
+    "provenance": {
+      "dataset_id": "fixture-first-trusted-square-dem-v1",
+      "source_title": "Synthetic Shackleton Rim DEM fixture",
+      "source_url": "repo://fixtures/first-trusted-square",
+      "license": "Apache-2.0",
+      "product_type": "terrain-metrics.v1",
+      "claim_kind": "Derived",
+      "generated_by": "moonmoon/src/terrain.analyze"
+    },
+    "uncertainty": {
+      "confidence": 0.6624,
+      "label": "medium",
+      "note": "Derived from a tiny fixture; useful for software proof, not mission certification."
+    }
+  },
+  "traverse": {
+    "profile": {
+      "profile_id": "conservative-lunar-rover-v1",
+      "label": "Conservative Lunar Rover",
+      "max_grade": 0.35,
+      "caution_grade": 0.18,
+      "max_roughness_m": 2.5,
+      "caution_roughness_m": 1.2,
+      "min_confidence": 0.7
+    },
+    "decision": "Review",
+    "score": 54,
+    "reasons": [
+      "max neighbor grade needs route review",
+      "terrain confidence below traverse threshold"
+    ],
+    "next_action": "operator should review route and source confidence before simulation"
+  },
+  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
+  "blockers": [
+    "needs operator review before robot traverse planning",
+    "fixture confidence is not high enough for physical mission planning"
+  ],
+  "next_questions": [
+    "Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture.",
+    "Add illumination windows for robot energy and thermal constraints.",
+    "Export the dossier into a LunarBook workspace for review."
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "tile_id": "first-trusted-square",
+  "rows": 4,
+  "cols": 4,
+  "cell_size_m": 10,
+  "source_manifest": {
+    "dataset_id": "fixture-first-trusted-square-dem-v1",
+    "title": "Synthetic Shackleton Rim DEM fixture",
+    "source_url": "repo://fixtures/first-trusted-square",
+    "license": "Apache-2.0",
+    "product_type": "tiny-dem-fixture",
+    "trust": "CuratedFixture",
+    "claim_kind": "Simulated",
+    "coverage": {
+      "south_deg": -89.9,
+      "north_deg": -89.86,
+      "west_deg": 0.1,
+      "east_deg": 0.14
+    },
+    "resolution_m": 10,
+    "source_path": "data/fixtures/first_trusted_square_dem.csv",
+    "source_sha256": "45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7",
+    "extractor": "moonmoon/src/terrain.first_trusted_square_grid.v1",
+    "checksum_kind": "InlineFixtureFingerprint",
+    "checksum": "inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4",
+    "citation": "Moonmoon repository fixture for software proof only.",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "Synthetic elevation values are intentionally small and deterministic.",
+      "This manifest proves the evidence contract before an authoritative LOLA/LROC fixture lands.",
+      "Do not use this dataset for mission-grade traverse planning."
+    ]
+  },
+  "cells": [
+    {
+      "tile_id": "trusted-square-r0-c0",
+      "row": 0,
+      "col": 0,
+      "elevation_m": 0,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r0-c1",
+      "row": 0,
+      "col": 1,
+      "elevation_m": 0.8,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r0-c2",
+      "row": 0,
+      "col": 2,
+      "elevation_m": 1.6,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r0-c3",
+      "row": 0,
+      "col": 3,
+      "elevation_m": 2.1,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r1-c0",
+      "row": 1,
+      "col": 0,
+      "elevation_m": 0.5,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r1-c1",
+      "row": 1,
+      "col": 1,
+      "elevation_m": 1.2,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r1-c2",
+      "row": 1,
+      "col": 2,
+      "elevation_m": 2.4,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r1-c3",
+      "row": 1,
+      "col": 3,
+      "elevation_m": 3.2,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r2-c0",
+      "row": 2,
+      "col": 0,
+      "elevation_m": 0.2,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r2-c1",
+      "row": 2,
+      "col": 1,
+      "elevation_m": 1.4,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r2-c2",
+      "row": 2,
+      "col": 2,
+      "elevation_m": 3,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r2-c3",
+      "row": 2,
+      "col": 3,
+      "elevation_m": 4.7,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r3-c0",
+      "row": 3,
+      "col": 0,
+      "elevation_m": -0.3,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r3-c1",
+      "row": 3,
+      "col": 1,
+      "elevation_m": 0.9,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r3-c2",
+      "row": 3,
+      "col": 2,
+      "elevation_m": 2.8,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    },
+    {
+      "tile_id": "trusted-square-r3-c3",
+      "row": 3,
+      "col": 3,
+      "elevation_m": 5.4,
+      "provenance": {
+        "dataset_id": "fixture-first-trusted-square-dem-v1",
+        "source_title": "Synthetic Shackleton Rim DEM fixture",
+        "source_url": "repo://fixtures/first-trusted-square",
+        "license": "Apache-2.0",
+        "product_type": "tiny-dem-fixture",
+        "claim_kind": "Simulated",
+        "generated_by": "source-manifest"
+      },
+      "uncertainty": {
+        "confidence": 0.72,
+        "label": "medium",
+        "note": "Synthetic DEM fixture shaped from lunar south-pole planning assumptions."
+      }
+    }
+  ]
+}
