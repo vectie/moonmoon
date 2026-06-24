@@ -3,6 +3,7 @@ pub(all) enum BookEntryKind {
   SourceDataset
   SourceValidation
   SourceUpgradeCandidate
+  SourceAcquisitionPlan
   DerivedTerrain
   MissionDecision
   OpenQuestion
@@ -42,6 +43,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SourceDataset => "source-dataset"
     SourceValidation => "source-validation"
     SourceUpgradeCandidate => "source-upgrade-candidate"
+    SourceAcquisitionPlan => "source-acquisition-plan"
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
     OpenQuestion => "open-question"
@@ -60,6 +62,25 @@ fn source_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
       confidence: 0.0,
       path: "source-candidates/\{candidate.candidate_id}.json",
       summary: "\{candidate.instrument} \{candidate.product_family}: \{candidate.next_action}",
+    })
+  }
+  entries
+}
+
+///|
+fn source_acquisition_plan_entries(
+  dossier : @site.SiteDossier,
+) -> Array[BookEntry] {
+  let entries : Array[BookEntry] = []
+  for plan in dossier.source_acquisition_plans {
+    entries.push({
+      entry_id: "source-acquisition/\{plan.plan_id}",
+      title: "Acquire \{plan.product_id}",
+      kind: SourceAcquisitionPlan,
+      claim_kind: @core.ClaimKind::Unknown,
+      confidence: 0.0,
+      path: "source-acquisition/\{plan.plan_id}.json",
+      summary: "\{@dataset.acquisition_plan_progress_label(plan)} for \{plan.target_region}: \{plan.trust_gate}",
     })
   }
   entries
@@ -206,6 +227,9 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
 pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   let entries = dataset_entries(dossier)
   for entry in source_candidate_entries(dossier) {
+    entries.push(entry)
+  }
+  for entry in source_acquisition_plan_entries(dossier) {
     entries.push(entry)
   }
   for entry in validation_entries(dossier) {

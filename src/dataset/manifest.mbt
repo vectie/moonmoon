@@ -58,6 +58,32 @@ pub(all) struct SourceCandidate {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SourceAcquisitionStep {
+  step_id : String
+  title : String
+  action : String
+  expected_evidence : String
+  done_when : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SourceAcquisitionPlan {
+  plan_id : String
+  candidate_id : String
+  product_id : String
+  source_product_url : String
+  source_label_url : String
+  discovery_url : String
+  target_region : String
+  expected_format : String
+  local_raw_path : String
+  local_label_path : String
+  extracted_fixture_path : String
+  trust_gate : String
+  steps : Array[SourceAcquisitionStep]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct DatasetManifest {
   dataset_id : @core.DatasetId
   title : String
@@ -81,6 +107,11 @@ pub(all) struct DatasetManifest {
 ///|
 pub fn source_candidate_status_label(candidate : SourceCandidate) -> String {
   review_status_label(candidate.review_status)
+}
+
+///|
+pub fn acquisition_plan_progress_label(plan : SourceAcquisitionPlan) -> String {
+  "planned:\{plan.steps.length()}-steps"
 }
 
 ///|
@@ -178,8 +209,70 @@ pub fn first_trusted_square_lola_candidate() -> SourceCandidate {
 }
 
 ///|
+pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
+  {
+    plan_id: "acquire-lro-lola-gdr-south-pole-20m-v1",
+    candidate_id: "candidate-lro-lola-sldem-first-trusted-square",
+    product_id: "ldem_875s_20m_float",
+    source_product_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-5-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    source_label_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-5-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml",
+    discovery_url: "https://ode.rsl.wustl.edu/moon/",
+    target_region: "Shackleton rim rehearsal tile near 89.88S, 0.12E",
+    expected_format: "PDS LOLA GDR south-polar float image plus XML label",
+    local_raw_path: "data/sources/lro_lola/ldem_875s_20m_float.img",
+    local_label_path: "data/sources/lro_lola/ldem_875s_20m_float.xml",
+    extracted_fixture_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
+    trust_gate: "Do not replace the synthetic fixture until product URL, label URL, SHA-256, extraction window, and generated CSV checksum are recorded.",
+    steps: [
+      {
+        step_id: "discover",
+        title: "Confirm product family",
+        action: "Use the PDS LOLA page and Lunar ODE to confirm the south-polar GDR float product is the right first authoritative terrain source.",
+        expected_evidence: "Official PDS page URL, ODE discovery URL, product id, and product label URL.",
+        done_when: "The source candidate points to a named product family and the acquisition plan names a concrete product id.",
+      },
+      {
+        step_id: "label",
+        title: "Fetch label first",
+        action: "Download the XML label before the large image and parse dimensions, projection, units, byte order, and map scale.",
+        expected_evidence: "A local XML label with SHA-256 recorded in the authoritative dataset manifest draft.",
+        done_when: "The extractor can derive pixel coordinates for the trusted-square bounds without reading the full image into memory.",
+      },
+      {
+        step_id: "extract",
+        title: "Extract tiny tile",
+        action: "Read only the needed south-pole window from the float image and emit a compact CSV for the first trusted square.",
+        expected_evidence: "A small CSV under data/sources/lro_lola with source product id, bounds, resolution, and SHA-256.",
+        done_when: "scripts/generate_moonmoon_fixture.py can regenerate MoonBit terrain from the authoritative CSV.",
+      },
+      {
+        step_id: "validate",
+        title: "Verify evidence chain",
+        action: "Check raw label checksum, raw image checksum when available, extracted CSV checksum, and generated inline grid fingerprint.",
+        expected_evidence: "A passing source verification script and a DatasetValidation with status verified.",
+        done_when: "moon test passes while the dossier marks the authoritative dataset as accepted for software proof.",
+      },
+      {
+        step_id: "review",
+        title: "Human review before mission claims",
+        action: "Review projection math, elevation units, polar singularity handling, and traverse thresholds before raising claim kind beyond derived software evidence.",
+        expected_evidence: "MoonBook review notes tied to the dataset, terrain metrics, and traverse decision.",
+        done_when: "The review queue no longer contains the source-upgrade blocker for this site.",
+      },
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate] {
   [first_trusted_square_lola_candidate()]
+}
+
+///|
+pub fn first_trusted_square_source_acquisition_plans() -> Array[
+  SourceAcquisitionPlan,
+] {
+  [first_trusted_square_lola_acquisition_plan()]
 }
 
 ///|

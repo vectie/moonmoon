@@ -4,6 +4,7 @@ pub(all) struct SiteDossier {
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@dataset.DatasetValidation]
   source_candidates : Array[@dataset.SourceCandidate]
+  source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   summary : String
@@ -56,6 +57,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     datasets: [grid.source_manifest],
     validations: [@terrain.validate_grid_source(grid)],
     source_candidates: @dataset.first_trusted_square_source_candidates(),
+    source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
     terrain,
     traverse,
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
@@ -98,6 +100,25 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - access: \{candidate.access_url}\n"
     text += "  - target path: \{candidate.local_target_path}\n"
     text += "  - next action: \{candidate.next_action}\n"
+  }
+  text += "\n"
+  text += "## Source Acquisition Plans\n\n"
+  for plan in dossier.source_acquisition_plans {
+    text += "- \{plan.plan_id}: \{plan.product_id}\n"
+    text += "  - candidate: \{plan.candidate_id}\n"
+    text += "  - progress: \{@dataset.acquisition_plan_progress_label(plan)}\n"
+    text += "  - discovery: \{plan.discovery_url}\n"
+    text += "  - product: \{plan.source_product_url}\n"
+    text += "  - label: \{plan.source_label_url}\n"
+    text += "  - target region: \{plan.target_region}\n"
+    text += "  - local raw path: \{plan.local_raw_path}\n"
+    text += "  - local label path: \{plan.local_label_path}\n"
+    text += "  - extracted fixture path: \{plan.extracted_fixture_path}\n"
+    text += "  - trust gate: \{plan.trust_gate}\n"
+    text += "  - steps:\n"
+    for step in plan.steps {
+      text += "    - \{step.step_id}: \{step.title} - \{step.done_when}\n"
+    }
   }
   text += "\n"
   text += "## Source Validation\n\n"

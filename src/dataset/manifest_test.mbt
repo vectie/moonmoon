@@ -54,3 +54,22 @@ test "first trusted square declares an authoritative LOLA upgrade candidate" {
   )
   assert_eq(@dataset.first_trusted_square_source_candidates().length(), 1)
 }
+
+///|
+test "first trusted square has a concrete LOLA acquisition plan" {
+  let plan = @dataset.first_trusted_square_lola_acquisition_plan()
+  assert_eq(plan.plan_id, "acquire-lro-lola-gdr-south-pole-20m-v1")
+  assert_eq(plan.product_id, "ldem_875s_20m_float")
+  assert_true(plan.source_product_url.contains("lola_gdr/polar/float_img"))
+  assert_true(plan.source_label_url.has_suffix(".xml"))
+  assert_eq(plan.discovery_url, "https://ode.rsl.wustl.edu/moon/")
+  assert_eq(
+    plan.extracted_fixture_path,
+    "data/sources/lro_lola/first_trusted_square_dem.csv",
+  )
+  assert_eq(@dataset.acquisition_plan_progress_label(plan), "planned:5-steps")
+  assert_eq(
+    @dataset.first_trusted_square_source_acquisition_plans().length(),
+    1,
+  )
+}

@@ -8,11 +8,17 @@ import {
 }
 
 // Values
+pub fn acquisition_plan_progress_label(SourceAcquisitionPlan) -> String
+
 pub fn checksum_kind_label(ChecksumKind) -> String
+
+pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan
 
 pub fn first_trusted_square_lola_candidate() -> SourceCandidate
 
 pub fn first_trusted_square_manifest() -> DatasetManifest
+
+pub fn first_trusted_square_source_acquisition_plans() -> Array[SourceAcquisitionPlan]
 
 pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
 
@@ -86,6 +92,30 @@ pub(all) enum ReviewStatus {
   NeedsSourceUpgrade
   NeedsHumanReview
   Rejected
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SourceAcquisitionPlan {
+  plan_id : String
+  candidate_id : String
+  product_id : String
+  source_product_url : String
+  source_label_url : String
+  discovery_url : String
+  target_region : String
+  expected_format : String
+  local_raw_path : String
+  local_label_path : String
+  extracted_fixture_path : String
+  trust_gate : String
+  steps : Array[SourceAcquisitionStep]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SourceAcquisitionStep {
+  step_id : String
+  title : String
+  action : String
+  expected_evidence : String
+  done_when : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SourceCandidate {
