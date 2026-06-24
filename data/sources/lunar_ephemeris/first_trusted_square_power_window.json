@@ -1,0 +1,23 @@
+{
+  "evidence_id": "first-trusted-square-power-window-missing-v1",
+  "source_status": "missing-source",
+  "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
+  "local_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  "source_sha256": "",
+  "source_bytes": 0,
+  "time_start_utc": "pending",
+  "time_end_utc": "pending",
+  "target_lat_deg": -89.88,
+  "target_lon_deg": 0.12,
+  "sunlit_hours": 0.0,
+  "dark_hours": 0.0,
+  "available_energy_wh": 0.0,
+  "confidence": 0.0,
+  "has_time_window_ephemeris": false,
+  "reasons": [
+    "official ephemeris or illumination source is not pinned yet",
+    "source checksum and byte count are intentionally pending",
+    "energy gate must remain blocked until generated evidence carries a real time window"
+  ]
+}
+

@@ -67,6 +67,10 @@ Current implementation status:
 - `src/dataset` now records that missing power source as a typed ephemeris
   source candidate and acquisition plan, so MoonBook can review exact SPICE or
   equivalent illumination inputs before the energy gate changes state.
+- `data/sources/lunar_ephemeris/first_trusted_square_power_window.json` now
+  stores a checked missing-source power-window fixture, and
+  `scripts/generate_power_window.py` mirrors it into generated MoonBit evidence
+  consumed by the mission energy and illumination gates.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `src/adapters/moonrobo` exports robot-facing simulation precondition packets
@@ -162,6 +166,9 @@ Current implementation status:
   candidate and acquisition plan. The plan names source discovery, checksum
   pinning, local JSON power-window evidence, generated MoonBit output, and the
   review gate required before Moonrobo power evidence can become credible.
+- The energy-window and route illumination payloads now cite the generated
+  power-window evidence id and source status, making the current block traceable
+  to a concrete checked artifact rather than an implicit boolean.
 - MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
   materialized workspace carries the robot-facing handoff payload.
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized

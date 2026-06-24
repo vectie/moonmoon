@@ -146,6 +146,15 @@ power-window evidence are present. This keeps terrain proof and power proof
 separate: measured LOLA windows can be accepted for software proof while
 Moonrobo still stays blocked by absent time-windowed solar evidence.
 
+The first power-window evidence boundary is now executable but intentionally
+negative. `data/sources/lunar_ephemeris/first_trusted_square_power_window.json`
+records the missing source status, target coordinate, intended local evidence
+path, zero verified Wh, and blocking reasons. `scripts/generate_power_window.py`
+mirrors that JSON into
+`src/mission/generated_first_trusted_square_power_window.mbt`, and the mission
+energy/illumination gates read the generated evidence instead of hard-coding the
+absence of ephemeris input.
+
 The current fixture now has a checked source-file boundary:
 
 - `data/sources/lro_lola/gdr_ds.cat`

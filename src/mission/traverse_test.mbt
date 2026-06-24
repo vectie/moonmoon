@@ -81,6 +81,17 @@ test "first trusted square corridor scan ranks measured route windows" {
 
 ///|
 test "first trusted square illumination gate blocks missing time window evidence" {
+  let evidence = @mission.first_trusted_square_power_window_evidence()
+  assert_eq(
+    evidence.evidence_id,
+    "first-trusted-square-power-window-missing-v1",
+  )
+  assert_eq(evidence.source_status, "missing-source")
+  assert_eq(
+    evidence.local_source_path,
+    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  )
+  assert_true(!evidence.has_time_window_ephemeris)
   let assessment = @mission.assess_illumination(
     @terrain.first_trusted_square_grid(),
     @mission.conservative_illumination_constraint(),
@@ -90,6 +101,11 @@ test "first trusted square illumination gate blocks missing time window evidence
     assessment.constraint.constraint_id,
     "conservative-south-pole-power-v1",
   )
+  assert_eq(
+    assessment.constraint.power_window_evidence_id,
+    evidence.evidence_id,
+  )
+  assert_eq(assessment.constraint.power_window_source_status, "missing-source")
   assert_true(assessment.relief_shadow_risk > 0.3)
   assert_true(assessment.confidence < 0.5)
   assert_true(
@@ -105,6 +121,15 @@ test "first trusted square energy window blocks missing ephemeris budget" {
   let assessment = @mission.first_trusted_square_energy_assessment()
   assert_true(assessment.decision == Block)
   assert_eq(assessment.budget.budget_id, "conservative-south-pole-energy-v1")
+  assert_eq(
+    assessment.budget.power_window_evidence_id,
+    "first-trusted-square-power-window-missing-v1",
+  )
+  assert_eq(assessment.budget.power_window_source_status, "missing-source")
+  assert_eq(
+    assessment.budget.power_window_source_path,
+    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  )
   assert_eq(assessment.route_count, 5)
   assert_eq(assessment.blocked_route_count, 5)
   assert_true(assessment.required_energy_wh > 800.0)

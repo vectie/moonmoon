@@ -29,6 +29,11 @@ pub(all) struct TraverseScore {
 pub(all) struct IlluminationConstraint {
   constraint_id : String
   label : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
+  time_start_utc : String
+  time_end_utc : String
   min_sunlit_hours : Double
   max_dark_hours : Double
   max_relief_shadow_risk : Double
@@ -53,6 +58,11 @@ pub(all) struct IlluminationAssessment {
 pub(all) struct EnergyBudget {
   budget_id : String
   label : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
+  time_start_utc : String
+  time_end_utc : String
   battery_capacity_wh : Double
   reserve_wh : Double
   drive_power_w : Double
@@ -61,7 +71,28 @@ pub(all) struct EnergyBudget {
   min_energy_margin_wh : Double
   required_sunlit_hours : Double
   assumed_dark_survival_hours : Double
+  verified_available_energy_wh : Double
   has_time_window_ephemeris : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct PowerWindowEvidence {
+  evidence_id : String
+  source_status : String
+  source_family_url : String
+  local_source_path : String
+  source_sha256 : String
+  source_bytes : Int
+  time_start_utc : String
+  time_end_utc : String
+  target_lat_deg : Double
+  target_lon_deg : Double
+  sunlit_hours : Double
+  dark_hours : Double
+  available_energy_wh : Double
+  confidence : Double
+  has_time_window_ephemeris : Bool
+  reasons : Array[String]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -162,24 +193,50 @@ pub fn energy_decision_label(assessment : EnergyAssessment) -> String {
 }
 
 ///|
+pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence {
+  generated_first_trusted_square_power_window_evidence()
+}
+
+///|
+fn verified_available_energy_wh(evidence : PowerWindowEvidence) -> Double {
+  if !evidence.has_time_window_ephemeris {
+    0.0
+  } else {
+    evidence.available_energy_wh
+  }
+}
+
+///|
 pub fn conservative_illumination_constraint() -> IlluminationConstraint {
+  let evidence = first_trusted_square_power_window_evidence()
   {
     constraint_id: "conservative-south-pole-power-v1",
     label: "Conservative South Pole Power/Thermal Gate",
+    power_window_evidence_id: evidence.evidence_id,
+    power_window_source_path: evidence.local_source_path,
+    power_window_source_status: evidence.source_status,
+    time_start_utc: evidence.time_start_utc,
+    time_end_utc: evidence.time_end_utc,
     min_sunlit_hours: 4.0,
     max_dark_hours: 2.0,
     max_relief_shadow_risk: 0.22,
     caution_relief_shadow_risk: 0.14,
     min_confidence: 0.7,
-    has_time_window_ephemeris: false,
+    has_time_window_ephemeris: evidence.has_time_window_ephemeris,
   }
 }
 
 ///|
 pub fn conservative_energy_budget() -> EnergyBudget {
+  let evidence = first_trusted_square_power_window_evidence()
   {
     budget_id: "conservative-south-pole-energy-v1",
     label: "Conservative South Pole Rover Energy Budget",
+    power_window_evidence_id: evidence.evidence_id,
+    power_window_source_path: evidence.local_source_path,
+    power_window_source_status: evidence.source_status,
+    time_start_utc: evidence.time_start_utc,
+    time_end_utc: evidence.time_end_utc,
     battery_capacity_wh: 1200.0,
     reserve_wh: 600.0,
     drive_power_w: 120.0,
@@ -188,7 +245,8 @@ pub fn conservative_energy_budget() -> EnergyBudget {
     min_energy_margin_wh: 250.0,
     required_sunlit_hours: 4.0,
     assumed_dark_survival_hours: 2.0,
-    has_time_window_ephemeris: false,
+    verified_available_energy_wh: verified_available_energy_wh(evidence),
+    has_time_window_ephemeris: evidence.has_time_window_ephemeris,
   }
 }
 
@@ -348,6 +406,11 @@ pub fn assess_illumination(
     reasons, missing_ephemeris, "no time-windowed solar ephemeris is attached",
   )
   add_reason_if(
+    reasons,
+    missing_ephemeris,
+    "power-window evidence \{constraint.power_window_evidence_id} has source status \{constraint.power_window_source_status}",
+  )
+  add_reason_if(
     reasons, risk_blocked, "local relief shadow proxy exceeds conservative limit",
   )
   add_reason_if(
@@ -406,10 +469,12 @@ pub fn assess_energy_window(
     budget.drive_power_w * estimated_drive_hours +
     budget.comms_power_w * estimated_drive_hours +
     budget.thermal_survival_power_w * estimated_dark_survival_hours
-  let available_energy_wh = if budget.has_time_window_ephemeris {
+  let available_energy_wh = if !budget.has_time_window_ephemeris {
+    0.0
+  } else if budget.verified_available_energy_wh > budget.battery_capacity_wh {
     budget.battery_capacity_wh
   } else {
-    0.0
+    budget.verified_available_energy_wh
   }
   let margin_wh = available_energy_wh - required_energy_wh
   let reasons : Array[String] = []
@@ -417,6 +482,11 @@ pub fn assess_energy_window(
     reasons,
     !budget.has_time_window_ephemeris,
     "no time-windowed solar ephemeris is attached for energy planning",
+  )
+  add_reason_if(
+    reasons,
+    !budget.has_time_window_ephemeris,
+    "power-window evidence \{budget.power_window_evidence_id} has source status \{budget.power_window_source_status}",
   )
   add_reason_if(
     reasons,

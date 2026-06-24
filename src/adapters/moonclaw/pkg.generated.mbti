@@ -116,6 +116,9 @@ pub(all) struct MoonClawEphemerisAcquisitionReceipt {
   site_id : String
   energy_decision : @mission.TraverseDecision
   has_time_window_ephemeris : Bool
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
   route_count : Int
   blocked_route_count : Int
   required_sunlit_hours : Double

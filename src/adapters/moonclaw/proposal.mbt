@@ -124,6 +124,9 @@ pub(all) struct MoonClawEphemerisAcquisitionReceipt {
   site_id : @core.SiteId
   energy_decision : @mission.TraverseDecision
   has_time_window_ephemeris : Bool
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
   route_count : Int
   blocked_route_count : Int
   required_sunlit_hours : Double
@@ -747,6 +750,7 @@ pub fn ephemeris_acquisition_receipt(
 ) -> MoonClawEphemerisAcquisitionReceipt {
   let proposal = ephemeris_acquisition_proposal(dossier)
   let energy = dossier.energy
+  let evidence = @mission.first_trusted_square_power_window_evidence()
   let checks = [
     validation(
       "energy-window-present",
@@ -755,8 +759,14 @@ pub fn ephemeris_acquisition_receipt(
     ),
     validation(
       "time-window-ephemeris-missing",
-      !energy.budget.has_time_window_ephemeris,
-      "current energy budget explicitly has no time-windowed ephemeris attached.",
+      !energy.budget.has_time_window_ephemeris &&
+      !evidence.has_time_window_ephemeris,
+      "current energy budget explicitly reads \{evidence.evidence_id}, which has no time-windowed ephemeris attached.",
+    ),
+    validation(
+      "power-window-source-status-missing",
+      evidence.source_status == "missing-source",
+      "generated power-window evidence source status is \{evidence.source_status}.",
     ),
     validation(
       "verified-available-energy-zero",
@@ -785,6 +795,9 @@ pub fn ephemeris_acquisition_receipt(
     site_id: dossier.site.site_id,
     energy_decision: energy.decision,
     has_time_window_ephemeris: energy.budget.has_time_window_ephemeris,
+    power_window_evidence_id: evidence.evidence_id,
+    power_window_source_path: evidence.local_source_path,
+    power_window_source_status: evidence.source_status,
     route_count: energy.route_count,
     blocked_route_count: energy.blocked_route_count,
     required_sunlit_hours: energy.budget.required_sunlit_hours,
@@ -900,6 +913,9 @@ pub fn render_ephemeris_receipts_markdown(
     text += "  - status: \{receipt_status_label(ephemeris.receipt.status)}\n"
     text += "  - energy decision: \{@mission.traverse_decision_label(ephemeris.energy_decision)}\n"
     text += "  - has time-windowed ephemeris: \{ephemeris.has_time_window_ephemeris}\n"
+    text += "  - power-window evidence: \{ephemeris.power_window_evidence_id}\n"
+    text += "  - power-window source: \{ephemeris.power_window_source_path}\n"
+    text += "  - power-window source status: \{ephemeris.power_window_source_status}\n"
     text += "  - routes: \{ephemeris.route_count} total, \{ephemeris.blocked_route_count} blocked\n"
     text += "  - required sunlit hours: \{ephemeris.required_sunlit_hours}\n"
     text += "  - dark survival hours: \{ephemeris.assumed_dark_survival_hours}\n"

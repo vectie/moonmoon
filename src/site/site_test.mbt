@@ -143,6 +143,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("selected route: southwest-bypass"))
   assert_true(markdown.contains("## Energy Window"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
+  assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))
+  assert_true(markdown.contains("power-window source status: missing-source"))
   assert_true(markdown.contains("verified available energy: 0"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
@@ -218,6 +220,14 @@ test "first trusted square dossier exports machine-readable evidence" {
     text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
   )
   assert_true(text.contains("\"available_energy_wh\": 0"))
+  assert_true(
+    text.contains("\"power_window_source_status\": \"missing-source\""),
+  )
+  assert_true(
+    text.contains(
+      "\"power_window_evidence_id\": \"first-trusted-square-power-window-missing-v1\"",
+    ),
+  )
   assert_true(text.contains("\"route_candidates\""))
   assert_true(text.contains("\"route_id\": \"west-contour-detour\""))
   assert_true(text.contains("\"route_id\": \"southwest-bypass\""))

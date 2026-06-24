@@ -122,6 +122,15 @@ test "first trusted square ephemeris receipt records missing power evidence" {
   )
   assert_true(receipt.energy_decision == @mission.TraverseDecision::Block)
   assert_true(!receipt.has_time_window_ephemeris)
+  assert_eq(
+    receipt.power_window_evidence_id,
+    "first-trusted-square-power-window-missing-v1",
+  )
+  assert_eq(receipt.power_window_source_status, "missing-source")
+  assert_eq(
+    receipt.power_window_source_path,
+    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  )
   assert_eq(receipt.route_count, 5)
   assert_eq(receipt.blocked_route_count, 5)
   assert_eq(receipt.verified_available_energy_wh, 0.0)
@@ -130,6 +139,11 @@ test "first trusted square ephemeris receipt records missing power evidence" {
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {
       note.contains("time-window-ephemeris-missing")
+    }),
+  )
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("power-window-source-status-missing")
     }),
   )
   assert_true(receipt.next_action.contains("cannot clear the energy gate"))
@@ -158,6 +172,8 @@ test "MoonClaw ephemeris receipt renderers expose missing source contract" {
   assert_true(markdown.contains("ephemeris-energy-v1/current-receipt"))
   assert_true(markdown.contains("needs-review"))
   assert_true(markdown.contains("time-window-ephemeris-missing"))
+  assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))
+  assert_true(markdown.contains("power-window source status: missing-source"))
   assert_true(markdown.contains("first_trusted_square_power_window.json"))
   let json = @moonclaw.first_trusted_square_ephemeris_receipts_json().stringify(
     indent=2,
@@ -165,6 +181,9 @@ test "MoonClaw ephemeris receipt renderers expose missing source contract" {
   assert_true(json.contains("\"missing_outputs\""))
   assert_true(json.contains("\"NeedsReview\""))
   assert_true(json.contains("\"has_time_window_ephemeris\""))
+  assert_true(
+    json.contains("\"power_window_source_status\": \"missing-source\""),
+  )
 }
 
 ///|

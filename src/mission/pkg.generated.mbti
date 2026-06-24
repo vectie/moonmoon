@@ -28,6 +28,8 @@ pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow]
 
 pub fn first_trusted_square_energy_assessment() -> EnergyAssessment
 
+pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence
+
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
 
 pub fn first_trusted_square_traverse_score() -> TraverseScore
@@ -78,6 +80,11 @@ pub(all) struct EnergyAssessment {
 pub(all) struct EnergyBudget {
   budget_id : String
   label : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
+  time_start_utc : String
+  time_end_utc : String
   battery_capacity_wh : Double
   reserve_wh : Double
   drive_power_w : Double
@@ -86,6 +93,7 @@ pub(all) struct EnergyBudget {
   min_energy_margin_wh : Double
   required_sunlit_hours : Double
   assumed_dark_survival_hours : Double
+  verified_available_energy_wh : Double
   has_time_window_ephemeris : Bool
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -103,12 +111,36 @@ pub(all) struct IlluminationAssessment {
 pub(all) struct IlluminationConstraint {
   constraint_id : String
   label : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  power_window_source_status : String
+  time_start_utc : String
+  time_end_utc : String
   min_sunlit_hours : Double
   max_dark_hours : Double
   max_relief_shadow_risk : Double
   caution_relief_shadow_risk : Double
   min_confidence : Double
   has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PowerWindowEvidence {
+  evidence_id : String
+  source_status : String
+  source_family_url : String
+  local_source_path : String
+  source_sha256 : String
+  source_bytes : Int
+  time_start_utc : String
+  time_end_utc : String
+  target_lat_deg : Double
+  target_lon_deg : Double
+  sunlit_hours : Double
+  dark_hours : Double
+  available_energy_wh : Double
+  confidence : Double
+  has_time_window_ephemeris : Bool
+  reasons : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RouteCandidate {
