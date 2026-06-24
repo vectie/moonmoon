@@ -2,7 +2,7 @@
 test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 34)
+  assert_eq(dossier.entries.length(), 35)
   assert_eq(dossier.review_queue.length(), 22)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -73,6 +73,9 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(
     dossier.entries[33].kind == @moonbook.BookEntryKind::MoonClawProposal,
   )
+  assert_true(
+    dossier.entries[34].kind == @moonbook.BookEntryKind::MoonClawReceipt,
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[19].kind),
     "mission-decision",
@@ -100,6 +103,11 @@ test "first trusted square exports a LunarBook evidence dossier" {
     "moonclaw-proposal",
   )
   assert_true(dossier.entries[33].summary.contains("ephemeris"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[34].kind),
+    "moonclaw-receipt",
+  )
+  assert_true(dossier.entries[34].summary.contains("Moonrobo handoff block"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -150,6 +158,7 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("moonrobo-handoff"))
   assert_true(markdown.contains("moonclaw-proposal"))
+  assert_true(markdown.contains("moonclaw-receipt"))
   assert_true(markdown.contains("## Review Queue"))
   assert_true(markdown.contains("workspace-materialized [low/accepted]"))
   assert_true(markdown.contains("route-direct-lola-window [high/rejected]"))
@@ -177,4 +186,5 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(json.contains("\"EnergyWindow\""))
   assert_true(json.contains("\"MoonroboHandoff\""))
   assert_true(json.contains("\"MoonClawProposal\""))
+  assert_true(json.contains("\"MoonClawReceipt\""))
 }

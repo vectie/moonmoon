@@ -14,6 +14,7 @@ pub(all) enum BookEntryKind {
   EnergyWindow
   MoonroboHandoff
   MoonClawProposal
+  MoonClawReceipt
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -91,6 +92,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     EnergyWindow => "energy-window"
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
+    MoonClawReceipt => "moonclaw-receipt"
     OpenQuestion => "open-question"
   }
 }
@@ -488,6 +490,20 @@ fn moonclaw_proposal_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let receipt = @moonclaw.route_scoring_receipt(dossier)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/route-scoring-receipt",
+    title: "MoonClaw route-scoring receipt for \{dossier.site.name}",
+    kind: MoonClawReceipt,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.7,
+    path: "moonclaw/\{dossier.site.site_id}/receipts.json",
+    summary: "\{@moonclaw.receipt_status_label(receipt.receipt.status)} receipt keeps primary Moonrobo handoff \{@mission.traverse_decision_label(receipt.moonrobo_handoff_decision)}: \{receipt.next_action}",
+  }
+}
+
+///|
 fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   items.push(
@@ -640,6 +656,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   entries.push(energy_entry(dossier))
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))
+  entries.push(moonclaw_receipt_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(raw_review_queue)
   {

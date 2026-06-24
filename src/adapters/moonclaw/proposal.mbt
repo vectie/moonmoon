@@ -59,6 +59,38 @@ pub(all) struct MoonClawReceipt {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MoonClawReceiptValidation {
+  validation_id : String
+  passed : Bool
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MoonClawRouteScore {
+  route_id : String
+  rank : Int
+  route_decision : @mission.TraverseDecision
+  illumination_decision : @mission.TraverseDecision
+  route_score : Int
+  max_grade : Double
+  roughness_m : Double
+  confidence : Double
+  evidence_path : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MoonClawRouteScoringReceipt {
+  receipt : MoonClawReceipt
+  site_id : @core.SiteId
+  selected_route_id : String
+  route_scores : Array[MoonClawRouteScore]
+  validation_checks : Array[MoonClawReceiptValidation]
+  moonrobo_handoff_decision : @mission.TraverseDecision
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn job_kind_label(kind : MoonClawJobKind) -> String {
   match kind {
     CorridorExpansion => "corridor-expansion"
@@ -103,6 +135,116 @@ fn criterion(
   description : String,
 ) -> MoonClawAcceptanceCriterion {
   { criterion_id, description }
+}
+
+///|
+fn validation(
+  validation_id : String,
+  passed : Bool,
+  note : String,
+) -> MoonClawReceiptValidation {
+  { validation_id, passed, note }
+}
+
+///|
+fn validation_notes(checks : Array[MoonClawReceiptValidation]) -> Array[String] {
+  let notes : Array[String] = []
+  for check in checks {
+    let status = if check.passed { "pass" } else { "fail" }
+    notes.push("\{check.validation_id}: \{status} - \{check.note}")
+  }
+  notes
+}
+
+///|
+fn all_checks_pass(checks : Array[MoonClawReceiptValidation]) -> Bool {
+  for check in checks {
+    if !check.passed {
+      return false
+    }
+  }
+  true
+}
+
+///|
+fn route_id_exists(
+  routes : Array[@mission.RouteCandidate],
+  route_id : String,
+) -> Bool {
+  routes.any(fn(route) { route.route_id == route_id })
+}
+
+///|
+fn route_by_id(
+  routes : Array[@mission.RouteCandidate],
+  route_id : String,
+) -> @mission.RouteCandidate {
+  for route in routes {
+    if route.route_id == route_id {
+      return route
+    }
+  }
+  routes[0]
+}
+
+///|
+fn route_rank(
+  route : @mission.RouteCandidate,
+  routes : Array[@mission.RouteCandidate],
+) -> Int {
+  let mut rank = 1
+  for other in routes {
+    if other.score > route.score {
+      rank = rank + 1
+    }
+  }
+  rank
+}
+
+///|
+fn route_score(
+  route : @mission.RouteCandidate,
+  routes : Array[@mission.RouteCandidate],
+  site_id : @core.SiteId,
+) -> MoonClawRouteScore {
+  {
+    route_id: route.route_id,
+    rank: route_rank(route, routes),
+    route_decision: route.decision,
+    illumination_decision: route.illumination.decision,
+    route_score: route.score,
+    max_grade: route.expected_max_grade,
+    roughness_m: route.expected_roughness_m,
+    confidence: route.confidence,
+    evidence_path: "mission/\{site_id}/routes/\{route.route_id}.json",
+    next_action: route.next_action,
+  }
+}
+
+///|
+fn route_scores(
+  routes : Array[@mission.RouteCandidate],
+  site_id : @core.SiteId,
+) -> Array[MoonClawRouteScore] {
+  let scores : Array[MoonClawRouteScore] = []
+  for route in routes {
+    scores.push(route_score(route, routes, site_id))
+  }
+  scores
+}
+
+///|
+fn route_receipt_next_action(
+  handoff_decision : @mission.TraverseDecision,
+) -> String {
+  match handoff_decision {
+    Allow =>
+      "MoonClaw route scoring validates a Moonrobo-allowable route; operator should inspect the handoff before simulation"
+    Review =>
+      "MoonClaw route scoring found a reviewable route; operator review is required before Moonrobo simulation"
+    Block =>
+      "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+  }
 }
 
 ///|
@@ -277,6 +419,112 @@ pub fn first_trusted_square_proposals() -> Array[MoonClawProposal] {
 ///|
 pub fn first_trusted_square_primary_proposal() -> MoonClawProposal {
   first_trusted_square_proposals()[0]
+}
+
+///|
+pub fn route_scoring_receipt(
+  dossier : @site.SiteDossier,
+) -> MoonClawRouteScoringReceipt {
+  let proposal = route_scoring_proposal(dossier)
+  let selected_route_id = dossier.corridor_scan[0].selected_route_id
+  let selected_route_present = route_id_exists(
+    dossier.route_candidates,
+    selected_route_id,
+  )
+  let selected_route = route_by_id(dossier.route_candidates, selected_route_id)
+  let handoff = @moonrobo.route_handoff(dossier, selected_route)
+  let checks = [
+    validation(
+      "route-candidates-present",
+      !dossier.route_candidates.is_empty(),
+      "\{dossier.route_candidates.length()} route candidates are available for scoring.",
+    ),
+    validation(
+      "selected-route-present",
+      selected_route_present,
+      "corridor-selected route \{selected_route_id} exists in the current route candidate set.",
+    ),
+    validation(
+      "energy-blocker-current",
+      dossier.energy.decision == @mission.TraverseDecision::Block,
+      "current energy assessment is \{@mission.energy_decision_label(dossier.energy)} and must remain a scoring blocker until ephemeris evidence is attached.",
+    ),
+    validation(
+      "moonrobo-handoff-compatible",
+      handoff.decision == @mission.TraverseDecision::Block,
+      "primary Moonrobo handoff is \{@moonrobo.handoff_status_label(handoff)}, matching the blocked route-scoring result.",
+    ),
+  ]
+  let status = if all_checks_pass(checks) { Accepted } else { NeedsReview }
+  {
+    receipt: {
+      receipt_id: "moonclaw/\{dossier.site.site_id}/route-scoring-v1/current-receipt",
+      proposal_id: proposal.proposal_id,
+      status,
+      accepted_outputs: [
+        "route-scoreboard", "moonrobo-handoff-compatibility", "blocked-evidence-summary",
+      ],
+      validation_notes: validation_notes(checks),
+    },
+    site_id: dossier.site.site_id,
+    selected_route_id,
+    route_scores: route_scores(dossier.route_candidates, dossier.site.site_id),
+    validation_checks: checks,
+    moonrobo_handoff_decision: handoff.decision,
+    next_action: route_receipt_next_action(handoff.decision),
+  }
+}
+
+///|
+pub fn first_trusted_square_route_scoring_receipt() -> MoonClawRouteScoringReceipt {
+  route_scoring_receipt(@site.first_trusted_square_dossier())
+}
+
+///|
+pub fn first_trusted_square_receipts() -> Array[MoonClawRouteScoringReceipt] {
+  [first_trusted_square_route_scoring_receipt()]
+}
+
+///|
+pub fn render_receipts_markdown(
+  receipts : Array[MoonClawRouteScoringReceipt],
+) -> String {
+  let mut text = "# MoonClaw Modeling Receipts\n\n"
+  for scoring in receipts {
+    text += "- \{scoring.receipt.receipt_id}\n"
+    text += "  - proposal: \{scoring.receipt.proposal_id}\n"
+    text += "  - status: \{receipt_status_label(scoring.receipt.status)}\n"
+    text += "  - selected route: \{scoring.selected_route_id}\n"
+    text += "  - Moonrobo handoff: \{@mission.traverse_decision_label(scoring.moonrobo_handoff_decision)}\n"
+    text += "  - next action: \{scoring.next_action}\n"
+    text += "  - validation:\n"
+    for check in scoring.validation_checks {
+      let status = if check.passed { "pass" } else { "fail" }
+      text += "    - \{check.validation_id}: \{status} - \{check.note}\n"
+    }
+    text += "  - route scores:\n"
+    for score in scoring.route_scores {
+      text += "    - #\{score.rank} \{score.route_id}: \{@mission.traverse_decision_label(score.route_decision)} route score \{score.route_score}, grade \{score.max_grade}, roughness \{score.roughness_m} m\n"
+    }
+  }
+  text
+}
+
+///|
+pub fn first_trusted_square_receipts_markdown() -> String {
+  render_receipts_markdown(first_trusted_square_receipts())
+}
+
+///|
+pub fn render_receipts_json(
+  receipts : Array[MoonClawRouteScoringReceipt],
+) -> Json {
+  receipts.to_json()
+}
+
+///|
+pub fn first_trusted_square_receipts_json() -> Json {
+  render_receipts_json(first_trusted_square_receipts())
 }
 
 ///|

@@ -5,6 +5,7 @@ import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
   "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",
 }
 
@@ -21,6 +22,14 @@ pub fn first_trusted_square_primary_proposal() -> MoonClawProposal
 
 pub fn first_trusted_square_proposals() -> Array[MoonClawProposal]
 
+pub fn first_trusted_square_receipts() -> Array[MoonClawRouteScoringReceipt]
+
+pub fn first_trusted_square_receipts_json() -> Json
+
+pub fn first_trusted_square_receipts_markdown() -> String
+
+pub fn first_trusted_square_route_scoring_receipt() -> MoonClawRouteScoringReceipt
+
 pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonClawProposal]
 
 pub fn job_kind_label(MoonClawJobKind) -> String
@@ -33,7 +42,13 @@ pub fn render_json(Array[MoonClawProposal]) -> Json
 
 pub fn render_markdown(Array[MoonClawProposal]) -> String
 
+pub fn render_receipts_json(Array[MoonClawRouteScoringReceipt]) -> Json
+
+pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
+
 pub fn route_scoring_proposal(@site.SiteDossier) -> MoonClawProposal
+
+pub fn route_scoring_receipt(@site.SiteDossier) -> MoonClawRouteScoringReceipt
 
 // Errors
 
@@ -89,6 +104,35 @@ pub(all) enum MoonClawReceiptStatus {
   Accepted
   Rejected
   NeedsReview
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawReceiptValidation {
+  validation_id : String
+  passed : Bool
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRouteScore {
+  route_id : String
+  rank : Int
+  route_decision : @mission.TraverseDecision
+  illumination_decision : @mission.TraverseDecision
+  route_score : Int
+  max_grade : Double
+  roughness_m : Double
+  confidence : Double
+  evidence_path : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRouteScoringReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  selected_route_id : String
+  route_scores : Array[MoonClawRouteScore]
+  validation_checks : Array[MoonClawReceiptValidation]
+  moonrobo_handoff_decision : @mission.TraverseDecision
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

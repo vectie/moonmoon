@@ -207,11 +207,13 @@ preconditions that must be cleared. It does not command hardware or imply
 physical execution authority.
 
 The current MoonClaw boundary is also one-way: Moonmoon emits bounded modeling
-proposal packets under `output/moonclaw/`, and MoonBook indexes those proposals
-as evidence. The first proposals request ephemeris-backed power windows, wider
-LOLA corridor search, and route-scoring receipts. A proposal names its inputs,
-blocked review items, acceptance criteria, and expected output paths, so an
-agent job can run without silently changing the mission model.
+proposal packets and deterministic receipt packets under `output/moonclaw/`, and
+MoonBook indexes both as evidence. The first proposals request ephemeris-backed
+power windows, wider LOLA corridor search, and route-scoring receipts. The first
+receipt validates the current route-scoring job against route IDs, selected
+route, energy blocker, and Moonrobo handoff compatibility, then records an
+accepted job result that still keeps Moonrobo blocked. That keeps agent progress
+separate from physical execution authority.
 
 ## Old Terrain Project Lessons
 

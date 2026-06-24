@@ -70,7 +70,8 @@ Current implementation status:
   for each route candidate, using Moonmoon terrain, illumination, energy, and
   corridor blockers as a pre-physical safety gate.
 - `src/adapters/moonclaw` exports bounded modeling proposals for ephemeris
-  acquisition, widened corridor search, and route scoring.
+  acquisition, widened corridor search, route scoring, and the first accepted
+  route-scoring receipt that still keeps Moonrobo blocked.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -158,6 +159,8 @@ Current implementation status:
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized
   workspace carries the proposal packet payload with acceptance criteria and
   expected outputs.
+- MoonBook now indexes the first MoonClaw route-scoring receipt, and the
+  materialized workspace carries the validation checks and route scoreboard.
 
 Remaining work:
 
@@ -192,14 +195,17 @@ Current implementation status:
   score route candidates after terrain and power evidence improves.
 - `cmd/main -- moonclaw proposals` emits Markdown/JSON proposal packets under
   `output/moonclaw/`.
-- MoonBook indexes the MoonClaw proposal packet and includes it in the
-  materialized evidence workspace.
+- `cmd/main -- moonclaw receipts` emits the current route-scoring receipt under
+  `output/moonclaw/`.
+- MoonBook indexes the MoonClaw proposal and receipt packets and includes them
+  in the materialized evidence workspace.
 
 Remaining work:
 
-- Add executable MoonClaw job runners or receipts for accepted proposal output.
-- Validate receipts against source checksums, route IDs, and current review
-  items before updating the Moonmoon model.
+- Add executable MoonClaw job runners for ephemeris and wider corridor proposal
+  output.
+- Validate receipts against source checksums and current review items before
+  updating the Moonmoon model.
 - Ingest the first successful receipt back into terrain, mission, and MoonBook
   outputs.
 

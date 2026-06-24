@@ -52,6 +52,8 @@ moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
 moon run cmd/main -- moonclaw proposals
 moon run cmd/main -- moonclaw proposals json
+moon run cmd/main -- moonclaw receipts
+moon run cmd/main -- moonclaw receipts json
 moon run cmd/main -- moonrobo handoff
 moon run cmd/main -- moonrobo handoff json
 python3 scripts/generate_moonmoon_fixture.py --check
@@ -64,6 +66,11 @@ written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
 `output/moonclaw/`, and `output/moonrobo/`. The materialized MoonBook workspace lives at
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
+
+MoonClaw outputs currently include bounded modeling proposals and a deterministic
+route-scoring receipt. The receipt validates the current route set, selected
+route, energy blocker, and Moonrobo handoff compatibility, then records that the
+job result is accepted while Moonrobo remains blocked.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by

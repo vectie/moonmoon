@@ -47,3 +47,41 @@ test "MoonClaw proposal renderers expose job contracts" {
   assert_true(json.contains("\"RouteScoring\""))
   assert_true(json.contains("\"Critical\""))
 }
+
+///|
+test "first trusted square route scoring receipt validates blocked evidence" {
+  let receipt = @moonclaw.first_trusted_square_route_scoring_receipt()
+  assert_eq(
+    receipt.receipt.proposal_id,
+    "moonclaw/first-trusted-square/route-scoring-v1",
+  )
+  assert_true(
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
+  )
+  assert_eq(receipt.selected_route_id, "southwest-bypass")
+  assert_true(
+    receipt.moonrobo_handoff_decision == @mission.TraverseDecision::Block,
+  )
+  assert_eq(receipt.route_scores.length(), 5)
+  assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("moonrobo-handoff-compatible")
+    }),
+  )
+  assert_true(receipt.next_action.contains("keeps Moonrobo blocked"))
+}
+
+///|
+test "MoonClaw receipt renderers expose route scoring result" {
+  let markdown = @moonclaw.first_trusted_square_receipts_markdown()
+  assert_true(markdown.contains("MoonClaw Modeling Receipts"))
+  assert_true(markdown.contains("route-scoring-v1/current-receipt"))
+  assert_true(markdown.contains("moonrobo-handoff-compatible"))
+  assert_true(markdown.contains("southwest-bypass"))
+  let json = @moonclaw.first_trusted_square_receipts_json().stringify(indent=2)
+  assert_true(json.contains("\"MoonClawRouteScoringReceipt\"") == false)
+  assert_true(json.contains("\"route_scores\""))
+  assert_true(json.contains("\"Accepted\""))
+  assert_true(json.contains("\"moonrobo_handoff_decision\""))
+}

@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE_JSON = ROOT / "output/site/first_trusted_square.json"
 BOOK_JSON = ROOT / "output/moonbook/first_trusted_square_book.json"
 MOONCLAW_JSON = ROOT / "output/moonclaw/first_trusted_square_proposals.json"
+MOONCLAW_RECEIPTS_JSON = ROOT / "output/moonclaw/first_trusted_square_receipts.json"
 MOONROBO_JSON = ROOT / "output/moonrobo/first_trusted_square_handoffs.json"
 WORKSPACE = ROOT / "output/moonbook/workspaces/first-trusted-square"
 GENERATOR = "scripts/materialize_moonbook_workspace.py"
@@ -48,6 +49,7 @@ def payload_for_entry(
   entry: dict[str, Any],
   site: dict[str, Any],
   moonclaw: list[dict[str, Any]],
+  moonclaw_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
   lookups: dict[str, dict[str, dict[str, Any]]],
 ) -> Any:
@@ -104,6 +106,11 @@ def payload_for_entry(
       "primary_proposal": moonclaw[0],
       "proposals": moonclaw,
     }
+  if kind == "MoonClawReceipt":
+    return {
+      "primary_receipt": moonclaw_receipts[0],
+      "receipts": moonclaw_receipts,
+    }
 
   raise ValueError(f"unsupported entry kind {kind!r} for {entry_id}")
 
@@ -112,6 +119,7 @@ def workspace_files(
   site: dict[str, Any],
   book: dict[str, Any],
   moonclaw: list[dict[str, Any]],
+  moonclaw_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
 ) -> dict[Path, str]:
   lookups = {
@@ -145,6 +153,7 @@ def workspace_files(
       "output/site/first_trusted_square.json",
       "output/moonbook/first_trusted_square_book.json",
       "output/moonclaw/first_trusted_square_proposals.json",
+      "output/moonclaw/first_trusted_square_receipts.json",
       "output/moonrobo/first_trusted_square_handoffs.json",
     ],
     "entries": entries,
@@ -156,7 +165,9 @@ def workspace_files(
   for entry in entries:
     path = WORKSPACE / entry["path"]
     entry_paths.append(entry["path"])
-    payload = payload_for_entry(entry, site, moonclaw, moonrobo, lookups)
+    payload = payload_for_entry(
+      entry, site, moonclaw, moonclaw_receipts, moonrobo, lookups,
+    )
     files[path] = render_json({
       "entry": entry,
       "payload": payload,
@@ -199,6 +210,7 @@ def workspace_files(
     "- Source site dossier: `output/site/first_trusted_square.json`\n"
     "- Source MoonBook dossier: `output/moonbook/first_trusted_square_book.json`\n"
     "- Source MoonClaw proposals: `output/moonclaw/first_trusted_square_proposals.json`\n"
+    "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
     f"- Entries: {len(entries)}\n"
     f"- Review queue items: {len(review_queue)}\n"
     f"- Review transitions: {len(review_transitions)}\n"
@@ -258,8 +270,9 @@ def main() -> int:
   site = load_json(SITE_JSON)
   book = load_json(BOOK_JSON)
   moonclaw = load_json(MOONCLAW_JSON)
+  moonclaw_receipts = load_json(MOONCLAW_RECEIPTS_JSON)
   moonrobo = load_json(MOONROBO_JSON)
-  files = workspace_files(site, book, moonclaw, moonrobo)
+  files = workspace_files(site, book, moonclaw, moonclaw_receipts, moonrobo)
   if args.check:
     return check_workspace(files)
   write_workspace(files)
