@@ -10,6 +10,16 @@
   - claim: measured
   - confidence: 1
   - path: datasets/lro-lola-first-trusted-square-dem-v1.json
+- dataset/lro-lola-first-trusted-square-west-contour-dem-v1: LOLA west-contour route-window DEM byte-range fixture
+  - kind: source-dataset
+  - claim: measured
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json
+- dataset/lro-lola-first-trusted-square-north-rim-dem-v1: LOLA north-rim route-window DEM byte-range fixture
+  - kind: source-dataset
+  - claim: measured
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-north-rim-dem-v1.json
 - source-candidate/candidate-lro-lola-sldem-first-trusted-square: LRO LOLA derived gridded topography candidate
   - kind: source-upgrade-candidate
   - claim: unknown
@@ -30,11 +40,31 @@
   - claim: measured
   - confidence: 0
   - path: source-extractions/extract-ldem-875s-20m-first-trusted-square-v1.json
+- source-extraction/extract-ldem-875s-20m-west-contour-v1: Extract first-trusted-square-west-contour-lola
+  - kind: source-extraction-candidate
+  - claim: measured
+  - confidence: 0
+  - path: source-extractions/extract-ldem-875s-20m-west-contour-v1.json
+- source-extraction/extract-ldem-875s-20m-north-rim-v1: Extract first-trusted-square-north-rim-lola
+  - kind: source-extraction-candidate
+  - claim: measured
+  - confidence: 0
+  - path: source-extractions/extract-ldem-875s-20m-north-rim-v1.json
 - validation/lro-lola-first-trusted-square-dem-v1: Source validation for lro-lola-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
   - confidence: 1
   - path: datasets/lro-lola-first-trusted-square-dem-v1.validation.json
+- validation/lro-lola-first-trusted-square-west-contour-dem-v1: Source validation for lro-lola-first-trusted-square-west-contour-dem-v1
+  - kind: source-validation
+  - claim: derived
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-west-contour-dem-v1.validation.json
+- validation/lro-lola-first-trusted-square-north-rim-dem-v1: Source validation for lro-lola-first-trusted-square-north-rim-dem-v1
+  - kind: source-validation
+  - claim: derived
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-north-rim-dem-v1.validation.json
 - terrain/first-trusted-square/metrics: Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: derived-terrain
   - claim: derived
@@ -47,18 +77,18 @@
   - path: mission/first-trusted-square/traverse.json
 - route/first-trusted-square/direct-lola-window: Direct traverse across measured LOLA patch
   - kind: route-alternative
-  - claim: assumed
+  - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/routes/direct-lola-window.json
 - route/first-trusted-square/west-contour-detour: West contour detour candidate
   - kind: route-alternative
-  - claim: assumed
-  - confidence: 0.55
+  - claim: derived
+  - confidence: 0.7544
   - path: mission/first-trusted-square/routes/west-contour-detour.json
 - route/first-trusted-square/north-rim-stepout: North rim step-out candidate
   - kind: route-alternative
-  - claim: assumed
-  - confidence: 0.5
+  - claim: derived
+  - confidence: 0.7544
   - path: mission/first-trusted-square/routes/north-rim-stepout.json
 
 ## Review Queue
@@ -67,10 +97,10 @@
 - blocker-1 [high] requires alternate route or stronger dataset -> operator
 - traverse-0 [high] max neighbor grade exceeds rover hard limit -> mission-review
 - traverse-1 [high] roughness exceeds rover hard limit -> mission-review
-- route-direct-lola-window [high] Direct traverse across measured LOLA patch: do not traverse directly; use this as the baseline hazard case -> mission-review
-- route-west-contour-detour [medium] West contour detour candidate: extract neighboring west window and rescore before simulation -> mission-review
-- route-north-rim-stepout [medium] North rim step-out candidate: extract north-adjacent window and add illumination review -> mission-review
+- route-direct-lola-window [high] Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case -> mission-review
+- route-west-contour-detour [high] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
+- route-north-rim-stepout [high] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
 - question-0 [low] Add illumination windows for robot energy and thermal constraints. -> moonclaw
-- question-1 [low] Find alternate route candidates around the blocked LOLA terrain patch. -> moonclaw
+- question-1 [low] Widen the corridor search because adjacent west/north LOLA windows are also blocked. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
 

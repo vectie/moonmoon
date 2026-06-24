@@ -13,13 +13,31 @@
       "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
     },
     {
+      "entry_id": "dataset/lro-lola-first-trusted-square-west-contour-dem-v1",
+      "title": "LOLA west-contour route-window DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-north-rim-dem-v1",
+      "title": "LOLA north-rim route-window DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
       "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
       "title": "LRO LOLA derived gridded topography candidate",
       "kind": "SourceUpgradeCandidate",
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-candidates/candidate-lro-lola-sldem-first-trusted-square.json",
-      "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixture for software proof, then add illumination and route alternatives before any rover claim."
+      "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim."
     },
     {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
@@ -28,7 +46,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
-      "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixture must keep product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum recorded."
+      "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded."
     },
     {
       "entry_id": "source-product/select-ldem-875s-20m-float-v1",
@@ -49,12 +67,48 @@
       "summary": "4x4 window at row 3972, col 3790; 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c"
     },
     {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-west-contour-v1",
+      "title": "Extract first-trusted-square-west-contour-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-west-contour-v1.json",
+      "summary": "4x4 window at row 3972, col 3786; 1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-north-rim-v1",
+      "title": "Extract first-trusted-square-north-rim-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-north-rim-v1.json",
+      "summary": "4x4 window at row 3968, col 3790; 40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28"
+    },
+    {
       "entry_id": "validation/lro-lola-first-trusted-square-dem-v1",
       "title": "Source validation for lro-lola-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
       "claim_kind": "Derived",
       "confidence": 1,
       "path": "datasets/lro-lola-first-trusted-square-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-west-contour-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-west-contour-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-north-rim-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-north-rim-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.validation.json",
       "summary": "verified: source fingerprint matches manifest"
     },
     {
@@ -79,28 +133,28 @@
       "entry_id": "route/first-trusted-square/direct-lola-window",
       "title": "Direct traverse across measured LOLA patch",
       "kind": "RouteAlternative",
-      "claim_kind": "Assumed",
+      "claim_kind": "Derived",
       "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/direct-lola-window.json",
-      "summary": "block with score 18: do not traverse directly; use this as the baseline hazard case"
+      "summary": "block with score 18 from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case"
     },
     {
       "entry_id": "route/first-trusted-square/west-contour-detour",
       "title": "West contour detour candidate",
       "kind": "RouteAlternative",
-      "claim_kind": "Assumed",
-      "confidence": 0.55,
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/west-contour-detour.json",
-      "summary": "review with score 54: extract neighboring west window and rescore before simulation"
+      "summary": "block with score 18 from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
     },
     {
       "entry_id": "route/first-trusted-square/north-rim-stepout",
       "title": "North rim step-out candidate",
       "kind": "RouteAlternative",
-      "claim_kind": "Assumed",
-      "confidence": 0.5,
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-      "summary": "review with score 54: extract north-adjacent window and add illumination review"
+      "summary": "block with score 18 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
     }
   ],
   "review_queue": [
@@ -131,19 +185,19 @@
     {
       "item_id": "route-direct-lola-window",
       "severity": "high",
-      "reason": "Direct traverse across measured LOLA patch: do not traverse directly; use this as the baseline hazard case",
+      "reason": "Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case",
       "owner": "mission-review"
     },
     {
       "item_id": "route-west-contour-detour",
-      "severity": "medium",
-      "reason": "West contour detour candidate: extract neighboring west window and rescore before simulation",
+      "severity": "high",
+      "reason": "West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation",
       "owner": "mission-review"
     },
     {
       "item_id": "route-north-rim-stepout",
-      "severity": "medium",
-      "reason": "North rim step-out candidate: extract north-adjacent window and add illumination review",
+      "severity": "high",
+      "reason": "North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review",
       "owner": "mission-review"
     },
     {
@@ -155,7 +209,7 @@
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Find alternate route candidates around the blocked LOLA terrain patch.",
+      "reason": "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
       "owner": "moonclaw"
     },
     {
