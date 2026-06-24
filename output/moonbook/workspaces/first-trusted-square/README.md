@@ -8,6 +8,6 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`
 - Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`
 - Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`
-- Entries: 37
-- Review queue items: 22
-- Review transitions: 22
+- Entries: 39
+- Review queue items: 23
+- Review transitions: 23

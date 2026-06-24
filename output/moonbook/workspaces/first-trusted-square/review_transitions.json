@@ -12,6 +12,14 @@
       "rationale": "accepted because the materialized workspace is present in generated MoonBook output"
     },
     {
+      "transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open",
+      "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "left open for data-review follow-up"
+    },
+    {
       "transition_id": "review-blocker-0-request-evidence",
       "item_id": "blocker-0",
       "decision": "RequestEvidence",

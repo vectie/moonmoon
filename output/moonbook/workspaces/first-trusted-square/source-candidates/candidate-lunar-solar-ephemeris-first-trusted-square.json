@@ -1,0 +1,33 @@
+{
+  "entry": {
+    "entry_id": "source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square",
+    "title": "Lunar solar ephemeris power-window candidate",
+    "kind": "SourceUpgradeCandidate",
+    "claim_kind": "Unknown",
+    "confidence": 0,
+    "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
+    "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate."
+  },
+  "payload": {
+    "candidate_id": "candidate-lunar-solar-ephemeris-first-trusted-square",
+    "title": "Lunar solar ephemeris power-window candidate",
+    "body": "Moon",
+    "mission": "NASA NAIF SPICE / planetary ephemeris",
+    "instrument": "SPICE kernels",
+    "product_family": "Sun/Moon ephemeris and lunar orientation kernels",
+    "official_source_url": "https://naif.jpl.nasa.gov/naif/data.html",
+    "access_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
+    "local_target_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+    "intended_use": "Attach time-windowed Sun/Moon geometry, local sunlit hours, and rover power-window evidence to the first trusted square.",
+    "next_action": "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+    "review_status": "NeedsSourceUpgrade",
+    "notes": [
+      "The current illumination and energy gates deliberately block because only relief-shadow proxies exist.",
+      "A real power gate needs a time-bounded Sun/Moon geometry source plus local horizon assumptions.",
+      "This candidate turns the missing ephemeris evidence from prose into a typed MoonBook-visible source contract."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

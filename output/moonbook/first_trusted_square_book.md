@@ -35,11 +35,21 @@
   - claim: unknown
   - confidence: 0
   - path: source-candidates/candidate-lro-lola-sldem-first-trusted-square.json
+- source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square: Lunar solar ephemeris power-window candidate
+  - kind: source-upgrade-candidate
+  - claim: unknown
+  - confidence: 0
+  - path: source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json
 - source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1: Acquire lro-lola-gdr-south-pole-selection
   - kind: source-acquisition-plan
   - claim: unknown
   - confidence: 0
   - path: source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json
+- source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1: Acquire lunar-solar-ephemeris-power-window
+  - kind: source-acquisition-plan
+  - claim: unknown
+  - confidence: 0
+  - path: source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1.json
 - source-product/select-ldem-875s-20m-float-v1: Select ldem_875s_20m_float
   - kind: source-product-selection
   - claim: unknown
@@ -194,6 +204,7 @@
 ## Review Queue
 
 - workspace-materialized [low/accepted] MoonBook workspace files are materialized from the current generated dossier -> moonbook
+- source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square [medium/open] Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate. -> data-review
 - blocker-0 [high/needs-evidence] terrain exceeds early traverse limits -> operator
 - blocker-1 [high/needs-evidence] requires alternate route or stronger dataset -> operator
 - traverse-0 [high/needs-evidence] max neighbor grade exceeds rover hard limit -> mission-review
@@ -221,6 +232,9 @@
 - review-workspace-materialized-accept: accept workspace-materialized -> accepted
   - reviewer: moonbook-policy-v1
   - rationale: accepted because the materialized workspace is present in generated MoonBook output
+- review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open: keep-open source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square -> open
+  - reviewer: moonbook-policy-v1
+  - rationale: left open for data-review follow-up
 - review-blocker-0-request-evidence: request-evidence blocker-0 -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits

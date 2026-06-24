@@ -63,6 +63,15 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - access: https://ode.rsl.wustl.edu/moon/
   - target path: data/sources/lro_lola/first_trusted_square_dem.csv plus adjacent route-window CSVs
   - next action: Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim.
+- candidate-lunar-solar-ephemeris-first-trusted-square: Lunar solar ephemeris power-window candidate
+  - mission: NASA NAIF SPICE / planetary ephemeris
+  - instrument: SPICE kernels
+  - product family: Sun/Moon ephemeris and lunar orientation kernels
+  - status: needs-source-upgrade
+  - official source: https://naif.jpl.nasa.gov/naif/data.html
+  - access: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
+  - target path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
+  - next action: Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.
 
 ## Source Acquisition Plans
 
@@ -85,6 +94,25 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
     - extract: Extract tiny tile - scripts/generate_moonmoon_fixture.py regenerates MoonBit terrain from the authoritative CSV.
     - validate: Verify evidence chain - moon test passes while the dossier marks the authoritative dataset as accepted for software proof.
     - review: Human review before mission claims - The source-upgrade blocker is closed and remaining review focuses on terrain hazards, illumination, and route alternatives.
+- acquire-lunar-solar-ephemeris-first-trusted-square-v1: lunar-solar-ephemeris-power-window
+  - candidate: candidate-lunar-solar-ephemeris-first-trusted-square
+  - progress: recorded:5-steps
+  - discovery: https://naif.jpl.nasa.gov/naif/data.html
+  - source family: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
+  - source metadata: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
+  - source metadata sha256: pending
+  - source metadata bytes: 0
+  - target region: First Trusted Square near Shackleton rim, 89.88S, 0.12E
+  - local source directory: data/sources/lunar_ephemeris/
+  - local metadata path: data/sources/lunar_ephemeris/README.md
+  - extracted fixture path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
+  - trust gate: Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block.
+  - steps:
+    - discover-source: Select official ephemeris source - The candidate names a concrete official source instead of a generic power assumption.
+    - pin-kernels: Pin checksummed inputs - scripts/verify_moonmoon_sources.sh can reject missing or changed ephemeris inputs.
+    - compute-local-window: Compute local power window - The JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty.
+    - generate-moonbit-window: Generate MoonBit evidence - moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh.
+    - review-energy-gate: Review before unblocking Moonrobo - Moonrobo handoff remains blocked or becomes reviewable based on measured terrain plus accepted time-windowed power evidence.
 
 ## Source Product Selections
 

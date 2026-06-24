@@ -12,6 +12,14 @@
       "last_transition_id": "review-workspace-materialized-accept"
     },
     {
+      "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+      "severity": "medium",
+      "reason": "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+      "owner": "data-review",
+      "status": "Open",
+      "last_transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open"
+    },
+    {
       "item_id": "blocker-0",
       "severity": "high",
       "reason": "terrain exceeds early traverse limits",

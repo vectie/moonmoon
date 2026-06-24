@@ -68,6 +68,15 @@
       "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim."
     },
     {
+      "entry_id": "source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square",
+      "title": "Lunar solar ephemeris power-window candidate",
+      "kind": "SourceUpgradeCandidate",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
+      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate."
+    },
+    {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
       "title": "Acquire lro-lola-gdr-south-pole-selection",
       "kind": "SourceAcquisitionPlan",
@@ -75,6 +84,15 @@
       "confidence": 0,
       "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
       "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded."
+    },
+    {
+      "entry_id": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1",
+      "title": "Acquire lunar-solar-ephemeris-power-window",
+      "kind": "SourceAcquisitionPlan",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1.json",
+      "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block."
     },
     {
       "entry_id": "source-product/select-ldem-875s-20m-float-v1",
