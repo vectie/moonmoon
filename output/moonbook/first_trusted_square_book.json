@@ -13,6 +13,15 @@
       "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
     },
     {
+      "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
+      "title": "LRO LOLA derived gridded topography candidate",
+      "kind": "SourceUpgradeCandidate",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-candidates/candidate-lro-lola-sldem-first-trusted-square.json",
+      "summary": "LOLA GDR/SLDEM derived gridded terrain: Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture."
+    },
+    {
       "entry_id": "validation/fixture-first-trusted-square-dem-v1",
       "title": "Source validation for fixture-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
@@ -41,6 +50,12 @@
     }
   ],
   "review_queue": [
+    {
+      "item_id": "source-candidate-candidate-lro-lola-sldem-first-trusted-square",
+      "severity": "medium",
+      "reason": "Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.",
+      "owner": "data-review"
+    },
     {
       "item_id": "blocker-0",
       "severity": "medium",

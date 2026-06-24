@@ -16,6 +16,18 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - checksum kind: inline-fixture-fingerprint
   - checksum: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
 
+## Source Upgrade Candidates
+
+- candidate-lro-lola-sldem-first-trusted-square: LRO LOLA derived gridded topography candidate
+  - mission: Lunar Reconnaissance Orbiter
+  - instrument: LOLA
+  - product family: GDR/SLDEM derived gridded terrain
+  - status: needs-source-upgrade
+  - official source: https://pds-geosciences.wustl.edu/missions/lro/lola.htm
+  - access: https://ode.rsl.wustl.edu/moon/
+  - target path: data/sources/lro_lola/first_trusted_square_dem.csv
+  - next action: Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.
+
 ## Source Validation
 
 - fixture-first-trusted-square-dem-v1: verified

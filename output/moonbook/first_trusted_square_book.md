@@ -10,6 +10,11 @@
   - claim: simulated
   - confidence: 1
   - path: datasets/fixture-first-trusted-square-dem-v1.json
+- source-candidate/candidate-lro-lola-sldem-first-trusted-square: LRO LOLA derived gridded topography candidate
+  - kind: source-upgrade-candidate
+  - claim: unknown
+  - confidence: 0
+  - path: source-candidates/candidate-lro-lola-sldem-first-trusted-square.json
 - validation/fixture-first-trusted-square-dem-v1: Source validation for fixture-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
@@ -28,6 +33,7 @@
 
 ## Review Queue
 
+- source-candidate-candidate-lro-lola-sldem-first-trusted-square [medium] Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture. -> data-review
 - blocker-0 [medium] needs operator review before robot traverse planning -> operator
 - blocker-1 [medium] fixture confidence is not high enough for physical mission planning -> operator
 - traverse-0 [medium] max neighbor grade needs route review -> mission-review
