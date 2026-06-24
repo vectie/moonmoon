@@ -114,6 +114,28 @@ pub(all) struct SourceProductSelection {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SourceExtractionCandidate {
+  extraction_id : String
+  selection_id : String
+  generated_by : String
+  output_path : String
+  output_sha256 : String
+  output_bytes : Int
+  tile_id : String
+  center_lat_deg : Double
+  center_lon_deg : Double
+  source_row_start : Int
+  source_col_start : Int
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  elevation_unit : String
+  claim_kind : @core.ClaimKind
+  review_status : ReviewStatus
+  notes : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct DatasetManifest {
   dataset_id : @core.DatasetId
   title : String
@@ -149,6 +171,13 @@ pub fn product_selection_status_label(
   selection : SourceProductSelection,
 ) -> String {
   review_status_label(selection.review_status)
+}
+
+///|
+pub fn extraction_candidate_status_label(
+  extraction : SourceExtractionCandidate,
+) -> String {
+  review_status_label(extraction.review_status)
 }
 
 ///|
@@ -349,6 +378,41 @@ pub fn first_trusted_square_source_product_selections() -> Array[
   SourceProductSelection,
 ] {
   [first_trusted_square_lola_product_selection()]
+}
+
+///|
+pub fn first_trusted_square_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-first-trusted-square-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
+    output_sha256: "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+    output_bytes: 636,
+    tile_id: "first-trusted-square-lola",
+    center_lat_deg: -89.88,
+    center_lon_deg: 0.12,
+    source_row_start: 3972,
+    source_col_start: 3790,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: NeedsHumanReview,
+    notes: [
+      "Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.",
+      "This candidate proves bounded extraction mechanics; active terrain remains the synthetic fixture until projection math and values are reviewed.",
+      "The output CSV matches the Moonmoon fixture CSV shape so it can replace the synthetic fixture after review.",
+    ],
+  }
+}
+
+///|
+pub fn first_trusted_square_source_extraction_candidates() -> Array[
+  SourceExtractionCandidate,
+] {
+  [first_trusted_square_lola_extraction_candidate()]
 }
 
 ///|

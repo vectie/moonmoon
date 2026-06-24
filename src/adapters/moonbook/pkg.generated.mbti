@@ -42,6 +42,7 @@ pub(all) enum BookEntryKind {
   SourceUpgradeCandidate
   SourceAcquisitionPlan
   SourceProductSelection
+  SourceExtractionCandidate
   DerivedTerrain
   MissionDecision
   OpenQuestion

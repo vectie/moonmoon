@@ -23,6 +23,11 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.source_product_selections[0].product_id,
     "ldem_875s_20m_float",
   )
+  assert_eq(dossier.source_extraction_candidates.length(), 1)
+  assert_eq(
+    dossier.source_extraction_candidates[0].tile_id,
+    "first-trusted-square-lola",
+  )
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Caution)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Review)
   assert_eq(dossier.blockers.length(), 2)
@@ -43,6 +48,13 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("ldem_875s_20m_float"))
   assert_true(markdown.contains("Polar Stereographic"))
   assert_true(markdown.contains("230068224"))
+  assert_true(markdown.contains("## Source Extraction Candidates"))
+  assert_true(markdown.contains("first-trusted-square-lola"))
+  assert_true(
+    markdown.contains(
+      "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+    ),
+  )
   assert_true(markdown.contains("## Source Validation"))
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
@@ -63,6 +75,7 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"source_candidates\""))
   assert_true(text.contains("\"source_acquisition_plans\""))
   assert_true(text.contains("\"source_product_selections\""))
+  assert_true(text.contains("\"source_extraction_candidates\""))
   assert_true(
     text.contains(
       "\"product_family_id\": \"lro-lola-gdr-south-pole-selection\"",
@@ -71,6 +84,8 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"source_metadata_bytes\": 5672"))
   assert_true(text.contains("\"product_id\": \"ldem_875s_20m_float\""))
   assert_true(text.contains("\"label_bytes\": 11629"))
+  assert_true(text.contains("\"tile_id\": \"first-trusted-square-lola\""))
+  assert_true(text.contains("\"output_bytes\": 636"))
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"CuratedFixture\""))

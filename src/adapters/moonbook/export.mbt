@@ -5,6 +5,7 @@ pub(all) enum BookEntryKind {
   SourceUpgradeCandidate
   SourceAcquisitionPlan
   SourceProductSelection
+  SourceExtractionCandidate
   DerivedTerrain
   MissionDecision
   OpenQuestion
@@ -46,6 +47,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SourceUpgradeCandidate => "source-upgrade-candidate"
     SourceAcquisitionPlan => "source-acquisition-plan"
     SourceProductSelection => "source-product-selection"
+    SourceExtractionCandidate => "source-extraction-candidate"
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
     OpenQuestion => "open-question"
@@ -102,6 +104,25 @@ fn source_product_selection_entries(
       confidence: 0.0,
       path: "source-products/\{selection.selection_id}.json",
       summary: "\{selection.projection} \{selection.resolution_m} m/pixel label pinned at \{selection.label_sha256}; \{selection.extraction_risk}",
+    })
+  }
+  entries
+}
+
+///|
+fn source_extraction_candidate_entries(
+  dossier : @site.SiteDossier,
+) -> Array[BookEntry] {
+  let entries : Array[BookEntry] = []
+  for extraction in dossier.source_extraction_candidates {
+    entries.push({
+      entry_id: "source-extraction/\{extraction.extraction_id}",
+      title: "Extract \{extraction.tile_id}",
+      kind: SourceExtractionCandidate,
+      claim_kind: extraction.claim_kind,
+      confidence: 0.0,
+      path: "source-extractions/\{extraction.extraction_id}.json",
+      summary: "\{extraction.rows}x\{extraction.cols} window at row \{extraction.source_row_start}, col \{extraction.source_col_start}; \{extraction.output_sha256}",
     })
   }
   entries
@@ -254,6 +275,9 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
     entries.push(entry)
   }
   for entry in source_product_selection_entries(dossier) {
+    entries.push(entry)
+  }
+  for entry in source_extraction_candidate_entries(dossier) {
     entries.push(entry)
   }
   for entry in validation_entries(dossier) {

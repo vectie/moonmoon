@@ -12,9 +12,13 @@ pub fn acquisition_plan_progress_label(SourceAcquisitionPlan) -> String
 
 pub fn checksum_kind_label(ChecksumKind) -> String
 
+pub fn extraction_candidate_status_label(SourceExtractionCandidate) -> String
+
 pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan
 
 pub fn first_trusted_square_lola_candidate() -> SourceCandidate
+
+pub fn first_trusted_square_lola_extraction_candidate() -> SourceExtractionCandidate
 
 pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection
 
@@ -23,6 +27,8 @@ pub fn first_trusted_square_manifest() -> DatasetManifest
 pub fn first_trusted_square_source_acquisition_plans() -> Array[SourceAcquisitionPlan]
 
 pub fn first_trusted_square_source_candidates() -> Array[SourceCandidate]
+
+pub fn first_trusted_square_source_extraction_candidates() -> Array[SourceExtractionCandidate]
 
 pub fn first_trusted_square_source_product_selections() -> Array[SourceProductSelection]
 
@@ -138,6 +144,27 @@ pub(all) struct SourceCandidate {
   local_target_path : String
   intended_use : String
   next_action : String
+  review_status : ReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SourceExtractionCandidate {
+  extraction_id : String
+  selection_id : String
+  generated_by : String
+  output_path : String
+  output_sha256 : String
+  output_bytes : Int
+  tile_id : String
+  center_lat_deg : Double
+  center_lon_deg : Double
+  source_row_start : Int
+  source_col_start : Int
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  elevation_unit : String
+  claim_kind : @core.ClaimKind
   review_status : ReviewStatus
   notes : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

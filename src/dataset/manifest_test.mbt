@@ -115,3 +115,38 @@ test "first trusted square selects a concrete LOLA product label" {
     1,
   )
 }
+
+///|
+test "first trusted square tracks a LOLA extraction candidate" {
+  let extraction = @dataset.first_trusted_square_lola_extraction_candidate()
+  assert_eq(
+    extraction.extraction_id,
+    "extract-ldem-875s-20m-first-trusted-square-v1",
+  )
+  assert_eq(extraction.selection_id, "select-ldem-875s-20m-float-v1")
+  assert_eq(extraction.generated_by, "scripts/extract_lola_trusted_square.py")
+  assert_eq(
+    extraction.output_path,
+    "data/sources/lro_lola/first_trusted_square_dem.csv",
+  )
+  assert_eq(
+    extraction.output_sha256,
+    "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+  )
+  assert_eq(extraction.output_bytes, 636)
+  assert_eq(extraction.tile_id, "first-trusted-square-lola")
+  assert_eq(extraction.source_row_start, 3972)
+  assert_eq(extraction.source_col_start, 3790)
+  assert_eq(extraction.rows, 4)
+  assert_eq(extraction.cols, 4)
+  assert_eq(extraction.cell_size_m, 20.0)
+  assert_true(extraction.claim_kind == @core.ClaimKind::Measured)
+  assert_eq(
+    @dataset.extraction_candidate_status_label(extraction),
+    "needs-human-review",
+  )
+  assert_eq(
+    @dataset.first_trusted_square_source_extraction_candidates().length(),
+    1,
+  )
+}

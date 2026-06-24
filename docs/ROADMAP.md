@@ -97,6 +97,9 @@ Current implementation status:
 - `data/sources/lro_lola/ldem_875s_20m_float.xml` pins the selected south-polar
   20 m/pixel LOLA DEM product label, including projection, bounds, raster
   shape, unit, and raw image name.
+- `data/sources/lro_lola/first_trusted_square_dem.csv` is a tiny 4x4 candidate
+  extraction generated from HTTP byte ranges against the selected IMG and
+  verified by SHA-256.
 - The first LOLA replacement path is tracked as a typed source-upgrade
   candidate in the site dossier and MoonBook export, with official PDS and ODE
   source links.
@@ -105,11 +108,14 @@ Current implementation status:
   and trust gate before the synthetic fixture can be replaced.
 - The first product selection now names `ldem_875s_20m_float` as the concrete
   label-backed extraction target, while keeping the raw IMG uncommitted.
+- The first extraction candidate now proves bounded raster access and produces
+  a fixture-shaped CSV, but it remains `needs-human-review` before it can
+  replace the active synthetic terrain fixture.
 
 Remaining work:
 
-- Replace the synthetic manifest with an authoritative LOLA/LROC-backed
-  manifest and checksum.
+- Review the LOLA extraction projection math and values, then replace the
+  synthetic manifest with an authoritative LOLA-backed manifest and checksum.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export
   summaries.
 - Add accepted/rejected review transitions once MoonBook storage exists.

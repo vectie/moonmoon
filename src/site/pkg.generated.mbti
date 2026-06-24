@@ -33,6 +33,7 @@ pub(all) struct SiteDossier {
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   source_product_selections : Array[@dataset.SourceProductSelection]
+  source_extraction_candidates : Array[@dataset.SourceExtractionCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   summary : String
