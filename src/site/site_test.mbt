@@ -97,6 +97,12 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.route_candidates[1].expected_max_grade,
   )
   assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
+  assert_eq(
+    dossier.power_window_evidence.evidence_id,
+    "first-trusted-square-power-window-missing-v1",
+  )
+  assert_eq(dossier.power_window_evidence.source_status, "missing-source")
+  assert_eq(dossier.power_window_evidence.available_energy_wh, 0.0)
   assert_eq(dossier.energy.route_count, 5)
   assert_eq(dossier.energy.blocked_route_count, 5)
   assert_eq(dossier.blockers.length(), 2)
@@ -142,6 +148,10 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("r+8-c-8"))
   assert_true(markdown.contains("selected route: southwest-bypass"))
   assert_true(markdown.contains("## Energy Window"))
+  assert_true(markdown.contains("## Power Window Evidence"))
+  assert_true(markdown.contains("source status: missing-source"))
+  assert_true(markdown.contains("source sha256: pending"))
+  assert_true(markdown.contains("has time-windowed ephemeris: false"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
   assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))
   assert_true(markdown.contains("power-window source status: missing-source"))
@@ -216,6 +226,7 @@ test "first trusted square dossier exports machine-readable evidence" {
   )
   assert_true(text.contains("\"window_id\": \"r+8-c-8\""))
   assert_true(text.contains("\"energy\""))
+  assert_true(text.contains("\"power_window_evidence\""))
   assert_true(
     text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
   )

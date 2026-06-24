@@ -100,6 +100,8 @@ def payload_for_entry(
     return lookups["route_candidates"][route_id_from_entry(entry_id)][
       "illumination"
     ]
+  if kind == "PowerWindowEvidence":
+    return site["power_window_evidence"]
   if kind == "EnergyWindow":
     return site["energy"]
   if kind == "MoonroboHandoff":

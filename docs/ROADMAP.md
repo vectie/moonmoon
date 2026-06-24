@@ -169,6 +169,9 @@ Current implementation status:
 - The energy-window and route illumination payloads now cite the generated
   power-window evidence id and source status, making the current block traceable
   to a concrete checked artifact rather than an implicit boolean.
+- MoonBook now indexes that checked/generated power-window boundary as its own
+  `power-window-evidence` entry and workspace payload before the derived energy
+  assessment.
 - MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
   materialized workspace carries the robot-facing handoff payload.
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized

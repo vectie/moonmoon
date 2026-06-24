@@ -153,7 +153,9 @@ path, zero verified Wh, and blocking reasons. `scripts/generate_power_window.py`
 mirrors that JSON into
 `src/mission/generated_first_trusted_square_power_window.mbt`, and the mission
 energy/illumination gates read the generated evidence instead of hard-coding the
-absence of ephemeris input.
+absence of ephemeris input. MoonBook indexes this generated boundary as a
+standalone `power-window-evidence` entry before the derived energy budget, so
+the source state remains reviewable independently from route scoring.
 
 The current fixture now has a checked source-file boundary:
 

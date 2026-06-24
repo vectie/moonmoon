@@ -99,7 +99,10 @@ The current power-window evidence is checked at
 `data/sources/lunar_ephemeris/first_trusted_square_power_window.json` and
 mirrored into MoonBit by `scripts/generate_power_window.py`. That source is a
 deliberate `missing-source` fixture: it makes the absent ephemeris input
-machine-readable and reproducible while keeping the energy gate blocked.
+machine-readable and reproducible while keeping the energy gate blocked. The
+same evidence is indexed as a standalone MoonBook `power-window-evidence` entry,
+so operators can inspect the source status separately from the derived energy
+budget.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source

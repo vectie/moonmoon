@@ -11,6 +11,7 @@ pub(all) struct SiteDossier {
   traverse : @mission.TraverseScore
   corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
+  power_window_evidence : @mission.PowerWindowEvidence
   energy : @mission.EnergyAssessment
   summary : String
   blockers : Array[String]
@@ -95,6 +96,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     traverse,
     corridor_scan: @mission.first_trusted_square_corridor_scan(),
     route_candidates,
+    power_window_evidence: @mission.first_trusted_square_power_window_evidence(),
     energy: @mission.assess_energy_window(
       route_candidates,
       @mission.conservative_energy_budget(),
@@ -251,6 +253,29 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
         text += ", route \{window.selected_route_id}"
       }
       text += "\n"
+    }
+  }
+  text += "\n"
+  text += "## Power Window Evidence\n\n"
+  let power = dossier.power_window_evidence
+  text += "- evidence: \{power.evidence_id}\n"
+  text += "- source status: \{power.source_status}\n"
+  text += "- source family: \{power.source_family_url}\n"
+  text += "- local source path: \{power.local_source_path}\n"
+  text += "- source sha256: \{pending_label(power.source_sha256)}\n"
+  text += "- source bytes: \{power.source_bytes}\n"
+  text += "- time window: \{power.time_start_utc} -> \{power.time_end_utc}\n"
+  text += "- sunlit hours: \{power.sunlit_hours}\n"
+  text += "- dark hours: \{power.dark_hours}\n"
+  text += "- available energy: \{power.available_energy_wh} Wh\n"
+  text += "- confidence: \{power.confidence}\n"
+  text += "- has time-windowed ephemeris: \{power.has_time_window_ephemeris}\n"
+  text += "- reasons:\n"
+  if power.reasons.is_empty() {
+    text += "  - none\n"
+  } else {
+    for reason in power.reasons {
+      text += "  - \{reason}\n"
     }
   }
   text += "\n"

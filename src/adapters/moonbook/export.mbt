@@ -11,6 +11,7 @@ pub(all) enum BookEntryKind {
   CorridorScan
   RouteAlternative
   IlluminationAssessment
+  PowerWindowEvidence
   EnergyWindow
   MoonroboHandoff
   MoonClawProposal
@@ -91,6 +92,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     CorridorScan => "corridor-scan"
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
+    PowerWindowEvidence => "power-window-evidence"
     EnergyWindow => "energy-window"
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
@@ -451,6 +453,20 @@ fn energy_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn power_window_evidence_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let evidence = dossier.power_window_evidence
+  {
+    entry_id: "power-window/\{dossier.site.site_id}/ephemeris-evidence",
+    title: "Power-window evidence for \{dossier.site.name}",
+    kind: PowerWindowEvidence,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: evidence.confidence,
+    path: "mission/\{dossier.site.site_id}/power-window-evidence.json",
+    summary: "\{evidence.source_status} \{evidence.evidence_id}: \{evidence.available_energy_wh} Wh verified from \{evidence.local_source_path}",
+  }
+}
+
+///|
 fn primary_route_candidate(
   dossier : @site.SiteDossier,
 ) -> @mission.RouteCandidate {
@@ -685,6 +701,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   for entry in illumination_entries(dossier) {
     entries.push(entry)
   }
+  entries.push(power_window_evidence_entry(dossier))
   entries.push(energy_entry(dossier))
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))

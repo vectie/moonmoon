@@ -38,6 +38,7 @@ pub(all) struct SiteDossier {
   traverse : @mission.TraverseScore
   corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
+  power_window_evidence : @mission.PowerWindowEvidence
   energy : @mission.EnergyAssessment
   summary : String
   blockers : Array[String]
