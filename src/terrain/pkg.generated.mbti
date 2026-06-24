@@ -1,0 +1,65 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/terrain"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/dataset",
+}
+
+// Values
+pub fn analyze(TerrainGrid) -> TerrainMetrics
+
+pub fn first_trusted_square_fixture_json() -> Json
+
+pub fn first_trusted_square_fixture_markdown() -> String
+
+pub fn first_trusted_square_grid() -> TerrainGrid
+
+pub fn first_trusted_square_metrics() -> TerrainMetrics
+
+pub fn grid_fingerprint(TerrainGrid) -> String
+
+pub fn hazard_label(HazardClass) -> String
+
+pub fn render_grid_json(TerrainGrid) -> Json
+
+pub fn render_grid_markdown(TerrainGrid) -> String
+
+pub fn validate_grid_source(TerrainGrid) -> @dataset.DatasetValidation
+
+// Errors
+
+// Types and methods
+pub(all) enum HazardClass {
+  Clear
+  Caution
+  Blocked
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainGrid {
+  tile_id : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  source_manifest : @dataset.DatasetManifest
+  cells : Array[@core.TerrainCell]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainMetrics {
+  min_elevation_m : Double
+  max_elevation_m : Double
+  elevation_range_m : Double
+  max_neighbor_grade : Double
+  roughness_m : Double
+  hazard_class : HazardClass
+  hazard_reason : String
+  provenance : @core.Provenance
+  uncertainty : @core.Uncertainty
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

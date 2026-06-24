@@ -1,6 +1,9 @@
-// import {
-//   "vectie/moonmoon" @lib,
-// }
+import {
+  "vectie/moonmoon/src/adapters/moonbook",
+  "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/terrain",
+  "moonbitlang/core/env",
+}
 
 options(
   "is-main": true,

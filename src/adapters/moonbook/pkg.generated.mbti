@@ -1,0 +1,65 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/adapters/moonbook"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/site",
+}
+
+// Values
+pub fn book_entry_kind_label(BookEntryKind) -> String
+
+pub fn first_trusted_square_book_dossier() -> LunarBookDossier
+
+pub fn first_trusted_square_book_json() -> Json
+
+pub fn first_trusted_square_book_markdown() -> String
+
+pub fn from_site_dossier(@site.SiteDossier) -> LunarBookDossier
+
+pub fn render_json(LunarBookDossier) -> Json
+
+pub fn render_markdown(LunarBookDossier) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct BookEntry {
+  entry_id : String
+  title : String
+  kind : BookEntryKind
+  claim_kind : @core.ClaimKind
+  confidence : Double
+  path : String
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum BookEntryKind {
+  SourceDataset
+  SourceValidation
+  DerivedTerrain
+  MissionDecision
+  OpenQuestion
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarBookDossier {
+  workspace : String
+  site_id : String
+  title : String
+  entries : Array[BookEntry]
+  review_queue : Array[ReviewQueueItem]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ReviewQueueItem {
+  item_id : String
+  severity : String
+  reason : String
+  owner : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,86 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/core"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn claim_kind_label(ClaimKind) -> String
+
+pub fn confidence_label(Double) -> String
+
+pub fn derived_provenance(Provenance, String, String) -> Provenance
+
+pub fn measured_provenance(String, String, String, String, String) -> Provenance
+
+pub fn uncertainty(Double, String) -> Uncertainty
+
+// Errors
+
+// Types and methods
+pub(all) enum ClaimKind {
+  Measured
+  Derived
+  Simulated
+  Assumed
+  Unknown
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarBounds {
+  south_deg : Double
+  north_deg : Double
+  west_deg : Double
+  east_deg : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarCoordinate {
+  latitude_deg : Double
+  longitude_deg : Double
+  radius_m : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarSite {
+  site_id : String
+  name : String
+  body : String
+  bounds : LunarBounds
+  center : LunarCoordinate
+  purpose : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Provenance {
+  dataset_id : String
+  source_title : String
+  source_url : String
+  license : String
+  product_type : String
+  claim_kind : ClaimKind
+  generated_by : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainCell {
+  tile_id : String
+  row : Int
+  col : Int
+  elevation_m : Double
+  provenance : Provenance
+  uncertainty : Uncertainty
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Uncertainty {
+  confidence : Double
+  label : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+pub type DatasetId = String
+
+pub type SiteId = String
+
+pub type TileId = String
+
+// Traits
+

@@ -1,0 +1,49 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/mission"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/terrain",
+}
+
+// Values
+pub fn conservative_rover_profile() -> TraverseProfile
+
+pub fn first_trusted_square_traverse_score() -> TraverseScore
+
+pub fn score_traverse(@terrain.TerrainMetrics, TraverseProfile) -> TraverseScore
+
+pub fn traverse_decision_label(TraverseDecision) -> String
+
+// Errors
+
+// Types and methods
+pub(all) enum TraverseDecision {
+  Allow
+  Review
+  Block
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TraverseProfile {
+  profile_id : String
+  label : String
+  max_grade : Double
+  caution_grade : Double
+  max_roughness_m : Double
+  caution_roughness_m : Double
+  min_confidence : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TraverseScore {
+  profile : TraverseProfile
+  decision : TraverseDecision
+  score : Int
+  reasons : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

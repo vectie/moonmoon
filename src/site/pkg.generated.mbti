@@ -1,0 +1,43 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/site"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/dataset",
+  "vectie/moonmoon/src/mission",
+  "vectie/moonmoon/src/terrain",
+}
+
+// Values
+pub fn first_trusted_square_dossier() -> SiteDossier
+
+pub fn first_trusted_square_json() -> Json
+
+pub fn first_trusted_square_markdown() -> String
+
+pub fn first_trusted_square_site() -> @core.LunarSite
+
+pub fn render_json(SiteDossier) -> Json
+
+pub fn render_markdown(SiteDossier) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct SiteDossier {
+  site : @core.LunarSite
+  datasets : Array[@dataset.DatasetManifest]
+  validations : Array[@dataset.DatasetValidation]
+  terrain : @terrain.TerrainMetrics
+  traverse : @mission.TraverseScore
+  summary : String
+  blockers : Array[String]
+  next_questions : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

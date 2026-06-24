@@ -35,8 +35,30 @@ NASA / LROC / LOLA / PDS / mission data
 
 ## Current Status
 
-This repository is still a seed project. That is intentional: Moonmoon should
-get the core shape right before accumulating code.
+Moonmoon now has its first executable proof slice: one tiny trusted-square
+terrain fixture with typed provenance, uncertainty, terrain metrics, hazard
+classification, mission traverse readiness, a site dossier, and reproducible
+Markdown/JSON CLI output.
+
+Run it with:
+
+```bash
+moon run cmd/main
+moon run cmd/main -- site summary
+moon run cmd/main -- json
+moon run cmd/main -- terrain fixture
+moon run cmd/main -- terrain fixture json
+moon run cmd/main -- moonbook dossier
+moon run cmd/main -- moonbook dossier json
+bash scripts/build_moonmoon_dossier.sh
+```
+
+Reproducible site, terrain, and LunarBook-ready deliverables are written to
+`output/site/`, `output/terrain/`, and `output/moonbook/`.
+
+The current fixture is synthetic. It is useful for proving the software shape,
+not for mission-grade lunar planning. The next major step is replacing it with a
+small authoritative LOLA/LROC-backed fixture.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source

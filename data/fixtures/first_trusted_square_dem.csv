@@ -1,0 +1,17 @@
+tile_id,row,col,elevation_m
+first-trusted-square,0,0,0.0
+first-trusted-square,0,1,0.8
+first-trusted-square,0,2,1.6
+first-trusted-square,0,3,2.1
+first-trusted-square,1,0,0.5
+first-trusted-square,1,1,1.2
+first-trusted-square,1,2,2.4
+first-trusted-square,1,3,3.2
+first-trusted-square,2,0,0.2
+first-trusted-square,2,1,1.4
+first-trusted-square,2,2,3.0
+first-trusted-square,2,3,4.7
+first-trusted-square,3,0,-0.3
+first-trusted-square,3,1,0.9
+first-trusted-square,3,2,2.8
+first-trusted-square,3,3,5.4
