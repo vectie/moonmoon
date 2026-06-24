@@ -140,6 +140,14 @@
       "last_transition_id": "review-energy-window-request-evidence"
     },
     {
+      "item_id": "moonrobo-handoff",
+      "severity": "high",
+      "reason": "Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared",
+      "owner": "moonrobo",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonrobo-handoff-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",

@@ -1,0 +1,53 @@
+# Moonrobo Simulation Preconditions
+
+- moonrobo/first-trusted-square/direct-lola-window/simulation-preconditions
+  - route: direct-lola-window
+  - decision: block
+  - task: route-simulation-precondition
+  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - preconditions:
+    - route-direct-lola-window: block - do not traverse directly; use this as the baseline hazard case
+    - illumination-direct-lola-window: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions
+  - route: west-contour-detour
+  - decision: block
+  - task: route-simulation-precondition
+  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - preconditions:
+    - route-west-contour-detour: block - widen the west corridor extraction before simulation
+    - illumination-west-contour-detour: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions
+  - route: north-rim-stepout
+  - decision: block
+  - task: route-simulation-precondition
+  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - preconditions:
+    - route-north-rim-stepout: block - widen the north corridor extraction and add illumination review
+    - illumination-north-rim-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions
+  - route: southwest-bypass
+  - decision: block
+  - task: route-simulation-precondition
+  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - preconditions:
+    - route-southwest-bypass: block - continue corridor search beyond the southwest bypass before simulation
+    - illumination-southwest-bypass: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- moonrobo/first-trusted-square/south-stepout/simulation-preconditions
+  - route: south-stepout
+  - decision: block
+  - task: route-simulation-precondition
+  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - preconditions:
+    - route-south-stepout: block - continue south corridor extraction and add ephemeris-backed illumination review
+    - illumination-south-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+

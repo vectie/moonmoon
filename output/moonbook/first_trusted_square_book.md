@@ -165,6 +165,11 @@
   - claim: derived
   - confidence: 0.45
   - path: mission/first-trusted-square/energy-window.json
+- moonrobo/first-trusted-square/simulation-preconditions: Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-handoff
+  - claim: derived
+  - confidence: 0.6
+  - path: moonrobo/first-trusted-square/handoffs.json
 
 ## Review Queue
 
@@ -185,6 +190,7 @@
 - illumination-south-stepout [high/needs-evidence] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
 - energy-window [high/needs-evidence] energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation -> power-thermal-review
+- moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared -> moonrobo
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low/open] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
 - question-2 [low/open] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
@@ -242,6 +248,9 @@
 - review-energy-window-request-evidence: request-evidence energy-window -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation
+- review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
 - review-question-0-keep-open: keep-open question-0 -> open
   - reviewer: moonbook-policy-v1
   - rationale: left open for moonclaw follow-up

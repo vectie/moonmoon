@@ -140,6 +140,14 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
     },
     {
+      "transition_id": "review-moonrobo-handoff-request-evidence",
+      "item_id": "moonrobo-handoff",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    },
+    {
       "transition_id": "review-question-0-keep-open",
       "item_id": "question-0",
       "decision": "KeepOpen",

@@ -290,6 +290,15 @@
       "confidence": 0.45,
       "path": "mission/first-trusted-square/energy-window.json",
       "summary": "block with 845 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
+      "title": "Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboHandoff",
+      "claim_kind": "Derived",
+      "confidence": 0.6,
+      "path": "moonrobo/first-trusted-square/handoffs.json",
+      "summary": "block primary route southwest-bypass: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
     }
   ],
   "review_queue": [
@@ -428,6 +437,14 @@
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-energy-window-request-evidence"
+    },
+    {
+      "item_id": "moonrobo-handoff",
+      "severity": "high",
+      "reason": "Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared",
+      "owner": "moonrobo",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonrobo-handoff-request-evidence"
     },
     {
       "item_id": "question-0",
@@ -590,6 +607,14 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    },
+    {
+      "transition_id": "review-moonrobo-handoff-request-evidence",
+      "item_id": "moonrobo-handoff",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
     },
     {
       "transition_id": "review-question-0-keep-open",

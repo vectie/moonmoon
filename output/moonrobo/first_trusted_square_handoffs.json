@@ -1,0 +1,197 @@
+[
+  {
+    "handoff_id": "moonrobo/first-trusted-square/direct-lola-window/simulation-preconditions",
+    "site_id": "first-trusted-square",
+    "route_id": "direct-lola-window",
+    "task_kind": "route-simulation-precondition",
+    "target_body": "Moon",
+    "decision": "Block",
+    "preconditions": [
+      {
+        "precondition_id": "route-direct-lola-window",
+        "label": "Route terrain gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+        "reason": "do not traverse directly; use this as the baseline hazard case"
+      },
+      {
+        "precondition_id": "illumination-direct-lola-window",
+        "label": "Illumination and thermal gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "energy-window",
+        "label": "Rover energy window gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/energy-window.json",
+        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      }
+    ],
+    "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+  },
+  {
+    "handoff_id": "moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions",
+    "site_id": "first-trusted-square",
+    "route_id": "west-contour-detour",
+    "task_kind": "route-simulation-precondition",
+    "target_body": "Moon",
+    "decision": "Block",
+    "preconditions": [
+      {
+        "precondition_id": "route-west-contour-detour",
+        "label": "Route terrain gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
+        "reason": "widen the west corridor extraction before simulation"
+      },
+      {
+        "precondition_id": "illumination-west-contour-detour",
+        "label": "Illumination and thermal gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "energy-window",
+        "label": "Rover energy window gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/energy-window.json",
+        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      }
+    ],
+    "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+  },
+  {
+    "handoff_id": "moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions",
+    "site_id": "first-trusted-square",
+    "route_id": "north-rim-stepout",
+    "task_kind": "route-simulation-precondition",
+    "target_body": "Moon",
+    "decision": "Block",
+    "preconditions": [
+      {
+        "precondition_id": "route-north-rim-stepout",
+        "label": "Route terrain gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+        "reason": "widen the north corridor extraction and add illumination review"
+      },
+      {
+        "precondition_id": "illumination-north-rim-stepout",
+        "label": "Illumination and thermal gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "energy-window",
+        "label": "Rover energy window gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/energy-window.json",
+        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      }
+    ],
+    "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+  },
+  {
+    "handoff_id": "moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions",
+    "site_id": "first-trusted-square",
+    "route_id": "southwest-bypass",
+    "task_kind": "route-simulation-precondition",
+    "target_body": "Moon",
+    "decision": "Block",
+    "preconditions": [
+      {
+        "precondition_id": "route-southwest-bypass",
+        "label": "Route terrain gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+        "reason": "continue corridor search beyond the southwest bypass before simulation"
+      },
+      {
+        "precondition_id": "illumination-southwest-bypass",
+        "label": "Illumination and thermal gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "energy-window",
+        "label": "Rover energy window gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/energy-window.json",
+        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      }
+    ],
+    "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+  },
+  {
+    "handoff_id": "moonrobo/first-trusted-square/south-stepout/simulation-preconditions",
+    "site_id": "first-trusted-square",
+    "route_id": "south-stepout",
+    "task_kind": "route-simulation-precondition",
+    "target_body": "Moon",
+    "decision": "Block",
+    "preconditions": [
+      {
+        "precondition_id": "route-south-stepout",
+        "label": "Route terrain gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
+        "reason": "continue south corridor extraction and add ephemeris-backed illumination review"
+      },
+      {
+        "precondition_id": "illumination-south-stepout",
+        "label": "Illumination and thermal gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      {
+        "precondition_id": "energy-window",
+        "label": "Rover energy window gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/energy-window.json",
+        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      }
+    ],
+    "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+  }
+]
