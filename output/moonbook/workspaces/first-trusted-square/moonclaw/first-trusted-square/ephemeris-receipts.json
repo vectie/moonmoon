@@ -17,7 +17,8 @@
         "accepted_outputs": [],
         "validation_notes": [
           "energy-window-present: pass - 5 route candidates are represented in the current energy assessment.",
-          "time-window-ephemeris-missing: pass - current energy budget explicitly has no time-windowed ephemeris attached.",
+          "time-window-ephemeris-missing: pass - current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached.",
+          "power-window-source-status-missing: pass - generated power-window evidence source status is missing-source.",
           "verified-available-energy-zero: pass - verified available energy remains zero without a time-windowed power source.",
           "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
           "expected-output-contract-present: pass - ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
@@ -26,6 +27,9 @@
       "site_id": "first-trusted-square",
       "energy_decision": "Block",
       "has_time_window_ephemeris": false,
+      "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+      "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+      "power_window_source_status": "missing-source",
       "route_count": 5,
       "blocked_route_count": 5,
       "required_sunlit_hours": 4,
@@ -47,7 +51,12 @@
         {
           "validation_id": "time-window-ephemeris-missing",
           "passed": true,
-          "note": "current energy budget explicitly has no time-windowed ephemeris attached."
+          "note": "current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached."
+        },
+        {
+          "validation_id": "power-window-source-status-missing",
+          "passed": true,
+          "note": "generated power-window evidence source status is missing-source."
         },
         {
           "validation_id": "verified-available-energy-zero",
@@ -76,7 +85,8 @@
           "accepted_outputs": [],
           "validation_notes": [
             "energy-window-present: pass - 5 route candidates are represented in the current energy assessment.",
-            "time-window-ephemeris-missing: pass - current energy budget explicitly has no time-windowed ephemeris attached.",
+            "time-window-ephemeris-missing: pass - current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached.",
+            "power-window-source-status-missing: pass - generated power-window evidence source status is missing-source.",
             "verified-available-energy-zero: pass - verified available energy remains zero without a time-windowed power source.",
             "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
             "expected-output-contract-present: pass - ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
@@ -85,6 +95,9 @@
         "site_id": "first-trusted-square",
         "energy_decision": "Block",
         "has_time_window_ephemeris": false,
+        "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+        "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+        "power_window_source_status": "missing-source",
         "route_count": 5,
         "blocked_route_count": 5,
         "required_sunlit_hours": 4,
@@ -106,7 +119,12 @@
           {
             "validation_id": "time-window-ephemeris-missing",
             "passed": true,
-            "note": "current energy budget explicitly has no time-windowed ephemeris attached."
+            "note": "current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached."
+          },
+          {
+            "validation_id": "power-window-source-status-missing",
+            "passed": true,
+            "note": "generated power-window evidence source status is missing-source."
           },
           {
             "validation_id": "verified-available-energy-zero",

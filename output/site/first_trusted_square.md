@@ -275,6 +275,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 ## Energy Window
 
 - budget: Conservative South Pole Rover Energy Budget (conservative-south-pole-energy-v1)
+- power-window evidence: first-trusted-square-power-window-missing-v1
+- power-window source: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
+- power-window source status: missing-source
+- time window: pending -> pending
 - decision: block
 - route candidates: 5
 - blocked route candidates: 5
@@ -286,6 +290,7 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 - next action: attach time-windowed solar ephemeris and verify rover energy budget before simulation
 - reasons:
   - no time-windowed solar ephemeris is attached for energy planning
+  - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
   - estimated energy demand exceeds verified available energy
   - 5 route candidates remain blocked before energy simulation
 
@@ -303,11 +308,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 9.250124999999999 m
   - confidence: 0.7544
   - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-missing-v1
+  - illumination source status: missing-source
   - illumination risk: 0.3635749999999998
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: do not traverse directly; use this as the baseline hazard case
@@ -328,11 +336,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 8.52791666666666 m
   - confidence: 0.7544
   - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-missing-v1
+  - illumination source status: missing-source
   - illumination risk: 0.32390624999999956
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: widen the west corridor extraction before simulation
@@ -353,11 +364,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.716124999999998 m
   - confidence: 0.7544
   - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-missing-v1
+  - illumination source status: missing-source
   - illumination risk: 0.28963125000000006
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: widen the north corridor extraction and add illumination review
@@ -378,11 +392,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.056666666666669 m
   - confidence: 0.7544
   - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-missing-v1
+  - illumination source status: missing-source
   - illumination risk: 0.2673000000000002
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: continue corridor search beyond the southwest bypass before simulation
@@ -403,11 +420,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.154583333333335 m
   - confidence: 0.7544
   - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-missing-v1
+  - illumination source status: missing-source
   - illumination risk: 0.27855000000000024
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: continue south corridor extraction and add ephemeris-backed illumination review

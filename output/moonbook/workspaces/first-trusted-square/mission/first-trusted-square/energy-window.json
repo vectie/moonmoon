@@ -12,6 +12,11 @@
     "budget": {
       "budget_id": "conservative-south-pole-energy-v1",
       "label": "Conservative South Pole Rover Energy Budget",
+      "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+      "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+      "power_window_source_status": "missing-source",
+      "time_start_utc": "pending",
+      "time_end_utc": "pending",
       "battery_capacity_wh": 1200,
       "reserve_wh": 600,
       "drive_power_w": 120,
@@ -20,6 +25,7 @@
       "min_energy_margin_wh": 250,
       "required_sunlit_hours": 4,
       "assumed_dark_survival_hours": 2,
+      "verified_available_energy_wh": 0,
       "has_time_window_ephemeris": false
     },
     "route_count": 5,
@@ -32,6 +38,7 @@
     "decision": "Block",
     "reasons": [
       "no time-windowed solar ephemeris is attached for energy planning",
+      "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
       "estimated energy demand exceeds verified available energy",
       "5 route candidates remain blocked before energy simulation"
     ],
