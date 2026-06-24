@@ -132,6 +132,14 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
     },
     {
+      "transition_id": "review-energy-window-request-evidence",
+      "item_id": "energy-window",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    },
+    {
       "transition_id": "review-question-0-keep-open",
       "item_id": "question-0",
       "decision": "KeepOpen",

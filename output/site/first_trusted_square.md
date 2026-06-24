@@ -2,7 +2,7 @@
 
 Purpose: Software proof slice for lunar terrain, uncertainty, and robot traverse reasoning.
 
-Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and a reproducible measured 5x5 route-corridor scan.
+Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 5x5 route-corridor scan, and a conservative rover energy-window budget.
 
 ## Source Datasets
 
@@ -243,6 +243,23 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - #3 r+0-c+8: grade 0.7054, roughness 8.517167 m, decision block
   - #4 r-4-c-8: grade 0.7091, roughness 8.112583 m, decision block
   - #5 r-4-c+8: grade 0.7125, roughness 8.56275 m, decision block
+
+## Energy Window
+
+- budget: Conservative South Pole Rover Energy Budget (conservative-south-pole-energy-v1)
+- decision: block
+- route candidates: 5
+- blocked route candidates: 5
+- estimated drive hours: 1.25
+- estimated dark survival hours: 2
+- required energy: 845 Wh
+- verified available energy: 0 Wh
+- energy margin: -845 Wh
+- next action: attach time-windowed solar ephemeris and verify rover energy budget before simulation
+- reasons:
+  - no time-windowed solar ephemeris is attached for energy planning
+  - estimated energy demand exceeds verified available energy
+  - 5 route candidates remain blocked before energy simulation
 
 ## Route Candidates
 

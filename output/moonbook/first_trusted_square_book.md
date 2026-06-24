@@ -160,6 +160,11 @@
   - claim: derived
   - confidence: 0.45263999999999993
   - path: mission/first-trusted-square/routes/south-stepout.illumination.json
+- energy/first-trusted-square/conservative-window: Energy window budget for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: energy-window
+  - claim: derived
+  - confidence: 0.45
+  - path: mission/first-trusted-square/energy-window.json
 
 ## Review Queue
 
@@ -179,6 +184,7 @@
 - route-south-stepout [high/needs-evidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
 - illumination-south-stepout [high/needs-evidence] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
+- energy-window [high/needs-evidence] energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation -> power-thermal-review
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low/open] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
 - question-2 [low/open] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
@@ -233,6 +239,9 @@
 - review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- review-energy-window-request-evidence: request-evidence energy-window -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation
 - review-question-0-keep-open: keep-open question-0 -> open
   - reviewer: moonbook-policy-v1
   - rationale: left open for moonclaw follow-up

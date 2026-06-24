@@ -132,6 +132,14 @@
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
     },
     {
+      "item_id": "energy-window",
+      "severity": "high",
+      "reason": "energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-energy-window-request-evidence"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",

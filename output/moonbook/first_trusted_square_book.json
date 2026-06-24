@@ -281,6 +281,15 @@
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
       "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "entry_id": "energy/first-trusted-square/conservative-window",
+      "title": "Energy window budget for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "EnergyWindow",
+      "claim_kind": "Derived",
+      "confidence": 0.45,
+      "path": "mission/first-trusted-square/energy-window.json",
+      "summary": "block with 845 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
     }
   ],
   "review_queue": [
@@ -411,6 +420,14 @@
       "owner": "mission-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
+    },
+    {
+      "item_id": "energy-window",
+      "severity": "high",
+      "reason": "energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-energy-window-request-evidence"
     },
     {
       "item_id": "question-0",
@@ -565,6 +582,14 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+    },
+    {
+      "transition_id": "review-energy-window-request-evidence",
+      "item_id": "energy-window",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
     },
     {
       "transition_id": "review-question-0-keep-open",

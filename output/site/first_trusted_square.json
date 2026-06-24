@@ -1112,7 +1112,36 @@
       "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
     }
   ],
-  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and a reproducible measured 5x5 route-corridor scan.",
+  "energy": {
+    "budget": {
+      "budget_id": "conservative-south-pole-energy-v1",
+      "label": "Conservative South Pole Rover Energy Budget",
+      "battery_capacity_wh": 1200,
+      "reserve_wh": 600,
+      "drive_power_w": 120,
+      "thermal_survival_power_w": 35,
+      "comms_power_w": 20,
+      "min_energy_margin_wh": 250,
+      "required_sunlit_hours": 4,
+      "assumed_dark_survival_hours": 2,
+      "has_time_window_ephemeris": false
+    },
+    "route_count": 5,
+    "blocked_route_count": 5,
+    "estimated_drive_hours": 1.25,
+    "estimated_dark_survival_hours": 2,
+    "required_energy_wh": 845,
+    "available_energy_wh": 0,
+    "margin_wh": -845,
+    "decision": "Block",
+    "reasons": [
+      "no time-windowed solar ephemeris is attached for energy planning",
+      "estimated energy demand exceeds verified available energy",
+      "5 route candidates remain blocked before energy simulation"
+    ],
+    "next_action": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+  },
+  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 5x5 route-corridor scan, and a conservative rover energy-window budget.",
   "blockers": [
     "terrain exceeds early traverse limits",
     "requires alternate route or stronger dataset"
