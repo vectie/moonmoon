@@ -67,7 +67,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
     blockers: terrain_blockers(terrain),
     next_questions: [
-      "Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture.", "Add illumination windows for robot energy and thermal constraints.",
+      "Add illumination windows for robot energy and thermal constraints.", "Find alternate route candidates around the blocked LOLA terrain patch.",
       "Export the dossier into a LunarBook workspace for review.",
     ],
   }

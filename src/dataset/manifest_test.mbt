@@ -1,19 +1,19 @@
 ///|
-test "first trusted square manifest marks fixture evidence clearly" {
+test "first trusted square manifest marks LOLA evidence clearly" {
   let manifest = @dataset.first_trusted_square_manifest()
-  assert_eq(manifest.dataset_id, "fixture-first-trusted-square-dem-v1")
-  assert_true(manifest.claim_kind == @core.ClaimKind::Simulated)
-  assert_true(manifest.trust == @dataset.DatasetTrust::CuratedFixture)
-  assert_eq(@dataset.trust_label(manifest.trust), "curated-fixture")
-  assert_eq(manifest.source_path, "data/fixtures/first_trusted_square_dem.csv")
+  assert_eq(manifest.dataset_id, "lro-lola-first-trusted-square-dem-v1")
+  assert_true(manifest.claim_kind == @core.ClaimKind::Measured)
+  assert_true(manifest.trust == @dataset.DatasetTrust::Authoritative)
+  assert_eq(@dataset.trust_label(manifest.trust), "authoritative")
+  assert_eq(
+    manifest.source_path,
+    "data/sources/lro_lola/first_trusted_square_dem.csv",
+  )
   assert_eq(
     manifest.source_sha256,
-    "45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7",
+    "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
   )
-  assert_eq(
-    manifest.extractor,
-    "scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
-  )
+  assert_true(manifest.extractor.contains("extract_lola_trusted_square.py"))
   assert_eq(
     @dataset.checksum_kind_label(manifest.checksum_kind),
     "inline-fixture-fingerprint",
@@ -24,7 +24,7 @@ test "first trusted square manifest marks fixture evidence clearly" {
   )
   let provenance = @dataset.to_provenance(manifest)
   assert_eq(provenance.dataset_id, manifest.dataset_id)
-  assert_true(provenance.claim_kind == @core.ClaimKind::Simulated)
+  assert_true(provenance.claim_kind == @core.ClaimKind::Measured)
   let validation = @dataset.verify_checksum(manifest, manifest.checksum)
   assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
   assert_eq(@dataset.validation_status_label(validation.status), "verified")
@@ -50,7 +50,7 @@ test "first trusted square declares an authoritative LOLA upgrade candidate" {
   assert_eq(candidate.access_url, "https://ode.rsl.wustl.edu/moon/")
   assert_eq(
     @dataset.source_candidate_status_label(candidate),
-    "needs-source-upgrade",
+    "accepted-for-software-proof",
   )
   assert_eq(@dataset.first_trusted_square_source_candidates().length(), 1)
 }
@@ -72,7 +72,7 @@ test "first trusted square has a concrete LOLA acquisition plan" {
     plan.extracted_fixture_path,
     "data/sources/lro_lola/first_trusted_square_dem.csv",
   )
-  assert_eq(@dataset.acquisition_plan_progress_label(plan), "planned:5-steps")
+  assert_eq(@dataset.acquisition_plan_progress_label(plan), "recorded:5-steps")
   assert_eq(
     @dataset.first_trusted_square_source_acquisition_plans().length(),
     1,
@@ -108,7 +108,7 @@ test "first trusted square selects a concrete LOLA product label" {
   assert_eq(selection.value_offset_km, 1737.4)
   assert_eq(
     @dataset.product_selection_status_label(selection),
-    "needs-human-review",
+    "accepted-for-software-proof",
   )
   assert_eq(
     @dataset.first_trusted_square_source_product_selections().length(),
@@ -143,7 +143,7 @@ test "first trusted square tracks a LOLA extraction candidate" {
   assert_true(extraction.claim_kind == @core.ClaimKind::Measured)
   assert_eq(
     @dataset.extraction_candidate_status_label(extraction),
-    "needs-human-review",
+    "accepted-for-software-proof",
   )
   assert_eq(
     @dataset.first_trusted_square_source_extraction_candidates().length(),

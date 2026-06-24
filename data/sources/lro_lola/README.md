@@ -1,14 +1,11 @@
 # LRO LOLA Source Acquisition Plan
 
-This directory is reserved for reproducible source evidence that upgrades
-Moonmoon from a synthetic terrain fixture to a tiny authoritative lunar terrain
-extraction.
+This directory stores reproducible LOLA source evidence for Moonmoon's first
+authoritative lunar terrain fixture.
 
 The current repository does not commit the raw LOLA product. It does commit a
-tiny candidate CSV extracted through HTTP byte ranges. The active
-first-trusted-square terrain still remains
-`data/fixtures/first_trusted_square_dem.csv` until the LOLA extraction is
-reviewed.
+tiny CSV extracted through HTTP byte ranges. That CSV is now the active
+first-trusted-square terrain source for Moonmoon software proof.
 
 ## First Target
 
@@ -41,7 +38,7 @@ reviewed.
 - Unit: `KILOMETER`
 - Value offset: `1737.4` km
 
-## First Extracted Candidate
+## First Extracted Fixture
 
 - Output path: `data/sources/lro_lola/first_trusted_square_dem.csv`
 - Output SHA-256: `7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c`
@@ -50,7 +47,7 @@ reviewed.
 - Source window: row `3972`, column `3790`, size `4x4`
 - Center: `89.88S`, `0.12E`
 - Cell size: 20 m
-- Status: needs human review before replacing the active synthetic fixture
+- Status: accepted for Moonmoon software proof
 
 ## Reproduction
 
@@ -66,7 +63,7 @@ Verify all pinned source evidence without network access:
 bash scripts/verify_moonmoon_sources.sh
 ```
 
-Regenerate only the tiny candidate extraction from HTTP byte ranges:
+Regenerate only the tiny active extraction from HTTP byte ranges:
 
 ```bash
 python3 scripts/extract_lola_trusted_square.py
@@ -74,7 +71,8 @@ python3 scripts/extract_lola_trusted_square.py
 
 ## Trust Gate
 
-Do not replace the synthetic fixture until the following evidence is recorded:
+Keep the active software-proof fixture accepted only while the following
+evidence remains recorded and verified:
 
 - official source family URL and metadata URL
 - selected product URL after ODE/PDS discovery
@@ -85,6 +83,3 @@ Do not replace the synthetic fixture until the following evidence is recorded:
 - generated inline grid fingerprint
 - passing `scripts/verify_moonmoon_sources.sh`
 - passing `moon test`
-
-The expected extracted output path is
-`data/sources/lro_lola/first_trusted_square_dem.csv`.

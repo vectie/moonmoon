@@ -112,7 +112,7 @@ generation, so product selection can proceed from durable evidence rather than
 only a URL in prose. It also pins the selected
 `ldem_875s_20m_float.xml` product label, whose metadata covers the first
 trusted square with south-polar 20 m/pixel polar stereographic LOLA DEM data.
-Moonmoon now also has a tiny candidate extraction at
+Moonmoon now also has a tiny active extraction at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, generated from HTTP byte
 ranges against the selected IMG. The MoonBit contract should remain:
 
@@ -124,32 +124,29 @@ authoritative source file
   -> site dossier and LunarBook evidence queue
 ```
 
-Until that source file is selected and checked in or reproducibly fetched, the
-current trusted-square dataset must remain marked as `simulated` and
-`curated-fixture`.
+Because that source file is now selected, checked in, and reproducibly fetched,
+the current trusted-square dataset is marked as `measured` and `authoritative`
+for software proof.
 
-Moonmoon now also records the LOLA replacement path as a typed source candidate
-inside the site dossier and MoonBook export. The candidate is not evidence yet;
-it is a durable work item that names the official PDS LOLA page, ODE Moon access
-point, intended local target path, and next selection/checksum action.
+Moonmoon also records the LOLA replacement path as a typed source candidate
+inside the site dossier and MoonBook export. That candidate is now accepted for
+software proof and names the official PDS LOLA page, ODE Moon access point,
+local target path, and follow-up action.
 
 The current fixture now has a checked source-file boundary:
 
-- `data/fixtures/first_trusted_square_dem.csv`
 - `data/sources/lro_lola/gdr_ds.cat`
 - `data/sources/lro_lola/ldem_875s_20m_float.xml`
 - `data/sources/lro_lola/first_trusted_square_dem.csv`
 - `scripts/verify_moonmoon_sources.sh`
 
-The terrain source file is still synthetic, but its SHA-256 is pinned in the
-manifest and verified before reproducible outputs are built. The pinned LOLA
-catalog is official metadata, not terrain evidence. It proves the GDR family
-context for the next selection step. The pinned product label is stronger: it
-records the exact product LID, projection, bounds, resolution, array shape,
-data type, unit, and raw image file name. The extracted LOLA CSV proves bounded
-IMG window reads and records a reproducible checksum, but it still needs human
-review before becoming the active terrain fixture. The MoonBit fixture mirrors
-the synthetic CSV through
+The active terrain source file is a LOLA byte-range extraction. Its SHA-256 is
+pinned in the manifest and verified before reproducible outputs are built. The
+pinned LOLA catalog proves the GDR family context; the pinned product label
+records the exact product LID, projection, bounds, resolution, array shape, data
+type, unit, and raw image file name. The extracted LOLA CSV proves bounded IMG
+window reads and records a reproducible checksum. The MoonBit fixture mirrors
+that CSV through
 `scripts/generate_moonmoon_fixture.py`, which writes
 `src/terrain/generated_first_trusted_square_fixture.mbt`. That generated module
 is now the terrain package's source for the trusted-square elevations. Replacing

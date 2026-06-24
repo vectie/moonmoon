@@ -3,7 +3,7 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
   let source_manifest = @dataset.first_trusted_square_manifest()
   let provenance = @dataset.to_provenance(source_manifest)
   let uncertainty = @core.uncertainty(
-    0.72, "Synthetic DEM fixture shaped from lunar south-pole planning assumptions.",
+    0.82, "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification.",
   )
   let rows = generated_first_trusted_square_rows()
   let cols = generated_first_trusted_square_cols()
@@ -25,7 +25,7 @@ pub fn first_trusted_square_grid() -> TerrainGrid {
     tile_id: generated_first_trusted_square_tile_id(),
     rows,
     cols,
-    cell_size_m: 10.0,
+    cell_size_m: source_manifest.resolution_m,
     source_manifest,
     cells,
   }

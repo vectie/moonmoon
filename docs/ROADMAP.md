@@ -39,9 +39,10 @@ Current implementation status:
 - `src/terrain` builds one deterministic 4x4 trusted-square fixture, computes
   elevation range, neighbor grade, roughness, hazard class, and Markdown/JSON
   fixture exports.
-- `data/fixtures/first_trusted_square_dem.csv` is the checked source fixture
-  for the current grid, and `scripts/verify_moonmoon_sources.sh` validates its
-  SHA-256 before dossier generation.
+- `data/sources/lro_lola/first_trusted_square_dem.csv` is the checked LOLA
+  byte-range source fixture for the current grid, and
+  `scripts/verify_moonmoon_sources.sh` validates its SHA-256 before dossier
+  generation.
 - `scripts/generate_moonmoon_fixture.py` regenerates the MoonBit fixture module
   from the checked CSV so terrain code does not hand-mirror source values; its
   `--check` mode verifies the generated file is current.
@@ -52,8 +53,9 @@ Current implementation status:
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands.
 
-The fixture is still synthetic. It proves the software and evidence contracts;
-it does not prove lunar mission validity.
+The active fixture is now measured LOLA DEM evidence accepted for Moonmoon
+software proof. It does not prove lunar mission validity; it currently blocks
+the conservative rover profile and asks for alternate route modeling.
 
 ## Milestone 2: First Rabbita Moonviewer
 
@@ -89,15 +91,14 @@ Current implementation status:
 - The review queue currently includes fixture blockers, traverse review
   reasons, and next questions for MoonClaw/operator follow-up.
 - The current inline fixture fingerprint verifies successfully against its
-  manifest, and the checked CSV fixture verifies against its SHA-256, but the
-  fixture is still synthetic.
+  manifest, and the checked LOLA CSV fixture verifies against its SHA-256.
 - `data/sources/lro_lola/gdr_ds.cat` pins the official PDS LOLA GDR catalog
   metadata, and `scripts/verify_moonmoon_sources.sh` verifies its SHA-256 and
-  byte count alongside the synthetic CSV fixture.
+  byte count alongside the active LOLA CSV fixture.
 - `data/sources/lro_lola/ldem_875s_20m_float.xml` pins the selected south-polar
   20 m/pixel LOLA DEM product label, including projection, bounds, raster
   shape, unit, and raw image name.
-- `data/sources/lro_lola/first_trusted_square_dem.csv` is a tiny 4x4 candidate
+- `data/sources/lro_lola/first_trusted_square_dem.csv` is the active tiny 4x4
   extraction generated from HTTP byte ranges against the selected IMG and
   verified by SHA-256.
 - The first LOLA replacement path is tracked as a typed source-upgrade
@@ -105,17 +106,16 @@ Current implementation status:
   source links.
 - The first LOLA acquisition plan now names the reachable south-polar GDR
   source family, catalog metadata, local source directory, extracted CSV path,
-  and trust gate before the synthetic fixture can be replaced.
+  and trust gate for the active software-proof fixture.
 - The first product selection now names `ldem_875s_20m_float` as the concrete
   label-backed extraction target, while keeping the raw IMG uncommitted.
 - The first extraction candidate now proves bounded raster access and produces
-  a fixture-shaped CSV, but it remains `needs-human-review` before it can
-  replace the active synthetic terrain fixture.
+  the active fixture-shaped CSV.
 
 Remaining work:
 
-- Review the LOLA extraction projection math and values, then replace the
-  synthetic manifest with an authoritative LOLA-backed manifest and checksum.
+- Add illumination constraints and route alternatives for the blocked measured
+  LOLA terrain.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export
   summaries.
 - Add accepted/rejected review transitions once MoonBook storage exists.

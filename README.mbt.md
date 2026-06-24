@@ -57,14 +57,14 @@ bash scripts/build_moonmoon_dossier.sh
 Reproducible site, terrain, and LunarBook-ready deliverables are written to
 `output/site/`, `output/terrain/`, and `output/moonbook/`.
 
-The current terrain fixture is sourced from
-`data/fixtures/first_trusted_square_dem.csv`, verified by
+The current terrain fixture is sourced from the checked LOLA byte-range CSV at
+`data/sources/lro_lola/first_trusted_square_dem.csv`, verified by
 `scripts/verify_moonmoon_sources.sh`, and regenerated into MoonBit by
 `scripts/generate_moonmoon_fixture.py`.
 
-The current fixture is synthetic. It is useful for proving the software shape,
-not for mission-grade lunar planning. The next major step is replacing it with a
-small authoritative LOLA/LROC-backed fixture.
+The current fixture is measured LOLA DEM evidence accepted for Moonmoon software
+proof. It is still not mission-grade lunar planning data; the next major step is
+adding illumination and route alternatives around the blocked terrain patch.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source

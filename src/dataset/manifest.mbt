@@ -163,7 +163,7 @@ pub fn source_candidate_status_label(candidate : SourceCandidate) -> String {
 
 ///|
 pub fn acquisition_plan_progress_label(plan : SourceAcquisitionPlan) -> String {
-  "planned:\{plan.steps.length()}-steps"
+  "recorded:\{plan.steps.length()}-steps"
 }
 
 ///|
@@ -264,12 +264,12 @@ pub fn first_trusted_square_lola_candidate() -> SourceCandidate {
     access_url: "https://ode.rsl.wustl.edu/moon/",
     local_target_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
     intended_use: "Replace the synthetic trusted-square DEM with a tiny authoritative lunar south-pole terrain extraction.",
-    next_action: "Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.",
-    review_status: NeedsSourceUpgrade,
+    next_action: "Use the checked LOLA byte-range fixture for software proof, then add illumination and route alternatives before any rover claim.",
+    review_status: AcceptedForSoftwareProof,
     notes: [
       "PDS Geosciences identifies LOLA as the LRO Lunar Orbiter Laser Altimeter for high-resolution lunar topography.",
       "The PDS page lists derived GDR and SLDEM product families and points recent LOLA data discovery to ODE/LOLA Data Node.",
-      "This candidate is not yet ingested; the active trusted-square dataset remains synthetic until a local source file is verified.",
+      "The first trusted-square active fixture now uses a checked LOLA GDR byte-range extraction for software proof.",
     ],
   }
 }
@@ -290,7 +290,7 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
     local_source_directory: "data/sources/lro_lola/",
     local_metadata_path: "data/sources/lro_lola/gdr_ds.cat",
     extracted_fixture_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
-    trust_gate: "Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded.",
+    trust_gate: "The active software-proof fixture must keep product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum recorded.",
     steps: [
       {
         step_id: "discover",
@@ -311,7 +311,7 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
         title: "Extract tiny tile",
         action: "Read only the needed south-pole window from the float image and emit a compact CSV for the first trusted square.",
         expected_evidence: "A small CSV under data/sources/lro_lola with source product id, bounds, resolution, and SHA-256.",
-        done_when: "scripts/generate_moonmoon_fixture.py can regenerate MoonBit terrain from the authoritative CSV.",
+        done_when: "scripts/generate_moonmoon_fixture.py regenerates MoonBit terrain from the authoritative CSV.",
       },
       {
         step_id: "validate",
@@ -325,7 +325,7 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
         title: "Human review before mission claims",
         action: "Review projection math, elevation units, polar singularity handling, and traverse thresholds before raising claim kind beyond derived software evidence.",
         expected_evidence: "MoonBook review notes tied to the dataset, terrain metrics, and traverse decision.",
-        done_when: "The review queue no longer contains the source-upgrade blocker for this site.",
+        done_when: "The source-upgrade blocker is closed and remaining review focuses on terrain hazards, illumination, and route alternatives.",
       },
     ],
   }
@@ -369,7 +369,7 @@ pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection {
     value_offset_km: 1737.4,
     selection_reason: "Covers the first trusted square near 89.88S with south-polar 20 m/pixel LOLA DEM data and has a small pinned XML label for extractor development.",
     extraction_risk: "The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image.",
-    review_status: NeedsHumanReview,
+    review_status: AcceptedForSoftwareProof,
   }
 }
 
@@ -399,11 +399,11 @@ pub fn first_trusted_square_lola_extraction_candidate() -> SourceExtractionCandi
     cell_size_m: 20.0,
     elevation_unit: "meters relative to 1737.4 km reference radius",
     claim_kind: @core.ClaimKind::Measured,
-    review_status: NeedsHumanReview,
+    review_status: AcceptedForSoftwareProof,
     notes: [
       "Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.",
-      "This candidate proves bounded extraction mechanics; active terrain remains the synthetic fixture until projection math and values are reviewed.",
-      "The output CSV matches the Moonmoon fixture CSV shape so it can replace the synthetic fixture after review.",
+      "This extraction is the active Moonmoon trusted-square fixture for software proof.",
+      "The output CSV keeps the small Moonmoon fixture shape while replacing synthetic values with measured LOLA DEM values.",
     ],
   }
 }
@@ -431,30 +431,31 @@ pub fn to_provenance(manifest : DatasetManifest) -> @core.Provenance {
 ///|
 pub fn first_trusted_square_manifest() -> DatasetManifest {
   {
-    dataset_id: "fixture-first-trusted-square-dem-v1",
-    title: "Synthetic Shackleton Rim DEM fixture",
-    source_url: "repo://fixtures/first-trusted-square",
+    dataset_id: "lro-lola-first-trusted-square-dem-v1",
+    title: "LOLA Shackleton Rim DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
     license: "Apache-2.0",
-    product_type: "tiny-dem-fixture",
-    trust: CuratedFixture,
-    claim_kind: @core.ClaimKind::Simulated,
+    product_type: "lola-gdr-byte-range-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
     coverage: {
       south_deg: -89.90,
       north_deg: -89.86,
       west_deg: 0.10,
       east_deg: 0.14,
     },
-    resolution_m: 10.0,
-    source_path: "data/fixtures/first_trusted_square_dem.csv",
-    source_sha256: "45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7",
-    extractor: "scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
+    source_sha256: "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
     checksum_kind: InlineFixtureFingerprint,
-    checksum: "inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4",
-    citation: "Moonmoon repository fixture for software proof only.",
+    checksum: "inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, extracted from official PDS Geosciences byte ranges for Moonmoon software proof.",
     review_status: AcceptedForSoftwareProof,
     notes: [
-      "Synthetic elevation values are intentionally small and deterministic.", "This manifest proves the evidence contract before an authoritative LOLA/LROC fixture lands.",
-      "Do not use this dataset for mission-grade traverse planning.",
+      "Elevation values are measured LOLA DEM samples converted from kilometers to meters relative to the 1737.4 km reference radius.",
+      "The raw 230 MB IMG is not committed; the tiny CSV is reproducibly extracted from HTTP byte ranges.",
+      "Do not use this dataset for mission-grade traverse planning without independent geospatial review.",
     ],
   }
 }

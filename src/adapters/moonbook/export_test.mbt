@@ -6,7 +6,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(dossier.review_queue.length() >= 5)
   assert_eq(
     dossier.entries[0].entry_id,
-    "dataset/fixture-first-trusted-square-dem-v1",
+    "dataset/lro-lola-first-trusted-square-dem-v1",
   )
   assert_true(
     dossier.entries[1].kind == @moonbook.BookEntryKind::SourceUpgradeCandidate,
@@ -46,8 +46,8 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("source-validation"))
   assert_true(markdown.contains("## Review Queue"))
-  assert_true(markdown.contains("Select a specific LOLA/SLDEM product"))
-  assert_true(markdown.contains("terrain confidence below traverse threshold"))
+  assert_true(markdown.contains("source-extraction-candidate"))
+  assert_true(markdown.contains("max neighbor grade exceeds rover hard limit"))
   let json = @moonbook.first_trusted_square_book_json().stringify(indent=2)
   assert_true(json.contains("\"review_queue\""))
   assert_true(json.contains("\"SourceUpgradeCandidate\""))

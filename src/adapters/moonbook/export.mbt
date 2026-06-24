@@ -221,12 +221,15 @@ fn traverse_entry(dossier : @site.SiteDossier) -> BookEntry {
 fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   for candidate in dossier.source_candidates {
-    items.push({
-      item_id: "source-candidate-\{candidate.candidate_id}",
-      severity: "medium",
-      reason: candidate.next_action,
-      owner: "data-review",
-    })
+    if candidate.review_status !=
+      @dataset.ReviewStatus::AcceptedForSoftwareProof {
+      items.push({
+        item_id: "source-candidate-\{candidate.candidate_id}",
+        severity: "medium",
+        reason: candidate.next_action,
+        owner: "data-review",
+      })
+    }
   }
   for validation in dossier.validations {
     if validation.status != @dataset.DatasetValidationStatus::Verified {

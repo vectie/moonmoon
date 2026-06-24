@@ -5,7 +5,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_eq(dossier.datasets.length(), 1)
   assert_eq(
     dossier.datasets[0].dataset_id,
-    "fixture-first-trusted-square-dem-v1",
+    "lro-lola-first-trusted-square-dem-v1",
   )
   assert_eq(dossier.validations.length(), 1)
   assert_true(
@@ -28,13 +28,13 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.source_extraction_candidates[0].tile_id,
     "first-trusted-square-lola",
   )
-  assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Caution)
-  assert_true(dossier.traverse.decision == @mission.TraverseDecision::Review)
+  assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Blocked)
+  assert_true(dossier.traverse.decision == @mission.TraverseDecision::Block)
   assert_eq(dossier.blockers.length(), 2)
   let markdown = @site.render_markdown(dossier)
   assert_true(markdown.contains("# First Trusted Square"))
   assert_true(markdown.contains("## Source Datasets"))
-  assert_true(markdown.contains("curated-fixture"))
+  assert_true(markdown.contains("authoritative"))
   assert_true(markdown.contains("source sha256"))
   assert_true(markdown.contains("## Source Upgrade Candidates"))
   assert_true(
@@ -43,7 +43,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Source Acquisition Plans"))
   assert_true(markdown.contains("lro-lola-gdr-south-pole-selection"))
   assert_true(markdown.contains("source metadata sha256"))
-  assert_true(markdown.contains("Do not replace the synthetic fixture"))
+  assert_true(markdown.contains("active software-proof fixture"))
   assert_true(markdown.contains("## Source Product Selections"))
   assert_true(markdown.contains("ldem_875s_20m_float"))
   assert_true(markdown.contains("Polar Stereographic"))
@@ -59,9 +59,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
   assert_true(
-    markdown.contains("provenance: fixture-first-trusted-square-dem-v1"),
+    markdown.contains("provenance: lro-lola-first-trusted-square-dem-v1"),
   )
-  assert_true(markdown.contains("needs operator review"))
+  assert_true(markdown.contains("terrain exceeds early traverse limits"))
 }
 
 ///|
@@ -88,7 +88,7 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"output_bytes\": 636"))
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
-  assert_true(text.contains("\"trust\": \"CuratedFixture\""))
+  assert_true(text.contains("\"trust\": \"Authoritative\""))
   assert_true(text.contains("\"profile_id\": \"conservative-lunar-rover-v1\""))
-  assert_true(text.contains("\"Review\""))
+  assert_true(text.contains("\"Block\""))
 }
