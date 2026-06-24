@@ -9,7 +9,7 @@
 - resolution: 10 m
 - source path: data/fixtures/first_trusted_square_dem.csv
 - source sha256: 45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7
-- extractor: moonmoon/src/terrain.first_trusted_square_grid.v1
+- extractor: scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
 - checksum kind: inline-fixture-fingerprint
 - checksum: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
 
