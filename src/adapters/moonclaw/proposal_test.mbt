@@ -72,6 +72,16 @@ test "first trusted square route scoring receipt validates blocked evidence" {
       note.contains("moonrobo-handoff-compatible")
     }),
   )
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("source-checksums-verified")
+    }),
+  )
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("proposal-blockers-current")
+    }),
+  )
   assert_true(receipt.next_action.contains("keeps Moonrobo blocked"))
 }
 
@@ -81,6 +91,8 @@ test "MoonClaw receipt renderers expose route scoring result" {
   assert_true(markdown.contains("MoonClaw Modeling Receipts"))
   assert_true(markdown.contains("route-scoring-v1/current-receipt"))
   assert_true(markdown.contains("moonrobo-handoff-compatible"))
+  assert_true(markdown.contains("source-checksums-verified"))
+  assert_true(markdown.contains("proposal-blockers-current"))
   assert_true(markdown.contains("southwest-bypass"))
   let json = @moonclaw.first_trusted_square_receipts_json().stringify(indent=2)
   assert_true(json.contains("\"MoonClawRouteScoringReceipt\"") == false)

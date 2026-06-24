@@ -211,9 +211,9 @@ proposal packets and deterministic receipt packets under `output/moonclaw/`, and
 MoonBook indexes both as evidence. The first proposals request ephemeris-backed
 power windows, wider LOLA corridor search, and route-scoring receipts. The first
 receipt validates the current route-scoring job against route IDs, selected
-route, energy blocker, and Moonrobo handoff compatibility, then records an
-accepted job result that still keeps Moonrobo blocked. That keeps agent progress
-separate from physical execution authority.
+route, source checksums, proposal blockers, energy blocker, and Moonrobo handoff
+compatibility, then records an accepted job result that still keeps Moonrobo
+blocked. That keeps agent progress separate from physical execution authority.
 
 ## Old Terrain Project Lessons
 

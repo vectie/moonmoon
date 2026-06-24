@@ -69,8 +69,9 @@ payloads, review status, and review transitions.
 
 MoonClaw outputs currently include bounded modeling proposals and a deterministic
 route-scoring receipt. The receipt validates the current route set, selected
-route, energy blocker, and Moonrobo handoff compatibility, then records that the
-job result is accepted while Moonrobo remains blocked.
+route, source checksums, proposal blockers, energy blocker, and Moonrobo handoff
+compatibility, then records that the job result is accepted while Moonrobo
+remains blocked.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by

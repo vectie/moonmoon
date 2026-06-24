@@ -168,6 +168,57 @@ fn all_checks_pass(checks : Array[MoonClawReceiptValidation]) -> Bool {
 }
 
 ///|
+fn verified_validation_count(
+  validations : Array[@dataset.DatasetValidation],
+) -> Int {
+  let mut count = 0
+  for validation in validations {
+    if validation.status == @dataset.DatasetValidationStatus::Verified {
+      count = count + 1
+    }
+  }
+  count
+}
+
+///|
+fn manifest_checksum(
+  manifests : Array[@dataset.DatasetManifest],
+  dataset_id : String,
+) -> String {
+  for manifest in manifests {
+    if manifest.dataset_id == dataset_id {
+      return manifest.checksum
+    }
+  }
+  ""
+}
+
+///|
+fn validation_matches_manifest(
+  validation : @dataset.DatasetValidation,
+  manifests : Array[@dataset.DatasetManifest],
+) -> Bool {
+  let expected = manifest_checksum(manifests, validation.dataset_id)
+  validation.status == @dataset.DatasetValidationStatus::Verified &&
+  expected != "" &&
+  validation.expected_checksum == expected &&
+  validation.actual_checksum == expected
+}
+
+///|
+fn all_validations_match_manifests(dossier : @site.SiteDossier) -> Bool {
+  if dossier.validations.length() != dossier.datasets.length() {
+    return false
+  }
+  for validation in dossier.validations {
+    if !validation_matches_manifest(validation, dossier.datasets) {
+      return false
+    }
+  }
+  true
+}
+
+///|
 fn route_id_exists(
   routes : Array[@mission.RouteCandidate],
   route_id : String,
@@ -252,6 +303,37 @@ fn route_receipt_next_action(
     Block =>
       "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
   }
+}
+
+///|
+fn blocker_current(
+  blocker_id : String,
+  dossier : @site.SiteDossier,
+  handoff : @moonrobo.MoonroboTaskHandoff,
+) -> Bool {
+  if blocker_id == "corridor-scan-best-window" {
+    dossier.corridor_scan[0].decision == @mission.TraverseDecision::Block
+  } else if blocker_id == "energy-window" {
+    dossier.energy.decision == @mission.TraverseDecision::Block
+  } else if blocker_id == "moonrobo-handoff" {
+    handoff.decision == @mission.TraverseDecision::Block
+  } else {
+    false
+  }
+}
+
+///|
+fn proposal_blockers_current(
+  proposal : MoonClawProposal,
+  dossier : @site.SiteDossier,
+  handoff : @moonrobo.MoonroboTaskHandoff,
+) -> Bool {
+  for blocker in proposal.blocked_by {
+    if !blocker_current(blocker, dossier, handoff) {
+      return false
+    }
+  }
+  true
 }
 
 ///|
@@ -450,6 +532,16 @@ pub fn route_scoring_receipt(
       "selected-route-present",
       selected_route_present,
       "corridor-selected route \{selected_route_id} exists in the current route candidate set.",
+    ),
+    validation(
+      "source-checksums-verified",
+      all_validations_match_manifests(dossier),
+      "\{verified_validation_count(dossier.validations)} of \{dossier.datasets.length()} dataset source fingerprints match their manifests.",
+    ),
+    validation(
+      "proposal-blockers-current",
+      proposal_blockers_current(proposal, dossier, handoff),
+      "route-scoring proposal blockers remain active: \{proposal.blocked_by.join(", ")}.",
     ),
     validation(
       "energy-blocker-current",

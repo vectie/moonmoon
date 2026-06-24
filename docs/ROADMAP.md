@@ -204,8 +204,8 @@ Remaining work:
 
 - Add executable MoonClaw job runners for ephemeris and wider corridor proposal
   output.
-- Validate receipts against source checksums and current review items before
-  updating the Moonmoon model.
+- Validate future external receipts against source checksums and current review
+  items before updating the Moonmoon model.
 - Ingest the first successful receipt back into terrain, mission, and MoonBook
   outputs.
 
