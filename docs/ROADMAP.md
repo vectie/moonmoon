@@ -47,6 +47,11 @@ Current implementation status:
 - `data/sources/lro_lola/first_trusted_square_corridor_scan.csv` records the
   reproducible 5x5 LOLA corridor ranking, so route promotion is tied to the
   whole measured search surface rather than one manually chosen sample.
+- `data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv` now pins
+  the planned 9x9 LOLA corridor scan as source evidence. It covers 81 measured
+  windows and still blocks every sampled local window, so route promotion waits
+  for generated MoonBit and MoonBook promotion rather than changing the active
+  mission result immediately.
 - `scripts/generate_moonmoon_fixture.py` regenerates the MoonBit fixture module
   from the checked CSV so terrain code does not hand-mirror source values; its
   `--check` mode verifies the generated file is current.
@@ -87,8 +92,8 @@ Current implementation status:
   a reviewed robot-facing input.
 - `src/adapters/moonclaw` now emits a matching corridor expansion task packet
   for the planned 9x9 search. It preserves the current 5x5 scan as baseline
-  evidence while marking the widened CSV, generated MoonBit scan, and MoonBook
-  workspace refresh as blocking artifacts.
+  evidence while marking the widened CSV ready and keeping generated MoonBit
+  scan plus MoonBook workspace refresh as blocking artifacts.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
   `moonbook dossier` commands, plus MoonClaw proposal and Moonrobo handoff
   Markdown/JSON.
@@ -165,9 +170,9 @@ Current implementation status:
   `scripts/generate_corridor_scan.py`, and surfaced as a MoonBook
   `corridor-scan` entry.
 - `scripts/scan_lola_corridor.py` can now plan wider scan surfaces offline with
-  explicit `--radius` and `--step` settings. The current pinned artifact remains
-  the 5x5 scan, while the next extraction target is the deterministic 9x9
-  `--radius 16 --step 4` search.
+  explicit `--radius` and `--step` settings, and the deterministic 9x9
+  `--radius 16 --step 4` search is now a pinned v2 CSV source artifact. The
+  active generated MoonBit scan remains the 5x5 baseline until promotion.
 - Route alternatives now carry MoonBook-visible illumination assessments. The
   current gate is intentionally conservative: it records relief-shadow risk and
   blocks all route candidates until a time-windowed solar ephemeris source is
@@ -206,8 +211,7 @@ Current implementation status:
   from `missing-source` to reviewed evidence.
 - MoonBook now also indexes the corridor expansion task, so the workspace and
   review queue show that the 81-window `first-trusted-square-9x9-corridor-scan-v2`
-  plan exists while the widened source CSV and downstream generated artifacts
-  remain blocked.
+  CSV is pinned while downstream generated artifacts remain blocked.
 
 Remaining work:
 

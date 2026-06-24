@@ -173,6 +173,7 @@ The current fixture now has a checked source-file boundary:
 - `data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv`
 - `data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv`
 - `data/sources/lro_lola/first_trusted_square_corridor_scan.csv`
+- `data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv`
 - `scripts/verify_moonmoon_sources.sh`
 
 The active terrain source file is a LOLA byte-range extraction. Its SHA-256 is
@@ -188,9 +189,11 @@ scan is mirrored separately by `scripts/generate_corridor_scan.py` into
 `src/mission/generated_first_trusted_square_corridor_scan.mbt`. Those generated
 modules are now the terrain and mission packages' source for the
 trusted-square elevations, the first adjacent route-window elevations, the first
-widened corridor elevations, and the 25-window corridor ranking. Replacing or
-extending the CSV set with tiny authoritative LOLA-derived extractions should
-keep the same pipeline shape.
+widened corridor elevations, and the 25-window corridor ranking. The pinned v2
+9x9 CSV extends that source boundary to 81 measured corridor windows, but it is
+not yet the active generated MoonBit mission scan. Replacing or extending the
+CSV set with tiny authoritative LOLA-derived extractions should keep the same
+pipeline shape.
 
 The first measured LOLA patch blocks the conservative rover profile. Moonmoon
 therefore records route alternatives as derived mission-planning claims tied to
@@ -212,10 +215,10 @@ specific lunar day/night window." Moonmoon also records a conservative rover
 energy-window budget: estimated drive hours, dark survival hours, required Wh,
 verified available Wh, and margin. With no time-windowed ephemeris attached,
 the verified available energy is deliberately zero and the energy gate blocks.
-The next modeling step is to widen the route corridor search beyond the
-southwest/south samples and execute the ephemeris acquisition plan so the
-relief/energy proxies can be replaced with ephemeris-backed sun/thermal
-windows.
+The next modeling step is to promote the pinned 9x9 route-corridor CSV into
+generated MoonBit and MoonBook outputs, then execute the ephemeris acquisition
+plan so the relief/energy proxies can be replaced with ephemeris-backed
+sun/thermal windows.
 
 The current MoonBook boundary is a generated workspace tree under
 `output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves

@@ -11,6 +11,7 @@ LOLA_NORTH_RIM="$ROOT/data/sources/lro_lola/first_trusted_square_north_rim_dem.c
 LOLA_SOUTHWEST_BYPASS="$ROOT/data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv"
 LOLA_SOUTH_STEPOUT="$ROOT/data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv"
 LOLA_CORRIDOR_SCAN="$ROOT/data/sources/lro_lola/first_trusted_square_corridor_scan.csv"
+LOLA_CORRIDOR_SCAN_V2="$ROOT/data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv"
 LUNAR_EPHEMERIS_POWER_WINDOW="$ROOT/data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
 
 EXPECTED_FIRST_TRUSTED_SQUARE_SHA256="45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7"
@@ -30,6 +31,8 @@ EXPECTED_LOLA_SOUTH_STEPOUT_SHA256="dde783fcf74ac0567bb2d6bb8eead6c2f83b62060331
 EXPECTED_LOLA_SOUTH_STEPOUT_BYTES="860"
 EXPECTED_LOLA_CORRIDOR_SCAN_SHA256="11430a5e4a83040027eaabd7bdcd2706fbbe9cf8c219de0b24787141256f6896"
 EXPECTED_LOLA_CORRIDOR_SCAN_BYTES="4813"
+EXPECTED_LOLA_CORRIDOR_SCAN_V2_SHA256="e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a"
+EXPECTED_LOLA_CORRIDOR_SCAN_V2_BYTES="15192"
 EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_SHA256="0163e018ed383615f595de564f474238aa6161b1df93d7a8fa0b456df6f453aa"
 EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_BYTES="810"
 
@@ -195,6 +198,25 @@ if [[ "$corridor_scan_bytes" != "$EXPECTED_LOLA_CORRIDOR_SCAN_BYTES" ]]; then
 fi
 
 printf 'verified %s %s\n' "$corridor_scan_actual" "$LOLA_CORRIDOR_SCAN"
+
+corridor_scan_v2_actual="$(shasum -a 256 "$LOLA_CORRIDOR_SCAN_V2" | awk '{print $1}')"
+corridor_scan_v2_bytes="$(wc -c < "$LOLA_CORRIDOR_SCAN_V2" | tr -d ' ')"
+
+if [[ "$corridor_scan_v2_actual" != "$EXPECTED_LOLA_CORRIDOR_SCAN_V2_SHA256" ]]; then
+  printf 'checksum mismatch for %s\n' "$LOLA_CORRIDOR_SCAN_V2" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_CORRIDOR_SCAN_V2_SHA256" >&2
+  printf 'actual   %s\n' "$corridor_scan_v2_actual" >&2
+  exit 1
+fi
+
+if [[ "$corridor_scan_v2_bytes" != "$EXPECTED_LOLA_CORRIDOR_SCAN_V2_BYTES" ]]; then
+  printf 'byte count mismatch for %s\n' "$LOLA_CORRIDOR_SCAN_V2" >&2
+  printf 'expected %s\n' "$EXPECTED_LOLA_CORRIDOR_SCAN_V2_BYTES" >&2
+  printf 'actual   %s\n' "$corridor_scan_v2_bytes" >&2
+  exit 1
+fi
+
+printf 'verified %s %s\n' "$corridor_scan_v2_actual" "$LOLA_CORRIDOR_SCAN_V2"
 
 power_window_actual="$(shasum -a 256 "$LUNAR_EPHEMERIS_POWER_WINDOW" | awk '{print $1}')"
 power_window_bytes="$(wc -c < "$LUNAR_EPHEMERIS_POWER_WINDOW" | tr -d ' ')"

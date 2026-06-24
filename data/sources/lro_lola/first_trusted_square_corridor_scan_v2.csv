@@ -1,0 +1,82 @@
+scan_id,window_id,rank,row_offset,col_offset,source_row_start,source_col_start,min_elevation_m,max_elevation_m,elevation_range_m,max_neighbor_grade,roughness_m,hazard,selected_route_id,note
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+16,1,-12,16,3960,3806,305.726000,341.536000,35.810000,0.513950,5.959750,blocked,,lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r+0-c+12,2,0,12,3972,3802,298.754000,343.999000,45.245000,0.579000,7.380708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c-16,3,0,-16,3972,3774,633.070000,684.567000,51.497000,0.615750,8.107167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+12,4,-12,12,3960,3802,339.980000,379.498000,39.518000,0.622300,6.907750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c+4,5,16,4,3988,3794,325.117000,370.652000,45.535000,0.622950,7.475292,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c+12,6,-4,12,3968,3802,318.603000,356.256000,37.653000,0.630850,6.155667,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c+16,7,-8,16,3964,3806,295.140000,328.299000,33.159000,0.636800,5.881958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c-8,8,8,-8,3980,3782,505.456000,548.224000,42.768000,0.648450,7.056667,blocked,southwest-bypass,promoted route evidence window; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r+12-c+4,9,12,4,3984,3794,340.783000,389.979000,49.196000,0.660000,8.154042,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c+12,10,-8,12,3964,3802,330.758000,370.192000,39.434000,0.667850,6.879292,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c-12,11,16,-12,3988,3778,517.499000,563.000000,45.501000,0.670850,7.249833,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c+16,12,-4,16,3968,3806,271.374000,318.070000,46.696000,0.678650,7.609500,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c+8,13,16,8,3988,3798,274.355000,325.965000,51.610000,0.681450,8.664417,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c-8,14,4,-8,3976,3782,518.387000,570.991000,52.604000,0.691300,9.079875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c-12,15,4,-12,3976,3778,561.726000,607.358000,45.632000,0.695100,8.262583,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c-12,16,12,-12,3984,3778,532.072000,574.383000,42.311000,0.701200,7.378292,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c-16,17,-12,-16,3960,3774,688.883000,737.863000,48.980000,0.701200,8.226750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c+8,18,0,8,3972,3798,338.444000,391.745000,53.301000,0.705400,8.517167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c-8,19,-4,-8,3968,3782,559.541000,608.833000,49.292000,0.709100,8.112583,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c-8,20,-16,-8,3956,3782,603.893000,648.993000,45.100000,0.710050,7.584083,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c+8,21,-4,8,3968,3798,359.544000,409.997000,50.453000,0.712500,8.562750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c+0,22,-16,0,3956,3790,499.827000,539.461000,39.634000,0.715400,7.213208,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c+0,23,8,0,3980,3790,409.003000,453.571000,44.568000,0.719950,7.154583,blocked,south-stepout,promoted route evidence window; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r+0-c-12,24,0,-12,3972,3778,585.376000,641.654000,56.278000,0.725050,9.333750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c+0,25,-4,0,3968,3790,460.176000,506.517000,46.341000,0.728000,7.716125,blocked,north-rim-stepout,promoted route evidence window; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r-8-c-4,26,-8,-4,3964,3786,527.272000,574.164000,46.892000,0.732150,8.067958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c+4,27,8,4,3980,3794,357.148000,404.510000,47.362000,0.743900,8.105083,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c+0,28,-8,0,3964,3790,473.789000,518.957000,45.168000,0.744450,7.451708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c+16,29,16,16,3988,3806,171.740000,220.850000,49.110000,0.747700,8.061667,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c-4,30,0,-4,3972,3786,492.629000,544.454000,51.825000,0.751700,8.527917,blocked,west-contour-detour,promoted route evidence window; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+0,31,-12,0,3960,3790,481.148000,527.339000,46.191000,0.754800,7.720375,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c+8,32,8,8,3980,3798,313.104000,358.261000,45.157000,0.762200,7.279875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c-16,33,-8,-16,3964,3774,677.010000,719.562000,42.552000,0.774600,7.580792,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c+8,34,-8,8,3964,3798,372.943000,415.496000,42.553000,0.784850,7.194250,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c+8,35,-16,8,3956,3798,401.440000,452.044000,50.604000,0.786650,8.550875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c-4,36,-12,-4,3960,3786,537.688000,578.935000,41.247000,0.789250,7.086167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c-16,37,-16,-16,3956,3774,703.228000,753.418000,50.190000,0.794900,8.262333,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c-8,38,0,-8,3972,3782,546.871000,595.787000,48.916000,0.800050,8.269958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c-4,39,4,-4,3976,3786,478.177000,525.142000,46.965000,0.810700,7.256417,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c+12,40,12,12,3984,3802,238.972000,291.229000,52.257000,0.812650,8.744083,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c+12,41,8,12,3980,3802,256.871000,309.170000,52.299000,0.823450,9.421750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c-8,42,-12,-8,3960,3782,591.305000,635.451000,44.146000,0.823900,7.871417,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c+8,43,12,8,3984,3798,293.027000,340.110000,47.083000,0.825400,8.583708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c+16,44,-16,16,3956,3806,318.584000,363.730000,45.146000,0.828350,7.375750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c-16,45,12,-16,3984,3774,578.967000,628.516000,49.549000,0.828900,8.124167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+4,46,-12,4,3960,3794,434.187000,483.819000,49.632000,0.836200,8.397458,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c+0,47,12,0,3984,3790,385.419000,441.175000,55.756000,0.837300,9.096750,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c-16,48,-4,-16,3968,3774,658.310000,707.490000,49.180000,0.838900,8.056875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c+16,49,12,16,3984,3806,186.695000,240.943000,54.248000,0.839600,9.044208,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c+16,50,4,16,3976,3806,229.492000,281.678000,52.186000,0.844050,8.523708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c+4,51,4,4,3976,3794,373.511000,423.914000,50.403000,0.848250,8.633708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c-16,52,8,-16,3980,3774,588.961000,638.910000,49.949000,0.858200,8.613875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c-16,53,4,-16,3976,3774,603.939000,659.114000,55.175000,0.860700,9.521250,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c-4,54,-4,-4,3968,3786,514.507000,568.221000,53.714000,0.862000,8.922167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+8,55,-12,8,3960,3798,381.409000,426.176000,44.767000,0.862850,7.784500,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c+12,56,4,12,3976,3802,279.541000,324.415000,44.874000,0.865000,7.462000,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c+4,57,-16,4,3956,3794,443.539000,492.191000,48.652000,0.869600,8.229000,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c-12,58,8,-12,3980,3778,539.727000,586.136000,46.409000,0.869750,7.500958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c+16,59,8,16,3980,3806,207.300000,265.675000,58.375000,0.870450,10.012583,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c+4,60,0,4,3972,3794,393.239000,437.527000,44.288000,0.875800,7.976000,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c-12,61,-8,-12,3964,3778,624.148000,672.973000,48.825000,0.881750,7.974708,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c-4,62,16,-4,3988,3786,416.121000,467.532000,51.411000,0.895650,8.188000,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c-16,63,16,-16,3988,3774,564.228000,611.226000,46.998000,0.899700,8.475667,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c+8,64,4,8,3976,3798,325.873000,374.014000,48.141000,0.900200,8.104333,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c+0,65,16,0,3988,3790,360.001000,412.050000,52.049000,0.916000,9.140542,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c-8,66,-8,-8,3964,3782,577.942000,620.168000,42.226000,0.928350,7.854958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c-12,67,-16,-12,3956,3778,656.422000,704.711000,48.289000,0.937050,8.343958,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-12-c-12,68,-12,-12,3960,3778,635.391000,685.659000,50.268000,0.937050,8.524583,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c-4,69,-16,-4,3956,3786,541.964000,596.991000,55.027000,0.940950,9.605333,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-16-c+12,70,-16,12,3956,3802,358.846000,402.312000,43.466000,0.943650,6.792125,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c+4,71,-4,4,3968,3794,406.203000,458.977000,52.774000,0.949250,9.016208,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c+12,72,16,12,3988,3802,219.415000,273.502000,54.087000,0.952500,9.451875,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+8-c-4,73,8,-4,3980,3786,447.296000,506.078000,58.782000,0.979400,10.809917,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-8-c+4,74,-8,4,3964,3794,411.773000,468.721000,56.948000,0.992850,9.857333,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+16-c-8,75,16,-8,3988,3782,463.564000,516.381000,52.817000,0.995700,9.822667,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c-8,76,12,-8,3984,3782,477.556000,526.347000,48.791000,0.999500,7.653500,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r-4-c-12,77,-4,-12,3968,3778,612.527000,655.319000,42.792000,1.016600,7.538000,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+12-c-4,78,12,-4,3984,3786,430.362000,491.083000,60.721000,1.048700,8.901917,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+4-c+0,79,4,0,3976,3790,422.537000,476.548000,54.011000,1.064450,9.511042,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c+16,80,0,16,3972,3806,253.192000,305.605000,52.413000,1.067350,9.390167,blocked,,measured scan window; not promoted as a route candidate
+first-trusted-square-9x9-corridor-scan-v2,r+0-c+0,81,0,0,3972,3790,441.521000,499.693000,58.172000,1.159350,9.250125,blocked,direct-lola-window,promoted route evidence window; still blocked

@@ -144,7 +144,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
     "moonclaw-task",
   )
   assert_true(
-    dossier.entries[38].summary.contains("81 windows with 3 blockers"),
+    dossier.entries[38].summary.contains("81 windows with 2 blockers"),
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[39].kind),
@@ -220,7 +220,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let corridor_task = dossier.review_queue[22]
   assert_eq(corridor_task.item_id, "moonclaw-corridor-task")
   assert_true(corridor_task.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  assert_true(corridor_task.reason.contains("3 blocking artifacts"))
+  assert_true(corridor_task.reason.contains("2 blocking artifacts"))
   assert_true(corridor_task.reason.contains("81-window search"))
 }
 

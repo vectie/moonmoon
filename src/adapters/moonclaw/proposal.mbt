@@ -766,13 +766,13 @@ pub fn corridor_expansion_task(
       task_artifact(
         "widened-scan-csv", "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
         "scripts/scan_lola_corridor.py", "81-window LOLA byte-range scan is extracted, checksummed, and reviewed",
-        "missing", false, "network byte-range extraction for the 9x9 search has not produced a pinned CSV",
-        "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
+        "pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a",
+        true, "", "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
       ),
       task_artifact(
         "generated-corridor-scan", "src/mission/generated_first_trusted_square_corridor_scan.mbt",
         "scripts/generate_corridor_scan.py", "MoonBit corridor scan mirrors the reviewed widened CSV",
-        "current 5x5 generated scan", false, "generated MoonBit still mirrors the 5x5 scan until the 9x9 CSV is pinned",
+        "current 5x5 generated scan", false, "generated MoonBit still mirrors the 5x5 scan until the pinned 9x9 CSV is promoted",
         "python3 scripts/generate_corridor_scan.py --check",
       ),
       task_artifact(
@@ -789,7 +789,7 @@ pub fn corridor_expansion_task(
     ],
     acceptance_criteria: proposal.acceptance_criteria,
     safety_gate: "Do not promote a widened route candidate until the 9x9 CSV is pinned, MoonBit generation reads it, and Moonrobo handoffs are regenerated from the updated corridor evidence.",
-    next_action: "Run the 9x9 LOLA byte-range extraction, pin the CSV checksum, regenerate MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.",
+    next_action: "Promote the pinned 9x9 LOLA CSV into generated MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.",
   }
 }
 

@@ -136,7 +136,7 @@ test "first trusted square corridor task names planned 9x9 search gates" {
   assert_eq(task.planned_window_count, 81)
   assert_eq(task.planned_radius_cells, 16)
   assert_eq(task.planned_step_cells, 4)
-  assert_eq(@moonclaw.corridor_task_blocked_artifact_count(task), 3)
+  assert_eq(@moonclaw.corridor_task_blocked_artifact_count(task), 2)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "planned-9x9-search" && artifact.ready
@@ -145,8 +145,11 @@ test "first trusted square corridor task names planned 9x9 search gates" {
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "widened-scan-csv" &&
-      !artifact.ready &&
-      artifact.blocking_reason.contains("9x9 search")
+      artifact.ready &&
+      artifact.blocking_reason == "" &&
+      artifact.current_state.contains(
+        "e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a",
+      )
     }),
   )
   assert_true(
@@ -169,13 +172,13 @@ test "MoonClaw corridor task renderers expose widened search blockers" {
   assert_true(markdown.contains("81 windows"))
   assert_true(markdown.contains("first_trusted_square_corridor_scan_v2.csv"))
   assert_true(markdown.contains("widened-scan-csv"))
-  assert_true(markdown.contains("ready: false"))
+  assert_true(markdown.contains("ready: true"))
   let json = @moonclaw.first_trusted_square_corridor_tasks_json().stringify(
     indent=2,
   )
   assert_true(json.contains("\"planned_window_count\": 81"))
   assert_true(json.contains("\"planned_radius_cells\": 16"))
-  assert_true(json.contains("\"blocking_reason\""))
+  assert_true(json.contains("\"blocking_reason\": \"\""))
 }
 
 ///|
