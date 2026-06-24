@@ -1,0 +1,159 @@
+{
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py",
+  "items": [
+    {
+      "transition_id": "review-workspace-materialized-accept",
+      "item_id": "workspace-materialized",
+      "decision": "Accept",
+      "resulting_status": "Accepted",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "accepted because the materialized workspace is present in generated MoonBook output"
+    },
+    {
+      "transition_id": "review-blocker-0-request-evidence",
+      "item_id": "blocker-0",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits"
+    },
+    {
+      "transition_id": "review-blocker-1-request-evidence",
+      "item_id": "blocker-1",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset"
+    },
+    {
+      "transition_id": "review-traverse-0-request-evidence",
+      "item_id": "traverse-0",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit"
+    },
+    {
+      "transition_id": "review-traverse-1-request-evidence",
+      "item_id": "traverse-1",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: roughness exceeds rover hard limit"
+    },
+    {
+      "transition_id": "review-route-direct-lola-window-reject",
+      "item_id": "route-direct-lola-window",
+      "decision": "Reject",
+      "resulting_status": "Rejected",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "rejected for this proof slice because the evidence explicitly says not to traverse directly"
+    },
+    {
+      "transition_id": "review-illumination-direct-lola-window-request-evidence",
+      "item_id": "illumination-direct-lola-window",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-west-contour-detour-request-evidence",
+      "item_id": "route-west-contour-detour",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
+    },
+    {
+      "transition_id": "review-illumination-west-contour-detour-request-evidence",
+      "item_id": "illumination-west-contour-detour",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-north-rim-stepout-request-evidence",
+      "item_id": "route-north-rim-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+    },
+    {
+      "transition_id": "review-illumination-north-rim-stepout-request-evidence",
+      "item_id": "illumination-north-rim-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-southwest-bypass-request-evidence",
+      "item_id": "route-southwest-bypass",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "transition_id": "review-illumination-southwest-bypass-request-evidence",
+      "item_id": "illumination-southwest-bypass",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-south-stepout-request-evidence",
+      "item_id": "route-south-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "transition_id": "review-illumination-south-stepout-request-evidence",
+      "item_id": "illumination-south-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "transition_id": "review-corridor-scan-best-window-request-evidence",
+      "item_id": "corridor-scan-best-window",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+    },
+    {
+      "transition_id": "review-question-0-keep-open",
+      "item_id": "question-0",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "left open for moonclaw follow-up"
+    },
+    {
+      "transition_id": "review-question-1-keep-open",
+      "item_id": "question-1",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "left open for moonclaw follow-up"
+    },
+    {
+      "transition_id": "review-question-2-keep-open",
+      "item_id": "question-2",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "left open for moonclaw follow-up"
+    }
+  ]
+}

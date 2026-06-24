@@ -288,5 +288,6 @@
       "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     }
   ],
-  "review_queue_path": "review_queue.json"
+  "review_queue_path": "review_queue.json",
+  "review_transitions_path": "review_transitions.json"
 }

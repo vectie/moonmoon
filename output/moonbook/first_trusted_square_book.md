@@ -163,22 +163,83 @@
 
 ## Review Queue
 
-- blocker-0 [high] terrain exceeds early traverse limits -> operator
-- blocker-1 [high] requires alternate route or stronger dataset -> operator
-- traverse-0 [high] max neighbor grade exceeds rover hard limit -> mission-review
-- traverse-1 [high] roughness exceeds rover hard limit -> mission-review
-- route-direct-lola-window [high] Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case -> mission-review
-- illumination-direct-lola-window [high] Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- route-west-contour-detour [high] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
-- illumination-west-contour-detour [high] West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- route-north-rim-stepout [high] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
-- illumination-north-rim-stepout [high] North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- route-southwest-bypass [high] Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation -> mission-review
-- illumination-southwest-bypass [high] Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- route-south-stepout [high] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
-- illumination-south-stepout [high] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- corridor-scan-best-window [high] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
-- question-0 [low] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
-- question-1 [low] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
-- question-2 [low] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
+- workspace-materialized [low/accepted] MoonBook workspace files are materialized from the current generated dossier -> moonbook
+- blocker-0 [high/needs-evidence] terrain exceeds early traverse limits -> operator
+- blocker-1 [high/needs-evidence] requires alternate route or stronger dataset -> operator
+- traverse-0 [high/needs-evidence] max neighbor grade exceeds rover hard limit -> mission-review
+- traverse-1 [high/needs-evidence] roughness exceeds rover hard limit -> mission-review
+- route-direct-lola-window [high/rejected] Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case -> mission-review
+- illumination-direct-lola-window [high/needs-evidence] Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-west-contour-detour [high/needs-evidence] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
+- illumination-west-contour-detour [high/needs-evidence] West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-north-rim-stepout [high/needs-evidence] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
+- illumination-north-rim-stepout [high/needs-evidence] North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-southwest-bypass [high/needs-evidence] Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation -> mission-review
+- illumination-southwest-bypass [high/needs-evidence] Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-south-stepout [high/needs-evidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
+- illumination-south-stepout [high/needs-evidence] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- corridor-scan-best-window [high/needs-evidence] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
+- question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
+- question-1 [low/open] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
+- question-2 [low/open] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
+
+## Review Transitions
+
+- review-workspace-materialized-accept: accept workspace-materialized -> accepted
+  - reviewer: moonbook-policy-v1
+  - rationale: accepted because the materialized workspace is present in generated MoonBook output
+- review-blocker-0-request-evidence: request-evidence blocker-0 -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits
+- review-blocker-1-request-evidence: request-evidence blocker-1 -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset
+- review-traverse-0-request-evidence: request-evidence traverse-0 -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit
+- review-traverse-1-request-evidence: request-evidence traverse-1 -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: roughness exceeds rover hard limit
+- review-route-direct-lola-window-reject: reject route-direct-lola-window -> rejected
+  - reviewer: moonbook-policy-v1
+  - rationale: rejected for this proof slice because the evidence explicitly says not to traverse directly
+- review-illumination-direct-lola-window-request-evidence: request-evidence illumination-direct-lola-window -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+- review-route-west-contour-detour-request-evidence: request-evidence route-west-contour-detour -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation
+- review-illumination-west-contour-detour-request-evidence: request-evidence illumination-west-contour-detour -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+- review-route-north-rim-stepout-request-evidence: request-evidence route-north-rim-stepout -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review
+- review-illumination-north-rim-stepout-request-evidence: request-evidence illumination-north-rim-stepout -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+- review-route-southwest-bypass-request-evidence: request-evidence route-southwest-bypass -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation
+- review-illumination-southwest-bypass-request-evidence: request-evidence illumination-southwest-bypass -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+- review-route-south-stepout-request-evidence: request-evidence route-south-stepout -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review
+- review-illumination-south-stepout-request-evidence: request-evidence illumination-south-stepout -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+- review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
+  - reviewer: moonbook-policy-v1
+  - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- review-question-0-keep-open: keep-open question-0 -> open
+  - reviewer: moonbook-policy-v1
+  - rationale: left open for moonclaw follow-up
+- review-question-1-keep-open: keep-open question-1 -> open
+  - reviewer: moonbook-policy-v1
+  - rationale: left open for moonclaw follow-up
+- review-question-2-keep-open: keep-open question-2 -> open
+  - reviewer: moonbook-policy-v1
+  - rationale: left open for moonclaw follow-up
 
