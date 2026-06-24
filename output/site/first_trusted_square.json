@@ -357,12 +357,36 @@
       "expected_max_grade": 1.1593500000000005,
       "expected_roughness_m": 9.250124999999999,
       "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+        "evidence_tile_id": "first-trusted-square-lola",
+        "relief_shadow_risk": 0.3635749999999998,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
       "decision": "Block",
-      "score": 18,
+      "score": 6,
       "reasons": [
         "expected grade exceeds rover hard limit",
         "expected roughness exceeds rover hard limit",
-        "active LOLA patch is blocked"
+        "active LOLA patch is blocked",
+        "illumination gate is block"
       ],
       "next_action": "do not traverse directly; use this as the baseline hazard case"
     },
@@ -377,12 +401,36 @@
       "expected_max_grade": 0.7517000000000025,
       "expected_roughness_m": 8.52791666666666,
       "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-west-contour-dem-v1",
+        "evidence_tile_id": "first-trusted-square-west-contour-lola",
+        "relief_shadow_risk": 0.32390624999999956,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
       "decision": "Block",
-      "score": 18,
+      "score": 6,
       "reasons": [
         "expected grade exceeds rover hard limit",
         "expected roughness exceeds rover hard limit",
-        "west-adjacent LOLA window is measured but still blocked at this scale"
+        "west-adjacent LOLA window is measured but still blocked at this scale",
+        "illumination gate is block"
       ],
       "next_action": "widen the west corridor extraction before simulation"
     },
@@ -397,12 +445,36 @@
       "expected_max_grade": 0.7280000000000001,
       "expected_roughness_m": 7.716124999999998,
       "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
+        "evidence_tile_id": "first-trusted-square-north-rim-lola",
+        "relief_shadow_risk": 0.28963125000000006,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
       "decision": "Block",
-      "score": 18,
+      "score": 6,
       "reasons": [
         "expected grade exceeds rover hard limit",
         "expected roughness exceeds rover hard limit",
-        "north-adjacent LOLA window is measured but still blocked at this scale"
+        "north-adjacent LOLA window is measured but still blocked at this scale",
+        "illumination gate is block"
       ],
       "next_action": "widen the north corridor extraction and add illumination review"
     }
@@ -413,7 +485,7 @@
     "requires alternate route or stronger dataset"
   ],
   "next_questions": [
-    "Add illumination windows for robot energy and thermal constraints.",
+    "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
     "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
     "Export the dossier into a LunarBook workspace for review."
   ]

@@ -136,7 +136,7 @@
       "claim_kind": "Derived",
       "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/direct-lola-window.json",
-      "summary": "block with score 18 from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case"
+      "summary": "block with score 6 from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case"
     },
     {
       "entry_id": "route/first-trusted-square/west-contour-detour",
@@ -145,7 +145,7 @@
       "claim_kind": "Derived",
       "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/west-contour-detour.json",
-      "summary": "block with score 18 from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
+      "summary": "block with score 6 from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
     },
     {
       "entry_id": "route/first-trusted-square/north-rim-stepout",
@@ -154,7 +154,34 @@
       "claim_kind": "Derived",
       "confidence": 0.7544,
       "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-      "summary": "block with score 18 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+      "summary": "block with score 6 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/direct-lola-window",
+      "title": "Illumination gate for Direct traverse across measured LOLA patch",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+      "summary": "block with relief-shadow risk 0.3635749999999998: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/west-contour-detour",
+      "title": "Illumination gate for West contour detour candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+      "summary": "block with relief-shadow risk 0.32390624999999956: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/north-rim-stepout",
+      "title": "Illumination gate for North rim step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.28963125000000006: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     }
   ],
   "review_queue": [
@@ -189,10 +216,22 @@
       "owner": "mission-review"
     },
     {
+      "item_id": "illumination-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
       "item_id": "route-west-contour-detour",
       "severity": "high",
       "reason": "West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation",
       "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-west-contour-detour",
+      "severity": "high",
+      "reason": "West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
     },
     {
       "item_id": "route-north-rim-stepout",
@@ -201,9 +240,15 @@
       "owner": "mission-review"
     },
     {
+      "item_id": "illumination-north-rim-stepout",
+      "severity": "high",
+      "reason": "North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
-      "reason": "Add illumination windows for robot energy and thermal constraints.",
+      "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
       "owner": "moonclaw"
     },
     {

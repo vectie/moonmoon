@@ -174,7 +174,7 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 - direct-lola-window: Direct traverse across measured LOLA patch
   - decision: block
-  - score: 18
+  - score: 6
   - strategy: Use the active 4x4 measured window as-is.
   - evidence dataset: lro-lola-first-trusted-square-dem-v1
   - evidence tile: first-trusted-square-lola
@@ -183,14 +183,23 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected max grade: 1.1593500000000005
   - expected roughness: 9.250124999999999 m
   - confidence: 0.7544
+  - illumination decision: block
+  - illumination risk: 0.3635749999999998
+  - illumination confidence: 0.45263999999999993
+  - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+  - illumination reasons:
+    - no time-windowed solar ephemeris is attached
+    - local relief shadow proxy exceeds conservative limit
+    - illumination confidence below power planning threshold
   - next action: do not traverse directly; use this as the baseline hazard case
   - reasons:
     - expected grade exceeds rover hard limit
     - expected roughness exceeds rover hard limit
     - active LOLA patch is blocked
+    - illumination gate is block
 - west-contour-detour: West contour detour candidate
   - decision: block
-  - score: 18
+  - score: 6
   - strategy: Test the west-adjacent LOLA window as a possible contour route around the active patch.
   - evidence dataset: lro-lola-first-trusted-square-west-contour-dem-v1
   - evidence tile: first-trusted-square-west-contour-lola
@@ -199,14 +208,23 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected max grade: 0.7517000000000025
   - expected roughness: 8.52791666666666 m
   - confidence: 0.7544
+  - illumination decision: block
+  - illumination risk: 0.32390624999999956
+  - illumination confidence: 0.45263999999999993
+  - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+  - illumination reasons:
+    - no time-windowed solar ephemeris is attached
+    - local relief shadow proxy exceeds conservative limit
+    - illumination confidence below power planning threshold
   - next action: widen the west corridor extraction before simulation
   - reasons:
     - expected grade exceeds rover hard limit
     - expected roughness exceeds rover hard limit
     - west-adjacent LOLA window is measured but still blocked at this scale
+    - illumination gate is block
 - north-rim-stepout: North rim step-out candidate
   - decision: block
-  - score: 18
+  - score: 6
   - strategy: Test the north-adjacent LOLA window as a possible step-out toward a smoother rim approach.
   - evidence dataset: lro-lola-first-trusted-square-north-rim-dem-v1
   - evidence tile: first-trusted-square-north-rim-lola
@@ -215,11 +233,20 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected max grade: 0.7280000000000001
   - expected roughness: 7.716124999999998 m
   - confidence: 0.7544
+  - illumination decision: block
+  - illumination risk: 0.28963125000000006
+  - illumination confidence: 0.45263999999999993
+  - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+  - illumination reasons:
+    - no time-windowed solar ephemeris is attached
+    - local relief shadow proxy exceeds conservative limit
+    - illumination confidence below power planning threshold
   - next action: widen the north corridor extraction and add illumination review
   - reasons:
     - expected grade exceeds rover hard limit
     - expected roughness exceeds rover hard limit
     - north-adjacent LOLA window is measured but still blocked at this scale
+    - illumination gate is block
 
 ## Blockers
 
@@ -228,7 +255,7 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 ## Next Questions
 
-- Add illumination windows for robot energy and thermal constraints.
+- Attach time-windowed solar ephemeris for robot energy and thermal constraints.
 - Widen the corridor search because adjacent west/north LOLA windows are also blocked.
 - Export the dossier into a LunarBook workspace for review.
 

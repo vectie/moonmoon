@@ -90,6 +90,21 @@
   - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/routes/north-rim-stepout.json
+- illumination/first-trusted-square/direct-lola-window: Illumination gate for Direct traverse across measured LOLA patch
+  - kind: illumination-assessment
+  - claim: derived
+  - confidence: 0.45263999999999993
+  - path: mission/first-trusted-square/routes/direct-lola-window.illumination.json
+- illumination/first-trusted-square/west-contour-detour: Illumination gate for West contour detour candidate
+  - kind: illumination-assessment
+  - claim: derived
+  - confidence: 0.45263999999999993
+  - path: mission/first-trusted-square/routes/west-contour-detour.illumination.json
+- illumination/first-trusted-square/north-rim-stepout: Illumination gate for North rim step-out candidate
+  - kind: illumination-assessment
+  - claim: derived
+  - confidence: 0.45263999999999993
+  - path: mission/first-trusted-square/routes/north-rim-stepout.illumination.json
 
 ## Review Queue
 
@@ -98,9 +113,12 @@
 - traverse-0 [high] max neighbor grade exceeds rover hard limit -> mission-review
 - traverse-1 [high] roughness exceeds rover hard limit -> mission-review
 - route-direct-lola-window [high] Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case -> mission-review
+- illumination-direct-lola-window [high] Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - route-west-contour-detour [high] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
+- illumination-west-contour-detour [high] West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - route-north-rim-stepout [high] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
-- question-0 [low] Add illumination windows for robot energy and thermal constraints. -> moonclaw
+- illumination-north-rim-stepout [high] North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- question-0 [low] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low] Widen the corridor search because adjacent west/north LOLA windows are also blocked. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
 
