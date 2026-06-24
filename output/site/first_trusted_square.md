@@ -114,6 +114,47 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - max neighbor grade exceeds rover hard limit
   - roughness exceeds rover hard limit
 
+## Route Candidates
+
+- direct-lola-window: Direct traverse across measured LOLA patch
+  - decision: block
+  - score: 18
+  - strategy: Use the active 4x4 measured window as-is.
+  - expected max grade: 1.1593500000000005
+  - expected roughness: 9.250124999999999 m
+  - confidence: 0.7544
+  - next action: do not traverse directly; use this as the baseline hazard case
+  - reasons:
+    - expected grade exceeds rover hard limit
+    - expected roughness exceeds rover hard limit
+    - active LOLA patch is blocked
+- west-contour-detour: West contour detour candidate
+  - decision: review
+  - score: 54
+  - strategy: Route around the steepest east-west drop and request adjacent west-side extraction.
+  - expected max grade: 0.28
+  - expected roughness: 1.8 m
+  - confidence: 0.55
+  - next action: extract neighboring west window and rescore before simulation
+  - reasons:
+    - expected grade needs route review
+    - expected roughness needs route review
+    - route confidence below threshold
+    - detour is a planning hypothesis until adjacent LOLA windows are extracted
+- north-rim-stepout: North rim step-out candidate
+  - decision: review
+  - score: 54
+  - strategy: Step toward the north edge of the product bounds and search for a smoother approach corridor.
+  - expected max grade: 0.22
+  - expected roughness: 1.4 m
+  - confidence: 0.5
+  - next action: extract north-adjacent window and add illumination review
+  - reasons:
+    - expected grade needs route review
+    - expected roughness needs route review
+    - route confidence below threshold
+    - north step-out requires neighboring tile evidence and illumination constraints
+
 ## Blockers
 
 - terrain exceeds early traverse limits

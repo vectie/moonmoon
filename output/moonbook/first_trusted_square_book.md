@@ -45,6 +45,21 @@
   - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/traverse.json
+- route/first-trusted-square/direct-lola-window: Direct traverse across measured LOLA patch
+  - kind: route-alternative
+  - claim: assumed
+  - confidence: 0.7544
+  - path: mission/first-trusted-square/routes/direct-lola-window.json
+- route/first-trusted-square/west-contour-detour: West contour detour candidate
+  - kind: route-alternative
+  - claim: assumed
+  - confidence: 0.55
+  - path: mission/first-trusted-square/routes/west-contour-detour.json
+- route/first-trusted-square/north-rim-stepout: North rim step-out candidate
+  - kind: route-alternative
+  - claim: assumed
+  - confidence: 0.5
+  - path: mission/first-trusted-square/routes/north-rim-stepout.json
 
 ## Review Queue
 
@@ -52,6 +67,9 @@
 - blocker-1 [high] requires alternate route or stronger dataset -> operator
 - traverse-0 [high] max neighbor grade exceeds rover hard limit -> mission-review
 - traverse-1 [high] roughness exceeds rover hard limit -> mission-review
+- route-direct-lola-window [high] Direct traverse across measured LOLA patch: do not traverse directly; use this as the baseline hazard case -> mission-review
+- route-west-contour-detour [medium] West contour detour candidate: extract neighboring west window and rescore before simulation -> mission-review
+- route-north-rim-stepout [medium] North rim step-out candidate: extract north-adjacent window and add illumination review -> mission-review
 - question-0 [low] Add illumination windows for robot energy and thermal constraints. -> moonclaw
 - question-1 [low] Find alternate route candidates around the blocked LOLA terrain patch. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw

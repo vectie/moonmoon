@@ -227,6 +227,58 @@
     ],
     "next_action": "choose alternate route or improve terrain evidence"
   },
+  "route_candidates": [
+    {
+      "route_id": "direct-lola-window",
+      "label": "Direct traverse across measured LOLA patch",
+      "strategy": "Use the active 4x4 measured window as-is.",
+      "expected_max_grade": 1.1593500000000005,
+      "expected_roughness_m": 9.250124999999999,
+      "confidence": 0.7544,
+      "decision": "Block",
+      "score": 18,
+      "reasons": [
+        "expected grade exceeds rover hard limit",
+        "expected roughness exceeds rover hard limit",
+        "active LOLA patch is blocked"
+      ],
+      "next_action": "do not traverse directly; use this as the baseline hazard case"
+    },
+    {
+      "route_id": "west-contour-detour",
+      "label": "West contour detour candidate",
+      "strategy": "Route around the steepest east-west drop and request adjacent west-side extraction.",
+      "expected_max_grade": 0.28,
+      "expected_roughness_m": 1.8,
+      "confidence": 0.55,
+      "decision": "Review",
+      "score": 54,
+      "reasons": [
+        "expected grade needs route review",
+        "expected roughness needs route review",
+        "route confidence below threshold",
+        "detour is a planning hypothesis until adjacent LOLA windows are extracted"
+      ],
+      "next_action": "extract neighboring west window and rescore before simulation"
+    },
+    {
+      "route_id": "north-rim-stepout",
+      "label": "North rim step-out candidate",
+      "strategy": "Step toward the north edge of the product bounds and search for a smoother approach corridor.",
+      "expected_max_grade": 0.22,
+      "expected_roughness_m": 1.4,
+      "confidence": 0.5,
+      "decision": "Review",
+      "score": 54,
+      "reasons": [
+        "expected grade needs route review",
+        "expected roughness needs route review",
+        "route confidence below threshold",
+        "north step-out requires neighboring tile evidence and illumination constraints"
+      ],
+      "next_action": "extract north-adjacent window and add illumination review"
+    }
+  ],
   "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, and first-pass hazard classification.",
   "blockers": [
     "terrain exceeds early traverse limits",

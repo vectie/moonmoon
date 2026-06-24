@@ -74,6 +74,33 @@
       "confidence": 0.7544,
       "path": "mission/first-trusted-square/traverse.json",
       "summary": "block with score 20: choose alternate route or improve terrain evidence"
+    },
+    {
+      "entry_id": "route/first-trusted-square/direct-lola-window",
+      "title": "Direct traverse across measured LOLA patch",
+      "kind": "RouteAlternative",
+      "claim_kind": "Assumed",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/direct-lola-window.json",
+      "summary": "block with score 18: do not traverse directly; use this as the baseline hazard case"
+    },
+    {
+      "entry_id": "route/first-trusted-square/west-contour-detour",
+      "title": "West contour detour candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Assumed",
+      "confidence": 0.55,
+      "path": "mission/first-trusted-square/routes/west-contour-detour.json",
+      "summary": "review with score 54: extract neighboring west window and rescore before simulation"
+    },
+    {
+      "entry_id": "route/first-trusted-square/north-rim-stepout",
+      "title": "North rim step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Assumed",
+      "confidence": 0.5,
+      "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+      "summary": "review with score 54: extract north-adjacent window and add illumination review"
     }
   ],
   "review_queue": [
@@ -99,6 +126,24 @@
       "item_id": "traverse-1",
       "severity": "high",
       "reason": "roughness exceeds rover hard limit",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "route-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch: do not traverse directly; use this as the baseline hazard case",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "route-west-contour-detour",
+      "severity": "medium",
+      "reason": "West contour detour candidate: extract neighboring west window and rescore before simulation",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "route-north-rim-stepout",
+      "severity": "medium",
+      "reason": "North rim step-out candidate: extract north-adjacent window and add illumination review",
       "owner": "mission-review"
     },
     {
