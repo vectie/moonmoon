@@ -79,6 +79,12 @@ energy blocker, and Moonrobo handoff compatibility. They record accepted terrain
 and route results while the ephemeris receipt keeps the power gate in review
 until a real time-windowed solar source is attached.
 
+Moonmoon now also records that missing solar source as a typed acquisition
+contract. The first trusted square has a `SPICE kernels` source candidate and a
+MoonBook-visible ephemeris acquisition plan for pinned source metadata,
+checksummed inputs, generated JSON power-window evidence, and a future generated
+MoonBit power-window module.
+
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by
 `scripts/verify_moonmoon_sources.sh`, and regenerated into MoonBit by

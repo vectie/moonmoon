@@ -137,6 +137,15 @@ inside the site dossier and MoonBook export. That candidate is now accepted for
 software proof and names the official PDS LOLA page, ODE Moon access point,
 local target path, and follow-up action.
 
+Moonmoon separately records the missing south-pole power evidence as a typed
+ephemeris source candidate. The current candidate points at official NAIF SPICE
+data discovery and the generic kernel source family, but remains
+`needs-source-upgrade` until exact kernel/product files, byte counts, SHA-256
+checksums, local paths, computed sunlit/dark hours, and generated MoonBit
+power-window evidence are present. This keeps terrain proof and power proof
+separate: measured LOLA windows can be accepted for software proof while
+Moonrobo still stays blocked by absent time-windowed solar evidence.
+
 The current fixture now has a checked source-file boundary:
 
 - `data/sources/lro_lola/gdr_ds.cat`
@@ -187,8 +196,9 @@ energy-window budget: estimated drive hours, dark survival hours, required Wh,
 verified available Wh, and margin. With no time-windowed ephemeris attached,
 the verified available energy is deliberately zero and the energy gate blocks.
 The next modeling step is to widen the route corridor search beyond the
-southwest/south samples and replace the relief/energy proxies with
-ephemeris-backed sun/thermal windows.
+southwest/south samples and execute the ephemeris acquisition plan so the
+relief/energy proxies can be replaced with ephemeris-backed sun/thermal
+windows.
 
 The current MoonBook boundary is a generated workspace tree under
 `output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves

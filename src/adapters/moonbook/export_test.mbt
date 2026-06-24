@@ -2,8 +2,8 @@
 test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 37)
-  assert_eq(dossier.review_queue.length(), 22)
+  assert_eq(dossier.entries.length(), 39)
+  assert_eq(dossier.review_queue.length(), 23)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -29,102 +29,114 @@ test "first trusted square exports a LunarBook evidence dossier" {
     dossier.entries[5].kind == @moonbook.BookEntryKind::SourceUpgradeCandidate,
   )
   assert_true(
-    dossier.entries[6].kind == @moonbook.BookEntryKind::SourceAcquisitionPlan,
+    dossier.entries[6].kind == @moonbook.BookEntryKind::SourceUpgradeCandidate,
+  )
+  assert_true(dossier.entries[6].summary.contains("energy gate"))
+  assert_true(
+    dossier.entries[7].kind == @moonbook.BookEntryKind::SourceAcquisitionPlan,
   )
   assert_true(
-    dossier.entries[7].kind == @moonbook.BookEntryKind::SourceProductSelection,
+    dossier.entries[8].kind == @moonbook.BookEntryKind::SourceAcquisitionPlan,
   )
   assert_true(
-    dossier.entries[8].kind ==
+    dossier.entries[8].summary.contains(
+      "generated_first_trusted_square_power_window.mbt",
+    ),
+  )
+  assert_true(
+    dossier.entries[9].kind == @moonbook.BookEntryKind::SourceProductSelection,
+  )
+  assert_true(
+    dossier.entries[10].kind ==
     @moonbook.BookEntryKind::SourceExtractionCandidate,
   )
   assert_true(
-    dossier.entries[13].kind == @moonbook.BookEntryKind::SourceValidation,
+    dossier.entries[15].kind == @moonbook.BookEntryKind::SourceValidation,
   )
   assert_true(
-    dossier.entries[18].kind == @moonbook.BookEntryKind::DerivedTerrain,
+    dossier.entries[20].kind == @moonbook.BookEntryKind::DerivedTerrain,
   )
   assert_true(
-    dossier.entries[19].kind == @moonbook.BookEntryKind::MissionDecision,
+    dossier.entries[21].kind == @moonbook.BookEntryKind::MissionDecision,
   )
-  assert_true(dossier.entries[20].kind == @moonbook.BookEntryKind::CorridorScan)
+  assert_true(dossier.entries[22].kind == @moonbook.BookEntryKind::CorridorScan)
   assert_true(
-    dossier.entries[21].kind == @moonbook.BookEntryKind::RouteAlternative,
-  )
-  assert_true(
-    dossier.entries[24].kind == @moonbook.BookEntryKind::RouteAlternative,
+    dossier.entries[23].kind == @moonbook.BookEntryKind::RouteAlternative,
   )
   assert_true(
-    dossier.entries[25].kind == @moonbook.BookEntryKind::RouteAlternative,
+    dossier.entries[26].kind == @moonbook.BookEntryKind::RouteAlternative,
   )
   assert_true(
-    dossier.entries[26].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+    dossier.entries[27].kind == @moonbook.BookEntryKind::RouteAlternative,
   )
   assert_true(
-    dossier.entries[29].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+    dossier.entries[28].kind == @moonbook.BookEntryKind::IlluminationAssessment,
   )
   assert_true(
-    dossier.entries[30].kind == @moonbook.BookEntryKind::IlluminationAssessment,
-  )
-  assert_true(dossier.entries[31].kind == @moonbook.BookEntryKind::EnergyWindow)
-  assert_true(
-    dossier.entries[32].kind == @moonbook.BookEntryKind::MoonroboHandoff,
+    dossier.entries[31].kind == @moonbook.BookEntryKind::IlluminationAssessment,
   )
   assert_true(
-    dossier.entries[33].kind == @moonbook.BookEntryKind::MoonClawProposal,
+    dossier.entries[32].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+  )
+  assert_true(dossier.entries[33].kind == @moonbook.BookEntryKind::EnergyWindow)
+  assert_true(
+    dossier.entries[34].kind == @moonbook.BookEntryKind::MoonroboHandoff,
   )
   assert_true(
-    dossier.entries[34].kind == @moonbook.BookEntryKind::MoonClawReceipt,
+    dossier.entries[35].kind == @moonbook.BookEntryKind::MoonClawProposal,
   )
   assert_true(
-    dossier.entries[35].kind ==
+    dossier.entries[36].kind == @moonbook.BookEntryKind::MoonClawReceipt,
+  )
+  assert_true(
+    dossier.entries[37].kind ==
     @moonbook.BookEntryKind::MoonClawEphemerisReceipt,
   )
   assert_true(
-    dossier.entries[36].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
+    dossier.entries[38].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_eq(
-    @moonbook.book_entry_kind_label(dossier.entries[19].kind),
+    @moonbook.book_entry_kind_label(dossier.entries[21].kind),
     "mission-decision",
   )
   assert_eq(
-    @moonbook.book_entry_kind_label(dossier.entries[20].kind),
+    @moonbook.book_entry_kind_label(dossier.entries[22].kind),
     "corridor-scan",
   )
-  assert_true(dossier.entries[20].summary.contains("r+8-c-8"))
-  assert_true(dossier.entries[22].summary.contains("west-contour"))
-  assert_true(dossier.entries[24].summary.contains("southwest"))
-  assert_true(dossier.entries[29].summary.contains("relief-shadow risk"))
-  assert_eq(
-    @moonbook.book_entry_kind_label(dossier.entries[31].kind),
-    "energy-window",
-  )
-  assert_true(dossier.entries[31].summary.contains("0 Wh verified available"))
-  assert_eq(
-    @moonbook.book_entry_kind_label(dossier.entries[32].kind),
-    "moonrobo-handoff",
-  )
-  assert_true(dossier.entries[32].summary.contains("southwest-bypass"))
+  assert_true(dossier.entries[22].summary.contains("r+8-c-8"))
+  assert_true(dossier.entries[24].summary.contains("west-contour"))
+  assert_true(dossier.entries[26].summary.contains("southwest"))
+  assert_true(dossier.entries[31].summary.contains("relief-shadow risk"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[33].kind),
-    "moonclaw-proposal",
+    "energy-window",
   )
-  assert_true(dossier.entries[33].summary.contains("ephemeris"))
+  assert_true(dossier.entries[33].summary.contains("0 Wh verified available"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[34].kind),
-    "moonclaw-receipt",
+    "moonrobo-handoff",
   )
-  assert_true(dossier.entries[34].summary.contains("Moonrobo handoff block"))
+  assert_true(dossier.entries[34].summary.contains("southwest-bypass"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[35].kind),
-    "moonclaw-ephemeris-receipt",
+    "moonclaw-proposal",
   )
-  assert_true(dossier.entries[35].summary.contains("energy block"))
+  assert_true(dossier.entries[35].summary.contains("ephemeris"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[36].kind),
+    "moonclaw-receipt",
+  )
+  assert_true(dossier.entries[36].summary.contains("Moonrobo handoff block"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[37].kind),
+    "moonclaw-ephemeris-receipt",
+  )
+  assert_true(dossier.entries[37].summary.contains("energy block"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[38].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[36].summary.contains("25 measured windows"))
+  assert_true(dossier.entries[38].summary.contains("25 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -136,26 +148,35 @@ test "first trusted square exports a LunarBook evidence dossier" {
     @moonbook.review_item_status_label(dossier.review_queue[0].status),
     "accepted",
   )
-  let direct_route = dossier.review_queue[5]
+  let ephemeris_candidate = dossier.review_queue[1]
+  assert_eq(
+    ephemeris_candidate.item_id,
+    "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+  )
+  assert_true(ephemeris_candidate.status == @moonbook.ReviewItemStatus::Open)
+  assert_true(
+    dossier.review_transitions[1].decision == @moonbook.ReviewDecision::KeepOpen,
+  )
+  let direct_route = dossier.review_queue[6]
   assert_eq(direct_route.item_id, "route-direct-lola-window")
   assert_true(direct_route.status == @moonbook.ReviewItemStatus::Rejected)
   assert_true(
-    dossier.review_transitions[5].decision == @moonbook.ReviewDecision::Reject,
+    dossier.review_transitions[6].decision == @moonbook.ReviewDecision::Reject,
   )
   assert_eq(
-    @moonbook.review_decision_label(dossier.review_transitions[5].decision),
+    @moonbook.review_decision_label(dossier.review_transitions[6].decision),
     "reject",
   )
-  let corridor = dossier.review_queue[15]
+  let corridor = dossier.review_queue[16]
   assert_eq(corridor.item_id, "corridor-scan-best-window")
   assert_true(corridor.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let energy = dossier.review_queue[16]
+  let energy = dossier.review_queue[17]
   assert_eq(energy.item_id, "energy-window")
   assert_true(energy.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let handoff = dossier.review_queue[17]
+  let handoff = dossier.review_queue[18]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let moonclaw = dossier.review_queue[18]
+  let moonclaw = dossier.review_queue[19]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
 }

@@ -39,12 +39,17 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(
     dossier.validations[4].status == @dataset.DatasetValidationStatus::Verified,
   )
-  assert_eq(dossier.source_candidates.length(), 1)
+  assert_eq(dossier.source_candidates.length(), 2)
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
-  assert_eq(dossier.source_acquisition_plans.length(), 1)
+  assert_eq(dossier.source_candidates[1].instrument, "SPICE kernels")
+  assert_eq(dossier.source_acquisition_plans.length(), 2)
   assert_eq(
     dossier.source_acquisition_plans[0].product_family_id,
     "lro-lola-gdr-south-pole-selection",
+  )
+  assert_eq(
+    dossier.source_acquisition_plans[1].product_family_id,
+    "lunar-solar-ephemeris-power-window",
   )
   assert_eq(dossier.source_product_selections.length(), 1)
   assert_eq(
@@ -104,10 +109,16 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(
     markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),
   )
+  assert_true(markdown.contains("SPICE kernels"))
+  assert_true(markdown.contains("needs-source-upgrade"))
   assert_true(markdown.contains("## Source Acquisition Plans"))
   assert_true(markdown.contains("lro-lola-gdr-south-pole-selection"))
+  assert_true(markdown.contains("lunar-solar-ephemeris-power-window"))
   assert_true(markdown.contains("source metadata sha256"))
   assert_true(markdown.contains("active software-proof fixtures"))
+  assert_true(
+    markdown.contains("generated_first_trusted_square_power_window.mbt"),
+  )
   assert_true(markdown.contains("## Source Product Selections"))
   assert_true(markdown.contains("ldem_875s_20m_float"))
   assert_true(markdown.contains("Polar Stereographic"))
@@ -166,6 +177,12 @@ test "first trusted square dossier exports machine-readable evidence" {
       "\"product_family_id\": \"lro-lola-gdr-south-pole-selection\"",
     ),
   )
+  assert_true(
+    text.contains(
+      "\"product_family_id\": \"lunar-solar-ephemeris-power-window\"",
+    ),
+  )
+  assert_true(text.contains("\"instrument\": \"SPICE kernels\""))
   assert_true(text.contains("\"source_metadata_bytes\": 5672"))
   assert_true(text.contains("\"product_id\": \"ldem_875s_20m_float\""))
   assert_true(text.contains("\"label_bytes\": 11629"))

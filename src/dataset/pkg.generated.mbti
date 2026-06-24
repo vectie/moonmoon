@@ -14,6 +14,10 @@ pub fn checksum_kind_label(ChecksumKind) -> String
 
 pub fn extraction_candidate_status_label(SourceExtractionCandidate) -> String
 
+pub fn first_trusted_square_ephemeris_acquisition_plan() -> SourceAcquisitionPlan
+
+pub fn first_trusted_square_ephemeris_candidate() -> SourceCandidate
+
 pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan
 
 pub fn first_trusted_square_lola_candidate() -> SourceCandidate

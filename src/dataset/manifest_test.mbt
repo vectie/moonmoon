@@ -52,7 +52,31 @@ test "first trusted square declares an authoritative LOLA upgrade candidate" {
     @dataset.source_candidate_status_label(candidate),
     "accepted-for-software-proof",
   )
-  assert_eq(@dataset.first_trusted_square_source_candidates().length(), 1)
+  assert_eq(@dataset.first_trusted_square_source_candidates().length(), 2)
+}
+
+///|
+test "first trusted square declares an ephemeris power source candidate" {
+  let candidate = @dataset.first_trusted_square_ephemeris_candidate()
+  assert_eq(
+    candidate.candidate_id,
+    "candidate-lunar-solar-ephemeris-first-trusted-square",
+  )
+  assert_true(candidate.instrument.contains("SPICE"))
+  assert_true(candidate.product_family.contains("ephemeris"))
+  assert_eq(
+    candidate.official_source_url,
+    "https://naif.jpl.nasa.gov/naif/data.html",
+  )
+  assert_eq(
+    candidate.local_target_path,
+    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  )
+  assert_true(candidate.next_action.contains("energy gate"))
+  assert_eq(
+    @dataset.source_candidate_status_label(candidate),
+    "needs-source-upgrade",
+  )
 }
 
 ///|
@@ -75,8 +99,33 @@ test "first trusted square has a concrete LOLA acquisition plan" {
   assert_eq(@dataset.acquisition_plan_progress_label(plan), "recorded:5-steps")
   assert_eq(
     @dataset.first_trusted_square_source_acquisition_plans().length(),
-    1,
+    2,
   )
+}
+
+///|
+test "first trusted square has an ephemeris acquisition plan" {
+  let plan = @dataset.first_trusted_square_ephemeris_acquisition_plan()
+  assert_eq(
+    plan.plan_id,
+    "acquire-lunar-solar-ephemeris-first-trusted-square-v1",
+  )
+  assert_eq(
+    plan.candidate_id,
+    "candidate-lunar-solar-ephemeris-first-trusted-square",
+  )
+  assert_eq(plan.product_family_id, "lunar-solar-ephemeris-power-window")
+  assert_true(plan.source_family_url.contains("generic_kernels"))
+  assert_eq(plan.source_metadata_sha256, "")
+  assert_eq(plan.source_metadata_bytes, 0)
+  assert_eq(
+    plan.extracted_fixture_path,
+    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+  )
+  assert_true(
+    plan.trust_gate.contains("generated_first_trusted_square_power_window.mbt"),
+  )
+  assert_eq(@dataset.acquisition_plan_progress_label(plan), "recorded:5-steps")
 }
 
 ///|

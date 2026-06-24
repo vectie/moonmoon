@@ -64,6 +64,9 @@ Current implementation status:
 - `src/mission` also adds a conservative rover energy-window budget. It records
   estimated drive/dark-survival energy demand, verified available energy, and
   margin, then blocks until time-windowed ephemeris can prove available power.
+- `src/dataset` now records that missing power source as a typed ephemeris
+  source candidate and acquisition plan, so MoonBook can review exact SPICE or
+  equivalent illumination inputs before the energy gate changes state.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `src/adapters/moonrobo` exports robot-facing simulation precondition packets
@@ -155,6 +158,10 @@ Current implementation status:
 - The site dossier and MoonBook export now carry a conservative energy-window
   assessment that turns the missing ephemeris problem into an explicit Wh
   budget and review item.
+- The site dossier and MoonBook export now carry a separate ephemeris source
+  candidate and acquisition plan. The plan names source discovery, checksum
+  pinning, local JSON power-window evidence, generated MoonBit output, and the
+  review gate required before Moonrobo power evidence can become credible.
 - MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
   materialized workspace carries the robot-facing handoff payload.
 - MoonBook now indexes MoonClaw modeling proposals, and the materialized
@@ -169,8 +176,8 @@ Remaining work:
 
 - Continue corridor search beyond the blocked southwest/south widened LOLA
   windows.
-- Replace the relief-shadow proxy with time-windowed solar ephemeris and
-  measured sun/thermal windows.
+- Execute the ephemeris acquisition plan and replace the relief-shadow proxy
+  with time-windowed solar ephemeris and measured sun/thermal windows.
 - Extend the materialized MoonBook workspace with operator-authored review
   transitions and append-only review history.
 - Add persisted reviewer identity, timestamps, and manual accepted/rejected
