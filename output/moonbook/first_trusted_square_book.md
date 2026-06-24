@@ -20,6 +20,16 @@
   - claim: measured
   - confidence: 1
   - path: datasets/lro-lola-first-trusted-square-north-rim-dem-v1.json
+- dataset/lro-lola-first-trusted-square-southwest-bypass-dem-v1: LOLA southwest-bypass corridor DEM byte-range fixture
+  - kind: source-dataset
+  - claim: measured
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.json
+- dataset/lro-lola-first-trusted-square-south-stepout-dem-v1: LOLA south-stepout corridor DEM byte-range fixture
+  - kind: source-dataset
+  - claim: measured
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.json
 - source-candidate/candidate-lro-lola-sldem-first-trusted-square: LRO LOLA derived gridded topography candidate
   - kind: source-upgrade-candidate
   - claim: unknown
@@ -50,6 +60,16 @@
   - claim: measured
   - confidence: 0
   - path: source-extractions/extract-ldem-875s-20m-north-rim-v1.json
+- source-extraction/extract-ldem-875s-20m-southwest-bypass-v1: Extract first-trusted-square-southwest-bypass-lola
+  - kind: source-extraction-candidate
+  - claim: measured
+  - confidence: 0
+  - path: source-extractions/extract-ldem-875s-20m-southwest-bypass-v1.json
+- source-extraction/extract-ldem-875s-20m-south-stepout-v1: Extract first-trusted-square-south-stepout-lola
+  - kind: source-extraction-candidate
+  - claim: measured
+  - confidence: 0
+  - path: source-extractions/extract-ldem-875s-20m-south-stepout-v1.json
 - validation/lro-lola-first-trusted-square-dem-v1: Source validation for lro-lola-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
@@ -65,6 +85,16 @@
   - claim: derived
   - confidence: 1
   - path: datasets/lro-lola-first-trusted-square-north-rim-dem-v1.validation.json
+- validation/lro-lola-first-trusted-square-southwest-bypass-dem-v1: Source validation for lro-lola-first-trusted-square-southwest-bypass-dem-v1
+  - kind: source-validation
+  - claim: derived
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.validation.json
+- validation/lro-lola-first-trusted-square-south-stepout-dem-v1: Source validation for lro-lola-first-trusted-square-south-stepout-dem-v1
+  - kind: source-validation
+  - claim: derived
+  - confidence: 1
+  - path: datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.validation.json
 - terrain/first-trusted-square/metrics: Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: derived-terrain
   - claim: derived
@@ -90,6 +120,16 @@
   - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/routes/north-rim-stepout.json
+- route/first-trusted-square/southwest-bypass: Southwest widened bypass candidate
+  - kind: route-alternative
+  - claim: derived
+  - confidence: 0.7544
+  - path: mission/first-trusted-square/routes/southwest-bypass.json
+- route/first-trusted-square/south-stepout: South step-out candidate
+  - kind: route-alternative
+  - claim: derived
+  - confidence: 0.7544
+  - path: mission/first-trusted-square/routes/south-stepout.json
 - illumination/first-trusted-square/direct-lola-window: Illumination gate for Direct traverse across measured LOLA patch
   - kind: illumination-assessment
   - claim: derived
@@ -105,6 +145,16 @@
   - claim: derived
   - confidence: 0.45263999999999993
   - path: mission/first-trusted-square/routes/north-rim-stepout.illumination.json
+- illumination/first-trusted-square/southwest-bypass: Illumination gate for Southwest widened bypass candidate
+  - kind: illumination-assessment
+  - claim: derived
+  - confidence: 0.45263999999999993
+  - path: mission/first-trusted-square/routes/southwest-bypass.illumination.json
+- illumination/first-trusted-square/south-stepout: Illumination gate for South step-out candidate
+  - kind: illumination-assessment
+  - claim: derived
+  - confidence: 0.45263999999999993
+  - path: mission/first-trusted-square/routes/south-stepout.illumination.json
 
 ## Review Queue
 
@@ -118,7 +168,11 @@
 - illumination-west-contour-detour [high] West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - route-north-rim-stepout [high] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
 - illumination-north-rim-stepout [high] North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-southwest-bypass [high] Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation -> mission-review
+- illumination-southwest-bypass [high] Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- route-south-stepout [high] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
+- illumination-south-stepout [high] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - question-0 [low] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
-- question-1 [low] Widen the corridor search because adjacent west/north LOLA windows are also blocked. -> moonclaw
+- question-1 [low] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
 

@@ -31,6 +31,24 @@
       "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
     },
     {
+      "entry_id": "dataset/lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "title": "LOLA southwest-bypass corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "title": "LOLA south-stepout corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
       "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
       "title": "LRO LOLA derived gridded topography candidate",
       "kind": "SourceUpgradeCandidate",
@@ -85,6 +103,24 @@
       "summary": "4x4 window at row 3968, col 3790; 40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28"
     },
     {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-southwest-bypass-v1",
+      "title": "Extract first-trusted-square-southwest-bypass-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-southwest-bypass-v1.json",
+      "summary": "4x4 window at row 3980, col 3782; c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-south-stepout-v1",
+      "title": "Extract first-trusted-square-south-stepout-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-south-stepout-v1.json",
+      "summary": "4x4 window at row 3980, col 3790; dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c"
+    },
+    {
       "entry_id": "validation/lro-lola-first-trusted-square-dem-v1",
       "title": "Source validation for lro-lola-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
@@ -109,6 +145,24 @@
       "claim_kind": "Derived",
       "confidence": 1,
       "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.validation.json",
       "summary": "verified: source fingerprint matches manifest"
     },
     {
@@ -157,6 +211,24 @@
       "summary": "block with score 6 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
     },
     {
+      "entry_id": "route/first-trusted-square/southwest-bypass",
+      "title": "Southwest widened bypass candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/southwest-bypass.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "entry_id": "route/first-trusted-square/south-stepout",
+      "title": "South step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/south-stepout.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
       "entry_id": "illumination/first-trusted-square/direct-lola-window",
       "title": "Illumination gate for Direct traverse across measured LOLA patch",
       "kind": "IlluminationAssessment",
@@ -182,6 +254,24 @@
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
       "summary": "block with relief-shadow risk 0.28963125000000006: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/southwest-bypass",
+      "title": "Illumination gate for Southwest widened bypass candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+      "summary": "block with relief-shadow risk 0.2673000000000002: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/south-stepout",
+      "title": "Illumination gate for South step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     }
   ],
   "review_queue": [
@@ -246,6 +336,30 @@
       "owner": "power-thermal-review"
     },
     {
+      "item_id": "route-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "route-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review",
+      "owner": "mission-review"
+    },
+    {
+      "item_id": "illumination-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review"
+    },
+    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -254,7 +368,7 @@
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
+      "reason": "Continue widening the corridor search because the best measured southwest window is still blocked.",
       "owner": "moonclaw"
     },
     {

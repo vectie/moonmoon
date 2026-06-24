@@ -98,6 +98,60 @@
         "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
         "Illumination and a wider corridor search are still required before robot planning."
       ]
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "title": "LOLA southwest-bypass corridor DEM byte-range fixture",
+      "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+      "license": "Apache-2.0",
+      "product_type": "lola-gdr-byte-range-corridor-dem-fixture",
+      "trust": "Authoritative",
+      "claim_kind": "Measured",
+      "coverage": {
+        "south_deg": -89.92,
+        "north_deg": -89.88,
+        "west_deg": 0.02,
+        "east_deg": 0.06
+      },
+      "resolution_m": 20,
+      "source_path": "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+      "source_sha256": "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+      "extractor": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "checksum": "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
+      "citation": "LRO LOLA GDR product ldem_875s_20m_float, southwest widened corridor byte-range extraction for Moonmoon route evidence.",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
+        "The window is the best sampled local grade among the first 5x5 scan but remains blocked by conservative rover limits."
+      ]
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "title": "LOLA south-stepout corridor DEM byte-range fixture",
+      "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+      "license": "Apache-2.0",
+      "product_type": "lola-gdr-byte-range-corridor-dem-fixture",
+      "trust": "Authoritative",
+      "claim_kind": "Measured",
+      "coverage": {
+        "south_deg": -89.92,
+        "north_deg": -89.88,
+        "west_deg": 0.1,
+        "east_deg": 0.14
+      },
+      "resolution_m": 20,
+      "source_path": "data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv",
+      "source_sha256": "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
+      "extractor": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "checksum": "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
+      "citation": "LRO LOLA GDR product ldem_875s_20m_float, south widened corridor byte-range extraction for Moonmoon route evidence.",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
+        "The window is smoother than the active patch but remains blocked by conservative rover limits."
+      ]
     }
   ],
   "validations": [
@@ -122,6 +176,22 @@
       "checksum_kind": "InlineFixtureFingerprint",
       "expected_checksum": "inline-grid-v1:tile=first-trusted-square-north-rim-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=506.517:last=460.176",
       "actual_checksum": "inline-grid-v1:tile=first-trusted-square-north-rim-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=506.517:last=460.176",
+      "status": "Verified",
+      "note": "source fingerprint matches manifest"
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "expected_checksum": "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
+      "actual_checksum": "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
+      "status": "Verified",
+      "note": "source fingerprint matches manifest"
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "expected_checksum": "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
+      "actual_checksum": "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
       "status": "Verified",
       "note": "source fingerprint matches manifest"
     }
@@ -302,6 +372,54 @@
         "This window gives the north-rim route candidate measured terrain evidence before illumination analysis exists.",
         "The local window is still too small for mission-grade corridor planning."
       ]
+    },
+    {
+      "extraction_id": "extract-ldem-875s-20m-southwest-bypass-v1",
+      "selection_id": "select-ldem-875s-20m-float-v1",
+      "generated_by": "scripts/extract_lola_trusted_square.py",
+      "output_path": "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+      "output_sha256": "c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5",
+      "output_bytes": 908,
+      "tile_id": "first-trusted-square-southwest-bypass-lola",
+      "center_lat_deg": -89.9,
+      "center_lon_deg": 0.04,
+      "source_row_start": 3980,
+      "source_col_start": 3782,
+      "rows": 4,
+      "cols": 4,
+      "cell_size_m": 20,
+      "elevation_unit": "meters relative to 1737.4 km reference radius",
+      "claim_kind": "Measured",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "Generated from the wider southwest HTTP byte ranges after the first adjacent west/north windows remained blocked.",
+        "This is the lowest-grade window in the first 5x5 corridor scan, but still exceeds the conservative rover traverse limits.",
+        "The local window is still too small for mission-grade corridor planning."
+      ]
+    },
+    {
+      "extraction_id": "extract-ldem-875s-20m-south-stepout-v1",
+      "selection_id": "select-ldem-875s-20m-float-v1",
+      "generated_by": "scripts/extract_lola_trusted_square.py",
+      "output_path": "data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv",
+      "output_sha256": "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
+      "output_bytes": 860,
+      "tile_id": "first-trusted-square-south-stepout-lola",
+      "center_lat_deg": -89.9,
+      "center_lon_deg": 0.12,
+      "source_row_start": 3980,
+      "source_col_start": 3790,
+      "rows": 4,
+      "cols": 4,
+      "cell_size_m": 20,
+      "elevation_unit": "meters relative to 1737.4 km reference radius",
+      "claim_kind": "Measured",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "Generated from the wider south HTTP byte ranges after the first adjacent west/north windows remained blocked.",
+        "This window is smoother than the active patch but still exceeds conservative rover traverse limits.",
+        "The local window is still too small for mission-grade corridor planning."
+      ]
     }
   ],
   "terrain": {
@@ -477,16 +595,104 @@
         "illumination gate is block"
       ],
       "next_action": "widen the north corridor extraction and add illumination review"
+    },
+    {
+      "route_id": "southwest-bypass",
+      "label": "Southwest widened bypass candidate",
+      "strategy": "Use the lowest-grade measured window from the first 5x5 corridor scan as a possible bypass direction.",
+      "evidence_dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "evidence_source_path": "data/sources/lro_lola/first_trusted_square_southwest_bypass_dem.csv",
+      "evidence_summary": "blocked measured window; elevation range 42.76800000000003 m",
+      "expected_max_grade": 0.6484500000000025,
+      "expected_roughness_m": 7.056666666666669,
+      "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+        "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+        "relief_shadow_risk": 0.2673000000000002,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      "decision": "Block",
+      "score": 6,
+      "reasons": [
+        "expected grade exceeds rover hard limit",
+        "expected roughness exceeds rover hard limit",
+        "southwest widened corridor is measured and lower risk but still blocked",
+        "illumination gate is block"
+      ],
+      "next_action": "continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "route_id": "south-stepout",
+      "label": "South step-out candidate",
+      "strategy": "Use the south measured window from the first 5x5 corridor scan as a second widened route direction.",
+      "evidence_dataset_id": "lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+      "evidence_source_path": "data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv",
+      "evidence_summary": "blocked measured window; elevation range 44.56800000000004 m",
+      "expected_max_grade": 0.7199500000000001,
+      "expected_roughness_m": 7.154583333333335,
+      "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-south-stepout-dem-v1",
+        "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+        "relief_shadow_risk": 0.27855000000000024,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      "decision": "Block",
+      "score": 6,
+      "reasons": [
+        "expected grade exceeds rover hard limit",
+        "expected roughness exceeds rover hard limit",
+        "south widened corridor is measured and smoother than the active patch but still blocked",
+        "illumination gate is block"
+      ],
+      "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
     }
   ],
-  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured route-window alternatives.",
+  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured widened route-window alternatives.",
   "blockers": [
     "terrain exceeds early traverse limits",
     "requires alternate route or stronger dataset"
   ],
   "next_questions": [
     "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
-    "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
+    "Continue widening the corridor search because the best measured southwest window is still blocked.",
     "Export the dossier into a LunarBook workspace for review."
   ]
 }
