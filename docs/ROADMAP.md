@@ -66,8 +66,11 @@ Current implementation status:
   margin, then blocks until time-windowed ephemeris can prove available power.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
+- `src/adapters/moonrobo` exports robot-facing simulation precondition packets
+  for each route candidate, using Moonmoon terrain, illumination, energy, and
+  corridor blockers as a pre-physical safety gate.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
-  `moonbook dossier` commands.
+  `moonbook dossier` commands, plus Moonrobo handoff Markdown/JSON.
 
 The active fixture is now measured LOLA DEM evidence accepted for Moonmoon
 software proof. It does not prove lunar mission validity; it currently blocks
@@ -147,6 +150,8 @@ Current implementation status:
 - The site dossier and MoonBook export now carry a conservative energy-window
   assessment that turns the missing ephemeris problem into an explicit Wh
   budget and review item.
+- MoonBook now indexes the Moonrobo simulation-precondition handoff, and the
+  materialized workspace carries the robot-facing handoff payload.
 
 Remaining work:
 
@@ -183,6 +188,17 @@ control.
 
 Done when Moonrobo can say why a simulated task is allowed, blocked, or needs
 more evidence.
+
+Current implementation status:
+
+- `src/adapters/moonrobo` defines `MoonroboTaskHandoff` and
+  `RobotPrecondition` contracts.
+- The first trusted square exports one handoff per route candidate and a
+  primary handoff selected from the best measured corridor route.
+- Every handoff currently blocks, because terrain, illumination, corridor, and
+  energy preconditions are not safe for simulation.
+- `scripts/build_moonmoon_dossier.sh` writes
+  `output/moonrobo/first_trusted_square_handoffs.md` and `.json`.
 
 ## Milestone 6: Operational Moon Tile
 

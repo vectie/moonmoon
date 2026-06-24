@@ -1,5 +1,6 @@
 import {
   "vectie/moonmoon/src/adapters/moonbook",
+  "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/terrain",
   "moonbitlang/core/env",

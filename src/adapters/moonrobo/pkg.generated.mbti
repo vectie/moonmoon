@@ -1,0 +1,57 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/adapters/moonrobo"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/mission",
+  "vectie/moonmoon/src/site",
+}
+
+// Values
+pub fn first_trusted_square_handoffs() -> Array[MoonroboTaskHandoff]
+
+pub fn first_trusted_square_json() -> Json
+
+pub fn first_trusted_square_markdown() -> String
+
+pub fn first_trusted_square_primary_handoff() -> MoonroboTaskHandoff
+
+pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
+
+pub fn handoff_status_label(MoonroboTaskHandoff) -> String
+
+pub fn precondition_status_label(RobotPrecondition) -> String
+
+pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
+
+pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
+
+pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
+
+// Errors
+
+// Types and methods
+pub(all) struct MoonroboTaskHandoff {
+  handoff_id : String
+  site_id : String
+  route_id : String
+  task_kind : String
+  target_body : String
+  decision : @mission.TraverseDecision
+  preconditions : Array[RobotPrecondition]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotPrecondition {
+  precondition_id : String
+  label : String
+  decision : @mission.TraverseDecision
+  evidence_path : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

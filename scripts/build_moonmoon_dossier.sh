@@ -5,10 +5,12 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/output/site"
 TERRAIN_OUT="$ROOT/output/terrain"
 MOONBOOK_OUT="$ROOT/output/moonbook"
+MOONROBO_OUT="$ROOT/output/moonrobo"
 
 mkdir -p "$OUT"
 mkdir -p "$TERRAIN_OUT"
 mkdir -p "$MOONBOOK_OUT"
+mkdir -p "$MOONROBO_OUT"
 
 cd "$ROOT"
 
@@ -22,6 +24,8 @@ python3 scripts/generate_corridor_scan.py
 /Users/kq/.moon/bin/moon run cmd/main -- terrain fixture json > "$TERRAIN_OUT/first_trusted_square_grid.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier > "$MOONBOOK_OUT/first_trusted_square_book.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier json > "$MOONBOOK_OUT/first_trusted_square_book.json"
+/Users/kq/.moon/bin/moon run cmd/main -- moonrobo handoff > "$MOONROBO_OUT/first_trusted_square_handoffs.md"
+/Users/kq/.moon/bin/moon run cmd/main -- moonrobo handoff json > "$MOONROBO_OUT/first_trusted_square_handoffs.json"
 python3 scripts/materialize_moonbook_workspace.py
 
 printf 'wrote %s\n' "$OUT/first_trusted_square.md"
@@ -30,4 +34,6 @@ printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.md"
 printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.json"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.md"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.json"
+printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.md"
+printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.json"
 printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"

@@ -59,6 +59,7 @@ The current implementation has started this shape with:
 - `src/mission`
 - `src/site`
 - `src/adapters/moonbook`
+- `src/adapters/moonrobo`
 - `cmd/main`
 
 Each package owns typed contracts plus deterministic tests. The exported files
@@ -196,6 +197,13 @@ snapshot, and `review_transitions.json` records the deterministic transition
 log that produced that snapshot. That makes the workspace inspectable as files,
 while the authoritative source remains the MoonBit-generated site and MoonBook
 dossiers.
+
+The current Moonrobo boundary is deliberately one-way: Moonmoon emits
+simulation precondition packets under `output/moonrobo/`, and MoonBook indexes
+those packets as evidence. A packet names the route candidate, target body, task
+kind, combined decision, and the route, illumination, energy, and corridor
+preconditions that must be cleared. It does not command hardware or imply
+physical execution authority.
 
 ## Old Terrain Project Lessons
 

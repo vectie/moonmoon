@@ -53,6 +53,7 @@ pub(all) enum BookEntryKind {
   RouteAlternative
   IlluminationAssessment
   EnergyWindow
+  MoonroboHandoff
   OpenQuestion
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

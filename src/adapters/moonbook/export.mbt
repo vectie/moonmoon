@@ -12,6 +12,7 @@ pub(all) enum BookEntryKind {
   RouteAlternative
   IlluminationAssessment
   EnergyWindow
+  MoonroboHandoff
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -87,6 +88,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
     EnergyWindow => "energy-window"
+    MoonroboHandoff => "moonrobo-handoff"
     OpenQuestion => "open-question"
   }
 }
@@ -441,6 +443,35 @@ fn energy_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn primary_route_candidate(
+  dossier : @site.SiteDossier,
+) -> @mission.RouteCandidate {
+  let selected_route_id = dossier.corridor_scan[0].selected_route_id
+  let mut selected_route = dossier.route_candidates[0]
+  for route in dossier.route_candidates {
+    if route.route_id == selected_route_id {
+      selected_route = route
+    }
+  }
+  selected_route
+}
+
+///|
+fn moonrobo_handoff_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let selected_route = primary_route_candidate(dossier)
+  let handoff = @moonrobo.route_handoff(dossier, selected_route)
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/simulation-preconditions",
+    title: "Moonrobo simulation preconditions for \{dossier.site.name}",
+    kind: MoonroboHandoff,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.6,
+    path: "moonrobo/\{dossier.site.site_id}/handoffs.json",
+    summary: "\{@moonrobo.handoff_status_label(handoff)} primary route \{handoff.route_id}: \{handoff.next_action}",
+  }
+}
+
+///|
 fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   items.push(
@@ -537,6 +568,20 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       ),
     )
   }
+  let moonrobo_handoff = @moonrobo.route_handoff(
+    dossier,
+    primary_route_candidate(dossier),
+  )
+  if moonrobo_handoff.decision != @mission.TraverseDecision::Allow {
+    items.push(
+      review_item(
+        "moonrobo-handoff",
+        decision_severity(moonrobo_handoff.decision),
+        "Moonrobo handoff: \{moonrobo_handoff.next_action}",
+        "moonrobo",
+      ),
+    )
+  }
   for index, question in dossier.next_questions {
     items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }
@@ -571,6 +616,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
     entries.push(entry)
   }
   entries.push(energy_entry(dossier))
+  entries.push(moonrobo_handoff_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(raw_review_queue)
   {

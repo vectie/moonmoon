@@ -50,14 +50,16 @@ moon run cmd/main -- terrain fixture
 moon run cmd/main -- terrain fixture json
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
+moon run cmd/main -- moonrobo handoff
+moon run cmd/main -- moonrobo handoff json
 python3 scripts/generate_moonmoon_fixture.py --check
 python3 scripts/materialize_moonbook_workspace.py --check
 bash scripts/build_moonmoon_dossier.sh
 ```
 
-Reproducible site, terrain, and MoonBook deliverables are written to
-`output/site/`, `output/terrain/`, and `output/moonbook/`. The materialized
-MoonBook workspace lives at
+Reproducible site, terrain, MoonBook, and Moonrobo handoff deliverables are
+written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
+`output/moonrobo/`. The materialized MoonBook workspace lives at
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
 
