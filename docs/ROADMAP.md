@@ -97,10 +97,12 @@ state.
 Current implementation status:
 
 - `src/adapters/moonbook` converts the trusted-square site dossier into
-  MoonBook-ready entries and a review queue, including source validation
-  entries.
+  MoonBook entries and a review queue, including source validation entries.
 - `scripts/build_moonmoon_dossier.sh` writes stable Markdown/JSON exports under
   `output/site/`, `output/terrain/`, and `output/moonbook/`.
+- `scripts/materialize_moonbook_workspace.py` turns the aggregate site and
+  MoonBook JSON dossiers into per-entry workspace files under
+  `output/moonbook/workspaces/first-trusted-square/`.
 - The review queue currently includes fixture blockers, traverse review
   reasons, illumination/power blockers, and next questions for
   MoonClaw/operator follow-up.
@@ -143,8 +145,8 @@ Remaining work:
   windows.
 - Replace the relief-shadow proxy with time-windowed solar ephemeris and
   explicit robot energy/thermal budgets.
-- Write actual MoonBook workspace files rather than only MoonBook-ready export
-  summaries.
+- Extend the materialized MoonBook workspace with accepted/rejected review
+  transitions and append-only review history.
 - Add accepted/rejected review transitions once MoonBook storage exists.
 
 ## Milestone 4: MoonClaw Modeling Jobs
@@ -204,6 +206,6 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 - Add illumination windows and energy assumptions to the mission score.
 - Add Rabbita view models for terrain layers, inspector rows, and route
   overlays.
-- Add MoonBook workspace materialization and review status transitions.
+- Add MoonBook review status transitions.
 - Keep running `moon check`, `moon test`, `moon info`, and `moon fmt` for each
   proof slice.

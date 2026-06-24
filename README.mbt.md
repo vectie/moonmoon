@@ -51,11 +51,14 @@ moon run cmd/main -- terrain fixture json
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
 python3 scripts/generate_moonmoon_fixture.py --check
+python3 scripts/materialize_moonbook_workspace.py --check
 bash scripts/build_moonmoon_dossier.sh
 ```
 
-Reproducible site, terrain, and LunarBook-ready deliverables are written to
-`output/site/`, `output/terrain/`, and `output/moonbook/`.
+Reproducible site, terrain, and MoonBook deliverables are written to
+`output/site/`, `output/terrain/`, and `output/moonbook/`. The materialized
+MoonBook workspace lives at
+`output/moonbook/workspaces/first-trusted-square/`.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `data/sources/lro_lola/first_trusted_square_dem.csv`, verified by

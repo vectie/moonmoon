@@ -63,6 +63,8 @@ The current implementation has started this shape with:
 
 Each package owns typed contracts plus deterministic tests. The exported files
 under `output/` are generated artifacts, not hand-maintained source of truth.
+MoonBook workspace files are materialized from the generated site and MoonBook
+JSON dossiers by `scripts/materialize_moonbook_workspace.py`.
 
 ## Core Contracts
 
@@ -181,6 +183,13 @@ between "we have a terrain sample" and "a robot can survive this route in a
 specific lunar day/night window." The next modeling step is to widen the route
 corridor search beyond the southwest/south samples and replace the relief proxy
 with ephemeris-backed sun/thermal windows.
+
+The current MoonBook boundary is a generated workspace tree under
+`output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves
+the aggregate entry list, each entry path contains the full typed payload behind
+that evidence claim, and `review_queue.json` records the current open review
+work. That makes the workspace inspectable as files, while the authoritative
+source remains the MoonBit-generated site and MoonBook dossiers.
 
 ## Old Terrain Project Lessons
 

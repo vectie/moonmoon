@@ -89,7 +89,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
       "Continue widening the corridor search because the best measured southwest window is still blocked.",
-      "Export the dossier into a LunarBook workspace for review.",
+      "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
     ],
   }
 }

@@ -22,6 +22,7 @@ python3 scripts/generate_corridor_scan.py
 /Users/kq/.moon/bin/moon run cmd/main -- terrain fixture json > "$TERRAIN_OUT/first_trusted_square_grid.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier > "$MOONBOOK_OUT/first_trusted_square_book.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier json > "$MOONBOOK_OUT/first_trusted_square_book.json"
+python3 scripts/materialize_moonbook_workspace.py
 
 printf 'wrote %s\n' "$OUT/first_trusted_square.md"
 printf 'wrote %s\n' "$OUT/first_trusted_square.json"
@@ -29,3 +30,4 @@ printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.md"
 printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.json"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.md"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.json"
+printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"
