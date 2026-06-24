@@ -184,6 +184,15 @@
       "summary": "block with score 20: choose alternate route or improve terrain evidence"
     },
     {
+      "entry_id": "corridor/first-trusted-square/first-trusted-square-5x5",
+      "title": "5x5 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "CorridorScan",
+      "claim_kind": "Derived",
+      "confidence": 0.75,
+      "path": "mission/first-trusted-square/corridor-scan.json",
+      "summary": "best window r+8-c-8 rank 1 selects southwest-bypass: block with grade 0.64845 and roughness 7.056667 m"
+    },
+    {
       "entry_id": "route/first-trusted-square/direct-lola-window",
       "title": "Direct traverse across measured LOLA patch",
       "kind": "RouteAlternative",
@@ -358,6 +367,12 @@
       "severity": "high",
       "reason": "South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
       "owner": "power-thermal-review"
+    },
+    {
+      "item_id": "corridor-scan-best-window",
+      "severity": "high",
+      "reason": "best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked",
+      "owner": "mission-review"
     },
     {
       "item_id": "question-0",

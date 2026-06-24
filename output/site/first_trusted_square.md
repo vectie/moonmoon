@@ -2,7 +2,7 @@
 
 Purpose: Software proof slice for lunar terrain, uncertainty, and robot traverse reasoning.
 
-Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured widened route-window alternatives.
+Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and a reproducible measured 5x5 route-corridor scan.
 
 ## Source Datasets
 
@@ -225,6 +225,24 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 - reasons:
   - max neighbor grade exceeds rover hard limit
   - roughness exceeds rover hard limit
+
+## Corridor Scan
+
+- scan: first-trusted-square-5x5-corridor-scan-v1
+- windows ranked: 25
+- best measured window: r+8-c-8 (rank 1)
+- offset: row 8, col -8
+- selected route: southwest-bypass
+- decision: block
+- max neighbor grade: 0.64845
+- roughness: 7.056667 m
+- note: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- top windows:
+  - #1 r+8-c-8: grade 0.64845, roughness 7.056667 m, decision block, route southwest-bypass
+  - #2 r+4-c-8: grade 0.6913, roughness 9.079875 m, decision block
+  - #3 r+0-c+8: grade 0.7054, roughness 8.517167 m, decision block
+  - #4 r-4-c-8: grade 0.7091, roughness 8.112583 m, decision block
+  - #5 r-4-c+8: grade 0.7125, roughness 8.56275 m, decision block
 
 ## Route Candidates
 

@@ -105,6 +105,11 @@
   - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/traverse.json
+- corridor/first-trusted-square/first-trusted-square-5x5: 5x5 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: corridor-scan
+  - claim: derived
+  - confidence: 0.75
+  - path: mission/first-trusted-square/corridor-scan.json
 - route/first-trusted-square/direct-lola-window: Direct traverse across measured LOLA patch
   - kind: route-alternative
   - claim: derived
@@ -172,6 +177,7 @@
 - illumination-southwest-bypass [high] Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - route-south-stepout [high] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
 - illumination-south-stepout [high] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
+- corridor-scan-best-window [high] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
 - question-0 [low] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
