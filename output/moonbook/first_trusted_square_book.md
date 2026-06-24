@@ -170,6 +170,11 @@
   - claim: derived
   - confidence: 0.45263999999999993
   - path: mission/first-trusted-square/routes/south-stepout.illumination.json
+- power-window/first-trusted-square/ephemeris-evidence: Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: power-window-evidence
+  - claim: derived
+  - confidence: 0
+  - path: mission/first-trusted-square/power-window-evidence.json
 - energy/first-trusted-square/conservative-window: Energy window budget for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: energy-window
   - claim: derived

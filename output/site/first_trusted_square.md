@@ -272,6 +272,25 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - #4 r-4-c-8: grade 0.7091, roughness 8.112583 m, decision block
   - #5 r-4-c+8: grade 0.7125, roughness 8.56275 m, decision block
 
+## Power Window Evidence
+
+- evidence: first-trusted-square-power-window-missing-v1
+- source status: missing-source
+- source family: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
+- local source path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
+- source sha256: pending
+- source bytes: 0
+- time window: pending -> pending
+- sunlit hours: 0
+- dark hours: 0
+- available energy: 0 Wh
+- confidence: 0
+- has time-windowed ephemeris: false
+- reasons:
+  - official ephemeris or illumination source is not pinned yet
+  - source checksum and byte count are intentionally pending
+  - energy gate must remain blocked until generated evidence carries a real time window
+
 ## Energy Window
 
 - budget: Conservative South Pole Rover Energy Budget (conservative-south-pole-energy-v1)

@@ -301,6 +301,15 @@
       "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     },
     {
+      "entry_id": "power-window/first-trusted-square/ephemeris-evidence",
+      "title": "Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "PowerWindowEvidence",
+      "claim_kind": "Derived",
+      "confidence": 0,
+      "path": "mission/first-trusted-square/power-window-evidence.json",
+      "summary": "missing-source first-trusted-square-power-window-missing-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+    },
+    {
       "entry_id": "energy/first-trusted-square/conservative-window",
       "title": "Energy window budget for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "EnergyWindow",

@@ -1,0 +1,36 @@
+{
+  "entry": {
+    "entry_id": "power-window/first-trusted-square/ephemeris-evidence",
+    "title": "Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "PowerWindowEvidence",
+    "claim_kind": "Derived",
+    "confidence": 0,
+    "path": "mission/first-trusted-square/power-window-evidence.json",
+    "summary": "missing-source first-trusted-square-power-window-missing-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+  },
+  "payload": {
+    "evidence_id": "first-trusted-square-power-window-missing-v1",
+    "source_status": "missing-source",
+    "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
+    "local_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+    "source_sha256": "",
+    "source_bytes": 0,
+    "time_start_utc": "pending",
+    "time_end_utc": "pending",
+    "target_lat_deg": -89.88,
+    "target_lon_deg": 0.12,
+    "sunlit_hours": 0,
+    "dark_hours": 0,
+    "available_energy_wh": 0,
+    "confidence": 0,
+    "has_time_window_ephemeris": false,
+    "reasons": [
+      "official ephemeris or illumination source is not pinned yet",
+      "source checksum and byte count are intentionally pending",
+      "energy gate must remain blocked until generated evidence carries a real time window"
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}
