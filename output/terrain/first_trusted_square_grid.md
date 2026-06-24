@@ -1,35 +1,35 @@
-# Terrain Fixture: first-trusted-square
+# Terrain Fixture: first-trusted-square-lola
 
 ## Source
 
-- dataset: fixture-first-trusted-square-dem-v1
-- title: Synthetic Shackleton Rim DEM fixture
-- trust: curated-fixture
-- claim: simulated
-- resolution: 10 m
-- source path: data/fixtures/first_trusted_square_dem.csv
-- source sha256: 45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7
-- extractor: scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
+- dataset: lro-lola-first-trusted-square-dem-v1
+- title: LOLA Shackleton Rim DEM byte-range fixture
+- trust: authoritative
+- claim: measured
+- resolution: 20 m
+- source path: data/sources/lro_lola/first_trusted_square_dem.csv
+- source sha256: 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c
+- extractor: scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
 - checksum kind: inline-fixture-fingerprint
-- checksum: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
+- checksum: inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521
 
 ## Source Validation
 
 - status: verified
-- actual: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
+- actual: inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521
 - note: source fingerprint matches manifest
 
 ## Grid
 
 - rows: 4
 - cols: 4
-- cell size: 10 m
+- cell size: 20 m
 - cells: 16
 
 ## Derived Metrics
 
-- elevation range: 5.7 m (-0.3 to 5.4)
-- max neighbor grade: 0.26000000000000006
-- roughness: 0.9291666666666666 m
-- hazard: caution - terrain needs operator review before traverse planning
+- elevation range: 58.17199999999997 m (441.521 to 499.693)
+- max neighbor grade: 1.1593500000000005
+- roughness: 9.250124999999999 m
+- hazard: blocked - neighbor grade or roughness exceeds early rover traverse limits
 

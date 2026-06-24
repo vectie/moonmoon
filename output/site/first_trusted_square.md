@@ -6,15 +6,15 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 ## Source Datasets
 
-- fixture-first-trusted-square-dem-v1: Synthetic Shackleton Rim DEM fixture
-  - trust: curated-fixture
+- lro-lola-first-trusted-square-dem-v1: LOLA Shackleton Rim DEM byte-range fixture
+  - trust: authoritative
   - review: accepted-for-software-proof
-  - resolution: 10 m
-  - source path: data/fixtures/first_trusted_square_dem.csv
-  - source sha256: 45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7
-  - extractor: scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
+  - resolution: 20 m
+  - source path: data/sources/lro_lola/first_trusted_square_dem.csv
+  - source sha256: 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c
+  - extractor: scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
   - checksum kind: inline-fixture-fingerprint
-  - checksum: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
+  - checksum: inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521
 
 ## Source Upgrade Candidates
 
@@ -22,17 +22,17 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - mission: Lunar Reconnaissance Orbiter
   - instrument: LOLA
   - product family: GDR/SLDEM derived gridded terrain
-  - status: needs-source-upgrade
+  - status: accepted-for-software-proof
   - official source: https://pds-geosciences.wustl.edu/missions/lro/lola.htm
   - access: https://ode.rsl.wustl.edu/moon/
   - target path: data/sources/lro_lola/first_trusted_square_dem.csv
-  - next action: Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.
+  - next action: Use the checked LOLA byte-range fixture for software proof, then add illumination and route alternatives before any rover claim.
 
 ## Source Acquisition Plans
 
 - acquire-lro-lola-gdr-south-pole-20m-v1: lro-lola-gdr-south-pole-selection
   - candidate: candidate-lro-lola-sldem-first-trusted-square
-  - progress: planned:5-steps
+  - progress: recorded:5-steps
   - discovery: https://ode.rsl.wustl.edu/moon/
   - source family: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/
   - source metadata: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/catalog/gdr_ds.cat
@@ -42,19 +42,19 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - local source directory: data/sources/lro_lola/
   - local metadata path: data/sources/lro_lola/gdr_ds.cat
   - extracted fixture path: data/sources/lro_lola/first_trusted_square_dem.csv
-  - trust gate: Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded.
+  - trust gate: The active software-proof fixture must keep product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum recorded.
   - steps:
     - discover: Confirm product family - The source candidate points to a named product family and the acquisition plan names a reachable PDS family root.
     - metadata: Fetch metadata first - The extractor can derive pixel coordinates for the trusted-square bounds without reading the full image into memory.
-    - extract: Extract tiny tile - scripts/generate_moonmoon_fixture.py can regenerate MoonBit terrain from the authoritative CSV.
+    - extract: Extract tiny tile - scripts/generate_moonmoon_fixture.py regenerates MoonBit terrain from the authoritative CSV.
     - validate: Verify evidence chain - moon test passes while the dossier marks the authoritative dataset as accepted for software proof.
-    - review: Human review before mission claims - The review queue no longer contains the source-upgrade blocker for this site.
+    - review: Human review before mission claims - The source-upgrade blocker is closed and remaining review focuses on terrain hazards, illumination, and route alternatives.
 
 ## Source Product Selections
 
 - select-ldem-875s-20m-float-v1: ldem_875s_20m_float
   - plan: acquire-lro-lola-gdr-south-pole-20m-v1
-  - status: needs-human-review
+  - status: accepted-for-software-proof
   - product lid: urn:nasa:pds:lro_lola_rdr:data_gridded:ldem_875s_20m_float
   - image: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img
   - label: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml
@@ -74,7 +74,7 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 - extract-ldem-875s-20m-first-trusted-square-v1: first-trusted-square-lola
   - selection: select-ldem-875s-20m-float-v1
-  - status: needs-human-review
+  - status: accepted-for-software-proof
   - generated by: scripts/extract_lola_trusted_square.py
   - output path: data/sources/lro_lola/first_trusted_square_dem.csv
   - output sha256: 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c
@@ -86,42 +86,42 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - claim: measured
   - notes:
     - Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.
-    - This candidate proves bounded extraction mechanics; active terrain remains the synthetic fixture until projection math and values are reviewed.
-    - The output CSV matches the Moonmoon fixture CSV shape so it can replace the synthetic fixture after review.
+    - This extraction is the active Moonmoon trusted-square fixture for software proof.
+    - The output CSV keeps the small Moonmoon fixture shape while replacing synthetic values with measured LOLA DEM values.
 
 ## Source Validation
 
-- fixture-first-trusted-square-dem-v1: verified
-  - actual: inline-grid-v1:tile=first-trusted-square:rows=4:cols=4:cell-size-m=10:cells=16:first=0:last=5.4
+- lro-lola-first-trusted-square-dem-v1: verified
+  - actual: inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521
   - note: source fingerprint matches manifest
 
 ## Terrain
 
-- elevation range: 5.7 m (-0.3 to 5.4)
-- max neighbor grade: 0.26000000000000006
-- roughness: 0.9291666666666666 m
-- hazard: caution - terrain needs operator review before traverse planning
-- confidence: medium (0.6624)
-- provenance: fixture-first-trusted-square-dem-v1 / terrain-metrics.v1
+- elevation range: 58.17199999999997 m (441.521 to 499.693)
+- max neighbor grade: 1.1593500000000005
+- roughness: 9.250124999999999 m
+- hazard: blocked - neighbor grade or roughness exceeds early rover traverse limits
+- confidence: medium (0.7544)
+- provenance: lro-lola-first-trusted-square-dem-v1 / terrain-metrics.v1
 
 ## Traverse Readiness
 
 - profile: Conservative Lunar Rover (conservative-lunar-rover-v1)
-- decision: review
-- score: 54
-- next action: operator should review route and source confidence before simulation
+- decision: block
+- score: 20
+- next action: choose alternate route or improve terrain evidence
 - reasons:
-  - max neighbor grade needs route review
-  - terrain confidence below traverse threshold
+  - max neighbor grade exceeds rover hard limit
+  - roughness exceeds rover hard limit
 
 ## Blockers
 
-- needs operator review before robot traverse planning
-- fixture confidence is not high enough for physical mission planning
+- terrain exceeds early traverse limits
+- requires alternate route or stronger dataset
 
 ## Next Questions
 
-- Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture.
 - Add illumination windows for robot energy and thermal constraints.
+- Find alternate route candidates around the blocked LOLA terrain patch.
 - Export the dossier into a LunarBook workspace for review.
 

@@ -5,11 +5,11 @@
 
 ## Entries
 
-- dataset/fixture-first-trusted-square-dem-v1: Synthetic Shackleton Rim DEM fixture
+- dataset/lro-lola-first-trusted-square-dem-v1: LOLA Shackleton Rim DEM byte-range fixture
   - kind: source-dataset
-  - claim: simulated
+  - claim: measured
   - confidence: 1
-  - path: datasets/fixture-first-trusted-square-dem-v1.json
+  - path: datasets/lro-lola-first-trusted-square-dem-v1.json
 - source-candidate/candidate-lro-lola-sldem-first-trusted-square: LRO LOLA derived gridded topography candidate
   - kind: source-upgrade-candidate
   - claim: unknown
@@ -30,30 +30,29 @@
   - claim: measured
   - confidence: 0
   - path: source-extractions/extract-ldem-875s-20m-first-trusted-square-v1.json
-- validation/fixture-first-trusted-square-dem-v1: Source validation for fixture-first-trusted-square-dem-v1
+- validation/lro-lola-first-trusted-square-dem-v1: Source validation for lro-lola-first-trusted-square-dem-v1
   - kind: source-validation
   - claim: derived
   - confidence: 1
-  - path: datasets/fixture-first-trusted-square-dem-v1.validation.json
+  - path: datasets/lro-lola-first-trusted-square-dem-v1.validation.json
 - terrain/first-trusted-square/metrics: Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: derived-terrain
   - claim: derived
-  - confidence: 0.6624
+  - confidence: 0.7544
   - path: terrain/first-trusted-square/metrics.json
 - mission/first-trusted-square/traverse: Traverse readiness for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: mission-decision
   - claim: derived
-  - confidence: 0.6624
+  - confidence: 0.7544
   - path: mission/first-trusted-square/traverse.json
 
 ## Review Queue
 
-- source-candidate-candidate-lro-lola-sldem-first-trusted-square [medium] Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture. -> data-review
-- blocker-0 [medium] needs operator review before robot traverse planning -> operator
-- blocker-1 [medium] fixture confidence is not high enough for physical mission planning -> operator
-- traverse-0 [medium] max neighbor grade needs route review -> mission-review
-- traverse-1 [medium] terrain confidence below traverse threshold -> mission-review
-- question-0 [low] Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture. -> moonclaw
-- question-1 [low] Add illumination windows for robot energy and thermal constraints. -> moonclaw
+- blocker-0 [high] terrain exceeds early traverse limits -> operator
+- blocker-1 [high] requires alternate route or stronger dataset -> operator
+- traverse-0 [high] max neighbor grade exceeds rover hard limit -> mission-review
+- traverse-1 [high] roughness exceeds rover hard limit -> mission-review
+- question-0 [low] Add illumination windows for robot energy and thermal constraints. -> moonclaw
+- question-1 [low] Find alternate route candidates around the blocked LOLA terrain patch. -> moonclaw
 - question-2 [low] Export the dossier into a LunarBook workspace for review. -> moonclaw
 

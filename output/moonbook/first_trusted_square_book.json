@@ -4,12 +4,12 @@
   "title": "Moonmoon evidence dossier: First Trusted Square / Shackleton Rim rehearsal tile",
   "entries": [
     {
-      "entry_id": "dataset/fixture-first-trusted-square-dem-v1",
-      "title": "Synthetic Shackleton Rim DEM fixture",
+      "entry_id": "dataset/lro-lola-first-trusted-square-dem-v1",
+      "title": "LOLA Shackleton Rim DEM byte-range fixture",
       "kind": "SourceDataset",
-      "claim_kind": "Simulated",
+      "claim_kind": "Measured",
       "confidence": 1,
-      "path": "datasets/fixture-first-trusted-square-dem-v1.json",
+      "path": "datasets/lro-lola-first-trusted-square-dem-v1.json",
       "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
     },
     {
@@ -19,7 +19,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-candidates/candidate-lro-lola-sldem-first-trusted-square.json",
-      "summary": "LOLA GDR/SLDEM derived gridded terrain: Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture."
+      "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixture for software proof, then add illumination and route alternatives before any rover claim."
     },
     {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
@@ -28,7 +28,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
-      "summary": "planned:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: Do not replace the synthetic fixture until product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum are recorded."
+      "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixture must keep product family URL, metadata URL, selected product URL, SHA-256, extraction window, and generated CSV checksum recorded."
     },
     {
       "entry_id": "source-product/select-ldem-875s-20m-float-v1",
@@ -49,12 +49,12 @@
       "summary": "4x4 window at row 3972, col 3790; 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c"
     },
     {
-      "entry_id": "validation/fixture-first-trusted-square-dem-v1",
-      "title": "Source validation for fixture-first-trusted-square-dem-v1",
+      "entry_id": "validation/lro-lola-first-trusted-square-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
       "claim_kind": "Derived",
       "confidence": 1,
-      "path": "datasets/fixture-first-trusted-square-dem-v1.validation.json",
+      "path": "datasets/lro-lola-first-trusted-square-dem-v1.validation.json",
       "summary": "verified: source fingerprint matches manifest"
     },
     {
@@ -62,61 +62,55 @@
       "title": "Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "DerivedTerrain",
       "claim_kind": "Derived",
-      "confidence": 0.6624,
+      "confidence": 0.7544,
       "path": "terrain/first-trusted-square/metrics.json",
-      "summary": "caution hazard, 5.7 m elevation range, 0.9291666666666666 m roughness."
+      "summary": "blocked hazard, 58.17199999999997 m elevation range, 9.250124999999999 m roughness."
     },
     {
       "entry_id": "mission/first-trusted-square/traverse",
       "title": "Traverse readiness for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MissionDecision",
       "claim_kind": "Derived",
-      "confidence": 0.6624,
+      "confidence": 0.7544,
       "path": "mission/first-trusted-square/traverse.json",
-      "summary": "review with score 54: operator should review route and source confidence before simulation"
+      "summary": "block with score 20: choose alternate route or improve terrain evidence"
     }
   ],
   "review_queue": [
     {
-      "item_id": "source-candidate-candidate-lro-lola-sldem-first-trusted-square",
-      "severity": "medium",
-      "reason": "Select a specific LOLA/SLDEM product, record its source URL and SHA-256, then regenerate the trusted-square fixture.",
-      "owner": "data-review"
-    },
-    {
       "item_id": "blocker-0",
-      "severity": "medium",
-      "reason": "needs operator review before robot traverse planning",
+      "severity": "high",
+      "reason": "terrain exceeds early traverse limits",
       "owner": "operator"
     },
     {
       "item_id": "blocker-1",
-      "severity": "medium",
-      "reason": "fixture confidence is not high enough for physical mission planning",
+      "severity": "high",
+      "reason": "requires alternate route or stronger dataset",
       "owner": "operator"
     },
     {
       "item_id": "traverse-0",
-      "severity": "medium",
-      "reason": "max neighbor grade needs route review",
+      "severity": "high",
+      "reason": "max neighbor grade exceeds rover hard limit",
       "owner": "mission-review"
     },
     {
       "item_id": "traverse-1",
-      "severity": "medium",
-      "reason": "terrain confidence below traverse threshold",
+      "severity": "high",
+      "reason": "roughness exceeds rover hard limit",
       "owner": "mission-review"
     },
     {
       "item_id": "question-0",
       "severity": "low",
-      "reason": "Replace synthetic DEM with an authoritative LOLA/LROC-backed fixture.",
+      "reason": "Add illumination windows for robot energy and thermal constraints.",
       "owner": "moonclaw"
     },
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Add illumination windows for robot energy and thermal constraints.",
+      "reason": "Find alternate route candidates around the blocked LOLA terrain patch.",
       "owner": "moonclaw"
     },
     {
