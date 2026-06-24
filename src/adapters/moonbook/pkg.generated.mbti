@@ -52,6 +52,7 @@ pub(all) enum BookEntryKind {
   CorridorScan
   RouteAlternative
   IlluminationAssessment
+  EnergyWindow
   OpenQuestion
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -67,8 +67,9 @@ The current terrain fixture is sourced from the checked LOLA byte-range CSV at
 `scripts/generate_moonmoon_fixture.py`.
 
 The current fixture is measured LOLA DEM evidence accepted for Moonmoon software
-proof. It is still not mission-grade lunar planning data; the next major step is
-adding illumination and route alternatives around the blocked terrain patch.
+proof. It is still not mission-grade lunar planning data; the current
+illumination and energy gates intentionally block until time-windowed
+ephemeris-backed power evidence exists.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source

@@ -99,3 +99,24 @@ test "first trusted square illumination gate blocks missing time window evidence
   )
   assert_true(assessment.next_action.contains("solar ephemeris"))
 }
+
+///|
+test "first trusted square energy window blocks missing ephemeris budget" {
+  let assessment = @mission.first_trusted_square_energy_assessment()
+  assert_true(assessment.decision == Block)
+  assert_eq(assessment.budget.budget_id, "conservative-south-pole-energy-v1")
+  assert_eq(assessment.route_count, 5)
+  assert_eq(assessment.blocked_route_count, 5)
+  assert_true(assessment.required_energy_wh > 800.0)
+  assert_eq(assessment.available_energy_wh, 0.0)
+  assert_true(assessment.margin_wh < 0.0)
+  assert_true(
+    assessment.reasons.any(fn(reason) { reason.contains("solar ephemeris") }),
+  )
+  assert_true(
+    assessment.reasons.any(fn(reason) {
+      reason.contains("route candidates remain blocked")
+    }),
+  )
+  assert_eq(@mission.energy_decision_label(assessment), "block")
+}

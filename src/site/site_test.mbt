@@ -91,6 +91,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.route_candidates[3].expected_max_grade <
     dossier.route_candidates[1].expected_max_grade,
   )
+  assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
+  assert_eq(dossier.energy.route_count, 5)
+  assert_eq(dossier.energy.blocked_route_count, 5)
   assert_eq(dossier.blockers.length(), 2)
   let markdown = @site.render_markdown(dossier)
   assert_true(markdown.contains("# First Trusted Square"))
@@ -127,6 +130,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("first-trusted-square-5x5-corridor-scan-v1"))
   assert_true(markdown.contains("r+8-c-8"))
   assert_true(markdown.contains("selected route: southwest-bypass"))
+  assert_true(markdown.contains("## Energy Window"))
+  assert_true(markdown.contains("conservative-south-pole-energy-v1"))
+  assert_true(markdown.contains("verified available energy: 0"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
   assert_true(markdown.contains("north-rim-stepout"))
@@ -190,6 +196,11 @@ test "first trusted square dossier exports machine-readable evidence" {
     text.contains("\"scan_id\": \"first-trusted-square-5x5-corridor-scan-v1\""),
   )
   assert_true(text.contains("\"window_id\": \"r+8-c-8\""))
+  assert_true(text.contains("\"energy\""))
+  assert_true(
+    text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
+  )
+  assert_true(text.contains("\"available_energy_wh\": 0"))
   assert_true(text.contains("\"route_candidates\""))
   assert_true(text.contains("\"route_id\": \"west-contour-detour\""))
   assert_true(text.contains("\"route_id\": \"southwest-bypass\""))

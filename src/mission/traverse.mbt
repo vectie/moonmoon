@@ -50,6 +50,36 @@ pub(all) struct IlluminationAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct EnergyBudget {
+  budget_id : String
+  label : String
+  battery_capacity_wh : Double
+  reserve_wh : Double
+  drive_power_w : Double
+  thermal_survival_power_w : Double
+  comms_power_w : Double
+  min_energy_margin_wh : Double
+  required_sunlit_hours : Double
+  assumed_dark_survival_hours : Double
+  has_time_window_ephemeris : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct EnergyAssessment {
+  budget : EnergyBudget
+  route_count : Int
+  blocked_route_count : Int
+  estimated_drive_hours : Double
+  estimated_dark_survival_hours : Double
+  required_energy_wh : Double
+  available_energy_wh : Double
+  margin_wh : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RouteCandidate {
   route_id : String
   label : String
@@ -127,6 +157,11 @@ pub fn illumination_decision_label(
 }
 
 ///|
+pub fn energy_decision_label(assessment : EnergyAssessment) -> String {
+  traverse_decision_label(assessment.decision)
+}
+
+///|
 pub fn conservative_illumination_constraint() -> IlluminationConstraint {
   {
     constraint_id: "conservative-south-pole-power-v1",
@@ -136,6 +171,23 @@ pub fn conservative_illumination_constraint() -> IlluminationConstraint {
     max_relief_shadow_risk: 0.22,
     caution_relief_shadow_risk: 0.14,
     min_confidence: 0.7,
+    has_time_window_ephemeris: false,
+  }
+}
+
+///|
+pub fn conservative_energy_budget() -> EnergyBudget {
+  {
+    budget_id: "conservative-south-pole-energy-v1",
+    label: "Conservative South Pole Rover Energy Budget",
+    battery_capacity_wh: 1200.0,
+    reserve_wh: 600.0,
+    drive_power_w: 120.0,
+    thermal_survival_power_w: 35.0,
+    comms_power_w: 20.0,
+    min_energy_margin_wh: 250.0,
+    required_sunlit_hours: 4.0,
+    assumed_dark_survival_hours: 2.0,
     has_time_window_ephemeris: false,
   }
 }
@@ -328,6 +380,92 @@ pub fn assess_illumination(
         "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     },
   }
+}
+
+///|
+fn blocked_route_count(routes : Array[RouteCandidate]) -> Int {
+  let mut count = 0
+  for route in routes {
+    if route.decision == Block {
+      count += 1
+    }
+  }
+  count
+}
+
+///|
+pub fn assess_energy_window(
+  routes : Array[RouteCandidate],
+  budget : EnergyBudget,
+) -> EnergyAssessment {
+  let route_count = routes.length()
+  let blocked_count = blocked_route_count(routes)
+  let estimated_drive_hours = route_count.to_double() * 0.25
+  let estimated_dark_survival_hours = budget.assumed_dark_survival_hours
+  let required_energy_wh = budget.reserve_wh +
+    budget.drive_power_w * estimated_drive_hours +
+    budget.comms_power_w * estimated_drive_hours +
+    budget.thermal_survival_power_w * estimated_dark_survival_hours
+  let available_energy_wh = if budget.has_time_window_ephemeris {
+    budget.battery_capacity_wh
+  } else {
+    0.0
+  }
+  let margin_wh = available_energy_wh - required_energy_wh
+  let reasons : Array[String] = []
+  add_reason_if(
+    reasons,
+    !budget.has_time_window_ephemeris,
+    "no time-windowed solar ephemeris is attached for energy planning",
+  )
+  add_reason_if(
+    reasons,
+    margin_wh < 0.0,
+    "estimated energy demand exceeds verified available energy",
+  )
+  add_reason_if(
+    reasons,
+    margin_wh >= 0.0 && margin_wh < budget.min_energy_margin_wh,
+    "estimated energy margin is below conservative reserve",
+  )
+  add_reason_if(
+    reasons,
+    blocked_count > 0,
+    "\{blocked_count} route candidates remain blocked before energy simulation",
+  )
+  let decision = if !budget.has_time_window_ephemeris || margin_wh < 0.0 {
+    Block
+  } else if margin_wh < budget.min_energy_margin_wh || blocked_count > 0 {
+    Review
+  } else {
+    Allow
+  }
+  {
+    budget,
+    route_count,
+    blocked_route_count: blocked_count,
+    estimated_drive_hours,
+    estimated_dark_survival_hours,
+    required_energy_wh,
+    available_energy_wh,
+    margin_wh,
+    decision,
+    reasons,
+    next_action: match decision {
+      Allow => "energy window may advance to route simulation"
+      Review => "review route blockers and energy margin before simulation"
+      Block =>
+        "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    },
+  }
+}
+
+///|
+pub fn first_trusted_square_energy_assessment() -> EnergyAssessment {
+  assess_energy_window(
+    first_trusted_square_route_candidates(),
+    conservative_energy_budget(),
+  )
 }
 
 ///|

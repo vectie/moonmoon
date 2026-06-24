@@ -11,6 +11,7 @@ pub(all) struct SiteDossier {
   traverse : @mission.TraverseScore
   corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
+  energy : @mission.EnergyAssessment
   summary : String
   blockers : Array[String]
   next_questions : Array[String]
@@ -60,6 +61,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     terrain,
     @mission.conservative_rover_profile(),
   )
+  let route_candidates = @mission.first_trusted_square_route_candidates()
   {
     site: first_trusted_square_site(),
     datasets: [
@@ -83,8 +85,12 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     terrain,
     traverse,
     corridor_scan: @mission.first_trusted_square_corridor_scan(),
-    route_candidates: @mission.first_trusted_square_route_candidates(),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and a reproducible measured 5x5 route-corridor scan.",
+    route_candidates,
+    energy: @mission.assess_energy_window(
+      route_candidates,
+      @mission.conservative_energy_budget(),
+    ),
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 5x5 route-corridor scan, and a conservative rover energy-window budget.",
     blockers: terrain_blockers(terrain),
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -236,6 +242,27 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
         text += ", route \{window.selected_route_id}"
       }
       text += "\n"
+    }
+  }
+  text += "\n"
+  text += "## Energy Window\n\n"
+  let energy = dossier.energy
+  text += "- budget: \{energy.budget.label} (\{energy.budget.budget_id})\n"
+  text += "- decision: \{@mission.energy_decision_label(energy)}\n"
+  text += "- route candidates: \{energy.route_count}\n"
+  text += "- blocked route candidates: \{energy.blocked_route_count}\n"
+  text += "- estimated drive hours: \{energy.estimated_drive_hours}\n"
+  text += "- estimated dark survival hours: \{energy.estimated_dark_survival_hours}\n"
+  text += "- required energy: \{energy.required_energy_wh} Wh\n"
+  text += "- verified available energy: \{energy.available_energy_wh} Wh\n"
+  text += "- energy margin: \{energy.margin_wh} Wh\n"
+  text += "- next action: \{energy.next_action}\n"
+  text += "- reasons:\n"
+  if energy.reasons.is_empty() {
+    text += "  - none\n"
+  } else {
+    for reason in energy.reasons {
+      text += "  - \{reason}\n"
     }
   }
   text += "\n"

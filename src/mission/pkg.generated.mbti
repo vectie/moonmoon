@@ -8,7 +8,11 @@ import {
 }
 
 // Values
+pub fn assess_energy_window(Array[RouteCandidate], EnergyBudget) -> EnergyAssessment
+
 pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint) -> IlluminationAssessment
+
+pub fn conservative_energy_budget() -> EnergyBudget
 
 pub fn conservative_illumination_constraint() -> IlluminationConstraint
 
@@ -16,9 +20,13 @@ pub fn conservative_rover_profile() -> TraverseProfile
 
 pub fn corridor_scan_window_status_label(CorridorScanWindow) -> String
 
+pub fn energy_decision_label(EnergyAssessment) -> String
+
 pub fn first_trusted_square_best_corridor_window() -> CorridorScanWindow
 
 pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow]
+
+pub fn first_trusted_square_energy_assessment() -> EnergyAssessment
 
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
 
@@ -51,6 +59,34 @@ pub(all) struct CorridorScanWindow {
   decision : TraverseDecision
   selected_route_id : String
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct EnergyAssessment {
+  budget : EnergyBudget
+  route_count : Int
+  blocked_route_count : Int
+  estimated_drive_hours : Double
+  estimated_dark_survival_hours : Double
+  required_energy_wh : Double
+  available_energy_wh : Double
+  margin_wh : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct EnergyBudget {
+  budget_id : String
+  label : String
+  battery_capacity_wh : Double
+  reserve_wh : Double
+  drive_power_w : Double
+  thermal_survival_power_w : Double
+  comms_power_w : Double
+  min_energy_margin_wh : Double
+  required_sunlit_hours : Double
+  assumed_dark_survival_hours : Double
+  has_time_window_ephemeris : Bool
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct IlluminationAssessment {

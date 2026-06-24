@@ -86,6 +86,8 @@ def payload_for_entry(
     return lookups["route_candidates"][route_id_from_entry(entry_id)][
       "illumination"
     ]
+  if kind == "EnergyWindow":
+    return site["energy"]
 
   raise ValueError(f"unsupported entry kind {kind!r} for {entry_id}")
 

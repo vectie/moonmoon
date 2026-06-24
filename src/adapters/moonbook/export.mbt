@@ -11,6 +11,7 @@ pub(all) enum BookEntryKind {
   CorridorScan
   RouteAlternative
   IlluminationAssessment
+  EnergyWindow
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -85,6 +86,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     CorridorScan => "corridor-scan"
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
+    EnergyWindow => "energy-window"
     OpenQuestion => "open-question"
   }
 }
@@ -426,6 +428,19 @@ fn illumination_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
 }
 
 ///|
+fn energy_entry(dossier : @site.SiteDossier) -> BookEntry {
+  {
+    entry_id: "energy/\{dossier.site.site_id}/conservative-window",
+    title: "Energy window budget for \{dossier.site.name}",
+    kind: EnergyWindow,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.45,
+    path: "mission/\{dossier.site.site_id}/energy-window.json",
+    summary: "\{@mission.energy_decision_label(dossier.energy)} with \{dossier.energy.required_energy_wh} Wh required and \{dossier.energy.available_energy_wh} Wh verified available: \{dossier.energy.next_action}",
+  }
+}
+
+///|
 fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   items.push(
@@ -512,6 +527,16 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       ),
     )
   }
+  if dossier.energy.decision != @mission.TraverseDecision::Allow {
+    items.push(
+      review_item(
+        "energy-window",
+        decision_severity(dossier.energy.decision),
+        "energy window budget: \{dossier.energy.next_action}",
+        "power-thermal-review",
+      ),
+    )
+  }
   for index, question in dossier.next_questions {
     items.push(review_item("question-\{index}", "low", question, "moonclaw"))
   }
@@ -545,6 +570,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   for entry in illumination_entries(dossier) {
     entries.push(entry)
   }
+  entries.push(energy_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(raw_review_queue)
   {

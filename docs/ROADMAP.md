@@ -61,6 +61,9 @@ Current implementation status:
 - `src/mission` adds a conservative south-pole illumination/power gate for each
   route candidate. It uses measured local relief as an early shadow-risk proxy
   and blocks execution until time-windowed solar ephemeris is attached.
+- `src/mission` also adds a conservative rover energy-window budget. It records
+  estimated drive/dark-survival energy demand, verified available energy, and
+  margin, then blocks until time-windowed ephemeris can prove available power.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
@@ -141,13 +144,16 @@ Current implementation status:
   current gate is intentionally conservative: it records relief-shadow risk and
   blocks all route candidates until a time-windowed solar ephemeris source is
   connected.
+- The site dossier and MoonBook export now carry a conservative energy-window
+  assessment that turns the missing ephemeris problem into an explicit Wh
+  budget and review item.
 
 Remaining work:
 
 - Continue corridor search beyond the blocked southwest/south widened LOLA
   windows.
 - Replace the relief-shadow proxy with time-windowed solar ephemeris and
-  explicit robot energy/thermal budgets.
+  measured sun/thermal windows.
 - Extend the materialized MoonBook workspace with operator-authored review
   transitions and append-only review history.
 - Add persisted reviewer identity, timestamps, and manual accepted/rejected
@@ -183,7 +189,8 @@ more evidence.
 Goal: move from static terrain to mission windows.
 
 - Add time-based illumination windows.
-- Add basic energy assumptions.
+- Replace first conservative energy assumptions with ephemeris-backed power
+  windows.
 - Add route planning across a small tile grid.
 - Add construction-pad and mining-zone checks.
 - Show blockers and confidence in Rabbita.
@@ -207,7 +214,7 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 - Replace the synthetic trusted-square DEM with a tiny authoritative fixture.
 - Replace the checked synthetic CSV with a tiny authoritative LOLA-derived
   extraction while preserving the same verify/generate/dossier pipeline.
-- Add illumination windows and energy assumptions to the mission score.
+- Add ephemeris-backed illumination and energy windows to the mission score.
 - Add Rabbita view models for terrain layers, inspector rows, and route
   overlays.
 - Add persisted MoonBook review history and editable review status transitions.

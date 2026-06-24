@@ -180,9 +180,13 @@ candidate. The first version is intentionally limited: it uses local measured
 relief as a shadow-risk proxy and marks the gate `block` when no time-windowed
 solar ephemeris is attached. That keeps Moonmoon honest about the difference
 between "we have a terrain sample" and "a robot can survive this route in a
-specific lunar day/night window." The next modeling step is to widen the route
-corridor search beyond the southwest/south samples and replace the relief proxy
-with ephemeris-backed sun/thermal windows.
+specific lunar day/night window." Moonmoon also records a conservative rover
+energy-window budget: estimated drive hours, dark survival hours, required Wh,
+verified available Wh, and margin. With no time-windowed ephemeris attached,
+the verified available energy is deliberately zero and the energy gate blocks.
+The next modeling step is to widen the route corridor search beyond the
+southwest/south samples and replace the relief/energy proxies with
+ephemeris-backed sun/thermal windows.
 
 The current MoonBook boundary is a generated workspace tree under
 `output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves
