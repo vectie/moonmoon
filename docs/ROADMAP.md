@@ -51,6 +51,9 @@ Current implementation status:
 - `src/mission` also scores route alternatives for the blocked LOLA patch:
   the direct measured window remains blocked, and the measured west/north
   adjacent windows are also blocked at this sampling scale.
+- `src/mission` adds a conservative south-pole illumination/power gate for each
+  route candidate. It uses measured local relief as an early shadow-risk proxy
+  and blocks execution until time-windowed solar ephemeris is attached.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `cmd/main` exposes reproducible `site summary`, `terrain fixture`, and
@@ -92,7 +95,8 @@ Current implementation status:
 - `scripts/build_moonmoon_dossier.sh` writes stable Markdown/JSON exports under
   `output/site/`, `output/terrain/`, and `output/moonbook/`.
 - The review queue currently includes fixture blockers, traverse review
-  reasons, and next questions for MoonClaw/operator follow-up.
+  reasons, illumination/power blockers, and next questions for
+  MoonClaw/operator follow-up.
 - The current inline fixture fingerprint verifies successfully against its
   manifest, and the checked LOLA CSV fixture verifies against its SHA-256.
 - `data/sources/lro_lola/gdr_ds.cat` pins the official PDS LOLA GDR catalog
@@ -115,12 +119,17 @@ Current implementation status:
   label-backed extraction target, while keeping the raw IMG uncommitted.
 - The first extraction candidates now prove bounded raster access and produce
   the active fixture-shaped CSV plus adjacent west/north route evidence CSVs.
+- Route alternatives now carry MoonBook-visible illumination assessments. The
+  current gate is intentionally conservative: it records relief-shadow risk and
+  blocks all route candidates until a time-windowed solar ephemeris source is
+  connected.
 
 Remaining work:
 
 - Widen the route-window corridor search beyond the blocked west/north adjacent
   LOLA windows.
-- Add illumination constraints for robot energy and thermal feasibility.
+- Replace the relief-shadow proxy with time-windowed solar ephemeris and
+  explicit robot energy/thermal budgets.
 - Write actual MoonBook workspace files rather than only MoonBook-ready export
   summaries.
 - Add accepted/rejected review transitions once MoonBook storage exists.

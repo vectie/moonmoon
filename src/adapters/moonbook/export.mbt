@@ -9,6 +9,7 @@ pub(all) enum BookEntryKind {
   DerivedTerrain
   MissionDecision
   RouteAlternative
+  IlluminationAssessment
   OpenQuestion
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -52,6 +53,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     DerivedTerrain => "derived-terrain"
     MissionDecision => "mission-decision"
     RouteAlternative => "route-alternative"
+    IlluminationAssessment => "illumination-assessment"
     OpenQuestion => "open-question"
   }
 }
@@ -237,6 +239,23 @@ fn route_candidate_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
 }
 
 ///|
+fn illumination_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
+  let entries : Array[BookEntry] = []
+  for route in dossier.route_candidates {
+    entries.push({
+      entry_id: "illumination/\{dossier.site.site_id}/\{route.route_id}",
+      title: "Illumination gate for \{route.label}",
+      kind: IlluminationAssessment,
+      claim_kind: @core.ClaimKind::Derived,
+      confidence: route.illumination.confidence,
+      path: "mission/\{dossier.site.site_id}/routes/\{route.route_id}.illumination.json",
+      summary: "\{@mission.illumination_decision_label(route.illumination)} with relief-shadow risk \{route.illumination.relief_shadow_risk}: \{route.illumination.next_action}",
+    })
+  }
+  entries
+}
+
+///|
 fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   let items : Array[ReviewQueueItem] = []
   for candidate in dossier.source_candidates {
@@ -285,6 +304,14 @@ fn review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
         owner: "mission-review",
       })
     }
+    if route.illumination.decision != @mission.TraverseDecision::Allow {
+      items.push({
+        item_id: "illumination-\{route.route_id}",
+        severity: decision_severity(route.illumination.decision),
+        reason: "\{route.label}: \{route.illumination.next_action}",
+        owner: "power-thermal-review",
+      })
+    }
   }
   for index, question in dossier.next_questions {
     items.push({
@@ -318,6 +345,9 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
   entries.push(terrain_entry(dossier))
   entries.push(traverse_entry(dossier))
   for entry in route_candidate_entries(dossier) {
+    entries.push(entry)
+  }
+  for entry in illumination_entries(dossier) {
     entries.push(entry)
   }
   {

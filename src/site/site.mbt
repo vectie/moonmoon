@@ -79,7 +79,8 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, and measured route-window alternatives.",
     blockers: terrain_blockers(terrain),
     next_questions: [
-      "Add illumination windows for robot energy and thermal constraints.", "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
+      "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
+      "Widen the corridor search because adjacent west/north LOLA windows are also blocked.",
       "Export the dossier into a LunarBook workspace for review.",
     ],
   }
@@ -221,6 +222,18 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - expected max grade: \{route.expected_max_grade}\n"
     text += "  - expected roughness: \{route.expected_roughness_m} m\n"
     text += "  - confidence: \{route.confidence}\n"
+    text += "  - illumination decision: \{@mission.illumination_decision_label(route.illumination)}\n"
+    text += "  - illumination risk: \{route.illumination.relief_shadow_risk}\n"
+    text += "  - illumination confidence: \{route.illumination.confidence}\n"
+    text += "  - illumination next action: \{route.illumination.next_action}\n"
+    text += "  - illumination reasons:\n"
+    if route.illumination.reasons.is_empty() {
+      text += "    - none\n"
+    } else {
+      for reason in route.illumination.reasons {
+        text += "    - \{reason}\n"
+      }
+    }
     text += "  - next action: \{route.next_action}\n"
     text += "  - reasons:\n"
     if route.reasons.is_empty() {

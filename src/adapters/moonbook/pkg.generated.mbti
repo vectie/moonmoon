@@ -46,6 +46,7 @@ pub(all) enum BookEntryKind {
   DerivedTerrain
   MissionDecision
   RouteAlternative
+  IlluminationAssessment
   OpenQuestion
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

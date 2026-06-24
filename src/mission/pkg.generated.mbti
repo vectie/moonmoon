@@ -8,11 +8,17 @@ import {
 }
 
 // Values
+pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint) -> IlluminationAssessment
+
+pub fn conservative_illumination_constraint() -> IlluminationConstraint
+
 pub fn conservative_rover_profile() -> TraverseProfile
 
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
 
 pub fn first_trusted_square_traverse_score() -> TraverseScore
+
+pub fn illumination_decision_label(IlluminationAssessment) -> String
 
 pub fn route_candidate_status_label(RouteCandidate) -> String
 
@@ -23,6 +29,28 @@ pub fn traverse_decision_label(TraverseDecision) -> String
 // Errors
 
 // Types and methods
+pub(all) struct IlluminationAssessment {
+  constraint : IlluminationConstraint
+  evidence_dataset_id : String
+  evidence_tile_id : String
+  relief_shadow_risk : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct IlluminationConstraint {
+  constraint_id : String
+  label : String
+  min_sunlit_hours : Double
+  max_dark_hours : Double
+  max_relief_shadow_risk : Double
+  caution_relief_shadow_risk : Double
+  min_confidence : Double
+  has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RouteCandidate {
   route_id : String
   label : String
@@ -34,6 +62,7 @@ pub(all) struct RouteCandidate {
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double
+  illumination : IlluminationAssessment
   decision : TraverseDecision
   score : Int
   reasons : Array[String]

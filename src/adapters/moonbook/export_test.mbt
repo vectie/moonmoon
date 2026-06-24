@@ -2,7 +2,7 @@
 test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 17)
+  assert_eq(dossier.entries.length(), 20)
   assert_true(dossier.review_queue.length() >= 5)
   assert_eq(
     dossier.entries[0].entry_id,
@@ -47,11 +47,21 @@ test "first trusted square exports a LunarBook evidence dossier" {
   assert_true(
     dossier.entries[16].kind == @moonbook.BookEntryKind::RouteAlternative,
   )
+  assert_true(
+    dossier.entries[17].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+  )
+  assert_true(
+    dossier.entries[18].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+  )
+  assert_true(
+    dossier.entries[19].kind == @moonbook.BookEntryKind::IlluminationAssessment,
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[13].kind),
     "mission-decision",
   )
   assert_true(dossier.entries[15].summary.contains("west-contour"))
+  assert_true(dossier.entries[18].summary.contains("relief-shadow risk"))
 }
 
 ///|
@@ -64,9 +74,11 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("source-validation"))
   assert_true(markdown.contains("route-alternative"))
+  assert_true(markdown.contains("illumination-assessment"))
   assert_true(markdown.contains("## Review Queue"))
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("max neighbor grade exceeds rover hard limit"))
+  assert_true(markdown.contains("power-thermal-review"))
   let json = @moonbook.first_trusted_square_book_json().stringify(indent=2)
   assert_true(json.contains("\"review_queue\""))
   assert_true(json.contains("\"SourceUpgradeCandidate\""))
@@ -76,4 +88,5 @@ test "first trusted square LunarBook renderers expose review work" {
   assert_true(json.contains("\"SourceValidation\""))
   assert_true(json.contains("\"MissionDecision\""))
   assert_true(json.contains("\"RouteAlternative\""))
+  assert_true(json.contains("\"IlluminationAssessment\""))
 }

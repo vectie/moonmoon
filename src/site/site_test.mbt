@@ -93,6 +93,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("north-rim-stepout"))
   assert_true(markdown.contains("evidence dataset"))
   assert_true(markdown.contains("west-adjacent LOLA window is measured"))
+  assert_true(markdown.contains("illumination decision: block"))
+  assert_true(markdown.contains("illumination risk"))
+  assert_true(markdown.contains("no time-windowed solar ephemeris is attached"))
   assert_true(
     markdown.contains("provenance: lro-lola-first-trusted-square-dem-v1"),
   )
@@ -136,5 +139,10 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"route_candidates\""))
   assert_true(text.contains("\"route_id\": \"west-contour-detour\""))
   assert_true(text.contains("\"evidence_dataset_id\""))
+  assert_true(text.contains("\"illumination\""))
+  assert_true(
+    text.contains("\"constraint_id\": \"conservative-south-pole-power-v1\""),
+  )
+  assert_true(text.contains("\"relief_shadow_risk\""))
   assert_true(text.contains("\"Block\""))
 }

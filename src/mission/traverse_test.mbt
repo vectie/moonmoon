@@ -27,8 +27,40 @@ test "first trusted square route candidates use measured adjacent windows" {
   )
   assert_true(routes[1].expected_max_grade > 0.7)
   assert_eq(@mission.route_candidate_status_label(routes[1]), "block")
+  assert_true(routes[1].illumination.decision == Block)
+  assert_true(routes[1].illumination.relief_shadow_risk > 0.3)
+  assert_true(
+    routes[1].illumination.reasons.any(fn(reason) {
+      reason.contains("solar ephemeris")
+    }),
+  )
+  assert_eq(
+    @mission.illumination_decision_label(routes[1].illumination),
+    "block",
+  )
   assert_eq(routes[2].route_id, "north-rim-stepout")
   assert_true(routes[2].decision == Block)
   assert_eq(routes[2].evidence_tile_id, "first-trusted-square-north-rim-lola")
   assert_true(routes[2].next_action.contains("illumination"))
+}
+
+///|
+test "first trusted square illumination gate blocks missing time window evidence" {
+  let assessment = @mission.assess_illumination(
+    @terrain.first_trusted_square_grid(),
+    @mission.conservative_illumination_constraint(),
+  )
+  assert_true(assessment.decision == Block)
+  assert_eq(
+    assessment.constraint.constraint_id,
+    "conservative-south-pole-power-v1",
+  )
+  assert_true(assessment.relief_shadow_risk > 0.3)
+  assert_true(assessment.confidence < 0.5)
+  assert_true(
+    assessment.reasons.any(fn(reason) {
+      reason.contains("time-windowed solar ephemeris")
+    }),
+  )
+  assert_true(assessment.next_action.contains("solar ephemeris"))
 }

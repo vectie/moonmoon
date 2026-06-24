@@ -26,6 +26,30 @@ pub(all) struct TraverseScore {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct IlluminationConstraint {
+  constraint_id : String
+  label : String
+  min_sunlit_hours : Double
+  max_dark_hours : Double
+  max_relief_shadow_risk : Double
+  caution_relief_shadow_risk : Double
+  min_confidence : Double
+  has_time_window_ephemeris : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct IlluminationAssessment {
+  constraint : IlluminationConstraint
+  evidence_dataset_id : String
+  evidence_tile_id : String
+  relief_shadow_risk : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RouteCandidate {
   route_id : String
   label : String
@@ -37,6 +61,7 @@ pub(all) struct RouteCandidate {
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double
+  illumination : IlluminationAssessment
   decision : TraverseDecision
   score : Int
   reasons : Array[String]
@@ -68,6 +93,27 @@ pub fn traverse_decision_label(decision : TraverseDecision) -> String {
 ///|
 pub fn route_candidate_status_label(candidate : RouteCandidate) -> String {
   traverse_decision_label(candidate.decision)
+}
+
+///|
+pub fn illumination_decision_label(
+  assessment : IlluminationAssessment,
+) -> String {
+  traverse_decision_label(assessment.decision)
+}
+
+///|
+pub fn conservative_illumination_constraint() -> IlluminationConstraint {
+  {
+    constraint_id: "conservative-south-pole-power-v1",
+    label: "Conservative South Pole Power/Thermal Gate",
+    min_sunlit_hours: 4.0,
+    max_dark_hours: 2.0,
+    max_relief_shadow_risk: 0.22,
+    caution_relief_shadow_risk: 0.14,
+    min_confidence: 0.7,
+    has_time_window_ephemeris: false,
+  }
 }
 
 ///|
@@ -157,7 +203,25 @@ pub fn first_trusted_square_traverse_score() -> TraverseScore {
 }
 
 ///|
-fn route_score(decision : TraverseDecision, confidence : Double) -> Int {
+fn combine_decisions(
+  terrain_decision : TraverseDecision,
+  illumination_decision : TraverseDecision,
+) -> TraverseDecision {
+  if terrain_decision == Block || illumination_decision == Block {
+    Block
+  } else if terrain_decision == Review || illumination_decision == Review {
+    Review
+  } else {
+    Allow
+  }
+}
+
+///|
+fn route_score(
+  decision : TraverseDecision,
+  confidence : Double,
+  illumination : IlluminationAssessment,
+) -> Int {
   let base = match decision {
     Allow => 88
     Review => 62
@@ -170,7 +234,76 @@ fn route_score(decision : TraverseDecision, confidence : Double) -> Int {
   } else {
     0
   }
-  base - confidence_penalty
+  let illumination_penalty = match illumination.decision {
+    Allow => 0
+    Review => 6
+    Block => 12
+  }
+  base - confidence_penalty - illumination_penalty
+}
+
+///|
+fn relief_shadow_risk(
+  grid : @terrain.TerrainGrid,
+  metrics : @terrain.TerrainMetrics,
+) -> Double {
+  let span = (grid.rows + grid.cols).to_double() * grid.cell_size_m
+  if span <= 0.0 {
+    1.0
+  } else {
+    metrics.elevation_range_m / span
+  }
+}
+
+///|
+pub fn assess_illumination(
+  grid : @terrain.TerrainGrid,
+  constraint : IlluminationConstraint,
+) -> IlluminationAssessment {
+  let metrics = @terrain.analyze(grid)
+  let risk = relief_shadow_risk(grid, metrics)
+  let confidence = metrics.uncertainty.confidence * 0.6
+  let reasons : Array[String] = []
+  let missing_ephemeris = !constraint.has_time_window_ephemeris
+  let risk_blocked = risk >= constraint.max_relief_shadow_risk
+  let risk_review = risk >= constraint.caution_relief_shadow_risk
+  let confidence_review = confidence < constraint.min_confidence
+  add_reason_if(
+    reasons, missing_ephemeris, "no time-windowed solar ephemeris is attached",
+  )
+  add_reason_if(
+    reasons, risk_blocked, "local relief shadow proxy exceeds conservative limit",
+  )
+  add_reason_if(
+    reasons,
+    !risk_blocked && risk_review,
+    "local relief shadow proxy needs illumination review",
+  )
+  add_reason_if(
+    reasons, confidence_review, "illumination confidence below power planning threshold",
+  )
+  let decision = if missing_ephemeris || risk_blocked {
+    Block
+  } else if risk_review || confidence_review {
+    Review
+  } else {
+    Allow
+  }
+  {
+    constraint,
+    evidence_dataset_id: grid.source_manifest.dataset_id,
+    evidence_tile_id: grid.tile_id,
+    relief_shadow_risk: risk,
+    confidence,
+    decision,
+    reasons,
+    next_action: match decision {
+      Allow => "illumination gate may advance to energy simulation"
+      Review => "review illumination window before route simulation"
+      Block =>
+        "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+  }
 }
 
 ///|
@@ -188,6 +321,10 @@ fn make_route_candidate(
   let expected_max_grade = metrics.max_neighbor_grade
   let expected_roughness_m = metrics.roughness_m
   let confidence = metrics.uncertainty.confidence
+  let illumination = assess_illumination(
+    grid,
+    conservative_illumination_constraint(),
+  )
   let grade_blocked = expected_max_grade >= profile.max_grade
   let roughness_blocked = expected_roughness_m >= profile.max_roughness_m
   let grade_review = expected_max_grade >= profile.caution_grade
@@ -213,12 +350,18 @@ fn make_route_candidate(
   if extra_reason != "" {
     reasons.push(extra_reason)
   }
-  let decision = if grade_blocked || roughness_blocked {
+  let terrain_decision = if grade_blocked || roughness_blocked {
     Block
   } else if grade_review || roughness_review || confidence_review {
     Review
   } else {
     Allow
+  }
+  let decision = combine_decisions(terrain_decision, illumination.decision)
+  if illumination.decision != Allow {
+    reasons.push(
+      "illumination gate is \{illumination_decision_label(illumination)}",
+    )
   }
   {
     route_id,
@@ -231,8 +374,9 @@ fn make_route_candidate(
     expected_max_grade,
     expected_roughness_m,
     confidence,
+    illumination,
     decision,
-    score: route_score(decision, confidence),
+    score: route_score(decision, confidence, illumination),
     reasons,
     next_action,
   }

@@ -161,8 +161,15 @@ local measured evidence windows, not as safe corridor claims. The direct route
 preserves the measured blocked result; west-contour and north-rim alternatives
 now point at adjacent measured LOLA windows, and both remain `block` because
 their local grade and roughness still exceed the conservative rover limits.
-The next modeling step is to widen the corridor search and add illumination
-constraints.
+
+Moonmoon now also attaches a conservative illumination/power gate to each route
+candidate. The first version is intentionally limited: it uses local measured
+relief as a shadow-risk proxy and marks the gate `block` when no time-windowed
+solar ephemeris is attached. That keeps Moonmoon honest about the difference
+between "we have a terrain sample" and "a robot can survive this route in a
+specific lunar day/night window." The next modeling step is to widen the route
+corridor search and replace the relief proxy with ephemeris-backed sun/thermal
+windows.
 
 ## Old Terrain Project Lessons
 
