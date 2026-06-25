@@ -1669,7 +1669,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-reviewed-fresh-evidence-task-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize reviewed remediation-margin fresh evidence task into MoonBook",
       outcome: "The reviewed fresh-evidence task becomes durable MoonBook workspace evidence before terrain escalation, horizon regeneration, or energy freeze verification runs",
@@ -1682,7 +1682,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json",
         "scripts/check_moonbook_remediation_margin_reviewed_fresh_evidence_task_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the reviewed remediation-margin fresh-evidence task with source receipt provenance, pending terrain/horizon/energy actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
+      done_when: "done: MoonBook indexes and materializes the reviewed remediation-margin fresh-evidence task with source receipt provenance, pending terrain/horizon/energy actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "rabbita-remediation-margin-reviewed-fresh-evidence-task-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface reviewed remediation-margin fresh evidence task in Rabbita",
+      outcome: "Operators can inspect the accepted reviewed fresh-evidence task from MoonBook before terrain escalation, horizon regeneration, or energy freeze verification runs",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_fresh_evidence_task_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_fresh_evidence_task_surface.py",
+      ],
+      done_when: "Rabbita renders the reviewed remediation-margin fresh-evidence task with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
