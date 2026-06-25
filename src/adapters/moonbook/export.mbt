@@ -22,6 +22,7 @@ pub(all) enum BookEntryKind {
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection
   MoonroboRemediationMarginRefreshModeling
+  MoonroboRemediationMarginRefreshProjection
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
@@ -132,6 +133,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonrobo-remediation-margin-projection"
     MoonroboRemediationMarginRefreshModeling =>
       "moonrobo-remediation-margin-refresh-modeling"
+    MoonroboRemediationMarginRefreshProjection =>
+      "moonrobo-remediation-margin-refresh-projection"
     MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
@@ -1108,6 +1111,24 @@ fn moonrobo_remediation_margin_refresh_modeling_entry(
 }
 
 ///|
+fn moonrobo_remediation_margin_refresh_projection_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let projection = @moonrobo.first_trusted_square_remediation_margin_refresh_projection()
+  let refresh_ids = projection.blocking_refresh_ids.join(", ")
+  let margin_ids = projection.blocking_margin_ids.join(", ")
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/remediation-margin-refresh-projection",
+    title: "MoonRobo remediation-margin refresh projection for \{dossier.site.name}",
+    kind: MoonroboRemediationMarginRefreshProjection,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.7,
+    path: "moonrobo/\{dossier.site.site_id}/remediation-margin-refresh-projection.json",
+    summary: "\{@moonrobo.remediation_margin_refresh_projection_status_label(projection.projection_status)} from \{@moonrobo.remediation_margin_refresh_modeling_state_label(projection.source_modeling_state)} with \{projection.still_blocking_count} still-blocking refreshes (\{refresh_ids}) over margins (\{margin_ids}); simulation \{@moonrobo.execution_state_label(projection.simulation_state)}, hardware authority \{projection.hardware_authority} at \{@moonrobo.execution_state_label(projection.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1371,6 +1392,7 @@ fn book_entries(
   entries.push(moonrobo_remediation_margin_modeling_entry(dossier))
   entries.push(moonrobo_remediation_margin_projection_entry(dossier))
   entries.push(moonrobo_remediation_margin_refresh_modeling_entry(dossier))
+  entries.push(moonrobo_remediation_margin_refresh_projection_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

@@ -159,6 +159,14 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_PROJECTION_JSON = (
     root / "output/moonrobo/first_trusted_square_remediation_margin_projection.json"
   )
+  materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_MODELING_JSON = (
+    root
+    / "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json"
+  )
+  materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON = (
+    root
+    / "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json"
+  )
   materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
     root / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
   )
@@ -258,6 +266,12 @@ def materialize_temp_workspace(root: Path) -> None:
       [],
     )
   )
+  moonrobo_remediation_margin_refresh_projection = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON,
+      {},
+    )
+  )
   moonrobo_simulation_review_packet = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
@@ -303,6 +317,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_remediation_margin_modeling,
     moonrobo_remediation_margin_projection,
     moonrobo_remediation_margin_refresh_modeling,
+    moonrobo_remediation_margin_refresh_projection,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,

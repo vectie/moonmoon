@@ -1188,7 +1188,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-refresh-projection-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin refresh projection into MoonBook",
       outcome: "The refresh no-consume projection becomes durable MoonBook evidence beside the refresh modeling pass it consumes",
@@ -1201,7 +1201,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
         "scripts/check_moonbook_remediation_margin_refresh_projection_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin refresh projection with AllRefreshesStillBlocking source state, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh projection with AllRefreshesStillBlocking source state, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-projection-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh projection in Rabbita",
+      outcome: "Operators can inspect the durable MoonRobo refresh projection, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_projection_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh projection with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }
