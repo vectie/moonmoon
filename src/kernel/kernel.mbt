@@ -169,12 +169,12 @@ fn robot_gate(dossier : @site.SiteDossier) -> EvidenceGate {
 fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
   {
     gate_id: "moonbook-evidence-workspace",
-    label: "Durable review workspace materialized",
+    label: "Durable review workspace and transition ledger materialized",
     owner_package: "src/adapters/moonbook",
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "add editable reviewer identity and append-only review transitions",
+    next_action: "connect Moondesk or Rabbita controls to append new operator-authored transitions",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "operator-authored review transitions",
+      next_output: "operator-authored transition capture from the inspection surface",
     },
     {
       layer_id: "operator-viewer",
@@ -356,7 +356,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-review-transition-log",
-      priority: 75,
+      priority: 30,
       lane: SuiteLane,
       title: "Add append-only operator review transitions for MoonBook evidence",
       outcome: "MoonBook can record human review movement without mutating MoonMoon source facts",
@@ -364,7 +364,21 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/review_queue.json", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
       ],
-      done_when: "review transitions include reviewer identity, timestamp policy, accepted/rejected state changes, and immutable source evidence references",
+      done_when: "done: review transitions include reviewer identity, timestamp policy, accepted/rejected state changes, and immutable source evidence references",
+    },
+    {
+      task_id: "rabbita-browser-inspection-surface",
+      priority: 80,
+      lane: ViewerLane,
+      title: "Build the browser-facing Rabbita lunar inspection surface",
+      outcome: "Operators can inspect terrain, hazard, route, source, and review state from the generated view model",
+      depends_on: [
+        "src/ui/view_model.mbt", "output/ui/first_trusted_square_view.json", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      evidence: [
+        "src/ui/types.mbt", "src/ui/view_model.mbt", "output/ui/first_trusted_square_view.json",
+      ],
+      done_when: "Rabbita renders selectable cells, layer toggles, route overlays, source evidence, and MoonBook review status in one browser-facing inspection view",
     },
   ]
 }

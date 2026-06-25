@@ -272,78 +272,153 @@
 ## Review Transitions
 
 - review-workspace-materialized-accept: accept workspace-materialized -> accepted
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonbook
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: workspace/index at moonbook://moonmoon/first-trusted-square/index.json
   - rationale: accepted because the materialized workspace is present in generated MoonBook output
 - review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open: keep-open source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square -> open
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as data-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square at moonbook://moonmoon/first-trusted-square/source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json
   - rationale: left open for data-review follow-up
 - review-blocker-0-request-evidence: request-evidence blocker-0 -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as operator
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits
 - review-blocker-1-request-evidence: request-evidence blocker-1 -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as operator
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset
 - review-traverse-0-request-evidence: request-evidence traverse-0 -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit
 - review-traverse-1-request-evidence: request-evidence traverse-1 -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: roughness exceeds rover hard limit
 - review-route-direct-lola-window-reject: reject route-direct-lola-window -> rejected
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/direct-lola-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.json
   - rationale: rejected for this proof slice because the evidence explicitly says not to traverse directly
 - review-illumination-direct-lola-window-request-evidence: request-evidence illumination-direct-lola-window -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/direct-lola-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation
 - review-route-west-contour-detour-request-evidence: request-evidence route-west-contour-detour -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/west-contour-detour at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation
 - review-illumination-west-contour-detour-request-evidence: request-evidence illumination-west-contour-detour -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/west-contour-detour at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation
 - review-route-north-rim-stepout-request-evidence: request-evidence route-north-rim-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/north-rim-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review
 - review-illumination-north-rim-stepout-request-evidence: request-evidence illumination-north-rim-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/north-rim-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation
 - review-route-southwest-bypass-request-evidence: request-evidence route-southwest-bypass -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/southwest-bypass at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation
 - review-illumination-southwest-bypass-request-evidence: request-evidence illumination-southwest-bypass -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/southwest-bypass at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation
 - review-route-south-stepout-request-evidence: request-evidence route-south-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/south-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review
 - review-illumination-south-stepout-request-evidence: request-evidence illumination-south-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/south-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation
 - review-route-northeast-stepout-request-evidence: request-evidence route-northeast-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: route/first-trusted-square/northeast-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation
 - review-illumination-northeast-stepout-request-evidence: request-evidence illumination-northeast-stepout -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: illumination/first-trusted-square/northeast-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation
 - review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: corridor/first-trusted-square/first-trusted-square-9x9 at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/corridor-scan.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - review-energy-window-request-evidence: request-evidence energy-window -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: energy/first-trusted-square/conservative-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation
 - review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonrobo
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: moonrobo/first-trusted-square/simulation-preconditions at moonbook://moonmoon/first-trusted-square/moonrobo/first-trusted-square/handoffs.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
 - review-moonclaw-proposals-request-evidence: request-evidence moonclaw-proposals -> needs-evidence
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonclaw
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: moonclaw/first-trusted-square/modeling-proposals at moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/proposals.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable
 - review-question-0-keep-open: keep-open question-0 -> open
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonclaw
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: site/first-trusted-square/next-question-0 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
 - review-question-1-keep-open: keep-open question-1 -> open
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonclaw
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: site/first-trusted-square/next-question-1 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
 - review-question-2-keep-open: keep-open question-2 -> open
-  - reviewer: moonbook-policy-v1
+  - reviewer: operator/moonbook-policy-v1 as moonclaw
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: site/first-trusted-square/next-question-2 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
 

@@ -178,6 +178,28 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(
     dossier.review_transitions[0].decision == @moonbook.ReviewDecision::Accept,
   )
+  assert_true(
+    dossier.review_transitions[0].previous_status ==
+    @moonbook.ReviewItemStatus::Open,
+  )
+  assert_eq(
+    dossier.review_transitions[0].reviewer_id,
+    "operator/moonbook-policy-v1",
+  )
+  assert_eq(dossier.review_transitions[0].reviewer_role, "moonbook")
+  assert_eq(
+    dossier.review_transitions[0].timestamp_policy,
+    "deterministic-evidence-window-start",
+  )
+  assert_eq(
+    dossier.review_transitions[0].recorded_at_utc,
+    "2026-06-25T00:00:00Z",
+  )
+  assert_true(dossier.review_transitions[0].append_only)
+  assert_eq(
+    dossier.review_transitions[0].source_evidence_refs[0].immutable_uri,
+    "moonbook://moonmoon/first-trusted-square/index.json",
+  )
   assert_eq(
     @moonbook.review_item_status_label(dossier.review_queue[0].status),
     "accepted",
@@ -196,6 +218,15 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(direct_route.status == @moonbook.ReviewItemStatus::Rejected)
   assert_true(
     dossier.review_transitions[6].decision == @moonbook.ReviewDecision::Reject,
+  )
+  assert_true(
+    dossier.review_transitions[6].source_evidence_refs[0].entry_id ==
+    "route/first-trusted-square/direct-lola-window",
+  )
+  assert_true(
+    dossier.review_transitions[6].source_evidence_refs[0].immutable_uri.contains(
+      "mission/first-trusted-square/routes/direct-lola-window.json",
+    ),
   )
   assert_eq(
     @moonbook.review_decision_label(dossier.review_transitions[6].decision),
@@ -243,12 +274,26 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(markdown.contains("route-direct-lola-window [high/rejected]"))
   assert_true(markdown.contains("## Review Transitions"))
   assert_true(markdown.contains("review-route-direct-lola-window-reject"))
+  assert_true(
+    markdown.contains("operator/moonbook-policy-v1 as mission-review"),
+  )
+  assert_true(markdown.contains("deterministic-evidence-window-start"))
+  assert_true(markdown.contains("append only: true"))
+  assert_true(
+    markdown.contains(
+      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.json",
+    ),
+  )
   assert_true(markdown.contains("source-extraction-candidate"))
   assert_true(markdown.contains("max neighbor grade exceeds rover hard limit"))
   assert_true(markdown.contains("power-thermal-review"))
   let json = @moonbook.first_trusted_square_book_json().stringify(indent=2)
   assert_true(json.contains("\"review_queue\""))
   assert_true(json.contains("\"review_transitions\""))
+  assert_true(json.contains("\"reviewer_id\""))
+  assert_true(json.contains("\"timestamp_policy\""))
+  assert_true(json.contains("\"append_only\""))
+  assert_true(json.contains("\"source_evidence_refs\""))
   assert_true(json.contains("\"Accepted\""))
   assert_true(json.contains("\"Rejected\""))
   assert_true(json.contains("\"NeedsEvidence\""))

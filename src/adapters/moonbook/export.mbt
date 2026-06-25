@@ -44,6 +44,14 @@ pub(all) struct ReviewQueueItem {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct ReviewEvidenceReference {
+  ref_id : String
+  entry_id : String
+  path : String
+  immutable_uri : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) enum ReviewDecision {
   KeepOpen
   Accept
@@ -63,9 +71,15 @@ pub(all) enum ReviewItemStatus {
 pub(all) struct ReviewTransition {
   transition_id : String
   item_id : String
+  previous_status : ReviewItemStatus
   decision : ReviewDecision
   resulting_status : ReviewItemStatus
-  reviewer : String
+  reviewer_id : String
+  reviewer_role : String
+  timestamp_policy : String
+  recorded_at_utc : String
+  append_only : Bool
+  source_evidence_refs : Array[ReviewEvidenceReference]
   rationale : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -283,14 +297,202 @@ fn transition_id(item : ReviewQueueItem, decision : ReviewDecision) -> String {
 }
 
 ///|
-fn make_review_transition(item : ReviewQueueItem) -> ReviewTransition {
+fn review_evidence_ref(
+  workspace : String,
+  ref_id : String,
+  entry_id : String,
+  path : String,
+) -> ReviewEvidenceReference {
+  { ref_id, entry_id, path, immutable_uri: "\{workspace}/\{path}" }
+}
+
+///|
+fn review_evidence_refs(
+  item : ReviewQueueItem,
+  dossier : @site.SiteDossier,
+) -> Array[ReviewEvidenceReference] {
+  let workspace = "moonbook://moonmoon/first-trusted-square"
+  let refs : Array[ReviewEvidenceReference] = []
+  if item.item_id == "workspace-materialized" {
+    refs.push(
+      review_evidence_ref(
+        workspace, "workspace-index", "workspace/index", "index.json",
+      ),
+    )
+  }
+  for candidate in dossier.source_candidates {
+    if item.item_id == "source-candidate-\{candidate.candidate_id}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "source-candidate-\{candidate.candidate_id}",
+          "source-candidate/\{candidate.candidate_id}",
+          "source-candidates/\{candidate.candidate_id}.json",
+        ),
+      )
+    }
+  }
+  for validation in dossier.validations {
+    if item.item_id == "validation-\{validation.dataset_id}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "validation-\{validation.dataset_id}",
+          "validation/\{validation.dataset_id}",
+          "datasets/\{validation.dataset_id}.validation.json",
+        ),
+      )
+    }
+  }
+  for index, _blocker in dossier.blockers {
+    if item.item_id == "blocker-\{index}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "traverse-blocker-\{index}",
+          "mission/\{dossier.site.site_id}/traverse",
+          "mission/\{dossier.site.site_id}/traverse.json",
+        ),
+      )
+    }
+  }
+  for index, _reason in dossier.traverse.reasons {
+    if item.item_id == "traverse-\{index}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "traverse-reason-\{index}",
+          "mission/\{dossier.site.site_id}/traverse",
+          "mission/\{dossier.site.site_id}/traverse.json",
+        ),
+      )
+    }
+  }
+  for route in dossier.route_candidates {
+    if item.item_id == "route-\{route.route_id}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "route-\{route.route_id}",
+          "route/\{dossier.site.site_id}/\{route.route_id}",
+          "mission/\{dossier.site.site_id}/routes/\{route.route_id}.json",
+        ),
+      )
+    }
+    if item.item_id == "illumination-\{route.route_id}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "illumination-\{route.route_id}",
+          "illumination/\{dossier.site.site_id}/\{route.route_id}",
+          "mission/\{dossier.site.site_id}/routes/\{route.route_id}.illumination.json",
+        ),
+      )
+    }
+  }
+  if item.item_id == "corridor-scan-best-window" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "corridor-scan-best-window",
+        "corridor/\{dossier.site.site_id}/first-trusted-square-9x9",
+        "mission/\{dossier.site.site_id}/corridor-scan.json",
+      ),
+    )
+  }
+  if item.item_id == "power-window-evidence" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "power-window-evidence",
+        "power-window/\{dossier.site.site_id}/ephemeris-evidence",
+        "mission/\{dossier.site.site_id}/power-window-evidence.json",
+      ),
+    )
+  }
+  if item.item_id == "energy-window" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "energy-window",
+        "energy/\{dossier.site.site_id}/conservative-window",
+        "mission/\{dossier.site.site_id}/energy-window.json",
+      ),
+    )
+  }
+  if item.item_id == "moonrobo-handoff" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "moonrobo-handoff",
+        "moonrobo/\{dossier.site.site_id}/simulation-preconditions",
+        "moonrobo/\{dossier.site.site_id}/handoffs.json",
+      ),
+    )
+  }
+  if item.item_id == "moonclaw-proposals" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "moonclaw-proposals",
+        "moonclaw/\{dossier.site.site_id}/modeling-proposals",
+        "moonclaw/\{dossier.site.site_id}/proposals.json",
+      ),
+    )
+  }
+  if item.item_id == "moonclaw-ephemeris-task" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "moonclaw-ephemeris-task",
+        "moonclaw/\{dossier.site.site_id}/ephemeris-acquisition-task",
+        "moonclaw/\{dossier.site.site_id}/ephemeris-task.json",
+      ),
+    )
+  }
+  if item.item_id == "moonclaw-corridor-task" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "moonclaw-corridor-task",
+        "moonclaw/\{dossier.site.site_id}/corridor-expansion-task",
+        "moonclaw/\{dossier.site.site_id}/corridor-task.json",
+      ),
+    )
+  }
+  for index, _question in dossier.next_questions {
+    if item.item_id == "question-\{index}" {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          "question-\{index}",
+          "site/\{dossier.site.site_id}/next-question-\{index}",
+          "review_queue.json",
+        ),
+      )
+    }
+  }
+  refs
+}
+
+///|
+fn make_review_transition(
+  item : ReviewQueueItem,
+  dossier : @site.SiteDossier,
+) -> ReviewTransition {
   let decision = review_decision_for_item(item)
   {
     transition_id: transition_id(item, decision),
     item_id: item.item_id,
+    previous_status: item.status,
     decision,
     resulting_status: resulting_status_for_decision(decision),
-    reviewer: "moonbook-policy-v1",
+    reviewer_id: "operator/moonbook-policy-v1",
+    reviewer_role: item.owner,
+    timestamp_policy: "deterministic-evidence-window-start",
+    recorded_at_utc: dossier.power_window_evidence.time_start_utc,
+    append_only: true,
+    source_evidence_refs: review_evidence_refs(item, dossier),
     rationale: transition_rationale(item, decision),
   }
 }
@@ -313,10 +515,11 @@ fn apply_review_transition(
 ///|
 fn review_transitions_for_queue(
   items : Array[ReviewQueueItem],
+  dossier : @site.SiteDossier,
 ) -> Array[ReviewTransition] {
   let transitions : Array[ReviewTransition] = []
   for item in items {
-    transitions.push(make_review_transition(item))
+    transitions.push(make_review_transition(item, dossier))
   }
   transitions
 }
@@ -799,7 +1002,9 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   let raw_review_queue = open_review_queue(dossier)
-  let review_transitions = review_transitions_for_queue(raw_review_queue)
+  let review_transitions = review_transitions_for_queue(
+    raw_review_queue, dossier,
+  )
   {
     workspace: "moonbook://moonmoon/first-trusted-square",
     site_id: dossier.site.site_id,
@@ -842,7 +1047,12 @@ pub fn render_markdown(dossier : MoonBookDossier) -> String {
   } else {
     for transition in dossier.review_transitions {
       text += "- \{transition.transition_id}: \{review_decision_label(transition.decision)} \{transition.item_id} -> \{review_item_status_label(transition.resulting_status)}\n"
-      text += "  - reviewer: \{transition.reviewer}\n"
+      text += "  - reviewer: \{transition.reviewer_id} as \{transition.reviewer_role}\n"
+      text += "  - timestamp: \{transition.recorded_at_utc} (\{transition.timestamp_policy})\n"
+      text += "  - append only: \{transition.append_only}\n"
+      for source in transition.source_evidence_refs {
+        text += "  - source: \{source.entry_id} at \{source.immutable_uri}\n"
+      }
       text += "  - rationale: \{transition.rationale}\n"
     }
   }

@@ -633,201 +633,526 @@
     {
       "transition_id": "review-workspace-materialized-accept",
       "item_id": "workspace-materialized",
+      "previous_status": "Open",
       "decision": "Accept",
       "resulting_status": "Accepted",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonbook",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "workspace-index",
+          "entry_id": "workspace/index",
+          "path": "index.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/index.json"
+        }
+      ],
       "rationale": "accepted because the materialized workspace is present in generated MoonBook output"
     },
     {
       "transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open",
       "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+      "previous_status": "Open",
       "decision": "KeepOpen",
       "resulting_status": "Open",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "data-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+          "entry_id": "source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square",
+          "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json"
+        }
+      ],
       "rationale": "left open for data-review follow-up"
     },
     {
       "transition_id": "review-blocker-0-request-evidence",
       "item_id": "blocker-0",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "operator",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-blocker-0",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits"
     },
     {
       "transition_id": "review-blocker-1-request-evidence",
       "item_id": "blocker-1",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "operator",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-blocker-1",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset"
     },
     {
       "transition_id": "review-traverse-0-request-evidence",
       "item_id": "traverse-0",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-reason-0",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit"
     },
     {
       "transition_id": "review-traverse-1-request-evidence",
       "item_id": "traverse-1",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-reason-1",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: roughness exceeds rover hard limit"
     },
     {
       "transition_id": "review-route-direct-lola-window-reject",
       "item_id": "route-direct-lola-window",
+      "previous_status": "Open",
       "decision": "Reject",
       "resulting_status": "Rejected",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-direct-lola-window",
+          "entry_id": "route/first-trusted-square/direct-lola-window",
+          "path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.json"
+        }
+      ],
       "rationale": "rejected for this proof slice because the evidence explicitly says not to traverse directly"
     },
     {
       "transition_id": "review-illumination-direct-lola-window-request-evidence",
       "item_id": "illumination-direct-lola-window",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-direct-lola-window",
+          "entry_id": "illumination/first-trusted-square/direct-lola-window",
+          "path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-west-contour-detour-request-evidence",
       "item_id": "route-west-contour-detour",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-west-contour-detour",
+          "entry_id": "route/first-trusted-square/west-contour-detour",
+          "path": "mission/first-trusted-square/routes/west-contour-detour.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
     },
     {
       "transition_id": "review-illumination-west-contour-detour-request-evidence",
       "item_id": "illumination-west-contour-detour",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-west-contour-detour",
+          "entry_id": "illumination/first-trusted-square/west-contour-detour",
+          "path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-north-rim-stepout-request-evidence",
       "item_id": "route-north-rim-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-north-rim-stepout",
+          "entry_id": "route/first-trusted-square/north-rim-stepout",
+          "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
     },
     {
       "transition_id": "review-illumination-north-rim-stepout-request-evidence",
       "item_id": "illumination-north-rim-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-north-rim-stepout",
+          "entry_id": "illumination/first-trusted-square/north-rim-stepout",
+          "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-southwest-bypass-request-evidence",
       "item_id": "route-southwest-bypass",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-southwest-bypass",
+          "entry_id": "route/first-trusted-square/southwest-bypass",
+          "path": "mission/first-trusted-square/routes/southwest-bypass.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
     },
     {
       "transition_id": "review-illumination-southwest-bypass-request-evidence",
       "item_id": "illumination-southwest-bypass",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-southwest-bypass",
+          "entry_id": "illumination/first-trusted-square/southwest-bypass",
+          "path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-south-stepout-request-evidence",
       "item_id": "route-south-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-south-stepout",
+          "entry_id": "route/first-trusted-square/south-stepout",
+          "path": "mission/first-trusted-square/routes/south-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
     },
     {
       "transition_id": "review-illumination-south-stepout-request-evidence",
       "item_id": "illumination-south-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-south-stepout",
+          "entry_id": "illumination/first-trusted-square/south-stepout",
+          "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-northeast-stepout-request-evidence",
       "item_id": "route-northeast-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-northeast-stepout",
+          "entry_id": "route/first-trusted-square/northeast-stepout",
+          "path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
     },
     {
       "transition_id": "review-illumination-northeast-stepout-request-evidence",
       "item_id": "illumination-northeast-stepout",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-northeast-stepout",
+          "entry_id": "illumination/first-trusted-square/northeast-stepout",
+          "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-corridor-scan-best-window-request-evidence",
       "item_id": "corridor-scan-best-window",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "corridor-scan-best-window",
+          "entry_id": "corridor/first-trusted-square/first-trusted-square-9x9",
+          "path": "mission/first-trusted-square/corridor-scan.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/corridor-scan.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
       "transition_id": "review-energy-window-request-evidence",
       "item_id": "energy-window",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "energy-window",
+          "entry_id": "energy/first-trusted-square/conservative-window",
+          "path": "mission/first-trusted-square/energy-window.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
     },
     {
       "transition_id": "review-moonrobo-handoff-request-evidence",
       "item_id": "moonrobo-handoff",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonrobo",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "moonrobo-handoff",
+          "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
+          "path": "moonrobo/first-trusted-square/handoffs.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonrobo/first-trusted-square/handoffs.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
     },
     {
       "transition_id": "review-moonclaw-proposals-request-evidence",
       "item_id": "moonclaw-proposals",
+      "previous_status": "Open",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "moonclaw-proposals",
+          "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
+          "path": "moonclaw/first-trusted-square/proposals.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/proposals.json"
+        }
+      ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
     },
     {
       "transition_id": "review-question-0-keep-open",
       "item_id": "question-0",
+      "previous_status": "Open",
       "decision": "KeepOpen",
       "resulting_status": "Open",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-0",
+          "entry_id": "site/first-trusted-square/next-question-0",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
       "rationale": "left open for moonclaw follow-up"
     },
     {
       "transition_id": "review-question-1-keep-open",
       "item_id": "question-1",
+      "previous_status": "Open",
       "decision": "KeepOpen",
       "resulting_status": "Open",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-1",
+          "entry_id": "site/first-trusted-square/next-question-1",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
       "rationale": "left open for moonclaw follow-up"
     },
     {
       "transition_id": "review-question-2-keep-open",
       "item_id": "question-2",
+      "previous_status": "Open",
       "decision": "KeepOpen",
       "resulting_status": "Open",
-      "reviewer": "moonbook-policy-v1",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-2",
+          "entry_id": "site/first-trusted-square/next-question-2",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
       "rationale": "left open for moonclaw follow-up"
     }
   ]
