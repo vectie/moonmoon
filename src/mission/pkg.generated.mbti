@@ -36,9 +36,17 @@ pub fn first_trusted_square_traverse_score() -> TraverseScore
 
 pub fn illumination_decision_label(IlluminationAssessment) -> String
 
+pub fn mission_readiness_check_kind_label(MissionReadinessCheckKind) -> String
+
+pub fn mission_simulation_readiness_label(MissionSimulationReadiness) -> String
+
+pub fn readiness_check(String, MissionReadinessCheckKind, String, TraverseDecision, String, String) -> MissionReadinessCheck
+
 pub fn route_candidate_status_label(RouteCandidate) -> String
 
 pub fn score_traverse(@terrain.TerrainMetrics, TraverseProfile) -> TraverseScore
+
+pub fn simulation_readiness(String, String, Array[MissionReadinessCheck]) -> MissionSimulationReadiness
 
 pub fn traverse_decision_label(TraverseDecision) -> String
 
@@ -122,6 +130,35 @@ pub(all) struct IlluminationConstraint {
   caution_relief_shadow_risk : Double
   min_confidence : Double
   has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionReadinessCheck {
+  check_id : String
+  kind : MissionReadinessCheckKind
+  label : String
+  decision : TraverseDecision
+  evidence_path : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MissionReadinessCheckKind {
+  TerrainReadiness
+  CorridorReadiness
+  IlluminationReadiness
+  EnergyReadiness
+  MoonBookReviewReadiness
+  RobotSimulationReadiness
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionSimulationReadiness {
+  readiness_id : String
+  route_id : String
+  decision : TraverseDecision
+  robot_simulation_status : String
+  checks : Array[MissionReadinessCheck]
+  blocking_checks : Array[String]
+  review_checks : Array[String]
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct PowerWindowComputation {

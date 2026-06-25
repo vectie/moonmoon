@@ -189,6 +189,13 @@ items remain high-severity blockers. Moonrobo handoff packets include the same
 robot-facing simulation packets preserve the difference between missing source
 evidence and computed energy margin.
 
+Moonmoon now also has a mission-owned simulation readiness contract in
+`src/mission/readiness.mbt`. MoonRobo handoff packets consume that contract
+instead of recomputing scattered route, illumination, energy, and review gates.
+The selected-route checklist names terrain, corridor, illumination, energy,
+MoonBook review, and robot-simulation status as one explicit allow/review/block
+result before any robot-facing simulation packet can move forward.
+
 The current fixture now has a checked source-file boundary:
 
 - `data/sources/lro_lola/gdr_ds.cat`

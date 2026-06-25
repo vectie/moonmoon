@@ -6,6 +6,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/direct-lola-window/simulation-readiness",
+      "route_id": "direct-lola-window",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-direct-lola-window",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "reason": "route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-direct-lola-window",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route direct-lola-window still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-direct-lola-window",
+        "corridor-scan-best-window",
+        "illumination-direct-lola-window",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -13,22 +79,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#direct-lola-window",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-direct-lola-window",
+        "terrain-direct-lola-window",
+        "corridor-scan-best-window",
         "illumination-direct-lola-window",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-direct-lola-window",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-direct-lola-window",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
-        "reason": "do not traverse directly; use this as the baseline hazard case"
+        "reason": "route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-direct-lola-window",
@@ -38,25 +113,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route direct-lola-window still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
@@ -68,6 +143,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/west-contour-detour/simulation-readiness",
+      "route_id": "west-contour-detour",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-west-contour-detour",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
+          "reason": "route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-west-contour-detour",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route west-contour-detour still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-west-contour-detour",
+        "corridor-scan-best-window",
+        "illumination-west-contour-detour",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -75,22 +216,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#west-contour-detour",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-west-contour-detour",
+        "terrain-west-contour-detour",
+        "corridor-scan-best-window",
         "illumination-west-contour-detour",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-west-contour-detour",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-west-contour-detour",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
-        "reason": "widen the west corridor extraction before simulation"
+        "reason": "route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-west-contour-detour",
@@ -100,25 +250,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route west-contour-detour still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
@@ -130,6 +280,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/north-rim-stepout/simulation-readiness",
+      "route_id": "north-rim-stepout",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-north-rim-stepout",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+          "reason": "route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-north-rim-stepout",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route north-rim-stepout still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-north-rim-stepout",
+        "corridor-scan-best-window",
+        "illumination-north-rim-stepout",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -137,22 +353,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#north-rim-stepout",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-north-rim-stepout",
+        "terrain-north-rim-stepout",
+        "corridor-scan-best-window",
         "illumination-north-rim-stepout",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-north-rim-stepout",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-north-rim-stepout",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-        "reason": "widen the north corridor extraction and add illumination review"
+        "reason": "route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-north-rim-stepout",
@@ -162,25 +387,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route north-rim-stepout still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
@@ -192,6 +417,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/southwest-bypass/simulation-readiness",
+      "route_id": "southwest-bypass",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-southwest-bypass",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+          "reason": "route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-southwest-bypass",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route southwest-bypass still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-southwest-bypass",
+        "corridor-scan-best-window",
+        "illumination-southwest-bypass",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -199,22 +490,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#southwest-bypass",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-southwest-bypass",
+        "terrain-southwest-bypass",
+        "corridor-scan-best-window",
         "illumination-southwest-bypass",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-southwest-bypass",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-southwest-bypass",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
-        "reason": "continue corridor search beyond the southwest bypass before simulation"
+        "reason": "route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-southwest-bypass",
@@ -224,25 +524,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route southwest-bypass still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
@@ -254,6 +554,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/south-stepout/simulation-readiness",
+      "route_id": "south-stepout",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-south-stepout",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
+          "reason": "route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-south-stepout",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route south-stepout still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-south-stepout",
+        "corridor-scan-best-window",
+        "illumination-south-stepout",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -261,22 +627,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#south-stepout",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-south-stepout",
+        "terrain-south-stepout",
+        "corridor-scan-best-window",
         "illumination-south-stepout",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-south-stepout",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-south-stepout",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
-        "reason": "continue south corridor extraction and add ephemeris-backed illumination review"
+        "reason": "route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-south-stepout",
@@ -286,25 +661,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route south-stepout still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
@@ -316,6 +691,72 @@
     "task_kind": "route-simulation-precondition",
     "target_body": "Moon",
     "decision": "Block",
+    "mission_readiness": {
+      "readiness_id": "mission/first-trusted-square/northeast-stepout/simulation-readiness",
+      "route_id": "northeast-stepout",
+      "decision": "Block",
+      "robot_simulation_status": "simulation-blocked",
+      "checks": [
+        {
+          "check_id": "terrain-northeast-stepout",
+          "kind": "TerrainReadiness",
+          "label": "Selected-route terrain gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+        },
+        {
+          "check_id": "corridor-scan-best-window",
+          "kind": "CorridorReadiness",
+          "label": "Measured corridor search gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        },
+        {
+          "check_id": "illumination-northeast-stepout",
+          "kind": "IlluminationReadiness",
+          "label": "Illumination and thermal gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+          "reason": "widen local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "check_id": "energy-window",
+          "kind": "EnergyReadiness",
+          "label": "Rover energy window gate",
+          "decision": "Block",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
+        },
+        {
+          "check_id": "moonbook-review",
+          "kind": "MoonBookReviewReadiness",
+          "label": "MoonBook accepted-review gate",
+          "decision": "Block",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "reason": "MoonBook review remains blocked because selected route northeast-stepout still has route or illumination blockers"
+        },
+        {
+          "check_id": "robot-simulation",
+          "kind": "RobotSimulationReadiness",
+          "label": "Robot simulation gate",
+          "decision": "Block",
+          "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+          "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
+        }
+      ],
+      "blocking_checks": [
+        "terrain-northeast-stepout",
+        "corridor-scan-best-window",
+        "illumination-northeast-stepout",
+        "energy-window",
+        "moonbook-review",
+        "robot-simulation"
+      ],
+      "review_checks": [],
+      "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -323,22 +764,31 @@
       "authority": "moonmoon-safety-gate-only",
       "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#northeast-stepout",
       "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
-      "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+      "hardware_denial_reason": "MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
       "blocking_preconditions": [
-        "route-northeast-stepout",
+        "terrain-northeast-stepout",
+        "corridor-scan-best-window",
         "illumination-northeast-stepout",
         "energy-window",
-        "corridor-scan-best-window"
+        "moonbook-review",
+        "robot-simulation"
       ],
       "review_preconditions": []
     },
     "preconditions": [
       {
-        "precondition_id": "route-northeast-stepout",
-        "label": "Route terrain gate",
+        "precondition_id": "terrain-northeast-stepout",
+        "label": "Selected-route terrain gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-        "reason": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+        "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+      },
+      {
+        "precondition_id": "corridor-scan-best-window",
+        "label": "Measured corridor search gate",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "precondition_id": "illumination-northeast-stepout",
@@ -348,25 +798,25 @@
         "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
-        "precondition_id": "power-window-evidence",
-        "label": "Power-window source evidence gate",
-        "decision": "Allow",
-        "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
-      },
-      {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "revise rover power model, route count, or site window before simulation"
+        "reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation"
       },
       {
-        "precondition_id": "corridor-scan-best-window",
-        "label": "Measured corridor search gate",
+        "precondition_id": "moonbook-review",
+        "label": "MoonBook accepted-review gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-        "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "reason": "MoonBook review remains blocked because selected route northeast-stepout still has route or illumination blockers"
+      },
+      {
+        "precondition_id": "robot-simulation",
+        "label": "Robot simulation gate",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "reason": "MoonRobo simulation stays blocked until mission readiness checks clear"
       }
     ],
     "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"

@@ -38,6 +38,7 @@ pub(all) struct MoonroboTaskHandoff {
   task_kind : String
   target_body : String
   decision : @mission.TraverseDecision
+  mission_readiness : @mission.MissionSimulationReadiness
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
@@ -66,48 +67,6 @@ pub fn execution_state_label(state : MoonroboExecutionState) -> String {
 }
 
 ///|
-fn combine_decision(
-  left : @mission.TraverseDecision,
-  right : @mission.TraverseDecision,
-) -> @mission.TraverseDecision {
-  if left == @mission.TraverseDecision::Block ||
-    right == @mission.TraverseDecision::Block {
-    @mission.TraverseDecision::Block
-  } else if left == @mission.TraverseDecision::Review ||
-    right == @mission.TraverseDecision::Review {
-    @mission.TraverseDecision::Review
-  } else {
-    @mission.TraverseDecision::Allow
-  }
-}
-
-///|
-fn blocking_precondition_ids(
-  preconditions : Array[RobotPrecondition],
-) -> Array[String] {
-  let ids : Array[String] = []
-  for precondition in preconditions {
-    if precondition.decision == @mission.TraverseDecision::Block {
-      ids.push(precondition.precondition_id)
-    }
-  }
-  ids
-}
-
-///|
-fn review_precondition_ids(
-  preconditions : Array[RobotPrecondition],
-) -> Array[String] {
-  let ids : Array[String] = []
-  for precondition in preconditions {
-    if precondition.decision == @mission.TraverseDecision::Review {
-      ids.push(precondition.precondition_id)
-    }
-  }
-  ids
-}
-
-///|
 fn simulation_state(
   decision : @mission.TraverseDecision,
 ) -> MoonroboExecutionState {
@@ -130,14 +89,13 @@ fn replay_state(decision : @mission.TraverseDecision) -> MoonroboExecutionState 
 ///|
 fn execution_envelope(
   route : @mission.RouteCandidate,
-  decision : @mission.TraverseDecision,
-  preconditions : Array[RobotPrecondition],
+  readiness : @mission.MissionSimulationReadiness,
 ) -> MoonroboExecutionEnvelope {
-  let blocking = blocking_precondition_ids(preconditions)
-  let review = review_precondition_ids(preconditions)
+  let blocking = readiness.blocking_checks
+  let review = readiness.review_checks
   {
-    simulation_state: simulation_state(decision),
-    replay_state: replay_state(decision),
+    simulation_state: simulation_state(readiness.decision),
+    replay_state: replay_state(readiness.decision),
     hardware_state: HardwareDenied,
     authority: "moonmoon-safety-gate-only",
     simulation_packet_path: "output/moonrobo/first_trusted_square_handoffs.json#\{route.route_id}",
@@ -146,82 +104,6 @@ fn execution_envelope(
     blocking_preconditions: blocking,
     review_preconditions: review,
   }
-}
-
-///|
-fn route_precondition(route : @mission.RouteCandidate) -> RobotPrecondition {
-  {
-    precondition_id: "route-\{route.route_id}",
-    label: "Route terrain gate",
-    decision: route.decision,
-    evidence_path: "mission/first-trusted-square/routes/\{route.route_id}.json",
-    reason: route.next_action,
-  }
-}
-
-///|
-fn illumination_precondition(
-  route : @mission.RouteCandidate,
-) -> RobotPrecondition {
-  {
-    precondition_id: "illumination-\{route.route_id}",
-    label: "Illumination and thermal gate",
-    decision: route.illumination.decision,
-    evidence_path: "mission/first-trusted-square/routes/\{route.route_id}.illumination.json",
-    reason: route.illumination.next_action,
-  }
-}
-
-///|
-fn energy_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
-  {
-    precondition_id: "energy-window",
-    label: "Rover energy window gate",
-    decision: dossier.energy.decision,
-    evidence_path: "mission/first-trusted-square/energy-window.json",
-    reason: dossier.energy.next_action,
-  }
-}
-
-///|
-fn power_window_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
-  let evidence = dossier.power_window_evidence
-  let decision = if evidence.has_time_window_ephemeris &&
-    evidence.source_status == "ready" {
-    @mission.TraverseDecision::Allow
-  } else {
-    @mission.TraverseDecision::Block
-  }
-  {
-    precondition_id: "power-window-evidence",
-    label: "Power-window source evidence gate",
-    decision,
-    evidence_path: "mission/first-trusted-square/power-window-evidence.json",
-    reason: "power-window evidence \{evidence.evidence_id} has source status \{evidence.source_status}",
-  }
-}
-
-///|
-fn corridor_precondition(dossier : @site.SiteDossier) -> RobotPrecondition {
-  let best = dossier.corridor_scan[0]
-  {
-    precondition_id: "corridor-scan-best-window",
-    label: "Measured corridor search gate",
-    decision: best.decision,
-    evidence_path: "mission/first-trusted-square/corridor-scan.json",
-    reason: best.note,
-  }
-}
-
-///|
-fn handoff_decision(
-  preconditions : Array[RobotPrecondition],
-) -> @mission.TraverseDecision {
-  let mut decision = @mission.TraverseDecision::Allow
-  for precondition in preconditions {
-    decision = combine_decision(decision, precondition.decision)
-  }
-  decision
 }
 
 ///|
@@ -237,18 +119,146 @@ fn handoff_next_action(decision : @mission.TraverseDecision) -> String {
 }
 
 ///|
+fn terrain_decision(
+  route : @mission.RouteCandidate,
+) -> @mission.TraverseDecision {
+  let profile = @mission.conservative_rover_profile()
+  let grade_blocked = route.expected_max_grade >= profile.max_grade
+  let roughness_blocked = route.expected_roughness_m >= profile.max_roughness_m
+  let grade_review = route.expected_max_grade >= profile.caution_grade
+  let roughness_review = route.expected_roughness_m >=
+    profile.caution_roughness_m
+  let confidence_review = route.confidence < profile.min_confidence
+  if grade_blocked || roughness_blocked {
+    @mission.TraverseDecision::Block
+  } else if grade_review || roughness_review || confidence_review {
+    @mission.TraverseDecision::Review
+  } else {
+    @mission.TraverseDecision::Allow
+  }
+}
+
+///|
+fn terrain_reason(route : @mission.RouteCandidate) -> String {
+  "route terrain evidence reports grade \{route.expected_max_grade}, roughness \{route.expected_roughness_m} m, confidence \{route.confidence}: \{route.next_action}"
+}
+
+///|
+fn moonbook_review_decision(
+  route : @mission.RouteCandidate,
+) -> @mission.TraverseDecision {
+  if route.decision == @mission.TraverseDecision::Allow &&
+    route.illumination.decision == @mission.TraverseDecision::Allow {
+    @mission.TraverseDecision::Review
+  } else {
+    @mission.TraverseDecision::Block
+  }
+}
+
+///|
+fn moonbook_review_reason(route : @mission.RouteCandidate) -> String {
+  if route.decision == @mission.TraverseDecision::Allow &&
+    route.illumination.decision == @mission.TraverseDecision::Allow {
+    "MoonBook review must accept the selected route, energy window, and handoff before simulation"
+  } else {
+    "MoonBook review remains blocked because selected route \{route.route_id} still has route or illumination blockers"
+  }
+}
+
+///|
+fn readiness_checks(
+  dossier : @site.SiteDossier,
+  route : @mission.RouteCandidate,
+) -> Array[@mission.MissionReadinessCheck] {
+  let best = dossier.corridor_scan[0]
+  [
+    @mission.readiness_check(
+      "terrain-\{route.route_id}",
+      @mission.MissionReadinessCheckKind::TerrainReadiness,
+      "Selected-route terrain gate",
+      terrain_decision(route),
+      "mission/first-trusted-square/routes/\{route.route_id}.json",
+      terrain_reason(route),
+    ),
+    @mission.readiness_check(
+      "corridor-scan-best-window",
+      @mission.MissionReadinessCheckKind::CorridorReadiness,
+      "Measured corridor search gate",
+      best.decision,
+      "mission/first-trusted-square/corridor-scan.json",
+      best.note,
+    ),
+    @mission.readiness_check(
+      "illumination-\{route.route_id}",
+      @mission.MissionReadinessCheckKind::IlluminationReadiness,
+      "Illumination and thermal gate",
+      route.illumination.decision,
+      "mission/first-trusted-square/routes/\{route.route_id}.illumination.json",
+      route.illumination.next_action,
+    ),
+    @mission.readiness_check(
+      "energy-window",
+      @mission.MissionReadinessCheckKind::EnergyReadiness,
+      "Rover energy window gate",
+      dossier.energy.decision,
+      "mission/first-trusted-square/energy-window.json",
+      "energy gate reads power-window evidence \{dossier.energy.budget.power_window_evidence_id}: \{dossier.energy.next_action}",
+    ),
+    @mission.readiness_check(
+      "moonbook-review",
+      @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+      "MoonBook accepted-review gate",
+      moonbook_review_decision(route),
+      "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      moonbook_review_reason(route),
+    ),
+  ]
+}
+
+///|
+fn mission_readiness(
+  dossier : @site.SiteDossier,
+  route : @mission.RouteCandidate,
+) -> @mission.MissionSimulationReadiness {
+  @mission.simulation_readiness(
+    "mission/\{dossier.site.site_id}/\{route.route_id}/simulation-readiness",
+    route.route_id,
+    readiness_checks(dossier, route),
+  )
+}
+
+///|
+fn precondition_from_check(
+  check : @mission.MissionReadinessCheck,
+) -> RobotPrecondition {
+  {
+    precondition_id: check.check_id,
+    label: check.label,
+    decision: check.decision,
+    evidence_path: check.evidence_path,
+    reason: check.reason,
+  }
+}
+
+///|
+fn preconditions_from_readiness(
+  readiness : @mission.MissionSimulationReadiness,
+) -> Array[RobotPrecondition] {
+  let preconditions : Array[RobotPrecondition] = []
+  for check in readiness.checks {
+    preconditions.push(precondition_from_check(check))
+  }
+  preconditions
+}
+
+///|
 pub fn route_handoff(
   dossier : @site.SiteDossier,
   route : @mission.RouteCandidate,
 ) -> MoonroboTaskHandoff {
-  let preconditions = [
-    route_precondition(route),
-    illumination_precondition(route),
-    power_window_precondition(dossier),
-    energy_precondition(dossier),
-    corridor_precondition(dossier),
-  ]
-  let decision = handoff_decision(preconditions)
+  let readiness = mission_readiness(dossier, route)
+  let preconditions = preconditions_from_readiness(readiness)
+  let decision = readiness.decision
   {
     handoff_id: "moonrobo/\{dossier.site.site_id}/\{route.route_id}/simulation-preconditions",
     site_id: dossier.site.site_id,
@@ -256,7 +266,8 @@ pub fn route_handoff(
     task_kind: "route-simulation-precondition",
     target_body: dossier.site.body,
     decision,
-    execution: execution_envelope(route, decision, preconditions),
+    mission_readiness: readiness,
+    execution: execution_envelope(route, readiness),
     preconditions,
     next_action: handoff_next_action(decision),
   }
@@ -302,12 +313,14 @@ pub fn render_markdown(handoffs : Array[MoonroboTaskHandoff]) -> String {
     text += "  - simulation: \{execution_state_label(handoff.execution.simulation_state)}\n"
     text += "  - replay: \{execution_state_label(handoff.execution.replay_state)}\n"
     text += "  - hardware: \{execution_state_label(handoff.execution.hardware_state)}\n"
+    text += "  - mission readiness: \{@mission.mission_simulation_readiness_label(handoff.mission_readiness)}\n"
+    text += "  - robot simulation status: \{handoff.mission_readiness.robot_simulation_status}\n"
     text += "  - authority: \{handoff.execution.authority}\n"
     text += "  - hardware denial: \{handoff.execution.hardware_denial_reason}\n"
     text += "  - next action: \{handoff.next_action}\n"
-    text += "  - preconditions:\n"
-    for precondition in handoff.preconditions {
-      text += "    - \{precondition.precondition_id}: \{precondition_status_label(precondition)} - \{precondition.reason}\n"
+    text += "  - mission readiness checks:\n"
+    for check in handoff.mission_readiness.checks {
+      text += "    - \{check.check_id} (\{@mission.mission_readiness_check_kind_label(check.kind)}): \{@mission.traverse_decision_label(check.decision)} - \{check.reason}\n"
     }
   }
   text

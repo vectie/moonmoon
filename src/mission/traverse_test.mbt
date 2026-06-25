@@ -180,3 +180,76 @@ test "first trusted square energy window blocks insufficient computed power" {
   assert_eq(@mission.energy_decision_label(assessment), "block")
   assert_true(assessment.next_action.contains("revise rover power model"))
 }
+
+///|
+test "mission simulation readiness aggregates named gates" {
+  let route = @mission.first_trusted_square_route_candidates()[5]
+  let corridor = @mission.first_trusted_square_best_corridor_window()
+  let energy = @mission.first_trusted_square_energy_assessment()
+  let checks = [
+    @mission.readiness_check(
+      "terrain-\{route.route_id}",
+      @mission.MissionReadinessCheckKind::TerrainReadiness,
+      "Selected-route terrain gate",
+      route.decision,
+      route.evidence_source_path,
+      route.next_action,
+    ),
+    @mission.readiness_check(
+      "corridor-scan-best-window",
+      @mission.MissionReadinessCheckKind::CorridorReadiness,
+      "Measured corridor search gate",
+      corridor.decision,
+      "mission/first-trusted-square/corridor-scan.json",
+      corridor.note,
+    ),
+    @mission.readiness_check(
+      "illumination-\{route.route_id}",
+      @mission.MissionReadinessCheckKind::IlluminationReadiness,
+      "Illumination and thermal gate",
+      route.illumination.decision,
+      route.illumination.constraint.power_window_source_path,
+      route.illumination.next_action,
+    ),
+    @mission.readiness_check(
+      "energy-window",
+      @mission.MissionReadinessCheckKind::EnergyReadiness,
+      "Rover energy window gate",
+      energy.decision,
+      energy.budget.power_window_source_path,
+      energy.next_action,
+    ),
+    @mission.readiness_check(
+      "moonbook-review",
+      @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+      "MoonBook accepted-review gate",
+      @mission.TraverseDecision::Block,
+      "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      "MoonBook review has unresolved blockers",
+    ),
+  ]
+  let readiness = @mission.simulation_readiness(
+    "mission/first-trusted-square/northeast-stepout/simulation-readiness",
+    route.route_id,
+    checks,
+  )
+  assert_true(readiness.decision == @mission.TraverseDecision::Block)
+  assert_eq(readiness.route_id, "northeast-stepout")
+  assert_eq(readiness.checks.length(), 6)
+  assert_eq(readiness.checks[0].check_id, "terrain-northeast-stepout")
+  assert_eq(readiness.checks[1].check_id, "corridor-scan-best-window")
+  assert_eq(readiness.checks[2].check_id, "illumination-northeast-stepout")
+  assert_eq(readiness.checks[3].check_id, "energy-window")
+  assert_eq(readiness.checks[4].check_id, "moonbook-review")
+  assert_eq(readiness.checks[5].check_id, "robot-simulation")
+  assert_eq(readiness.robot_simulation_status, "simulation-blocked")
+  assert_true(readiness.blocking_checks.contains("moonbook-review"))
+  assert_true(readiness.blocking_checks.contains("robot-simulation"))
+  assert_eq(
+    @mission.mission_readiness_check_kind_label(
+      @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+    ),
+    "moonbook-review",
+  )
+  assert_eq(@mission.mission_simulation_readiness_label(readiness), "block")
+}

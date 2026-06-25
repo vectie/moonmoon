@@ -161,7 +161,7 @@ fn robot_gate(dossier : @site.SiteDossier) -> EvidenceGate {
     },
     proof_artifact: "output/moonrobo/first_trusted_square_handoffs.json",
     blocker: "terrain, route, illumination, and energy gates must all clear before physical execution",
-    next_action: "keep MoonRobo packets one-way until the world model proves route and power readiness",
+    next_action: "use the mission readiness checklist to clear selected-route terrain, illumination, energy, and review blockers before simulation",
   }
 }
 
@@ -210,7 +210,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       } else {
         Blocked
       },
-      next_output: "ephemeris-backed power gate and promoted route scoring",
+      next_output: "selected-route blocker clearance plan",
     },
     {
       layer_id: "evidence-projection",
@@ -382,17 +382,31 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "mission-simulation-readiness-gate",
-      priority: 85,
+      priority: 20,
       lane: MissionLane,
       title: "Make simulation readiness a single mission-owned gate",
       outcome: "MoonRobo simulation packets depend on one reviewable mission readiness checklist instead of scattered route, power, and review blockers",
       depends_on: [
-        "src/mission/traverse.mbt", "src/adapters/moonrobo/handoff.mbt", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "src/mission/readiness.mbt", "src/adapters/moonrobo/handoff.mbt", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
       ],
       evidence: [
         "output/site/first_trusted_square.json", "output/moonrobo/first_trusted_square_handoffs.json",
       ],
-      done_when: "selected route readiness names terrain, corridor, illumination, energy, MoonBook review, and robot-simulation status with one explicit allow/block result",
+      done_when: "done: selected route readiness names terrain, corridor, illumination, energy, MoonBook review, and robot-simulation status with one explicit allow/block result",
+    },
+    {
+      task_id: "selected-route-blocker-clearance",
+      priority: 90,
+      lane: MissionLane,
+      title: "Clear the selected-route blockers that keep simulation denied",
+      outcome: "The primary route can move from blocked handoff evidence toward a reviewable simulation packet",
+      depends_on: [
+        "src/mission/readiness.mbt", "src/mission/traverse.mbt", "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      evidence: [
+        "output/site/first_trusted_square.json", "output/moonbook/workspaces/first-trusted-square/review_queue.json",
+      ],
+      done_when: "the selected northeast-stepout route has explicit clearance actions or accepted evidence for terrain grade, illumination confidence, energy margin, and MoonBook review",
     },
   ]
 }

@@ -80,10 +80,8 @@ fn generated_first_trusted_square_power_window_evidence() -> PowerWindowEvidence
     confidence: 0.620000,
     has_time_window_ephemeris: true,
     reasons: [
-      "official NAIF DE440 source files are locally pinned with byte counts and checksums",
-      "Sun/Moon geometry was sampled hourly from DE440s over the declared UTC window",
-      "spherical zero-horizon model found sun altitude between -0.012003 and 0.130418 degrees",
-      "local terrain-shadow and panel-attitude modeling remain conservative review blockers",
+      "official NAIF DE440 source files are locally pinned with byte counts and checksums", "Sun/Moon geometry was sampled hourly from DE440s over the declared UTC window",
+      "spherical zero-horizon model found sun altitude between -0.012003 and 0.130418 degrees", "local terrain-shadow and panel-attitude modeling remain conservative review blockers",
     ],
   }
 }
