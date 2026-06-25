@@ -1,0 +1,46 @@
+# MoonClaw Remediation Margin Reviewed Action Plans
+
+- moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - priority: critical
+  - state: accepted
+  - route: northeast-stepout
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/closeout-action-task
+  - review transition: rabbita-moonclaw-remediation-margin-closeout-action-review-accept
+  - review decision: Accept
+  - reviewer: operator/rabbita-closeout-action-review
+  - reviewed at: 2026-06-25T00:00:00Z
+  - refresh cycles: 2
+  - blockers: 3
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - automatic refresh loop allowed: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - safety gate: Execute only the reviewed closeout actions; do not start an automatic refresh loop, consume simulation, or change MoonRobo hardware authority.
+  - next action: Schedule the terrain escalation, horizon retry-with-new-evidence, and energy freeze as bounded reviewed work items with fresh evidence attached before any downstream MoonRobo simulation review.
+  - source evidence:
+    - moonclaw-remediation-margin-closeout-action-review: moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review
+  - actions:
+    - 1. terrain-EscalateToOperatorDecision: terrain-northeast-stepout / refresh-terrain-northeast-stepout
+      - disposition: EscalateToOperatorDecision
+      - required evidence: operator-reviewed DEM slope and roughness evidence before another terrain refresh
+      - target: operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation
+      - command: manual: review DEM slope/roughness evidence for terrain-northeast-stepout before any terrain refresh is retried
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+    - 2. local-horizon-RetryWithNewEvidence: illumination-northeast-stepout / refresh-illumination-northeast-stepout
+      - disposition: RetryWithNewEvidence
+      - required evidence: new local-horizon or ephemeris evidence before retrying the horizon refresh
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+    - 3. energy-FreezeUntilNewSourceEvidence: energy-window / refresh-energy-window
+      - disposition: FreezeUntilNewSourceEvidence
+      - required evidence: new power-window source evidence or rover energy profile before unfreezing energy
+      - target: operator/rabbita-remediation-margin-cycle-closeout#energy-freeze
+      - command: manual: keep energy-window frozen until new power-window source evidence or rover energy profile is attached
+      - check: python3 scripts/check_energy_margin_remediation.py
+  - acceptance:
+    - accepted-review-required: Plan is emitted only from an append-only Accept transition for the closeout action task.
+    - bounded-closeout-actions: Plan carries terrain escalation, horizon retry-with-new-evidence, and energy freeze actions without opening another automatic refresh loop.
+    - hardware-denial-preserved: Hardware state remains HardwareDenied under moonmoon-safety-gate-only with no hardware authority change.

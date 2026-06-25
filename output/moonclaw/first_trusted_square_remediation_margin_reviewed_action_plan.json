@@ -1,0 +1,99 @@
+[
+  {
+    "plan_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan",
+    "site_id": "first-trusted-square",
+    "route_id": "northeast-stepout",
+    "priority": "Critical",
+    "state": "Accepted",
+    "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/closeout-action-task",
+    "source_review_transition_id": "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
+    "source_review_item_id": "moonclaw-remediation-margin-closeout-action-review",
+    "source_review_decision": "Accept",
+    "reviewer_id": "operator/rabbita-closeout-action-review",
+    "reviewed_at_utc": "2026-06-25T00:00:00Z",
+    "source_evidence_refs": [
+      {
+        "ref_id": "moonclaw-remediation-margin-closeout-action-review",
+        "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
+        "path": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+        "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review"
+      }
+    ],
+    "may_consume_simulation": false,
+    "simulation_state": "SimulationBlocked",
+    "refresh_cycle_count": 2,
+    "blocker_count": 3,
+    "blocking_refresh_ids": [
+      "refresh-terrain-northeast-stepout",
+      "refresh-illumination-northeast-stepout",
+      "refresh-energy-window"
+    ],
+    "blocking_margin_ids": [
+      "terrain-northeast-stepout",
+      "illumination-northeast-stepout",
+      "energy-window"
+    ],
+    "actions": [
+      {
+        "rank": 1,
+        "action_id": "terrain-EscalateToOperatorDecision",
+        "margin_id": "terrain-northeast-stepout",
+        "refresh_id": "refresh-terrain-northeast-stepout",
+        "blocker_domain": "terrain",
+        "disposition": "EscalateToOperatorDecision",
+        "required_evidence": "operator-reviewed DEM slope and roughness evidence before another terrain refresh",
+        "target_artifact_path": "operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation",
+        "command": "manual: review DEM slope/roughness evidence for terrain-northeast-stepout before any terrain refresh is retried",
+        "acceptance_check": "python3 scripts/check_selected_route_terrain_remediation.py",
+        "reason": "terrain blocker terrain-northeast-stepout remains tied to refresh-terrain-northeast-stepout after the first refresh and follow-up refresh projections; disposition EscalateToOperatorDecision prevents an unbounded refresh loop"
+      },
+      {
+        "rank": 2,
+        "action_id": "local-horizon-RetryWithNewEvidence",
+        "margin_id": "illumination-northeast-stepout",
+        "refresh_id": "refresh-illumination-northeast-stepout",
+        "blocker_domain": "local-horizon",
+        "disposition": "RetryWithNewEvidence",
+        "required_evidence": "new local-horizon or ephemeris evidence before retrying the horizon refresh",
+        "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+        "command": "python3 scripts/generate_selected_route_horizon.py --check",
+        "acceptance_check": "python3 scripts/check_selected_route_horizon_model.py",
+        "reason": "local-horizon blocker illumination-northeast-stepout remains tied to refresh-illumination-northeast-stepout after the first refresh and follow-up refresh projections; disposition RetryWithNewEvidence prevents an unbounded refresh loop"
+      },
+      {
+        "rank": 3,
+        "action_id": "energy-FreezeUntilNewSourceEvidence",
+        "margin_id": "energy-window",
+        "refresh_id": "refresh-energy-window",
+        "blocker_domain": "energy",
+        "disposition": "FreezeUntilNewSourceEvidence",
+        "required_evidence": "new power-window source evidence or rover energy profile before unfreezing energy",
+        "target_artifact_path": "operator/rabbita-remediation-margin-cycle-closeout#energy-freeze",
+        "command": "manual: keep energy-window frozen until new power-window source evidence or rover energy profile is attached",
+        "acceptance_check": "python3 scripts/check_energy_margin_remediation.py",
+        "reason": "energy blocker energy-window remains tied to refresh-energy-window after the first refresh and follow-up refresh projections; disposition FreezeUntilNewSourceEvidence prevents an unbounded refresh loop"
+      }
+    ],
+    "automatic_refresh_loop_allowed": false,
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_authority_change": false,
+    "hardware_denied": true,
+    "acceptance_criteria": [
+      {
+        "criterion_id": "accepted-review-required",
+        "description": "Plan is emitted only from an append-only Accept transition for the closeout action task."
+      },
+      {
+        "criterion_id": "bounded-closeout-actions",
+        "description": "Plan carries terrain escalation, horizon retry-with-new-evidence, and energy freeze actions without opening another automatic refresh loop."
+      },
+      {
+        "criterion_id": "hardware-denial-preserved",
+        "description": "Hardware state remains HardwareDenied under moonmoon-safety-gate-only with no hardware authority change."
+      }
+    ],
+    "safety_gate": "Execute only the reviewed closeout actions; do not start an automatic refresh loop, consume simulation, or change MoonRobo hardware authority.",
+    "next_action": "Schedule the terrain escalation, horizon retry-with-new-evidence, and energy freeze as bounded reviewed work items with fresh evidence attached before any downstream MoonRobo simulation review."
+  }
+]

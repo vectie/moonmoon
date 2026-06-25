@@ -1508,7 +1508,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-reviewed-action-plan",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Emit reviewed remediation-margin action plan",
       outcome: "An accepted closeout-action review turns into one bounded MoonClaw action plan for terrain escalation, horizon retry-with-new-evidence, and energy freeze while preserving no-consume simulation and HardwareDenied authority",
@@ -1520,7 +1520,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
         "scripts/check_moonclaw_remediation_margin_reviewed_action_plan.py",
       ],
-      done_when: "MoonClaw emits a reviewed remediation-margin action plan only after an accepted closeout action review, carrying terrain escalation, horizon retry-with-new-evidence, and energy freeze actions with no automatic refresh loop and HardwareDenied authority preserved",
+      done_when: "done: MoonClaw emits a reviewed remediation-margin action plan only after an accepted closeout action review, carrying terrain escalation, horizon retry-with-new-evidence, and energy freeze actions with no automatic refresh loop and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "moonbook-remediation-margin-reviewed-action-plan-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize reviewed remediation-margin action plan into MoonBook",
+      outcome: "The accepted MoonClaw reviewed action plan becomes durable MoonBook workspace evidence before terrain escalation, horizon retry, or energy freeze work is scheduled",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_action_plan.py", "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_action_plan_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, and HardwareDenied authority preserved",
     },
   ]
 }
