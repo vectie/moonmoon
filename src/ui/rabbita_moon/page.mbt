@@ -434,6 +434,23 @@ fn app_script() -> String {
     #|  ));
     #|}
     #|
+    #|function renderGapEvidence() {
+    #|  const ids = [
+    #|    'moonclaw/first-trusted-square/moonrobo-gap-remediation-task',
+    #|    'moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt'
+    #|  ];
+    #|  const entries = ids
+    #|    .map(id => book.entries.find(entry => entry.entry_id === id))
+    #|    .filter(Boolean);
+    #|  document.getElementById('moonclaw-gap-evidence').replaceChildren(...entries.map(entry =>
+    #|    el('div', { className: 'review-row', 'data-entry-id': entry.entry_id }, [
+    #|      el('b', { text: `${entry.title} - ${entry.kind}` }),
+    #|      el('span', { text: entry.summary }),
+    #|      el('p', { className: 'source-path', text: entry.path })
+    #|    ])
+    #|  ));
+    #|}
+    #|
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
@@ -576,6 +593,7 @@ fn app_script() -> String {
     #|  renderRoutes();
     #|  renderFacts();
     #|  renderReview();
+    #|  renderGapEvidence();
     #|  renderClearanceReview();
     #|}
     #|
@@ -647,6 +665,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>MoonBook Review Status</h2>
     $|      <div id="review" class="review-list"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>MoonClaw Gap Evidence</h2>
+    $|      <div id="moonclaw-gap-evidence" class="review-list"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>

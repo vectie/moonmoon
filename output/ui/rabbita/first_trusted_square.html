@@ -2765,6 +2765,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <div id="review" class="review-list"></div>
     </section>
     <section class="section">
+      <h2>MoonClaw Gap Evidence</h2>
+      <div id="moonclaw-gap-evidence" class="review-list"></div>
+    </section>
+    <section class="section">
       <h2>Selected Route Clearance</h2>
       <div id="clearance-review" class="clearance-list"></div>
       <div class="export-actions" style="margin-top: 10px;">
@@ -2917,6 +2921,23 @@ function renderReview() {
   ));
 }
 
+function renderGapEvidence() {
+  const ids = [
+    'moonclaw/first-trusted-square/moonrobo-gap-remediation-task',
+    'moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt'
+  ];
+  const entries = ids
+    .map(id => book.entries.find(entry => entry.entry_id === id))
+    .filter(Boolean);
+  document.getElementById('moonclaw-gap-evidence').replaceChildren(...entries.map(entry =>
+    el('div', { className: 'review-row', 'data-entry-id': entry.entry_id }, [
+      el('b', { text: `${entry.title} - ${entry.kind}` }),
+      el('span', { text: entry.summary }),
+      el('p', { className: 'source-path', text: entry.path })
+    ])
+  ));
+}
+
 function transitionDecisionStatus(decision) {
   if (decision === 'Accept') return 'Accepted';
   if (decision === 'Reject') return 'Rejected';
@@ -3059,6 +3080,7 @@ function render() {
   renderRoutes();
   renderFacts();
   renderReview();
+  renderGapEvidence();
   renderClearanceReview();
 }
 

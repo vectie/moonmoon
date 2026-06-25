@@ -566,7 +566,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-imported-gap-evidence-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Expose imported MoonClaw gap evidence in Rabbita",
       outcome: "Operators can inspect the imported MoonClaw task, receipt, remaining gaps, and hardware denial state without leaving the Rabbita review surface",
@@ -578,7 +578,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_imported_gap_evidence_surface.py",
       ],
-      done_when: "Rabbita renders imported MoonClaw gap task and receipt summaries from embedded MoonBook evidence, including still-blocking gap count and HardwareDenied authority",
+      done_when: "done: Rabbita renders imported MoonClaw gap task and receipt summaries from embedded MoonBook evidence, including still-blocking gap count and HardwareDenied authority",
+    },
+    {
+      task_id: "moonrobo-gap-remediation-modeling-pass",
+      priority: 70,
+      lane: RobotLane,
+      title: "Run the first modeling pass against MoonRobo blocker gaps",
+      outcome: "The imported gap task drives bounded terrain, illumination, energy, MoonBook, and robot-simulation updates instead of only reporting blockers",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
+        "scripts/scan_lola_corridor.py", "scripts/compute_power_window.py",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_readiness_preview.json", "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
+        "scripts/check_moonrobo_gap_remediation_modeling.py",
+      ],
+      done_when: "a bounded modeling pass consumes the imported gap task and either clears at least one MoonRobo blocker gap with regenerated evidence or records why every gap remains blocked",
     },
   ]
 }

@@ -169,6 +169,9 @@ Current implementation status:
 - Imported transition builds now materialize the remediation receipt into the
   MoonBook workspace beside the generated task, making both the requested work
   and its current gap accounting durable evidence.
+- Rabbita Moon now exposes the imported MoonClaw gap task and receipt entries
+  from the embedded MoonBook dossier, including remaining gap count and denied
+  hardware authority, so operators can inspect them in the review surface.
 
 ## Milestone 3: MoonBook Evidence Loop
 
