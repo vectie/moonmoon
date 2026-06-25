@@ -135,10 +135,13 @@ Done when a human can inspect one site without reading JSON.
 
 Current implementation status:
 
-- `src/ui` exposes a renderer-neutral trusted-square view model with
-  elevation/hazard cells, route rows, selected-route state, and inspector facts.
+- `src/ui` exposes a renderer-neutral trusted-square operator view with
+  viewport geometry, layer toggles, per-cell layer intensities, route overlays,
+  a selected-tile inspector, source panel, and scorecard.
 - `cmd/main -- ui view` renders that model as Markdown, while `json` exposes
   the same contract for future Rabbita/Lepusa browser surfaces.
+- `scripts/build_moonmoon_dossier.sh` publishes the current UI contract under
+  `output/ui/first_trusted_square_view.{md,json}`.
 
 ## Milestone 3: MoonBook Evidence Loop
 

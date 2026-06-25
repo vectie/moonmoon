@@ -311,6 +311,11 @@ The first UI should include:
 - route candidate overlay
 - site scorecard
 
+`src/ui` now provides that renderer-neutral contract as the
+`TrustedSquareViewModel`: layer toggles, per-cell layer values, route overlays,
+selected-tile inspector, source panel, and scorecard. Rabbita should consume
+that model directly rather than re-deriving terrain, mission, or power facts.
+
 Lepusa should package the local operator experience once the browser surface is
 useful.
 

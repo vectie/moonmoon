@@ -1,0 +1,158 @@
+///|
+pub(all) enum ViewLayerKind {
+  ElevationLayer
+  SlopeLayer
+  RoughnessLayer
+  HazardLayer
+  RouteLayer
+  EvidenceLayer
+  PowerLayer
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct LayerToggle {
+  layer_id : String
+  kind : ViewLayerKind
+  label : String
+  visible : Bool
+  value_unit : String
+  legend_min : Double
+  legend_max : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct ViewportGeometry {
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  tile_width_px : Int
+  tile_height_px : Int
+  viewport_width_px : Int
+  viewport_height_px : Int
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct CellLayerValue {
+  layer_id : String
+  value : Double
+  value_label : String
+  status : String
+  intensity : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct TerrainCellView {
+  cell_id : String
+  row : Int
+  col : Int
+  x_px : Int
+  y_px : Int
+  elevation_m : Double
+  slope_grade : Double
+  roughness_m : Double
+  hazard : String
+  selected : Bool
+  confidence : Double
+  source_dataset_id : String
+  layer_values : Array[CellLayerValue]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RouteView {
+  route_id : String
+  label : String
+  selected : Bool
+  decision : String
+  score : Int
+  max_grade : Double
+  roughness_m : Double
+  evidence_tile_id : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RouteOverlay {
+  overlay_id : String
+  route_id : String
+  label : String
+  selected : Bool
+  decision : String
+  evidence_tile_id : String
+  viewport_ref : String
+  status : String
+  summary : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct InspectorFact {
+  fact_id : String
+  label : String
+  value : String
+  status : String
+  evidence_path : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct TileInspector {
+  cell_id : String
+  row : Int
+  col : Int
+  elevation_m : Double
+  slope_grade : Double
+  roughness_m : Double
+  hazard : String
+  source_dataset_id : String
+  source_path : String
+  claim : String
+  uncertainty_label : String
+  confidence : Double
+  layer_values : Array[CellLayerValue]
+  notes : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SourcePanel {
+  dataset_id : String
+  source_title : String
+  source_url : String
+  local_source_path : String
+  claim : String
+  review_status : String
+  checksum : String
+  generated_by : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SiteScorecard {
+  decision : String
+  score : Int
+  terrain_hazard : String
+  route_candidates : Int
+  blocked_route_candidates : Int
+  selected_route_id : String
+  available_energy_wh : Double
+  energy_margin_wh : Double
+  confidence : Double
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct TrustedSquareViewModel {
+  view_id : String
+  site_id : String
+  title : String
+  viewport : ViewportGeometry
+  layers : Array[LayerToggle]
+  active_layer_id : String
+  selected_cell_id : String
+  selected_route_id : String
+  terrain_cells : Array[TerrainCellView]
+  routes : Array[RouteView]
+  route_overlays : Array[RouteOverlay]
+  selected_tile : TileInspector
+  source_panel : SourcePanel
+  scorecard : SiteScorecard
+  inspector_facts : Array[InspectorFact]
+  blockers : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)

@@ -1,0 +1,1162 @@
+{
+  "view_id": "ui/first-trusted-square/operator-view-v2",
+  "site_id": "first-trusted-square",
+  "title": "First Trusted Square / Shackleton Rim rehearsal tile",
+  "viewport": {
+    "rows": 4,
+    "cols": 4,
+    "cell_size_m": 20,
+    "tile_width_px": 88,
+    "tile_height_px": 56,
+    "viewport_width_px": 352,
+    "viewport_height_px": 224
+  },
+  "layers": [
+    {
+      "layer_id": "elevation",
+      "kind": "ElevationLayer",
+      "label": "Elevation",
+      "visible": true,
+      "value_unit": "m",
+      "legend_min": 441.521,
+      "legend_max": 499.693,
+      "status": "measured"
+    },
+    {
+      "layer_id": "slope",
+      "kind": "SlopeLayer",
+      "label": "Slope",
+      "visible": true,
+      "value_unit": "grade",
+      "legend_min": 0,
+      "legend_max": 1.1593500000000005,
+      "status": "derived"
+    },
+    {
+      "layer_id": "roughness",
+      "kind": "RoughnessLayer",
+      "label": "Roughness",
+      "visible": false,
+      "value_unit": "m",
+      "legend_min": 0,
+      "legend_max": 9.250124999999999,
+      "status": "derived"
+    },
+    {
+      "layer_id": "hazard",
+      "kind": "HazardLayer",
+      "label": "Hazard",
+      "visible": true,
+      "value_unit": "risk",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "blocked"
+    },
+    {
+      "layer_id": "route",
+      "kind": "RouteLayer",
+      "label": "Routes",
+      "visible": true,
+      "value_unit": "state",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "blocked"
+    },
+    {
+      "layer_id": "evidence",
+      "kind": "EvidenceLayer",
+      "label": "Evidence",
+      "visible": false,
+      "value_unit": "state",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "ready"
+    },
+    {
+      "layer_id": "power",
+      "kind": "PowerLayer",
+      "label": "Power",
+      "visible": false,
+      "value_unit": "Wh",
+      "legend_min": 0,
+      "legend_max": 234.938073,
+      "status": "block"
+    }
+  ],
+  "active_layer_id": "hazard",
+  "selected_cell_id": "first-trusted-square-lola/r3-c2",
+  "selected_route_id": "northeast-stepout",
+  "terrain_cells": [
+    {
+      "cell_id": "first-trusted-square-lola/r0-c0",
+      "row": 0,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 0,
+      "elevation_m": 499.693,
+      "slope_grade": 0.8539999999999992,
+      "roughness_m": 13.367999999999995,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 499.693,
+          "value_label": "499.693 m",
+          "status": "measured",
+          "intensity": 1
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8539999999999992,
+          "value_label": "0.8539999999999992 grade",
+          "status": "derived",
+          "intensity": 0.736619657566739
+        },
+        {
+          "layer_id": "roughness",
+          "value": 13.367999999999995,
+          "value_label": "13.367999999999995 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c1",
+      "row": 0,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 0,
+      "elevation_m": 482.613,
+      "slope_grade": 0.8729000000000013,
+      "roughness_m": 13.603000000000009,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 482.613,
+          "value_label": "482.613 m",
+          "status": "measured",
+          "intensity": 0.7063879529670634
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8729000000000013,
+          "value_label": "0.8729000000000013 grade",
+          "status": "derived",
+          "intensity": 0.7529218958899391
+        },
+        {
+          "layer_id": "roughness",
+          "value": 13.603000000000009,
+          "value_label": "13.603000000000009 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c2",
+      "row": 0,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 0,
+      "elevation_m": 465.155,
+      "slope_grade": 0.8729000000000013,
+      "roughness_m": 12.944999999999993,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 465.155,
+          "value_label": "465.155 m",
+          "status": "measured",
+          "intensity": 0.40627793440142973
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8729000000000013,
+          "value_label": "0.8729000000000013 grade",
+          "status": "derived",
+          "intensity": 0.7529218958899391
+        },
+        {
+          "layer_id": "roughness",
+          "value": 12.944999999999993,
+          "value_label": "12.944999999999993 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c3",
+      "row": 0,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 0,
+      "elevation_m": 448.988,
+      "slope_grade": 0.8083499999999987,
+      "roughness_m": 9.079999999999984,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 448.988,
+          "value_label": "448.988 m",
+          "status": "measured",
+          "intensity": 0.12836072337206883
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8083499999999987,
+          "value_label": "0.8083499999999987 grade",
+          "status": "derived",
+          "intensity": 0.697244145426315
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.079999999999984,
+          "value_label": "9.079999999999984 m",
+          "status": "derived",
+          "intensity": 0.9816083566438275
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c0",
+      "row": 1,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 56,
+      "elevation_m": 490.037,
+      "slope_grade": 0.6847499999999996,
+      "roughness_m": 9.164333333333332,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 490.037,
+          "value_label": "490.037 m",
+          "status": "measured",
+          "intensity": 0.8340094891012857
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6847499999999996,
+          "value_label": "0.6847499999999996 grade",
+          "status": "derived",
+          "intensity": 0.5906326821063521
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.164333333333332,
+          "value_label": "9.164333333333332 m",
+          "status": "derived",
+          "intensity": 0.9907253505583258
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c1",
+      "row": 1,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 56,
+      "elevation_m": 476.342,
+      "slope_grade": 0.8198499999999995,
+      "roughness_m": 9.308250000000001,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 476.342,
+          "value_label": "476.342 m",
+          "status": "measured",
+          "intensity": 0.5985869490476516
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8198499999999995,
+          "value_label": "0.8198499999999995 grade",
+          "status": "derived",
+          "intensity": 0.707163496786992
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.308250000000001,
+          "value_label": "9.308250000000001 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c2",
+      "row": 1,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 56,
+      "elevation_m": 459.945,
+      "slope_grade": 0.8198499999999995,
+      "roughness_m": 8.58175,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 459.945,
+          "value_label": "459.945 m",
+          "status": "measured",
+          "intensity": 0.3167159458158562
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8198499999999995,
+          "value_label": "0.8198499999999995 grade",
+          "status": "derived",
+          "intensity": 0.707163496786992
+        },
+        {
+          "layer_id": "roughness",
+          "value": 8.58175,
+          "value_label": "8.58175 m",
+          "status": "derived",
+          "intensity": 0.9277442196727071
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c3",
+      "row": 1,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 56,
+      "elevation_m": 450.981,
+      "slope_grade": 0.44819999999999993,
+      "roughness_m": 3.7123333333333335,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 450.981,
+          "value_label": "450.981 m",
+          "status": "measured",
+          "intensity": 0.16262119232620478
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.44819999999999993,
+          "value_label": "0.44819999999999993 grade",
+          "status": "derived",
+          "intensity": 0.38659593737870335
+        },
+        {
+          "layer_id": "roughness",
+          "value": 3.7123333333333335,
+          "value_label": "3.7123333333333335 m",
+          "status": "derived",
+          "intensity": 0.4013279099831985
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c0",
+      "row": 2,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 112,
+      "elevation_m": 485.895,
+      "slope_grade": 0.5211500000000001,
+      "roughness_m": 5.596999999999999,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 485.895,
+          "value_label": "485.895 m",
+          "status": "measured",
+          "intensity": 0.7628068486557105
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.5211500000000001,
+          "value_label": "0.5211500000000001 grade",
+          "status": "derived",
+          "intensity": 0.44951912709708014
+        },
+        {
+          "layer_id": "roughness",
+          "value": 5.596999999999999,
+          "value_label": "5.596999999999999 m",
+          "status": "derived",
+          "intensity": 0.6050729044202104
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c1",
+      "row": 2,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 112,
+      "elevation_m": 475.472,
+      "slope_grade": 0.5885499999999979,
+      "roughness_m": 6.201499999999996,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 475.472,
+          "value_label": "475.472 m",
+          "status": "measured",
+          "intensity": 0.5836313002819223
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.5885499999999979,
+          "value_label": "0.5885499999999979 grade",
+          "status": "derived",
+          "intensity": 0.5076551515935633
+        },
+        {
+          "layer_id": "roughness",
+          "value": 6.201499999999996,
+          "value_label": "6.201499999999996 m",
+          "status": "derived",
+          "intensity": 0.6704233726571259
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c2",
+      "row": 2,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 112,
+      "elevation_m": 463.701,
+      "slope_grade": 0.6450000000000017,
+      "roughness_m": 9.525250000000014,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 463.701,
+          "value_label": "463.701 m",
+          "status": "measured",
+          "intensity": 0.3812830915216946
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6450000000000017,
+          "value_label": "0.6450000000000017 grade",
+          "status": "derived",
+          "intensity": 0.5563462284901034
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.525250000000014,
+          "value_label": "9.525250000000014 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c3",
+      "row": 2,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 112,
+      "elevation_m": 450.801,
+      "slope_grade": 0.6450000000000017,
+      "roughness_m": 7.453333333333338,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 450.801,
+          "value_label": "450.801 m",
+          "status": "measured",
+          "intensity": 0.15952692016777792
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6450000000000017,
+          "value_label": "0.6450000000000017 grade",
+          "status": "derived",
+          "intensity": 0.5563462284901034
+        },
+        {
+          "layer_id": "roughness",
+          "value": 7.453333333333338,
+          "value_label": "7.453333333333338 m",
+          "status": "derived",
+          "intensity": 0.8057548771863449
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c0",
+      "row": 3,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 168,
+      "elevation_m": 483.669,
+      "slope_grade": 0.3227499999999992,
+      "roughness_m": 4.340499999999992,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 483.669,
+          "value_label": "483.669 m",
+          "status": "measured",
+          "intensity": 0.7245410162964999
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.3227499999999992,
+          "value_label": "0.3227499999999992 grade",
+          "status": "derived",
+          "intensity": 0.27838875231810845
+        },
+        {
+          "layer_id": "roughness",
+          "value": 4.340499999999992,
+          "value_label": "4.340499999999992 m",
+          "status": "derived",
+          "intensity": 0.4692369022040234
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c1",
+      "row": 3,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 168,
+      "elevation_m": 477.214,
+      "slope_grade": 1.1593500000000005,
+      "roughness_m": 10.461333333333338,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 477.214,
+          "value_label": "477.214 m",
+          "status": "measured",
+          "intensity": 0.6135769786151414
+        },
+        {
+          "layer_id": "slope",
+          "value": 1.1593500000000005,
+          "value_label": "1.1593500000000005 grade",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "roughness",
+          "value": 10.461333333333338,
+          "value_label": "10.461333333333338 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c2",
+      "row": 3,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 168,
+      "elevation_m": 454.027,
+      "slope_grade": 1.1593500000000005,
+      "roughness_m": 15.122333333333339,
+      "hazard": "blocked",
+      "selected": true,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 454.027,
+          "value_label": "454.027 m",
+          "status": "measured",
+          "intensity": 0.21498315340713708
+        },
+        {
+          "layer_id": "slope",
+          "value": 1.1593500000000005,
+          "value_label": "1.1593500000000005 grade",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "roughness",
+          "value": 15.122333333333339,
+          "value_label": "15.122333333333339 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c3",
+      "row": 3,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 168,
+      "elevation_m": 441.521,
+      "slope_grade": 0.6252999999999986,
+      "roughness_m": 10.892999999999972,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 441.521,
+          "value_label": "441.521 m",
+          "status": "measured",
+          "intensity": 0
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6252999999999986,
+          "value_label": "0.6252999999999986 grade",
+          "status": "derived",
+          "intensity": 0.5393539483331162
+        },
+        {
+          "layer_id": "roughness",
+          "value": 10.892999999999972,
+          "value_label": "10.892999999999972 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "direct-lola-window",
+      "label": "Direct traverse across measured LOLA patch",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 1.1593500000000005,
+      "roughness_m": 9.250124999999999,
+      "evidence_tile_id": "first-trusted-square-lola",
+      "next_action": "do not traverse directly; use this as the baseline hazard case"
+    },
+    {
+      "route_id": "west-contour-detour",
+      "label": "West contour detour candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7517000000000025,
+      "roughness_m": 8.52791666666666,
+      "evidence_tile_id": "first-trusted-square-west-contour-lola",
+      "next_action": "widen the west corridor extraction before simulation"
+    },
+    {
+      "route_id": "north-rim-stepout",
+      "label": "North rim step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7280000000000001,
+      "roughness_m": 7.716124999999998,
+      "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "next_action": "widen the north corridor extraction and add illumination review"
+    },
+    {
+      "route_id": "southwest-bypass",
+      "label": "Southwest widened bypass candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.6484500000000025,
+      "roughness_m": 7.056666666666669,
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "next_action": "continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "route_id": "south-stepout",
+      "label": "South step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7199500000000001,
+      "roughness_m": 7.154583333333335,
+      "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+      "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "route_id": "northeast-stepout",
+      "label": "Northeast 9x9 step-out candidate",
+      "selected": true,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.5139499999999998,
+      "roughness_m": 5.95975,
+      "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "next_action": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    }
+  ],
+  "route_overlays": [
+    {
+      "overlay_id": "route-overlay/direct-lola-window",
+      "route_id": "direct-lola-window",
+      "label": "Direct traverse across measured LOLA patch",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-lola",
+      "status": "block",
+      "summary": "first-trusted-square-lola: grade 1.1593500000000005, roughness 9.250124999999999 m"
+    },
+    {
+      "overlay_id": "route-overlay/west-contour-detour",
+      "route_id": "west-contour-detour",
+      "label": "West contour detour candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-west-contour-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-west-contour-lola",
+      "status": "block",
+      "summary": "first-trusted-square-west-contour-lola: grade 0.7517000000000025, roughness 8.52791666666666 m"
+    },
+    {
+      "overlay_id": "route-overlay/north-rim-stepout",
+      "route_id": "north-rim-stepout",
+      "label": "North rim step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-north-rim-lola",
+      "status": "block",
+      "summary": "first-trusted-square-north-rim-lola: grade 0.7280000000000001, roughness 7.716124999999998 m"
+    },
+    {
+      "overlay_id": "route-overlay/southwest-bypass",
+      "route_id": "southwest-bypass",
+      "label": "Southwest widened bypass candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-southwest-bypass-lola",
+      "status": "block",
+      "summary": "first-trusted-square-southwest-bypass-lola: grade 0.6484500000000025, roughness 7.056666666666669 m"
+    },
+    {
+      "overlay_id": "route-overlay/south-stepout",
+      "route_id": "south-stepout",
+      "label": "South step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-south-stepout-lola",
+      "status": "block",
+      "summary": "first-trusted-square-south-stepout-lola: grade 0.7199500000000001, roughness 7.154583333333335 m"
+    },
+    {
+      "overlay_id": "route-overlay/northeast-stepout",
+      "route_id": "northeast-stepout",
+      "label": "Northeast 9x9 step-out candidate",
+      "selected": true,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-northeast-stepout-lola",
+      "status": "block",
+      "summary": "first-trusted-square-northeast-stepout-lola: grade 0.5139499999999998, roughness 5.95975 m"
+    }
+  ],
+  "selected_tile": {
+    "cell_id": "first-trusted-square-lola/r3-c2",
+    "row": 3,
+    "col": 2,
+    "elevation_m": 454.027,
+    "slope_grade": 1.1593500000000005,
+    "roughness_m": 15.122333333333339,
+    "hazard": "blocked",
+    "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "claim": "measured",
+    "uncertainty_label": "medium",
+    "confidence": 0.82,
+    "layer_values": [
+      {
+        "layer_id": "elevation",
+        "value": 454.027,
+        "value_label": "454.027 m",
+        "status": "measured",
+        "intensity": 0.21498315340713708
+      },
+      {
+        "layer_id": "slope",
+        "value": 1.1593500000000005,
+        "value_label": "1.1593500000000005 grade",
+        "status": "derived",
+        "intensity": 1
+      },
+      {
+        "layer_id": "roughness",
+        "value": 15.122333333333339,
+        "value_label": "15.122333333333339 m",
+        "status": "derived",
+        "intensity": 1
+      },
+      {
+        "layer_id": "hazard",
+        "value": 1,
+        "value_label": "blocked",
+        "status": "blocked",
+        "intensity": 1
+      },
+      {
+        "layer_id": "power",
+        "value": 234.938073,
+        "value_label": "234.938073 Wh",
+        "status": "block",
+        "intensity": 0.18572179683794465
+      }
+    ],
+    "notes": [
+      "selected by highest local slope and roughness in the active viewport",
+      "active route overlay: northeast-stepout",
+      "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification."
+    ]
+  },
+  "source_panel": {
+    "dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "source_title": "LOLA Shackleton Rim DEM byte-range fixture",
+    "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    "local_source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "claim": "measured",
+    "review_status": "accepted-for-software-proof",
+    "checksum": "inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521",
+    "generated_by": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt"
+  },
+  "scorecard": {
+    "decision": "block",
+    "score": 20,
+    "terrain_hazard": "blocked",
+    "route_candidates": 6,
+    "blocked_route_candidates": 6,
+    "selected_route_id": "northeast-stepout",
+    "available_energy_wh": 234.938073,
+    "energy_margin_wh": -1030.061927,
+    "confidence": 0.7544,
+    "next_action": "revise rover power model, route count, or site window before simulation"
+  },
+  "inspector_facts": [
+    {
+      "fact_id": "selected-cell",
+      "label": "Selected cell",
+      "value": "first-trusted-square-lola/r3-c2",
+      "status": "inspecting",
+      "evidence_path": "ui/first-trusted-square/view-model.json"
+    },
+    {
+      "fact_id": "source-datasets",
+      "label": "Source datasets",
+      "value": "6 checked datasets",
+      "status": "ready",
+      "evidence_path": "output/moonbook/workspaces/first-trusted-square/index.json"
+    },
+    {
+      "fact_id": "best-corridor-window",
+      "label": "Best corridor window",
+      "value": "r-12-c+16 -> northeast-stepout",
+      "status": "block",
+      "evidence_path": "mission/first-trusted-square/corridor-scan.json"
+    },
+    {
+      "fact_id": "power-window-evidence",
+      "label": "Power-window evidence",
+      "value": "ready",
+      "status": "ready",
+      "evidence_path": "mission/first-trusted-square/power-window-evidence.json"
+    },
+    {
+      "fact_id": "energy-window",
+      "label": "Energy window",
+      "value": "-1030.061927 Wh margin",
+      "status": "block",
+      "evidence_path": "mission/first-trusted-square/energy-window.json"
+    }
+  ],
+  "blockers": [
+    "terrain exceeds early traverse limits",
+    "requires alternate route or stronger dataset"
+  ]
+}

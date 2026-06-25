@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "rabbita-layer-view-model",
+    "moonrobo-simulation-contract-v2",
   )
 }
 
@@ -28,8 +28,9 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(
     markdown.contains("MoonTown schedules work; MoonMoon owns lunar physics"),
   )
-  assert_true(markdown.contains("src/ui/view_model.mbt"))
+  assert_true(markdown.contains("src/ui/types.mbt + src/ui/view_model.mbt"))
   assert_true(markdown.contains("promote-best-9x9-route-fixture"))
   assert_true(markdown.contains("rabbita-layer-view-model"))
   assert_true(markdown.contains("replace-missing-power-window"))
+  assert_true(markdown.contains("moonrobo-simulation-contract-v2"))
 }

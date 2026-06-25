@@ -226,8 +226,8 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       label: "Operator viewer",
       owns: "renderer-neutral layer view models and Rabbita lunar inspection UI",
       source_contract: "site dossier -> terrain/hazard/route layer view state",
-      current_artifact: "src/ui/view_model.mbt",
-      readiness: NeedsEvidence,
+      current_artifact: "src/ui/types.mbt + src/ui/view_model.mbt",
+      readiness: Ready,
       next_output: "browser-facing Rabbita lunar inspection UI backed by the renderer-neutral view model",
     },
   ]
@@ -332,13 +332,15 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-layer-view-model",
-      priority: 85,
+      priority: 55,
       lane: ViewerLane,
       title: "Build the renderer-neutral lunar layer view model before UI decoration",
       outcome: "Rabbita can render elevation, hazard, route, and evidence state from one typed model",
-      depends_on: ["src/site/site.mbt"],
-      evidence: ["site dossier JSON", "terrain grid JSON"],
-      done_when: "a UI package can inspect one site without parsing MoonBook or mission internals",
+      depends_on: ["src/site/site.mbt", "src/ui/types.mbt"],
+      evidence: [
+        "src/ui/types.mbt", "src/ui/view_model.mbt", "output/ui/first_trusted_square_view.json",
+      ],
+      done_when: "done: renderer-neutral UI model exposes layers, selected tile inspector, source panel, scorecard, and route overlays",
     },
     {
       task_id: "moonrobo-simulation-contract-v2",
