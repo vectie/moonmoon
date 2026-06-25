@@ -743,7 +743,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-simulation-review-packet-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize selected-route simulation review packet into MoonBook",
       outcome: "The MoonRobo simulation review packet becomes durable MoonBook evidence beside the accepted clearance transitions, remediation margins, and hardware-denial invariants it audits",
@@ -755,7 +755,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-packet.json",
         "scripts/check_moonbook_simulation_review_packet_workspace.py",
       ],
-      done_when: "selected-route simulation review packet is indexed, materialized, and validated in the MoonBook workspace without changing hardware authority",
+      done_when: "done: selected-route simulation review packet is indexed, materialized, and validated in the MoonBook workspace without changing hardware authority",
+    },
+    {
+      task_id: "rabbita-simulation-review-packet-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface selected-route simulation review packet in Rabbita",
+      outcome: "Operators can review the durable MoonRobo simulation packet, accepted clearance transitions, remediation margins, and hardware-denial invariants from Rabbita before any simulation handoff moves forward",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-packet.json",
+        "output/moonrobo/first_trusted_square_simulation_review_packet.json", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_review_packet_surface.py",
+      ],
+      done_when: "Rabbita renders the simulation review packet summary with accepted clearance count, remediation margin count, and hardware-denial invariants from embedded MoonBook evidence",
     },
   ]
 }

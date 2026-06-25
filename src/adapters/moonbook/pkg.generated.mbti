@@ -64,6 +64,8 @@ pub(all) enum BookEntryKind {
   EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
+  MoonroboGapModeling
+  MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
   MoonClawReceipt

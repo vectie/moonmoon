@@ -488,6 +488,15 @@
       "confidence": 0.82,
       "path": "moonrobo/first-trusted-square/gap-remediation-modeling.json",
       "summary": "AllGapsStillBlocked with 6 MoonRobo gaps still blocking"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-review-packet",
+      "title": "MoonRobo selected-route simulation review packet",
+      "kind": "MoonroboSimulationReviewPacket",
+      "claim_kind": "Derived",
+      "confidence": 0.84,
+      "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
+      "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware HardwareDenied"
     }
   ],
   "review_queue": [

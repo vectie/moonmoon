@@ -144,6 +144,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON = (
     root / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json"
   )
+  materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
+    root / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
+  )
   materialize_moonbook_workspace.MISSION_HORIZON_JSON = (
     root / "output/mission/first_trusted_square_northeast_stepout_horizon.json"
   )
@@ -192,6 +195,12 @@ def materialize_temp_workspace(root: Path) -> None:
     materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON,
     [],
   )
+  moonrobo_simulation_review_packet = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
+      {},
+    )
+  )
   mission_horizon = load_json(materialize_moonbook_workspace.MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(
     materialize_moonbook_workspace.MISSION_TERRAIN_REMEDIATION_JSON,
@@ -212,6 +221,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_gap_receipts,
     moonrobo,
     moonrobo_gap_modeling,
+    moonrobo_simulation_review_packet,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

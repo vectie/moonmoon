@@ -275,6 +275,11 @@
   - claim: derived
   - confidence: 0.82
   - path: moonrobo/first-trusted-square/gap-remediation-modeling.json
+- moonrobo/first-trusted-square/simulation-review-packet: MoonRobo selected-route simulation review packet
+  - kind: moonrobo-simulation-review-packet
+  - claim: derived
+  - confidence: 0.84
+  - path: moonrobo/first-trusted-square/simulation-review-packet.json
 
 ## Review Queue
 

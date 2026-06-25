@@ -18,6 +18,8 @@ pub(all) enum BookEntryKind {
   EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
+  MoonroboGapModeling
+  MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
   MoonClawReceipt
@@ -118,6 +120,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     EnergyRemediationEvidence => "energy-remediation-evidence"
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
+    MoonroboGapModeling => "moonrobo-gap-modeling"
+    MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
     MoonClawReceipt => "moonclaw-receipt"

@@ -242,6 +242,37 @@ def update_moonrobo_gap_modeling_entry(
   book["entries"].append(next_entry)
 
 
+def moonrobo_simulation_review_packet_entry(
+  packet: dict[str, Any],
+) -> dict[str, Any]:
+  return {
+    "entry_id": "moonrobo/first-trusted-square/simulation-review-packet",
+    "title": "MoonRobo selected-route simulation review packet",
+    "kind": "MoonroboSimulationReviewPacket",
+    "claim_kind": "Derived",
+    "confidence": 0.84,
+    "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
+    "summary": (
+      f"{packet['robot_simulation_status']} {packet['route_id']} with "
+      f"{len(packet['remediation_margins'])} remediation margins, "
+      f"{len(packet['accepted_clearance_transitions'])} accepted clearance "
+      f"transitions, hardware {packet['hardware_state']}"
+    ),
+  }
+
+
+def update_moonrobo_simulation_review_packet_entry(
+  book: dict[str, Any],
+  packet: dict[str, Any],
+) -> None:
+  next_entry = moonrobo_simulation_review_packet_entry(packet)
+  for index, entry in enumerate(book["entries"]):
+    if entry["entry_id"] == next_entry["entry_id"]:
+      book["entries"][index] = next_entry
+      return
+  book["entries"].append(next_entry)
+
+
 def update_moonrobo(
   moonrobo: list[dict[str, Any]],
   plan: dict[str, Any],
@@ -997,6 +1028,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_moonclaw_gap_task_entry(book, gap_task)
   update_moonclaw_gap_receipt_entry(book, gap_receipt)
   update_moonrobo_gap_modeling_entry(book, modeling_pass)
+  update_moonrobo_simulation_review_packet_entry(book, simulation_packet)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)

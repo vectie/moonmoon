@@ -1,0 +1,178 @@
+{
+  "entry": {
+    "entry_id": "moonrobo/first-trusted-square/simulation-review-packet",
+    "title": "MoonRobo selected-route simulation review packet",
+    "kind": "MoonroboSimulationReviewPacket",
+    "claim_kind": "Derived",
+    "confidence": 0.84,
+    "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
+    "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware HardwareDenied"
+  },
+  "payload": {
+    "packet_id": "moonrobo-simulation-review-packet/first-trusted-square/northeast-stepout",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_transition_file": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_clearance_transitions_accept.json",
+    "source_handoff_path": "output/moonrobo/first_trusted_square_handoffs.json",
+    "source_preview_path": "output/moonrobo/first_trusted_square_readiness_preview.json",
+    "route_id": "northeast-stepout",
+    "clearance_decision": "Allow",
+    "clearance_allows_simulation_review": true,
+    "mission_readiness_decision": "Block",
+    "robot_simulation_status": "simulation-blocked",
+    "simulation_state": "SimulationBlocked",
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_denied": true,
+    "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#northeast-stepout",
+    "accepted_clearance_transitions": [
+      {
+        "transition_id": "rabbita-clear-terrain-grade-northeast-stepout-accept",
+        "clearance_id": "clear-terrain-grade-northeast-stepout",
+        "reviewer_id": "operator/rabbita-clearance-review",
+        "reviewer_role": "mission-review",
+        "recorded_at_utc": "2026-06-25T00:00:00Z",
+        "source_evidence_refs": [
+          {
+            "ref_id": "rabbita-clear-terrain-grade-northeast-stepout-accept-source",
+            "entry_id": "mission/first-trusted-square/selected-route-clearance",
+            "path": "mission/first-trusted-square/selected-route-clearance.json",
+            "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
+          }
+        ],
+        "rationale": "Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture"
+      },
+      {
+        "transition_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept",
+        "clearance_id": "clear-illumination-confidence-northeast-stepout",
+        "reviewer_id": "operator/rabbita-clearance-review",
+        "reviewer_role": "power-thermal-review",
+        "recorded_at_utc": "2026-06-25T00:00:00Z",
+        "source_evidence_refs": [
+          {
+            "ref_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept-source",
+            "entry_id": "mission/first-trusted-square/selected-route-clearance",
+            "path": "mission/first-trusted-square/selected-route-clearance.json",
+            "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout"
+          }
+        ],
+        "rationale": "Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture"
+      },
+      {
+        "transition_id": "rabbita-clear-energy-margin-accept",
+        "clearance_id": "clear-energy-margin",
+        "reviewer_id": "operator/rabbita-clearance-review",
+        "reviewer_role": "power-thermal-review",
+        "recorded_at_utc": "2026-06-25T00:00:00Z",
+        "source_evidence_refs": [
+          {
+            "ref_id": "rabbita-clear-energy-margin-accept-source",
+            "entry_id": "mission/first-trusted-square/selected-route-clearance",
+            "path": "mission/first-trusted-square/selected-route-clearance.json",
+            "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
+          }
+        ],
+        "rationale": "Rabbita accept decision for clear-energy-margin: imported fixture"
+      },
+      {
+        "transition_id": "rabbita-clear-moonbook-review-northeast-stepout-accept",
+        "clearance_id": "clear-moonbook-review-northeast-stepout",
+        "reviewer_id": "operator/rabbita-clearance-review",
+        "reviewer_role": "mission-review",
+        "recorded_at_utc": "2026-06-25T00:00:00Z",
+        "source_evidence_refs": [
+          {
+            "ref_id": "rabbita-clear-moonbook-review-northeast-stepout-accept-source",
+            "entry_id": "mission/first-trusted-square/selected-route-clearance",
+            "path": "mission/first-trusted-square/selected-route-clearance.json",
+            "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout"
+          }
+        ],
+        "rationale": "Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture"
+      }
+    ],
+    "remediation_margins": [
+      {
+        "margin_id": "margin-terrain-northeast-stepout",
+        "check_id": "terrain-northeast-stepout",
+        "kind": "TerrainReadiness",
+        "decision": "Block",
+        "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "clearance_id": "clear-terrain-grade-northeast-stepout",
+        "clearance_status": "AcceptedEvidence",
+        "clearance_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout",
+        "margin_terms": [
+          "grade margin",
+          "roughness margin"
+        ],
+        "margin_summary": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
+      },
+      {
+        "margin_id": "margin-illumination-northeast-stepout",
+        "check_id": "illumination-northeast-stepout",
+        "kind": "IlluminationReadiness",
+        "decision": "Block",
+        "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+        "clearance_id": "clear-illumination-confidence-northeast-stepout",
+        "clearance_status": "AcceptedEvidence",
+        "clearance_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout",
+        "margin_terms": [
+          "terrain-shadow margin"
+        ],
+        "margin_summary": "local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation"
+      },
+      {
+        "margin_id": "margin-energy-window",
+        "check_id": "energy-window",
+        "kind": "EnergyReadiness",
+        "decision": "Block",
+        "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "clearance_id": "clear-energy-margin",
+        "clearance_status": "AcceptedEvidence",
+        "clearance_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin",
+        "margin_terms": [
+          "bounded margin",
+          "margin gap"
+        ],
+        "margin_summary": "energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation"
+      }
+    ],
+    "remaining_non_margin_blockers": [
+      {
+        "check_id": "corridor-scan-best-window",
+        "kind": "CorridorReadiness",
+        "decision": "Block",
+        "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+        "clearance_status": "NotClearanceGated",
+        "next_action": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+      },
+      {
+        "check_id": "moonbook-review",
+        "kind": "MoonBookReviewReadiness",
+        "decision": "Block",
+        "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "clearance_status": "AcceptedEvidence",
+        "next_action": "MoonBook review remains blocked because selected route northeast-stepout still has route or illumination blockers"
+      },
+      {
+        "check_id": "robot-simulation",
+        "kind": "RobotSimulationReadiness",
+        "decision": "Block",
+        "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
+        "clearance_status": "NotClearanceGated",
+        "next_action": "MoonRobo simulation stays blocked until mission readiness checks clear"
+      }
+    ],
+    "hardware_denial_invariants": [
+      "hardware_state must remain HardwareDenied",
+      "hardware_authority must remain moonmoon-safety-gate-only",
+      "MoonMoon must not emit hardware commands or physical execution authority",
+      "simulation readiness must be regenerated from mission checks, not from clearance acceptance alone",
+      "current hardware_state is HardwareDenied",
+      "current hardware_authority is moonmoon-safety-gate-only"
+    ],
+    "next_action": "Keep selected-route simulation blocked until terrain, horizon, and energy remediation margins clear in regenerated MoonMoon evidence; hardware remains denied by MoonMoon."
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}
