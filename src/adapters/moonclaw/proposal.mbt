@@ -603,6 +603,13 @@ pub fn ephemeris_acquisition_task(
 ) -> MoonClawEphemerisAcquisitionTask {
   let proposal = ephemeris_acquisition_proposal(dossier)
   let evidence = dossier.power_window_evidence
+  let source_inventory_state = if evidence.has_time_window_ephemeris {
+    "\{evidence.source_files.length()} ready source files"
+  } else {
+    "\{evidence.source_files.length()} candidate source files; checksums pending"
+  }
+  let source_inventory_ready = evidence.has_time_window_ephemeris &&
+    evidence.source_status == "ready"
   let state = if evidence.has_time_window_ephemeris &&
     evidence.source_status == "ready" {
     Accepted
@@ -621,9 +628,8 @@ pub fn ephemeris_acquisition_task(
       task_artifact(
         "source-discovery-record", "data/sources/lunar_ephemeris/README.md", "operator-or-moonclaw-source-agent",
         "official ephemeris or illumination source family selected with citation",
-        "placeholder source family, exact kernels and checksums pending", false,
-        "exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned",
-        "source-acquisition plan must name the exact official files before energy can unblock",
+        source_inventory_state, source_inventory_ready, "official kernel candidates are named, but temporal coverage, byte counts, checksums, and local files are not pinned",
+        "source-acquisition plan must pin exact official files before energy can unblock",
       ),
       task_artifact(
         "power-window-json",

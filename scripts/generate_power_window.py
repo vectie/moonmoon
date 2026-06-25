@@ -60,6 +60,9 @@ COMPUTATION_FIELDS = {
     "status": str,
 }
 
+ALLOWED_SOURCE_FILE_STATUSES = {"missing", "candidate", "ready"}
+ALLOWED_MISSING_COMPUTATION_STATUSES = {"not-computed", "blocked"}
+
 
 def read_evidence() -> dict[str, Any]:
     with SOURCE.open(encoding="utf-8") as handle:
@@ -74,6 +77,7 @@ def read_evidence() -> dict[str, Any]:
     for reason in evidence["reasons"]:
         if not isinstance(reason, str):
             raise SystemExit(f"{SOURCE.relative_to(ROOT)} reasons must be strings")
+    seen_source_file_ids: set[str] = set()
     for source_file in evidence["source_files"]:
         if not isinstance(source_file, dict):
             raise SystemExit(f"{SOURCE.relative_to(ROOT)} source_files must be objects")
@@ -84,6 +88,23 @@ def read_evidence() -> dict[str, Any]:
                 raise SystemExit(
                     f"{SOURCE.relative_to(ROOT)} source_files field {field!r} has wrong type"
                 )
+        file_id = source_file["file_id"]
+        if file_id in seen_source_file_ids:
+            raise SystemExit(f"{SOURCE.relative_to(ROOT)} repeats source_files file_id {file_id!r}")
+        seen_source_file_ids.add(file_id)
+        if source_file["status"] not in ALLOWED_SOURCE_FILE_STATUSES:
+            raise SystemExit(
+                f"{SOURCE.relative_to(ROOT)} source_files entry {file_id!r} has unknown status"
+            )
+        if source_file["status"] == "ready":
+            if source_file["sha256"] == "" or source_file["bytes"] <= 0:
+                raise SystemExit(
+                    f"{SOURCE.relative_to(ROOT)} ready source file {file_id!r} must pin checksum and bytes"
+                )
+        elif source_file["sha256"] != "" or source_file["bytes"] != 0:
+            raise SystemExit(
+                f"{SOURCE.relative_to(ROOT)} non-ready source file {file_id!r} must leave checksum and bytes pending"
+            )
     for field, expected_type in COMPUTATION_FIELDS.items():
         if field not in evidence["computation"]:
             raise SystemExit(f"{SOURCE.relative_to(ROOT)} computation missing {field!r}")
@@ -94,7 +115,7 @@ def read_evidence() -> dict[str, Any]:
             raise SystemExit("missing ephemeris evidence must not verify available energy")
         if evidence["source_sha256"] != "" or evidence["source_bytes"] != 0:
             raise SystemExit("missing ephemeris evidence must leave source checksum pending")
-        if evidence["computation"]["status"] not in {"not-computed", "blocked"}:
+        if evidence["computation"]["status"] not in ALLOWED_MISSING_COMPUTATION_STATUSES:
             raise SystemExit("missing ephemeris evidence must not report a completed computation")
         for source_file in evidence["source_files"]:
             if source_file["status"] == "ready":

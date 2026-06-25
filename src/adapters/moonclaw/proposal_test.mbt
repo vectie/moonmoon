@@ -68,6 +68,14 @@ test "first trusted square ephemeris task names executable source gates" {
   assert_eq(@moonclaw.task_blocked_artifact_count(task), 2)
   assert_true(
     task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "source-discovery-record" &&
+      artifact.current_state.contains("5 candidate source files") &&
+      !artifact.ready &&
+      artifact.blocking_reason.contains("checksums")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "power-window-json" &&
       artifact.current_state == "missing-source" &&
       !artifact.ready &&
@@ -101,6 +109,7 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
   let markdown = @moonclaw.first_trusted_square_ephemeris_tasks_markdown()
   assert_true(markdown.contains("MoonClaw Ephemeris Acquisition Tasks"))
   assert_true(markdown.contains("power-window-json"))
+  assert_true(markdown.contains("5 candidate source files"))
   assert_true(markdown.contains("missing-source"))
   assert_true(markdown.contains("ready: false"))
   assert_true(markdown.contains("blocking: current power-window evidence"))

@@ -164,7 +164,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Power Window Evidence"))
   assert_true(markdown.contains("source status: missing-source"))
   assert_true(markdown.contains("source sha256: pending"))
-  assert_true(markdown.contains("spice-kernel-set-pending"))
+  assert_true(markdown.contains("naif0012.tls"))
+  assert_true(markdown.contains("de440s.bsp"))
+  assert_true(markdown.contains("moon_de440_250416.tf"))
   assert_true(markdown.contains("south-pole-power-window-v1"))
   assert_true(markdown.contains("has time-windowed ephemeris: false"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
@@ -249,6 +251,8 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"window_id\": \"r-12-c+16\""))
   assert_true(text.contains("\"energy\""))
   assert_true(text.contains("\"power_window_evidence\""))
+  assert_true(text.contains("\"file_id\": \"de440s.bsp\""))
+  assert_true(text.contains("\"file_id\": \"moon_de440_250416.tf\""))
   assert_true(
     text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
   )

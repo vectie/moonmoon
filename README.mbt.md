@@ -112,7 +112,9 @@ The current power-window evidence is checked at
 `data/sources/lunar_ephemeris/first_trusted_square_power_window.json` and
 mirrored into MoonBit by `scripts/generate_power_window.py`. That source is a
 deliberate `missing-source` fixture: it makes the absent ephemeris input
-machine-readable and reproducible while keeping the energy gate blocked. The
+machine-readable and reproducible while keeping the energy gate blocked. It now
+names the candidate NAIF kernel inventory, while byte counts, checksums, local
+copies, and the computed time window remain pending. The
 same evidence is indexed as a standalone MoonBook `power-window-evidence` entry,
 so operators can inspect the source status separately from the derived energy
 budget. MoonBook also queues that entry directly while the evidence remains
