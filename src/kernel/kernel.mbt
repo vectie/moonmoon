@@ -1430,7 +1430,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-closeout-action-task",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Emit one bounded MoonClaw task from remediation-margin closeout",
       outcome: "The closeout policy turns into one operator-reviewable action packet with terrain escalation, horizon retry-with-new-evidence, and energy freeze dispositions instead of a new automatic refresh loop",
@@ -1442,7 +1442,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
         "scripts/check_moonclaw_remediation_margin_closeout_action_task.py",
       ],
-      done_when: "MoonClaw emits one remediation-margin closeout action task that consumes the closeout policy, preserves no-consume simulation and HardwareDenied authority, and names the terrain escalate, horizon retry-with-new-evidence, and energy freeze actions with required evidence",
+      done_when: "done: MoonClaw emits one remediation-margin closeout action task that consumes the closeout policy, preserves no-consume simulation and HardwareDenied authority, and names the terrain escalate, horizon retry-with-new-evidence, and energy freeze actions with required evidence",
+    },
+    {
+      task_id: "moonbook-remediation-margin-closeout-action-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin closeout action task into MoonBook",
+      outcome: "The bounded MoonClaw closeout action task becomes durable workspace evidence beside the closeout policy it consumes",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+        "scripts/check_moonbook_remediation_margin_closeout_action_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin closeout action task with NeedsReview state, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

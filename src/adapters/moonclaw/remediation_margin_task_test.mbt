@@ -347,6 +347,118 @@ test "MoonClaw remediation margin refresh follow-up renderers expose no-consume 
 }
 
 ///|
+test "first trusted square remediation margin closeout action task consumes policy" {
+  let task = @moonclaw.first_trusted_square_remediation_margin_closeout_action_task()
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/closeout-action-task",
+  )
+  assert_eq(
+    task.source_policy_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/cycle-closeout-policy",
+  )
+  assert_eq(
+    task.source_policy_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
+  )
+  assert_true(
+    task.source_closeout_status ==
+    @moonrobo.RemediationMarginCycleCloseoutStatus::NoConsumeCycleClosedForPolicy,
+  )
+  assert_true(
+    task.source_refresh_projection_status ==
+    @moonrobo.RemediationMarginRefreshProjectionStatus::NoConsumeRefreshSimulationBlocked,
+  )
+  assert_true(
+    task.source_followup_projection_status ==
+    @moonrobo.RemediationMarginRefreshFollowupProjectionStatus::NoConsumeFollowupRefreshSimulationBlocked,
+  )
+  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
+  assert_true(!task.may_consume_simulation)
+  assert_true(
+    task.simulation_state == @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_eq(task.refresh_cycle_count, 2)
+  assert_eq(task.blocker_count, 3)
+  assert_eq(task.blocking_refresh_ids[0], "refresh-terrain-northeast-stepout")
+  assert_eq(
+    task.blocking_refresh_ids[1],
+    "refresh-illumination-northeast-stepout",
+  )
+  assert_eq(task.blocking_refresh_ids[2], "refresh-energy-window")
+  assert_eq(task.blocking_margin_ids[0], "terrain-northeast-stepout")
+  assert_eq(task.blocking_margin_ids[1], "illumination-northeast-stepout")
+  assert_eq(task.blocking_margin_ids[2], "energy-window")
+  assert_eq(task.closeout_actions.length(), 3)
+  assert_true(
+    task.closeout_actions[0].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::EscalateToOperatorDecision,
+  )
+  assert_true(task.closeout_actions[0].command.contains("manual: review DEM"))
+  assert_true(
+    task.closeout_actions[1].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::RetryWithNewEvidence,
+  )
+  assert_true(
+    task.closeout_actions[1].command.contains(
+      "generate_selected_route_horizon.py --check",
+    ),
+  )
+  assert_true(
+    task.closeout_actions[2].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::FreezeUntilNewSourceEvidence,
+  )
+  assert_true(
+    task.closeout_actions[2].command.contains(
+      "manual: keep energy-window frozen",
+    ),
+  )
+  assert_true(
+    task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(task.hardware_denied)
+}
+
+///|
+test "MoonClaw remediation margin closeout action renderers expose bounded actions" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_closeout_action_tasks_markdown()
+  assert_true(
+    markdown.contains("MoonClaw Remediation Margin Closeout Action Tasks"),
+  )
+  assert_true(markdown.contains("NoConsumeCycleClosedForPolicy"))
+  assert_true(markdown.contains("NoConsumeRefreshSimulationBlocked"))
+  assert_true(markdown.contains("NoConsumeFollowupRefreshSimulationBlocked"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("needs-review"))
+  assert_true(markdown.contains("EscalateToOperatorDecision"))
+  assert_true(markdown.contains("RetryWithNewEvidence"))
+  assert_true(markdown.contains("FreezeUntilNewSourceEvidence"))
+  assert_true(markdown.contains("manual: review DEM"))
+  assert_true(markdown.contains("generate_selected_route_horizon.py --check"))
+  assert_true(markdown.contains("manual: keep energy-window frozen"))
+  assert_true(
+    markdown.contains("hardware authority: moonmoon-safety-gate-only"),
+  )
+  let json = @moonclaw.first_trusted_square_remediation_margin_closeout_action_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"task_id\": \"moonclaw/first-trusted-square/remediation-margin-v1/closeout-action-task\"",
+    ),
+  )
+  assert_true(
+    json.contains(
+      "\"source_closeout_status\": \"NoConsumeCycleClosedForPolicy\"",
+    ),
+  )
+  assert_true(json.contains("\"state\": \"NeedsReview\""))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}
+
+///|
 test "first trusted square remediation margin refresh follow-up receipt carries follow-up refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_receipt()
   assert_eq(
