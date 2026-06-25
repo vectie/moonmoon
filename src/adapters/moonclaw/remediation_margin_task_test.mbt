@@ -959,6 +959,105 @@ test "MoonClaw fresh evidence action receipt renderers expose provenance and saf
 }
 
 ///|
+test "first trusted square regenerated reviewed work item receipts consume action receipts" {
+  let receipts = @moonclaw.first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts()
+  let action_receipts = @moonclaw.first_trusted_square_remediation_margin_fresh_evidence_action_receipts()
+  assert_eq(receipts.length(), 3)
+  assert_true(
+    receipts.all(fn(receipt) {
+      receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted &&
+      receipt.source_fresh_evidence_task_id ==
+      "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task" &&
+      receipt.source_plan_id ==
+      "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan" &&
+      receipt.source_review_transition_id ==
+      "rabbita-moonclaw-remediation-margin-closeout-action-review-accept" &&
+      receipt.source_review_decision ==
+      @moonclaw.MoonClawCloseoutActionReviewDecision::Accept &&
+      receipt.source_action_state ==
+      @moonclaw.MoonClawRemediationMarginFreshEvidenceActionReceiptState::FreshEvidenceActionsRecorded &&
+      receipt.result_state ==
+      @moonclaw.MoonClawRemediationMarginReviewedWorkItemReceiptState::ReviewedWorkItemsCarriedForward &&
+      receipt.work_item_result.status ==
+      @moonclaw.MoonClawRemediationMarginReviewedWorkItemResultStatus::ReviewedWorkItemPendingFreshEvidence &&
+      receipt.source_receipt_ids.contains(receipt.source_receipt_id) &&
+      action_receipts.any(fn(action_receipt) {
+        action_receipt.receipt.receipt_id == receipt.source_action_receipt_id &&
+        action_receipt.action_result.action_id == receipt.source_action_id &&
+        action_receipt.source_work_item_id == receipt.source_work_item_id
+      }) &&
+      !receipt.may_consume_simulation &&
+      !receipt.automatic_refresh_loop_allowed &&
+      !receipt.hardware_authority_change &&
+      receipt.hardware_denied &&
+      receipt.validation_checks.all(fn(check) { check.passed })
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.margin_id == "terrain-northeast-stepout" &&
+      receipt.execution_mode == "operator-escalation" &&
+      receipt.work_item_result.disposition ==
+      @moonrobo.RemediationMarginCycleDisposition::EscalateToOperatorDecision
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.margin_id == "illumination-northeast-stepout" &&
+      receipt.execution_mode == "bounded-regeneration" &&
+      receipt.work_item_result.acceptance_check.contains(
+        "check_selected_route_horizon_model.py",
+      )
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.margin_id == "energy-window" &&
+      receipt.execution_mode == "manual-freeze-verification" &&
+      receipt.work_item_result.acceptance_check.contains(
+        "check_energy_margin_remediation.py",
+      )
+    }),
+  )
+}
+
+///|
+test "MoonClaw regenerated reviewed work item receipt renderers expose action provenance" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonClaw Remediation Margin Regenerated Reviewed Work Item Receipts",
+    ),
+  )
+  assert_true(markdown.contains("source-action-receipt-accepted"))
+  assert_true(markdown.contains("source-receipt-provenance-preserved"))
+  assert_true(markdown.contains("execution-mode-preserved"))
+  assert_true(markdown.contains("ReviewedWorkItemPendingFreshEvidence"))
+  assert_true(markdown.contains("operator-escalation"))
+  assert_true(markdown.contains("bounded-regeneration"))
+  assert_true(markdown.contains("manual-freeze-verification"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("automatic refresh loop allowed: false"))
+  assert_true(markdown.contains("hardware authority change: false"))
+  let json = @moonclaw.first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"source_action_receipt_id\""))
+  assert_true(json.contains("\"source_action_id\""))
+  assert_true(json.contains("\"execution_mode\": \"operator-escalation\""))
+  assert_true(json.contains("\"execution_mode\": \"bounded-regeneration\""))
+  assert_true(
+    json.contains("\"execution_mode\": \"manual-freeze-verification\""),
+  )
+  assert_true(
+    json.contains("\"result_state\": \"ReviewedWorkItemsCarriedForward\""),
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"automatic_refresh_loop_allowed\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}
+
+///|
 test "first trusted square remediation margin refresh follow-up receipt carries follow-up refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_receipt()
   assert_eq(
