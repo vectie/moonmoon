@@ -1172,7 +1172,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-refresh-projection",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Project refresh modeling into MoonRobo no-consume readiness",
       outcome: "MoonRobo turns the refresh modeling pass into an explicit projection that keeps simulation consumption blocked until terrain, horizon, and energy refresh evidence clears",
@@ -1184,7 +1184,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
         "scripts/check_moonrobo_remediation_margin_refresh_projection.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin refresh projection that consumes the refresh modeling pass, preserves AllRefreshesStillBlocking and no-consume simulation status, names the terrain/horizon/energy refresh blockers, and keeps HardwareDenied authority",
+      done_when: "done: MoonRobo emits a remediation-margin refresh projection that consumes the refresh modeling pass, preserves AllRefreshesStillBlocking and no-consume simulation status, names the terrain/horizon/energy refresh blockers, and keeps HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-projection-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh projection into MoonBook",
+      outcome: "The refresh no-consume projection becomes durable MoonBook evidence beside the refresh modeling pass it consumes",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
+        "scripts/check_moonbook_remediation_margin_refresh_projection_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin refresh projection with AllRefreshesStillBlocking source state, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority",
     },
   ]
 }

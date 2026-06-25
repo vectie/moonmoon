@@ -86,6 +86,8 @@ python3 scripts/generate_selected_route_terrain_remediation.py
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation margins json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_modeling.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation refresh modeling > "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_modeling.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation refresh modeling json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_modeling.json"
+/Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation refresh projection > "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_projection.md"
+/Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation refresh projection json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_projection.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation projection > "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation projection json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
@@ -134,6 +136,8 @@ printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_model
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_modeling.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_modeling.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_modeling.json"
+printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_projection.md"
+printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_projection.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.json"
 if [[ -n "$REVIEW_TRANSITIONS" ]]; then
