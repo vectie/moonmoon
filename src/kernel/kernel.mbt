@@ -582,7 +582,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-gap-remediation-modeling-pass",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Run the first modeling pass against MoonRobo blocker gaps",
       outcome: "The imported gap task drives bounded terrain, illumination, energy, MoonBook, and robot-simulation updates instead of only reporting blockers",
@@ -595,7 +595,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_readiness_preview.json", "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
         "scripts/check_moonrobo_gap_remediation_modeling.py",
       ],
-      done_when: "a bounded modeling pass consumes the imported gap task and either clears at least one MoonRobo blocker gap with regenerated evidence or records why every gap remains blocked",
+      done_when: "done: a bounded modeling pass consumes the imported gap task and either clears at least one MoonRobo blocker gap with regenerated evidence or records why every gap remains blocked",
+    },
+    {
+      task_id: "moonbook-gap-remediation-modeling-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize MoonRobo remediation modeling pass into MoonBook",
+      outcome: "The bounded gap remediation modeling pass becomes durable MoonBook evidence alongside the MoonClaw task and receipt",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_gap_remediation_modeling.json", "scripts/materialize_moonbook_workspace.py",
+        "scripts/import_rabbita_transitions.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/gap-remediation-modeling.json",
+        "scripts/check_moonbook_gap_remediation_modeling_workspace.py",
+      ],
+      done_when: "imported transition builds materialize the MoonRobo gap remediation modeling pass into the MoonBook workspace index, manifest, and per-entry payloads",
     },
   ]
 }

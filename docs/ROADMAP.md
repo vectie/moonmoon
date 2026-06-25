@@ -172,6 +172,10 @@ Current implementation status:
 - Rabbita Moon now exposes the imported MoonClaw gap task and receipt entries
   from the embedded MoonBook dossier, including remaining gap count and denied
   hardware authority, so operators can inspect them in the review surface.
+- The imported workflow now emits a MoonRobo gap remediation modeling pass. It
+  consumes the MoonClaw gap task and readiness preview, evaluates the bounded
+  terrain, illumination, energy, MoonBook, and simulation commands, and records
+  that every current gap remains blocked under denied hardware authority.
 
 ## Milestone 3: MoonBook Evidence Loop
 

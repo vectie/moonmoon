@@ -31,6 +31,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonrobo/first_trusted_square_readiness_preview.json",
     "moonrobo_preview_md": root
     / "output/moonrobo/first_trusted_square_readiness_preview.md",
+    "moonrobo_gap_modeling_json": root
+    / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
+    "moonrobo_gap_modeling_md": root
+    / "output/moonrobo/first_trusted_square_gap_remediation_modeling.md",
     "moonclaw_gap_task_json": root
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "moonclaw_gap_task_md": root
@@ -433,6 +437,110 @@ def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[st
   }
 
 
+def remediation_model_for_gap(gap: dict[str, Any]) -> dict[str, str]:
+  check_id = gap["check_id"]
+  if check_id == "terrain-northeast-stepout":
+    return {
+      "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+      "modeling_evidence_path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
+      "result_rationale": "bounded LOLA corridor modeling has a promoted northeast-stepout fixture, but the selected route still exceeds conservative terrain limits",
+    }
+  if check_id == "illumination-northeast-stepout":
+    return {
+      "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+      "modeling_evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "result_rationale": "current pass has no new local horizon or terrain-shadow evidence, so illumination remains blocked",
+    }
+  if check_id == "energy-window":
+    return {
+      "modeling_command": "python3 scripts/compute_power_window.py --check",
+      "modeling_evidence_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+      "result_rationale": "computed ephemeris-backed power evidence is present, but verified available energy remains below the conservative requirement",
+    }
+  if check_id == "moonbook-review":
+    return {
+      "modeling_command": "python3 scripts/materialize_moonbook_workspace.py --check",
+      "modeling_evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      "result_rationale": "operator clearance is accepted, but MoonBook review remains blocked while route, illumination, and energy evidence are still blocking",
+    }
+  return {
+    "modeling_command": "python3 scripts/check_moonrobo_readiness_preview.py",
+    "modeling_evidence_path": "output/moonrobo/first_trusted_square_readiness_preview.json",
+    "result_rationale": "MoonRobo simulation remains blocked because upstream mission-readiness gaps are still blocking",
+  }
+
+
+def remediation_result(
+  gap: dict[str, Any],
+) -> dict[str, Any]:
+  model = remediation_model_for_gap(gap)
+  return {
+    "check_id": gap["check_id"],
+    "kind": gap["kind"],
+    "input_evidence_path": gap["evidence_path"],
+    "modeling_evidence_path": model["modeling_evidence_path"],
+    "modeling_command": model["modeling_command"],
+    "result_status": "StillBlocking",
+    "cleared": False,
+    "clearance_status": gap["clearance_status"],
+    "result_rationale": model["result_rationale"],
+    "next_action": gap["next_action"],
+  }
+
+
+def moonrobo_gap_remediation_modeling_pass(
+  gap_task: dict[str, Any],
+  preview: dict[str, Any],
+) -> dict[str, Any]:
+  results = [remediation_result(gap) for gap in gap_task["blocker_gap_report"]]
+  cleared = [result for result in results if result["cleared"]]
+  still_blocking = [result for result in results if not result["cleared"]]
+  return {
+    "modeling_pass_id": "moonrobo/first-trusted-square/moonrobo-gap-remediation-v1/modeling-pass",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_task_id": gap_task["task_id"],
+    "source_preview_id": preview["preview_id"],
+    "route_id": preview["route_id"],
+    "state": "AllGapsStillBlocked" if still_blocking else "AllGapsCleared",
+    "blocker_gap_count": len(results),
+    "cleared_gap_count": len(cleared),
+    "still_blocking_gap_count": len(still_blocking),
+    "gap_results": results,
+    "commands_evaluated": sorted(
+      {result["modeling_command"] for result in results},
+    ),
+    "hardware_state": preview["hardware_state"],
+    "hardware_authority": preview["hardware_authority"],
+    "hardware_denied": preview["hardware_denied"],
+    "next_action": (
+      "Every current blocker remains blocking in this bounded pass; continue "
+      "terrain, local horizon, energy-margin, MoonBook review, and simulation "
+      "modeling before changing MoonRobo readiness."
+      if still_blocking
+      else "Regenerate MoonRobo handoffs from cleared evidence while hardware remains denied."
+    ),
+  }
+
+
+def render_moonrobo_gap_modeling_markdown(modeling: dict[str, Any]) -> str:
+  text = "# MoonRobo Gap Remediation Modeling Pass\n\n"
+  text += f"- pass: {modeling['modeling_pass_id']}\n"
+  text += f"- route: {modeling['route_id']}\n"
+  text += f"- state: {modeling['state']}\n"
+  text += f"- cleared gaps: {modeling['cleared_gap_count']}\n"
+  text += f"- still blocking gaps: {modeling['still_blocking_gap_count']}\n"
+  text += f"- hardware state: {modeling['hardware_state']}\n"
+  text += f"- hardware authority: {modeling['hardware_authority']}\n"
+  text += f"- next action: {modeling['next_action']}\n\n"
+  text += "## Gap Results\n\n"
+  for result in modeling["gap_results"]:
+    text += f"- {result['check_id']}: {result['result_status']}\n"
+    text += f"  - command: `{result['modeling_command']}`\n"
+    text += f"  - evidence: {result['modeling_evidence_path']}\n"
+    text += f"  - rationale: {result['result_rationale']}\n"
+  return text
+
+
 def gap_result(gap: dict[str, Any]) -> dict[str, Any]:
   return {
     "check_id": gap["check_id"],
@@ -449,6 +557,7 @@ def gap_result(gap: dict[str, Any]) -> dict[str, Any]:
 def moonclaw_gap_remediation_receipt(
   gap_task: dict[str, Any],
   preview: dict[str, Any],
+  modeling_pass: dict[str, Any],
 ) -> dict[str, Any]:
   gap_results = [gap_result(gap) for gap in gap_task["blocker_gap_report"]]
   validation_checks = [
@@ -460,11 +569,19 @@ def moonclaw_gap_remediation_receipt(
     },
     {
       "validation_id": "gap-accounting-complete",
-      "passed": len(gap_results) == preview["blocker_gap_count"],
+      "passed": len(gap_results) == preview["blocker_gap_count"]
+      and len(modeling_pass["gap_results"]) == preview["blocker_gap_count"],
       "note": (
-        f"{len(gap_results)} receipt gap results account for "
+        f"{len(gap_results)} receipt gap results and "
+        f"{len(modeling_pass['gap_results'])} modeling results account for "
         f"{preview['blocker_gap_count']} preview blocker gaps"
       ),
+    },
+    {
+      "validation_id": "modeling-pass-consumed",
+      "passed": modeling_pass["source_task_id"] == gap_task["task_id"]
+      and modeling_pass["source_preview_id"] == preview["preview_id"],
+      "note": f"receipt consumes modeling pass {modeling_pass['modeling_pass_id']}",
     },
     {
       "validation_id": "hardware-denial-preserved",
@@ -489,6 +606,7 @@ def moonclaw_gap_remediation_receipt(
       "accepted_outputs": [
         "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
         "output/moonrobo/first_trusted_square_readiness_preview.json",
+        "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
       ],
       "validation_notes": [
         f"{check['validation_id']}: "
@@ -500,6 +618,7 @@ def moonclaw_gap_remediation_receipt(
     "route_id": preview["route_id"],
     "source_task_id": gap_task["task_id"],
     "source_preview_id": preview["preview_id"],
+    "source_modeling_pass_id": modeling_pass["modeling_pass_id"],
     "remediation_state": "OpenGapsCarriedForward"
     if gap_results
     else "AllGapsCleared",
@@ -680,18 +799,28 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_moonrobo(moonrobo, plan)
   preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
   gap_task = moonclaw_gap_task(preview, transition_file)
-  gap_receipt = moonclaw_gap_remediation_receipt(gap_task, preview)
+  modeling_pass = moonrobo_gap_remediation_modeling_pass(gap_task, preview)
+  gap_receipt = moonclaw_gap_remediation_receipt(
+    gap_task,
+    preview,
+    modeling_pass,
+  )
   update_moonclaw_gap_task_entry(book, gap_task)
   update_moonclaw_gap_receipt_entry(book, gap_receipt)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
+  write_json(paths["moonrobo_gap_modeling_json"], [modeling_pass])
   write_json(paths["moonclaw_gap_task_json"], [gap_task])
   write_json(paths["moonclaw_gap_receipt_json"], [gap_receipt])
   paths["book_md"].write_text(render_book_markdown(book), encoding="utf-8")
   paths["moonrobo_md"].write_text(render_moonrobo_markdown(moonrobo), encoding="utf-8")
   paths["moonrobo_preview_md"].write_text(
     render_moonrobo_preview_markdown(preview),
+    encoding="utf-8",
+  )
+  paths["moonrobo_gap_modeling_md"].write_text(
+    render_moonrobo_gap_modeling_markdown(modeling_pass),
     encoding="utf-8",
   )
   paths["moonclaw_gap_task_md"].write_text(
