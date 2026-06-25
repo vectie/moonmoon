@@ -1205,7 +1205,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-refresh-projection-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin refresh projection in Rabbita",
       outcome: "Operators can inspect the durable MoonRobo refresh projection, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority from the review surface",
@@ -1216,7 +1216,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_projection_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin refresh projection with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin refresh projection with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-refresh-followup-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Issue the next remediation-margin refresh task from visible projection evidence",
+      outcome: "MoonClaw gets the next bounded refresh packet only after the no-consume refresh projection is durable and visible in Rabbita",
+      depends_on: [
+        "output/ui/rabbita/first_trusted_square.html", "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
+        "scripts/check_rabbita_remediation_margin_refresh_projection_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_followup_task.py",
+      ],
+      done_when: "MoonClaw emits the next remediation-margin refresh task from the durable refresh projection, preserving no-consume simulation status, terrain/horizon/energy blockers, and HardwareDenied authority",
     },
   ]
 }

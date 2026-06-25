@@ -600,6 +600,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshProjection() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-projection',
+    #|    'moonrobo/first-trusted-square/remediation-margin-refresh-projection',
+    #|    'remediation-margin-refresh-projection-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-projection',
@@ -761,6 +769,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
     #|  renderRemediationMarginRefreshModeling();
+    #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
     #|}
@@ -877,6 +886,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Modeling</h2>
     $|      <div id="remediation-margin-refresh-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh modeling pass with still-blocking refresh results, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Projection</h2>
+    $|      <div id="remediation-margin-refresh-projection" class="review-list" aria-label="MoonRobo remediation margin refresh projection with no-consume simulation status, terrain/horizon/energy refresh blockers, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Projection</h2>

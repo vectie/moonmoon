@@ -20,6 +20,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Remediation Margin Receipt"))
   assert_true(html.contains("Remediation Margin Modeling"))
   assert_true(html.contains("Remediation Margin Refresh Modeling"))
+  assert_true(html.contains("Remediation Margin Refresh Projection"))
   assert_true(html.contains("Remediation Margin Projection"))
   assert_true(html.contains("Selected Route Clearance"))
   assert_true(html.contains("selected-route-remediation"))
@@ -32,6 +33,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("remediation-margin-receipt"))
   assert_true(html.contains("remediation-margin-modeling"))
   assert_true(html.contains("remediation-margin-refresh-modeling"))
+  assert_true(html.contains("remediation-margin-refresh-projection"))
   assert_true(html.contains("remediation-margin-projection"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
@@ -54,6 +56,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function renderRemediationMarginModeling()"))
   assert_true(
     html.contains("function renderRemediationMarginRefreshModeling()"),
+  )
+  assert_true(
+    html.contains("function renderRemediationMarginRefreshProjection()"),
   )
   assert_true(html.contains("function renderRemediationMarginProjection()"))
   assert_true(html.contains("function renderClearanceReview()"))
@@ -91,6 +96,11 @@ test "Rabbita Moon page renders browser inspection controls" {
     ),
   )
   assert_true(
+    html.contains(
+      "moonrobo/first-trusted-square/remediation-margin-refresh-projection",
+    ),
+  )
+  assert_true(
     html.contains("moonrobo/first-trusted-square/remediation-margin-projection"),
   )
   assert_true(html.contains("RefreshesCarriedForward"))
@@ -100,6 +110,10 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("AllMarginsStillBlocking"))
   assert_true(html.contains("AllRefreshesStillBlocking"))
   assert_true(html.contains("NoConsumeSimulationBlocked"))
+  assert_true(html.contains("NoConsumeRefreshSimulationBlocked"))
+  assert_true(html.contains("refresh-terrain-northeast-stepout"))
+  assert_true(html.contains("refresh-illumination-northeast-stepout"))
+  assert_true(html.contains("refresh-energy-window"))
   assert_true(html.contains("3 ranked refreshes"))
   assert_true(html.contains("simulation-blocked"))
   assert_true(html.contains("may consume false"))
