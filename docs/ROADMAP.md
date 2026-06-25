@@ -11,9 +11,23 @@ Goal: make the repo express its purpose and first boundaries.
 - Decide initial package layout under `src/`.
 - Keep the root package thin.
 - Align `moon.mod` with the suite baseline when implementation begins.
+- Keep a standalone `src/kernel` package as the product spine for layers,
+  evidence gates, suite boundaries, and the active build queue.
 
 Done when a new contributor can understand what Moonmoon owns and what it
 deliberately leaves to Moontown, MoonClaw, MoonBook, Moondesk, and Moonrobo.
+
+Current rebuild stance:
+
+- MoonMoon is a standalone lunar world-model project, not a stale port of
+  `../tl-2022` and not a submodule of MoonTown.
+- `../tl-2022` contributes the high-level lesson that terrain products should
+  be DEM/source/evidence driven.
+- `../moontown` contributes the high-level lesson that durable truth should
+  live in documents, ledgers, review gates, and protocol boundaries.
+- The highest-leverage next implementation is route-window promotion and
+  ephemeris-backed power evidence, because these unblock robot-facing modeling
+  more than UI decoration or extra prose.
 
 ## Milestone 1: One Trusted Square
 

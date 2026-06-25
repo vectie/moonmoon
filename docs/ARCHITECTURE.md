@@ -19,6 +19,10 @@ data sources
 
 The first real implementation can follow this package shape:
 
+- `src/kernel`
+  Standalone MoonMoon product kernel. Names layer ownership, evidence gates,
+  MoonSuite boundaries, and the build queue that keeps the project focused on
+  the fastest path to a robot-facing lunar world model.
 - `src/core`
   Lunar identifiers, coordinates, tiles, terrain cells, provenance, uncertainty,
   and shared model types.
@@ -53,6 +57,7 @@ The root package can stay a thin facade once `src/` exists.
 
 The current implementation has started this shape with:
 
+- `src/kernel`
 - `src/core`
 - `src/dataset`
 - `src/terrain`
@@ -67,6 +72,12 @@ Each package owns typed contracts plus deterministic tests. The exported files
 under `output/` are generated artifacts, not hand-maintained source of truth.
 MoonBook workspace files are materialized from the generated site and MoonBook
 JSON dossiers by `scripts/materialize_moonbook_workspace.py`.
+
+The kernel sits above the first trusted-square proof slice. It is not a
+compatibility layer; it is the product-facing contract for the standalone
+project. If a future package does not help a kernel layer, clear an evidence
+gate, improve a suite boundary, or complete a build-queue task, it should not be
+added yet.
 
 ## Core Contracts
 

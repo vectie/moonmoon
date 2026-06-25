@@ -44,6 +44,8 @@ Run it with:
 
 ```bash
 moon run cmd/main
+moon run cmd/main -- kernel
+moon run cmd/main -- kernel json
 moon run cmd/main -- site summary
 moon run cmd/main -- json
 moon run cmd/main -- terrain fixture
@@ -127,6 +129,19 @@ provenance and uncertainty:
 - What would block a rover traverse, mining task, construction pad, or solar
   ridge plan?
 - What evidence should be written back to MoonBook?
+
+## Rebuild Direction
+
+MoonMoon is now treated as a standalone product with a small kernel before any
+viewer or robot integration grows around it. The kernel is the product spine:
+it names the model layers, evidence gates, MoonSuite boundaries, and highest
+priority build queue from the current executable site dossier.
+
+The current top priority is deliberately large rather than cosmetic: promote
+the best measured 9x9 corridor window into a terrain fixture, route candidate,
+MoonBook entry, MoonClaw receipt, and MoonRobo handoff with one route id. That
+closes the gap between "we found a better lunar window" and "the suite can
+reason about it as robot-facing evidence."
 
 ## Documents
 

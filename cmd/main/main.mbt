@@ -5,6 +5,8 @@ fn print_help() -> Unit {
     #|
     #|Commands:
     #|  moon run cmd/main
+    #|  moon run cmd/main -- kernel
+    #|  moon run cmd/main -- kernel json
     #|  moon run cmd/main -- site summary
     #|  moon run cmd/main -- site summary json
     #|  moon run cmd/main -- terrain fixture
@@ -35,6 +37,12 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("kernel") {
+    if output_json {
+      println(@kernel.system_kernel_json().stringify(indent=2))
+    } else {
+      println(@kernel.system_kernel_markdown())
+    }
   } else if args.contains("moonclaw") &&
     args.contains("ephemeris") &&
     args.contains("tasks") {
