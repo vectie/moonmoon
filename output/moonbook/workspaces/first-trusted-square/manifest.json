@@ -2,7 +2,7 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 75,
+  "entry_count": 76,
   "review_queue_count": 29,
   "review_transition_count": 30,
   "entry_paths": [
@@ -73,6 +73,7 @@
     "moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
     "moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
     "moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json",
+    "moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
     "moonclaw/first-trusted-square/ephemeris-receipts.json",
     "moonclaw/first-trusted-square/corridor-receipts.json",
     "moonclaw/first-trusted-square/moonrobo-gap-task.json",

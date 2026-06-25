@@ -1718,7 +1718,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-fresh-evidence-action-receipts-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize fresh-evidence action receipts into MoonBook",
       outcome: "Fresh-evidence action receipts become durable MoonBook workspace evidence before reviewed work item receipt regeneration or downstream simulation review",
@@ -1731,7 +1731,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
         "scripts/check_moonbook_remediation_margin_fresh_evidence_action_receipts_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-fresh-evidence-action-receipts-surface",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Surface fresh-evidence action receipts in Rabbita",
+      outcome: "Operators can inspect the materialized fresh-evidence action receipts before reviewed work item receipt regeneration or downstream simulation review",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
+        "scripts/check_moonbook_remediation_margin_fresh_evidence_action_receipts_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_fresh_evidence_action_receipts_surface.py",
+      ],
+      done_when: "Rabbita renders the fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, pending reviewed work item state, and HardwareDenied authority",
     },
   ]
 }
