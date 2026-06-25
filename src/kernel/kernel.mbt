@@ -867,7 +867,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-task-packet",
-      priority: 70,
+      priority: 20,
       lane: MissionLane,
       title: "Create a MoonClaw task packet for remaining remediation margins",
       outcome: "Terrain, local-horizon, and energy blockers become one executable evidence packet for collecting or modeling the next route-clearance inputs",
@@ -879,7 +879,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_task.json", "scripts/check_moonclaw_remediation_margin_task.py",
       ],
-      done_when: "MoonClaw has one task packet that preserves all 3 active margin blockers, ranks terrain/horizon/energy work, and keeps hardware authority denied",
+      done_when: "done: MoonClaw has one task packet that preserves all 3 active margin blockers, ranks terrain/horizon/energy work, and keeps hardware authority denied",
+    },
+    {
+      task_id: "moonbook-remediation-margin-task-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin task into MoonBook",
+      outcome: "The MoonClaw remediation-margin packet becomes durable workspace evidence linked to terrain, horizon, energy, and MoonRobo blocker reduction inputs",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_task.json", "output/moonbook/workspaces/first-trusted-square/index.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
+        "scripts/check_moonbook_remediation_margin_task_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin task with 3 active margin blockers and HardwareDenied authority preserved",
     },
   ]
 }
