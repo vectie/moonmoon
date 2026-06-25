@@ -186,7 +186,17 @@
         "safety_gate": "This task may schedule only the explicit retry, escalation, and freeze actions from the closeout policy; it must not emit another automatic follow-up refresh loop or authorize MoonRobo simulation consumption.",
         "next_action": "Review the terrain escalation, horizon retry-with-new-evidence, and energy freeze actions in one operator pass before any new MoonClaw remediation task is emitted."
       }
-    ]
+    ],
+    "review": {
+      "item_id": "moonclaw-remediation-margin-closeout-action-review",
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
+      "status": "NeedsReview",
+      "decision": "RequestEvidence",
+      "transition": null,
+      "hardware_authority_change": false,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only"
+    }
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

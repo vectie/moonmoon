@@ -108,6 +108,10 @@ MISSION_ENERGY_REMEDIATION_JSON = (
 )
 WORKSPACE = ROOT / "output/moonbook/workspaces/first-trusted-square"
 GENERATOR = "scripts/materialize_moonbook_workspace.py"
+CLOSEOUT_ACTION_REVIEW_ITEM_ID = "moonclaw-remediation-margin-closeout-action-review"
+CLOSEOUT_ACTION_ENTRY_ID = (
+  "moonclaw/first-trusted-square/remediation-margin-closeout-action-task"
+)
 
 
 def load_json(path: Path) -> Any:
@@ -156,6 +160,43 @@ def clearance_transition_by_id(
     for transition in review_transitions
     if transition["item_id"].startswith("clear-")
     and transition["decision"] in {"Accept", "Reject", "RequestEvidence"}
+  }
+
+
+def closeout_action_review_state(
+  review_transitions: list[dict[str, Any]],
+) -> dict[str, Any]:
+  transition = next(
+    (
+      item
+      for item in reversed(review_transitions)
+      if item.get("item_id") == CLOSEOUT_ACTION_REVIEW_ITEM_ID
+    ),
+    None,
+  )
+  if transition is None:
+    return {
+      "item_id": CLOSEOUT_ACTION_REVIEW_ITEM_ID,
+      "entry_id": CLOSEOUT_ACTION_ENTRY_ID,
+      "status": "NeedsReview",
+      "decision": "RequestEvidence",
+      "transition": None,
+      "hardware_authority_change": False,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+    }
+  return {
+    "item_id": CLOSEOUT_ACTION_REVIEW_ITEM_ID,
+    "entry_id": CLOSEOUT_ACTION_ENTRY_ID,
+    "status": transition["resulting_status"],
+    "decision": transition["decision"],
+    "transition": transition,
+    "hardware_authority_change": transition.get("hardware_authority_change", False),
+    "hardware_state": transition.get("hardware_state", "HardwareDenied"),
+    "hardware_authority": transition.get(
+      "hardware_authority",
+      "moonmoon-safety-gate-only",
+    ),
   }
 
 
@@ -445,6 +486,7 @@ def payload_for_entry(
     return {
       "primary_task": moonclaw_remediation_margin_closeout_action_tasks[0],
       "tasks": moonclaw_remediation_margin_closeout_action_tasks,
+      "review": closeout_action_review_state(book["review_transitions"]),
     }
   if kind == "MoonClawRemediationMarginRefreshFollowupReceipt":
     return {

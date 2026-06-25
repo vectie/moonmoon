@@ -102,6 +102,23 @@ def assert_closeout_action_workspace(root: Path) -> None:
   payload = entry_file["payload"]
   if payload["tasks"] != source:
     raise AssertionError("workspace payload diverges from generated task bundle")
+  review = payload["review"]
+  if review["item_id"] != "moonclaw-remediation-margin-closeout-action-review":
+    raise AssertionError(review)
+  if review["entry_id"] != ENTRY_ID:
+    raise AssertionError(review)
+  if review["status"] != "NeedsReview":
+    raise AssertionError(review)
+  if review["decision"] != "RequestEvidence":
+    raise AssertionError(review)
+  if review["transition"] is not None:
+    raise AssertionError(review)
+  if review["hardware_authority_change"] is not False:
+    raise AssertionError(review)
+  if review["hardware_state"] != "HardwareDenied":
+    raise AssertionError(review)
+  if review["hardware_authority"] != "moonmoon-safety-gate-only":
+    raise AssertionError(review)
   primary = payload["primary_task"]
   if primary != source[0]:
     raise AssertionError("primary task diverges from generated source")

@@ -11,6 +11,14 @@ from typing import Any
 
 import materialize_moonbook_workspace as workspace
 
+CLOSEOUT_ACTION_REVIEW_ITEM_ID = "moonclaw-remediation-margin-closeout-action-review"
+CLOSEOUT_ACTION_ENTRY_ID = (
+  "moonclaw/first-trusted-square/remediation-margin-closeout-action-task"
+)
+CLOSEOUT_ACTION_ENTRY_PATH = (
+  "moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json"
+)
+
 
 def load_json(path: Path) -> Any:
   with path.open("r", encoding="utf-8") as handle:
@@ -70,12 +78,44 @@ def imported_transitions(path: Path) -> list[dict[str, Any]]:
   else:
     raise ValueError(f"{path} must contain a transition array, transitions, or items")
   for transition in transitions:
-    item_id = transition.get("item_id", "")
-    if not item_id.startswith("clear-"):
-      raise ValueError(f"unsupported transition item_id {item_id!r}; expected clear-*")
-    if transition.get("decision") not in {"Accept", "Reject", "RequestEvidence"}:
-      raise ValueError(f"unsupported transition decision for {item_id!r}")
+    validate_imported_transition(transition)
   return transitions
+
+
+def validate_imported_transition(transition: dict[str, Any]) -> None:
+  item_id = transition.get("item_id", "")
+  decision = transition.get("decision")
+  if item_id.startswith("clear-"):
+    if decision not in {"Accept", "Reject", "RequestEvidence"}:
+      raise ValueError(f"unsupported transition decision for {item_id!r}")
+    return
+  if item_id != CLOSEOUT_ACTION_REVIEW_ITEM_ID:
+    raise ValueError(
+      f"unsupported transition item_id {item_id!r}; expected clear-* or "
+      f"{CLOSEOUT_ACTION_REVIEW_ITEM_ID!r}",
+    )
+  if decision not in {"Accept", "RequestEvidence", "Defer"}:
+    raise ValueError(f"unsupported closeout action review decision {decision!r}")
+  if transition.get("entry_id") != CLOSEOUT_ACTION_ENTRY_ID:
+    raise ValueError("closeout action review transition has unexpected entry_id")
+  if transition.get("hardware_authority_change") is not False:
+    raise ValueError("closeout action review must not change hardware authority")
+  if transition.get("hardware_state") != "HardwareDenied":
+    raise ValueError("closeout action review must preserve HardwareDenied")
+  if transition.get("hardware_authority") != "moonmoon-safety-gate-only":
+    raise ValueError("closeout action review must preserve MoonMoon safety authority")
+  refs = transition.get("source_evidence_refs", [])
+  if len(refs) != 1:
+    raise ValueError("closeout action review must carry one immutable evidence ref")
+  ref = refs[0]
+  if ref.get("entry_id") != CLOSEOUT_ACTION_ENTRY_ID:
+    raise ValueError("closeout action review ref has unexpected entry_id")
+  if ref.get("path") != CLOSEOUT_ACTION_ENTRY_PATH:
+    raise ValueError("closeout action review ref has unexpected path")
+  if not ref.get("immutable_uri", "").startswith(
+    "moonbook://moonmoon/first-trusted-square/"
+  ):
+    raise ValueError("closeout action review ref is not a MoonBook immutable URI")
 
 
 def transition_by_item(transitions: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -87,6 +127,8 @@ def status_for_decision(decision: str) -> str:
     return "Accepted"
   if decision == "Reject":
     return "Rejected"
+  if decision == "Defer":
+    return "Deferred"
   return "NeedsEvidence"
 
 
@@ -95,7 +137,9 @@ def merge_review_transitions(
   imported: list[dict[str, Any]],
 ) -> None:
   by_item = transition_by_item(imported)
-  known_items = {item["item_id"] for item in book["review_queue"]}
+  known_items = {
+    item["item_id"] for item in book["review_queue"]
+  } | {CLOSEOUT_ACTION_REVIEW_ITEM_ID}
   unknown = sorted(set(by_item) - known_items)
   if unknown:
     raise ValueError(f"transitions reference unknown review items: {', '.join(unknown)}")

@@ -1493,7 +1493,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-closeout-action-review-import",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Import remediation-margin closeout action review into MoonBook",
       outcome: "MoonBook can consume the Rabbita closeout-action review transition, preserve append-only evidence, and update the closeout action task review state without changing hardware authority",
@@ -1504,7 +1504,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "data/fixtures/rabbita_closeout_action_review_accept.json", "scripts/check_rabbita_closeout_action_review_import.py",
       ],
-      done_when: "Imported closeout action review transitions accept, request evidence, or defer the MoonClaw closeout action task in MoonBook with immutable evidence refs, reviewer identity, timestamp policy, append-only semantics, and HardwareDenied authority preserved",
+      done_when: "done: Imported closeout action review transitions accept, request evidence, or defer the MoonClaw closeout action task in MoonBook with immutable evidence refs, reviewer identity, timestamp policy, append-only semantics, and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-reviewed-action-plan",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit reviewed remediation-margin action plan",
+      outcome: "An accepted closeout-action review turns into one bounded MoonClaw action plan for terrain escalation, horizon retry-with-new-evidence, and energy freeze while preserving no-consume simulation and HardwareDenied authority",
+      depends_on: [
+        "data/fixtures/rabbita_closeout_action_review_accept.json", "scripts/check_rabbita_closeout_action_review_import.py",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_action_plan.py",
+      ],
+      done_when: "MoonClaw emits a reviewed remediation-margin action plan only after an accepted closeout action review, carrying terrain escalation, horizon retry-with-new-evidence, and energy freeze actions with no automatic refresh loop and HardwareDenied authority preserved",
     },
   ]
 }
