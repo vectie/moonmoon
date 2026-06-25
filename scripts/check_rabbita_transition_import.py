@@ -46,6 +46,9 @@ def assert_imported(root: Path) -> None:
   gap_receipt = load_json(
     root / "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
   )[0]
+  gap_modeling = load_json(
+    root / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
+  )[0]
   workspace_entry = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json",
@@ -57,6 +60,10 @@ def assert_imported(root: Path) -> None:
   workspace_gap_receipt = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
+  )
+  workspace_gap_modeling = load_json(
+    root
+    / "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/gap-remediation-modeling.json",
   )
   embedded = embedded_book(root / "output/ui/rabbita/first_trusted_square.html")
 
@@ -91,6 +98,8 @@ def assert_imported(root: Path) -> None:
     raise AssertionError("workspace MoonClaw gap task was not materialized")
   if workspace_gap_receipt["payload"]["primary_receipt"] != gap_receipt:
     raise AssertionError("workspace MoonClaw gap receipt was not materialized")
+  if workspace_gap_modeling["payload"]["primary_modeling_pass"] != gap_modeling:
+    raise AssertionError("workspace MoonRobo gap modeling was not materialized")
 
   clear_statuses = {
     item["item_id"]: item["status"]
@@ -132,6 +141,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_JSON = (
     root / "output/moonrobo/first_trusted_square_handoffs.json"
   )
+  materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON = (
+    root / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json"
+  )
   materialize_moonbook_workspace.WORKSPACE = (
     root / "output/moonbook/workspaces/first-trusted-square"
   )
@@ -166,6 +178,10 @@ def materialize_temp_workspace(root: Path) -> None:
     materialize_moonbook_workspace.MOONCLAW_CORRIDOR_RECEIPTS_JSON,
   )
   moonrobo = load_json(materialize_moonbook_workspace.MOONROBO_JSON)
+  moonrobo_gap_modeling = materialize_moonbook_workspace.load_optional_json(
+    materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON,
+    [],
+  )
   files = materialize_moonbook_workspace.workspace_files(
     site,
     book,
@@ -178,6 +194,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_corridor_receipts,
     moonclaw_gap_receipts,
     moonrobo,
+    moonrobo_gap_modeling,
   )
   materialize_moonbook_workspace.write_workspace(files)
 

@@ -176,6 +176,9 @@ Current implementation status:
   consumes the MoonClaw gap task and readiness preview, evaluates the bounded
   terrain, illumination, energy, MoonBook, and simulation commands, and records
   that every current gap remains blocked under denied hardware authority.
+- Imported transition builds now materialize that modeling pass into MoonBook
+  beside the gap task and receipt, so the bounded all-still-blocked result is
+  durable workspace evidence.
 
 ## Milestone 3: MoonBook Evidence Loop
 

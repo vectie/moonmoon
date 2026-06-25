@@ -599,7 +599,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-gap-remediation-modeling-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize MoonRobo remediation modeling pass into MoonBook",
       outcome: "The bounded gap remediation modeling pass becomes durable MoonBook evidence alongside the MoonClaw task and receipt",
@@ -611,7 +611,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/gap-remediation-modeling.json",
         "scripts/check_moonbook_gap_remediation_modeling_workspace.py",
       ],
-      done_when: "imported transition builds materialize the MoonRobo gap remediation modeling pass into the MoonBook workspace index, manifest, and per-entry payloads",
+      done_when: "done: imported transition builds materialize the MoonRobo gap remediation modeling pass into the MoonBook workspace index, manifest, and per-entry payloads",
+    },
+    {
+      task_id: "moonrobo-illumination-local-horizon-remediation",
+      priority: 70,
+      lane: RobotLane,
+      title: "Add local horizon evidence for the selected-route illumination gap",
+      outcome: "MoonRobo illumination readiness is driven by explicit local terrain-shadow evidence instead of a standing blocker note",
+      depends_on: [
+        "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv", "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+        "src/mission",
+      ],
+      evidence: [
+        "output/mission/first_trusted_square_northeast_stepout_horizon.json", "scripts/check_selected_route_horizon_model.py",
+      ],
+      done_when: "selected-route illumination readiness consumes a bounded local horizon model and either clears the illumination gap or records quantitative terrain-shadow evidence for why it remains blocked",
     },
   ]
 }
