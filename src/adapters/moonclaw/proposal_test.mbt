@@ -118,7 +118,7 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
 }
 
 ///|
-test "first trusted square corridor task names planned 9x9 search gates" {
+test "first trusted square corridor task names promoted 9x9 search gates" {
   let task = @moonclaw.first_trusted_square_corridor_expansion_task()
   assert_eq(
     task.task_id,

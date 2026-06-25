@@ -48,7 +48,7 @@ Current implementation status:
   reproducible 5x5 LOLA corridor ranking, so route promotion is tied to the
   whole measured search surface rather than one manually chosen sample.
 - `data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv` now pins
-  the planned 9x9 LOLA corridor scan as source evidence. It covers 81 measured
+  the active 9x9 LOLA corridor scan as source evidence. It covers 81 measured
   windows and still blocks every sampled local window, so route promotion waits
   for generated MoonBit and MoonBook promotion rather than changing the active
   mission result immediately.
