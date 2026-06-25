@@ -1,0 +1,57 @@
+# MoonClaw Remediation Margin Refresh Follow-Up Receipts
+
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt
+  - proposal: moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection
+  - status: accepted
+  - route: northeast-stepout
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task
+  - source refresh projection: moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection
+  - source modeling pass: moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass
+  - source modeling state: AllRefreshesStillBlocking
+  - projection status: NoConsumeRefreshSimulationBlocked
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - state: FollowupRefreshesCarriedForward
+  - follow-up actions: 3
+  - refreshed: 0
+  - still blocking: 3
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - next action: Execute the follow-up terrain, local-horizon, and energy refresh commands, rebuild the dossier, then regenerate refresh modeling and refresh projection evidence before simulation consumption can change.
+  - blocking refresh ids:
+    - refresh-terrain-northeast-stepout
+    - refresh-illumination-northeast-stepout
+    - refresh-energy-window
+  - blocking margin ids:
+    - terrain-northeast-stepout
+    - illumination-northeast-stepout
+    - energy-window
+  - validation:
+    - source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task
+    - refresh-projection-source-present: pass - source refresh projection moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection remains NoConsumeRefreshSimulationBlocked from AllRefreshesStillBlocking with may-consume=false
+    - followup-refresh-accounting-complete: pass - 3 receipt follow-up results account for 3 ranked actions
+    - result-paths-present: pass - every follow-up result carries projection, target, command, check, and evidence paths
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - followup-refreshes-carried-forward: pass - all current follow-up refresh actions are carried forward until refreshed evidence clears them
+  - follow-up results:
+    - 1. refresh-terrain-northeast-stepout: terrain-northeast-stepout - FollowupRefreshStillBlocking
+      - target: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - command: python3 scripts/generate_selected_route_terrain_remediation.py --check
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+      - current: follow-up refresh requested; refreshed evidence has not yet cleared this projection-derived blocker
+      - next action: Re-run the terrain refresh first because moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection still blocks simulation consumption on selected-route grade, roughness, and blocking-edge evidence.
+    - 2. refresh-illumination-northeast-stepout: illumination-northeast-stepout - FollowupRefreshStillBlocking
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+      - current: follow-up refresh requested; refreshed evidence has not yet cleared this projection-derived blocker
+      - next action: Re-run the local-horizon refresh after terrain so illumination evidence remains tied to bounded terrain-shadow geometry for northeast-stepout.
+    - 3. refresh-energy-window: energy-window - FollowupRefreshStillBlocking
+      - target: output/mission/first_trusted_square_energy_remediation.json
+      - evidence: output/mission/first_trusted_square_energy_remediation.json
+      - command: python3 scripts/check_energy_margin_remediation.py
+      - check: python3 scripts/check_energy_margin_remediation.py
+      - current: follow-up refresh requested; refreshed evidence has not yet cleared this projection-derived blocker
+      - next action: Re-run bounded energy refresh last because demand and reserve evidence should consume the refreshed terrain and local-horizon constraints for northeast-stepout.

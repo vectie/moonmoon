@@ -1252,7 +1252,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-refresh-followup-receipt-loop",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Close remediation-margin refresh follow-up task with a MoonClaw receipt",
       outcome: "Each projection-derived terrain, horizon, and energy follow-up refresh action can be proved executed or carried forward before MoonRobo refresh modeling changes",
@@ -1265,7 +1265,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
         "scripts/check_moonclaw_remediation_margin_refresh_followup_receipt.py",
       ],
-      done_when: "MoonClaw emits a remediation-margin refresh follow-up receipt that maps each visible follow-up terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
+      done_when: "done: MoonClaw emits a remediation-margin refresh follow-up receipt that maps each visible follow-up terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-followup-receipt-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh follow-up receipt in Rabbita",
+      outcome: "Operators can inspect the durable MoonClaw follow-up refresh receipt, still-blocking terrain/horizon/energy refresh results, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_followup_receipt.py",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_receipt_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh follow-up receipt with FollowupRefreshesCarriedForward state, 3 still-blocking follow-up refreshes, terrain/horizon/energy result ids, and HardwareDenied authority",
     },
   ]
 }
