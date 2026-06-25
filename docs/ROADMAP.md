@@ -147,6 +147,10 @@ Current implementation status:
   rejected, and request-evidence states render back into the controls and the
   next export JSON instead of resetting every clearance item to
   request-evidence.
+- Imported Rabbita clearance decisions now also generate a MoonRobo readiness
+  preview under `output/moonrobo/` during the import workflow. The preview lets
+  an all-accepted clearance fixture show selected-route clearance as allowed
+  while preserving blocked simulation readiness and denied hardware authority.
 
 ## Milestone 3: MoonBook Evidence Loop
 

@@ -37,6 +37,9 @@ def embedded_book(html_path: Path) -> dict[str, Any]:
 def assert_imported(root: Path) -> None:
   book = load_json(root / "output/moonbook/first_trusted_square_book.json")
   moonrobo = load_json(root / "output/moonrobo/first_trusted_square_handoffs.json")
+  preview = load_json(
+    root / "output/moonrobo/first_trusted_square_readiness_preview.json",
+  )
   workspace_entry = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json",
@@ -61,6 +64,12 @@ def assert_imported(root: Path) -> None:
     raise AssertionError(plan["accepted_items"])
   if {item["status"] for item in plan["items"]} != {"AcceptedEvidence"}:
     raise AssertionError(plan["items"])
+  if preview["route_id"] != "northeast-stepout":
+    raise AssertionError(preview["route_id"])
+  if preview["clearance_decision"] != "Allow":
+    raise AssertionError(preview["clearance_decision"])
+  if preview["hardware_state"] != "HardwareDenied":
+    raise AssertionError(preview["hardware_state"])
 
   if workspace_entry["payload"] != plan:
     raise AssertionError("workspace selected-route clearance was not materialized")

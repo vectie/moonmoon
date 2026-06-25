@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "project imported clearance decisions into a robot-facing simulation readiness preview",
+    next_action: "summarize the remaining MoonRobo blockers after imported clearance is accepted",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "reviewed simulation readiness projection for imported clearance states",
+      next_output: "MoonRobo readiness gap report after imported clearance",
     },
     {
       layer_id: "operator-viewer",
@@ -471,7 +471,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-imported-clearance-readiness-preview",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Project imported clearance decisions into a MoonRobo readiness preview",
       outcome: "Accepted operator clearance can be inspected as robot-facing readiness evidence while hardware authority stays denied",
@@ -481,8 +481,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "data/fixtures/rabbita_clearance_transitions_accept.json", "output/moonrobo/first_trusted_square_handoffs.json",
+        "scripts/check_moonrobo_readiness_preview.py",
       ],
-      done_when: "the all-accepted transition fixture regenerates a MoonRobo preview packet showing selected-route clearance allowed while physical execution remains denied until mission readiness gates clear",
+      done_when: "done: the all-accepted transition fixture regenerates a MoonRobo preview packet showing selected-route clearance allowed while physical execution remains denied until mission readiness gates clear",
+    },
+    {
+      task_id: "moonrobo-clearance-gap-report",
+      priority: 70,
+      lane: RobotLane,
+      title: "Report remaining MoonRobo blockers after imported clearance is accepted",
+      outcome: "Operators can see exactly which mission gates still block simulation after all selected-route clearance items are accepted",
+      depends_on: [
+        "scripts/import_rabbita_transitions.py", "scripts/check_moonrobo_readiness_preview.py",
+        "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_readiness_preview.json", "data/fixtures/rabbita_clearance_transitions_accept.json",
+      ],
+      done_when: "the imported-clearance preview includes a concise blocker gap report naming remaining terrain, illumination, energy, MoonBook, and robot-simulation gates with evidence paths and next actions",
     },
   ]
 }

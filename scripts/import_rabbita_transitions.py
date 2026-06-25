@@ -27,6 +27,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     "book_md": root / "output/moonbook/first_trusted_square_book.md",
     "moonrobo_json": root / "output/moonrobo/first_trusted_square_handoffs.json",
     "moonrobo_md": root / "output/moonrobo/first_trusted_square_handoffs.md",
+    "moonrobo_preview_json": root
+    / "output/moonrobo/first_trusted_square_readiness_preview.json",
+    "moonrobo_preview_md": root
+    / "output/moonrobo/first_trusted_square_readiness_preview.md",
     "rabbita_html": root / "output/ui/rabbita/first_trusted_square.html",
   }
 
@@ -149,6 +153,74 @@ def update_moonrobo(
       handoff["clearance_plan"] = plan
 
 
+def moonrobo_readiness_preview(
+  handoff: dict[str, Any],
+  transition_file: Path,
+) -> dict[str, Any]:
+  clearance = handoff["clearance_plan"]
+  execution = handoff["execution"]
+  readiness = handoff["mission_readiness"]
+  clearance_allows = clearance["decision"] == "Allow"
+  simulation_ready = readiness["decision"] == "Allow"
+  return {
+    "preview_id": f"moonrobo-readiness-preview/{handoff['site_id']}/{handoff['route_id']}",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_transition_file": str(transition_file),
+    "route_id": handoff["route_id"],
+    "clearance_decision": clearance["decision"],
+    "clearance_allows_simulation_review": clearance_allows,
+    "accepted_clearance_items": clearance["accepted_items"],
+    "blocking_clearance_items": clearance["blocking_items"],
+    "review_clearance_items": clearance["review_items"],
+    "rejected_clearance_items": clearance["rejected_items"],
+    "mission_readiness_decision": readiness["decision"],
+    "robot_simulation_status": readiness["robot_simulation_status"],
+    "simulation_state": execution["simulation_state"],
+    "hardware_state": execution["hardware_state"],
+    "hardware_authority": execution["authority"],
+    "hardware_denied": execution["hardware_state"] == "HardwareDenied",
+    "blocking_preconditions": execution["blocking_preconditions"],
+    "review_preconditions": execution["review_preconditions"],
+    "safety_summary": (
+      "selected-route clearance is allowed by imported operator decisions; "
+      "MoonRobo simulation readiness is still gated by mission preconditions "
+      "and MoonMoon keeps hardware execution denied"
+      if clearance_allows and not simulation_ready
+      else "selected-route clearance and mission readiness both allow only simulation consumption; hardware execution remains outside MoonMoon authority"
+      if clearance_allows
+      else "selected-route clearance still has blocking or review items; MoonRobo simulation remains gated and hardware execution remains denied"
+    ),
+  }
+
+
+def render_moonrobo_preview_markdown(preview: dict[str, Any]) -> str:
+  text = "# MoonRobo Imported Clearance Readiness Preview\n\n"
+  text += f"- preview: {preview['preview_id']}\n"
+  text += f"- route: {preview['route_id']}\n"
+  text += f"- clearance decision: {decision_label(preview['clearance_decision'])}\n"
+  text += (
+    "- clearance allows simulation review: "
+    f"{str(preview['clearance_allows_simulation_review']).lower()}\n"
+  )
+  text += (
+    "- mission readiness: "
+    f"{decision_label(preview['mission_readiness_decision'])}\n"
+  )
+  text += f"- robot simulation status: {preview['robot_simulation_status']}\n"
+  text += f"- simulation state: {preview['simulation_state']}\n"
+  text += f"- hardware state: {preview['hardware_state']}\n"
+  text += f"- hardware authority: {preview['hardware_authority']}\n"
+  text += f"- hardware denied: {str(preview['hardware_denied']).lower()}\n"
+  text += f"- safety summary: {preview['safety_summary']}\n\n"
+  text += "## Accepted Clearance Items\n\n"
+  for item in preview["accepted_clearance_items"]:
+    text += f"- {item}\n"
+  text += "\n## Blocking Preconditions\n\n"
+  for item in preview["blocking_preconditions"]:
+    text += f"- {item}\n"
+  return text
+
+
 def book_entry_kind_label(kind: str) -> str:
   out = []
   for index, char in enumerate(kind):
@@ -261,10 +333,16 @@ def apply_import(root: Path, transition_file: Path) -> None:
   plan = reviewed_clearance_plan(moonrobo, book)
   update_selected_route_entry(book, plan)
   update_moonrobo(moonrobo, plan)
+  preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
+  write_json(paths["moonrobo_preview_json"], preview)
   paths["book_md"].write_text(render_book_markdown(book), encoding="utf-8")
   paths["moonrobo_md"].write_text(render_moonrobo_markdown(moonrobo), encoding="utf-8")
+  paths["moonrobo_preview_md"].write_text(
+    render_moonrobo_preview_markdown(preview),
+    encoding="utf-8",
+  )
   html = paths["rabbita_html"].read_text(encoding="utf-8")
   paths["rabbita_html"].write_text(replace_embedded_book(html, book), encoding="utf-8")
 
