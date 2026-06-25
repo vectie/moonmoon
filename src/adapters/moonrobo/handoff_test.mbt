@@ -766,6 +766,102 @@ test "Moonrobo remediation margin refresh follow-up modeling consumes follow-up 
 }
 
 ///|
+test "Moonrobo remediation margin refresh follow-up projection blocks simulation consumption" {
+  let projection = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_projection()
+  assert_eq(
+    projection.projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-followup-projection",
+  )
+  assert_eq(
+    projection.source_modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-followup-modeling-pass",
+  )
+  assert_eq(
+    projection.source_modeling_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json",
+  )
+  assert_true(
+    projection.source_modeling_state
+    is @moonrobo.RemediationMarginRefreshFollowupModelingState::AllFollowupRefreshesStillBlocking,
+  )
+  assert_eq(
+    projection.source_receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt",
+  )
+  assert_eq(
+    projection.source_task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task",
+  )
+  assert_eq(
+    projection.source_refresh_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection",
+  )
+  assert_eq(projection.source_followup_state, "FollowupRefreshesCarriedForward")
+  assert_true(!projection.may_consume_simulation)
+  assert_true(
+    projection.projection_status
+    is @moonrobo.RemediationMarginRefreshFollowupProjectionStatus::NoConsumeFollowupRefreshSimulationBlocked,
+  )
+  assert_true(
+    projection.simulation_state
+    is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_eq(projection.followup_action_count, 3)
+  assert_eq(projection.refreshed_count, 0)
+  assert_eq(projection.still_blocking_count, 3)
+  assert_eq(projection.consumed_followup_result_ids.length(), 3)
+  assert_true(
+    projection.consumed_followup_result_ids.contains(
+      "refresh-terrain-northeast-stepout",
+    ),
+  )
+  assert_true(
+    projection.blocking_refresh_ids.contains(
+      "refresh-illumination-northeast-stepout",
+    ),
+  )
+  assert_true(projection.blocking_refresh_ids.contains("refresh-energy-window"))
+  assert_true(
+    projection.blocking_margin_ids.contains("terrain-northeast-stepout"),
+  )
+  assert_true(
+    projection.blocking_margin_ids.contains("illumination-northeast-stepout"),
+  )
+  assert_true(projection.blocking_margin_ids.contains("energy-window"))
+  assert_true(
+    projection.hardware_state
+    is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(projection.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(projection.hardware_denied)
+  assert_true(
+    projection.reason.contains("no-consume follow-up refresh projection"),
+  )
+  assert_true(projection.reason.contains("AllFollowupRefreshesStillBlocking"))
+  assert_true(projection.next_action.contains("do not let MoonRobo consume"))
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_projection_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonRobo Remediation Margin Refresh Follow-Up Projection",
+    ),
+  )
+  assert_true(markdown.contains("NoConsumeFollowupRefreshSimulationBlocked"))
+  assert_true(markdown.contains("AllFollowupRefreshesStillBlocking"))
+  assert_true(markdown.contains("simulation-blocked"))
+  assert_true(markdown.contains("refresh-terrain-northeast-stepout"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_projection_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(
+    json.contains(
+      "\"projection_status\": \"NoConsumeFollowupRefreshSimulationBlocked\"",
+    ),
+  )
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))

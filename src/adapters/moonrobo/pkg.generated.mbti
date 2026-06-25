@@ -41,6 +41,12 @@ pub fn first_trusted_square_remediation_margin_refresh_followup_modeling_pass() 
 
 pub fn first_trusted_square_remediation_margin_refresh_followup_modeling_passes() -> Array[RemediationMarginRefreshFollowupModelingPass]
 
+pub fn first_trusted_square_remediation_margin_refresh_followup_projection() -> RemediationMarginRefreshFollowupProjection
+
+pub fn first_trusted_square_remediation_margin_refresh_followup_projection_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_refresh_followup_projection_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_refresh_modeling_json() -> Json
 
 pub fn first_trusted_square_remediation_margin_refresh_modeling_markdown() -> String
@@ -79,6 +85,12 @@ pub fn remediation_margin_refresh_followup_modeling_result_status_label(Remediat
 
 pub fn remediation_margin_refresh_followup_modeling_state_label(RemediationMarginRefreshFollowupModelingState) -> String
 
+pub fn remediation_margin_refresh_followup_projection(RemediationMarginRefreshFollowupModelingPass, String) -> RemediationMarginRefreshFollowupProjection
+
+pub fn remediation_margin_refresh_followup_projection_json(RemediationMarginRefreshFollowupProjection) -> Json
+
+pub fn remediation_margin_refresh_followup_projection_status_label(RemediationMarginRefreshFollowupProjectionStatus) -> String
+
 pub fn remediation_margin_refresh_modeling_pass(String, String, String, String, String, String, String, Array[RemediationMarginRefreshModelingInput], MoonroboExecutionState, String, Bool) -> RemediationMarginRefreshModelingPass
 
 pub fn remediation_margin_refresh_modeling_result_status_label(RemediationMarginRefreshModelingResultStatus) -> String
@@ -104,6 +116,8 @@ pub fn render_remediation_margin_projection_markdown(RemediationMarginProjection
 pub fn render_remediation_margin_refresh_followup_modeling_json(Array[RemediationMarginRefreshFollowupModelingPass]) -> Json
 
 pub fn render_remediation_margin_refresh_followup_modeling_markdown(Array[RemediationMarginRefreshFollowupModelingPass]) -> String
+
+pub fn render_remediation_margin_refresh_followup_projection_markdown(RemediationMarginRefreshFollowupProjection) -> String
 
 pub fn render_remediation_margin_refresh_modeling_json(Array[RemediationMarginRefreshModelingPass]) -> Json
 
@@ -312,6 +326,38 @@ pub(all) enum RemediationMarginRefreshFollowupModelingState {
   AllFollowupRefreshesAccepted
   SomeFollowupRefreshesAccepted
   AllFollowupRefreshesStillBlocking
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginRefreshFollowupProjection {
+  projection_id : String
+  site_id : String
+  route_id : String
+  source_modeling_pass_id : String
+  source_modeling_path : String
+  source_modeling_state : RemediationMarginRefreshFollowupModelingState
+  source_receipt_id : String
+  source_task_id : String
+  source_refresh_projection_id : String
+  source_followup_state : String
+  may_consume_simulation : Bool
+  projection_status : RemediationMarginRefreshFollowupProjectionStatus
+  simulation_state : MoonroboExecutionState
+  followup_action_count : Int
+  refreshed_count : Int
+  still_blocking_count : Int
+  consumed_followup_result_ids : Array[String]
+  blocking_refresh_ids : Array[String]
+  blocking_margin_ids : Array[String]
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  reason : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginRefreshFollowupProjectionStatus {
+  FollowupRefreshSimulationConsumeAllowed
+  NoConsumeFollowupRefreshSimulationBlocked
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RemediationMarginRefreshModelingInput {

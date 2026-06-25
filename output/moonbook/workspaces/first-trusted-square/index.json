@@ -29,6 +29,7 @@
     "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
     "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
     "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json",
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
     "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
     "output/moonrobo/first_trusted_square_simulation_review_packet.json",
     "output/moonrobo/first_trusted_square_simulation_review_decision.json",
@@ -574,6 +575,15 @@
       "confidence": 0.7,
       "path": "moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json",
       "summary": "AllFollowupRefreshesStillBlocking with 3 still-blocking follow-up refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 refreshed, source receipt moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt, source projection moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection, no-consume simulation simulation-blocked, and hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection",
+      "title": "MoonRobo remediation-margin refresh follow-up projection for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboRemediationMarginRefreshFollowupProjection",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json",
+      "summary": "NoConsumeFollowupRefreshSimulationBlocked from AllFollowupRefreshesStillBlocking with 3 still-blocking follow-up refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",

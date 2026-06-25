@@ -1334,7 +1334,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-refresh-followup-projection",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Project follow-up refresh modeling into MoonRobo no-consume readiness",
       outcome: "MoonRobo turns the follow-up modeling pass into an explicit projection that keeps simulation consumption blocked until terrain, horizon, and energy follow-up refresh evidence clears",
@@ -1346,7 +1346,39 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
         "scripts/check_moonrobo_remediation_margin_refresh_followup_projection.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin refresh follow-up projection that consumes the follow-up modeling pass, preserves AllFollowupRefreshesStillBlocking and no-consume simulation status, names the terrain/horizon/energy follow-up blockers, and keeps HardwareDenied authority",
+      done_when: "done: MoonRobo emits a remediation-margin refresh follow-up projection that consumes the follow-up modeling pass, preserves AllFollowupRefreshesStillBlocking and no-consume simulation status, names the terrain/horizon/energy follow-up blockers, and keeps HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-followup-projection-workspace",
+      priority: 20,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh follow-up projection into MoonBook",
+      outcome: "The follow-up no-consume projection becomes durable MoonBook evidence beside the follow-up modeling pass it consumes",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json",
+        "scripts/check_moonrobo_remediation_margin_refresh_followup_projection.py",
+      ],
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh follow-up projection with AllFollowupRefreshesStillBlocking source state, no-consume simulation status, terrain/horizon/energy follow-up blockers, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-followup-projection-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh follow-up projection in Rabbita",
+      outcome: "Operators can inspect the durable follow-up projection, no-consume simulation status, terrain/horizon/energy follow-up blockers, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon", "scripts/check_moonrobo_remediation_margin_refresh_followup_projection.py",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_projection_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh follow-up projection with NoConsumeFollowupRefreshSimulationBlocked status, AllFollowupRefreshesStillBlocking source state, terrain/horizon/energy follow-up blockers, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }
