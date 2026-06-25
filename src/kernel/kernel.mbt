@@ -835,7 +835,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-simulation-blocker-reduction-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize simulation blocker reduction into MoonBook",
       outcome: "The non-margin blocker reduction pass becomes durable MoonBook evidence next to the decision it updates",
@@ -848,7 +848,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-blocker-reduction.json",
         "scripts/check_moonbook_simulation_blocker_reduction_workspace.py",
       ],
-      done_when: "simulation blocker reduction is indexed, materialized, and validated in MoonBook with closed and active blocker counts preserved",
+      done_when: "done: simulation blocker reduction is indexed, materialized, and validated in MoonBook with closed and active blocker counts preserved",
+    },
+    {
+      task_id: "rabbita-simulation-blocker-reduction-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface simulation blocker reduction in Rabbita",
+      outcome: "Operators can see the closed non-margin blockers, active robot-simulation blocker, and remaining remediation margins from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-blocker-reduction.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_blocker_reduction_surface.py",
+      ],
+      done_when: "Rabbita renders blocker-reduction evidence with closed count 2, active count 1, active robot-simulation blocker, and HardwareDenied authority",
     },
   ]
 }

@@ -285,6 +285,11 @@
   - claim: derived
   - confidence: 0.84
   - path: moonrobo/first-trusted-square/simulation-review-decision.json
+- moonrobo/first-trusted-square/simulation-blocker-reduction: MoonRobo simulation blocker reduction
+  - kind: moonrobo-simulation-blocker-reduction
+  - claim: derived
+  - confidence: 0.84
+  - path: moonrobo/first-trusted-square/simulation-blocker-reduction.json
 
 ## Review Queue
 

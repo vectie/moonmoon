@@ -150,6 +150,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_DECISION_JSON = (
     root / "output/moonrobo/first_trusted_square_simulation_review_decision.json"
   )
+  materialize_moonbook_workspace.MOONROBO_SIMULATION_BLOCKER_REDUCTION_JSON = (
+    root / "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json"
+  )
   materialize_moonbook_workspace.MISSION_HORIZON_JSON = (
     root / "output/mission/first_trusted_square_northeast_stepout_horizon.json"
   )
@@ -210,6 +213,12 @@ def materialize_temp_workspace(root: Path) -> None:
       {},
     )
   )
+  moonrobo_simulation_blocker_reduction = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_SIMULATION_BLOCKER_REDUCTION_JSON,
+      {},
+    )
+  )
   mission_horizon = load_json(materialize_moonbook_workspace.MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(
     materialize_moonbook_workspace.MISSION_TERRAIN_REMEDIATION_JSON,
@@ -232,6 +241,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_gap_modeling,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
+    moonrobo_simulation_blocker_reduction,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

@@ -315,6 +315,37 @@ def update_moonrobo_simulation_review_decision_entry(
   book["entries"].append(next_entry)
 
 
+def moonrobo_simulation_blocker_reduction_entry(
+  reduction: dict[str, Any],
+) -> dict[str, Any]:
+  return {
+    "entry_id": "moonrobo/first-trusted-square/simulation-blocker-reduction",
+    "title": "MoonRobo simulation blocker reduction",
+    "kind": "MoonroboSimulationBlockerReduction",
+    "claim_kind": "Derived",
+    "confidence": 0.84,
+    "path": "moonrobo/first-trusted-square/simulation-blocker-reduction.json",
+    "summary": (
+      f"{reduction['closed_non_margin_blocker_count']} closed non-margin blockers, "
+      f"{reduction['active_non_margin_blocker_count']} active non-margin blockers, "
+      f"{reduction['blocking_margin_count']} remediation margins still blocking, "
+      f"hardware authority denied at {reduction['hardware_state']}"
+    ),
+  }
+
+
+def update_moonrobo_simulation_blocker_reduction_entry(
+  book: dict[str, Any],
+  reduction: dict[str, Any],
+) -> None:
+  next_entry = moonrobo_simulation_blocker_reduction_entry(reduction)
+  for index, entry in enumerate(book["entries"]):
+    if entry["entry_id"] == next_entry["entry_id"]:
+      book["entries"][index] = next_entry
+      return
+  book["entries"].append(next_entry)
+
+
 def update_moonrobo(
   moonrobo: list[dict[str, Any]],
   plan: dict[str, Any],
@@ -1318,6 +1349,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_moonrobo_gap_modeling_entry(book, modeling_pass)
   update_moonrobo_simulation_review_packet_entry(book, simulation_packet)
   update_moonrobo_simulation_review_decision_entry(book, simulation_decision)
+  update_moonrobo_simulation_blocker_reduction_entry(book, blocker_reduction)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
