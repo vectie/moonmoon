@@ -2,7 +2,7 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 53,
+  "entry_count": 54,
   "review_queue_count": 29,
   "review_transition_count": 29,
   "entry_paths": [
@@ -48,6 +48,7 @@
     "mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
     "mission/first-trusted-square/power-window-evidence.json",
     "mission/first-trusted-square/energy-window.json",
+    "mission/first-trusted-square/energy-remediation.json",
     "mission/first-trusted-square/selected-route-clearance.json",
     "moonrobo/first-trusted-square/handoffs.json",
     "moonclaw/first-trusted-square/proposals.json",

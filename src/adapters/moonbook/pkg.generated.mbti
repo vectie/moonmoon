@@ -61,6 +61,7 @@ pub(all) enum BookEntryKind {
   TerrainRemediationEvidence
   PowerWindowEvidence
   EnergyWindow
+  EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
   MoonClawProposal

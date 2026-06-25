@@ -694,7 +694,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-energy-remediation-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize selected-route energy remediation into MoonBook",
       outcome: "The bounded selected-route energy remediation artifact becomes durable MoonBook workspace evidence next to route, horizon, terrain, and robot readiness packets",
@@ -706,7 +706,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/energy-remediation.json",
         "scripts/check_moonbook_energy_remediation_workspace.py",
       ],
-      done_when: "selected-route energy remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
+      done_when: "done: selected-route energy remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
+    },
+    {
+      task_id: "rabbita-remediation-evidence-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface selected-route remediation evidence in Rabbita",
+      outcome: "Rabbita exposes the materialized terrain, horizon, and energy remediation artifacts from the selected-route review flow instead of only listing clearance status",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
+        "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-horizon.json",
+        "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/energy-remediation.json",
+        "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_evidence_surface.py",
+      ],
+      done_when: "Rabbita review output links each selected-route remediation artifact and displays the quantitative blocker margin needed for operator review",
     },
   ]
 }

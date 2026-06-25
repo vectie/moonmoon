@@ -215,6 +215,11 @@
   - claim: derived
   - confidence: 0.45
   - path: mission/first-trusted-square/energy-window.json
+- energy-remediation/first-trusted-square/northeast-stepout: Energy remediation evidence for Northeast 9x9 step-out candidate
+  - kind: energy-remediation-evidence
+  - claim: derived
+  - confidence: 0.66
+  - path: mission/first-trusted-square/energy-remediation.json
 - mission/first-trusted-square/selected-route-clearance: Selected route clearance plan for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: selected-route-clearance
   - claim: derived

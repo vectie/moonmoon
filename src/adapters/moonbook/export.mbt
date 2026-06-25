@@ -15,6 +15,7 @@ pub(all) enum BookEntryKind {
   TerrainRemediationEvidence
   PowerWindowEvidence
   EnergyWindow
+  EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
   MoonClawProposal
@@ -114,6 +115,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     TerrainRemediationEvidence => "terrain-remediation-evidence"
     PowerWindowEvidence => "power-window-evidence"
     EnergyWindow => "energy-window"
+    EnergyRemediationEvidence => "energy-remediation-evidence"
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
@@ -814,6 +816,23 @@ fn energy_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn selected_route_energy_remediation_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let route = primary_route_candidate(dossier)
+  let remediation = @mission.first_trusted_square_energy_remediation()
+  {
+    entry_id: "energy-remediation/\{dossier.site.site_id}/\{route.route_id}",
+    title: "Energy remediation evidence for \{route.label}",
+    kind: EnergyRemediationEvidence,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: remediation.confidence,
+    path: "mission/\{dossier.site.site_id}/energy-remediation.json",
+    summary: "\{@mission.energy_remediation_decision_label(remediation)} with bounded margin \{remediation.bounded_margin_wh} Wh and margin gap \{remediation.margin_gap_wh} Wh from \{remediation.power_window_source_path}",
+  }
+}
+
+///|
 fn power_window_evidence_entry(dossier : @site.SiteDossier) -> BookEntry {
   let evidence = dossier.power_window_evidence
   {
@@ -1190,6 +1209,7 @@ fn book_entries(
   entries.push(selected_route_terrain_remediation_entry(dossier))
   entries.push(power_window_evidence_entry(dossier))
   entries.push(energy_entry(dossier))
+  entries.push(selected_route_energy_remediation_entry(dossier))
   entries.push(selected_route_clearance_entry(dossier, clearance_transitions))
   entries.push(moonrobo_handoff_entry(dossier, clearance_transitions))
   entries.push(moonclaw_proposal_entry(dossier))

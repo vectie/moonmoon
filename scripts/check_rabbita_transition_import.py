@@ -151,6 +151,9 @@ def rebase_materializer(root: Path) -> None:
     root
     / "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json"
   )
+  materialize_moonbook_workspace.MISSION_ENERGY_REMEDIATION_JSON = (
+    root / "output/mission/first_trusted_square_energy_remediation.json"
+  )
   materialize_moonbook_workspace.WORKSPACE = (
     root / "output/moonbook/workspaces/first-trusted-square"
   )
@@ -193,6 +196,9 @@ def materialize_temp_workspace(root: Path) -> None:
   mission_terrain_remediation = load_json(
     materialize_moonbook_workspace.MISSION_TERRAIN_REMEDIATION_JSON,
   )
+  mission_energy_remediation = load_json(
+    materialize_moonbook_workspace.MISSION_ENERGY_REMEDIATION_JSON,
+  )
   files = materialize_moonbook_workspace.workspace_files(
     site,
     book,
@@ -208,6 +214,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_gap_modeling,
     mission_horizon,
     mission_terrain_remediation,
+    mission_energy_remediation,
   )
   materialize_moonbook_workspace.write_workspace(files)
 
