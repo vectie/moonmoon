@@ -993,7 +993,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-projection-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin projection into MoonBook",
       outcome: "The MoonRobo no-consume remediation-margin projection becomes durable workspace evidence beside the modeling pass it consumes",
@@ -1006,7 +1006,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
         "scripts/check_moonbook_remediation_margin_projection_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin projection with no-consume simulation status, still-blocking margin ids, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin projection with no-consume simulation status, still-blocking margin ids, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-projection-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin projection in Rabbita",
+      outcome: "Operators can inspect MoonRobo no-consume simulation status, still-blocking margin ids, and HardwareDenied authority from the Rabbita review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_projection_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin projection with NoConsumeSimulationBlocked status, AllMarginsStillBlocking source state, terrain/horizon/energy blockers, and HardwareDenied authority",
     },
   ]
 }
