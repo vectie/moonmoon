@@ -16,6 +16,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Simulation Blocker Reduction"))
   assert_true(html.contains("Remediation Margin Task"))
   assert_true(html.contains("Remediation Margin Refresh Task"))
+  assert_true(html.contains("Remediation Margin Refresh Follow-Up Task"))
   assert_true(html.contains("Remediation Margin Refresh Receipt"))
   assert_true(html.contains("Remediation Margin Receipt"))
   assert_true(html.contains("Remediation Margin Modeling"))
@@ -29,6 +30,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("simulation-blocker-reduction"))
   assert_true(html.contains("remediation-margin-task"))
   assert_true(html.contains("remediation-margin-refresh-task"))
+  assert_true(html.contains("remediation-margin-refresh-followup-task"))
   assert_true(html.contains("remediation-margin-refresh-receipt"))
   assert_true(html.contains("remediation-margin-receipt"))
   assert_true(html.contains("remediation-margin-modeling"))
@@ -51,6 +53,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function renderSimulationBlockerReduction()"))
   assert_true(html.contains("function renderRemediationMarginTask()"))
   assert_true(html.contains("function renderRemediationMarginRefreshTask()"))
+  assert_true(
+    html.contains("function renderRemediationMarginRefreshFollowupTask()"),
+  )
   assert_true(html.contains("function renderRemediationMarginRefreshReceipt()"))
   assert_true(html.contains("function renderRemediationMarginReceipt()"))
   assert_true(html.contains("function renderRemediationMarginModeling()"))
@@ -77,6 +82,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains(
       "moonclaw/first-trusted-square/remediation-margin-refresh-task",
+    ),
+  )
+  assert_true(
+    html.contains(
+      "moonclaw/first-trusted-square/remediation-margin-refresh-followup-task",
     ),
   )
   assert_true(
@@ -111,6 +121,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("AllRefreshesStillBlocking"))
   assert_true(html.contains("NoConsumeSimulationBlocked"))
   assert_true(html.contains("NoConsumeRefreshSimulationBlocked"))
+  assert_true(html.contains("3 blocking refreshes"))
   assert_true(html.contains("refresh-terrain-northeast-stepout"))
   assert_true(html.contains("refresh-illumination-northeast-stepout"))
   assert_true(html.contains("refresh-energy-window"))

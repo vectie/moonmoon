@@ -568,6 +568,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshFollowupTask() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-followup-task',
+    #|    'moonclaw/first-trusted-square/remediation-margin-refresh-followup-task',
+    #|    'remediation-margin-refresh-followup-task-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshReceipt() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-receipt',
@@ -765,6 +773,7 @@ fn app_script() -> String {
     #|  renderSimulationBlockerReduction();
     #|  renderRemediationMarginTask();
     #|  renderRemediationMarginRefreshTask();
+    #|  renderRemediationMarginRefreshFollowupTask();
     #|  renderRemediationMarginRefreshReceipt();
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
@@ -870,6 +879,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Task</h2>
     $|      <div id="remediation-margin-refresh-task" class="review-list" aria-label="MoonClaw remediation margin refresh task with no-consume projection status, ranked evidence refreshes, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Follow-Up Task</h2>
+    $|      <div id="remediation-margin-refresh-followup-task" class="review-list" aria-label="MoonClaw remediation margin refresh follow-up task with no-consume refresh projection status, terrain/horizon/energy refresh blockers, target commands, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Receipt</h2>

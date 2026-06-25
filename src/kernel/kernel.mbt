@@ -1236,7 +1236,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-refresh-followup-task-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin refresh follow-up task in Rabbita",
       outcome: "Operators can inspect the projection-derived MoonClaw follow-up refresh packet, blocking refresh ids, target commands, and HardwareDenied authority from the review surface",
@@ -1248,7 +1248,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_task_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin refresh follow-up task with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, follow-up target commands, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin refresh follow-up task with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, follow-up target commands, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-refresh-followup-receipt-loop",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Close remediation-margin refresh follow-up task with a MoonClaw receipt",
+      outcome: "Each projection-derived terrain, horizon, and energy follow-up refresh action can be proved executed or carried forward before MoonRobo refresh modeling changes",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_task_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_followup_receipt.py",
+      ],
+      done_when: "MoonClaw emits a remediation-margin refresh follow-up receipt that maps each visible follow-up terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
     },
   ]
 }
