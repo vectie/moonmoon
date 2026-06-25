@@ -215,6 +215,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--warn) 52%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--warn);
     #|}
+    #|.remediation-margin-receipt-row {
+    #|  border-color: color-mix(in srgb, var(--ok) 44%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--ok);
+    #|}
     #|.decision-group {
     #|  display: grid;
     #|  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -536,6 +540,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginReceipt() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-receipt',
+    #|    'moonclaw/first-trusted-square/remediation-margin-receipt',
+    #|    'remediation-margin-receipt-row'
+    #|  );
+    #|}
+    #|
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
@@ -684,6 +696,7 @@ fn app_script() -> String {
     #|  renderSimulationReviewDecision();
     #|  renderSimulationBlockerReduction();
     #|  renderRemediationMarginTask();
+    #|  renderRemediationMarginReceipt();
     #|  renderClearanceReview();
     #|}
     #|
@@ -779,6 +792,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Task</h2>
     $|      <div id="remediation-margin-task" class="review-list" aria-label="MoonClaw remediation margin task with three active blockers and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Receipt</h2>
+    $|      <div id="remediation-margin-receipt" class="review-list" aria-label="MoonClaw remediation margin receipt with still-blocking margin results and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>

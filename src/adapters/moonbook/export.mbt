@@ -988,6 +988,9 @@ fn moonclaw_remediation_margin_receipt_entry(
   dossier : @site.SiteDossier,
 ) -> BookEntry {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_receipt()
+  let margin_ids = receipt.margin_results
+    .map(fn(result) { result.margin_id })
+    .join(", ")
   {
     entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-receipt",
     title: "MoonClaw remediation-margin receipt for \{dossier.site.name}",
@@ -995,7 +998,7 @@ fn moonclaw_remediation_margin_receipt_entry(
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.7,
     path: "moonclaw/\{dossier.site.site_id}/remediation-margin-receipt.json",
-    summary: "\{@moonclaw.remediation_margin_state_label(receipt.remediation_state)} with \{receipt.still_blocking_margin_count} remediation margins still blocking, \{receipt.cleared_margin_count} cleared, and hardware authority \{receipt.hardware_authority}",
+    summary: "\{@moonclaw.remediation_margin_state_label(receipt.remediation_state)} with \{receipt.still_blocking_margin_count} remediation margins still blocking (\{margin_ids}), \{receipt.cleared_margin_count} cleared, and hardware authority \{receipt.hardware_authority} at \{@moonrobo.execution_state_label(receipt.hardware_state)}",
   }
 }
 

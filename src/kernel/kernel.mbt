@@ -929,7 +929,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-receipt-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin receipt in Rabbita",
       outcome: "Operators can inspect the remediation-margin receipt, still-blocking terrain/horizon/energy results, and HardwareDenied authority from the review surface",
@@ -940,7 +940,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_receipt_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin receipt with OpenMarginsCarriedForward state, 3 still-blocking margins, terrain/horizon/energy result ids, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin receipt with OpenMarginsCarriedForward state, 3 still-blocking margins, terrain/horizon/energy result ids, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonrobo-remediation-margin-modeling-pass",
+      priority: 70,
+      lane: RobotLane,
+      title: "Run a bounded modeling pass against remediation margins",
+      outcome: "MoonRobo can see whether the terrain, horizon, and energy margin receipt clears any blocker or must carry all margins forward under HardwareDenied authority",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-receipt.json",
+        "output/moonclaw/first_trusted_square_remediation_margin_receipt.json", "src/adapters/moonrobo",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
+        "scripts/check_moonrobo_remediation_margin_modeling.py",
+      ],
+      done_when: "MoonRobo emits a remediation-margin modeling pass that consumes the receipt, maps terrain/horizon/energy margins to cleared or still-blocking states, and preserves HardwareDenied authority",
     },
   ]
 }

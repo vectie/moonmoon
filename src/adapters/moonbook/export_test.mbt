@@ -228,7 +228,13 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(dossier.entries[50].summary.contains("OpenMarginsCarriedForward"))
   assert_true(dossier.entries[50].summary.contains("3 remediation margins"))
+  assert_true(dossier.entries[50].summary.contains("terrain-northeast-stepout"))
+  assert_true(
+    dossier.entries[50].summary.contains("illumination-northeast-stepout"),
+  )
+  assert_true(dossier.entries[50].summary.contains("energy-window"))
   assert_true(dossier.entries[50].summary.contains("moonmoon-safety-gate-only"))
+  assert_true(dossier.entries[50].summary.contains("hardware-denied"))
   assert_true(dossier.entries[50].path.contains("remediation-margin-receipt"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[51].kind),

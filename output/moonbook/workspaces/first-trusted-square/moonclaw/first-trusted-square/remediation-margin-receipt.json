@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.7,
     "path": "moonclaw/first-trusted-square/remediation-margin-receipt.json",
-    "summary": "OpenMarginsCarriedForward with 3 remediation margins still blocking, 0 cleared, and hardware authority moonmoon-safety-gate-only"
+    "summary": "OpenMarginsCarriedForward with 3 remediation margins still blocking (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 cleared, and hardware authority moonmoon-safety-gate-only at hardware-denied"
   },
   "payload": {
     "primary_receipt": {
