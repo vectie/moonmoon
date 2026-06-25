@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "summarize the remaining MoonRobo blockers after imported clearance is accepted",
+    next_action: "emit a bounded MoonClaw remediation task for the remaining MoonRobo blocker gaps",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "MoonRobo readiness gap report after imported clearance",
+      next_output: "MoonClaw remediation task from MoonRobo readiness gaps",
     },
     {
       layer_id: "operator-viewer",
@@ -487,7 +487,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-clearance-gap-report",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Report remaining MoonRobo blockers after imported clearance is accepted",
       outcome: "Operators can see exactly which mission gates still block simulation after all selected-route clearance items are accepted",
@@ -497,8 +497,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonrobo/first_trusted_square_readiness_preview.json", "data/fixtures/rabbita_clearance_transitions_accept.json",
+        "scripts/check_moonrobo_readiness_preview.py",
       ],
-      done_when: "the imported-clearance preview includes a concise blocker gap report naming remaining terrain, illumination, energy, MoonBook, and robot-simulation gates with evidence paths and next actions",
+      done_when: "done: the imported-clearance preview includes a concise blocker gap report naming remaining terrain, illumination, energy, MoonBook, and robot-simulation gates with evidence paths and next actions",
+    },
+    {
+      task_id: "moonclaw-moonrobo-gap-remediation-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit a MoonClaw remediation task from MoonRobo readiness gaps",
+      outcome: "The next modeling run can target remaining terrain, illumination, energy, MoonBook, and robot-simulation blockers from one task packet",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_readiness_preview.json", "src/adapters/moonclaw",
+        "scripts/import_rabbita_transitions.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_moonrobo_gap_task.json", "output/moonrobo/first_trusted_square_readiness_preview.json",
+      ],
+      done_when: "a MoonClaw task packet consumes the imported-clearance gap report and names concrete remediation commands, acceptance checks, and robot-safety invariants",
     },
   ]
 }

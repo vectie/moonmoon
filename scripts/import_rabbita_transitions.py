@@ -153,6 +153,38 @@ def update_moonrobo(
       handoff["clearance_plan"] = plan
 
 
+def clearance_item_by_source_check(
+  clearance: dict[str, Any],
+) -> dict[str, dict[str, Any]]:
+  return {item["source_check_id"]: item for item in clearance["items"]}
+
+
+def readiness_check_by_id(readiness: dict[str, Any]) -> dict[str, dict[str, Any]]:
+  return {check["check_id"]: check for check in readiness["checks"]}
+
+
+def blocker_gap_report(handoff: dict[str, Any]) -> list[dict[str, Any]]:
+  readiness = handoff["mission_readiness"]
+  checks = readiness_check_by_id(readiness)
+  clearance_items = clearance_item_by_source_check(handoff["clearance_plan"])
+  report: list[dict[str, Any]] = []
+  for check_id in handoff["execution"]["blocking_preconditions"]:
+    check = checks[check_id]
+    clearance = clearance_items.get(check_id)
+    report.append({
+      "check_id": check["check_id"],
+      "kind": check["kind"],
+      "label": check["label"],
+      "decision": check["decision"],
+      "evidence_path": check["evidence_path"],
+      "next_action": check["reason"],
+      "clearance_id": clearance["clearance_id"] if clearance else "",
+      "clearance_status": clearance["status"] if clearance else "NotClearanceGated",
+      "clearance_evidence_id": clearance["accepted_evidence_id"] if clearance else "",
+    })
+  return report
+
+
 def moonrobo_readiness_preview(
   handoff: dict[str, Any],
   transition_file: Path,
@@ -160,6 +192,7 @@ def moonrobo_readiness_preview(
   clearance = handoff["clearance_plan"]
   execution = handoff["execution"]
   readiness = handoff["mission_readiness"]
+  gaps = blocker_gap_report(handoff)
   clearance_allows = clearance["decision"] == "Allow"
   simulation_ready = readiness["decision"] == "Allow"
   return {
@@ -181,6 +214,8 @@ def moonrobo_readiness_preview(
     "hardware_denied": execution["hardware_state"] == "HardwareDenied",
     "blocking_preconditions": execution["blocking_preconditions"],
     "review_preconditions": execution["review_preconditions"],
+    "blocker_gap_count": len(gaps),
+    "blocker_gap_report": gaps,
     "safety_summary": (
       "selected-route clearance is allowed by imported operator decisions; "
       "MoonRobo simulation readiness is still gated by mission preconditions "
@@ -211,13 +246,20 @@ def render_moonrobo_preview_markdown(preview: dict[str, Any]) -> str:
   text += f"- hardware state: {preview['hardware_state']}\n"
   text += f"- hardware authority: {preview['hardware_authority']}\n"
   text += f"- hardware denied: {str(preview['hardware_denied']).lower()}\n"
+  text += f"- blocker gaps: {preview['blocker_gap_count']}\n"
   text += f"- safety summary: {preview['safety_summary']}\n\n"
   text += "## Accepted Clearance Items\n\n"
   for item in preview["accepted_clearance_items"]:
     text += f"- {item}\n"
-  text += "\n## Blocking Preconditions\n\n"
-  for item in preview["blocking_preconditions"]:
-    text += f"- {item}\n"
+  text += "\n## Blocker Gap Report\n\n"
+  for gap in preview["blocker_gap_report"]:
+    text += f"- {gap['check_id']} ({book_entry_kind_label(gap['kind'])})\n"
+    text += f"  - evidence: {gap['evidence_path']}\n"
+    text += f"  - clearance: {gap['clearance_status']}"
+    if gap["clearance_id"]:
+      text += f" via {gap['clearance_id']}"
+    text += "\n"
+    text += f"  - next action: {gap['next_action']}\n"
   return text
 
 

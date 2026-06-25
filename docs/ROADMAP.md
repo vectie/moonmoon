@@ -151,6 +151,10 @@ Current implementation status:
   preview under `output/moonrobo/` during the import workflow. The preview lets
   an all-accepted clearance fixture show selected-route clearance as allowed
   while preserving blocked simulation readiness and denied hardware authority.
+- That preview now includes a blocker gap report. It names the remaining
+  terrain, illumination, energy, MoonBook, and robot-simulation gates with
+  evidence paths, clearance status, and next actions after imported clearance
+  has been accepted.
 
 ## Milestone 3: MoonBook Evidence Loop
 

@@ -49,11 +49,57 @@ def assert_preview(root: Path) -> None:
     raise AssertionError(preview["blocking_preconditions"])
   if "energy-window" not in preview["blocking_preconditions"]:
     raise AssertionError(preview["blocking_preconditions"])
+  gaps = {gap["check_id"]: gap for gap in preview["blocker_gap_report"]}
+  expected_gaps = {
+    "terrain-northeast-stepout": (
+      "TerrainReadiness",
+      "mission/first-trusted-square/routes/northeast-stepout.json",
+      "AcceptedEvidence",
+    ),
+    "illumination-northeast-stepout": (
+      "IlluminationReadiness",
+      "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "AcceptedEvidence",
+    ),
+    "energy-window": (
+      "EnergyReadiness",
+      "mission/first-trusted-square/energy-window.json",
+      "AcceptedEvidence",
+    ),
+    "moonbook-review": (
+      "MoonBookReviewReadiness",
+      "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      "AcceptedEvidence",
+    ),
+    "robot-simulation": (
+      "RobotSimulationReadiness",
+      "output/moonrobo/first_trusted_square_handoffs.json",
+      "NotClearanceGated",
+    ),
+  }
+  for check_id, (kind, evidence_path, clearance_status) in expected_gaps.items():
+    gap = gaps[check_id]
+    if gap["kind"] != kind:
+      raise AssertionError(gap)
+    if gap["evidence_path"] != evidence_path:
+      raise AssertionError(gap)
+    if gap["clearance_status"] != clearance_status:
+      raise AssertionError(gap)
+    if not gap["next_action"]:
+      raise AssertionError(gap)
   if "hardware denied: true" not in markdown:
     raise AssertionError(markdown)
   if "clearance decision: allow" not in markdown:
     raise AssertionError(markdown)
   if "robot simulation status: simulation-blocked" not in markdown:
+    raise AssertionError(markdown)
+  if "## Blocker Gap Report" not in markdown:
+    raise AssertionError(markdown)
+  if "terrain-northeast-stepout" not in markdown:
+    raise AssertionError(markdown)
+  if "illumination-northeast-stepout" not in markdown:
+    raise AssertionError(markdown)
+  if "moonbook-review" not in markdown:
     raise AssertionError(markdown)
 
 
