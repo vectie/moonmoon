@@ -1367,7 +1367,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-refresh-followup-projection-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin refresh follow-up projection in Rabbita",
       outcome: "Operators can inspect the durable follow-up projection, no-consume simulation status, terrain/horizon/energy follow-up blockers, and HardwareDenied authority from the review surface",
@@ -1378,7 +1378,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_projection_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin refresh follow-up projection with NoConsumeFollowupRefreshSimulationBlocked status, AllFollowupRefreshesStillBlocking source state, terrain/horizon/energy follow-up blockers, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin refresh follow-up projection with NoConsumeFollowupRefreshSimulationBlocked status, AllFollowupRefreshesStillBlocking source state, terrain/horizon/energy follow-up blockers, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonrobo-remediation-margin-cycle-closeout-policy",
+      priority: 70,
+      lane: RobotLane,
+      title: "Close the repeated remediation-margin refresh cycle with one policy packet",
+      outcome: "MoonRobo stops growing one-off follow-up loops and emits one bounded closeout policy that names whether to retry, escalate, or freeze terrain/horizon/energy blockers",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_projection_surface.py",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
+        "scripts/check_moonrobo_remediation_margin_cycle_closeout.py",
+      ],
+      done_when: "MoonRobo emits a concise remediation-margin cycle closeout policy that consumes the first refresh and follow-up projections, preserves no-consume simulation and HardwareDenied authority, and gives terrain/horizon/energy blockers explicit retry/escalate/freeze dispositions",
     },
   ]
 }

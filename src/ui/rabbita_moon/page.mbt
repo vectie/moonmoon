@@ -243,6 +243,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 66%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-refresh-followup-projection-row {
+    #|  border-color: color-mix(in srgb, var(--danger) 52%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -632,6 +636,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshFollowupProjection() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-followup-projection',
+    #|    'moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection',
+    #|    'remediation-margin-refresh-followup-projection-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -804,6 +816,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginModeling();
     #|  renderRemediationMarginRefreshModeling();
     #|  renderRemediationMarginRefreshFollowupModeling();
+    #|  renderRemediationMarginRefreshFollowupProjection();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -933,6 +946,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Follow-Up Modeling</h2>
     $|      <div id="remediation-margin-refresh-followup-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh follow-up modeling pass with still-blocking follow-up refresh results, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Follow-Up Projection</h2>
+    $|      <div id="remediation-margin-refresh-followup-projection" class="review-list" aria-label="MoonRobo remediation margin refresh follow-up projection with no-consume simulation status, terrain/horizon/energy follow-up blockers, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Projection</h2>
