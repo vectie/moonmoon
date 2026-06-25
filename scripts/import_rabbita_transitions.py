@@ -35,6 +35,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
     "moonrobo_gap_modeling_md": root
     / "output/moonrobo/first_trusted_square_gap_remediation_modeling.md",
+    "moonrobo_simulation_packet_json": root
+    / "output/moonrobo/first_trusted_square_simulation_review_packet.json",
+    "moonrobo_simulation_packet_md": root
+    / "output/moonrobo/first_trusted_square_simulation_review_packet.md",
     "moonclaw_gap_task_json": root
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "moonclaw_gap_task_md": root
@@ -354,6 +358,157 @@ def render_moonrobo_preview_markdown(preview: dict[str, Any]) -> str:
       text += f" via {gap['clearance_id']}"
     text += "\n"
     text += f"  - next action: {gap['next_action']}\n"
+  return text
+
+
+def accepted_clearance_transitions(book: dict[str, Any]) -> list[dict[str, Any]]:
+  transitions: list[dict[str, Any]] = []
+  for transition in book["review_transitions"]:
+    if not transition["item_id"].startswith("clear-"):
+      continue
+    if transition["decision"] != "Accept":
+      continue
+    transitions.append({
+      "transition_id": transition["transition_id"],
+      "clearance_id": transition["item_id"],
+      "reviewer_id": transition["reviewer_id"],
+      "reviewer_role": transition["reviewer_role"],
+      "recorded_at_utc": transition["recorded_at_utc"],
+      "source_evidence_refs": transition["source_evidence_refs"],
+      "rationale": transition["rationale"],
+    })
+  return transitions
+
+
+def remediation_margin_terms(check_id: str) -> list[str]:
+  if check_id == "terrain-northeast-stepout":
+    return ["grade margin", "roughness margin"]
+  if check_id == "illumination-northeast-stepout":
+    return ["terrain-shadow margin"]
+  if check_id == "energy-window":
+    return ["bounded margin", "margin gap"]
+  return []
+
+
+def remediation_margin_evidence(preview: dict[str, Any]) -> list[dict[str, Any]]:
+  margins: list[dict[str, Any]] = []
+  for gap in preview["blocker_gap_report"]:
+    terms = remediation_margin_terms(gap["check_id"])
+    if not terms:
+      continue
+    margins.append({
+      "margin_id": f"margin-{gap['check_id']}",
+      "check_id": gap["check_id"],
+      "kind": gap["kind"],
+      "decision": gap["decision"],
+      "evidence_path": gap["evidence_path"],
+      "clearance_id": gap["clearance_id"],
+      "clearance_status": gap["clearance_status"],
+      "clearance_evidence_id": gap["clearance_evidence_id"],
+      "margin_terms": terms,
+      "margin_summary": gap["next_action"],
+    })
+  return margins
+
+
+def non_margin_blockers(preview: dict[str, Any]) -> list[dict[str, Any]]:
+  blockers: list[dict[str, Any]] = []
+  margin_ids = {margin["check_id"] for margin in remediation_margin_evidence(preview)}
+  for gap in preview["blocker_gap_report"]:
+    if gap["check_id"] in margin_ids:
+      continue
+    blockers.append({
+      "check_id": gap["check_id"],
+      "kind": gap["kind"],
+      "decision": gap["decision"],
+      "evidence_path": gap["evidence_path"],
+      "clearance_status": gap["clearance_status"],
+      "next_action": gap["next_action"],
+    })
+  return blockers
+
+
+def hardware_denial_invariants(preview: dict[str, Any]) -> list[str]:
+  return [
+    "hardware_state must remain HardwareDenied",
+    "hardware_authority must remain moonmoon-safety-gate-only",
+    "MoonMoon must not emit hardware commands or physical execution authority",
+    "simulation readiness must be regenerated from mission checks, not from clearance acceptance alone",
+    f"current hardware_state is {preview['hardware_state']}",
+    f"current hardware_authority is {preview['hardware_authority']}",
+  ]
+
+
+def moonrobo_simulation_review_packet(
+  handoff: dict[str, Any],
+  preview: dict[str, Any],
+  book: dict[str, Any],
+  transition_file: Path,
+) -> dict[str, Any]:
+  return {
+    "packet_id": f"moonrobo-simulation-review-packet/{handoff['site_id']}/{handoff['route_id']}",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_transition_file": str(transition_file),
+    "source_handoff_path": "output/moonrobo/first_trusted_square_handoffs.json",
+    "source_preview_path": "output/moonrobo/first_trusted_square_readiness_preview.json",
+    "route_id": handoff["route_id"],
+    "clearance_decision": preview["clearance_decision"],
+    "clearance_allows_simulation_review": preview["clearance_allows_simulation_review"],
+    "mission_readiness_decision": preview["mission_readiness_decision"],
+    "robot_simulation_status": preview["robot_simulation_status"],
+    "simulation_state": preview["simulation_state"],
+    "hardware_state": preview["hardware_state"],
+    "hardware_authority": preview["hardware_authority"],
+    "hardware_denied": preview["hardware_denied"],
+    "simulation_packet_path": handoff["execution"]["simulation_packet_path"],
+    "accepted_clearance_transitions": accepted_clearance_transitions(book),
+    "remediation_margins": remediation_margin_evidence(preview),
+    "remaining_non_margin_blockers": non_margin_blockers(preview),
+    "hardware_denial_invariants": hardware_denial_invariants(preview),
+    "next_action": (
+      "Keep selected-route simulation blocked until terrain, horizon, and "
+      "energy remediation margins clear in regenerated MoonMoon evidence; "
+      "hardware remains denied by MoonMoon."
+    ),
+  }
+
+
+def render_moonrobo_simulation_review_packet_markdown(packet: dict[str, Any]) -> str:
+  text = "# MoonRobo Selected-Route Simulation Review Packet\n\n"
+  text += f"- packet: {packet['packet_id']}\n"
+  text += f"- route: {packet['route_id']}\n"
+  text += f"- clearance decision: {decision_label(packet['clearance_decision'])}\n"
+  text += (
+    "- clearance allows simulation review: "
+    f"{str(packet['clearance_allows_simulation_review']).lower()}\n"
+  )
+  text += f"- mission readiness: {decision_label(packet['mission_readiness_decision'])}\n"
+  text += f"- robot simulation status: {packet['robot_simulation_status']}\n"
+  text += f"- simulation state: {packet['simulation_state']}\n"
+  text += f"- hardware state: {packet['hardware_state']}\n"
+  text += f"- hardware authority: {packet['hardware_authority']}\n"
+  text += f"- hardware denied: {str(packet['hardware_denied']).lower()}\n"
+  text += f"- next action: {packet['next_action']}\n\n"
+  text += "## Accepted Clearance Transitions\n\n"
+  for transition in packet["accepted_clearance_transitions"]:
+    text += f"- {transition['clearance_id']} via {transition['transition_id']}\n"
+    text += f"  - reviewer: {transition['reviewer_id']}\n"
+    text += f"  - rationale: {transition['rationale']}\n"
+  text += "\n## Remediation Margins\n\n"
+  for margin in packet["remediation_margins"]:
+    text += f"- {margin['check_id']} ({book_entry_kind_label(margin['kind'])})\n"
+    text += f"  - evidence: {margin['evidence_path']}\n"
+    text += f"  - terms: {', '.join(margin['margin_terms'])}\n"
+    text += f"  - clearance: {margin['clearance_status']}\n"
+    text += f"  - margin: {margin['margin_summary']}\n"
+  text += "\n## Remaining Non-Margin Blockers\n\n"
+  for blocker in packet["remaining_non_margin_blockers"]:
+    text += f"- {blocker['check_id']} ({book_entry_kind_label(blocker['kind'])})\n"
+    text += f"  - evidence: {blocker['evidence_path']}\n"
+    text += f"  - next action: {blocker['next_action']}\n"
+  text += "\n## Hardware Denial Invariants\n\n"
+  for invariant in packet["hardware_denial_invariants"]:
+    text += f"- {invariant}\n"
   return text
 
 
@@ -824,7 +979,14 @@ def apply_import(root: Path, transition_file: Path) -> None:
   plan = reviewed_clearance_plan(moonrobo, book)
   update_selected_route_entry(book, plan)
   update_moonrobo(moonrobo, plan)
-  preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
+  handoff = selected_handoff(moonrobo)
+  preview = moonrobo_readiness_preview(handoff, transition_file)
+  simulation_packet = moonrobo_simulation_review_packet(
+    handoff,
+    preview,
+    book,
+    transition_file,
+  )
   gap_task = moonclaw_gap_task(preview, transition_file)
   modeling_pass = moonrobo_gap_remediation_modeling_pass(gap_task, preview)
   gap_receipt = moonclaw_gap_remediation_receipt(
@@ -838,6 +1000,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
+  write_json(paths["moonrobo_simulation_packet_json"], simulation_packet)
   write_json(paths["moonrobo_gap_modeling_json"], [modeling_pass])
   write_json(paths["moonclaw_gap_task_json"], [gap_task])
   write_json(paths["moonclaw_gap_receipt_json"], [gap_receipt])
@@ -845,6 +1008,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
   paths["moonrobo_md"].write_text(render_moonrobo_markdown(moonrobo), encoding="utf-8")
   paths["moonrobo_preview_md"].write_text(
     render_moonrobo_preview_markdown(preview),
+    encoding="utf-8",
+  )
+  paths["moonrobo_simulation_packet_md"].write_text(
+    render_moonrobo_simulation_review_packet_markdown(simulation_packet),
     encoding="utf-8",
   )
   paths["moonrobo_gap_modeling_md"].write_text(

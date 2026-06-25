@@ -163,6 +163,111 @@ test "Moonrobo handoff can consume selected-route clearance transitions" {
 }
 
 ///|
+test "Moonrobo simulation review packet joins clearance margins and hardware denial" {
+  let dossier = @site.first_trusted_square_dossier()
+  let route = dossier.route_candidates[5]
+  let handoff = @moonrobo.route_handoff_with_clearance_transitions(
+    dossier,
+    route,
+    [
+      @mission.clearance_transition(
+        "operator-clear-terrain-grade-northeast-stepout-accept",
+        "clear-terrain-grade-northeast-stepout",
+        @mission.MissionClearanceReviewDecision::ClearanceAccept,
+        "operator/rabbita-clearance-review",
+        "2026-06-25T00:00:00Z",
+        "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout",
+        "terrain remediation evidence accepted for simulation review",
+      ),
+      @mission.clearance_transition(
+        "operator-clear-illumination-confidence-northeast-stepout-accept",
+        "clear-illumination-confidence-northeast-stepout",
+        @mission.MissionClearanceReviewDecision::ClearanceAccept,
+        "operator/rabbita-clearance-review",
+        "2026-06-25T00:00:00Z",
+        "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout",
+        "local horizon evidence accepted for simulation review",
+      ),
+      @mission.clearance_transition(
+        "operator-clear-energy-margin-accept",
+        "clear-energy-margin",
+        @mission.MissionClearanceReviewDecision::ClearanceAccept,
+        "operator/rabbita-clearance-review",
+        "2026-06-25T00:00:00Z",
+        "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin",
+        "energy remediation evidence accepted for simulation review",
+      ),
+      @mission.clearance_transition(
+        "operator-clear-moonbook-review-northeast-stepout-accept",
+        "clear-moonbook-review-northeast-stepout",
+        @mission.MissionClearanceReviewDecision::ClearanceAccept,
+        "operator/rabbita-clearance-review",
+        "2026-06-25T00:00:00Z",
+        "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout",
+        "MoonBook clearance evidence accepted for simulation review",
+      ),
+    ],
+  )
+  let packet = @moonrobo.simulation_review_packet(
+    handoff, "data/fixtures/rabbita_clearance_transitions_accept.json",
+  )
+  assert_eq(
+    packet.packet_id,
+    "moonrobo-simulation-review-packet/first-trusted-square/northeast-stepout",
+  )
+  assert_true(packet.clearance_allows_simulation_review)
+  assert_eq(packet.accepted_clearance_transitions.length(), 4)
+  assert_eq(packet.remediation_margins.length(), 3)
+  assert_true(packet.hardware_denied)
+  assert_true(
+    packet.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_true(
+    packet.remaining_non_margin_blockers.any(fn(blocker) {
+      blocker.check_id == "robot-simulation"
+    }),
+  )
+  assert_true(
+    packet.remediation_margins.any(fn(margin) {
+      margin.check_id == "terrain-northeast-stepout" &&
+      margin.margin_summary.contains("grade") &&
+      margin.margin_summary.contains("roughness") &&
+      margin.clearance_status ==
+      @mission.MissionClearanceStatus::AcceptedEvidence
+    }),
+  )
+  assert_true(
+    packet.remediation_margins.any(fn(margin) {
+      margin.check_id == "illumination-northeast-stepout" &&
+      margin.evidence_path.contains("horizon")
+    }),
+  )
+  assert_true(
+    packet.remediation_margins.any(fn(margin) {
+      margin.check_id == "energy-window" &&
+      margin.margin_summary.contains("bounded selected-route margin") &&
+      margin.margin_summary.contains("margin gap")
+    }),
+  )
+  assert_true(
+    packet.hardware_denial_invariants.contains(
+      "hardware_state must remain HardwareDenied",
+    ),
+  )
+  let markdown = @moonrobo.render_simulation_review_packet_markdown(packet)
+  assert_true(
+    markdown.contains("MoonRobo Selected-Route Simulation Review Packet"),
+  )
+  assert_true(markdown.contains("Accepted Clearance Transitions"))
+  assert_true(markdown.contains("Remediation Margins"))
+  assert_true(markdown.contains("Hardware Denial Invariants"))
+  let json = @moonrobo.simulation_review_packet_json(packet).stringify(indent=2)
+  assert_true(json.contains("\"hardware_denied\": true"))
+  assert_true(json.contains("\"remediation_margins\""))
+  assert_true(json.contains("\"accepted_clearance_transitions\""))
+}
+
+///|
 test "Moonrobo execution state labels distinguish simulation replay and hardware" {
   assert_eq(
     @moonrobo.execution_state_label(

@@ -108,6 +108,10 @@ printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_corridor_receipts.md"
 printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_corridor_receipts.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.json"
+if [[ -n "$REVIEW_TRANSITIONS" ]]; then
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.md"
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.json"
+fi
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"
 printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"

@@ -29,9 +29,15 @@ pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
+pub fn render_simulation_review_packet_markdown(SimulationReviewPacket) -> String
+
 pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
 
 pub fn route_handoff_with_clearance_transitions(@site.SiteDossier, @mission.RouteCandidate, Array[@mission.MissionClearanceTransition]) -> MoonroboTaskHandoff
+
+pub fn simulation_review_packet(MoonroboTaskHandoff, String) -> SimulationReviewPacket
+
+pub fn simulation_review_packet_json(SimulationReviewPacket) -> Json
 
 // Errors
 
@@ -77,6 +83,62 @@ pub(all) struct RobotPrecondition {
   decision : @mission.TraverseDecision
   evidence_path : String
   reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewBlocker {
+  check_id : String
+  kind : @mission.MissionReadinessCheckKind
+  evidence_path : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewClearanceTransition {
+  transition_id : String
+  clearance_id : String
+  reviewer_id : String
+  reviewer_role : String
+  recorded_at_utc : String
+  source_evidence_refs : Array[SimulationReviewEvidenceRef]
+  rationale : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewEvidenceRef {
+  ref_id : String
+  entry_id : String
+  path : String
+  immutable_uri : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewMarginEvidence {
+  margin_id : String
+  check_id : String
+  kind : @mission.MissionReadinessCheckKind
+  decision : @mission.TraverseDecision
+  evidence_path : String
+  clearance_status : @mission.MissionClearanceStatus
+  clearance_evidence_id : String
+  margin_summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewPacket {
+  packet_id : String
+  site_id : String
+  route_id : String
+  source_transition_file : String
+  clearance_decision : @mission.TraverseDecision
+  clearance_allows_simulation_review : Bool
+  mission_readiness_decision : @mission.TraverseDecision
+  robot_simulation_status : String
+  simulation_state : MoonroboExecutionState
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  simulation_packet_path : String
+  accepted_clearance_transitions : Array[SimulationReviewClearanceTransition]
+  remediation_margins : Array[SimulationReviewMarginEvidence]
+  remaining_non_margin_blockers : Array[SimulationReviewBlocker]
+  hardware_denial_invariants : Array[String]
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases
