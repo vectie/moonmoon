@@ -38,6 +38,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   )
   assert_true(html.contains("Remediation Margin Regenerated Receipt Readiness"))
   assert_true(html.contains("Regenerated Readiness Fresh Evidence Task"))
+  assert_true(
+    html.contains("Regenerated Readiness Fresh Evidence Action Receipts"),
+  )
   assert_true(html.contains("Closeout Action Review"))
   assert_true(html.contains("Remediation Margin Refresh Projection"))
   assert_true(html.contains("Remediation Margin Projection"))
@@ -71,6 +74,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("remediation-margin-regenerated-receipt-readiness"))
   assert_true(
     html.contains("regenerated-receipt-readiness-fresh-evidence-task"),
+  )
+  assert_true(
+    html.contains(
+      "regenerated-receipt-readiness-fresh-evidence-action-receipts",
+    ),
   )
   assert_true(html.contains("closeout-action-review"))
   assert_true(html.contains("closeout-action-review-export"))
@@ -146,6 +154,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains(
       "function renderRegeneratedReceiptReadinessFreshEvidenceTask()",
+    ),
+  )
+  assert_true(
+    html.contains(
+      "function renderRegeneratedReceiptReadinessFreshEvidenceActionReceipts()",
     ),
   )
   assert_true(
@@ -256,6 +269,11 @@ test "Rabbita Moon page renders browser inspection controls" {
       "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task",
     ),
   )
+  assert_true(
+    html.contains(
+      "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts",
+    ),
+  )
   assert_true(html.contains("operator/rabbita-closeout-action-review"))
   assert_true(html.contains("moonclaw-closeout-action-review"))
   assert_true(html.contains("hardware_authority_change"))
@@ -301,6 +319,10 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("RegeneratedReceiptsPendingFreshEvidence"))
   assert_true(html.contains("3 pending regenerated receipts"))
   assert_true(html.contains("0 ready receipts"))
+  assert_true(
+    html.contains("3 regenerated readiness fresh-evidence action receipts"),
+  )
+  assert_true(html.contains("RegeneratedFreshEvidenceActionsRecorded"))
   assert_true(html.contains("fresh-evidence actions"))
   assert_true(html.contains("source action receipt provenance"))
   assert_true(html.contains("source receipt provenance"))
