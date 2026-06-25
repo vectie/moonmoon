@@ -344,12 +344,12 @@ pub fn first_trusted_square_ephemeris_candidate() -> SourceCandidate {
     access_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
     local_target_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
     intended_use: "Attach time-windowed Sun/Moon geometry, local sunlit hours, and rover power-window evidence to the first trusted square.",
-    next_action: "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+    next_action: "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
     review_status: NeedsSourceUpgrade,
     notes: [
       "The current illumination and energy gates deliberately block because only relief-shadow proxies exist.",
-      "A real power gate needs a time-bounded Sun/Moon geometry source plus local horizon assumptions.",
-      "This candidate turns the missing ephemeris evidence from prose into a typed MoonBook-visible source contract.",
+      "The NAIF source files are pinned locally, but the power gate still needs a time-bounded Sun/Moon geometry computation plus local horizon assumptions.",
+      "This candidate turns the ephemeris evidence from prose into a typed MoonBook-visible source contract.",
     ],
   }
 }
@@ -362,8 +362,8 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> SourceAcquisitionPla
     product_family_id: "lunar-solar-ephemeris-power-window",
     source_family_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
     source_metadata_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
-    source_metadata_sha256: "",
-    source_metadata_bytes: 0,
+    source_metadata_sha256: "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+    source_metadata_bytes: 45745465,
     discovery_url: "https://naif.jpl.nasa.gov/naif/data.html",
     target_region: "First Trusted Square near Shackleton rim, 89.88S, 0.12E",
     expected_format: "Pinned ephemeris/orientation source plus generated JSON power-window evidence",
@@ -377,14 +377,14 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> SourceAcquisitionPla
         title: "Select official ephemeris source",
         action: "Choose NAIF SPICE kernels or an equivalent official illumination product that can support Sun/Moon geometry for the south-pole tile.",
         expected_evidence: "Source family URL, kernel/product names, access URL, and license/usage notes recorded in MoonBook.",
-        done_when: "The candidate names a concrete official source instead of a generic power assumption.",
+        done_when: "done: the candidate names concrete official NAIF source files instead of a generic power assumption.",
       },
       {
         step_id: "pin-kernels",
         title: "Pin checksummed inputs",
         action: "Record exact kernel or illumination product files, byte counts, SHA-256 checksums, and local paths under data/sources/lunar_ephemeris.",
         expected_evidence: "A README plus source metadata checksum fields that make reruns deterministic.",
-        done_when: "scripts/verify_moonmoon_sources.sh can reject missing or changed ephemeris inputs.",
+        done_when: "done: scripts/verify_moonmoon_sources.sh rejects missing or changed ephemeris inputs.",
       },
       {
         step_id: "compute-local-window",

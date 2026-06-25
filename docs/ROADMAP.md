@@ -87,14 +87,13 @@ Current implementation status:
   source candidate and acquisition plan, so MoonBook can review exact SPICE or
   equivalent illumination inputs before the energy gate changes state.
 - `data/sources/lunar_ephemeris/first_trusted_square_power_window.json` now
-  stores a checked missing-source power-window fixture, and
+  stores a checked source-files-ready power-window fixture, and
   `scripts/generate_power_window.py` mirrors it into generated MoonBit evidence
   consumed by the mission energy and illumination gates.
 - The power-window fixture now carries structured source-file and computation
-  metadata. It names the candidate NAIF kernel inventory while keeping every
-  source file non-ready until local copies, byte counts, and checksums are
-  pinned; future ready evidence must report a computed local window instead of
-  only flipping a status string.
+  metadata. It pins the NAIF kernel inventory with local copies, byte counts,
+  and checksums; future ready evidence must report a computed local window
+  instead of only flipping a status string.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `src/adapters/moonrobo` exports robot-facing simulation precondition packets
@@ -217,8 +216,8 @@ Current implementation status:
   `power-window-evidence` entry and workspace payload before the derived energy
   assessment.
 - MoonBook also raises a dedicated `power-window-evidence` review item while
-  the generated evidence reports `missing-source`, separating source readiness
-  from the downstream energy-window blocker.
+  the generated evidence reports `source-files-ready`, separating power-window
+  computation readiness from the downstream energy-window blocker.
 - Moonrobo simulation-precondition packets now include that same
   `power-window-evidence` blocker before `energy-window`, keeping source
   readiness visible at the robot boundary.
@@ -229,12 +228,12 @@ Current implementation status:
   expected outputs.
 - MoonBook now indexes the first MoonClaw route-scoring, corridor-expansion, and
   ephemeris receipts, and the materialized workspace carries the validation
-  checks, route scoreboard, corridor window proof, and missing ephemeris output
+  checks, route scoreboard, corridor window proof, and uncomputed ephemeris output
   contract.
 - MoonBook now also indexes the MoonClaw ephemeris acquisition task, so the
   workspace contains the exact source files, generated files, validation
   commands, artifact blockers, and Moonrobo precondition gate that must move
-  from `missing-source` to reviewed evidence.
+  from `source-files-ready` to reviewed computed evidence.
 - MoonBook now also indexes the corridor expansion task, so the workspace and
   review queue show that the 81-window `first-trusted-square-9x9-corridor-scan-v2`
   CSV is pinned, promoted into generated MoonBit, and materialized for review.

@@ -2,7 +2,7 @@
 
 Purpose: Software proof slice for lunar terrain, uncertainty, and robot traverse reasoning.
 
-Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, and a conservative rover energy-window budget.
+Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, promoted best-window route evidence, and a conservative rover energy-window budget.
 
 ## Source Datasets
 
@@ -51,6 +51,15 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - extractor: scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_south_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
   - checksum kind: inline-fixture-fingerprint
   - checksum: inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003
+- lro-lola-first-trusted-square-northeast-stepout-dem-v1: LOLA northeast-stepout 9x9 corridor DEM byte-range fixture
+  - trust: authoritative
+  - review: accepted-for-software-proof
+  - resolution: 20 m
+  - source path: data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv
+  - source sha256: b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c
+  - extractor: scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt
+  - checksum kind: inline-fixture-fingerprint
+  - checksum: inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726
 
 ## Source Upgrade Candidates
 
@@ -71,7 +80,7 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - official source: https://naif.jpl.nasa.gov/naif/data.html
   - access: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
   - target path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
-  - next action: Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.
+  - next action: Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.
 
 ## Source Acquisition Plans
 
@@ -100,16 +109,16 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - discovery: https://naif.jpl.nasa.gov/naif/data.html
   - source family: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
   - source metadata: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
-  - source metadata sha256: pending
-  - source metadata bytes: 0
+  - source metadata sha256: d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59
+  - source metadata bytes: 45745465
   - target region: First Trusted Square near Shackleton rim, 89.88S, 0.12E
   - local source directory: data/sources/lunar_ephemeris/
   - local metadata path: data/sources/lunar_ephemeris/README.md
   - extracted fixture path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
   - trust gate: Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block.
   - steps:
-    - discover-source: Select official ephemeris source - The candidate names a concrete official source instead of a generic power assumption.
-    - pin-kernels: Pin checksummed inputs - scripts/verify_moonmoon_sources.sh can reject missing or changed ephemeris inputs.
+    - discover-source: Select official ephemeris source - done: the candidate names concrete official NAIF source files instead of a generic power assumption.
+    - pin-kernels: Pin checksummed inputs - done: scripts/verify_moonmoon_sources.sh rejects missing or changed ephemeris inputs.
     - compute-local-window: Compute local power window - The JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty.
     - generate-moonbit-window: Generate MoonBit evidence - moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh.
     - review-energy-gate: Review before unblocking Moonrobo - Moonrobo handoff remains blocked or becomes reviewable based on measured terrain plus accepted time-windowed power evidence.
@@ -216,6 +225,22 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
     - Generated from the wider south HTTP byte ranges after the first adjacent west/north windows remained blocked.
     - This window is smoother than the active patch but still exceeds conservative rover traverse limits.
     - The local window is still too small for mission-grade corridor planning.
+- extract-ldem-875s-20m-northeast-stepout-v1: first-trusted-square-northeast-stepout-lola
+  - selection: select-ldem-875s-20m-float-v1
+  - status: accepted-for-software-proof
+  - generated by: scripts/extract_lola_trusted_square.py
+  - output path: data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv
+  - output sha256: b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c
+  - output bytes: 924
+  - center: -89.76, 0.28
+  - source window: row 3960, col 3806, 4x4
+  - cell size: 20 m
+  - elevation unit: meters relative to 1737.4 km reference radius
+  - claim: measured
+  - notes:
+    - Generated from the best measured window in the active 9x9 LOLA corridor scan.
+    - This window now has a named route fixture and route id instead of staying only as a ranked scan row.
+    - The route remains blocked by conservative terrain and power gates before simulation.
 
 ## Source Validation
 
@@ -233,6 +258,9 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - note: source fingerprint matches manifest
 - lro-lola-first-trusted-square-south-stepout-dem-v1: verified
   - actual: inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003
+  - note: source fingerprint matches manifest
+- lro-lola-first-trusted-square-northeast-stepout-dem-v1: verified
+  - actual: inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726
   - note: source fingerprint matches manifest
 
 ## Terrain
@@ -260,13 +288,13 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 - windows ranked: 81
 - best measured window: r-12-c+16 (rank 1)
 - offset: row -12, col 16
-- selected route: none promoted yet
+- selected route: northeast-stepout
 - decision: block
 - max neighbor grade: 0.51395
 - roughness: 5.95975 m
-- note: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
+- note: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - top windows:
-  - #1 r-12-c+16: grade 0.51395, roughness 5.95975 m, decision block
+  - #1 r-12-c+16: grade 0.51395, roughness 5.95975 m, decision block, route northeast-stepout
   - #2 r+0-c+12: grade 0.579, roughness 7.380708 m, decision block
   - #3 r+0-c-16: grade 0.61575, roughness 8.107167 m, decision block
   - #4 r-12-c+12: grade 0.6223, roughness 6.90775 m, decision block
@@ -274,12 +302,22 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 ## Power Window Evidence
 
-- evidence: first-trusted-square-power-window-missing-v1
-- source status: missing-source
+- evidence: first-trusted-square-power-window-sources-ready-v1
+- source status: source-files-ready
 - source family: https://naif.jpl.nasa.gov/pub/naif/generic_kernels/
 - local source path: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
-- source sha256: pending
-- source bytes: 0
+- source sha256: d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59
+- source bytes: 45745465
+- source files:
+  - naif0012.tls: ready, leap seconds and UTC/TDB time conversion, sha256 678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b
+  - de440s.bsp: ready, Sun/Earth/Moon geometry for the selected south-pole time window, sha256 c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2
+  - pck00011.tpc: ready, body constants and base lunar body-frame definitions, sha256 3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1
+  - moon_pa_de440_200625.bpc: ready, binary lunar principal-axis orientation for local horizon geometry, sha256 60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f
+  - moon_de440_250416.tf: ready, Moon frame association for DE440-era lunar orientation kernels, sha256 a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768
+- computation: south-pole-power-window-v1 (not-computed)
+  - generated by: pending ephemeris acquisition
+  - horizon model: pending local horizon model
+  - rover power model: conservative-south-pole-energy-v1
 - time window: pending -> pending
 - sunlit hours: 0
 - dark hours: 0
@@ -287,31 +325,31 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 - confidence: 0
 - has time-windowed ephemeris: false
 - reasons:
-  - official ephemeris or illumination source is not pinned yet
-  - source checksum and byte count are intentionally pending
-  - energy gate must remain blocked until generated evidence carries a real time window
+  - official NAIF kernel files are locally pinned with byte counts and checksums
+  - local power-window computation has not produced sunlit or dark hours yet
+  - energy gate must remain blocked until generated evidence carries a computed time window
 
 ## Energy Window
 
 - budget: Conservative South Pole Rover Energy Budget (conservative-south-pole-energy-v1)
-- power-window evidence: first-trusted-square-power-window-missing-v1
+- power-window evidence: first-trusted-square-power-window-sources-ready-v1
 - power-window source: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
-- power-window source status: missing-source
+- power-window source status: source-files-ready
 - time window: pending -> pending
 - decision: block
-- route candidates: 5
-- blocked route candidates: 5
-- estimated drive hours: 1.25
+- route candidates: 6
+- blocked route candidates: 6
+- estimated drive hours: 1.5
 - estimated dark survival hours: 2
-- required energy: 845 Wh
+- required energy: 880 Wh
 - verified available energy: 0 Wh
-- energy margin: -845 Wh
+- energy margin: -880 Wh
 - next action: attach time-windowed solar ephemeris and verify rover energy budget before simulation
 - reasons:
   - no time-windowed solar ephemeris is attached for energy planning
-  - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+  - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
   - estimated energy demand exceeds verified available energy
-  - 5 route candidates remain blocked before energy simulation
+  - 6 route candidates remain blocked before energy simulation
 
 ## Route Candidates
 
@@ -327,14 +365,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 9.250124999999999 m
   - confidence: 0.7544
   - illumination decision: block
-  - illumination evidence: first-trusted-square-power-window-missing-v1
-  - illumination source status: missing-source
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
   - illumination risk: 0.3635749999999998
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
-    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: do not traverse directly; use this as the baseline hazard case
@@ -355,14 +393,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 8.52791666666666 m
   - confidence: 0.7544
   - illumination decision: block
-  - illumination evidence: first-trusted-square-power-window-missing-v1
-  - illumination source status: missing-source
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
   - illumination risk: 0.32390624999999956
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
-    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: widen the west corridor extraction before simulation
@@ -383,14 +421,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.716124999999998 m
   - confidence: 0.7544
   - illumination decision: block
-  - illumination evidence: first-trusted-square-power-window-missing-v1
-  - illumination source status: missing-source
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
   - illumination risk: 0.28963125000000006
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
-    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: widen the north corridor extraction and add illumination review
@@ -411,14 +449,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.056666666666669 m
   - confidence: 0.7544
   - illumination decision: block
-  - illumination evidence: first-trusted-square-power-window-missing-v1
-  - illumination source status: missing-source
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
   - illumination risk: 0.2673000000000002
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
-    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: continue corridor search beyond the southwest bypass before simulation
@@ -439,14 +477,14 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - expected roughness: 7.154583333333335 m
   - confidence: 0.7544
   - illumination decision: block
-  - illumination evidence: first-trusted-square-power-window-missing-v1
-  - illumination source status: missing-source
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
   - illumination risk: 0.27855000000000024
   - illumination confidence: 0.45263999999999993
   - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
   - illumination reasons:
     - no time-windowed solar ephemeris is attached
-    - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
     - local relief shadow proxy exceeds conservative limit
     - illumination confidence below power planning threshold
   - next action: continue south corridor extraction and add ephemeris-backed illumination review
@@ -454,6 +492,34 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
     - expected grade exceeds rover hard limit
     - expected roughness exceeds rover hard limit
     - south widened corridor is measured and smoother than the active patch but still blocked
+    - illumination gate is block
+- northeast-stepout: Northeast 9x9 step-out candidate
+  - decision: block
+  - score: 6
+  - strategy: Promote the best measured window from the active 9x9 corridor scan into a named route fixture.
+  - evidence dataset: lro-lola-first-trusted-square-northeast-stepout-dem-v1
+  - evidence tile: first-trusted-square-northeast-stepout-lola
+  - evidence source: data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv
+  - evidence summary: blocked measured window; elevation range 35.81 m
+  - expected max grade: 0.5139499999999998
+  - expected roughness: 5.95975 m
+  - confidence: 0.7544
+  - illumination decision: block
+  - illumination evidence: first-trusted-square-power-window-sources-ready-v1
+  - illumination source status: source-files-ready
+  - illumination risk: 0.22381250000000003
+  - illumination confidence: 0.45263999999999993
+  - illumination next action: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
+  - illumination reasons:
+    - no time-windowed solar ephemeris is attached
+    - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
+    - local relief shadow proxy exceeds conservative limit
+    - illumination confidence below power planning threshold
+  - next action: review the promoted route fixture and attach ephemeris-backed illumination before simulation
+  - reasons:
+    - expected grade exceeds rover hard limit
+    - expected roughness exceeds rover hard limit
+    - best active 9x9 corridor window is measured and selected but still blocked
     - illumination gate is block
 
 ## Blockers
@@ -464,6 +530,6 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 ## Next Questions
 
 - Attach time-windowed solar ephemeris for robot energy and thermal constraints.
-- Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.
-- Review the materialized LunarBook workspace entries and close accepted or rejected queue items.
+- Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.
+- Review the materialized MoonBook workspace entries and close accepted or rejected queue items.
 

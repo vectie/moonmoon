@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.75,
     "path": "mission/first-trusted-square/corridor-scan.json",
-    "summary": "best window r-12-c+16 rank 1 selects no promoted route yet: block with grade 0.51395 and roughness 5.95975 m"
+    "summary": "best window r-12-c+16 rank 1 selects northeast-stepout: block with grade 0.51395 and roughness 5.95975 m"
   },
   "payload": {
     "scan_id": "first-trusted-square-9x9-corridor-scan-v2",
@@ -24,8 +24,8 @@
       "max_neighbor_grade": 0.51395,
       "roughness_m": 5.95975,
       "decision": "Block",
-      "selected_route_id": "",
-      "note": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+      "selected_route_id": "northeast-stepout",
+      "note": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     "windows": [
       {
@@ -42,8 +42,8 @@
         "max_neighbor_grade": 0.51395,
         "roughness_m": 5.95975,
         "decision": "Block",
-        "selected_route_id": "",
-        "note": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+        "selected_route_id": "northeast-stepout",
+        "note": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
       },
       {
         "scan_id": "first-trusted-square-9x9-corridor-scan-v2",

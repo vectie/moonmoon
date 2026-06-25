@@ -132,12 +132,28 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     },
     {
+      "transition_id": "review-route-northeast-stepout-request-evidence",
+      "item_id": "route-northeast-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    },
+    {
+      "transition_id": "review-illumination-northeast-stepout-request-evidence",
+      "item_id": "illumination-northeast-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
       "transition_id": "review-corridor-scan-best-window-request-evidence",
       "item_id": "corridor-scan-best-window",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
       "transition_id": "review-power-window-evidence-request-evidence",
@@ -145,7 +161,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review"
     },
     {
       "transition_id": "review-energy-window-request-evidence",
@@ -177,7 +193,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input"
     },
     {
       "transition_id": "review-question-0-keep-open",

@@ -32,19 +32,19 @@
         "path": "data/sources/lunar_ephemeris/README.md",
         "producer": "operator-or-moonclaw-source-agent",
         "required_state": "official ephemeris or illumination source family selected with citation",
-        "current_state": "placeholder source family, exact kernels and checksums pending",
-        "ready": false,
-        "blocking_reason": "exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned",
-        "validation_gate": "source-acquisition plan must name the exact official files before energy can unblock"
+        "current_state": "5 ready source files; computation pending",
+        "ready": true,
+        "blocking_reason": "",
+        "validation_gate": "source-acquisition plan must pin exact official files and the power-window computation before energy can unblock"
       },
       {
         "artifact_id": "power-window-json",
         "path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
         "producer": "scripts/generate_power_window.py input",
         "required_state": "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
-        "current_state": "missing-source",
+        "current_state": "source-files-ready",
         "ready": false,
-        "blocking_reason": "current power-window evidence is missing-source; no time-windowed ephemeris is attached",
+        "blocking_reason": "current power-window evidence is source-files-ready; no computed time-windowed ephemeris is attached",
         "validation_gate": "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check"
       },
       {
@@ -52,7 +52,7 @@
         "path": "src/mission/generated_first_trusted_square_power_window.mbt",
         "producer": "scripts/generate_power_window.py",
         "required_state": "MoonBit evidence mirrors the cited power-window JSON without hand edits",
-        "current_state": "generated-missing-source-evidence",
+        "current_state": "generated-uncomputed-power-window-evidence",
         "ready": true,
         "blocking_reason": "",
         "validation_gate": "moon test src/mission"
@@ -99,6 +99,6 @@
       }
     ],
     "safety_gate": "Do not allow Moonrobo simulation until power-window-json is ready, generated MoonBit evidence is current, and Moonrobo preconditions no longer block on power-window-evidence.",
-    "next_action": "MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+    "next_action": "MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
   }
 ]

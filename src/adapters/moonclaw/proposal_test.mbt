@@ -65,21 +65,21 @@ test "first trusted square ephemeris task names executable source gates" {
   assert_true(task.safety_gate.contains("Do not allow Moonrobo simulation"))
   assert_true(task.inputs.length() == 3)
   assert_true(task.artifacts.length() == 5)
-  assert_eq(@moonclaw.task_blocked_artifact_count(task), 2)
+  assert_eq(@moonclaw.task_blocked_artifact_count(task), 1)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "source-discovery-record" &&
-      artifact.current_state.contains("5 candidate source files") &&
-      !artifact.ready &&
-      artifact.blocking_reason.contains("checksums")
+      artifact.current_state.contains("5 ready source files") &&
+      artifact.ready &&
+      artifact.blocking_reason == ""
     }),
   )
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "power-window-json" &&
-      artifact.current_state == "missing-source" &&
+      artifact.current_state == "source-files-ready" &&
       !artifact.ready &&
-      artifact.blocking_reason.contains("no time-windowed ephemeris") &&
+      artifact.blocking_reason.contains("no computed time-windowed ephemeris") &&
       artifact.path ==
       "data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
     }),
@@ -109,8 +109,8 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
   let markdown = @moonclaw.first_trusted_square_ephemeris_tasks_markdown()
   assert_true(markdown.contains("MoonClaw Ephemeris Acquisition Tasks"))
   assert_true(markdown.contains("power-window-json"))
-  assert_true(markdown.contains("5 candidate source files"))
-  assert_true(markdown.contains("missing-source"))
+  assert_true(markdown.contains("5 ready source files"))
+  assert_true(markdown.contains("source-files-ready"))
   assert_true(markdown.contains("ready: false"))
   assert_true(markdown.contains("blocking: current power-window evidence"))
   assert_true(markdown.contains("moonrobo-preconditions"))
@@ -269,7 +269,7 @@ test "first trusted square corridor receipt validates bounded search result" {
 }
 
 ///|
-test "first trusted square ephemeris receipt records missing power evidence" {
+test "first trusted square ephemeris receipt records uncomputed power evidence" {
   let receipt = @moonclaw.first_trusted_square_ephemeris_acquisition_receipt()
   assert_eq(
     receipt.receipt.proposal_id,
@@ -282,9 +282,9 @@ test "first trusted square ephemeris receipt records missing power evidence" {
   assert_true(!receipt.has_time_window_ephemeris)
   assert_eq(
     receipt.power_window_evidence_id,
-    "first-trusted-square-power-window-missing-v1",
+    "first-trusted-square-power-window-sources-ready-v1",
   )
-  assert_eq(receipt.power_window_source_status, "missing-source")
+  assert_eq(receipt.power_window_source_status, "source-files-ready")
   assert_eq(
     receipt.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
@@ -296,12 +296,12 @@ test "first trusted square ephemeris receipt records missing power evidence" {
   assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {
-      note.contains("time-window-ephemeris-missing")
+      note.contains("time-window-ephemeris-not-computed")
     }),
   )
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {
-      note.contains("power-window-source-status-missing")
+      note.contains("power-window-source-files-ready")
     }),
   )
   assert_true(receipt.next_action.contains("cannot clear the energy gate"))
@@ -324,14 +324,18 @@ test "MoonClaw receipt renderers expose route scoring result" {
 }
 
 ///|
-test "MoonClaw ephemeris receipt renderers expose missing source contract" {
+test "MoonClaw ephemeris receipt renderers expose uncomputed source contract" {
   let markdown = @moonclaw.first_trusted_square_ephemeris_receipts_markdown()
   assert_true(markdown.contains("MoonClaw Ephemeris Receipts"))
   assert_true(markdown.contains("ephemeris-energy-v1/current-receipt"))
   assert_true(markdown.contains("needs-review"))
-  assert_true(markdown.contains("time-window-ephemeris-missing"))
-  assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))
-  assert_true(markdown.contains("power-window source status: missing-source"))
+  assert_true(markdown.contains("time-window-ephemeris-not-computed"))
+  assert_true(
+    markdown.contains("first-trusted-square-power-window-sources-ready-v1"),
+  )
+  assert_true(
+    markdown.contains("power-window source status: source-files-ready"),
+  )
   assert_true(markdown.contains("first_trusted_square_power_window.json"))
   let json = @moonclaw.first_trusted_square_ephemeris_receipts_json().stringify(
     indent=2,
@@ -340,7 +344,7 @@ test "MoonClaw ephemeris receipt renderers expose missing source contract" {
   assert_true(json.contains("\"NeedsReview\""))
   assert_true(json.contains("\"has_time_window_ephemeris\""))
   assert_true(
-    json.contains("\"power_window_source_status\": \"missing-source\""),
+    json.contains("\"power_window_source_status\": \"source-files-ready\""),
   )
 }
 

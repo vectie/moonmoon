@@ -6,34 +6,34 @@
     "claim_kind": "Derived",
     "confidence": 0.7,
     "path": "moonclaw/first-trusted-square/receipts.json",
-    "summary": "needs-review receipt keeps primary Moonrobo handoff block: MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
+    "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
   },
   "payload": {
     "primary_receipt": {
       "receipt": {
         "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
         "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
-        "status": "NeedsReview",
+        "status": "Accepted",
         "accepted_outputs": [
           "route-scoreboard",
           "moonrobo-handoff-compatibility",
           "blocked-evidence-summary"
         ],
         "validation_notes": [
-          "route-candidates-present: pass - 5 route candidates are available for scoring.",
-          "selected-route-present: fail - corridor-selected route  exists in the current route candidate set.",
-          "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+          "route-candidates-present: pass - 6 route candidates are available for scoring.",
+          "selected-route-present: pass - corridor-selected route northeast-stepout exists in the current route candidate set.",
+          "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
           "proposal-blockers-current: pass - route-scoring proposal blockers remain active: corridor-scan-best-window, energy-window, moonrobo-handoff.",
           "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
           "moonrobo-handoff-compatible: pass - primary Moonrobo handoff is block, matching the blocked route-scoring result."
         ]
       },
       "site_id": "first-trusted-square",
-      "selected_route_id": "",
+      "selected_route_id": "northeast-stepout",
       "route_scores": [
         {
           "route_id": "direct-lola-window",
-          "rank": 5,
+          "rank": 6,
           "route_decision": "Block",
           "illumination_decision": "Block",
           "route_score": 6,
@@ -46,7 +46,7 @@
         },
         {
           "route_id": "west-contour-detour",
-          "rank": 4,
+          "rank": 5,
           "route_decision": "Block",
           "illumination_decision": "Block",
           "route_score": 6,
@@ -59,7 +59,7 @@
         },
         {
           "route_id": "north-rim-stepout",
-          "rank": 3,
+          "rank": 4,
           "route_decision": "Block",
           "illumination_decision": "Block",
           "route_score": 6,
@@ -72,7 +72,7 @@
         },
         {
           "route_id": "southwest-bypass",
-          "rank": 1,
+          "rank": 2,
           "route_decision": "Block",
           "illumination_decision": "Block",
           "route_score": 6,
@@ -85,7 +85,7 @@
         },
         {
           "route_id": "south-stepout",
-          "rank": 2,
+          "rank": 3,
           "route_decision": "Block",
           "illumination_decision": "Block",
           "route_score": 6,
@@ -95,23 +95,36 @@
           "confidence": 0.7544,
           "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
           "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+        },
+        {
+          "route_id": "northeast-stepout",
+          "rank": 1,
+          "route_decision": "Block",
+          "illumination_decision": "Block",
+          "route_score": 6,
+          "risk_index": 1.1099249999999996,
+          "max_grade": 0.5139499999999998,
+          "roughness_m": 5.95975,
+          "confidence": 0.7544,
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "next_action": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
         }
       ],
       "validation_checks": [
         {
           "validation_id": "route-candidates-present",
           "passed": true,
-          "note": "5 route candidates are available for scoring."
+          "note": "6 route candidates are available for scoring."
         },
         {
           "validation_id": "selected-route-present",
-          "passed": false,
-          "note": "corridor-selected route  exists in the current route candidate set."
+          "passed": true,
+          "note": "corridor-selected route northeast-stepout exists in the current route candidate set."
         },
         {
           "validation_id": "source-checksums-verified",
           "passed": true,
-          "note": "5 of 5 dataset source fingerprints match their manifests."
+          "note": "6 of 6 dataset source fingerprints match their manifests."
         },
         {
           "validation_id": "proposal-blockers-current",
@@ -130,34 +143,34 @@
         }
       ],
       "moonrobo_handoff_decision": "Block",
-      "next_action": "MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
+      "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
     },
     "receipts": [
       {
         "receipt": {
           "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
           "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
-          "status": "NeedsReview",
+          "status": "Accepted",
           "accepted_outputs": [
             "route-scoreboard",
             "moonrobo-handoff-compatibility",
             "blocked-evidence-summary"
           ],
           "validation_notes": [
-            "route-candidates-present: pass - 5 route candidates are available for scoring.",
-            "selected-route-present: fail - corridor-selected route  exists in the current route candidate set.",
-            "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+            "route-candidates-present: pass - 6 route candidates are available for scoring.",
+            "selected-route-present: pass - corridor-selected route northeast-stepout exists in the current route candidate set.",
+            "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
             "proposal-blockers-current: pass - route-scoring proposal blockers remain active: corridor-scan-best-window, energy-window, moonrobo-handoff.",
             "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
             "moonrobo-handoff-compatible: pass - primary Moonrobo handoff is block, matching the blocked route-scoring result."
           ]
         },
         "site_id": "first-trusted-square",
-        "selected_route_id": "",
+        "selected_route_id": "northeast-stepout",
         "route_scores": [
           {
             "route_id": "direct-lola-window",
-            "rank": 5,
+            "rank": 6,
             "route_decision": "Block",
             "illumination_decision": "Block",
             "route_score": 6,
@@ -170,7 +183,7 @@
           },
           {
             "route_id": "west-contour-detour",
-            "rank": 4,
+            "rank": 5,
             "route_decision": "Block",
             "illumination_decision": "Block",
             "route_score": 6,
@@ -183,7 +196,7 @@
           },
           {
             "route_id": "north-rim-stepout",
-            "rank": 3,
+            "rank": 4,
             "route_decision": "Block",
             "illumination_decision": "Block",
             "route_score": 6,
@@ -196,7 +209,7 @@
           },
           {
             "route_id": "southwest-bypass",
-            "rank": 1,
+            "rank": 2,
             "route_decision": "Block",
             "illumination_decision": "Block",
             "route_score": 6,
@@ -209,7 +222,7 @@
           },
           {
             "route_id": "south-stepout",
-            "rank": 2,
+            "rank": 3,
             "route_decision": "Block",
             "illumination_decision": "Block",
             "route_score": 6,
@@ -219,23 +232,36 @@
             "confidence": 0.7544,
             "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
             "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+          },
+          {
+            "route_id": "northeast-stepout",
+            "rank": 1,
+            "route_decision": "Block",
+            "illumination_decision": "Block",
+            "route_score": 6,
+            "risk_index": 1.1099249999999996,
+            "max_grade": 0.5139499999999998,
+            "roughness_m": 5.95975,
+            "confidence": 0.7544,
+            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+            "next_action": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
           }
         ],
         "validation_checks": [
           {
             "validation_id": "route-candidates-present",
             "passed": true,
-            "note": "5 route candidates are available for scoring."
+            "note": "6 route candidates are available for scoring."
           },
           {
             "validation_id": "selected-route-present",
-            "passed": false,
-            "note": "corridor-selected route  exists in the current route candidate set."
+            "passed": true,
+            "note": "corridor-selected route northeast-stepout exists in the current route candidate set."
           },
           {
             "validation_id": "source-checksums-verified",
             "passed": true,
-            "note": "5 of 5 dataset source fingerprints match their manifests."
+            "note": "6 of 6 dataset source fingerprints match their manifests."
           },
           {
             "validation_id": "proposal-blockers-current",
@@ -254,7 +280,7 @@
           }
         ],
         "moonrobo_handoff_decision": "Block",
-        "next_action": "MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
+        "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
       }
     ]
   },

@@ -368,6 +368,15 @@ fn validation_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
 }
 
 ///|
+fn blocker_count_label(count : Int) -> String {
+  if count == 1 {
+    "1 blocker"
+  } else {
+    "\{count} blockers"
+  }
+}
+
+///|
 fn terrain_entry(dossier : @site.SiteDossier) -> BookEntry {
   {
     entry_id: "terrain/\{dossier.site.site_id}/metrics",
@@ -519,6 +528,7 @@ fn moonclaw_proposal_entry(dossier : @site.SiteDossier) -> BookEntry {
 ///|
 fn moonclaw_ephemeris_task_entry(dossier : @site.SiteDossier) -> BookEntry {
   let task = @moonclaw.ephemeris_acquisition_task(dossier)
+  let blockers = @moonclaw.task_blocked_artifact_count(task)
   {
     entry_id: "moonclaw/\{dossier.site.site_id}/ephemeris-acquisition-task",
     title: "MoonClaw ephemeris acquisition task for \{dossier.site.name}",
@@ -526,13 +536,14 @@ fn moonclaw_ephemeris_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.6,
     path: "moonclaw/\{dossier.site.site_id}/ephemeris-task.json",
-    summary: "\{@moonclaw.receipt_status_label(task.state)} task tracks \{task.artifacts.length()} artifacts with \{@moonclaw.task_blocked_artifact_count(task)} blockers before Moonrobo power evidence can unblock",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task tracks \{task.artifacts.length()} artifacts with \{blocker_count_label(blockers)} before Moonrobo power evidence can unblock",
   }
 }
 
 ///|
 fn moonclaw_corridor_task_entry(dossier : @site.SiteDossier) -> BookEntry {
   let task = @moonclaw.corridor_expansion_task(dossier)
+  let blockers = @moonclaw.corridor_task_blocked_artifact_count(task)
   {
     entry_id: "moonclaw/\{dossier.site.site_id}/corridor-expansion-task",
     title: "MoonClaw corridor expansion task for \{dossier.site.name}",
@@ -540,7 +551,7 @@ fn moonclaw_corridor_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.65,
     path: "moonclaw/\{dossier.site.site_id}/corridor-task.json",
-    summary: "\{@moonclaw.receipt_status_label(task.state)} task plans \{task.planned_window_count} windows with \{@moonclaw.corridor_task_blocked_artifact_count(task)} blockers before route promotion",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task plans \{task.planned_window_count} windows with \{blocker_count_label(blockers)} before route promotion",
   }
 }
 
@@ -684,7 +695,7 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       review_item(
         "power-window-evidence",
         "high",
-        "power-window evidence \{dossier.power_window_evidence.evidence_id} has source status \{dossier.power_window_evidence.source_status}; pin official ephemeris source, checksum, and time window before energy review",
+        "power-window evidence \{dossier.power_window_evidence.evidence_id} has source status \{dossier.power_window_evidence.source_status}; compute and review a time-windowed power result before energy review",
         "power-thermal-review",
       ),
     )
@@ -726,7 +737,7 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       review_item(
         "moonclaw-ephemeris-task",
         "high",
-        "MoonClaw ephemeris task has \{blocked_artifacts} blocking artifacts before power-window evidence can become robot-facing input",
+        "MoonClaw ephemeris task has \{blocker_count_label(blocked_artifacts)} before power-window evidence can become robot-facing input",
         "moonclaw",
       ),
     )
@@ -740,7 +751,7 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       review_item(
         "moonclaw-corridor-task",
         "high",
-        "MoonClaw corridor task has \{corridor_blocked_artifacts} blocking artifacts before the planned \{corridor_task.planned_window_count}-window search can update route evidence",
+        "MoonClaw corridor task has \{blocker_count_label(corridor_blocked_artifacts)} before the planned \{corridor_task.planned_window_count}-window search can update route evidence",
         "moonclaw",
       ),
     )

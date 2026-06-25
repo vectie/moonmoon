@@ -84,18 +84,18 @@ ephemeris and corridor acquisition tasks, a deterministic route-scoring receipt,
 deterministic corridor-expansion receipt, and a needs-review ephemeris receipt.
 The tasks name source artifacts, generator commands, validation gates,
 machine-readable artifact readiness, blocker reasons, and Moonrobo safety
-condition required to move the power-window evidence from `missing-source` to
-reviewed robot-facing input and to move the corridor search from the current
+condition required to move the power-window evidence from `source-files-ready`
+to reviewed robot-facing input and to move the corridor search from the current
 5x5 proof to a planned 9x9 extraction. The receipts validate the current route
 set, selected route, measured corridor windows, source checksums, proposal
 blockers, energy blocker, and Moonrobo handoff compatibility. They record
 accepted terrain and route results while the ephemeris receipt keeps the power
 gate in review until a real time-windowed solar source is attached.
 
-Moonmoon now also records that missing solar source as a typed acquisition
+Moonmoon now also records the solar source boundary as a typed acquisition
 contract. The first trusted square has a `SPICE kernels` source candidate and a
-MoonBook-visible ephemeris acquisition plan for pinned source metadata,
-checksummed inputs, generated JSON power-window evidence, and a future generated
+MoonBook-visible ephemeris acquisition plan with pinned source metadata,
+checksummed inputs, generated JSON power-window evidence, and a future computed
 MoonBit power-window module.
 
 The current terrain fixture is sourced from the checked LOLA byte-range CSV at
@@ -111,17 +111,17 @@ ephemeris-backed power evidence exists.
 The current power-window evidence is checked at
 `data/sources/lunar_ephemeris/first_trusted_square_power_window.json` and
 mirrored into MoonBit by `scripts/generate_power_window.py`. That source is a
-deliberate `missing-source` fixture: it makes the absent ephemeris input
+deliberate `source-files-ready` fixture: it makes the pinned ephemeris inputs
 machine-readable and reproducible while keeping the energy gate blocked. It now
-names the candidate NAIF kernel inventory, while byte counts, checksums, local
-copies, and the computed time window remain pending. The
+names and verifies the NAIF kernel inventory, while the computed time window
+remains pending. The
 same evidence is indexed as a standalone MoonBook `power-window-evidence` entry,
 so operators can inspect the source status separately from the derived energy
 budget. MoonBook also queues that entry directly while the evidence remains
-`missing-source`, keeping the source-review blocker separate from route and
-energy calculations. Moonrobo handoff packets consume the same evidence as a
-separate precondition, so robot simulation stays blocked on source readiness
-before it even considers the derived energy budget.
+`source-files-ready`, keeping the power-computation blocker separate from route
+and energy calculations. Moonrobo handoff packets consume the same evidence as
+a separate precondition, so robot simulation stays blocked on computed
+power-window readiness before it even considers the derived energy budget.
 
 The first target is not a decorative Moon viewer. The first target is one
 trusted lunar site model that can answer operational questions with source

@@ -6,7 +6,7 @@
   - state: needs-review
   - objective: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed.
   - safety gate: Do not allow Moonrobo simulation until power-window-json is ready, generated MoonBit evidence is current, and Moonrobo preconditions no longer block on power-window-evidence.
-  - next action: MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached
+  - next action: MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached
   - inputs:
     - energy-window: mission/first-trusted-square/energy-window.json - Conservative rover energy budget currently blocks because no verified sunlit power window is attached.
     - route-illumination: mission/first-trusted-square/routes/*.illumination.json - Per-route illumination gates use measured relief as a shadow-risk proxy and require time-windowed replacement evidence.
@@ -15,21 +15,20 @@
     - source-discovery-record: data/sources/lunar_ephemeris/README.md
       - producer: operator-or-moonclaw-source-agent
       - required: official ephemeris or illumination source family selected with citation
-      - current: placeholder source family, exact kernels and checksums pending
-      - ready: false
-      - blocking: exact official kernel/product files, temporal coverage, byte counts, and checksums are not pinned
-      - gate: source-acquisition plan must name the exact official files before energy can unblock
+      - current: 5 ready source files; computation pending
+      - ready: true
+      - gate: source-acquisition plan must pin exact official files and the power-window computation before energy can unblock
     - power-window-json: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
       - producer: scripts/generate_power_window.py input
       - required: ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh
-      - current: missing-source
+      - current: source-files-ready
       - ready: false
-      - blocking: current power-window evidence is missing-source; no time-windowed ephemeris is attached
+      - blocking: current power-window evidence is source-files-ready; no computed time-windowed ephemeris is attached
       - gate: scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check
     - generated-moonbit-window: src/mission/generated_first_trusted_square_power_window.mbt
       - producer: scripts/generate_power_window.py
       - required: MoonBit evidence mirrors the cited power-window JSON without hand edits
-      - current: generated-missing-source-evidence
+      - current: generated-uncomputed-power-window-evidence
       - ready: true
       - gate: moon test src/mission
     - site-energy-output: output/site/first_trusted_square.json

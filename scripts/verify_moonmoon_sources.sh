@@ -14,6 +14,11 @@ LOLA_NORTHEAST_STEPOUT="$ROOT/data/sources/lro_lola/first_trusted_square_northea
 LOLA_CORRIDOR_SCAN="$ROOT/data/sources/lro_lola/first_trusted_square_corridor_scan.csv"
 LOLA_CORRIDOR_SCAN_V2="$ROOT/data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv"
 LUNAR_EPHEMERIS_POWER_WINDOW="$ROOT/data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+LUNAR_EPHEMERIS_NAIF0012="$ROOT/data/sources/lunar_ephemeris/kernels/naif0012.tls"
+LUNAR_EPHEMERIS_DE440S="$ROOT/data/sources/lunar_ephemeris/kernels/de440s.bsp"
+LUNAR_EPHEMERIS_PCK00011="$ROOT/data/sources/lunar_ephemeris/kernels/pck00011.tpc"
+LUNAR_EPHEMERIS_MOON_PA_DE440="$ROOT/data/sources/lunar_ephemeris/kernels/moon_pa_de440_200625.bpc"
+LUNAR_EPHEMERIS_MOON_DE440="$ROOT/data/sources/lunar_ephemeris/kernels/moon_de440_250416.tf"
 
 EXPECTED_FIRST_TRUSTED_SQUARE_SHA256="45981303392c9be40ce224143409cb675d1a62bb541420a782c4397cce8fbdf7"
 EXPECTED_LOLA_GDR_CATALOG_SHA256="f7b1af88b345ca57f088cf484fc491f9c9cc614fd24575ccbe5b0cb83b2373d8"
@@ -36,8 +41,46 @@ EXPECTED_LOLA_CORRIDOR_SCAN_SHA256="11430a5e4a83040027eaabd7bdcd2706fbbe9cf8c219
 EXPECTED_LOLA_CORRIDOR_SCAN_BYTES="4813"
 EXPECTED_LOLA_CORRIDOR_SCAN_V2_SHA256="9d303140bde14fe5f6be4b697f8464bdbc93889c8149f22b4b8b32de4d95c52e"
 EXPECTED_LOLA_CORRIDOR_SCAN_V2_BYTES="15245"
-EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_SHA256="f23674c011227d0fde3f81716cd55d6c706101f4ec55e2c10d83eb4820648b51"
-EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_BYTES="3220"
+EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_SHA256="3a777aae252f727f525da591838f4cfd979ef68c1dbd7fe0b2f256f58a884180"
+EXPECTED_LUNAR_EPHEMERIS_POWER_WINDOW_BYTES="3648"
+EXPECTED_LUNAR_EPHEMERIS_NAIF0012_SHA256="678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b"
+EXPECTED_LUNAR_EPHEMERIS_NAIF0012_BYTES="5257"
+EXPECTED_LUNAR_EPHEMERIS_DE440S_SHA256="c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2"
+EXPECTED_LUNAR_EPHEMERIS_DE440S_BYTES="32726016"
+EXPECTED_LUNAR_EPHEMERIS_PCK00011_SHA256="3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1"
+EXPECTED_LUNAR_EPHEMERIS_PCK00011_BYTES="131226"
+EXPECTED_LUNAR_EPHEMERIS_MOON_PA_DE440_SHA256="60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f"
+EXPECTED_LUNAR_EPHEMERIS_MOON_PA_DE440_BYTES="12863488"
+EXPECTED_LUNAR_EPHEMERIS_MOON_DE440_SHA256="a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768"
+EXPECTED_LUNAR_EPHEMERIS_MOON_DE440_BYTES="19478"
+EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_SHA256="d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59"
+EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_BYTES="45745465"
+
+verify_file() {
+  local path="$1"
+  local expected_sha="$2"
+  local expected_bytes="$3"
+  local actual
+  local bytes
+  actual="$(shasum -a 256 "$path" | awk '{print $1}')"
+  bytes="$(wc -c < "$path" | tr -d ' ')"
+
+  if [[ "$actual" != "$expected_sha" ]]; then
+    printf 'checksum mismatch for %s\n' "$path" >&2
+    printf 'expected %s\n' "$expected_sha" >&2
+    printf 'actual   %s\n' "$actual" >&2
+    exit 1
+  fi
+
+  if [[ "$bytes" != "$expected_bytes" ]]; then
+    printf 'byte count mismatch for %s\n' "$path" >&2
+    printf 'expected %s\n' "$expected_bytes" >&2
+    printf 'actual   %s\n' "$bytes" >&2
+    exit 1
+  fi
+
+  printf 'verified %s %s\n' "$actual" "$path"
+}
 
 actual="$(shasum -a 256 "$SOURCE" | awk '{print $1}')"
 
@@ -239,6 +282,55 @@ if [[ "$corridor_scan_v2_bytes" != "$EXPECTED_LOLA_CORRIDOR_SCAN_V2_BYTES" ]]; t
 fi
 
 printf 'verified %s %s\n' "$corridor_scan_v2_actual" "$LOLA_CORRIDOR_SCAN_V2"
+
+verify_file \
+  "$LUNAR_EPHEMERIS_NAIF0012" \
+  "$EXPECTED_LUNAR_EPHEMERIS_NAIF0012_SHA256" \
+  "$EXPECTED_LUNAR_EPHEMERIS_NAIF0012_BYTES"
+
+verify_file \
+  "$LUNAR_EPHEMERIS_DE440S" \
+  "$EXPECTED_LUNAR_EPHEMERIS_DE440S_SHA256" \
+  "$EXPECTED_LUNAR_EPHEMERIS_DE440S_BYTES"
+
+verify_file \
+  "$LUNAR_EPHEMERIS_PCK00011" \
+  "$EXPECTED_LUNAR_EPHEMERIS_PCK00011_SHA256" \
+  "$EXPECTED_LUNAR_EPHEMERIS_PCK00011_BYTES"
+
+verify_file \
+  "$LUNAR_EPHEMERIS_MOON_PA_DE440" \
+  "$EXPECTED_LUNAR_EPHEMERIS_MOON_PA_DE440_SHA256" \
+  "$EXPECTED_LUNAR_EPHEMERIS_MOON_PA_DE440_BYTES"
+
+verify_file \
+  "$LUNAR_EPHEMERIS_MOON_DE440" \
+  "$EXPECTED_LUNAR_EPHEMERIS_MOON_DE440_SHA256" \
+  "$EXPECTED_LUNAR_EPHEMERIS_MOON_DE440_BYTES"
+
+kernel_bundle_actual="$(cat \
+  "$LUNAR_EPHEMERIS_NAIF0012" \
+  "$LUNAR_EPHEMERIS_DE440S" \
+  "$LUNAR_EPHEMERIS_PCK00011" \
+  "$LUNAR_EPHEMERIS_MOON_PA_DE440" \
+  "$LUNAR_EPHEMERIS_MOON_DE440" | shasum -a 256 | awk '{print $1}')"
+kernel_bundle_bytes="$((EXPECTED_LUNAR_EPHEMERIS_NAIF0012_BYTES + EXPECTED_LUNAR_EPHEMERIS_DE440S_BYTES + EXPECTED_LUNAR_EPHEMERIS_PCK00011_BYTES + EXPECTED_LUNAR_EPHEMERIS_MOON_PA_DE440_BYTES + EXPECTED_LUNAR_EPHEMERIS_MOON_DE440_BYTES))"
+
+if [[ "$kernel_bundle_actual" != "$EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_SHA256" ]]; then
+  printf 'checksum mismatch for lunar ephemeris kernel bundle\n' >&2
+  printf 'expected %s\n' "$EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_SHA256" >&2
+  printf 'actual   %s\n' "$kernel_bundle_actual" >&2
+  exit 1
+fi
+
+if [[ "$kernel_bundle_bytes" != "$EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_BYTES" ]]; then
+  printf 'byte count mismatch for lunar ephemeris kernel bundle\n' >&2
+  printf 'expected %s\n' "$EXPECTED_LUNAR_EPHEMERIS_KERNEL_BUNDLE_BYTES" >&2
+  printf 'actual   %s\n' "$kernel_bundle_bytes" >&2
+  exit 1
+fi
+
+printf 'verified %s lunar ephemeris kernel bundle\n' "$kernel_bundle_actual"
 
 power_window_actual="$(shasum -a 256 "$LUNAR_EPHEMERIS_POWER_WINDOW" | awk '{print $1}')"
 power_window_bytes="$(wc -c < "$LUNAR_EPHEMERIS_POWER_WINDOW" | tr -d ' ')"

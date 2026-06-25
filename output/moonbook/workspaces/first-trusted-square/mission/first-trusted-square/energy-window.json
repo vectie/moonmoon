@@ -6,15 +6,15 @@
     "claim_kind": "Derived",
     "confidence": 0.45,
     "path": "mission/first-trusted-square/energy-window.json",
-    "summary": "block with 845 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    "summary": "block with 880 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
   },
   "payload": {
     "budget": {
       "budget_id": "conservative-south-pole-energy-v1",
       "label": "Conservative South Pole Rover Energy Budget",
-      "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+      "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
       "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-      "power_window_source_status": "missing-source",
+      "power_window_source_status": "source-files-ready",
       "time_start_utc": "pending",
       "time_end_utc": "pending",
       "battery_capacity_wh": 1200,
@@ -28,19 +28,19 @@
       "verified_available_energy_wh": 0,
       "has_time_window_ephemeris": false
     },
-    "route_count": 5,
-    "blocked_route_count": 5,
-    "estimated_drive_hours": 1.25,
+    "route_count": 6,
+    "blocked_route_count": 6,
+    "estimated_drive_hours": 1.5,
     "estimated_dark_survival_hours": 2,
-    "required_energy_wh": 845,
+    "required_energy_wh": 880,
     "available_energy_wh": 0,
-    "margin_wh": -845,
+    "margin_wh": -880,
     "decision": "Block",
     "reasons": [
       "no time-windowed solar ephemeris is attached for energy planning",
-      "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+      "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
       "estimated energy demand exceeds verified available energy",
-      "5 route candidates remain blocked before energy simulation"
+      "6 route candidates remain blocked before energy simulation"
     ],
     "next_action": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
   },

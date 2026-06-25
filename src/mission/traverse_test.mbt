@@ -91,9 +91,9 @@ test "first trusted square illumination gate blocks missing time window evidence
   let evidence = @mission.first_trusted_square_power_window_evidence()
   assert_eq(
     evidence.evidence_id,
-    "first-trusted-square-power-window-missing-v1",
+    "first-trusted-square-power-window-sources-ready-v1",
   )
-  assert_eq(evidence.source_status, "missing-source")
+  assert_eq(evidence.source_status, "source-files-ready")
   assert_eq(
     evidence.local_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
@@ -101,16 +101,21 @@ test "first trusted square illumination gate blocks missing time window evidence
   assert_true(!evidence.has_time_window_ephemeris)
   assert_eq(evidence.source_files.length(), 5)
   assert_eq(evidence.source_files[0].file_id, "naif0012.tls")
-  assert_eq(evidence.source_files[0].status, "candidate")
+  assert_eq(evidence.source_files[0].status, "ready")
   assert_eq(evidence.source_files[1].file_id, "de440s.bsp")
   assert_eq(evidence.source_files[2].file_id, "pck00011.tpc")
   assert_eq(evidence.source_files[3].file_id, "moon_pa_de440_200625.bpc")
   assert_eq(evidence.source_files[4].file_id, "moon_de440_250416.tf")
   for source_file in evidence.source_files {
-    assert_eq(source_file.sha256, "")
-    assert_eq(source_file.bytes, 0)
-    assert_true(source_file.status != "ready")
+    assert_true(source_file.sha256.length() == 64)
+    assert_true(source_file.bytes > 0)
+    assert_eq(source_file.status, "ready")
   }
+  assert_eq(evidence.source_bytes, 45745465)
+  assert_eq(
+    evidence.source_sha256,
+    "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+  )
   assert_eq(evidence.computation.method_id, "south-pole-power-window-v1")
   assert_eq(evidence.computation.status, "not-computed")
   let assessment = @mission.assess_illumination(
@@ -126,7 +131,10 @@ test "first trusted square illumination gate blocks missing time window evidence
     assessment.constraint.power_window_evidence_id,
     evidence.evidence_id,
   )
-  assert_eq(assessment.constraint.power_window_source_status, "missing-source")
+  assert_eq(
+    assessment.constraint.power_window_source_status,
+    "source-files-ready",
+  )
   assert_true(assessment.relief_shadow_risk > 0.3)
   assert_true(assessment.confidence < 0.5)
   assert_true(
@@ -144,9 +152,9 @@ test "first trusted square energy window blocks missing ephemeris budget" {
   assert_eq(assessment.budget.budget_id, "conservative-south-pole-energy-v1")
   assert_eq(
     assessment.budget.power_window_evidence_id,
-    "first-trusted-square-power-window-missing-v1",
+    "first-trusted-square-power-window-sources-ready-v1",
   )
-  assert_eq(assessment.budget.power_window_source_status, "missing-source")
+  assert_eq(assessment.budget.power_window_source_status, "source-files-ready")
   assert_eq(
     assessment.budget.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",

@@ -152,6 +152,33 @@
         "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
         "The window is smoother than the active patch but remains blocked by conservative rover limits."
       ]
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "title": "LOLA northeast-stepout 9x9 corridor DEM byte-range fixture",
+      "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+      "license": "Apache-2.0",
+      "product_type": "lola-gdr-byte-range-corridor-dem-fixture",
+      "trust": "Authoritative",
+      "claim_kind": "Measured",
+      "coverage": {
+        "south_deg": -89.78,
+        "north_deg": -89.74,
+        "west_deg": 0.26,
+        "east_deg": 0.3
+      },
+      "resolution_m": 20,
+      "source_path": "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+      "source_sha256": "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+      "extractor": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "checksum": "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
+      "citation": "LRO LOLA GDR product ldem_875s_20m_float, northeast 9x9 corridor byte-range extraction for Moonmoon route evidence.",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "This is measured local terrain evidence for the best ranked window in the active 9x9 scan, not proof that the route is safe.",
+        "The selected route remains blocked until terrain review, wider sampling, and time-windowed power evidence improve."
+      ]
     }
   ],
   "validations": [
@@ -194,6 +221,14 @@
       "actual_checksum": "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
       "status": "Verified",
       "note": "source fingerprint matches manifest"
+    },
+    {
+      "dataset_id": "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "checksum_kind": "InlineFixtureFingerprint",
+      "expected_checksum": "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
+      "actual_checksum": "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
+      "status": "Verified",
+      "note": "source fingerprint matches manifest"
     }
   ],
   "source_candidates": [
@@ -227,12 +262,12 @@
       "access_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
       "local_target_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
       "intended_use": "Attach time-windowed Sun/Moon geometry, local sunlit hours, and rover power-window evidence to the first trusted square.",
-      "next_action": "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+      "next_action": "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
       "review_status": "NeedsSourceUpgrade",
       "notes": [
         "The current illumination and energy gates deliberately block because only relief-shadow proxies exist.",
-        "A real power gate needs a time-bounded Sun/Moon geometry source plus local horizon assumptions.",
-        "This candidate turns the missing ephemeris evidence from prose into a typed MoonBook-visible source contract."
+        "The NAIF source files are pinned locally, but the power gate still needs a time-bounded Sun/Moon geometry computation plus local horizon assumptions.",
+        "This candidate turns the ephemeris evidence from prose into a typed MoonBook-visible source contract."
       ]
     }
   ],
@@ -296,8 +331,8 @@
       "product_family_id": "lunar-solar-ephemeris-power-window",
       "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
       "source_metadata_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
-      "source_metadata_sha256": "",
-      "source_metadata_bytes": 0,
+      "source_metadata_sha256": "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+      "source_metadata_bytes": 45745465,
       "discovery_url": "https://naif.jpl.nasa.gov/naif/data.html",
       "target_region": "First Trusted Square near Shackleton rim, 89.88S, 0.12E",
       "expected_format": "Pinned ephemeris/orientation source plus generated JSON power-window evidence",
@@ -311,14 +346,14 @@
           "title": "Select official ephemeris source",
           "action": "Choose NAIF SPICE kernels or an equivalent official illumination product that can support Sun/Moon geometry for the south-pole tile.",
           "expected_evidence": "Source family URL, kernel/product names, access URL, and license/usage notes recorded in MoonBook.",
-          "done_when": "The candidate names a concrete official source instead of a generic power assumption."
+          "done_when": "done: the candidate names concrete official NAIF source files instead of a generic power assumption."
         },
         {
           "step_id": "pin-kernels",
           "title": "Pin checksummed inputs",
           "action": "Record exact kernel or illumination product files, byte counts, SHA-256 checksums, and local paths under data/sources/lunar_ephemeris.",
           "expected_evidence": "A README plus source metadata checksum fields that make reruns deterministic.",
-          "done_when": "scripts/verify_moonmoon_sources.sh can reject missing or changed ephemeris inputs."
+          "done_when": "done: scripts/verify_moonmoon_sources.sh rejects missing or changed ephemeris inputs."
         },
         {
           "step_id": "compute-local-window",
@@ -492,6 +527,30 @@
         "This window is smoother than the active patch but still exceeds conservative rover traverse limits.",
         "The local window is still too small for mission-grade corridor planning."
       ]
+    },
+    {
+      "extraction_id": "extract-ldem-875s-20m-northeast-stepout-v1",
+      "selection_id": "select-ldem-875s-20m-float-v1",
+      "generated_by": "scripts/extract_lola_trusted_square.py",
+      "output_path": "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+      "output_sha256": "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+      "output_bytes": 924,
+      "tile_id": "first-trusted-square-northeast-stepout-lola",
+      "center_lat_deg": -89.76,
+      "center_lon_deg": 0.28,
+      "source_row_start": 3960,
+      "source_col_start": 3806,
+      "rows": 4,
+      "cols": 4,
+      "cell_size_m": 20,
+      "elevation_unit": "meters relative to 1737.4 km reference radius",
+      "claim_kind": "Measured",
+      "review_status": "AcceptedForSoftwareProof",
+      "notes": [
+        "Generated from the best measured window in the active 9x9 LOLA corridor scan.",
+        "This window now has a named route fixture and route id instead of staying only as a ranked scan row.",
+        "The route remains blocked by conservative terrain and power gates before simulation."
+      ]
     }
   ],
   "terrain": {
@@ -550,8 +609,8 @@
       "max_neighbor_grade": 0.51395,
       "roughness_m": 5.95975,
       "decision": "Block",
-      "selected_route_id": "",
-      "note": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+      "selected_route_id": "northeast-stepout",
+      "note": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
       "scan_id": "first-trusted-square-9x9-corridor-scan-v2",
@@ -1930,9 +1989,9 @@
         "constraint": {
           "constraint_id": "conservative-south-pole-power-v1",
           "label": "Conservative South Pole Power/Thermal Gate",
-          "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
           "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-          "power_window_source_status": "missing-source",
+          "power_window_source_status": "source-files-ready",
           "time_start_utc": "pending",
           "time_end_utc": "pending",
           "min_sunlit_hours": 4,
@@ -1949,7 +2008,7 @@
         "decision": "Block",
         "reasons": [
           "no time-windowed solar ephemeris is attached",
-          "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
           "local relief shadow proxy exceeds conservative limit",
           "illumination confidence below power planning threshold"
         ],
@@ -1980,9 +2039,9 @@
         "constraint": {
           "constraint_id": "conservative-south-pole-power-v1",
           "label": "Conservative South Pole Power/Thermal Gate",
-          "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
           "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-          "power_window_source_status": "missing-source",
+          "power_window_source_status": "source-files-ready",
           "time_start_utc": "pending",
           "time_end_utc": "pending",
           "min_sunlit_hours": 4,
@@ -1999,7 +2058,7 @@
         "decision": "Block",
         "reasons": [
           "no time-windowed solar ephemeris is attached",
-          "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
           "local relief shadow proxy exceeds conservative limit",
           "illumination confidence below power planning threshold"
         ],
@@ -2030,9 +2089,9 @@
         "constraint": {
           "constraint_id": "conservative-south-pole-power-v1",
           "label": "Conservative South Pole Power/Thermal Gate",
-          "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
           "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-          "power_window_source_status": "missing-source",
+          "power_window_source_status": "source-files-ready",
           "time_start_utc": "pending",
           "time_end_utc": "pending",
           "min_sunlit_hours": 4,
@@ -2049,7 +2108,7 @@
         "decision": "Block",
         "reasons": [
           "no time-windowed solar ephemeris is attached",
-          "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
           "local relief shadow proxy exceeds conservative limit",
           "illumination confidence below power planning threshold"
         ],
@@ -2080,9 +2139,9 @@
         "constraint": {
           "constraint_id": "conservative-south-pole-power-v1",
           "label": "Conservative South Pole Power/Thermal Gate",
-          "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
           "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-          "power_window_source_status": "missing-source",
+          "power_window_source_status": "source-files-ready",
           "time_start_utc": "pending",
           "time_end_utc": "pending",
           "min_sunlit_hours": 4,
@@ -2099,7 +2158,7 @@
         "decision": "Block",
         "reasons": [
           "no time-windowed solar ephemeris is attached",
-          "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
           "local relief shadow proxy exceeds conservative limit",
           "illumination confidence below power planning threshold"
         ],
@@ -2130,9 +2189,9 @@
         "constraint": {
           "constraint_id": "conservative-south-pole-power-v1",
           "label": "Conservative South Pole Power/Thermal Gate",
-          "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
           "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-          "power_window_source_status": "missing-source",
+          "power_window_source_status": "source-files-ready",
           "time_start_utc": "pending",
           "time_end_utc": "pending",
           "min_sunlit_hours": 4,
@@ -2149,7 +2208,7 @@
         "decision": "Block",
         "reasons": [
           "no time-windowed solar ephemeris is attached",
-          "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
           "local relief shadow proxy exceeds conservative limit",
           "illumination confidence below power planning threshold"
         ],
@@ -2164,15 +2223,125 @@
         "illumination gate is block"
       ],
       "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "route_id": "northeast-stepout",
+      "label": "Northeast 9x9 step-out candidate",
+      "strategy": "Promote the best measured window from the active 9x9 corridor scan into a named route fixture.",
+      "evidence_dataset_id": "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "evidence_source_path": "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+      "evidence_summary": "blocked measured window; elevation range 35.81 m",
+      "expected_max_grade": 0.5139499999999998,
+      "expected_roughness_m": 5.95975,
+      "confidence": 0.7544,
+      "illumination": {
+        "constraint": {
+          "constraint_id": "conservative-south-pole-power-v1",
+          "label": "Conservative South Pole Power/Thermal Gate",
+          "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
+          "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+          "power_window_source_status": "source-files-ready",
+          "time_start_utc": "pending",
+          "time_end_utc": "pending",
+          "min_sunlit_hours": 4,
+          "max_dark_hours": 2,
+          "max_relief_shadow_risk": 0.22,
+          "caution_relief_shadow_risk": 0.14,
+          "min_confidence": 0.7,
+          "has_time_window_ephemeris": false
+        },
+        "evidence_dataset_id": "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+        "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+        "relief_shadow_risk": 0.22381250000000003,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "no time-windowed solar ephemeris is attached",
+          "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
+          "local relief shadow proxy exceeds conservative limit",
+          "illumination confidence below power planning threshold"
+        ],
+        "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      },
+      "decision": "Block",
+      "score": 6,
+      "reasons": [
+        "expected grade exceeds rover hard limit",
+        "expected roughness exceeds rover hard limit",
+        "best active 9x9 corridor window is measured and selected but still blocked",
+        "illumination gate is block"
+      ],
+      "next_action": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
     }
   ],
   "power_window_evidence": {
-    "evidence_id": "first-trusted-square-power-window-missing-v1",
-    "source_status": "missing-source",
+    "evidence_id": "first-trusted-square-power-window-sources-ready-v1",
+    "source_status": "source-files-ready",
     "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
     "local_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    "source_sha256": "",
-    "source_bytes": 0,
+    "source_sha256": "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+    "source_bytes": 45745465,
+    "source_files": [
+      {
+        "file_id": "naif0012.tls",
+        "label": "NAIF leap seconds kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+        "local_path": "data/sources/lunar_ephemeris/kernels/naif0012.tls",
+        "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+        "bytes": 5257,
+        "role": "leap seconds and UTC/TDB time conversion",
+        "status": "ready"
+      },
+      {
+        "file_id": "de440s.bsp",
+        "label": "DE440 compact planetary ephemeris",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+        "local_path": "data/sources/lunar_ephemeris/kernels/de440s.bsp",
+        "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+        "bytes": 32726016,
+        "role": "Sun/Earth/Moon geometry for the selected south-pole time window",
+        "status": "ready"
+      },
+      {
+        "file_id": "pck00011.tpc",
+        "label": "IAU planetary constants kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+        "local_path": "data/sources/lunar_ephemeris/kernels/pck00011.tpc",
+        "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+        "bytes": 131226,
+        "role": "body constants and base lunar body-frame definitions",
+        "status": "ready"
+      },
+      {
+        "file_id": "moon_pa_de440_200625.bpc",
+        "label": "DE440 lunar principal-axis orientation kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de440_200625.bpc",
+        "local_path": "data/sources/lunar_ephemeris/kernels/moon_pa_de440_200625.bpc",
+        "sha256": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f",
+        "bytes": 12863488,
+        "role": "binary lunar principal-axis orientation for local horizon geometry",
+        "status": "ready"
+      },
+      {
+        "file_id": "moon_de440_250416.tf",
+        "label": "DE440 lunar frame kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_de440_250416.tf",
+        "local_path": "data/sources/lunar_ephemeris/kernels/moon_de440_250416.tf",
+        "sha256": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768",
+        "bytes": 19478,
+        "role": "Moon frame association for DE440-era lunar orientation kernels",
+        "status": "ready"
+      }
+    ],
+    "computation": {
+      "method_id": "south-pole-power-window-v1",
+      "generated_by": "pending ephemeris acquisition",
+      "time_step_minutes": 0,
+      "horizon_model": "pending local horizon model",
+      "rover_power_model": "conservative-south-pole-energy-v1",
+      "status": "not-computed"
+    },
     "time_start_utc": "pending",
     "time_end_utc": "pending",
     "target_lat_deg": -89.88,
@@ -2183,18 +2352,18 @@
     "confidence": 0,
     "has_time_window_ephemeris": false,
     "reasons": [
-      "official ephemeris or illumination source is not pinned yet",
-      "source checksum and byte count are intentionally pending",
-      "energy gate must remain blocked until generated evidence carries a real time window"
+      "official NAIF kernel files are locally pinned with byte counts and checksums",
+      "local power-window computation has not produced sunlit or dark hours yet",
+      "energy gate must remain blocked until generated evidence carries a computed time window"
     ]
   },
   "energy": {
     "budget": {
       "budget_id": "conservative-south-pole-energy-v1",
       "label": "Conservative South Pole Rover Energy Budget",
-      "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+      "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
       "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-      "power_window_source_status": "missing-source",
+      "power_window_source_status": "source-files-ready",
       "time_start_utc": "pending",
       "time_end_utc": "pending",
       "battery_capacity_wh": 1200,
@@ -2208,30 +2377,30 @@
       "verified_available_energy_wh": 0,
       "has_time_window_ephemeris": false
     },
-    "route_count": 5,
-    "blocked_route_count": 5,
-    "estimated_drive_hours": 1.25,
+    "route_count": 6,
+    "blocked_route_count": 6,
+    "estimated_drive_hours": 1.5,
     "estimated_dark_survival_hours": 2,
-    "required_energy_wh": 845,
+    "required_energy_wh": 880,
     "available_energy_wh": 0,
-    "margin_wh": -845,
+    "margin_wh": -880,
     "decision": "Block",
     "reasons": [
       "no time-windowed solar ephemeris is attached for energy planning",
-      "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+      "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
       "estimated energy demand exceeds verified available energy",
-      "5 route candidates remain blocked before energy simulation"
+      "6 route candidates remain blocked before energy simulation"
     ],
     "next_action": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
   },
-  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, and a conservative rover energy-window budget.",
+  "summary": "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, promoted best-window route evidence, and a conservative rover energy-window budget.",
   "blockers": [
     "terrain exceeds early traverse limits",
     "requires alternate route or stronger dataset"
   ],
   "next_questions": [
     "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
-    "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
-    "Review the materialized LunarBook workspace entries and close accepted or rejected queue items."
+    "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
+    "Review the materialized MoonBook workspace entries and close accepted or rejected queue items."
   ]
 }

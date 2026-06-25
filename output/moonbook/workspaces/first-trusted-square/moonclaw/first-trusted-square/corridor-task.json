@@ -27,13 +27,13 @@
           "input_id": "corridor-scan",
           "evidence_path": "mission/first-trusted-square/corridor-scan.json",
           "claim_kind": "Derived",
-          "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture."
+          "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window selects northeast-stepout and still blocks on conservative route limits."
         },
         {
           "input_id": "selected-route",
           "evidence_path": "mission/first-trusted-square/routes/*.json",
           "claim_kind": "Derived",
-          "summary": "Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route."
+          "summary": "Current named route candidates remain blocked; northeast-stepout is the selected route fixture for the best 9x9 measured window."
         },
         {
           "input_id": "source-extraction",
@@ -68,7 +68,7 @@
           "path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
           "producer": "scripts/scan_lola_corridor.py",
           "required_state": "81-window LOLA byte-range scan is extracted, checksummed, and reviewed",
-          "current_state": "pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a",
+          "current_state": "pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 9d303140bde14fe5f6be4b697f8464bdbc93889c8149f22b4b8b32de4d95c52e",
           "ready": true,
           "blocking_reason": "",
           "validation_gate": "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv"
@@ -115,8 +115,8 @@
           "description": "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files."
         }
       ],
-      "safety_gate": "Do not promote a widened route candidate until the best 9x9 window has its own route fixture and Moonrobo handoffs are regenerated from that route evidence.",
-      "next_action": "Extract and review a route fixture for the best 9x9 measured window r-12-c+16 before changing Moonrobo route candidates."
+      "safety_gate": "Do not allow Moonrobo simulation until the promoted northeast-stepout route clears terrain, illumination, energy, and review gates.",
+      "next_action": "Review northeast-stepout as the promoted r-12-c+16 fixture and continue wider sampling only if operators need more corridor context."
     },
     "tasks": [
       {
@@ -137,13 +137,13 @@
             "input_id": "corridor-scan",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
             "claim_kind": "Derived",
-            "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture."
+            "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window selects northeast-stepout and still blocks on conservative route limits."
           },
           {
             "input_id": "selected-route",
             "evidence_path": "mission/first-trusted-square/routes/*.json",
             "claim_kind": "Derived",
-            "summary": "Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route."
+            "summary": "Current named route candidates remain blocked; northeast-stepout is the selected route fixture for the best 9x9 measured window."
           },
           {
             "input_id": "source-extraction",
@@ -178,7 +178,7 @@
             "path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
             "producer": "scripts/scan_lola_corridor.py",
             "required_state": "81-window LOLA byte-range scan is extracted, checksummed, and reviewed",
-            "current_state": "pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a",
+            "current_state": "pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 9d303140bde14fe5f6be4b697f8464bdbc93889c8149f22b4b8b32de4d95c52e",
             "ready": true,
             "blocking_reason": "",
             "validation_gate": "python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv"
@@ -225,8 +225,8 @@
             "description": "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files."
           }
         ],
-        "safety_gate": "Do not promote a widened route candidate until the best 9x9 window has its own route fixture and Moonrobo handoffs are regenerated from that route evidence.",
-        "next_action": "Extract and review a route fixture for the best 9x9 measured window r-12-c+16 before changing Moonrobo route candidates."
+        "safety_gate": "Do not allow Moonrobo simulation until the promoted northeast-stepout route clears terrain, illumination, energy, and review gates.",
+        "next_action": "Review northeast-stepout as the promoted r-12-c+16 fixture and continue wider sampling only if operators need more corridor context."
       }
     ]
   },

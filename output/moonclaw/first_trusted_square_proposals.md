@@ -24,10 +24,10 @@
   - priority: high
   - title: Promote the LOLA route-corridor search
   - objective: Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.
-  - blocked by: corridor-scan-best-window, unpromoted-best-window, moonrobo-handoff
+  - blocked by: corridor-scan-best-window, moonrobo-handoff
   - inputs:
-    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture.
-    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route.
+    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window selects northeast-stepout and still blocks on conservative route limits.
+    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; northeast-stepout is the selected route fixture for the best 9x9 measured window.
     - source-extraction: source-extractions/first-trusted-square-southwest-bypass-20m.json - Existing byte-range extraction pattern for adding adjacent LOLA evidence windows.
   - acceptance:
     - bounded-search: Publish the search radius, sampled windows, ordering rule, CSV checksum, and generator command.

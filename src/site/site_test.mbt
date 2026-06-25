@@ -111,9 +111,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
   assert_eq(
     dossier.power_window_evidence.evidence_id,
-    "first-trusted-square-power-window-missing-v1",
+    "first-trusted-square-power-window-sources-ready-v1",
   )
-  assert_eq(dossier.power_window_evidence.source_status, "missing-source")
+  assert_eq(dossier.power_window_evidence.source_status, "source-files-ready")
   assert_eq(dossier.power_window_evidence.available_energy_wh, 0.0)
   assert_eq(dossier.energy.route_count, 6)
   assert_eq(dossier.energy.blocked_route_count, 6)
@@ -162,16 +162,20 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("selected route: northeast-stepout"))
   assert_true(markdown.contains("## Energy Window"))
   assert_true(markdown.contains("## Power Window Evidence"))
-  assert_true(markdown.contains("source status: missing-source"))
-  assert_true(markdown.contains("source sha256: pending"))
+  assert_true(markdown.contains("source status: source-files-ready"))
+  assert_true(markdown.contains("source bytes: 45745465"))
   assert_true(markdown.contains("naif0012.tls"))
   assert_true(markdown.contains("de440s.bsp"))
   assert_true(markdown.contains("moon_de440_250416.tf"))
   assert_true(markdown.contains("south-pole-power-window-v1"))
   assert_true(markdown.contains("has time-windowed ephemeris: false"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
-  assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))
-  assert_true(markdown.contains("power-window source status: missing-source"))
+  assert_true(
+    markdown.contains("first-trusted-square-power-window-sources-ready-v1"),
+  )
+  assert_true(
+    markdown.contains("power-window source status: source-files-ready"),
+  )
   assert_true(markdown.contains("verified available energy: 0"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
@@ -258,11 +262,11 @@ test "first trusted square dossier exports machine-readable evidence" {
   )
   assert_true(text.contains("\"available_energy_wh\": 0"))
   assert_true(
-    text.contains("\"power_window_source_status\": \"missing-source\""),
+    text.contains("\"power_window_source_status\": \"source-files-ready\""),
   )
   assert_true(
     text.contains(
-      "\"power_window_evidence_id\": \"first-trusted-square-power-window-missing-v1\"",
+      "\"power_window_evidence_id\": \"first-trusted-square-power-window-sources-ready-v1\"",
     ),
   )
   assert_true(text.contains("\"route_candidates\""))

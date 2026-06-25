@@ -485,7 +485,24 @@ fn corridor_receipt_next_action(best : @mission.CorridorScanWindow) -> String {
 
 ///|
 fn ephemeris_receipt_next_action() -> String {
-  "MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+  "MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
+}
+
+///|
+fn all_power_source_files_ready(
+  evidence : @mission.PowerWindowEvidence,
+) -> Bool {
+  if evidence.source_files.is_empty() {
+    return false
+  }
+  for source_file in evidence.source_files {
+    if source_file.status != "ready" ||
+      source_file.sha256 == "" ||
+      source_file.bytes <= 0 {
+      return false
+    }
+  }
+  true
 }
 
 ///|
@@ -605,11 +622,12 @@ pub fn ephemeris_acquisition_task(
   let evidence = dossier.power_window_evidence
   let source_inventory_state = if evidence.has_time_window_ephemeris {
     "\{evidence.source_files.length()} ready source files"
+  } else if all_power_source_files_ready(evidence) {
+    "\{evidence.source_files.length()} ready source files; computation pending"
   } else {
     "\{evidence.source_files.length()} candidate source files; checksums pending"
   }
-  let source_inventory_ready = evidence.has_time_window_ephemeris &&
-    evidence.source_status == "ready"
+  let source_inventory_ready = all_power_source_files_ready(evidence)
   let state = if evidence.has_time_window_ephemeris &&
     evidence.source_status == "ready" {
     Accepted
@@ -626,10 +644,18 @@ pub fn ephemeris_acquisition_task(
     inputs: proposal.inputs,
     artifacts: [
       task_artifact(
-        "source-discovery-record", "data/sources/lunar_ephemeris/README.md", "operator-or-moonclaw-source-agent",
+        "source-discovery-record",
+        "data/sources/lunar_ephemeris/README.md",
+        "operator-or-moonclaw-source-agent",
         "official ephemeris or illumination source family selected with citation",
-        source_inventory_state, source_inventory_ready, "official kernel candidates are named, but temporal coverage, byte counts, checksums, and local files are not pinned",
-        "source-acquisition plan must pin exact official files before energy can unblock",
+        source_inventory_state,
+        source_inventory_ready,
+        if source_inventory_ready {
+          ""
+        } else {
+          "official kernel candidates are named, but byte counts, checksums, and local files are not pinned"
+        },
+        "source-acquisition plan must pin exact official files and the power-window computation before energy can unblock",
       ),
       task_artifact(
         "power-window-json",
@@ -638,7 +664,7 @@ pub fn ephemeris_acquisition_task(
         "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
         evidence.source_status,
         evidence.has_time_window_ephemeris && evidence.source_status == "ready",
-        "current power-window evidence is \{evidence.source_status}; no time-windowed ephemeris is attached",
+        "current power-window evidence is \{evidence.source_status}; no computed time-windowed ephemeris is attached",
         "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check",
       ),
       task_artifact(
@@ -649,7 +675,7 @@ pub fn ephemeris_acquisition_task(
         if evidence.has_time_window_ephemeris {
           "generated-time-window-evidence"
         } else {
-          "generated-missing-source-evidence"
+          "generated-uncomputed-power-window-evidence"
         },
         true,
         "",
@@ -1032,14 +1058,15 @@ pub fn ephemeris_acquisition_receipt(
       "\{energy.route_count} route candidates are represented in the current energy assessment.",
     ),
     validation(
-      "time-window-ephemeris-missing",
+      "time-window-ephemeris-not-computed",
       !energy.budget.has_time_window_ephemeris &&
       !evidence.has_time_window_ephemeris,
-      "current energy budget explicitly reads \{evidence.evidence_id}, which has no time-windowed ephemeris attached.",
+      "current energy budget explicitly reads \{evidence.evidence_id}, whose pinned sources have not produced a time-windowed computation.",
     ),
     validation(
-      "power-window-source-status-missing",
-      evidence.source_status == "missing-source",
+      "power-window-source-files-ready",
+      evidence.source_status == "source-files-ready" &&
+      all_power_source_files_ready(evidence),
       "generated power-window evidence source status is \{evidence.source_status}.",
     ),
     validation(

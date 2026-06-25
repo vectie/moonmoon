@@ -49,6 +49,15 @@
       "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
     },
     {
+      "entry_id": "dataset/lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "title": "LOLA northeast-stepout 9x9 corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-northeast-stepout-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
       "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
       "title": "LRO LOLA derived gridded topography candidate",
       "kind": "SourceUpgradeCandidate",
@@ -64,7 +73,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
-      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate."
+      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate."
     },
     {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
@@ -139,6 +148,15 @@
       "summary": "4x4 window at row 3980, col 3790; dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c"
     },
     {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-northeast-stepout-v1",
+      "title": "Extract first-trusted-square-northeast-stepout-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-northeast-stepout-v1.json",
+      "summary": "4x4 window at row 3960, col 3806; b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c"
+    },
+    {
       "entry_id": "validation/lro-lola-first-trusted-square-dem-v1",
       "title": "Source validation for lro-lola-first-trusted-square-dem-v1",
       "kind": "SourceValidation",
@@ -184,6 +202,15 @@
       "summary": "verified: source fingerprint matches manifest"
     },
     {
+      "entry_id": "validation/lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-northeast-stepout-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
       "entry_id": "terrain/first-trusted-square/metrics",
       "title": "Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "DerivedTerrain",
@@ -208,7 +235,7 @@
       "claim_kind": "Derived",
       "confidence": 0.75,
       "path": "mission/first-trusted-square/corridor-scan.json",
-      "summary": "best window r-12-c+16 rank 1 selects no promoted route yet: block with grade 0.51395 and roughness 5.95975 m"
+      "summary": "best window r-12-c+16 rank 1 selects northeast-stepout: block with grade 0.51395 and roughness 5.95975 m"
     },
     {
       "entry_id": "route/first-trusted-square/direct-lola-window",
@@ -256,6 +283,15 @@
       "summary": "block with score 6 from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
     },
     {
+      "entry_id": "route/first-trusted-square/northeast-stepout",
+      "title": "Northeast 9x9 step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/northeast-stepout.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    },
+    {
       "entry_id": "illumination/first-trusted-square/direct-lola-window",
       "title": "Illumination gate for Direct traverse across measured LOLA patch",
       "kind": "IlluminationAssessment",
@@ -301,13 +337,22 @@
       "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     },
     {
+      "entry_id": "illumination/first-trusted-square/northeast-stepout",
+      "title": "Illumination gate for Northeast 9x9 step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.22381250000000003: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
       "entry_id": "power-window/first-trusted-square/ephemeris-evidence",
       "title": "Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "PowerWindowEvidence",
       "claim_kind": "Derived",
       "confidence": 0,
       "path": "mission/first-trusted-square/power-window-evidence.json",
-      "summary": "missing-source first-trusted-square-power-window-missing-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+      "summary": "source-files-ready first-trusted-square-power-window-sources-ready-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
     },
     {
       "entry_id": "energy/first-trusted-square/conservative-window",
@@ -316,7 +361,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45,
       "path": "mission/first-trusted-square/energy-window.json",
-      "summary": "block with 845 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      "summary": "block with 880 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
@@ -325,7 +370,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/handoffs.json",
-      "summary": "block primary route direct-lola-window: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "summary": "block primary route northeast-stepout: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
@@ -343,7 +388,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonclaw/first-trusted-square/ephemeris-task.json",
-      "summary": "needs-review task tracks 5 artifacts with 2 blockers before Moonrobo power evidence can unblock"
+      "summary": "needs-review task tracks 5 artifacts with 1 blocker before Moonrobo power evidence can unblock"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/corridor-expansion-task",
@@ -361,7 +406,7 @@
       "claim_kind": "Derived",
       "confidence": 0.7,
       "path": "moonclaw/first-trusted-square/receipts.json",
-      "summary": "needs-review receipt keeps primary Moonrobo handoff block: MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
+      "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
@@ -370,7 +415,7 @@
       "claim_kind": "Derived",
       "confidence": 0.55,
       "path": "moonclaw/first-trusted-square/ephemeris-receipts.json",
-      "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+      "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/corridor-expansion-receipt",
@@ -394,7 +439,7 @@
     {
       "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
       "severity": "medium",
-      "reason": "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+      "reason": "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
       "owner": "data-review",
       "status": "Open",
       "last_transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open"
@@ -512,9 +557,25 @@
       "last_transition_id": "review-illumination-south-stepout-request-evidence"
     },
     {
+      "item_id": "route-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-northeast-stepout-request-evidence"
+    },
+    {
+      "item_id": "illumination-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-northeast-stepout-request-evidence"
+    },
+    {
       "item_id": "corridor-scan-best-window",
       "severity": "high",
-      "reason": "best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked",
+      "reason": "best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked",
       "owner": "mission-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
@@ -522,7 +583,7 @@
     {
       "item_id": "power-window-evidence",
       "severity": "high",
-      "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review",
+      "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-power-window-evidence-request-evidence"
@@ -554,7 +615,7 @@
     {
       "item_id": "moonclaw-ephemeris-task",
       "severity": "high",
-      "reason": "MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input",
+      "reason": "MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input",
       "owner": "moonclaw",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
@@ -570,7 +631,7 @@
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
+      "reason": "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "owner": "moonclaw",
       "status": "Open",
       "last_transition_id": "review-question-1-keep-open"
@@ -578,7 +639,7 @@
     {
       "item_id": "question-2",
       "severity": "low",
-      "reason": "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
+      "reason": "Review the materialized MoonBook workspace entries and close accepted or rejected queue items.",
       "owner": "moonclaw",
       "status": "Open",
       "last_transition_id": "review-question-2-keep-open"
@@ -714,12 +775,28 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
     },
     {
+      "transition_id": "review-route-northeast-stepout-request-evidence",
+      "item_id": "route-northeast-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    },
+    {
+      "transition_id": "review-illumination-northeast-stepout-request-evidence",
+      "item_id": "illumination-northeast-stepout",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer": "moonbook-policy-v1",
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+    },
+    {
       "transition_id": "review-corridor-scan-best-window-request-evidence",
       "item_id": "corridor-scan-best-window",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
       "transition_id": "review-power-window-evidence-request-evidence",
@@ -727,7 +804,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review"
     },
     {
       "transition_id": "review-energy-window-request-evidence",
@@ -759,7 +836,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input"
     },
     {
       "transition_id": "review-question-0-keep-open",

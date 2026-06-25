@@ -121,7 +121,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[38].kind),
     "power-window-evidence",
   )
-  assert_true(dossier.entries[38].summary.contains("missing-source"))
+  assert_true(dossier.entries[38].summary.contains("source-files-ready"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[39].kind),
     "energy-window",
@@ -142,7 +142,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
     "moonclaw-task",
   )
   assert_true(
-    dossier.entries[42].summary.contains("5 artifacts with 2 blockers"),
+    dossier.entries[42].summary.contains("5 artifacts with 1 blocker"),
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[43].kind),
@@ -203,7 +203,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let power = dossier.review_queue[19]
   assert_eq(power.item_id, "power-window-evidence")
   assert_true(power.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  assert_true(power.reason.contains("missing-source"))
+  assert_true(power.reason.contains("time-windowed power result"))
   assert_true(
     dossier.review_transitions[19].decision ==
     @moonbook.ReviewDecision::RequestEvidence,
@@ -222,7 +222,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(
     ephemeris_task.status == @moonbook.ReviewItemStatus::NeedsEvidence,
   )
-  assert_true(ephemeris_task.reason.contains("2 blocking artifacts"))
+  assert_true(ephemeris_task.reason.contains("1 blocker"))
   let first_question = dossier.review_queue[24]
   assert_eq(first_question.item_id, "question-0")
   assert_true(first_question.status == @moonbook.ReviewItemStatus::Open)

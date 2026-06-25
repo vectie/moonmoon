@@ -23,9 +23,9 @@
       "constraint": {
         "constraint_id": "conservative-south-pole-power-v1",
         "label": "Conservative South Pole Power/Thermal Gate",
-        "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+        "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
         "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-        "power_window_source_status": "missing-source",
+        "power_window_source_status": "source-files-ready",
         "time_start_utc": "pending",
         "time_end_utc": "pending",
         "min_sunlit_hours": 4,
@@ -42,7 +42,7 @@
       "decision": "Block",
       "reasons": [
         "no time-windowed solar ephemeris is attached",
-        "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source",
+        "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
         "local relief shadow proxy exceeds conservative limit",
         "illumination confidence below power planning threshold"
       ],

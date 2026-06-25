@@ -136,10 +136,16 @@ fn power_gate(dossier : @site.SiteDossier) -> EvidenceGate {
     proof_artifact: power.local_source_path,
     blocker: if power.has_time_window_ephemeris {
       "none"
+    } else if power.source_status == "source-files-ready" {
+      "power-window sources are pinned but no computed sunlit/dark window is attached; verified available energy remains zero"
     } else {
       "power-window source is \{power.source_status}; verified available energy remains zero"
     },
-    next_action: "pin exact ephemeris source files, checksum them, and regenerate power-window evidence",
+    next_action: if power.source_status == "source-files-ready" {
+      "compute the local sunlit/dark window from pinned ephemeris files and regenerate power-window evidence"
+    } else {
+      "pin exact ephemeris source files, checksum them, and regenerate power-window evidence"
+    },
   }
 }
 
@@ -306,7 +312,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       task_id: "replace-missing-power-window",
       priority: 95,
       lane: DataLane,
-      title: "Replace the missing-source power window with ephemeris-backed evidence",
+      title: "Compute the pinned-source power window with ephemeris-backed evidence",
       outcome: "route decisions become time-window aware instead of permanently blocked by zero verified Wh",
       depends_on: [
         "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",

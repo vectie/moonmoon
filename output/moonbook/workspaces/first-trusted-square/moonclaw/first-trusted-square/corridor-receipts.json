@@ -22,9 +22,9 @@
         "validation_notes": [
           "corridor-scan-present: pass - 81 measured LOLA corridor windows are available.",
           "bounded-search-size: pass - current corridor expansion receipt covers the reproducible 9x9 LOLA search surface.",
-          "best-window-promotion-state: pass - best measured window r-12-c+16 is unpromoted route evidence and needs its own terrain fixture.",
+          "best-window-promotion-state: pass - best measured window r-12-c+16 selects route northeast-stepout.",
           "all-sampled-windows-blocked: pass - all sampled corridor windows remain blocked by conservative rover limits.",
-          "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+          "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
           "proposal-blockers-current: pass - corridor proposal blocker corridor-scan-best-window remains active."
         ]
       },
@@ -32,7 +32,7 @@
       "scan_id": "first-trusted-square-9x9-corridor-scan-v2",
       "sampled_window_count": 81,
       "best_window_id": "r-12-c+16",
-      "selected_route_id": "",
+      "selected_route_id": "northeast-stepout",
       "window_scores": [
         {
           "window_id": "r-12-c+16",
@@ -40,11 +40,11 @@
           "row_offset": -12,
           "col_offset": 16,
           "decision": "Block",
-          "selected_route_id": "",
+          "selected_route_id": "northeast-stepout",
           "risk_index": 1.109925,
           "max_grade": 0.51395,
           "roughness_m": 5.95975,
-          "note": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+          "note": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
         },
         {
           "window_id": "r+0-c+12",
@@ -1021,7 +1021,7 @@
         {
           "validation_id": "best-window-promotion-state",
           "passed": true,
-          "note": "best measured window r-12-c+16 is unpromoted route evidence and needs its own terrain fixture."
+          "note": "best measured window r-12-c+16 selects route northeast-stepout."
         },
         {
           "validation_id": "all-sampled-windows-blocked",
@@ -1031,7 +1031,7 @@
         {
           "validation_id": "source-checksums-verified",
           "passed": true,
-          "note": "5 of 5 dataset source fingerprints match their manifests."
+          "note": "6 of 6 dataset source fingerprints match their manifests."
         },
         {
           "validation_id": "proposal-blockers-current",
@@ -1055,9 +1055,9 @@
           "validation_notes": [
             "corridor-scan-present: pass - 81 measured LOLA corridor windows are available.",
             "bounded-search-size: pass - current corridor expansion receipt covers the reproducible 9x9 LOLA search surface.",
-            "best-window-promotion-state: pass - best measured window r-12-c+16 is unpromoted route evidence and needs its own terrain fixture.",
+            "best-window-promotion-state: pass - best measured window r-12-c+16 selects route northeast-stepout.",
             "all-sampled-windows-blocked: pass - all sampled corridor windows remain blocked by conservative rover limits.",
-            "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+            "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
             "proposal-blockers-current: pass - corridor proposal blocker corridor-scan-best-window remains active."
           ]
         },
@@ -1065,7 +1065,7 @@
         "scan_id": "first-trusted-square-9x9-corridor-scan-v2",
         "sampled_window_count": 81,
         "best_window_id": "r-12-c+16",
-        "selected_route_id": "",
+        "selected_route_id": "northeast-stepout",
         "window_scores": [
           {
             "window_id": "r-12-c+16",
@@ -1073,11 +1073,11 @@
             "row_offset": -12,
             "col_offset": 16,
             "decision": "Block",
-            "selected_route_id": "",
+            "selected_route_id": "northeast-stepout",
             "risk_index": 1.109925,
             "max_grade": 0.51395,
             "roughness_m": 5.95975,
-            "note": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "note": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           },
           {
             "window_id": "r+0-c+12",
@@ -2054,7 +2054,7 @@
           {
             "validation_id": "best-window-promotion-state",
             "passed": true,
-            "note": "best measured window r-12-c+16 is unpromoted route evidence and needs its own terrain fixture."
+            "note": "best measured window r-12-c+16 selects route northeast-stepout."
           },
           {
             "validation_id": "all-sampled-windows-blocked",
@@ -2064,7 +2064,7 @@
           {
             "validation_id": "source-checksums-verified",
             "passed": true,
-            "note": "5 of 5 dataset source fingerprints match their manifests."
+            "note": "6 of 6 dataset source fingerprints match their manifests."
           },
           {
             "validation_id": "proposal-blockers-current",

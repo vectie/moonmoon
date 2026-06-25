@@ -7,11 +7,11 @@
   - objective: Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.
   - current scan: first-trusted-square-9x9-corridor-scan-v2 (81 windows)
   - planned scan: first-trusted-square-9x9-corridor-scan-v2 (81 windows, radius 16, step 4)
-  - safety gate: Do not promote a widened route candidate until the best 9x9 window has its own route fixture and Moonrobo handoffs are regenerated from that route evidence.
-  - next action: Extract and review a route fixture for the best 9x9 measured window r-12-c+16 before changing Moonrobo route candidates.
+  - safety gate: Do not allow Moonrobo simulation until the promoted northeast-stepout route clears terrain, illumination, energy, and review gates.
+  - next action: Review northeast-stepout as the promoted r-12-c+16 fixture and continue wider sampling only if operators need more corridor context.
   - inputs:
-    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture.
-    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route.
+    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window selects northeast-stepout and still blocks on conservative route limits.
+    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; northeast-stepout is the selected route fixture for the best 9x9 measured window.
     - source-extraction: source-extractions/first-trusted-square-southwest-bypass-20m.json - Existing byte-range extraction pattern for adding adjacent LOLA evidence windows.
   - artifacts:
     - baseline-5x5-scan: data/sources/lro_lola/first_trusted_square_corridor_scan.csv
@@ -29,7 +29,7 @@
     - widened-scan-csv: data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
       - producer: scripts/scan_lola_corridor.py
       - required: 81-window LOLA byte-range scan is extracted, checksummed, and reviewed
-      - current: pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a
+      - current: pinned first-trusted-square-9x9-corridor-scan-v2 / sha256 9d303140bde14fe5f6be4b697f8464bdbc93889c8149f22b4b8b32de4d95c52e
       - ready: true
       - gate: python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
     - generated-corridor-scan: src/mission/generated_first_trusted_square_corridor_scan.mbt

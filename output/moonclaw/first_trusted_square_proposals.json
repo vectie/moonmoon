@@ -64,13 +64,13 @@
         "input_id": "corridor-scan",
         "evidence_path": "mission/first-trusted-square/corridor-scan.json",
         "claim_kind": "Derived",
-        "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture."
+        "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window selects northeast-stepout and still blocks on conservative route limits."
       },
       {
         "input_id": "selected-route",
         "evidence_path": "mission/first-trusted-square/routes/*.json",
         "claim_kind": "Derived",
-        "summary": "Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route."
+        "summary": "Current named route candidates remain blocked; northeast-stepout is the selected route fixture for the best 9x9 measured window."
       },
       {
         "input_id": "source-extraction",
@@ -95,7 +95,6 @@
     ],
     "blocked_by": [
       "corridor-scan-best-window",
-      "unpromoted-best-window",
       "moonrobo-handoff"
     ],
     "expected_outputs": [

@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.55,
     "path": "moonclaw/first-trusted-square/ephemeris-receipts.json",
-    "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+    "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
   },
   "payload": {
     "primary_receipt": {
@@ -16,25 +16,25 @@
         "status": "NeedsReview",
         "accepted_outputs": [],
         "validation_notes": [
-          "energy-window-present: pass - 5 route candidates are represented in the current energy assessment.",
-          "time-window-ephemeris-missing: pass - current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached.",
-          "power-window-source-status-missing: pass - generated power-window evidence source status is missing-source.",
+          "energy-window-present: pass - 6 route candidates are represented in the current energy assessment.",
+          "time-window-ephemeris-not-computed: pass - current energy budget explicitly reads first-trusted-square-power-window-sources-ready-v1, whose pinned sources have not produced a time-windowed computation.",
+          "power-window-source-files-ready: pass - generated power-window evidence source status is source-files-ready.",
           "verified-available-energy-zero: pass - verified available energy remains zero without a time-windowed power source.",
-          "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+          "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
           "expected-output-contract-present: pass - ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
         ]
       },
       "site_id": "first-trusted-square",
       "energy_decision": "Block",
       "has_time_window_ephemeris": false,
-      "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+      "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
       "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-      "power_window_source_status": "missing-source",
-      "route_count": 5,
-      "blocked_route_count": 5,
+      "power_window_source_status": "source-files-ready",
+      "route_count": 6,
+      "blocked_route_count": 6,
       "required_sunlit_hours": 4,
       "assumed_dark_survival_hours": 2,
-      "required_energy_wh": 845,
+      "required_energy_wh": 880,
       "verified_available_energy_wh": 0,
       "missing_outputs": [
         "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
@@ -46,17 +46,17 @@
         {
           "validation_id": "energy-window-present",
           "passed": true,
-          "note": "5 route candidates are represented in the current energy assessment."
+          "note": "6 route candidates are represented in the current energy assessment."
         },
         {
-          "validation_id": "time-window-ephemeris-missing",
+          "validation_id": "time-window-ephemeris-not-computed",
           "passed": true,
-          "note": "current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached."
+          "note": "current energy budget explicitly reads first-trusted-square-power-window-sources-ready-v1, whose pinned sources have not produced a time-windowed computation."
         },
         {
-          "validation_id": "power-window-source-status-missing",
+          "validation_id": "power-window-source-files-ready",
           "passed": true,
-          "note": "generated power-window evidence source status is missing-source."
+          "note": "generated power-window evidence source status is source-files-ready."
         },
         {
           "validation_id": "verified-available-energy-zero",
@@ -66,7 +66,7 @@
         {
           "validation_id": "source-checksums-verified",
           "passed": true,
-          "note": "5 of 5 dataset source fingerprints match their manifests."
+          "note": "6 of 6 dataset source fingerprints match their manifests."
         },
         {
           "validation_id": "expected-output-contract-present",
@@ -74,7 +74,7 @@
           "note": "ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
         }
       ],
-      "next_action": "MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+      "next_action": "MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
     },
     "receipts": [
       {
@@ -84,25 +84,25 @@
           "status": "NeedsReview",
           "accepted_outputs": [],
           "validation_notes": [
-            "energy-window-present: pass - 5 route candidates are represented in the current energy assessment.",
-            "time-window-ephemeris-missing: pass - current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached.",
-            "power-window-source-status-missing: pass - generated power-window evidence source status is missing-source.",
+            "energy-window-present: pass - 6 route candidates are represented in the current energy assessment.",
+            "time-window-ephemeris-not-computed: pass - current energy budget explicitly reads first-trusted-square-power-window-sources-ready-v1, whose pinned sources have not produced a time-windowed computation.",
+            "power-window-source-files-ready: pass - generated power-window evidence source status is source-files-ready.",
             "verified-available-energy-zero: pass - verified available energy remains zero without a time-windowed power source.",
-            "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
+            "source-checksums-verified: pass - 6 of 6 dataset source fingerprints match their manifests.",
             "expected-output-contract-present: pass - ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
           ]
         },
         "site_id": "first-trusted-square",
         "energy_decision": "Block",
         "has_time_window_ephemeris": false,
-        "power_window_evidence_id": "first-trusted-square-power-window-missing-v1",
+        "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
         "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-        "power_window_source_status": "missing-source",
-        "route_count": 5,
-        "blocked_route_count": 5,
+        "power_window_source_status": "source-files-ready",
+        "route_count": 6,
+        "blocked_route_count": 6,
         "required_sunlit_hours": 4,
         "assumed_dark_survival_hours": 2,
-        "required_energy_wh": 845,
+        "required_energy_wh": 880,
         "verified_available_energy_wh": 0,
         "missing_outputs": [
           "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
@@ -114,17 +114,17 @@
           {
             "validation_id": "energy-window-present",
             "passed": true,
-            "note": "5 route candidates are represented in the current energy assessment."
+            "note": "6 route candidates are represented in the current energy assessment."
           },
           {
-            "validation_id": "time-window-ephemeris-missing",
+            "validation_id": "time-window-ephemeris-not-computed",
             "passed": true,
-            "note": "current energy budget explicitly reads first-trusted-square-power-window-missing-v1, which has no time-windowed ephemeris attached."
+            "note": "current energy budget explicitly reads first-trusted-square-power-window-sources-ready-v1, whose pinned sources have not produced a time-windowed computation."
           },
           {
-            "validation_id": "power-window-source-status-missing",
+            "validation_id": "power-window-source-files-ready",
             "passed": true,
-            "note": "generated power-window evidence source status is missing-source."
+            "note": "generated power-window evidence source status is source-files-ready."
           },
           {
             "validation_id": "verified-available-energy-zero",
@@ -134,7 +134,7 @@
           {
             "validation_id": "source-checksums-verified",
             "passed": true,
-            "note": "5 of 5 dataset source fingerprints match their manifests."
+            "note": "6 of 6 dataset source fingerprints match their manifests."
           },
           {
             "validation_id": "expected-output-contract-present",
@@ -142,7 +142,7 @@
             "note": "ephemeris proposal names the source evidence, generated MoonBit window, site output, and MoonBook energy payload outputs."
           }
         ],
-        "next_action": "MoonClaw ephemeris acquisition cannot clear the energy gate until a cited time-windowed solar source, checksum, and generated MoonBit power window are attached"
+        "next_action": "MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
       }
     ]
   },

@@ -6,15 +6,75 @@
     "claim_kind": "Derived",
     "confidence": 0,
     "path": "mission/first-trusted-square/power-window-evidence.json",
-    "summary": "missing-source first-trusted-square-power-window-missing-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+    "summary": "source-files-ready first-trusted-square-power-window-sources-ready-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
   },
   "payload": {
-    "evidence_id": "first-trusted-square-power-window-missing-v1",
-    "source_status": "missing-source",
+    "evidence_id": "first-trusted-square-power-window-sources-ready-v1",
+    "source_status": "source-files-ready",
     "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
     "local_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    "source_sha256": "",
-    "source_bytes": 0,
+    "source_sha256": "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+    "source_bytes": 45745465,
+    "source_files": [
+      {
+        "file_id": "naif0012.tls",
+        "label": "NAIF leap seconds kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+        "local_path": "data/sources/lunar_ephemeris/kernels/naif0012.tls",
+        "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+        "bytes": 5257,
+        "role": "leap seconds and UTC/TDB time conversion",
+        "status": "ready"
+      },
+      {
+        "file_id": "de440s.bsp",
+        "label": "DE440 compact planetary ephemeris",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp",
+        "local_path": "data/sources/lunar_ephemeris/kernels/de440s.bsp",
+        "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+        "bytes": 32726016,
+        "role": "Sun/Earth/Moon geometry for the selected south-pole time window",
+        "status": "ready"
+      },
+      {
+        "file_id": "pck00011.tpc",
+        "label": "IAU planetary constants kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+        "local_path": "data/sources/lunar_ephemeris/kernels/pck00011.tpc",
+        "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+        "bytes": 131226,
+        "role": "body constants and base lunar body-frame definitions",
+        "status": "ready"
+      },
+      {
+        "file_id": "moon_pa_de440_200625.bpc",
+        "label": "DE440 lunar principal-axis orientation kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de440_200625.bpc",
+        "local_path": "data/sources/lunar_ephemeris/kernels/moon_pa_de440_200625.bpc",
+        "sha256": "60cd55aa401ea2ea97360636f567554bfe4e37bb829f901b4460a455dfaf783f",
+        "bytes": 12863488,
+        "role": "binary lunar principal-axis orientation for local horizon geometry",
+        "status": "ready"
+      },
+      {
+        "file_id": "moon_de440_250416.tf",
+        "label": "DE440 lunar frame kernel",
+        "source_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_de440_250416.tf",
+        "local_path": "data/sources/lunar_ephemeris/kernels/moon_de440_250416.tf",
+        "sha256": "a47c71e9c9f33796bdafb2c9d69a7ee447b6016ecad80f71cd6f3e479f9cf768",
+        "bytes": 19478,
+        "role": "Moon frame association for DE440-era lunar orientation kernels",
+        "status": "ready"
+      }
+    ],
+    "computation": {
+      "method_id": "south-pole-power-window-v1",
+      "generated_by": "pending ephemeris acquisition",
+      "time_step_minutes": 0,
+      "horizon_model": "pending local horizon model",
+      "rover_power_model": "conservative-south-pole-energy-v1",
+      "status": "not-computed"
+    },
     "time_start_utc": "pending",
     "time_end_utc": "pending",
     "target_lat_deg": -89.88,
@@ -25,9 +85,9 @@
     "confidence": 0,
     "has_time_window_ephemeris": false,
     "reasons": [
-      "official ephemeris or illumination source is not pinned yet",
-      "source checksum and byte count are intentionally pending",
-      "energy gate must remain blocked until generated evidence carries a real time window"
+      "official NAIF kernel files are locally pinned with byte counts and checksums",
+      "local power-window computation has not produced sunlit or dark hours yet",
+      "energy gate must remain blocked until generated evidence carries a computed time window"
     ]
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",

@@ -6,29 +6,29 @@
     "claim_kind": "Derived",
     "confidence": 0.6,
     "path": "moonrobo/first-trusted-square/handoffs.json",
-    "summary": "block primary route direct-lola-window: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    "summary": "block primary route northeast-stepout: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
   },
   "payload": {
     "primary_handoff": {
-      "handoff_id": "moonrobo/first-trusted-square/direct-lola-window/simulation-preconditions",
+      "handoff_id": "moonrobo/first-trusted-square/northeast-stepout/simulation-preconditions",
       "site_id": "first-trusted-square",
-      "route_id": "direct-lola-window",
+      "route_id": "northeast-stepout",
       "task_kind": "route-simulation-precondition",
       "target_body": "Moon",
       "decision": "Block",
       "preconditions": [
         {
-          "precondition_id": "route-direct-lola-window",
+          "precondition_id": "route-northeast-stepout",
           "label": "Route terrain gate",
           "decision": "Block",
-          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
-          "reason": "do not traverse directly; use this as the baseline hazard case"
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "reason": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
         },
         {
-          "precondition_id": "illumination-direct-lola-window",
+          "precondition_id": "illumination-northeast-stepout",
           "label": "Illumination and thermal gate",
           "decision": "Block",
-          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
           "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
         },
         {
@@ -36,7 +36,7 @@
           "label": "Power-window source evidence gate",
           "decision": "Block",
           "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-          "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+          "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
         },
         {
           "precondition_id": "energy-window",
@@ -50,7 +50,7 @@
           "label": "Measured corridor search gate",
           "decision": "Block",
           "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
         }
       ],
       "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -83,7 +83,7 @@
             "label": "Power-window source evidence gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-            "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
           },
           {
             "precondition_id": "energy-window",
@@ -97,7 +97,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -129,7 +129,7 @@
             "label": "Power-window source evidence gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-            "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
           },
           {
             "precondition_id": "energy-window",
@@ -143,7 +143,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -175,7 +175,7 @@
             "label": "Power-window source evidence gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-            "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
           },
           {
             "precondition_id": "energy-window",
@@ -189,7 +189,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -221,7 +221,7 @@
             "label": "Power-window source evidence gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-            "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
           },
           {
             "precondition_id": "energy-window",
@@ -235,7 +235,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -267,7 +267,7 @@
             "label": "Power-window source evidence gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-            "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source"
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
           },
           {
             "precondition_id": "energy-window",
@@ -281,7 +281,53 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+          }
+        ],
+        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      },
+      {
+        "handoff_id": "moonrobo/first-trusted-square/northeast-stepout/simulation-preconditions",
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "task_kind": "route-simulation-precondition",
+        "target_body": "Moon",
+        "decision": "Block",
+        "preconditions": [
+          {
+            "precondition_id": "route-northeast-stepout",
+            "label": "Route terrain gate",
+            "decision": "Block",
+            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+            "reason": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+          },
+          {
+            "precondition_id": "illumination-northeast-stepout",
+            "label": "Illumination and thermal gate",
+            "decision": "Block",
+            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+            "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+          },
+          {
+            "precondition_id": "power-window-evidence",
+            "label": "Power-window source evidence gate",
+            "decision": "Block",
+            "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
+            "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+          },
+          {
+            "precondition_id": "energy-window",
+            "label": "Rover energy window gate",
+            "decision": "Block",
+            "evidence_path": "mission/first-trusted-square/energy-window.json",
+            "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+          },
+          {
+            "precondition_id": "corridor-scan-best-window",
+            "label": "Measured corridor search gate",
+            "decision": "Block",
+            "evidence_path": "mission/first-trusted-square/corridor-scan.json",
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"

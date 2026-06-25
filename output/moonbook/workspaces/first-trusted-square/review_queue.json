@@ -14,7 +14,7 @@
     {
       "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
       "severity": "medium",
-      "reason": "Select pinned SPICE kernels or an equivalent official illumination source, record checksums, and generate the MoonBit power-window module before clearing the energy gate.",
+      "reason": "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
       "owner": "data-review",
       "status": "Open",
       "last_transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open"
@@ -132,9 +132,25 @@
       "last_transition_id": "review-illumination-south-stepout-request-evidence"
     },
     {
+      "item_id": "route-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-northeast-stepout-request-evidence"
+    },
+    {
+      "item_id": "illumination-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-northeast-stepout-request-evidence"
+    },
+    {
       "item_id": "corridor-scan-best-window",
       "severity": "high",
-      "reason": "best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked",
+      "reason": "best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked",
       "owner": "mission-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
@@ -142,7 +158,7 @@
     {
       "item_id": "power-window-evidence",
       "severity": "high",
-      "reason": "power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review",
+      "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-power-window-evidence-request-evidence"
@@ -174,7 +190,7 @@
     {
       "item_id": "moonclaw-ephemeris-task",
       "severity": "high",
-      "reason": "MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input",
+      "reason": "MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input",
       "owner": "moonclaw",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
@@ -190,7 +206,7 @@
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
+      "reason": "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "owner": "moonclaw",
       "status": "Open",
       "last_transition_id": "review-question-1-keep-open"
@@ -198,7 +214,7 @@
     {
       "item_id": "question-2",
       "severity": "low",
-      "reason": "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
+      "reason": "Review the materialized MoonBook workspace entries and close accepted or rejected queue items.",
       "owner": "moonclaw",
       "status": "Open",
       "last_transition_id": "review-question-2-keep-open"

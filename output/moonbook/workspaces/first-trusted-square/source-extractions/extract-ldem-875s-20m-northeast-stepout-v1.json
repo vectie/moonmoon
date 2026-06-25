@@ -1,0 +1,38 @@
+{
+  "entry": {
+    "entry_id": "source-extraction/extract-ldem-875s-20m-northeast-stepout-v1",
+    "title": "Extract first-trusted-square-northeast-stepout-lola",
+    "kind": "SourceExtractionCandidate",
+    "claim_kind": "Measured",
+    "confidence": 0,
+    "path": "source-extractions/extract-ldem-875s-20m-northeast-stepout-v1.json",
+    "summary": "4x4 window at row 3960, col 3806; b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c"
+  },
+  "payload": {
+    "extraction_id": "extract-ldem-875s-20m-northeast-stepout-v1",
+    "selection_id": "select-ldem-875s-20m-float-v1",
+    "generated_by": "scripts/extract_lola_trusted_square.py",
+    "output_path": "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+    "output_sha256": "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+    "output_bytes": 924,
+    "tile_id": "first-trusted-square-northeast-stepout-lola",
+    "center_lat_deg": -89.76,
+    "center_lon_deg": 0.28,
+    "source_row_start": 3960,
+    "source_col_start": 3806,
+    "rows": 4,
+    "cols": 4,
+    "cell_size_m": 20,
+    "elevation_unit": "meters relative to 1737.4 km reference radius",
+    "claim_kind": "Measured",
+    "review_status": "AcceptedForSoftwareProof",
+    "notes": [
+      "Generated from the best measured window in the active 9x9 LOLA corridor scan.",
+      "This window now has a named route fixture and route id instead of staying only as a ranked scan row.",
+      "The route remains blocked by conservative terrain and power gates before simulation."
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

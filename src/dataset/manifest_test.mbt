@@ -116,8 +116,11 @@ test "first trusted square has an ephemeris acquisition plan" {
   )
   assert_eq(plan.product_family_id, "lunar-solar-ephemeris-power-window")
   assert_true(plan.source_family_url.contains("generic_kernels"))
-  assert_eq(plan.source_metadata_sha256, "")
-  assert_eq(plan.source_metadata_bytes, 0)
+  assert_eq(
+    plan.source_metadata_sha256,
+    "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
+  )
+  assert_eq(plan.source_metadata_bytes, 45745465)
   assert_eq(
     plan.extracted_fixture_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
