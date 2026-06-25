@@ -43,6 +43,10 @@ MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEMS_JSON = (
   ROOT
   / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json"
 )
+MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEM_RECEIPTS_JSON = (
+  ROOT
+  / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json"
+)
 MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_RECEIPT_JSON = (
   ROOT
   / "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json"
@@ -333,6 +337,7 @@ def payload_for_entry(
   moonclaw_remediation_margin_closeout_action_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_reviewed_action_plans: list[dict[str, Any]],
   moonclaw_remediation_margin_reviewed_work_items: list[dict[str, Any]],
+  moonclaw_remediation_margin_reviewed_work_item_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_followup_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_receipts: list[dict[str, Any]],
@@ -513,6 +518,17 @@ def payload_for_entry(
       "source_task": moonclaw_remediation_margin_closeout_action_tasks[0],
       "review": closeout_action_review_state(book["review_transitions"]),
     }
+  if kind == "MoonClawRemediationMarginReviewedWorkItemReceipts":
+    return {
+      "primary_receipt": moonclaw_remediation_margin_reviewed_work_item_receipts[
+        0
+      ],
+      "receipts": moonclaw_remediation_margin_reviewed_work_item_receipts,
+      "source_work_items": moonclaw_remediation_margin_reviewed_work_items,
+      "source_plan": moonclaw_remediation_margin_reviewed_action_plans[0],
+      "source_task": moonclaw_remediation_margin_closeout_action_tasks[0],
+      "review": closeout_action_review_state(book["review_transitions"]),
+    }
   if kind == "MoonClawRemediationMarginRefreshFollowupReceipt":
     return {
       "primary_receipt": moonclaw_remediation_margin_refresh_followup_receipts[0],
@@ -564,6 +580,7 @@ def workspace_files(
   moonclaw_remediation_margin_closeout_action_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_reviewed_action_plans: list[dict[str, Any]],
   moonclaw_remediation_margin_reviewed_work_items: list[dict[str, Any]],
+  moonclaw_remediation_margin_reviewed_work_item_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_followup_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_receipts: list[dict[str, Any]],
@@ -621,6 +638,7 @@ def workspace_files(
     "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
@@ -713,6 +731,7 @@ def workspace_files(
       moonclaw_remediation_margin_closeout_action_tasks,
       moonclaw_remediation_margin_reviewed_action_plans,
       moonclaw_remediation_margin_reviewed_work_items,
+      moonclaw_remediation_margin_reviewed_work_item_receipts,
       moonclaw_remediation_margin_refresh_followup_receipts,
       moonclaw_remediation_margin_refresh_receipts,
       moonclaw_remediation_margin_receipts,
@@ -786,6 +805,7 @@ def workspace_files(
     "- Source MoonClaw remediation-margin closeout action task: `output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json`\n"
     "- Source MoonClaw remediation-margin reviewed action plan: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json`\n"
     "- Source MoonClaw remediation-margin reviewed work items: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json`\n"
+    "- Source MoonClaw remediation-margin reviewed work item receipts: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json`\n"
     "- Source MoonClaw remediation-margin refresh follow-up receipt: `output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json`\n"
     "- Source MoonClaw remediation-margin refresh receipt: `output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json`\n"
     "- Source MoonClaw remediation-margin receipt: `output/moonclaw/first_trusted_square_remediation_margin_receipt.json`\n"
@@ -912,6 +932,10 @@ def main() -> int:
     MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEMS_JSON,
     [],
   )
+  moonclaw_remediation_margin_reviewed_work_item_receipts = load_optional_json(
+    MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEM_RECEIPTS_JSON,
+    [],
+  )
   moonclaw_remediation_margin_refresh_followup_receipts = load_optional_json(
     MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_RECEIPT_JSON,
     [],
@@ -986,6 +1010,7 @@ def main() -> int:
     moonclaw_remediation_margin_closeout_action_tasks,
     moonclaw_remediation_margin_reviewed_action_plans,
     moonclaw_remediation_margin_reviewed_work_items,
+    moonclaw_remediation_margin_reviewed_work_item_receipts,
     moonclaw_remediation_margin_refresh_followup_receipts,
     moonclaw_remediation_margin_refresh_receipts,
     moonclaw_remediation_margin_receipts,

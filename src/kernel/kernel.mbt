@@ -1620,7 +1620,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-reviewed-work-item-receipts-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize reviewed remediation-margin work item receipts into MoonBook",
       outcome: "The three accepted MoonClaw reviewed work item receipts become durable MoonBook workspace evidence before fresh evidence execution or downstream simulation review",
@@ -1633,7 +1633,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
         "scripts/check_moonbook_remediation_margin_reviewed_work_item_receipts_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
+      done_when: "done: MoonBook indexes and materializes the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "rabbita-remediation-margin-reviewed-work-item-receipts-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface reviewed remediation-margin work item receipts in Rabbita",
+      outcome: "Operators can inspect the three accepted reviewed work item receipts from MoonBook before fresh evidence execution or downstream simulation review",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_work_item_receipts_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_work_item_receipts_surface.py",
+      ],
+      done_when: "Rabbita renders the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

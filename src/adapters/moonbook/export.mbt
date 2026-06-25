@@ -34,6 +34,7 @@ pub(all) enum BookEntryKind {
   MoonClawRemediationMarginCloseoutActionTask
   MoonClawRemediationMarginReviewedActionPlan
   MoonClawRemediationMarginReviewedWorkItems
+  MoonClawRemediationMarginReviewedWorkItemReceipts
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt
@@ -162,6 +163,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonclaw-remediation-margin-reviewed-action-plan"
     MoonClawRemediationMarginReviewedWorkItems =>
       "moonclaw-remediation-margin-reviewed-work-items"
+    MoonClawRemediationMarginReviewedWorkItemReceipts =>
+      "moonclaw-remediation-margin-reviewed-work-item-receipts"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawRemediationMarginRefreshFollowupReceipt =>
@@ -1322,6 +1325,30 @@ fn moonclaw_remediation_margin_reviewed_work_items_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_reviewed_work_item_receipts_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let receipts = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts()
+  let margin_ids = receipts
+    .map(fn(receipt) { receipt.work_item_result.margin_id })
+    .join(", ")
+  let states = receipts
+    .map(fn(receipt) {
+      "\{receipt.work_item_result.blocker_domain}=\{@moonclaw.remediation_margin_reviewed_work_item_result_status_label(receipt.work_item_result.status)}"
+    })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-work-item-receipts",
+    title: "MoonClaw reviewed remediation-margin work item receipts for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginReviewedWorkItemReceipts,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.76,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-work-item-receipts.json",
+    summary: "\{receipts.length()} accepted reviewed work item receipts for terrain/horizon/energy margins (\{margin_ids}); states \{states}; pending fresh evidence, accepted review provenance, automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1600,6 +1627,9 @@ fn book_entries(
   entries.push(moonclaw_remediation_margin_closeout_action_task_entry(dossier))
   entries.push(moonclaw_remediation_margin_reviewed_action_plan_entry(dossier))
   entries.push(moonclaw_remediation_margin_reviewed_work_items_entry(dossier))
+  entries.push(
+    moonclaw_remediation_margin_reviewed_work_item_receipts_entry(dossier),
+  )
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

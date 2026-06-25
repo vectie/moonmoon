@@ -15,6 +15,7 @@
     "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
@@ -624,6 +625,15 @@
       "confidence": 0.75,
       "path": "moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
       "summary": "3 accepted reviewed work items for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); actions terrain=EscalateToOperatorDecision, local-horizon=RetryWithNewEvidence, energy=FreezeUntilNewSourceEvidence; automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts",
+      "title": "MoonClaw reviewed remediation-margin work item receipts for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginReviewedWorkItemReceipts",
+      "claim_kind": "Derived",
+      "confidence": 0.76,
+      "path": "moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
+      "summary": "3 accepted reviewed work item receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); states terrain=ReviewedWorkItemPendingFreshEvidence, local-horizon=ReviewedWorkItemPendingFreshEvidence, energy=ReviewedWorkItemPendingFreshEvidence; pending fresh evidence, accepted review provenance, automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",

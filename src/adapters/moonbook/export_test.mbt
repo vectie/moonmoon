@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 67)
+  assert_eq(dossier.entries.length(), 68)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -174,10 +174,14 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(
     dossier.entries[65].kind ==
+    @moonbook.BookEntryKind::MoonClawRemediationMarginReviewedWorkItemReceipts,
+  )
+  assert_true(
+    dossier.entries[66].kind ==
     @moonbook.BookEntryKind::MoonClawEphemerisReceipt,
   )
   assert_true(
-    dossier.entries[66].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
+    dossier.entries[67].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
@@ -752,15 +756,55 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[65].kind),
-    "moonclaw-ephemeris-receipt",
+    "moonclaw-remediation-margin-reviewed-work-item-receipts",
   )
-  assert_true(dossier.entries[65].summary.contains("energy block"))
-  assert_true(dossier.entries[65].summary.contains("accepted receipt"))
+  assert_true(
+    dossier.entries[65].summary.contains(
+      "3 accepted reviewed work item receipts",
+    ),
+  )
+  assert_true(dossier.entries[65].summary.contains("pending fresh evidence"))
+  assert_true(
+    dossier.entries[65].summary.contains(
+      "terrain=ReviewedWorkItemPendingFreshEvidence",
+    ),
+  )
+  assert_true(
+    dossier.entries[65].summary.contains(
+      "local-horizon=ReviewedWorkItemPendingFreshEvidence",
+    ),
+  )
+  assert_true(
+    dossier.entries[65].summary.contains(
+      "energy=ReviewedWorkItemPendingFreshEvidence",
+    ),
+  )
+  assert_true(
+    dossier.entries[65].summary.contains("accepted review provenance"),
+  )
+  assert_true(
+    dossier.entries[65].summary.contains("automatic refresh loop allowed false"),
+  )
+  assert_true(dossier.entries[65].summary.contains("simulation-blocked"))
+  assert_true(dossier.entries[65].summary.contains("may consume false"))
+  assert_true(dossier.entries[65].summary.contains("moonmoon-safety-gate-only"))
+  assert_true(dossier.entries[65].summary.contains("hardware-denied"))
+  assert_true(
+    dossier.entries[65].path.contains(
+      "remediation-margin-reviewed-work-item-receipts",
+    ),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[66].kind),
+    "moonclaw-ephemeris-receipt",
+  )
+  assert_true(dossier.entries[66].summary.contains("energy block"))
+  assert_true(dossier.entries[66].summary.contains("accepted receipt"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[67].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[66].summary.contains("81 measured windows"))
+  assert_true(dossier.entries[67].summary.contains("81 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,

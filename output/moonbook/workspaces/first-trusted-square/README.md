@@ -13,6 +13,7 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source MoonClaw remediation-margin closeout action task: `output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json`
 - Source MoonClaw remediation-margin reviewed action plan: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json`
 - Source MoonClaw remediation-margin reviewed work items: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json`
+- Source MoonClaw remediation-margin reviewed work item receipts: `output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json`
 - Source MoonClaw remediation-margin refresh follow-up receipt: `output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json`
 - Source MoonClaw remediation-margin refresh receipt: `output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json`
 - Source MoonClaw remediation-margin receipt: `output/moonclaw/first_trusted_square_remediation_margin_receipt.json`
@@ -35,6 +36,6 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 73
+- Entries: 74
 - Review queue items: 29
 - Review transitions: 30

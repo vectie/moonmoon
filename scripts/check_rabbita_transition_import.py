@@ -314,6 +314,12 @@ def materialize_temp_workspace(root: Path) -> None:
       [],
     )
   )
+  moonclaw_remediation_margin_reviewed_work_item_receipts = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEM_RECEIPTS_JSON,
+      [],
+    )
+  )
   moonclaw_remediation_margin_refresh_followup_receipts = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_RECEIPT_JSON,
@@ -433,6 +439,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_remediation_margin_closeout_action_tasks,
     moonclaw_remediation_margin_reviewed_action_plans,
     moonclaw_remediation_margin_reviewed_work_items,
+    moonclaw_remediation_margin_reviewed_work_item_receipts,
     moonclaw_remediation_margin_refresh_followup_receipts,
     moonclaw_remediation_margin_refresh_receipts,
     moonclaw_remediation_margin_receipts,
