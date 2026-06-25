@@ -25,6 +25,7 @@ pub(all) enum BookEntryKind {
   MoonClawProposal
   MoonClawTask
   MoonClawRemediationMarginRefreshTask
+  MoonClawRemediationMarginRefreshReceipt
   MoonClawReceipt
   MoonClawRemediationMarginReceipt
   MoonClawEphemerisReceipt
@@ -133,6 +134,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawTask => "moonclaw-task"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
+    MoonClawRemediationMarginRefreshReceipt =>
+      "moonclaw-remediation-margin-refresh-receipt"
     MoonClawReceipt => "moonclaw-receipt"
     MoonClawRemediationMarginReceipt => "moonclaw-remediation-margin-receipt"
     MoonClawEphemerisReceipt => "moonclaw-ephemeris-receipt"
@@ -995,6 +998,25 @@ fn moonclaw_remediation_margin_refresh_task_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_refresh_receipt_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_receipt()
+  let margin_ids = receipt.refresh_results
+    .map(fn(result) { result.margin_id })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-refresh-receipt",
+    title: "MoonClaw remediation-margin refresh receipt for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginRefreshReceipt,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.7,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-refresh-receipt.json",
+    summary: "\{@moonclaw.remediation_margin_refresh_state_label(receipt.refresh_state)} with \{receipt.still_blocking_count} still-blocking refreshes (\{margin_ids}), \{receipt.refreshed_count} refreshed, source projection \{receipt.source_projection_id}, and hardware authority \{receipt.hardware_authority} at \{@moonrobo.execution_state_label(receipt.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.route_scoring_receipt(dossier)
   {
@@ -1321,6 +1343,7 @@ fn book_entries(
   entries.push(moonclaw_corridor_task_entry(dossier))
   entries.push(moonclaw_remediation_margin_task_entry(dossier))
   entries.push(moonclaw_remediation_margin_refresh_task_entry(dossier))
+  entries.push(moonclaw_remediation_margin_refresh_receipt_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_remediation_margin_receipt_entry(dossier))
   entries.push(moonrobo_remediation_margin_modeling_entry(dossier))

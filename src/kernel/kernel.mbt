@@ -1091,7 +1091,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-refresh-receipt-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin refresh receipt into MoonBook",
       outcome: "The projection-driven MoonClaw refresh receipt becomes durable workspace evidence before Rabbita or downstream modeling loops inspect it",
@@ -1104,7 +1104,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
         "scripts/check_moonbook_remediation_margin_refresh_receipt_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin refresh receipt with terrain/horizon/energy result accounting and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh receipt with terrain/horizon/energy result accounting and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-receipt-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh receipt in Rabbita",
+      outcome: "Operators can inspect the MoonClaw refresh receipt, still-blocking terrain/horizon/energy refresh results, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_receipt_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh receipt with RefreshesCarriedForward state, 3 still-blocking refreshes, terrain/horizon/energy result ids, and HardwareDenied authority",
     },
   ]
 }

@@ -1,0 +1,244 @@
+{
+  "entry": {
+    "entry_id": "moonclaw/first-trusted-square/remediation-margin-refresh-receipt",
+    "title": "MoonClaw remediation-margin refresh receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonClawRemediationMarginRefreshReceipt",
+    "claim_kind": "Derived",
+    "confidence": 0.7,
+    "path": "moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
+    "summary": "RefreshesCarriedForward with 3 still-blocking refreshes (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 refreshed, source projection moonrobo/first-trusted-square/remediation-margin-v1/projection, and hardware authority moonmoon-safety-gate-only at hardware-denied"
+  },
+  "payload": {
+    "primary_receipt": {
+      "receipt": {
+        "receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt",
+        "proposal_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+        "status": "Accepted",
+        "accepted_outputs": [
+          "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+          "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+          "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+          "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "output/mission/first_trusted_square_energy_remediation.json"
+        ],
+        "validation_notes": [
+          "source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+          "projection-source-present: pass - source projection moonrobo/first-trusted-square/remediation-margin-v1/projection remains NoConsumeSimulationBlocked with may-consume=false",
+          "ranked-refresh-accounting-complete: pass - 3 receipt refresh results account for 3 ranked actions",
+          "result-paths-present: pass - every refresh result carries projection, target, command, check, and evidence paths",
+          "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+          "refreshes-carried-forward: pass - all current refresh actions are carried forward until refreshed evidence clears them"
+        ]
+      },
+      "site_id": "first-trusted-square",
+      "route_id": "northeast-stepout",
+      "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+      "source_projection_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+      "refresh_state": "RefreshesCarriedForward",
+      "ranked_margin_ids": [
+        "terrain-northeast-stepout",
+        "illumination-northeast-stepout",
+        "energy-window"
+      ],
+      "refresh_action_count": 3,
+      "refreshed_count": 0,
+      "still_blocking_count": 3,
+      "refresh_results": [
+        {
+          "rank": 1,
+          "margin_id": "terrain-northeast-stepout",
+          "refresh_id": "refresh-terrain-northeast-stepout",
+          "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+          "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "command": "python3 scripts/generate_selected_route_terrain_remediation.py --check",
+          "acceptance_check": "python3 scripts/check_selected_route_terrain_remediation.py",
+          "status": "RefreshStillBlocking",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+          "next_action": "Refresh selected-route terrain evidence first because grade, roughness, and blocking-edge margins feed every downstream route-consume decision for northeast-stepout."
+        },
+        {
+          "rank": 2,
+          "margin_id": "illumination-northeast-stepout",
+          "refresh_id": "refresh-illumination-northeast-stepout",
+          "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+          "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "command": "python3 scripts/generate_selected_route_horizon.py --check",
+          "acceptance_check": "python3 scripts/check_selected_route_horizon_model.py",
+          "status": "RefreshStillBlocking",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+          "next_action": "Refresh local-horizon evidence for northeast-stepout after terrain so illumination keeps using bounded terrain-shadow geometry before simulation consumption changes."
+        },
+        {
+          "rank": 3,
+          "margin_id": "energy-window",
+          "refresh_id": "refresh-energy-window",
+          "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+          "target_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+          "command": "python3 scripts/check_energy_margin_remediation.py",
+          "acceptance_check": "python3 scripts/check_energy_margin_remediation.py",
+          "status": "RefreshStillBlocking",
+          "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+          "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+          "next_action": "Refresh bounded energy evidence for northeast-stepout after terrain and horizon because route demand and sunlit-window margins depend on those constraints."
+        }
+      ],
+      "validation_checks": [
+        {
+          "validation_id": "source-task-present",
+          "passed": true,
+          "note": "receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-task"
+        },
+        {
+          "validation_id": "projection-source-present",
+          "passed": true,
+          "note": "source projection moonrobo/first-trusted-square/remediation-margin-v1/projection remains NoConsumeSimulationBlocked with may-consume=false"
+        },
+        {
+          "validation_id": "ranked-refresh-accounting-complete",
+          "passed": true,
+          "note": "3 receipt refresh results account for 3 ranked actions"
+        },
+        {
+          "validation_id": "result-paths-present",
+          "passed": true,
+          "note": "every refresh result carries projection, target, command, check, and evidence paths"
+        },
+        {
+          "validation_id": "hardware-denial-preserved",
+          "passed": true,
+          "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+        },
+        {
+          "validation_id": "refreshes-carried-forward",
+          "passed": true,
+          "note": "all current refresh actions are carried forward until refreshed evidence clears them"
+        }
+      ],
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "next_action": "Execute the ranked terrain, local-horizon, and energy refresh commands, rebuild the dossier, and re-run the MoonRobo remediation-margin projection before simulation consumption can change."
+    },
+    "receipts": [
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt",
+          "proposal_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+            "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+            "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+            "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "output/mission/first_trusted_square_energy_remediation.json"
+          ],
+          "validation_notes": [
+            "source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+            "projection-source-present: pass - source projection moonrobo/first-trusted-square/remediation-margin-v1/projection remains NoConsumeSimulationBlocked with may-consume=false",
+            "ranked-refresh-accounting-complete: pass - 3 receipt refresh results account for 3 ranked actions",
+            "result-paths-present: pass - every refresh result carries projection, target, command, check, and evidence paths",
+            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+            "refreshes-carried-forward: pass - all current refresh actions are carried forward until refreshed evidence clears them"
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+        "source_projection_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+        "refresh_state": "RefreshesCarriedForward",
+        "ranked_margin_ids": [
+          "terrain-northeast-stepout",
+          "illumination-northeast-stepout",
+          "energy-window"
+        ],
+        "refresh_action_count": 3,
+        "refreshed_count": 0,
+        "still_blocking_count": 3,
+        "refresh_results": [
+          {
+            "rank": 1,
+            "margin_id": "terrain-northeast-stepout",
+            "refresh_id": "refresh-terrain-northeast-stepout",
+            "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+            "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "command": "python3 scripts/generate_selected_route_terrain_remediation.py --check",
+            "acceptance_check": "python3 scripts/check_selected_route_terrain_remediation.py",
+            "status": "RefreshStillBlocking",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+            "next_action": "Refresh selected-route terrain evidence first because grade, roughness, and blocking-edge margins feed every downstream route-consume decision for northeast-stepout."
+          },
+          {
+            "rank": 2,
+            "margin_id": "illumination-northeast-stepout",
+            "refresh_id": "refresh-illumination-northeast-stepout",
+            "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+            "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "command": "python3 scripts/generate_selected_route_horizon.py --check",
+            "acceptance_check": "python3 scripts/check_selected_route_horizon_model.py",
+            "status": "RefreshStillBlocking",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+            "next_action": "Refresh local-horizon evidence for northeast-stepout after terrain so illumination keeps using bounded terrain-shadow geometry before simulation consumption changes."
+          },
+          {
+            "rank": 3,
+            "margin_id": "energy-window",
+            "refresh_id": "refresh-energy-window",
+            "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+            "target_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+            "command": "python3 scripts/check_energy_margin_remediation.py",
+            "acceptance_check": "python3 scripts/check_energy_margin_remediation.py",
+            "status": "RefreshStillBlocking",
+            "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+            "current_state": "refresh requested; refreshed evidence has not yet cleared this remediation margin",
+            "next_action": "Refresh bounded energy evidence for northeast-stepout after terrain and horizon because route demand and sunlit-window margins depend on those constraints."
+          }
+        ],
+        "validation_checks": [
+          {
+            "validation_id": "source-task-present",
+            "passed": true,
+            "note": "receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-task"
+          },
+          {
+            "validation_id": "projection-source-present",
+            "passed": true,
+            "note": "source projection moonrobo/first-trusted-square/remediation-margin-v1/projection remains NoConsumeSimulationBlocked with may-consume=false"
+          },
+          {
+            "validation_id": "ranked-refresh-accounting-complete",
+            "passed": true,
+            "note": "3 receipt refresh results account for 3 ranked actions"
+          },
+          {
+            "validation_id": "result-paths-present",
+            "passed": true,
+            "note": "every refresh result carries projection, target, command, check, and evidence paths"
+          },
+          {
+            "validation_id": "hardware-denial-preserved",
+            "passed": true,
+            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+          },
+          {
+            "validation_id": "refreshes-carried-forward",
+            "passed": true,
+            "note": "all current refresh actions are carried forward until refreshed evidence clears them"
+          }
+        ],
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_denied": true,
+        "next_action": "Execute the ranked terrain, local-horizon, and energy refresh commands, rebuild the dossier, and re-run the MoonRobo remediation-margin projection before simulation consumption can change."
+      }
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

@@ -255,6 +255,11 @@
   - claim: derived
   - confidence: 0.72
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-task.json
+- moonclaw/first-trusted-square/remediation-margin-refresh-receipt: MoonClaw remediation-margin refresh receipt for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moon-claw-remediation-margin-refresh-receipt
+  - claim: derived
+  - confidence: 0.7
+  - path: moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json
 - moonclaw/first-trusted-square/route-scoring-receipt: MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-receipt
   - claim: derived

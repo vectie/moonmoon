@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 56)
+  assert_eq(dossier.entries.length(), 57)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -114,26 +114,30 @@ test "first trusted square exports a MoonBook evidence dossier" {
     @moonbook.BookEntryKind::MoonClawRemediationMarginRefreshTask,
   )
   assert_true(
-    dossier.entries[50].kind == @moonbook.BookEntryKind::MoonClawReceipt,
+    dossier.entries[50].kind ==
+    @moonbook.BookEntryKind::MoonClawRemediationMarginRefreshReceipt,
   )
   assert_true(
-    dossier.entries[51].kind ==
-    @moonbook.BookEntryKind::MoonClawRemediationMarginReceipt,
+    dossier.entries[51].kind == @moonbook.BookEntryKind::MoonClawReceipt,
   )
   assert_true(
     dossier.entries[52].kind ==
-    @moonbook.BookEntryKind::MoonroboRemediationMarginModeling,
+    @moonbook.BookEntryKind::MoonClawRemediationMarginReceipt,
   )
   assert_true(
     dossier.entries[53].kind ==
-    @moonbook.BookEntryKind::MoonroboRemediationMarginProjection,
+    @moonbook.BookEntryKind::MoonroboRemediationMarginModeling,
   )
   assert_true(
     dossier.entries[54].kind ==
+    @moonbook.BookEntryKind::MoonroboRemediationMarginProjection,
+  )
+  assert_true(
+    dossier.entries[55].kind ==
     @moonbook.BookEntryKind::MoonClawEphemerisReceipt,
   )
   assert_true(
-    dossier.entries[55].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
+    dossier.entries[56].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
@@ -250,42 +254,51 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[50].kind),
-    "moonclaw-receipt",
+    "moonclaw-remediation-margin-refresh-receipt",
   )
-  assert_true(dossier.entries[50].summary.contains("accepted"))
-  assert_true(dossier.entries[50].summary.contains("Moonrobo handoff block"))
+  assert_true(dossier.entries[50].summary.contains("RefreshesCarriedForward"))
+  assert_true(
+    dossier.entries[50].summary.contains("3 still-blocking refreshes"),
+  )
+  assert_true(dossier.entries[50].summary.contains("terrain-northeast-stepout"))
+  assert_true(
+    dossier.entries[50].summary.contains("illumination-northeast-stepout"),
+  )
+  assert_true(dossier.entries[50].summary.contains("energy-window"))
+  assert_true(dossier.entries[50].summary.contains("0 refreshed"))
+  assert_true(
+    dossier.entries[50].summary.contains(
+      "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+    ),
+  )
+  assert_true(dossier.entries[50].summary.contains("moonmoon-safety-gate-only"))
+  assert_true(dossier.entries[50].summary.contains("hardware-denied"))
+  assert_true(
+    dossier.entries[50].path.contains("remediation-margin-refresh-receipt"),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[51].kind),
-    "moonclaw-remediation-margin-receipt",
+    "moonclaw-receipt",
   )
-  assert_true(dossier.entries[51].summary.contains("OpenMarginsCarriedForward"))
-  assert_true(dossier.entries[51].summary.contains("3 remediation margins"))
-  assert_true(dossier.entries[51].summary.contains("terrain-northeast-stepout"))
-  assert_true(
-    dossier.entries[51].summary.contains("illumination-northeast-stepout"),
-  )
-  assert_true(dossier.entries[51].summary.contains("energy-window"))
-  assert_true(dossier.entries[51].summary.contains("moonmoon-safety-gate-only"))
-  assert_true(dossier.entries[51].summary.contains("hardware-denied"))
-  assert_true(dossier.entries[51].path.contains("remediation-margin-receipt"))
+  assert_true(dossier.entries[51].summary.contains("accepted"))
+  assert_true(dossier.entries[51].summary.contains("Moonrobo handoff block"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[52].kind),
-    "moonrobo-remediation-margin-modeling",
+    "moonclaw-remediation-margin-receipt",
   )
-  assert_true(dossier.entries[52].summary.contains("AllMarginsStillBlocking"))
+  assert_true(dossier.entries[52].summary.contains("OpenMarginsCarriedForward"))
+  assert_true(dossier.entries[52].summary.contains("3 remediation margins"))
   assert_true(dossier.entries[52].summary.contains("terrain-northeast-stepout"))
   assert_true(
     dossier.entries[52].summary.contains("illumination-northeast-stepout"),
   )
   assert_true(dossier.entries[52].summary.contains("energy-window"))
+  assert_true(dossier.entries[52].summary.contains("moonmoon-safety-gate-only"))
   assert_true(dossier.entries[52].summary.contains("hardware-denied"))
-  assert_true(dossier.entries[52].path.contains("remediation-margin-modeling"))
+  assert_true(dossier.entries[52].path.contains("remediation-margin-receipt"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[53].kind),
-    "moonrobo-remediation-margin-projection",
-  )
-  assert_true(
-    dossier.entries[53].summary.contains("NoConsumeSimulationBlocked"),
+    "moonrobo-remediation-margin-modeling",
   )
   assert_true(dossier.entries[53].summary.contains("AllMarginsStillBlocking"))
   assert_true(dossier.entries[53].summary.contains("terrain-northeast-stepout"))
@@ -293,22 +306,37 @@ test "first trusted square exports a MoonBook evidence dossier" {
     dossier.entries[53].summary.contains("illumination-northeast-stepout"),
   )
   assert_true(dossier.entries[53].summary.contains("energy-window"))
-  assert_true(dossier.entries[53].summary.contains("simulation-blocked"))
   assert_true(dossier.entries[53].summary.contains("hardware-denied"))
-  assert_true(
-    dossier.entries[53].path.contains("remediation-margin-projection"),
-  )
+  assert_true(dossier.entries[53].path.contains("remediation-margin-modeling"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[54].kind),
-    "moonclaw-ephemeris-receipt",
+    "moonrobo-remediation-margin-projection",
   )
-  assert_true(dossier.entries[54].summary.contains("energy block"))
-  assert_true(dossier.entries[54].summary.contains("accepted receipt"))
+  assert_true(
+    dossier.entries[54].summary.contains("NoConsumeSimulationBlocked"),
+  )
+  assert_true(dossier.entries[54].summary.contains("AllMarginsStillBlocking"))
+  assert_true(dossier.entries[54].summary.contains("terrain-northeast-stepout"))
+  assert_true(
+    dossier.entries[54].summary.contains("illumination-northeast-stepout"),
+  )
+  assert_true(dossier.entries[54].summary.contains("energy-window"))
+  assert_true(dossier.entries[54].summary.contains("simulation-blocked"))
+  assert_true(dossier.entries[54].summary.contains("hardware-denied"))
+  assert_true(
+    dossier.entries[54].path.contains("remediation-margin-projection"),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[55].kind),
+    "moonclaw-ephemeris-receipt",
+  )
+  assert_true(dossier.entries[55].summary.contains("energy block"))
+  assert_true(dossier.entries[55].summary.contains("accepted receipt"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[56].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[55].summary.contains("81 measured windows"))
+  assert_true(dossier.entries[56].summary.contains("81 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -604,6 +632,7 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(json.contains("\"MoonClawProposal\""))
   assert_true(json.contains("\"MoonClawTask\""))
   assert_true(json.contains("\"MoonClawRemediationMarginRefreshTask\""))
+  assert_true(json.contains("\"MoonClawRemediationMarginRefreshReceipt\""))
   assert_true(json.contains("\"MoonClawReceipt\""))
   assert_true(json.contains("\"MoonClawRemediationMarginReceipt\""))
   assert_true(json.contains("\"MoonClawEphemerisReceipt\""))
