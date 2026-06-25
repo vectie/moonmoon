@@ -40,6 +40,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw remediation reviewed action plan json
     #|  moon run cmd/main -- moonclaw remediation reviewed work items
     #|  moon run cmd/main -- moonclaw remediation reviewed work items json
+    #|  moon run cmd/main -- moonclaw remediation reviewed work item receipts
+    #|  moon run cmd/main -- moonclaw remediation reviewed work item receipts json
     #|  moon run cmd/main -- moonclaw remediation refresh followup receipts
     #|  moon run cmd/main -- moonclaw remediation refresh followup receipts json
     #|  moon run cmd/main -- moonclaw remediation refresh receipts
@@ -142,7 +144,19 @@ fn main {
     args.contains("reviewed") &&
     args.contains("work") &&
     args.contains("items") {
-    if output_json {
+    if args.contains("receipts") {
+      if output_json {
+        println(
+          @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_json().stringify(
+            indent=2,
+          ),
+        )
+      } else {
+        println(
+          @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_markdown(),
+        )
+      }
+    } else if output_json {
       println(
         @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items_json().stringify(
           indent=2,
@@ -151,6 +165,23 @@ fn main {
     } else {
       println(
         @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items_markdown(),
+      )
+    }
+  } else if args.contains("moonclaw") &&
+    args.contains("remediation") &&
+    args.contains("reviewed") &&
+    args.contains("work") &&
+    args.contains("item") &&
+    args.contains("receipts") {
+    if output_json {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_markdown(),
       )
     }
   } else if args.contains("moonclaw") &&

@@ -1,0 +1,113 @@
+# MoonClaw Remediation Margin Reviewed Work Item Receipts
+
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt
+  - proposal: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - status: accepted
+  - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout
+  - source plan: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - review transition: rabbita-moonclaw-remediation-margin-closeout-action-review-accept
+  - review decision: Accept
+  - reviewer: operator/rabbita-closeout-action-review
+  - reviewed at: 2026-06-25T00:00:00Z
+  - route: northeast-stepout
+  - result state: ReviewedWorkItemsCarriedForward
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - automatic refresh loop allowed: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - next action: Attach fresh evidence for terrain-northeast-stepout via manual: review DEM slope/roughness evidence for terrain-northeast-stepout before any terrain refresh is retried, verify python3 scripts/check_selected_route_terrain_remediation.py, then regenerate the reviewed work item receipts before downstream MoonRobo simulation review.
+  - validation:
+    - source-work-item-accepted: pass - receipt consumes accepted reviewed work item moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout from plan moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+    - review-provenance-preserved: pass - accepted review rabbita-moonclaw-remediation-margin-closeout-action-review-accept remains the source of authority
+    - work-item-accounting-complete: pass - work item terrain-northeast-stepout / refresh-terrain-northeast-stepout is accounted for by the accepted reviewed action plan
+    - result-paths-present: pass - reviewed work item result carries required evidence, target, command, check, and evidence paths
+    - no-automatic-refresh-loop: pass - reviewed work item does not open an automatic refresh loop
+    - simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - fresh-evidence-still-pending: pass - reviewed work item remains pending until fresh evidence satisfies python3 scripts/check_selected_route_terrain_remediation.py
+  - work item result:
+    - 1. refresh-terrain-northeast-stepout: terrain-northeast-stepout - ReviewedWorkItemPendingFreshEvidence
+      - blocker domain: terrain
+      - disposition: EscalateToOperatorDecision
+      - required evidence: operator-reviewed DEM slope and roughness evidence before another terrain refresh
+      - target: operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation
+      - evidence: operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation
+      - command: manual: review DEM slope/roughness evidence for terrain-northeast-stepout before any terrain refresh is retried
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+      - current: accepted reviewed work item is pending fresh evidence before any downstream MoonRobo simulation review
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt
+  - proposal: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - status: accepted
+  - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout
+  - source plan: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - review transition: rabbita-moonclaw-remediation-margin-closeout-action-review-accept
+  - review decision: Accept
+  - reviewer: operator/rabbita-closeout-action-review
+  - reviewed at: 2026-06-25T00:00:00Z
+  - route: northeast-stepout
+  - result state: ReviewedWorkItemsCarriedForward
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - automatic refresh loop allowed: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - next action: Attach fresh evidence for illumination-northeast-stepout via python3 scripts/generate_selected_route_horizon.py --check, verify python3 scripts/check_selected_route_horizon_model.py, then regenerate the reviewed work item receipts before downstream MoonRobo simulation review.
+  - validation:
+    - source-work-item-accepted: pass - receipt consumes accepted reviewed work item moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout from plan moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+    - review-provenance-preserved: pass - accepted review rabbita-moonclaw-remediation-margin-closeout-action-review-accept remains the source of authority
+    - work-item-accounting-complete: pass - work item illumination-northeast-stepout / refresh-illumination-northeast-stepout is accounted for by the accepted reviewed action plan
+    - result-paths-present: pass - reviewed work item result carries required evidence, target, command, check, and evidence paths
+    - no-automatic-refresh-loop: pass - reviewed work item does not open an automatic refresh loop
+    - simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - fresh-evidence-still-pending: pass - reviewed work item remains pending until fresh evidence satisfies python3 scripts/check_selected_route_horizon_model.py
+  - work item result:
+    - 2. refresh-illumination-northeast-stepout: illumination-northeast-stepout - ReviewedWorkItemPendingFreshEvidence
+      - blocker domain: local-horizon
+      - disposition: RetryWithNewEvidence
+      - required evidence: new local-horizon or ephemeris evidence before retrying the horizon refresh
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+      - current: accepted reviewed work item is pending fresh evidence before any downstream MoonRobo simulation review
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt
+  - proposal: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - status: accepted
+  - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window
+  - source plan: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - review transition: rabbita-moonclaw-remediation-margin-closeout-action-review-accept
+  - review decision: Accept
+  - reviewer: operator/rabbita-closeout-action-review
+  - reviewed at: 2026-06-25T00:00:00Z
+  - route: northeast-stepout
+  - result state: ReviewedWorkItemsCarriedForward
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - automatic refresh loop allowed: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - next action: Attach fresh evidence for energy-window via manual: keep energy-window frozen until new power-window source evidence or rover energy profile is attached, verify python3 scripts/check_energy_margin_remediation.py, then regenerate the reviewed work item receipts before downstream MoonRobo simulation review.
+  - validation:
+    - source-work-item-accepted: pass - receipt consumes accepted reviewed work item moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window from plan moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+    - review-provenance-preserved: pass - accepted review rabbita-moonclaw-remediation-margin-closeout-action-review-accept remains the source of authority
+    - work-item-accounting-complete: pass - work item energy-window / refresh-energy-window is accounted for by the accepted reviewed action plan
+    - result-paths-present: pass - reviewed work item result carries required evidence, target, command, check, and evidence paths
+    - no-automatic-refresh-loop: pass - reviewed work item does not open an automatic refresh loop
+    - simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - fresh-evidence-still-pending: pass - reviewed work item remains pending until fresh evidence satisfies python3 scripts/check_energy_margin_remediation.py
+  - work item result:
+    - 3. refresh-energy-window: energy-window - ReviewedWorkItemPendingFreshEvidence
+      - blocker domain: energy
+      - disposition: FreezeUntilNewSourceEvidence
+      - required evidence: new power-window source evidence or rover energy profile before unfreezing energy
+      - target: operator/rabbita-remediation-margin-cycle-closeout#energy-freeze
+      - evidence: operator/rabbita-remediation-margin-cycle-closeout#energy-freeze
+      - command: manual: keep energy-window frozen until new power-window source evidence or rover energy profile is attached
+      - check: python3 scripts/check_energy_margin_remediation.py
+      - current: accepted reviewed work item is pending fresh evidence before any downstream MoonRobo simulation review

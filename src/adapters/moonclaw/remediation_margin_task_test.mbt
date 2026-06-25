@@ -663,6 +663,101 @@ test "MoonClaw reviewed remediation margin work item renderers expose safety inv
 }
 
 ///|
+test "first trusted square reviewed work item receipts carry pending fresh evidence" {
+  let receipts = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts()
+  assert_eq(receipts.length(), 3)
+  assert_eq(
+    receipts[0].receipt.receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+  )
+  assert_eq(
+    receipts[1].receipt.receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+  )
+  assert_eq(
+    receipts[2].receipt.receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt",
+  )
+  for receipt in receipts {
+    assert_true(
+      receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
+    )
+    assert_true(
+      receipt.result_state ==
+      @moonclaw.MoonClawRemediationMarginReviewedWorkItemReceiptState::ReviewedWorkItemsCarriedForward,
+    )
+    assert_true(
+      receipt.work_item_result.status ==
+      @moonclaw.MoonClawRemediationMarginReviewedWorkItemResultStatus::ReviewedWorkItemPendingFreshEvidence,
+    )
+    assert_eq(
+      receipt.source_plan_id,
+      "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan",
+    )
+    assert_eq(
+      receipt.source_review_transition_id,
+      "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
+    )
+    assert_true(
+      receipt.source_review_decision ==
+      @moonclaw.MoonClawCloseoutActionReviewDecision::Accept,
+    )
+    assert_true(!receipt.may_consume_simulation)
+    assert_true(!receipt.automatic_refresh_loop_allowed)
+    assert_true(!receipt.hardware_authority_change)
+    assert_true(
+      receipt.simulation_state ==
+      @moonrobo.MoonroboExecutionState::SimulationBlocked,
+    )
+    assert_true(
+      receipt.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+    )
+    assert_eq(receipt.hardware_authority, "moonmoon-safety-gate-only")
+    assert_true(receipt.hardware_denied)
+    assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
+  }
+}
+
+///|
+test "MoonClaw reviewed remediation margin work item receipt renderers expose accounting" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_markdown()
+  assert_true(
+    markdown.contains("MoonClaw Remediation Margin Reviewed Work Item Receipts"),
+  )
+  assert_true(
+    markdown.contains("work-item-1-terrain-northeast-stepout/receipt"),
+  )
+  assert_true(markdown.contains("ReviewedWorkItemPendingFreshEvidence"))
+  assert_true(markdown.contains("review decision: Accept"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("automatic refresh loop allowed: false"))
+  assert_true(markdown.contains("hardware authority change: false"))
+  assert_true(markdown.contains("moonmoon-safety-gate-only"))
+  assert_true(markdown.contains("EscalateToOperatorDecision"))
+  assert_true(markdown.contains("RetryWithNewEvidence"))
+  assert_true(markdown.contains("FreezeUntilNewSourceEvidence"))
+  let json = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_item_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"receipt_id\": \"moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt\"",
+    ),
+  )
+  assert_true(
+    json.contains("\"result_state\": \"ReviewedWorkItemsCarriedForward\""),
+  )
+  assert_true(
+    json.contains("\"status\": \"ReviewedWorkItemPendingFreshEvidence\""),
+  )
+  assert_true(json.contains("\"source_review_decision\": \"Accept\""))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"automatic_refresh_loop_allowed\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+  assert_true(json.contains("\"hardware_authority_change\": false"))
+}
+
+///|
 test "first trusted square remediation margin refresh follow-up receipt carries follow-up refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_receipt()
   assert_eq(

@@ -1604,7 +1604,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-reviewed-work-item-receipts",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Emit reviewed remediation-margin work item receipts",
       outcome: "Each accepted reviewed work item gets a MoonClaw receipt that records whether terrain escalation, horizon retry-with-new-evidence, and energy freeze remain pending or have fresh evidence",
@@ -1616,7 +1616,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
         "scripts/check_moonclaw_remediation_margin_reviewed_work_item_receipts.py",
       ],
-      done_when: "MoonClaw emits reviewed remediation-margin work item receipts that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonClaw emits reviewed remediation-margin work item receipts that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-reviewed-work-item-receipts-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize reviewed remediation-margin work item receipts into MoonBook",
+      outcome: "The three accepted MoonClaw reviewed work item receipts become durable MoonBook workspace evidence before fresh evidence execution or downstream simulation review",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_work_item_receipts.py",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_work_item_receipts_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
     },
   ]
 }

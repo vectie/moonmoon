@@ -129,6 +129,12 @@ pub fn first_trusted_square_remediation_margin_reviewed_action_plans_json() -> J
 
 pub fn first_trusted_square_remediation_margin_reviewed_action_plans_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_reviewed_work_item_receipts() -> Array[MoonClawRemediationMarginReviewedWorkItemReceipt]
+
+pub fn first_trusted_square_remediation_margin_reviewed_work_item_receipts_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_reviewed_work_item_receipts_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_reviewed_work_items() -> Array[MoonClawRemediationMarginReviewedWorkItem]
 
 pub fn first_trusted_square_remediation_margin_reviewed_work_items_json() -> Json
@@ -170,6 +176,12 @@ pub fn remediation_margin_refresh_state_label(MoonClawRemediationMarginRefreshSt
 pub fn remediation_margin_result_status_label(MoonClawRemediationMarginResultStatus) -> String
 
 pub fn remediation_margin_reviewed_action_plans_from_review(MoonClawRemediationMarginCloseoutActionReview) -> Array[MoonClawRemediationMarginReviewedActionPlan]
+
+pub fn remediation_margin_reviewed_work_item_receipt_state_label(MoonClawRemediationMarginReviewedWorkItemReceiptState) -> String
+
+pub fn remediation_margin_reviewed_work_item_receipts_from_plan(MoonClawRemediationMarginReviewedActionPlan, Array[MoonClawRemediationMarginReviewedWorkItem]) -> Array[MoonClawRemediationMarginReviewedWorkItemReceipt]
+
+pub fn remediation_margin_reviewed_work_item_result_status_label(MoonClawRemediationMarginReviewedWorkItemResultStatus) -> String
 
 pub fn remediation_margin_reviewed_work_items_from_plans(Array[MoonClawRemediationMarginReviewedActionPlan]) -> Array[MoonClawRemediationMarginReviewedWorkItem]
 
@@ -228,6 +240,10 @@ pub fn render_remediation_margin_refresh_tasks_markdown(Array[MoonClawRemediatio
 pub fn render_remediation_margin_reviewed_action_plans_json(Array[MoonClawRemediationMarginReviewedActionPlan]) -> Json
 
 pub fn render_remediation_margin_reviewed_action_plans_markdown(Array[MoonClawRemediationMarginReviewedActionPlan]) -> String
+
+pub fn render_remediation_margin_reviewed_work_item_receipts_json(Array[MoonClawRemediationMarginReviewedWorkItemReceipt]) -> Json
+
+pub fn render_remediation_margin_reviewed_work_item_receipts_markdown(Array[MoonClawRemediationMarginReviewedWorkItemReceipt]) -> String
 
 pub fn render_remediation_margin_reviewed_work_items_json(Array[MoonClawRemediationMarginReviewedWorkItem]) -> Json
 
@@ -710,6 +726,58 @@ pub(all) struct MoonClawRemediationMarginReviewedWorkItem {
   hardware_denied : Bool
   safety_gate : String
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginReviewedWorkItemReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  route_id : String
+  source_work_item_id : String
+  source_plan_id : String
+  source_review_transition_id : String
+  source_review_decision : MoonClawCloseoutActionReviewDecision
+  reviewer_id : String
+  reviewed_at_utc : String
+  source_evidence_refs : Array[MoonClawCloseoutActionReviewEvidenceRef]
+  source_work_item_state : MoonClawReceiptStatus
+  may_consume_simulation : Bool
+  simulation_state : @moonrobo.MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  result_state : MoonClawRemediationMarginReviewedWorkItemReceiptState
+  work_item_result : MoonClawRemediationMarginReviewedWorkItemResult
+  validation_checks : Array[MoonClawReceiptValidation]
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_authority_change : Bool
+  hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawRemediationMarginReviewedWorkItemReceiptState {
+  ReviewedWorkItemsReady
+  ReviewedWorkItemsCarriedForward
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginReviewedWorkItemResult {
+  work_item_id : String
+  rank : Int
+  margin_id : String
+  refresh_id : String
+  blocker_domain : String
+  disposition : @moonrobo.RemediationMarginCycleDisposition
+  required_evidence : String
+  target_artifact_path : String
+  command : String
+  acceptance_check : String
+  status : MoonClawRemediationMarginReviewedWorkItemResultStatus
+  evidence_path : String
+  current_state : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawRemediationMarginReviewedWorkItemResultStatus {
+  ReviewedWorkItemFreshEvidenceReady
+  ReviewedWorkItemPendingFreshEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) enum MoonClawRemediationMarginState {
