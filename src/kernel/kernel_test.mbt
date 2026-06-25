@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "moonbook-remediation-margin-reviewed-work-items-workspace",
+    "rabbita-remediation-margin-reviewed-work-items-surface",
   )
 }
 
@@ -223,6 +223,9 @@ test "kernel markdown names suite roles and next product output" {
       "moonbook-remediation-margin-reviewed-work-items-workspace",
     ),
   )
+  assert_true(
+    markdown.contains("rabbita-remediation-margin-reviewed-work-items-surface"),
+  )
   assert_true(markdown.contains("NoConsumeCycleClosedForPolicy"))
   assert_true(markdown.contains("retry/escalate/freeze dispositions"))
   assert_true(markdown.contains("terrain escalate"))
@@ -236,6 +239,7 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(markdown.contains("no automatic refresh loop"))
   assert_true(markdown.contains("three explicit MoonClaw work items"))
   assert_true(markdown.contains("durable MoonBook workspace evidence"))
+  assert_true(markdown.contains("Operators can inspect the three accepted"))
   assert_true(markdown.contains("NoConsumeFollowupRefreshSimulationBlocked"))
   assert_true(markdown.contains("FollowupRefreshesCarriedForward state"))
   assert_true(markdown.contains("AllFollowupRefreshesStillBlocking state"))

@@ -33,6 +33,7 @@ pub(all) enum BookEntryKind {
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
   MoonClawRemediationMarginReviewedActionPlan
+  MoonClawRemediationMarginReviewedWorkItems
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt
@@ -159,6 +160,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonclaw-remediation-margin-closeout-action-task"
     MoonClawRemediationMarginReviewedActionPlan =>
       "moonclaw-remediation-margin-reviewed-action-plan"
+    MoonClawRemediationMarginReviewedWorkItems =>
+      "moonclaw-remediation-margin-reviewed-work-items"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawRemediationMarginRefreshFollowupReceipt =>
@@ -1296,6 +1299,29 @@ fn moonclaw_remediation_margin_reviewed_action_plan_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_reviewed_work_items_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let items = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items()
+  let margin_ids = items.map(fn(item) { item.margin_id }).join(", ")
+  let refresh_ids = items.map(fn(item) { item.refresh_id }).join(", ")
+  let actions = items
+    .map(fn(item) {
+      "\{item.blocker_domain}=\{@moonrobo.remediation_margin_cycle_disposition_label(item.disposition)}"
+    })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-work-items",
+    title: "MoonClaw reviewed remediation-margin work items for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginReviewedWorkItems,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.75,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-work-items.json",
+    summary: "\{items.length()} accepted reviewed work items for terrain/horizon/energy margins (\{margin_ids}) over refreshes (\{refresh_ids}); actions \{actions}; automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1573,6 +1599,7 @@ fn book_entries(
   entries.push(moonrobo_remediation_margin_cycle_closeout_policy_entry(dossier))
   entries.push(moonclaw_remediation_margin_closeout_action_task_entry(dossier))
   entries.push(moonclaw_remediation_margin_reviewed_action_plan_entry(dossier))
+  entries.push(moonclaw_remediation_margin_reviewed_work_items_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries
