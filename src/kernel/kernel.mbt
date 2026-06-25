@@ -1588,7 +1588,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-reviewed-work-items-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface reviewed remediation-margin work items in Rabbita",
       outcome: "Operators can inspect the three accepted reviewed MoonClaw work items from MoonBook before execution or downstream simulation review",
@@ -1600,7 +1600,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_work_items_surface.py",
       ],
-      done_when: "Rabbita renders the three reviewed remediation-margin work items with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the three reviewed remediation-margin work items with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-reviewed-work-item-receipts",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit reviewed remediation-margin work item receipts",
+      outcome: "Each accepted reviewed work item gets a MoonClaw receipt that records whether terrain escalation, horizon retry-with-new-evidence, and energy freeze remain pending or have fresh evidence",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_work_items_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_work_item_receipts.py",
+      ],
+      done_when: "MoonClaw emits reviewed remediation-margin work item receipts that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
