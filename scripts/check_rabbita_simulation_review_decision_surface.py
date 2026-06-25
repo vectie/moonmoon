@@ -20,7 +20,8 @@ SUMMARY_TERMS = [
   "SimulationBlocked",
   "consume=false",
   "3 remediation margins",
-  "3 non-margin blockers",
+  "1 active non-margin blockers",
+  "2 closed non-margin blockers",
   "HardwareDenied",
 ]
 

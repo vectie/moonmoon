@@ -819,7 +819,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-simulation-blocker-reduction-pass",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Reduce selected-route simulation blockers from the closeout decision",
       outcome: "MoonRobo's no-consume decision stops carrying stale non-margin blockers once corridor, MoonBook review, and robot-simulation evidence have explicit closeout states",
@@ -831,7 +831,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
         "scripts/check_moonrobo_simulation_blocker_reduction.py",
       ],
-      done_when: "selected-route simulation decision records which non-margin blockers are closed by existing evidence, which remain active, and why hardware authority still stays denied",
+      done_when: "done: selected-route simulation decision records which non-margin blockers are closed by existing evidence, which remain active, and why hardware authority still stays denied",
+    },
+    {
+      task_id: "moonbook-simulation-blocker-reduction-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize simulation blocker reduction into MoonBook",
+      outcome: "The non-margin blocker reduction pass becomes durable MoonBook evidence next to the decision it updates",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-blocker-reduction.json",
+        "scripts/check_moonbook_simulation_blocker_reduction_workspace.py",
+      ],
+      done_when: "simulation blocker reduction is indexed, materialized, and validated in MoonBook with closed and active blocker counts preserved",
     },
   ]
 }

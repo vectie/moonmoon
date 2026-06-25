@@ -113,6 +113,8 @@ if [[ -n "$REVIEW_TRANSITIONS" ]]; then
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.json"
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_decision.md"
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_decision.json"
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_blocker_reduction.md"
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_blocker_reduction.json"
 fi
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"

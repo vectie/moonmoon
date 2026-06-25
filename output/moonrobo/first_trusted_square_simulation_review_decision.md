@@ -5,9 +5,11 @@
 - route: northeast-stepout
 - status: SimulationBlocked
 - may consume simulation packet: false
-- reason: simulation packet remains blocked: 3 remediation margins and 3 non-margin blockers remain; hardware authority remains moonmoon-safety-gate-only
+- reason: simulation packet remains blocked: 3 remediation margins and 1 active non-margin blockers remain; 2 stale non-margin blockers are closed; hardware authority remains moonmoon-safety-gate-only
 - blocking margins: 3
-- non-margin blockers: 3
+- original non-margin blockers: 3
+- closed non-margin blockers: 2
+- active non-margin blockers: 1
 - accepted clearance transitions: 4
 - hardware state: HardwareDenied
 - hardware authority: moonmoon-safety-gate-only
@@ -20,10 +22,13 @@
 - illumination-northeast-stepout
 - energy-window
 
-## Remaining Non-Margin Blockers
+## Closed Non-Margin Blockers
 
 - corridor-scan-best-window
 - moonbook-review
+
+## Remaining Non-Margin Blockers
+
 - robot-simulation
 
 ## Hardware Denial Invariants

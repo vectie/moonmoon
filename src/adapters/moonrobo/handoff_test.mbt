@@ -277,16 +277,26 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
   )
   assert_eq(decision.blocking_margin_count, 3)
   assert_eq(decision.accepted_clearance_transition_count, 4)
-  assert_eq(decision.remaining_non_margin_blocker_count, 3)
+  assert_eq(decision.original_non_margin_blocker_count, 3)
+  assert_eq(decision.closed_non_margin_blocker_count, 2)
+  assert_eq(decision.remaining_non_margin_blocker_count, 1)
   assert_true(
     decision.blocking_margin_checks.contains("terrain-northeast-stepout"),
   )
+  assert_true(
+    decision.closed_non_margin_blockers.contains("corridor-scan-best-window"),
+  )
+  assert_true(decision.closed_non_margin_blockers.contains("moonbook-review"))
   assert_true(
     decision.remaining_non_margin_blockers.contains("robot-simulation"),
   )
   assert_true(decision.hardware_denied)
   assert_eq(decision.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(decision.reason.contains("3 remediation margins"))
+  assert_true(decision.reason.contains("1 active non-margin blockers"))
+  assert_true(
+    decision.reason.contains("2 stale non-margin blockers are closed"),
+  )
   assert_true(decision.reason.contains("hardware authority remains"))
   assert_true(decision.next_action.contains("do not let MoonRobo consume"))
   let decision_markdown = @moonrobo.render_simulation_review_decision_markdown(

@@ -46,7 +46,8 @@ def assert_decision_workspace(root: Path) -> None:
     "SimulationBlocked northeast-stepout",
     "consume=false",
     "3 remediation margins",
-    "3 non-margin blockers",
+    "1 active non-margin blockers",
+    "2 closed non-margin blockers",
     "hardware authority denied at HardwareDenied",
   ]:
     if text not in entry["summary"]:
@@ -74,8 +75,19 @@ def assert_decision_workspace(root: Path) -> None:
     raise AssertionError(payload)
   if payload["blocking_margin_count"] != 3:
     raise AssertionError(payload["blocking_margin_count"])
-  if payload["remaining_non_margin_blocker_count"] != 3:
+  if payload["original_non_margin_blocker_count"] != 3:
+    raise AssertionError(payload["original_non_margin_blocker_count"])
+  if payload["closed_non_margin_blocker_count"] != 2:
+    raise AssertionError(payload["closed_non_margin_blocker_count"])
+  if payload["remaining_non_margin_blocker_count"] != 1:
     raise AssertionError(payload["remaining_non_margin_blocker_count"])
+  if set(payload["closed_non_margin_blockers"]) != {
+    "corridor-scan-best-window",
+    "moonbook-review",
+  }:
+    raise AssertionError(payload["closed_non_margin_blockers"])
+  if payload["remaining_non_margin_blockers"] != ["robot-simulation"]:
+    raise AssertionError(payload["remaining_non_margin_blockers"])
   if payload["accepted_clearance_transition_count"] != 4:
     raise AssertionError(payload["accepted_clearance_transition_count"])
   if payload["hardware_state"] != "HardwareDenied":

@@ -47,7 +47,11 @@ def assert_decision(root: Path) -> None:
     raise AssertionError(decision["blocking_margin_count"])
   if decision["accepted_clearance_transition_count"] != 4:
     raise AssertionError(decision["accepted_clearance_transition_count"])
-  if decision["remaining_non_margin_blocker_count"] != 3:
+  if decision["original_non_margin_blocker_count"] != 3:
+    raise AssertionError(decision["original_non_margin_blocker_count"])
+  if decision["closed_non_margin_blocker_count"] != 2:
+    raise AssertionError(decision["closed_non_margin_blocker_count"])
+  if decision["remaining_non_margin_blocker_count"] != 1:
     raise AssertionError(decision["remaining_non_margin_blocker_count"])
 
   expected_margins = {
@@ -57,9 +61,13 @@ def assert_decision(root: Path) -> None:
   }
   if set(decision["blocking_margin_checks"]) != expected_margins:
     raise AssertionError(decision["blocking_margin_checks"])
-  expected_blockers = {
+  expected_closed = {
     "corridor-scan-best-window",
     "moonbook-review",
+  }
+  if set(decision["closed_non_margin_blockers"]) != expected_closed:
+    raise AssertionError(decision["closed_non_margin_blockers"])
+  expected_blockers = {
     "robot-simulation",
   }
   if set(decision["remaining_non_margin_blockers"]) != expected_blockers:
@@ -83,7 +91,8 @@ def assert_decision(root: Path) -> None:
   for term in [
     "simulation packet remains blocked",
     "3 remediation margins",
-    "3 non-margin blockers",
+    "1 active non-margin blockers",
+    "2 stale non-margin blockers are closed",
     "hardware authority remains moonmoon-safety-gate-only",
   ]:
     if term not in decision["reason"]:
@@ -101,6 +110,7 @@ def assert_decision(root: Path) -> None:
     "may consume simulation packet: false",
     "SimulationBlocked",
     "terrain-northeast-stepout",
+    "moonbook-review",
     "robot-simulation",
     "HardwareDenied",
     "Hardware Denial Invariants",

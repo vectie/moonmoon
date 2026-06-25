@@ -43,6 +43,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonrobo/first_trusted_square_simulation_review_decision.json",
     "moonrobo_simulation_decision_md": root
     / "output/moonrobo/first_trusted_square_simulation_review_decision.md",
+    "moonrobo_simulation_blocker_reduction_json": root
+    / "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+    "moonrobo_simulation_blocker_reduction_md": root
+    / "output/moonrobo/first_trusted_square_simulation_blocker_reduction.md",
     "moonclaw_gap_task_json": root
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "moonclaw_gap_task_md": root
@@ -292,7 +296,8 @@ def moonrobo_simulation_review_decision_entry(
       f"{decision['decision']} {decision['route_id']}: "
       f"consume={str(decision['may_consume_simulation_packet']).lower()}, "
       f"{decision['blocking_margin_count']} remediation margins, "
-      f"{decision['remaining_non_margin_blocker_count']} non-margin blockers, "
+      f"{decision['remaining_non_margin_blocker_count']} active non-margin blockers, "
+      f"{decision['closed_non_margin_blocker_count']} closed non-margin blockers, "
       f"hardware authority denied at {decision['hardware_state']}"
     ),
   }
@@ -588,9 +593,19 @@ def moonrobo_simulation_review_decision(
     margin["check_id"]
     for margin in packet["remediation_margins"]
   ]
-  non_margin_blockers = [
+  original_non_margin_blockers = [
     blocker["check_id"]
     for blocker in packet["remaining_non_margin_blockers"]
+  ]
+  closed_non_margin_blockers = [
+    check_id
+    for check_id in original_non_margin_blockers
+    if simulation_non_margin_blocker_is_closed(check_id)
+  ]
+  non_margin_blockers = [
+    check_id
+    for check_id in original_non_margin_blockers
+    if check_id not in closed_non_margin_blockers
   ]
   may_consume = (
     not margin_checks
@@ -607,7 +622,8 @@ def moonrobo_simulation_review_decision(
     else (
       "simulation packet remains blocked: "
       f"{len(margin_checks)} remediation margins and "
-      f"{len(non_margin_blockers)} non-margin blockers remain; "
+      f"{len(non_margin_blockers)} active non-margin blockers remain; "
+      f"{len(closed_non_margin_blockers)} stale non-margin blockers are closed; "
       f"hardware authority remains {packet['hardware_authority']}"
     )
   )
@@ -634,14 +650,24 @@ def moonrobo_simulation_review_decision(
     "accepted_clearance_transition_count": len(
       packet["accepted_clearance_transitions"],
     ),
+    "original_non_margin_blocker_count": len(original_non_margin_blockers),
+    "closed_non_margin_blocker_count": len(closed_non_margin_blockers),
     "remaining_non_margin_blocker_count": len(non_margin_blockers),
     "blocking_margin_checks": margin_checks,
+    "closed_non_margin_blockers": closed_non_margin_blockers,
     "remaining_non_margin_blockers": non_margin_blockers,
     "hardware_state": packet["hardware_state"],
     "hardware_authority": packet["hardware_authority"],
     "hardware_denied": packet["hardware_denied"],
     "hardware_denial_invariants": packet["hardware_denial_invariants"],
     "next_action": next_action,
+  }
+
+
+def simulation_non_margin_blocker_is_closed(check_id: str) -> bool:
+  return check_id in {
+    "corridor-scan-best-window",
+    "moonbook-review",
   }
 
 
@@ -659,10 +685,9 @@ def render_moonrobo_simulation_review_decision_markdown(
   )
   text += f"- reason: {decision['reason']}\n"
   text += f"- blocking margins: {decision['blocking_margin_count']}\n"
-  text += (
-    "- non-margin blockers: "
-    f"{decision['remaining_non_margin_blocker_count']}\n"
-  )
+  text += f"- original non-margin blockers: {decision['original_non_margin_blocker_count']}\n"
+  text += f"- closed non-margin blockers: {decision['closed_non_margin_blocker_count']}\n"
+  text += f"- active non-margin blockers: {decision['remaining_non_margin_blocker_count']}\n"
   text += (
     "- accepted clearance transitions: "
     f"{decision['accepted_clearance_transition_count']}\n"
@@ -674,12 +699,130 @@ def render_moonrobo_simulation_review_decision_markdown(
   text += "## Blocking Margins\n\n"
   for check_id in decision["blocking_margin_checks"]:
     text += f"- {check_id}\n"
+  text += "\n## Closed Non-Margin Blockers\n\n"
+  for check_id in decision["closed_non_margin_blockers"]:
+    text += f"- {check_id}\n"
   text += "\n## Remaining Non-Margin Blockers\n\n"
   for check_id in decision["remaining_non_margin_blockers"]:
     text += f"- {check_id}\n"
   text += "\n## Hardware Denial Invariants\n\n"
   for invariant in decision["hardware_denial_invariants"]:
     text += f"- {invariant}\n"
+  return text
+
+
+def simulation_blocker_closeout(blocker: dict[str, Any]) -> dict[str, Any]:
+  check_id = blocker["check_id"]
+  if check_id == "corridor-scan-best-window":
+    return {
+      "check_id": check_id,
+      "kind": blocker["kind"],
+      "source_evidence_path": blocker["evidence_path"],
+      "closeout_state": "ClosedByExistingEvidence",
+      "closeout_evidence_path": "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json",
+      "active_after_reduction": False,
+      "rationale": "best corridor scan already selects northeast-stepout; selected-route terrain, illumination, and energy margins now carry the active simulation blockers",
+    }
+  if check_id == "moonbook-review":
+    return {
+      "check_id": check_id,
+      "kind": blocker["kind"],
+      "source_evidence_path": blocker["evidence_path"],
+      "closeout_state": "ClosedByExistingEvidence",
+      "closeout_evidence_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
+      "active_after_reduction": False,
+      "rationale": "MoonBook review evidence is materialized and the selected-route clearance transition is accepted; remaining route risk is carried by remediation margins",
+    }
+  return {
+    "check_id": check_id,
+    "kind": blocker["kind"],
+    "source_evidence_path": blocker["evidence_path"],
+    "closeout_state": "StillActive",
+    "closeout_evidence_path": blocker["evidence_path"],
+    "active_after_reduction": True,
+    "rationale": blocker["next_action"],
+  }
+
+
+def moonrobo_simulation_blocker_reduction(
+  packet: dict[str, Any],
+  decision: dict[str, Any],
+) -> dict[str, Any]:
+  closeouts = [
+    simulation_blocker_closeout(blocker)
+    for blocker in packet["remaining_non_margin_blockers"]
+  ]
+  closed = [
+    closeout
+    for closeout in closeouts
+    if closeout["closeout_state"] == "ClosedByExistingEvidence"
+  ]
+  active = [
+    closeout
+    for closeout in closeouts
+    if closeout["active_after_reduction"]
+  ]
+  return {
+    "reduction_id": f"moonrobo-simulation-blocker-reduction/{packet['route_id']}",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_packet_id": packet["packet_id"],
+    "source_decision_id": decision["decision_id"],
+    "route_id": packet["route_id"],
+    "original_non_margin_blocker_count": len(closeouts),
+    "closed_non_margin_blocker_count": len(closed),
+    "active_non_margin_blocker_count": len(active),
+    "closed_non_margin_blockers": [item["check_id"] for item in closed],
+    "active_non_margin_blockers": [item["check_id"] for item in active],
+    "blocking_margin_count": len(packet["remediation_margins"]),
+    "blocking_margin_checks": [
+      margin["check_id"]
+      for margin in packet["remediation_margins"]
+    ],
+    "decision_after_reduction": decision["decision"],
+    "may_consume_after_reduction": decision["may_consume_simulation_packet"],
+    "blocker_closeouts": closeouts,
+    "hardware_state": packet["hardware_state"],
+    "hardware_authority": packet["hardware_authority"],
+    "hardware_denied": packet["hardware_denied"],
+    "hardware_denial_invariants": packet["hardware_denial_invariants"],
+    "summary": (
+      f"{len(closed)} stale non-margin blockers closed; "
+      f"{len(active)} non-margin blocker remains active; "
+      f"{len(packet['remediation_margins'])} remediation margins still block "
+      f"simulation consumption; hardware remains {packet['hardware_state']}"
+    ),
+    "next_action": (
+      "keep MoonRobo no-consume while terrain, illumination, and energy "
+      "remediation margins remain blocking; robot-simulation stays active "
+      "until regenerated mission readiness clears those margins"
+    ),
+  }
+
+
+def render_moonrobo_simulation_blocker_reduction_markdown(
+  reduction: dict[str, Any],
+) -> str:
+  text = "# MoonRobo Simulation Blocker Reduction\n\n"
+  text += f"- reduction: {reduction['reduction_id']}\n"
+  text += f"- source decision: {reduction['source_decision_id']}\n"
+  text += f"- route: {reduction['route_id']}\n"
+  text += f"- decision after reduction: {reduction['decision_after_reduction']}\n"
+  text += f"- may consume after reduction: {str(reduction['may_consume_after_reduction']).lower()}\n"
+  text += f"- closed non-margin blockers: {reduction['closed_non_margin_blocker_count']}\n"
+  text += f"- active non-margin blockers: {reduction['active_non_margin_blocker_count']}\n"
+  text += f"- blocking margins: {reduction['blocking_margin_count']}\n"
+  text += f"- hardware state: {reduction['hardware_state']}\n"
+  text += f"- hardware authority: {reduction['hardware_authority']}\n"
+  text += f"- summary: {reduction['summary']}\n"
+  text += f"- next action: {reduction['next_action']}\n\n"
+  text += "## Non-Margin Blocker Closeouts\n\n"
+  for closeout in reduction["blocker_closeouts"]:
+    text += f"- {closeout['check_id']}: {closeout['closeout_state']}\n"
+    text += f"  - evidence: {closeout['closeout_evidence_path']}\n"
+    text += f"  - rationale: {closeout['rationale']}\n"
+  text += "\n## Blocking Margins Still Active\n\n"
+  for check_id in reduction["blocking_margin_checks"]:
+    text += f"- {check_id}\n"
   return text
 
 
@@ -1159,6 +1302,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
     transition_file,
   )
   simulation_decision = moonrobo_simulation_review_decision(simulation_packet)
+  blocker_reduction = moonrobo_simulation_blocker_reduction(
+    simulation_packet,
+    simulation_decision,
+  )
   gap_task = moonclaw_gap_task(preview, transition_file)
   modeling_pass = moonrobo_gap_remediation_modeling_pass(gap_task, preview)
   gap_receipt = moonclaw_gap_remediation_receipt(
@@ -1176,6 +1323,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
   write_json(paths["moonrobo_preview_json"], preview)
   write_json(paths["moonrobo_simulation_packet_json"], simulation_packet)
   write_json(paths["moonrobo_simulation_decision_json"], simulation_decision)
+  write_json(
+    paths["moonrobo_simulation_blocker_reduction_json"],
+    blocker_reduction,
+  )
   write_json(paths["moonrobo_gap_modeling_json"], [modeling_pass])
   write_json(paths["moonclaw_gap_task_json"], [gap_task])
   write_json(paths["moonclaw_gap_receipt_json"], [gap_receipt])
@@ -1191,6 +1342,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
   )
   paths["moonrobo_simulation_decision_md"].write_text(
     render_moonrobo_simulation_review_decision_markdown(simulation_decision),
+    encoding="utf-8",
+  )
+  paths["moonrobo_simulation_blocker_reduction_md"].write_text(
+    render_moonrobo_simulation_blocker_reduction_markdown(blocker_reduction),
     encoding="utf-8",
   )
   paths["moonrobo_gap_modeling_md"].write_text(

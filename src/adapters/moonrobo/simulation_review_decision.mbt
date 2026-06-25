@@ -14,8 +14,11 @@ pub(all) struct SimulationReviewCloseoutDecision {
   reason : String
   blocking_margin_count : Int
   accepted_clearance_transition_count : Int
+  original_non_margin_blocker_count : Int
+  closed_non_margin_blocker_count : Int
   remaining_non_margin_blocker_count : Int
   blocking_margin_checks : Array[String]
+  closed_non_margin_blockers : Array[String]
   remaining_non_margin_blockers : Array[String]
   hardware_state : MoonroboExecutionState
   hardware_authority : String
@@ -49,9 +52,29 @@ fn remaining_non_margin_blocker_checks(
 ) -> Array[String] {
   let blockers : Array[String] = []
   for blocker in packet.remaining_non_margin_blockers {
-    blockers.push(blocker.check_id)
+    if !non_margin_blocker_is_closed(blocker.check_id) {
+      blockers.push(blocker.check_id)
+    }
   }
   blockers
+}
+
+///|
+fn closed_non_margin_blocker_checks(
+  packet : SimulationReviewPacket,
+) -> Array[String] {
+  let blockers : Array[String] = []
+  for blocker in packet.remaining_non_margin_blockers {
+    if non_margin_blocker_is_closed(blocker.check_id) {
+      blockers.push(blocker.check_id)
+    }
+  }
+  blockers
+}
+
+///|
+fn non_margin_blocker_is_closed(check_id : String) -> Bool {
+  check_id == "corridor-scan-best-window" || check_id == "moonbook-review"
 }
 
 ///|
@@ -59,12 +82,13 @@ fn simulation_review_decision_reason(
   may_consume : Bool,
   margin_count : Int,
   blocker_count : Int,
+  closed_blocker_count : Int,
   hardware_authority : String,
 ) -> String {
   if may_consume {
     "simulation packet may be consumed because no remediation margins or non-margin blockers remain, while hardware authority remains \{hardware_authority}"
   } else {
-    "simulation packet remains blocked: \{margin_count} remediation margins and \{blocker_count} non-margin blockers remain; hardware authority remains \{hardware_authority}"
+    "simulation packet remains blocked: \{margin_count} remediation margins and \{blocker_count} active non-margin blockers remain; \{closed_blocker_count} stale non-margin blockers are closed; hardware authority remains \{hardware_authority}"
   }
 }
 
@@ -85,6 +109,8 @@ pub fn simulation_review_closeout_decision(
   packet : SimulationReviewPacket,
 ) -> SimulationReviewCloseoutDecision {
   let margin_checks = blocking_margin_checks(packet)
+  let original_non_margin_count = packet.remaining_non_margin_blockers.length()
+  let closed_non_margin_blockers = closed_non_margin_blocker_checks(packet)
   let non_margin_blockers = remaining_non_margin_blocker_checks(packet)
   let may_consume = margin_checks.length() == 0 &&
     non_margin_blockers.length() == 0 &&
@@ -104,12 +130,16 @@ pub fn simulation_review_closeout_decision(
       may_consume,
       margin_checks.length(),
       non_margin_blockers.length(),
+      closed_non_margin_blockers.length(),
       packet.hardware_authority,
     ),
     blocking_margin_count: margin_checks.length(),
     accepted_clearance_transition_count: packet.accepted_clearance_transitions.length(),
+    original_non_margin_blocker_count: original_non_margin_count,
+    closed_non_margin_blocker_count: closed_non_margin_blockers.length(),
     remaining_non_margin_blocker_count: non_margin_blockers.length(),
     blocking_margin_checks: margin_checks,
+    closed_non_margin_blockers,
     remaining_non_margin_blockers: non_margin_blockers,
     hardware_state: packet.hardware_state,
     hardware_authority: packet.hardware_authority,
@@ -134,7 +164,9 @@ pub fn render_simulation_review_decision_markdown(
   text += "- may consume simulation packet: \{decision.may_consume_simulation_packet}\n"
   text += "- reason: \{decision.reason}\n"
   text += "- blocking margins: \{decision.blocking_margin_count}\n"
-  text += "- non-margin blockers: \{decision.remaining_non_margin_blocker_count}\n"
+  text += "- original non-margin blockers: \{decision.original_non_margin_blocker_count}\n"
+  text += "- closed non-margin blockers: \{decision.closed_non_margin_blocker_count}\n"
+  text += "- active non-margin blockers: \{decision.remaining_non_margin_blocker_count}\n"
   text += "- accepted clearance transitions: \{decision.accepted_clearance_transition_count}\n"
   text += "- hardware state: \{execution_state_label(decision.hardware_state)}\n"
   text += "- hardware authority: \{decision.hardware_authority}\n"
@@ -142,6 +174,10 @@ pub fn render_simulation_review_decision_markdown(
   text += "- next action: \{decision.next_action}\n\n"
   text += "## Blocking Margins\n\n"
   for check_id in decision.blocking_margin_checks {
+    text += "- \{check_id}\n"
+  }
+  text += "\n## Closed Non-Margin Blockers\n\n"
+  for check_id in decision.closed_non_margin_blockers {
     text += "- \{check_id}\n"
   }
   text += "\n## Remaining Non-Margin Blockers\n\n"

@@ -119,8 +119,11 @@ pub(all) struct SimulationReviewCloseoutDecision {
   reason : String
   blocking_margin_count : Int
   accepted_clearance_transition_count : Int
+  original_non_margin_blocker_count : Int
+  closed_non_margin_blocker_count : Int
   remaining_non_margin_blocker_count : Int
   blocking_margin_checks : Array[String]
+  closed_non_margin_blockers : Array[String]
   remaining_non_margin_blockers : Array[String]
   hardware_state : MoonroboExecutionState
   hardware_authority : String

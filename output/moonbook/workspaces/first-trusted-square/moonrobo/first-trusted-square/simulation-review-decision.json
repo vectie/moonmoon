@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.84,
     "path": "moonrobo/first-trusted-square/simulation-review-decision.json",
-    "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 3 non-margin blockers, hardware authority denied at HardwareDenied"
+    "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 1 active non-margin blockers, 2 closed non-margin blockers, hardware authority denied at HardwareDenied"
   },
   "payload": {
     "decision_id": "moonrobo-simulation-review-decision/first-trusted-square/northeast-stepout",
@@ -16,18 +16,22 @@
     "route_id": "northeast-stepout",
     "may_consume_simulation_packet": false,
     "decision": "SimulationBlocked",
-    "reason": "simulation packet remains blocked: 3 remediation margins and 3 non-margin blockers remain; hardware authority remains moonmoon-safety-gate-only",
+    "reason": "simulation packet remains blocked: 3 remediation margins and 1 active non-margin blockers remain; 2 stale non-margin blockers are closed; hardware authority remains moonmoon-safety-gate-only",
     "blocking_margin_count": 3,
     "accepted_clearance_transition_count": 4,
-    "remaining_non_margin_blocker_count": 3,
+    "original_non_margin_blocker_count": 3,
+    "closed_non_margin_blocker_count": 2,
+    "remaining_non_margin_blocker_count": 1,
     "blocking_margin_checks": [
       "terrain-northeast-stepout",
       "illumination-northeast-stepout",
       "energy-window"
     ],
-    "remaining_non_margin_blockers": [
+    "closed_non_margin_blockers": [
       "corridor-scan-best-window",
-      "moonbook-review",
+      "moonbook-review"
+    ],
+    "remaining_non_margin_blockers": [
       "robot-simulation"
     ],
     "hardware_state": "HardwareDenied",

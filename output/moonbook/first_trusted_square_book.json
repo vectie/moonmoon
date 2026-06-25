@@ -505,7 +505,7 @@
       "claim_kind": "Derived",
       "confidence": 0.84,
       "path": "moonrobo/first-trusted-square/simulation-review-decision.json",
-      "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 3 non-margin blockers, hardware authority denied at HardwareDenied"
+      "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 1 active non-margin blockers, 2 closed non-margin blockers, hardware authority denied at HardwareDenied"
     }
   ],
   "review_queue": [
