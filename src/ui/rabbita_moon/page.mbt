@@ -223,6 +223,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--ok) 48%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--ok);
     #|}
+    #|.remediation-margin-refresh-followup-receipt-row {
+    #|  border-color: color-mix(in srgb, var(--ok) 58%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--ok);
+    #|}
     #|.remediation-margin-receipt-row {
     #|  border-color: color-mix(in srgb, var(--ok) 44%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--ok);
@@ -576,6 +580,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshFollowupReceipt() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-followup-receipt',
+    #|    'moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt',
+    #|    'remediation-margin-refresh-followup-receipt-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshReceipt() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-receipt',
@@ -774,6 +786,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginTask();
     #|  renderRemediationMarginRefreshTask();
     #|  renderRemediationMarginRefreshFollowupTask();
+    #|  renderRemediationMarginRefreshFollowupReceipt();
     #|  renderRemediationMarginRefreshReceipt();
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
@@ -883,6 +896,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Follow-Up Task</h2>
     $|      <div id="remediation-margin-refresh-followup-task" class="review-list" aria-label="MoonClaw remediation margin refresh follow-up task with no-consume refresh projection status, terrain/horizon/energy refresh blockers, target commands, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Follow-Up Receipt</h2>
+    $|      <div id="remediation-margin-refresh-followup-receipt" class="review-list" aria-label="MoonClaw remediation margin refresh follow-up receipt with still-blocking follow-up refresh results and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Receipt</h2>

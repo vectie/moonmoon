@@ -208,6 +208,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   border-color: color-mix(in srgb, var(--ok) 48%, var(--line));
   box-shadow: inset 3px 0 0 var(--ok);
 }
+.remediation-margin-refresh-followup-receipt-row {
+  border-color: color-mix(in srgb, var(--ok) 58%, var(--line));
+  box-shadow: inset 3px 0 0 var(--ok);
+}
 .remediation-margin-receipt-row {
   border-color: color-mix(in srgb, var(--ok) 44%, var(--line));
   box-shadow: inset 3px 0 0 var(--ok);
@@ -3008,6 +3012,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <div id="remediation-margin-refresh-followup-task" class="review-list" aria-label="MoonClaw remediation margin refresh follow-up task with no-consume refresh projection status, terrain/horizon/energy refresh blockers, target commands, and hardware-denial authority"></div>
     </section>
     <section class="section">
+      <h2>Remediation Margin Refresh Follow-Up Receipt</h2>
+      <div id="remediation-margin-refresh-followup-receipt" class="review-list" aria-label="MoonClaw remediation margin refresh follow-up receipt with still-blocking follow-up refresh results and hardware-denial authority"></div>
+    </section>
+    <section class="section">
       <h2>Remediation Margin Refresh Receipt</h2>
       <div id="remediation-margin-refresh-receipt" class="review-list" aria-label="MoonClaw remediation margin refresh receipt with still-blocking refresh results and hardware-denial authority"></div>
     </section>
@@ -3286,6 +3294,14 @@ function renderRemediationMarginRefreshFollowupTask() {
   );
 }
 
+function renderRemediationMarginRefreshFollowupReceipt() {
+  renderMoonBookEntry(
+    'remediation-margin-refresh-followup-receipt',
+    'moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt',
+    'remediation-margin-refresh-followup-receipt-row'
+  );
+}
+
 function renderRemediationMarginRefreshReceipt() {
   renderMoonBookEntry(
     'remediation-margin-refresh-receipt',
@@ -3484,6 +3500,7 @@ function render() {
   renderRemediationMarginTask();
   renderRemediationMarginRefreshTask();
   renderRemediationMarginRefreshFollowupTask();
+  renderRemediationMarginRefreshFollowupReceipt();
   renderRemediationMarginRefreshReceipt();
   renderRemediationMarginReceipt();
   renderRemediationMarginModeling();
