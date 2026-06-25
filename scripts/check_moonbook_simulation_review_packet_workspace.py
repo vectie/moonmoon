@@ -42,7 +42,7 @@ def assert_packet_workspace(root: Path) -> None:
     raise AssertionError(entry)
   if entry["path"] != ENTRY_PATH:
     raise AssertionError(entry["path"])
-  if "hardware HardwareDenied" not in entry["summary"]:
+  if "hardware-denial invariants locked at HardwareDenied" not in entry["summary"]:
     raise AssertionError(entry["summary"])
   if ENTRY_PATH not in manifest["entry_paths"]:
     raise AssertionError("manifest has no simulation packet payload path")

@@ -515,7 +515,7 @@
       "claim_kind": "Derived",
       "confidence": 0.84,
       "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
-      "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware HardwareDenied"
+      "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware-denial invariants locked at HardwareDenied"
     }
   ],
   "review_queue_path": "review_queue.json",

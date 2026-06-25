@@ -256,7 +256,8 @@ def moonrobo_simulation_review_packet_entry(
       f"{packet['robot_simulation_status']} {packet['route_id']} with "
       f"{len(packet['remediation_margins'])} remediation margins, "
       f"{len(packet['accepted_clearance_transitions'])} accepted clearance "
-      f"transitions, hardware {packet['hardware_state']}"
+      f"transitions, hardware-denial invariants locked at "
+      f"{packet['hardware_state']}"
     ),
   }
 

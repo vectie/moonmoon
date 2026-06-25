@@ -759,7 +759,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-simulation-review-packet-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface selected-route simulation review packet in Rabbita",
       outcome: "Operators can review the durable MoonRobo simulation packet, accepted clearance transitions, remediation margins, and hardware-denial invariants from Rabbita before any simulation handoff moves forward",
@@ -770,7 +770,21 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_review_packet_surface.py",
       ],
-      done_when: "Rabbita renders the simulation review packet summary with accepted clearance count, remediation margin count, and hardware-denial invariants from embedded MoonBook evidence",
+      done_when: "done: Rabbita renders the simulation review packet summary with accepted clearance count, remediation margin count, and hardware-denial invariants from embedded MoonBook evidence",
+    },
+    {
+      task_id: "moonrobo-simulation-review-closeout-decision",
+      priority: 70,
+      lane: RobotLane,
+      title: "Emit selected-route simulation review closeout decision",
+      outcome: "MoonRobo gets one explicit closeout decision derived from the simulation review packet, so blocked margins, accepted clearance evidence, and hardware-denial invariants produce a clear simulation-consumption result",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_simulation_review_packet.json", "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-packet.json",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_simulation_review_decision.json", "scripts/check_moonrobo_simulation_review_decision.py",
+      ],
+      done_when: "selected-route simulation review decision records whether MoonRobo may consume the packet, why any blocker remains, and that hardware authority stays denied",
     },
   ]
 }
