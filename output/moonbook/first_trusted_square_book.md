@@ -345,6 +345,11 @@
   - claim: derived
   - confidence: 0.78
   - path: moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json
+- moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts: MoonClaw regenerated reviewed work item receipts for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moon-claw-remediation-margin-regenerated-reviewed-work-item-receipts
+  - claim: derived
+  - confidence: 0.79
+  - path: moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-ephemeris-receipt
   - claim: derived

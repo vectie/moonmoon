@@ -83,6 +83,7 @@ pub(all) enum BookEntryKind {
   MoonClawRemediationMarginReviewedWorkItemReceipts
   MoonClawRemediationMarginReviewedFreshEvidenceTask
   MoonClawRemediationMarginFreshEvidenceActionReceipts
+  MoonClawRemediationMarginRegeneratedReviewedWorkItemReceipts
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt

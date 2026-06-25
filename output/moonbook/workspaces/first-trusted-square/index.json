@@ -18,6 +18,7 @@
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
     "output/moonclaw/first_trusted_square_remediation_margin_reviewed_fresh_evidence_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
@@ -654,6 +655,15 @@
       "confidence": 0.78,
       "path": "moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
       "summary": "3 accepted fresh-evidence action receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); actions terrain=operator-escalation, local-horizon=bounded-regeneration, energy=manual-freeze-verification; source receipt provenance, reviewed work items remain pending fresh evidence, automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts",
+      "title": "MoonClaw regenerated reviewed work item receipts for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginRegeneratedReviewedWorkItemReceipts",
+      "claim_kind": "Derived",
+      "confidence": 0.79,
+      "path": "moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+      "summary": "3 regenerated reviewed work item receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); states terrain=ReviewedWorkItemPendingFreshEvidence, local-horizon=ReviewedWorkItemPendingFreshEvidence, energy=ReviewedWorkItemPendingFreshEvidence; execution modes terrain=operator-escalation, local-horizon=bounded-regeneration, energy=manual-freeze-verification; source action receipt provenance, source receipt provenance, accepted review provenance, automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",

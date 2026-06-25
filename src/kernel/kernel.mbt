@@ -1767,7 +1767,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-regenerated-reviewed-work-item-receipts-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize regenerated reviewed work item receipts into MoonBook",
       outcome: "Regenerated reviewed work item receipts become durable MoonBook workspace evidence before Rabbita surface or downstream MoonRobo simulation review",
@@ -1780,7 +1780,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
         "scripts/check_moonbook_remediation_margin_regenerated_reviewed_work_item_receipts_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes regenerated reviewed work item receipts with source action receipt provenance, source receipt and review provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes regenerated reviewed work item receipts with source action receipt provenance, source receipt and review provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-regenerated-reviewed-work-item-receipts-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface regenerated reviewed work item receipts in Rabbita",
+      outcome: "Operators can inspect the materialized regenerated reviewed work item receipts before downstream MoonRobo simulation review",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+        "scripts/check_moonbook_remediation_margin_regenerated_reviewed_work_item_receipts_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_regenerated_reviewed_work_item_receipts_surface.py",
+      ],
+      done_when: "Rabbita renders regenerated reviewed work item receipts with source action receipt provenance, source receipt and review provenance, terrain/horizon/energy execution modes, pending fresh evidence state, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
