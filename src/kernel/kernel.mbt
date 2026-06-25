@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "wire exported Rabbita clearance transitions into the MoonBook import workflow",
+    next_action: "make Rabbita initialize its review controls from imported transition state",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "review-transition import workflow for Rabbita exports",
+      next_output: "imported review state feedback for Rabbita",
     },
     {
       layer_id: "operator-viewer",
@@ -439,7 +439,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-transition-import-workflow",
-      priority: 75,
+      priority: 20,
       lane: SuiteLane,
       title: "Import Rabbita clearance review transitions into MoonBook regeneration",
       outcome: "Operator-exported clearance decisions can regenerate MoonBook, MoonRobo, and workspace payloads without manual source edits",
@@ -451,7 +451,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
         "output/moonrobo/first_trusted_square_handoffs.json",
       ],
-      done_when: "a Rabbita-exported transition JSON file can be passed into the dossier build to update selected-route clearance status and materialized handoff evidence",
+      done_when: "done: a Rabbita-exported transition JSON file can be passed into the dossier build to update selected-route clearance status and materialized handoff evidence",
+    },
+    {
+      task_id: "rabbita-import-feedback-state",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Initialize Rabbita clearance controls from imported review state",
+      outcome: "Operators can reload imported clearance decisions without every item reverting to request-evidence controls",
+      depends_on: [
+        "src/ui/rabbita_moon/page.mbt", "scripts/import_rabbita_transitions.py",
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "data/fixtures/rabbita_clearance_transitions_accept.json",
+      ],
+      done_when: "Rabbita renders accepted, rejected, and request-evidence imported states from the embedded MoonBook review queue and transitions",
     },
   ]
 }

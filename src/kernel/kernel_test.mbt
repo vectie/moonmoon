@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "rabbita-transition-import-workflow",
+    "rabbita-import-feedback-state",
   )
 }
 
@@ -40,4 +40,5 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(markdown.contains("operator-clearance-transition-capture"))
   assert_true(markdown.contains("rabbita-clearance-review-controls"))
   assert_true(markdown.contains("rabbita-transition-import-workflow"))
+  assert_true(markdown.contains("rabbita-import-feedback-state"))
 }

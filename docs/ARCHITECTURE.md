@@ -270,6 +270,14 @@ log that produced that snapshot. That makes the workspace inspectable as files,
 while the authoritative source remains the MoonBit-generated site and MoonBook
 dossiers.
 
+Rabbita clearance decisions can now re-enter that boundary as generated input,
+not as source edits. `scripts/build_moonmoon_dossier.sh --review-transitions
+<file>` applies a Rabbita-exported transition file after the MoonBit dossiers
+are generated and before the MoonBook workspace is materialized. The import
+updates MoonBook review state, selected-route clearance summaries, MoonRobo
+handoff clearance plans, the embedded Rabbita MoonBook payload, and the
+materialized workspace evidence in one deterministic pass.
+
 The current Moonrobo boundary is deliberately one-way: Moonmoon emits
 simulation precondition packets under `output/moonrobo/`, and MoonBook indexes
 those packets as evidence. A packet names the route candidate, target body, task

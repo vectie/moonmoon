@@ -98,11 +98,14 @@ def apply_clearance_transition(
     "Reject": "reject",
     "RequestEvidence": "request-evidence",
   }[decision]
-  next_item["clearance_action"] = (
+  action_prefix = (
     f"{label} by {transition['reviewer_id']} at "
-    f"{transition['recorded_at_utc']}: {transition['rationale']}; "
-    f"prior action was {item['clearance_action']}"
+    f"{transition['recorded_at_utc']}: {transition['rationale']}"
   )
+  if not item["clearance_action"].startswith(action_prefix):
+    next_item["clearance_action"] = (
+      f"{action_prefix}; prior action was {item['clearance_action']}"
+    )
   return next_item
 
 

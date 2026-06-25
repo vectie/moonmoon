@@ -9,6 +9,24 @@ MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
 UI_OUT="$ROOT/output/ui"
 RABBITA_OUT="$UI_OUT/rabbita"
+REVIEW_TRANSITIONS=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --review-transitions)
+      if [[ $# -lt 2 ]]; then
+        printf 'missing value for --review-transitions\n' >&2
+        exit 2
+      fi
+      REVIEW_TRANSITIONS="$2"
+      shift 2
+      ;;
+    *)
+      printf 'unknown argument: %s\n' "$1" >&2
+      exit 2
+      ;;
+  esac
+done
 
 mkdir -p "$OUT"
 mkdir -p "$TERRAIN_OUT"
@@ -49,6 +67,9 @@ python3 scripts/generate_power_window.py
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui rabbita > "$RABBITA_OUT/first_trusted_square.html"
+if [[ -n "$REVIEW_TRANSITIONS" ]]; then
+  python3 scripts/import_rabbita_transitions.py --review-transitions "$REVIEW_TRANSITIONS"
+fi
 python3 scripts/materialize_moonbook_workspace.py
 
 printf 'wrote %s\n' "$OUT/first_trusted_square.md"
