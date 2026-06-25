@@ -39,6 +39,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonrobo/first_trusted_square_simulation_review_packet.json",
     "moonrobo_simulation_packet_md": root
     / "output/moonrobo/first_trusted_square_simulation_review_packet.md",
+    "moonrobo_simulation_decision_json": root
+    / "output/moonrobo/first_trusted_square_simulation_review_decision.json",
+    "moonrobo_simulation_decision_md": root
+    / "output/moonrobo/first_trusted_square_simulation_review_decision.md",
     "moonclaw_gap_task_json": root
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "moonclaw_gap_task_md": root
@@ -544,6 +548,109 @@ def render_moonrobo_simulation_review_packet_markdown(packet: dict[str, Any]) ->
   return text
 
 
+def moonrobo_simulation_review_decision(
+  packet: dict[str, Any],
+) -> dict[str, Any]:
+  packet_scope = "/".join(packet["packet_id"].split("/")[1:])
+  margin_checks = [
+    margin["check_id"]
+    for margin in packet["remediation_margins"]
+  ]
+  non_margin_blockers = [
+    blocker["check_id"]
+    for blocker in packet["remaining_non_margin_blockers"]
+  ]
+  may_consume = (
+    not margin_checks
+    and not non_margin_blockers
+    and packet["hardware_denied"]
+    and packet["hardware_state"] == "HardwareDenied"
+  )
+  decision = "SimulationConsumable" if may_consume else "SimulationBlocked"
+  reason = (
+    "simulation packet may be consumed because no remediation margins or "
+    "non-margin blockers remain, while hardware authority remains "
+    f"{packet['hardware_authority']}"
+    if may_consume
+    else (
+      "simulation packet remains blocked: "
+      f"{len(margin_checks)} remediation margins and "
+      f"{len(non_margin_blockers)} non-margin blockers remain; "
+      f"hardware authority remains {packet['hardware_authority']}"
+    )
+  )
+  next_action = (
+    "allow MoonRobo to consume "
+    f"{packet['packet_id']} for simulation-only review while hardware stays denied"
+    if may_consume
+    else (
+      "do not let MoonRobo consume "
+      f"{packet['packet_id']}; clear the listed margins and blockers, "
+      "regenerate the packet, and keep hardware denied"
+    )
+  )
+  return {
+    "decision_id": f"moonrobo-simulation-review-decision/{packet_scope}",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_packet_id": packet["packet_id"],
+    "source_packet_path": "output/moonrobo/first_trusted_square_simulation_review_packet.json",
+    "route_id": packet["route_id"],
+    "may_consume_simulation_packet": may_consume,
+    "decision": decision,
+    "reason": reason,
+    "blocking_margin_count": len(margin_checks),
+    "accepted_clearance_transition_count": len(
+      packet["accepted_clearance_transitions"],
+    ),
+    "remaining_non_margin_blocker_count": len(non_margin_blockers),
+    "blocking_margin_checks": margin_checks,
+    "remaining_non_margin_blockers": non_margin_blockers,
+    "hardware_state": packet["hardware_state"],
+    "hardware_authority": packet["hardware_authority"],
+    "hardware_denied": packet["hardware_denied"],
+    "hardware_denial_invariants": packet["hardware_denial_invariants"],
+    "next_action": next_action,
+  }
+
+
+def render_moonrobo_simulation_review_decision_markdown(
+  decision: dict[str, Any],
+) -> str:
+  text = "# MoonRobo Selected-Route Simulation Review Decision\n\n"
+  text += f"- decision: {decision['decision_id']}\n"
+  text += f"- source packet: {decision['source_packet_id']}\n"
+  text += f"- route: {decision['route_id']}\n"
+  text += f"- status: {decision['decision']}\n"
+  text += (
+    "- may consume simulation packet: "
+    f"{str(decision['may_consume_simulation_packet']).lower()}\n"
+  )
+  text += f"- reason: {decision['reason']}\n"
+  text += f"- blocking margins: {decision['blocking_margin_count']}\n"
+  text += (
+    "- non-margin blockers: "
+    f"{decision['remaining_non_margin_blocker_count']}\n"
+  )
+  text += (
+    "- accepted clearance transitions: "
+    f"{decision['accepted_clearance_transition_count']}\n"
+  )
+  text += f"- hardware state: {decision['hardware_state']}\n"
+  text += f"- hardware authority: {decision['hardware_authority']}\n"
+  text += f"- hardware denied: {str(decision['hardware_denied']).lower()}\n"
+  text += f"- next action: {decision['next_action']}\n\n"
+  text += "## Blocking Margins\n\n"
+  for check_id in decision["blocking_margin_checks"]:
+    text += f"- {check_id}\n"
+  text += "\n## Remaining Non-Margin Blockers\n\n"
+  for check_id in decision["remaining_non_margin_blockers"]:
+    text += f"- {check_id}\n"
+  text += "\n## Hardware Denial Invariants\n\n"
+  for invariant in decision["hardware_denial_invariants"]:
+    text += f"- {invariant}\n"
+  return text
+
+
 def moonclaw_gap_task_artifacts(preview: dict[str, Any]) -> list[dict[str, Any]]:
   artifacts: list[dict[str, Any]] = [
     {
@@ -1019,6 +1126,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
     book,
     transition_file,
   )
+  simulation_decision = moonrobo_simulation_review_decision(simulation_packet)
   gap_task = moonclaw_gap_task(preview, transition_file)
   modeling_pass = moonrobo_gap_remediation_modeling_pass(gap_task, preview)
   gap_receipt = moonclaw_gap_remediation_receipt(
@@ -1034,6 +1142,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
   write_json(paths["moonrobo_simulation_packet_json"], simulation_packet)
+  write_json(paths["moonrobo_simulation_decision_json"], simulation_decision)
   write_json(paths["moonrobo_gap_modeling_json"], [modeling_pass])
   write_json(paths["moonclaw_gap_task_json"], [gap_task])
   write_json(paths["moonclaw_gap_receipt_json"], [gap_receipt])
@@ -1045,6 +1154,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
   )
   paths["moonrobo_simulation_packet_md"].write_text(
     render_moonrobo_simulation_review_packet_markdown(simulation_packet),
+    encoding="utf-8",
+  )
+  paths["moonrobo_simulation_decision_md"].write_text(
+    render_moonrobo_simulation_review_decision_markdown(simulation_decision),
     encoding="utf-8",
   )
   paths["moonrobo_gap_modeling_md"].write_text(

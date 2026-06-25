@@ -111,6 +111,8 @@ printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.json"
 if [[ -n "$REVIEW_TRANSITIONS" ]]; then
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.md"
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.json"
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_decision.md"
+  printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_decision.json"
 fi
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"

@@ -774,7 +774,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-simulation-review-closeout-decision",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Emit selected-route simulation review closeout decision",
       outcome: "MoonRobo gets one explicit closeout decision derived from the simulation review packet, so blocked margins, accepted clearance evidence, and hardware-denial invariants produce a clear simulation-consumption result",
@@ -784,7 +784,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/moonrobo/first_trusted_square_simulation_review_decision.json", "scripts/check_moonrobo_simulation_review_decision.py",
       ],
-      done_when: "selected-route simulation review decision records whether MoonRobo may consume the packet, why any blocker remains, and that hardware authority stays denied",
+      done_when: "done: selected-route simulation review decision records whether MoonRobo may consume the packet, why any blocker remains, and that hardware authority stays denied",
+    },
+    {
+      task_id: "moonbook-simulation-review-decision-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize selected-route simulation review decision into MoonBook",
+      outcome: "The MoonRobo closeout decision becomes durable MoonBook evidence beside the simulation packet it audits",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_simulation_review_decision.json", "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-packet.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
+        "scripts/check_moonbook_simulation_review_decision_workspace.py",
+      ],
+      done_when: "selected-route simulation review decision is indexed, materialized, and validated in the MoonBook workspace with hardware authority denied",
     },
   ]
 }

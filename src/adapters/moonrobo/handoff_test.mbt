@@ -265,6 +265,42 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
   assert_true(json.contains("\"hardware_denied\": true"))
   assert_true(json.contains("\"remediation_margins\""))
   assert_true(json.contains("\"accepted_clearance_transitions\""))
+  let decision = @moonrobo.simulation_review_closeout_decision(packet)
+  assert_eq(
+    decision.decision_id,
+    "moonrobo-simulation-review-decision/first-trusted-square/northeast-stepout",
+  )
+  assert_true(!decision.may_consume_simulation_packet)
+  assert_true(
+    decision.decision
+    is @moonrobo.SimulationReviewDecisionStatus::SimulationBlocked,
+  )
+  assert_eq(decision.blocking_margin_count, 3)
+  assert_eq(decision.accepted_clearance_transition_count, 4)
+  assert_eq(decision.remaining_non_margin_blocker_count, 3)
+  assert_true(
+    decision.blocking_margin_checks.contains("terrain-northeast-stepout"),
+  )
+  assert_true(
+    decision.remaining_non_margin_blockers.contains("robot-simulation"),
+  )
+  assert_true(decision.hardware_denied)
+  assert_eq(decision.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(decision.reason.contains("3 remediation margins"))
+  assert_true(decision.reason.contains("hardware authority remains"))
+  assert_true(decision.next_action.contains("do not let MoonRobo consume"))
+  let decision_markdown = @moonrobo.render_simulation_review_decision_markdown(
+    decision,
+  )
+  assert_true(decision_markdown.contains("Simulation Review Decision"))
+  assert_true(decision_markdown.contains("Hardware Denial Invariants"))
+  let decision_json = @moonrobo.simulation_review_decision_json(decision).stringify(
+    indent=2,
+  )
+  assert_true(
+    decision_json.contains("\"may_consume_simulation_packet\": false"),
+  )
+  assert_true(decision_json.contains("\"decision\": \"SimulationBlocked\""))
 }
 
 ///|

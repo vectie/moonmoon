@@ -29,11 +29,19 @@ pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
+pub fn render_simulation_review_decision_markdown(SimulationReviewCloseoutDecision) -> String
+
 pub fn render_simulation_review_packet_markdown(SimulationReviewPacket) -> String
 
 pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
 
 pub fn route_handoff_with_clearance_transitions(@site.SiteDossier, @mission.RouteCandidate, Array[@mission.MissionClearanceTransition]) -> MoonroboTaskHandoff
+
+pub fn simulation_review_closeout_decision(SimulationReviewPacket) -> SimulationReviewCloseoutDecision
+
+pub fn simulation_review_decision_json(SimulationReviewCloseoutDecision) -> Json
+
+pub fn simulation_review_decision_status_label(SimulationReviewDecisionStatus) -> String
 
 pub fn simulation_review_packet(MoonroboTaskHandoff, String) -> SimulationReviewPacket
 
@@ -100,6 +108,30 @@ pub(all) struct SimulationReviewClearanceTransition {
   recorded_at_utc : String
   source_evidence_refs : Array[SimulationReviewEvidenceRef]
   rationale : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewCloseoutDecision {
+  decision_id : String
+  source_packet_id : String
+  route_id : String
+  may_consume_simulation_packet : Bool
+  decision : SimulationReviewDecisionStatus
+  reason : String
+  blocking_margin_count : Int
+  accepted_clearance_transition_count : Int
+  remaining_non_margin_blocker_count : Int
+  blocking_margin_checks : Array[String]
+  remaining_non_margin_blockers : Array[String]
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  hardware_denial_invariants : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum SimulationReviewDecisionStatus {
+  SimulationConsumable
+  SimulationBlocked
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SimulationReviewEvidenceRef {
