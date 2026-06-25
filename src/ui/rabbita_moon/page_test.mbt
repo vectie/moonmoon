@@ -16,6 +16,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Simulation Blocker Reduction"))
   assert_true(html.contains("Remediation Margin Task"))
   assert_true(html.contains("Remediation Margin Receipt"))
+  assert_true(html.contains("Remediation Margin Modeling"))
   assert_true(html.contains("Selected Route Clearance"))
   assert_true(html.contains("selected-route-remediation"))
   assert_true(html.contains("simulation-review-packet"))
@@ -23,6 +24,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("simulation-blocker-reduction"))
   assert_true(html.contains("remediation-margin-task"))
   assert_true(html.contains("remediation-margin-receipt"))
+  assert_true(html.contains("remediation-margin-modeling"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
   assert_true(html.contains("first_trusted_square_clearance_transitions.json"))
@@ -39,6 +41,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function renderSimulationBlockerReduction()"))
   assert_true(html.contains("function renderRemediationMarginTask()"))
   assert_true(html.contains("function renderRemediationMarginReceipt()"))
+  assert_true(html.contains("function renderRemediationMarginModeling()"))
   assert_true(html.contains("function renderClearanceReview()"))
   assert_true(
     html.contains("moonrobo/first-trusted-square/simulation-review-packet"),
@@ -55,7 +58,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains("moonclaw/first-trusted-square/remediation-margin-receipt"),
   )
+  assert_true(
+    html.contains("moonrobo/first-trusted-square/remediation-margin-modeling"),
+  )
   assert_true(html.contains("OpenMarginsCarriedForward"))
+  assert_true(html.contains("AllMarginsStillBlocking"))
   assert_true(html.contains("terrain-northeast-stepout"))
   assert_true(html.contains("illumination-northeast-stepout"))
   assert_true(
