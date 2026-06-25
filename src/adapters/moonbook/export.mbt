@@ -11,6 +11,7 @@ pub(all) enum BookEntryKind {
   CorridorScan
   RouteAlternative
   IlluminationAssessment
+  LocalHorizonEvidence
   PowerWindowEvidence
   EnergyWindow
   SelectedRouteClearance
@@ -108,6 +109,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     CorridorScan => "corridor-scan"
     RouteAlternative => "route-alternative"
     IlluminationAssessment => "illumination-assessment"
+    LocalHorizonEvidence => "local-horizon-evidence"
     PowerWindowEvidence => "power-window-evidence"
     EnergyWindow => "energy-window"
     SelectedRouteClearance => "selected-route-clearance"
@@ -765,6 +767,21 @@ fn illumination_entries(dossier : @site.SiteDossier) -> Array[BookEntry] {
 }
 
 ///|
+fn selected_route_horizon_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let route = primary_route_candidate(dossier)
+  let horizon = route.illumination.local_horizon
+  {
+    entry_id: "local-horizon/\{dossier.site.site_id}/\{route.route_id}",
+    title: "Local horizon evidence for \{route.label}",
+    kind: LocalHorizonEvidence,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: horizon.confidence,
+    path: "mission/\{dossier.site.site_id}/\{route.route_id}-horizon.json",
+    summary: "\{@mission.traverse_decision_label(horizon.decision)} with terrain-shadow margin \{horizon.terrain_shadow_margin_deg} deg from \{horizon.source_path}",
+  }
+}
+
+///|
 fn energy_entry(dossier : @site.SiteDossier) -> BookEntry {
   {
     entry_id: "energy/\{dossier.site.site_id}/conservative-window",
@@ -1150,6 +1167,7 @@ fn book_entries(
   for entry in illumination_entries(dossier) {
     entries.push(entry)
   }
+  entries.push(selected_route_horizon_entry(dossier))
   entries.push(power_window_evidence_entry(dossier))
   entries.push(energy_entry(dossier))
   entries.push(selected_route_clearance_entry(dossier, clearance_transitions))

@@ -12,6 +12,7 @@
     "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
+    "output/mission/first_trusted_square_northeast_stepout_horizon.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
@@ -359,6 +360,15 @@
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
       "summary": "block with relief-shadow risk 0.22381250000000003: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation"
+    },
+    {
+      "entry_id": "local-horizon/first-trusted-square/northeast-stepout",
+      "title": "Local horizon evidence for Northeast 9x9 step-out candidate",
+      "kind": "LocalHorizonEvidence",
+      "claim_kind": "Derived",
+      "confidence": 0.66,
+      "path": "mission/first-trusted-square/northeast-stepout-horizon.json",
+      "summary": "block with terrain-shadow margin 26.356833 deg from data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv"
     },
     {
       "entry_id": "power-window/first-trusted-square/ephemeris-evidence",

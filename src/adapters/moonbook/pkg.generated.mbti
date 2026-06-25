@@ -57,6 +57,7 @@ pub(all) enum BookEntryKind {
   CorridorScan
   RouteAlternative
   IlluminationAssessment
+  LocalHorizonEvidence
   PowerWindowEvidence
   EnergyWindow
   SelectedRouteClearance
