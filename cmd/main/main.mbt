@@ -44,6 +44,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw remediation reviewed work item receipts json
     #|  moon run cmd/main -- moonclaw remediation reviewed fresh evidence task
     #|  moon run cmd/main -- moonclaw remediation reviewed fresh evidence task json
+    #|  moon run cmd/main -- moonclaw remediation fresh evidence action receipts
+    #|  moon run cmd/main -- moonclaw remediation fresh evidence action receipts json
     #|  moon run cmd/main -- moonclaw remediation refresh followup receipts
     #|  moon run cmd/main -- moonclaw remediation refresh followup receipts json
     #|  moon run cmd/main -- moonclaw remediation refresh receipts
@@ -232,6 +234,23 @@ fn main {
     } else {
       println(
         @moonclaw.first_trusted_square_remediation_margin_closeout_action_tasks_markdown(),
+      )
+    }
+  } else if args.contains("moonclaw") &&
+    args.contains("remediation") &&
+    args.contains("fresh") &&
+    args.contains("evidence") &&
+    args.contains("action") &&
+    args.contains("receipts") {
+    if output_json {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_fresh_evidence_action_receipts_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_fresh_evidence_action_receipts_markdown(),
       )
     }
   } else if args.contains("moonclaw") &&

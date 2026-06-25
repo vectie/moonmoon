@@ -83,6 +83,12 @@ pub fn first_trusted_square_remediation_margin_closeout_action_tasks_json() -> J
 
 pub fn first_trusted_square_remediation_margin_closeout_action_tasks_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_fresh_evidence_action_receipts() -> Array[MoonClawRemediationMarginFreshEvidenceActionReceipt]
+
+pub fn first_trusted_square_remediation_margin_fresh_evidence_action_receipts_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_fresh_evidence_action_receipts_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_receipt() -> MoonClawRemediationMarginReceipt
 
 pub fn first_trusted_square_remediation_margin_receipts() -> Array[MoonClawRemediationMarginReceipt]
@@ -165,6 +171,10 @@ pub fn priority_label(MoonClawJobPriority) -> String
 
 pub fn receipt_status_label(MoonClawReceiptStatus) -> String
 
+pub fn remediation_margin_fresh_evidence_action_receipt_state_label(MoonClawRemediationMarginFreshEvidenceActionReceiptState) -> String
+
+pub fn remediation_margin_fresh_evidence_action_receipts_from_task(MoonClawRemediationMarginReviewedFreshEvidenceTask) -> Array[MoonClawRemediationMarginFreshEvidenceActionReceipt]
+
 pub fn remediation_margin_receipt(MoonClawRemediationMarginTask) -> MoonClawRemediationMarginReceipt
 
 pub fn remediation_margin_refresh_followup_receipt(MoonClawRemediationMarginRefreshFollowupTask) -> MoonClawRemediationMarginRefreshFollowupReceipt
@@ -224,6 +234,10 @@ pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
 pub fn render_remediation_margin_closeout_action_tasks_json(Array[MoonClawRemediationMarginCloseoutActionTask]) -> Json
 
 pub fn render_remediation_margin_closeout_action_tasks_markdown(Array[MoonClawRemediationMarginCloseoutActionTask]) -> String
+
+pub fn render_remediation_margin_fresh_evidence_action_receipts_json(Array[MoonClawRemediationMarginFreshEvidenceActionReceipt]) -> Json
+
+pub fn render_remediation_margin_fresh_evidence_action_receipts_markdown(Array[MoonClawRemediationMarginFreshEvidenceActionReceipt]) -> String
 
 pub fn render_remediation_margin_receipts_json(Array[MoonClawRemediationMarginReceipt]) -> Json
 
@@ -484,6 +498,57 @@ pub(all) struct MoonClawRemediationMarginCloseoutActionTask {
   hardware_denied : Bool
   acceptance_criteria : Array[MoonClawAcceptanceCriterion]
   safety_gate : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginFreshEvidenceActionReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  route_id : String
+  source_task_id : String
+  source_plan_id : String
+  source_review_transition_id : String
+  source_review_decision : MoonClawCloseoutActionReviewDecision
+  reviewer_id : String
+  reviewed_at_utc : String
+  source_receipt_count : Int
+  source_receipt_ids : Array[String]
+  source_receipt_id : String
+  source_work_item_id : String
+  action_state : MoonClawRemediationMarginFreshEvidenceActionReceiptState
+  action_result : MoonClawRemediationMarginFreshEvidenceActionResult
+  validation_checks : Array[MoonClawReceiptValidation]
+  may_consume_simulation : Bool
+  simulation_state : @moonrobo.MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_authority_change : Bool
+  hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawRemediationMarginFreshEvidenceActionReceiptState {
+  FreshEvidenceActionsRecorded
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginFreshEvidenceActionResult {
+  rank : Int
+  action_id : String
+  source_receipt_id : String
+  source_work_item_id : String
+  margin_id : String
+  refresh_id : String
+  blocker_domain : String
+  disposition : @moonrobo.RemediationMarginCycleDisposition
+  result_status : MoonClawRemediationMarginReviewedWorkItemResultStatus
+  required_evidence : String
+  target_artifact_path : String
+  evidence_path : String
+  command : String
+  acceptance_check : String
+  execution_mode : String
+  current_state : String
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

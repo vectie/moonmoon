@@ -1702,7 +1702,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-fresh-evidence-action-receipts",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Emit fresh-evidence action receipts",
       outcome: "Terrain escalation, local-horizon bounded regeneration, and energy freeze verification each produce an explicit MoonClaw receipt before reviewed work item receipt regeneration",
@@ -1714,7 +1714,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json",
         "scripts/check_moonclaw_remediation_margin_fresh_evidence_action_receipts.py",
       ],
-      done_when: "MoonClaw emits fresh-evidence action receipts that preserve source receipt provenance, record terrain/horizon/energy execution modes, keep no automatic refresh loop and no simulation consumption, and preserve HardwareDenied authority",
+      done_when: "done: MoonClaw emits fresh-evidence action receipts that preserve source receipt provenance, record terrain/horizon/energy execution modes, keep no automatic refresh loop and no simulation consumption, and preserve HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-fresh-evidence-action-receipts-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize fresh-evidence action receipts into MoonBook",
+      outcome: "Fresh-evidence action receipts become durable MoonBook workspace evidence before reviewed work item receipt regeneration or downstream simulation review",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json",
+        "scripts/check_moonclaw_remediation_margin_fresh_evidence_action_receipts.py",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
+        "scripts/check_moonbook_remediation_margin_fresh_evidence_action_receipts_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
