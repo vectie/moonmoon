@@ -144,6 +144,17 @@ test "first trusted square illumination gate uses computed time window evidence"
     assessment.reasons.any(fn(reason) { reason.contains("local relief shadow") }),
   )
   assert_true(assessment.next_action.contains("local horizon"))
+  let horizon = @mission.first_trusted_square_route_candidates()[5].illumination.local_horizon
+  assert_eq(
+    horizon.evidence_id,
+    "first-trusted-square-northeast-stepout-local-horizon-v1",
+  )
+  assert_eq(
+    horizon.output_path,
+    "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+  )
+  assert_true(horizon.max_horizon_angle_deg > horizon.max_sun_altitude_deg)
+  assert_true(horizon.terrain_shadow_margin_deg > 0.0)
 }
 
 ///|
@@ -208,7 +219,7 @@ test "mission simulation readiness aggregates named gates" {
       @mission.MissionReadinessCheckKind::IlluminationReadiness,
       "Illumination and thermal gate",
       route.illumination.decision,
-      route.illumination.constraint.power_window_source_path,
+      route.illumination.local_horizon.output_path,
       route.illumination.next_action,
     ),
     @mission.readiness_check(
@@ -275,7 +286,7 @@ test "selected route clearance plan names blocker actions" {
         @mission.MissionReadinessCheckKind::IlluminationReadiness,
         "Illumination and thermal gate",
         @mission.TraverseDecision::Block,
-        route.illumination.constraint.power_window_source_path,
+        route.illumination.local_horizon.output_path,
         route.illumination.next_action,
       ),
       @mission.readiness_check(
@@ -371,7 +382,7 @@ test "selected route clearance plan consumes operator transitions" {
         @mission.MissionReadinessCheckKind::IlluminationReadiness,
         "Illumination and thermal gate",
         @mission.TraverseDecision::Block,
-        route.illumination.constraint.power_window_source_path,
+        route.illumination.local_horizon.output_path,
         route.illumination.next_action,
       ),
       @mission.readiness_check(
@@ -408,7 +419,7 @@ test "selected route clearance plan consumes operator transitions" {
       @mission.MissionClearanceReviewDecision::ClearanceReject,
       "operator/moonbook-policy-v2",
       "2026-06-25T00:00:00Z",
-      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "moonbook://moonmoon/first-trusted-square/output/mission/first_trusted_square_northeast_stepout_horizon.json",
       "local horizon confidence remains too weak",
     ),
     @mission.clearance_transition(

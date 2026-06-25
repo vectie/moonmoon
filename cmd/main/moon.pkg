@@ -3,6 +3,7 @@ import {
   "vectie/moonmoon/src/adapters/moonclaw",
   "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/kernel",
+  "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/terrain",
   "vectie/moonmoon/src/ui",

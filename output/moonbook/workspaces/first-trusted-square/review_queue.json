@@ -62,7 +62,7 @@
     {
       "item_id": "illumination-direct-lola-window",
       "severity": "high",
-      "reason": "Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "Direct traverse across measured LOLA patch: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-direct-lola-window-request-evidence"
@@ -78,7 +78,7 @@
     {
       "item_id": "illumination-west-contour-detour",
       "severity": "high",
-      "reason": "West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "West contour detour candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-west-contour-detour-request-evidence"
@@ -94,7 +94,7 @@
     {
       "item_id": "illumination-north-rim-stepout",
       "severity": "high",
-      "reason": "North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "North rim step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-north-rim-stepout-request-evidence"
@@ -110,7 +110,7 @@
     {
       "item_id": "illumination-southwest-bypass",
       "severity": "high",
-      "reason": "Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "Southwest widened bypass candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-southwest-bypass-request-evidence"
@@ -126,7 +126,7 @@
     {
       "item_id": "illumination-south-stepout",
       "severity": "high",
-      "reason": "South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "South step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-south-stepout-request-evidence"
@@ -142,7 +142,7 @@
     {
       "item_id": "illumination-northeast-stepout",
       "severity": "high",
-      "reason": "Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "reason": "Northeast 9x9 step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-northeast-stepout-request-evidence"
@@ -168,32 +168,32 @@
       "severity": "high",
       "reason": "Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
       "owner": "mission-review",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-clear-terrain-grade-northeast-stepout-request-evidence"
+      "status": "Accepted",
+      "last_transition_id": "rabbita-clear-terrain-grade-northeast-stepout-accept"
     },
     {
       "item_id": "clear-illumination-confidence-northeast-stepout",
       "severity": "high",
       "reason": "Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
       "owner": "power-thermal-review",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-clear-illumination-confidence-northeast-stepout-request-evidence"
+      "status": "Accepted",
+      "last_transition_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept"
     },
     {
       "item_id": "clear-energy-margin",
       "severity": "high",
       "reason": "Rover energy margin clearance: accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
       "owner": "power-thermal-review",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-clear-energy-margin-request-evidence"
+      "status": "Accepted",
+      "last_transition_id": "rabbita-clear-energy-margin-accept"
     },
     {
       "item_id": "clear-moonbook-review-northeast-stepout",
       "severity": "high",
       "reason": "MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
       "owner": "mission-review",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-clear-moonbook-review-northeast-stepout-request-evidence"
+      "status": "Accepted",
+      "last_transition_id": "rabbita-clear-moonbook-review-northeast-stepout-accept"
     },
     {
       "item_id": "moonrobo-handoff",

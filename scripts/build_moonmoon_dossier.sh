@@ -4,6 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$ROOT/output/site"
 TERRAIN_OUT="$ROOT/output/terrain"
+MISSION_OUT="$ROOT/output/mission"
 MOONBOOK_OUT="$ROOT/output/moonbook"
 MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
@@ -30,6 +31,7 @@ done
 
 mkdir -p "$OUT"
 mkdir -p "$TERRAIN_OUT"
+mkdir -p "$MISSION_OUT"
 mkdir -p "$MOONBOOK_OUT"
 mkdir -p "$MOONCLAW_OUT"
 mkdir -p "$MOONROBO_OUT"
@@ -43,11 +45,14 @@ python3 scripts/compute_power_window.py --check
 python3 scripts/generate_moonmoon_fixture.py
 python3 scripts/generate_corridor_scan.py
 python3 scripts/generate_power_window.py
+python3 scripts/generate_selected_route_horizon.py
 
 /Users/kq/.moon/bin/moon run cmd/main > "$OUT/first_trusted_square.md"
 /Users/kq/.moon/bin/moon run cmd/main -- json > "$OUT/first_trusted_square.json"
 /Users/kq/.moon/bin/moon run cmd/main -- terrain fixture > "$TERRAIN_OUT/first_trusted_square_grid.md"
 /Users/kq/.moon/bin/moon run cmd/main -- terrain fixture json > "$TERRAIN_OUT/first_trusted_square_grid.json"
+/Users/kq/.moon/bin/moon run cmd/main -- mission horizon > "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.md"
+/Users/kq/.moon/bin/moon run cmd/main -- mission horizon json > "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier > "$MOONBOOK_OUT/first_trusted_square_book.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier json > "$MOONBOOK_OUT/first_trusted_square_book.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonclaw proposals > "$MOONCLAW_OUT/first_trusted_square_proposals.md"
@@ -76,6 +81,8 @@ printf 'wrote %s\n' "$OUT/first_trusted_square.md"
 printf 'wrote %s\n' "$OUT/first_trusted_square.json"
 printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.md"
 printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.json"
+printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.md"
+printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.json"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.md"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.json"
 printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_proposals.md"

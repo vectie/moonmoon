@@ -37,14 +37,44 @@
       },
       "evidence_dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
       "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "local_horizon": {
+        "evidence_id": "local-horizon-proxy/first-trusted-square-north-rim-lola",
+        "route_id": "first-trusted-square-north-rim-lola",
+        "site_id": "first-trusted-square",
+        "source_dataset_id": "lro-lola-first-trusted-square-north-rim-dem-v1",
+        "source_tile_id": "first-trusted-square-north-rim-lola",
+        "source_path": "data/sources/lro_lola/first_trusted_square_north_rim_dem.csv",
+        "power_window_evidence_id": "first-trusted-square-power-window-computed-v1",
+        "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+        "output_path": "",
+        "method_id": "relief-shadow-proxy-v1",
+        "generated_by": "src/mission/traverse.mbt",
+        "rows": 4,
+        "cols": 4,
+        "cell_size_m": 20,
+        "center_elevation_m": 483.3465,
+        "max_obstruction_elevation_m": 506.517,
+        "max_horizon_angle_deg": 0.28963125000000006,
+        "min_sun_altitude_deg": 0,
+        "max_sun_altitude_deg": 0,
+        "terrain_shadow_margin_deg": 0.28963125000000006,
+        "confidence": 0.45263999999999993,
+        "decision": "Block",
+        "reasons": [
+          "relief-shadow proxy retained until a bounded local horizon model is generated"
+        ],
+        "next_action": "generate bounded local horizon evidence before route simulation"
+      },
       "relief_shadow_risk": 0.28963125000000006,
+      "terrain_shadow_margin_deg": 0.28963125000000006,
       "confidence": 0.45263999999999993,
       "decision": "Block",
       "reasons": [
         "local relief shadow proxy exceeds conservative limit",
+        "bounded local horizon angle 0.28963125000000006 deg exceeds max sun altitude 0 deg",
         "illumination confidence below power planning threshold"
       ],
-      "next_action": "widen local horizon and terrain-shadow evidence before route simulation"
+      "next_action": "local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation"
     },
     "decision": "Block",
     "score": 6,

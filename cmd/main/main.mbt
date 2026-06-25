@@ -11,6 +11,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- site summary json
     #|  moon run cmd/main -- terrain fixture
     #|  moon run cmd/main -- terrain fixture json
+    #|  moon run cmd/main -- mission horizon
+    #|  moon run cmd/main -- mission horizon json
     #|  moon run cmd/main -- ui view
     #|  moon run cmd/main -- ui view json
     #|  moon run cmd/main -- ui rabbita
@@ -123,6 +125,18 @@ fn main {
       println(@terrain.first_trusted_square_fixture_json().stringify(indent=2))
     } else {
       println(@terrain.first_trusted_square_fixture_markdown())
+    }
+  } else if args.contains("mission") && args.contains("horizon") {
+    if output_json {
+      println(
+        @mission.first_trusted_square_northeast_stepout_horizon_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @mission.first_trusted_square_northeast_stepout_horizon_markdown(),
+      )
     }
   } else if args.contains("ui") && args.contains("rabbita") {
     println(@rabbita_moon.first_trusted_square_html())

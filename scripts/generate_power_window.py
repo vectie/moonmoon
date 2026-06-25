@@ -173,15 +173,9 @@ def render() -> str:
       }},'''
         )
     source_files_literal = "\n".join(source_file_lines)
-    reason_values = [f'"{moon_string(reason)}"' for reason in evidence["reasons"]]
-    reason_lines = []
-    while reason_values:
-        if len(reason_values) >= 2:
-            reason_lines.append(f"      {reason_values[0]}, {reason_values[1]},")
-            reason_values = reason_values[2:]
-        else:
-            reason_lines.append(f"      {reason_values[0]},")
-            reason_values = []
+    reason_lines = [
+        f'      "{moon_string(reason)}",' for reason in evidence["reasons"]
+    ]
     reasons_literal = "\n".join(reason_lines)
     source_label = SOURCE.relative_to(ROOT)
     computation = evidence["computation"]

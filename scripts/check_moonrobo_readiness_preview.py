@@ -60,7 +60,7 @@ def assert_preview(root: Path) -> None:
     ),
     "illumination-northeast-stepout": (
       "IlluminationReadiness",
-      "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "output/mission/first_trusted_square_northeast_stepout_horizon.json",
       "AcceptedEvidence",
     ),
     "energy-window": (

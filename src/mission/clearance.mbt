@@ -378,10 +378,10 @@ fn illumination_clearance_item(
     check_evidence_path(
       readiness,
       check_id,
-      route.illumination.constraint.power_window_source_path,
+      route.illumination.local_horizon.output_path,
     ),
-    "illumination confidence \{route.illumination.confidence}, relief-shadow risk \{route.illumination.relief_shadow_risk}",
-    "confidence >= \{route.illumination.constraint.min_confidence}, relief-shadow risk < \{route.illumination.constraint.max_relief_shadow_risk}",
+    "illumination confidence \{route.illumination.confidence}, relief-shadow risk \{route.illumination.relief_shadow_risk}, terrain-shadow margin \{route.illumination.terrain_shadow_margin_deg} deg",
+    "confidence >= \{route.illumination.constraint.min_confidence}, relief-shadow risk < \{route.illumination.constraint.max_relief_shadow_risk}, terrain-shadow margin <= 0 deg",
     "accept local-horizon and terrain-shadow evidence for \{route.route_id} before any MoonRobo simulation packet is consumable",
   )
 }

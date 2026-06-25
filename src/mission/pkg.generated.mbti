@@ -30,6 +30,12 @@ pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow]
 
 pub fn first_trusted_square_energy_assessment() -> EnergyAssessment
 
+pub fn first_trusted_square_northeast_stepout_horizon_evidence() -> LocalHorizonEvidence
+
+pub fn first_trusted_square_northeast_stepout_horizon_json() -> Json
+
+pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String
+
 pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence
 
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
@@ -121,7 +127,9 @@ pub(all) struct IlluminationAssessment {
   constraint : IlluminationConstraint
   evidence_dataset_id : String
   evidence_tile_id : String
+  local_horizon : LocalHorizonEvidence
   relief_shadow_risk : Double
+  terrain_shadow_margin_deg : Double
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
@@ -142,6 +150,33 @@ pub(all) struct IlluminationConstraint {
   caution_relief_shadow_risk : Double
   min_confidence : Double
   has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LocalHorizonEvidence {
+  evidence_id : String
+  route_id : String
+  site_id : String
+  source_dataset_id : String
+  source_tile_id : String
+  source_path : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  output_path : String
+  method_id : String
+  generated_by : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  center_elevation_m : Double
+  max_obstruction_elevation_m : Double
+  max_horizon_angle_deg : Double
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
+  terrain_shadow_margin_deg : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MissionClearanceItem {

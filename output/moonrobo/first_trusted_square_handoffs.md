@@ -5,8 +5,8 @@
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
   - clearance plan: block
@@ -19,19 +19,19 @@
     - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
     - clear-moonbook-review-direct-lola-window (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-direct-lola-window (terrain): block - route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-direct-lola-window (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route direct-lola-window still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
+    - terrain-direct-lola-window (terrain-readiness): block - route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-direct-lola-window (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route direct-lola-window still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear
 - moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions
   - route: west-contour-detour
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
   - clearance plan: block
@@ -44,19 +44,19 @@
     - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
     - clear-moonbook-review-west-contour-detour (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-west-contour-detour (terrain): block - route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-west-contour-detour (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route west-contour-detour still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
+    - terrain-west-contour-detour (terrain-readiness): block - route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-west-contour-detour (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route west-contour-detour still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear
 - moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions
   - route: north-rim-stepout
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
   - clearance plan: block
@@ -69,19 +69,19 @@
     - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
     - clear-moonbook-review-north-rim-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-north-rim-stepout (terrain): block - route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-north-rim-stepout (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route north-rim-stepout still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
+    - terrain-north-rim-stepout (terrain-readiness): block - route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-north-rim-stepout (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route north-rim-stepout still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear
 - moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions
   - route: southwest-bypass
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
   - clearance plan: block
@@ -94,19 +94,19 @@
     - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
     - clear-moonbook-review-southwest-bypass (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-southwest-bypass (terrain): block - route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-southwest-bypass (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route southwest-bypass still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
+    - terrain-southwest-bypass (terrain-readiness): block - route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-southwest-bypass (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route southwest-bypass still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear
 - moonrobo/first-trusted-square/south-stepout/simulation-preconditions
   - route: south-stepout
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
   - clearance plan: block
@@ -119,35 +119,34 @@
     - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
     - clear-moonbook-review-south-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-south-stepout (terrain): block - route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-south-stepout (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route south-stepout still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
+    - terrain-south-stepout (terrain-readiness): block - route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-south-stepout (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route south-stepout still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear
 - moonrobo/first-trusted-square/northeast-stepout/simulation-preconditions
   - route: northeast-stepout
   - decision: block
   - task: route-simulation-precondition
   - simulation: simulation-blocked
-  - replay: replay-needs-review
-  - hardware: hardware-denied
+  - replay: ReplayNeedsReview
+  - hardware: HardwareDenied
   - mission readiness: block
   - robot simulation status: simulation-blocked
-  - clearance plan: block
+  - clearance plan: allow
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - selected-route clearance actions:
-    - clear-terrain-grade-northeast-stepout (terrain-grade): action-required - accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile
-    - clear-illumination-confidence-northeast-stepout (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable
-    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
-    - clear-moonbook-review-northeast-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
+    - clear-terrain-grade-northeast-stepout (terrain-grade): accepted-evidence - accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-northeast-stepout (illumination-confidence): accepted-evidence - accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): accepted-evidence - accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-energy-margin: imported fixture; prior action was accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-northeast-stepout (moonbook-review): accepted-evidence - accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
-    - terrain-northeast-stepout (terrain): block - route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation
-    - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-    - illumination-northeast-stepout (illumination): block - widen local horizon and terrain-shadow evidence before route simulation
-    - energy-window (energy): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
-    - moonbook-review (moonbook-review): block - MoonBook review remains blocked because selected route northeast-stepout still has route or illumination blockers
-    - robot-simulation (robot-simulation): block - MoonRobo simulation stays blocked until mission readiness checks clear
-
+    - terrain-northeast-stepout (terrain-readiness): block - route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation
+    - corridor-scan-best-window (corridor-readiness): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
+    - illumination-northeast-stepout (illumination-readiness): block - local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
+    - energy-window (energy-readiness): block - energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+    - moonbook-review (moon-book-review-readiness): block - MoonBook review remains blocked because selected route northeast-stepout still has route or illumination blockers
+    - robot-simulation (robot-simulation-readiness): block - MoonRobo simulation stays blocked until mission readiness checks clear

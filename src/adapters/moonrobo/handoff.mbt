@@ -172,6 +172,12 @@ fn readiness_checks(
   route : @mission.RouteCandidate,
 ) -> Array[@mission.MissionReadinessCheck] {
   let best = dossier.corridor_scan[0]
+  let illumination_evidence_path = if route.illumination.local_horizon.output_path !=
+    "" {
+    route.illumination.local_horizon.output_path
+  } else {
+    "mission/first-trusted-square/routes/\{route.route_id}.illumination.json"
+  }
   [
     @mission.readiness_check(
       "terrain-\{route.route_id}",
@@ -194,7 +200,7 @@ fn readiness_checks(
       @mission.MissionReadinessCheckKind::IlluminationReadiness,
       "Illumination and thermal gate",
       route.illumination.decision,
-      "mission/first-trusted-square/routes/\{route.route_id}.illumination.json",
+      illumination_evidence_path,
       route.illumination.next_action,
     ),
     @mission.readiness_check(

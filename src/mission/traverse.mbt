@@ -43,11 +43,41 @@ pub(all) struct IlluminationConstraint {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct LocalHorizonEvidence {
+  evidence_id : String
+  route_id : String
+  site_id : String
+  source_dataset_id : String
+  source_tile_id : String
+  source_path : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  output_path : String
+  method_id : String
+  generated_by : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  center_elevation_m : Double
+  max_obstruction_elevation_m : Double
+  max_horizon_angle_deg : Double
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
+  terrain_shadow_margin_deg : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct IlluminationAssessment {
   constraint : IlluminationConstraint
   evidence_dataset_id : String
   evidence_tile_id : String
+  local_horizon : LocalHorizonEvidence
   relief_shadow_risk : Double
+  terrain_shadow_margin_deg : Double
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
@@ -219,6 +249,41 @@ pub fn energy_decision_label(assessment : EnergyAssessment) -> String {
 ///|
 pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence {
   generated_first_trusted_square_power_window_evidence()
+}
+
+///|
+pub fn first_trusted_square_northeast_stepout_horizon_evidence() -> LocalHorizonEvidence {
+  generated_first_trusted_square_northeast_stepout_horizon_evidence()
+}
+
+///|
+pub fn first_trusted_square_northeast_stepout_horizon_json() -> Json {
+  first_trusted_square_northeast_stepout_horizon_evidence().to_json()
+}
+
+///|
+pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String {
+  let evidence = first_trusted_square_northeast_stepout_horizon_evidence()
+  let mut text = "# Selected Route Local Horizon\n\n"
+  text += "- evidence: \{evidence.evidence_id}\n"
+  text += "- site: \{evidence.site_id}\n"
+  text += "- route: \{evidence.route_id}\n"
+  text += "- source: \{evidence.source_path}\n"
+  text += "- power window: \{evidence.power_window_evidence_id}\n"
+  text += "- method: \{evidence.method_id}\n"
+  text += "- decision: \{traverse_decision_label(evidence.decision)}\n"
+  text += "- max horizon angle: \{evidence.max_horizon_angle_deg} deg\n"
+  text += "- max sun altitude: \{evidence.max_sun_altitude_deg} deg\n"
+  text += "- terrain-shadow margin: \{evidence.terrain_shadow_margin_deg} deg\n"
+  text += "- confidence: \{evidence.confidence}\n\n"
+  text += "## Reasons\n\n"
+  for reason in evidence.reasons {
+    text += "- \{reason}\n"
+  }
+  text += "\n## Next Action\n\n"
+  text += evidence.next_action
+  text += "\n"
+  text
 }
 
 ///|
@@ -419,17 +484,79 @@ fn relief_shadow_risk(
 }
 
 ///|
+fn proxy_local_horizon_evidence(
+  grid : @terrain.TerrainGrid,
+  metrics : @terrain.TerrainMetrics,
+  risk : Double,
+  constraint : IlluminationConstraint,
+) -> LocalHorizonEvidence {
+  let decision = if risk >= constraint.max_relief_shadow_risk {
+    Block
+  } else if risk >= constraint.caution_relief_shadow_risk {
+    Review
+  } else {
+    Allow
+  }
+  {
+    evidence_id: "local-horizon-proxy/\{grid.tile_id}",
+    route_id: grid.tile_id,
+    site_id: "first-trusted-square",
+    source_dataset_id: grid.source_manifest.dataset_id,
+    source_tile_id: grid.tile_id,
+    source_path: grid.source_manifest.source_path,
+    power_window_evidence_id: constraint.power_window_evidence_id,
+    power_window_source_path: constraint.power_window_source_path,
+    output_path: "",
+    method_id: "relief-shadow-proxy-v1",
+    generated_by: "src/mission/traverse.mbt",
+    rows: grid.rows,
+    cols: grid.cols,
+    cell_size_m: grid.cell_size_m,
+    center_elevation_m: metrics.min_elevation_m +
+    metrics.elevation_range_m / 2.0,
+    max_obstruction_elevation_m: metrics.max_elevation_m,
+    max_horizon_angle_deg: risk,
+    min_sun_altitude_deg: 0.0,
+    max_sun_altitude_deg: 0.0,
+    terrain_shadow_margin_deg: risk,
+    confidence: metrics.uncertainty.confidence * 0.6,
+    decision,
+    reasons: [
+      "relief-shadow proxy retained until a bounded local horizon model is generated",
+    ],
+    next_action: "generate bounded local horizon evidence before route simulation",
+  }
+}
+
+///|
+fn local_horizon_evidence(
+  grid : @terrain.TerrainGrid,
+  metrics : @terrain.TerrainMetrics,
+  risk : Double,
+  constraint : IlluminationConstraint,
+) -> LocalHorizonEvidence {
+  if grid.tile_id == "first-trusted-square-northeast-stepout-lola" {
+    first_trusted_square_northeast_stepout_horizon_evidence()
+  } else {
+    proxy_local_horizon_evidence(grid, metrics, risk, constraint)
+  }
+}
+
+///|
 pub fn assess_illumination(
   grid : @terrain.TerrainGrid,
   constraint : IlluminationConstraint,
 ) -> IlluminationAssessment {
   let metrics = @terrain.analyze(grid)
   let risk = relief_shadow_risk(grid, metrics)
+  let local_horizon = local_horizon_evidence(grid, metrics, risk, constraint)
   let confidence = metrics.uncertainty.confidence * 0.6
   let reasons : Array[String] = []
   let missing_ephemeris = !constraint.has_time_window_ephemeris
   let risk_blocked = risk >= constraint.max_relief_shadow_risk
   let risk_review = risk >= constraint.caution_relief_shadow_risk
+  let horizon_blocked = local_horizon.decision == Block
+  let horizon_review = local_horizon.decision == Review
   let confidence_review = confidence < constraint.min_confidence
   add_reason_if(
     reasons, missing_ephemeris, "no time-windowed solar ephemeris is attached",
@@ -444,15 +571,25 @@ pub fn assess_illumination(
   )
   add_reason_if(
     reasons,
+    horizon_blocked,
+    "bounded local horizon angle \{local_horizon.max_horizon_angle_deg} deg exceeds max sun altitude \{local_horizon.max_sun_altitude_deg} deg",
+  )
+  add_reason_if(
+    reasons,
     !risk_blocked && risk_review,
     "local relief shadow proxy needs illumination review",
   )
   add_reason_if(
+    reasons,
+    !horizon_blocked && horizon_review,
+    "bounded local horizon evidence needs illumination review",
+  )
+  add_reason_if(
     reasons, confidence_review, "illumination confidence below power planning threshold",
   )
-  let decision = if missing_ephemeris || risk_blocked {
+  let decision = if missing_ephemeris || risk_blocked || horizon_blocked {
     Block
-  } else if risk_review || confidence_review {
+  } else if risk_review || horizon_review || confidence_review {
     Review
   } else {
     Allow
@@ -461,7 +598,9 @@ pub fn assess_illumination(
     constraint,
     evidence_dataset_id: grid.source_manifest.dataset_id,
     evidence_tile_id: grid.tile_id,
+    local_horizon,
     relief_shadow_risk: risk,
+    terrain_shadow_margin_deg: local_horizon.terrain_shadow_margin_deg,
     confidence,
     decision,
     reasons,
@@ -471,6 +610,8 @@ pub fn assess_illumination(
       Block =>
         if missing_ephemeris {
           "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        } else if horizon_blocked {
+          "local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation"
         } else {
           "widen local horizon and terrain-shadow evidence before route simulation"
         }

@@ -368,9 +368,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.3635749999999998
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 0.3635749999999998 deg exceeds max sun altitude 0 deg
     - illumination confidence below power planning threshold
   - next action: do not traverse directly; use this as the baseline hazard case
   - reasons:
@@ -394,9 +395,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.32390624999999956
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 0.32390624999999956 deg exceeds max sun altitude 0 deg
     - illumination confidence below power planning threshold
   - next action: widen the west corridor extraction before simulation
   - reasons:
@@ -420,9 +422,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.28963125000000006
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 0.28963125000000006 deg exceeds max sun altitude 0 deg
     - illumination confidence below power planning threshold
   - next action: widen the north corridor extraction and add illumination review
   - reasons:
@@ -446,9 +449,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.2673000000000002
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 0.2673000000000002 deg exceeds max sun altitude 0 deg
     - illumination confidence below power planning threshold
   - next action: continue corridor search beyond the southwest bypass before simulation
   - reasons:
@@ -472,9 +476,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.27855000000000024
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 0.27855000000000024 deg exceeds max sun altitude 0 deg
     - illumination confidence below power planning threshold
   - next action: continue south corridor extraction and add ephemeris-backed illumination review
   - reasons:
@@ -498,9 +503,10 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
   - illumination source status: ready
   - illumination risk: 0.22381250000000003
   - illumination confidence: 0.45263999999999993
-  - illumination next action: widen local horizon and terrain-shadow evidence before route simulation
+  - illumination next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
   - illumination reasons:
     - local relief shadow proxy exceeds conservative limit
+    - bounded local horizon angle 26.487251 deg exceeds max sun altitude 0.130418 deg
     - illumination confidence below power planning threshold
   - next action: review the promoted route fixture and attach ephemeris-backed illumination before simulation
   - reasons:

@@ -474,9 +474,9 @@ def remediation_model_for_gap(gap: dict[str, Any]) -> dict[str, str]:
     }
   if check_id == "illumination-northeast-stepout":
     return {
-      "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
-      "modeling_evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
-      "result_rationale": "current pass has no new local horizon or terrain-shadow evidence, so illumination remains blocked",
+      "modeling_command": "python3 scripts/check_selected_route_horizon_model.py",
+      "modeling_evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+      "result_rationale": "bounded local horizon evidence records a positive terrain-shadow margin, so illumination remains blocked",
     }
   if check_id == "energy-window":
     return {
