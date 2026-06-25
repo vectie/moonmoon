@@ -1059,7 +1059,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-refresh-task-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin refresh task in Rabbita",
       outcome: "Operators can inspect the projection-driven MoonClaw refresh order, target artifacts, commands, and HardwareDenied authority from the review surface",
@@ -1070,7 +1070,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_task_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin refresh task with NoConsumeSimulationBlocked status, ranked terrain/horizon/energy refreshes, target artifact paths, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin refresh task with NoConsumeSimulationBlocked status, ranked terrain/horizon/energy refreshes, target artifact paths, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-refresh-receipt-loop",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Close remediation-margin refresh task with a MoonClaw receipt",
+      outcome: "Each projection-driven terrain, horizon, and energy refresh action can be proved executed or carried forward before MoonRobo remediation modeling changes",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_task.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_receipt.py",
+      ],
+      done_when: "MoonClaw emits a remediation-margin refresh receipt that maps each ranked terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
     },
   ]
 }
