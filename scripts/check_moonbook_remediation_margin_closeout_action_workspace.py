@@ -53,7 +53,12 @@ def load_json(path: Path) -> Any:
     return json.load(handle)
 
 
-def assert_closeout_action_workspace(root: Path) -> None:
+def assert_closeout_action_workspace(
+  root: Path,
+  expected_review_status: str,
+  expected_review_decision: str,
+  expect_transition: bool,
+) -> None:
   workspace = root / WORKSPACE
   index = load_json(workspace / "index.json")
   manifest = load_json(workspace / "manifest.json")
@@ -107,11 +112,13 @@ def assert_closeout_action_workspace(root: Path) -> None:
     raise AssertionError(review)
   if review["entry_id"] != ENTRY_ID:
     raise AssertionError(review)
-  if review["status"] != "NeedsReview":
+  if review["status"] != expected_review_status:
     raise AssertionError(review)
-  if review["decision"] != "RequestEvidence":
+  if review["decision"] != expected_review_decision:
     raise AssertionError(review)
-  if review["transition"] is not None:
+  if expect_transition and review["transition"] is None:
+    raise AssertionError(review)
+  if not expect_transition and review["transition"] is not None:
     raise AssertionError(review)
   if review["hardware_authority_change"] is not False:
     raise AssertionError(review)
@@ -194,7 +201,12 @@ def assert_closeout_action_workspace(root: Path) -> None:
 
 
 def main() -> int:
-  assert_closeout_action_workspace(ROOT)
+  assert_closeout_action_workspace(
+    ROOT,
+    expected_review_status="Accepted",
+    expected_review_decision="Accept",
+    expect_transition=True,
+  )
   with tempfile.TemporaryDirectory(
     prefix="moonmoon-moonbook-closeout-action-",
   ) as tmp:
@@ -202,7 +214,12 @@ def main() -> int:
     shutil.copytree(ROOT / "output", tmp_root / "output")
     import_rabbita_transitions.apply_import(tmp_root, FIXTURE)
     check_rabbita_transition_import.materialize_temp_workspace(tmp_root)
-    assert_closeout_action_workspace(tmp_root)
+    assert_closeout_action_workspace(
+      tmp_root,
+      expected_review_status="Accepted",
+      expected_review_decision="Accept",
+      expect_transition=True,
+    )
   print("checked MoonBook remediation margin closeout action workspace")
   return 0
 

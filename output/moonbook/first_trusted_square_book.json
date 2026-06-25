@@ -571,6 +571,15 @@
       "summary": "needs-review closeout action task consumes NoConsumeCycleClosedForPolicy after 2 refresh cycles with 3 terrain/horizon/energy blockers (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); actions terrain=EscalateToOperatorDecision, local-horizon=RetryWithNewEvidence, energy=FreezeUntilNewSourceEvidence; simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan",
+      "title": "MoonClaw reviewed remediation-margin action plan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginReviewedActionPlan",
+      "claim_kind": "Derived",
+      "confidence": 0.74,
+      "path": "moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
+      "summary": "accepted reviewed action plan from Accept closeout review rabbita-moonclaw-remediation-margin-closeout-action-review-accept with 3 terrain/horizon/energy blockers (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); actions terrain=EscalateToOperatorDecision, local-horizon=RetryWithNewEvidence, energy=FreezeUntilNewSourceEvidence; automatic refresh loop allowed false, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
       "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawEphemerisReceipt",
@@ -1486,6 +1495,31 @@
         }
       ],
       "rationale": "left open for moonclaw follow-up"
+    },
+    {
+      "transition_id": "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
+      "item_id": "moonclaw-remediation-margin-closeout-action-review",
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
+      "previous_status": "NeedsReview",
+      "decision": "Accept",
+      "resulting_status": "Accepted",
+      "reviewer_id": "operator/rabbita-closeout-action-review",
+      "reviewer_role": "moonclaw-closeout-action-review",
+      "timestamp_policy": "operator-browser-export",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "hardware_authority_change": false,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "source_evidence_refs": [
+        {
+          "ref_id": "moonclaw-remediation-margin-closeout-action-review",
+          "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
+          "path": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review"
+        }
+      ],
+      "rationale": "Rabbita accept decision for moonclaw-remediation-margin-closeout-action-review: terrain escalation, horizon retry-with-new-evidence, and energy freeze actions are operator-reviewed; hardware remains denied"
     }
   ]
 }

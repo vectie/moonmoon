@@ -1524,7 +1524,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-reviewed-action-plan-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize reviewed remediation-margin action plan into MoonBook",
       outcome: "The accepted MoonClaw reviewed action plan becomes durable MoonBook workspace evidence before terrain escalation, horizon retry, or energy freeze work is scheduled",
@@ -1536,7 +1536,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
         "scripts/check_moonbook_remediation_margin_reviewed_action_plan_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, and HardwareDenied authority preserved",
+      done_when: "done: MoonBook indexes and materializes the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "rabbita-remediation-margin-reviewed-action-plan-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface reviewed remediation-margin action plan in Rabbita",
+      outcome: "Operators can inspect the accepted MoonClaw reviewed action plan from MoonBook before terrain escalation, horizon retry, or energy freeze work is scheduled",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_action_plan_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_action_plan_surface.py",
+      ],
+      done_when: "Rabbita renders the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

@@ -180,7 +180,7 @@ pub fn first_trusted_square_remediation_margin_reviewed_action_plans() -> Array[
 }
 
 ///|
-fn review_decision_label(
+pub fn closeout_action_review_decision_label(
   decision : MoonClawCloseoutActionReviewDecision,
 ) -> String {
   match decision {
@@ -202,7 +202,7 @@ pub fn render_remediation_margin_reviewed_action_plans_markdown(
     text += "  - route: \{plan.route_id}\n"
     text += "  - source task: \{plan.source_task_id}\n"
     text += "  - review transition: \{plan.source_review_transition_id}\n"
-    text += "  - review decision: \{review_decision_label(plan.source_review_decision)}\n"
+    text += "  - review decision: \{closeout_action_review_decision_label(plan.source_review_decision)}\n"
     text += "  - reviewer: \{plan.reviewer_id}\n"
     text += "  - reviewed at: \{plan.reviewed_at_utc}\n"
     text += "  - refresh cycles: \{plan.refresh_cycle_count}\n"

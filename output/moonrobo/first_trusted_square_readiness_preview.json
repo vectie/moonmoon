@@ -1,7 +1,7 @@
 {
   "preview_id": "moonrobo-readiness-preview/first-trusted-square/northeast-stepout",
   "generated_by": "scripts/import_rabbita_transitions.py",
-  "source_transition_file": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_clearance_transitions_accept.json",
+  "source_transition_file": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_closeout_action_review_accept.json",
   "route_id": "northeast-stepout",
   "clearance_decision": "Allow",
   "clearance_allows_simulation_review": true,

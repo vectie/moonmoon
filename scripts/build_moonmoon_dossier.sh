@@ -10,7 +10,7 @@ MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
 UI_OUT="$ROOT/output/ui"
 RABBITA_OUT="$UI_OUT/rabbita"
-REVIEW_TRANSITIONS=""
+REVIEW_TRANSITIONS=()
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -19,7 +19,7 @@ while [[ $# -gt 0 ]]; do
         printf 'missing value for --review-transitions\n' >&2
         exit 2
       fi
-      REVIEW_TRANSITIONS="$2"
+      REVIEW_TRANSITIONS+=("$2")
       shift 2
       ;;
     *)
@@ -107,8 +107,10 @@ python3 scripts/generate_selected_route_terrain_remediation.py
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui rabbita > "$RABBITA_OUT/first_trusted_square.html"
-if [[ -n "$REVIEW_TRANSITIONS" ]]; then
-  python3 scripts/import_rabbita_transitions.py --review-transitions "$REVIEW_TRANSITIONS"
+if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
+  for REVIEW_TRANSITION_PATH in "${REVIEW_TRANSITIONS[@]}"; do
+    python3 scripts/import_rabbita_transitions.py --review-transitions "$REVIEW_TRANSITION_PATH"
+  done
 fi
 python3 scripts/materialize_moonbook_workspace.py
 
@@ -168,7 +170,7 @@ printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refre
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_refresh_projection.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.json"
-if [[ -n "$REVIEW_TRANSITIONS" ]]; then
+if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.md"
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_packet.json"
   printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_simulation_review_decision.md"

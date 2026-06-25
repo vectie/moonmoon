@@ -320,6 +320,11 @@
   - claim: derived
   - confidence: 0.72
   - path: moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json
+- moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan: MoonClaw reviewed remediation-margin action plan for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moon-claw-remediation-margin-reviewed-action-plan
+  - claim: derived
+  - confidence: 0.74
+  - path: moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-ephemeris-receipt
   - claim: derived
@@ -569,3 +574,9 @@
   - append only: true
   - source: site/first-trusted-square/next-question-2 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
+- rabbita-moonclaw-remediation-margin-closeout-action-review-accept: accept moonclaw-remediation-margin-closeout-action-review -> accepted
+  - reviewer: operator/rabbita-closeout-action-review as moonclaw-closeout-action-review
+  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
+  - append only: true
+  - source: moonclaw/first-trusted-square/remediation-margin-closeout-action-task at moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review
+  - rationale: Rabbita accept decision for moonclaw-remediation-margin-closeout-action-review: terrain escalation, horizon retry-with-new-evidence, and energy freeze actions are operator-reviewed; hardware remains denied

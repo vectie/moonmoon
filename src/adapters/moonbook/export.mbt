@@ -32,6 +32,7 @@ pub(all) enum BookEntryKind {
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
+  MoonClawRemediationMarginReviewedActionPlan
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt
@@ -156,6 +157,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonclaw-remediation-margin-refresh-followup-task"
     MoonClawRemediationMarginCloseoutActionTask =>
       "moonclaw-remediation-margin-closeout-action-task"
+    MoonClawRemediationMarginReviewedActionPlan =>
+      "moonclaw-remediation-margin-reviewed-action-plan"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawRemediationMarginRefreshFollowupReceipt =>
@@ -1269,6 +1272,30 @@ fn moonclaw_remediation_margin_closeout_action_task_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_reviewed_action_plan_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let plans = @moonclaw.first_trusted_square_remediation_margin_reviewed_action_plans()
+  let plan = plans[0]
+  let refresh_ids = plan.blocking_refresh_ids.join(", ")
+  let margin_ids = plan.blocking_margin_ids.join(", ")
+  let actions = plan.actions
+    .map(fn(action) {
+      "\{action.blocker_domain}=\{@moonrobo.remediation_margin_cycle_disposition_label(action.disposition)}"
+    })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-action-plan",
+    title: "MoonClaw reviewed remediation-margin action plan for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginReviewedActionPlan,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.74,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-reviewed-action-plan.json",
+    summary: "\{@moonclaw.receipt_status_label(plan.state)} reviewed action plan from \{@moonclaw.closeout_action_review_decision_label(plan.source_review_decision)} closeout review \{plan.source_review_transition_id} with \{plan.blocker_count} terrain/horizon/energy blockers (\{refresh_ids}) over margins (\{margin_ids}); actions \{actions}; automatic refresh loop allowed \{plan.automatic_refresh_loop_allowed}, simulation \{@moonrobo.execution_state_label(plan.simulation_state)}, may consume \{plan.may_consume_simulation}, hardware authority \{plan.hardware_authority} at \{@moonrobo.execution_state_label(plan.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1545,6 +1572,7 @@ fn book_entries(
   )
   entries.push(moonrobo_remediation_margin_cycle_closeout_policy_entry(dossier))
   entries.push(moonclaw_remediation_margin_closeout_action_task_entry(dossier))
+  entries.push(moonclaw_remediation_margin_reviewed_action_plan_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

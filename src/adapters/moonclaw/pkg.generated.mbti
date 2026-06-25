@@ -11,6 +11,8 @@ import {
 }
 
 // Values
+pub fn closeout_action_review_decision_label(MoonClawCloseoutActionReviewDecision) -> String
+
 pub fn corridor_expansion_proposal(@site.SiteDossier) -> MoonClawProposal
 
 pub fn corridor_expansion_receipt(@site.SiteDossier) -> MoonClawCorridorExpansionReceipt

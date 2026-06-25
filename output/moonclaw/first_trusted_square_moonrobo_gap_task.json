@@ -9,7 +9,7 @@
     "inputs": [
       {
         "input_id": "imported-clearance-transitions",
-        "evidence_path": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_clearance_transitions_accept.json",
+        "evidence_path": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_closeout_action_review_accept.json",
         "claim_kind": "Assumed",
         "summary": "Operator-exported Rabbita transitions accept selected-route clearance items without changing source facts."
       },
