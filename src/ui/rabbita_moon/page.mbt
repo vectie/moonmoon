@@ -251,6 +251,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--danger) 60%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
     #|}
+    #|.remediation-margin-closeout-action-row {
+    #|  border-color: color-mix(in srgb, var(--warn) 64%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--warn);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -656,6 +660,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginCloseoutAction() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-closeout-action',
+    #|    'moonclaw/first-trusted-square/remediation-margin-closeout-action-task',
+    #|    'remediation-margin-closeout-action-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -830,6 +842,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginRefreshFollowupModeling();
     #|  renderRemediationMarginRefreshFollowupProjection();
     #|  renderRemediationMarginCycleCloseout();
+    #|  renderRemediationMarginCloseoutAction();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -967,6 +980,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Cycle Closeout</h2>
     $|      <div id="remediation-margin-cycle-closeout" class="review-list" aria-label="MoonRobo remediation margin cycle closeout policy with no-consume status, retry/escalate/freeze blocker dispositions, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Closeout Action</h2>
+    $|      <div id="remediation-margin-closeout-action" class="review-list" aria-label="MoonClaw remediation margin closeout action task with needs-review state, retry/escalate/freeze actions, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Projection</h2>

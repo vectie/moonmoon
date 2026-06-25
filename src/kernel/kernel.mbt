@@ -1463,7 +1463,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-closeout-action-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin closeout action task in Rabbita",
       outcome: "Operators can review the bounded MoonClaw closeout action task, NeedsReview state, no-consume simulation status, and terrain/horizon/energy dispositions before any new remediation task is emitted",
@@ -1474,7 +1474,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin closeout action task with NeedsReview state, NoConsumeCycleClosedForPolicy source status, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin closeout action task with NeedsReview state, NoConsumeCycleClosedForPolicy source status, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-closeout-action-review-export",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Export operator review for remediation-margin closeout action",
+      outcome: "Rabbita can emit an importable operator review transition for the closeout action task before MoonClaw schedules the explicit retry, escalation, and freeze work",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_surface.py",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_review_export.py",
+      ],
+      done_when: "Rabbita exports an append-only closeout action review transition with Accept, RequestEvidence, and Defer choices, immutable MoonBook evidence refs, operator identity, timestamp policy, and no hardware authority change",
     },
   ]
 }
