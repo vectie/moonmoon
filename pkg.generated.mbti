@@ -4,6 +4,7 @@ package "vectie/moonmoon"
 import {
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/ui",
 }
 
 // Values
@@ -24,6 +25,12 @@ pub fn trusted_square_markdown() -> String
 pub fn trusted_square_moonclaw_json() -> Json
 
 pub fn trusted_square_moonrobo_json() -> Json
+
+pub fn trusted_square_view_json() -> Json
+
+pub fn trusted_square_view_markdown() -> String
+
+pub fn trusted_square_view_model() -> @ui.TrustedSquareViewModel
 
 // Errors
 

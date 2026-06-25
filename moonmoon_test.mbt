@@ -26,3 +26,15 @@ test "root facade renders durable suite boundaries" {
   assert_true(book_json.contains("power-window-evidence"))
   assert_true(robot_json.contains("simulation-preconditions"))
 }
+
+///|
+test "root facade exposes operator view model" {
+  let view = @moonmoon.trusted_square_view_model()
+  assert_eq(view.selected_route_id, "northeast-stepout")
+  assert_eq(view.terrain_cells.length(), 16)
+  assert_true(
+    @moonmoon.trusted_square_view_json()
+    .stringify(indent=2)
+    .contains("terrain_cells"),
+  )
+}

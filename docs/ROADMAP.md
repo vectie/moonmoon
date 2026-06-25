@@ -128,6 +128,13 @@ Goal: make the trusted square inspectable.
 
 Done when a human can inspect one site without reading JSON.
 
+Current implementation status:
+
+- `src/ui` exposes a renderer-neutral trusted-square view model with
+  elevation/hazard cells, route rows, selected-route state, and inspector facts.
+- `cmd/main -- ui view` renders that model as Markdown, while `json` exposes
+  the same contract for future Rabbita/Lepusa browser surfaces.
+
 ## Milestone 3: MoonBook Evidence Loop
 
 Goal: make Moonmoon outputs durable.

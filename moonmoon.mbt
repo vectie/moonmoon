@@ -42,3 +42,18 @@ pub fn trusted_square_moonclaw_json() -> Json {
 pub fn trusted_square_moonrobo_json() -> Json {
   @moonrobo.first_trusted_square_json()
 }
+
+///|
+pub fn trusted_square_view_model() -> @ui.TrustedSquareViewModel {
+  @ui.first_trusted_square_view_model()
+}
+
+///|
+pub fn trusted_square_view_markdown() -> String {
+  @ui.first_trusted_square_markdown()
+}
+
+///|
+pub fn trusted_square_view_json() -> Json {
+  @ui.first_trusted_square_json()
+}

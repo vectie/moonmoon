@@ -30,7 +30,7 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(
     markdown.contains("MoonTown schedules work; MoonMoon owns lunar physics"),
   )
-  assert_true(markdown.contains("first terrain layer view model"))
+  assert_true(markdown.contains("src/ui/view_model.mbt"))
   assert_true(markdown.contains("promote-best-9x9-route-fixture"))
   assert_true(markdown.contains("replace-missing-power-window"))
 }

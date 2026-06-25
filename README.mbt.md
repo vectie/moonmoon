@@ -50,6 +50,8 @@ moon run cmd/main -- site summary
 moon run cmd/main -- json
 moon run cmd/main -- terrain fixture
 moon run cmd/main -- terrain fixture json
+moon run cmd/main -- ui view
+moon run cmd/main -- ui view json
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
 moon run cmd/main -- moonclaw proposals

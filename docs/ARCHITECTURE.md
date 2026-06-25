@@ -66,6 +66,7 @@ The current implementation has started this shape with:
 - `src/adapters/moonbook`
 - `src/adapters/moonclaw`
 - `src/adapters/moonrobo`
+- `src/ui`
 - `cmd/main`
 
 Each package owns typed contracts plus deterministic tests. The exported files
@@ -78,6 +79,11 @@ compatibility layer; it is the product-facing contract for the standalone
 project. If a future package does not help a kernel layer, clear an evidence
 gate, improve a suite boundary, or complete a build-queue task, it should not be
 added yet.
+
+The first `src/ui` slice is renderer-neutral. It projects the trusted-square
+dossier into terrain cells, route rows, selected-route state, and inspector
+facts that a CLI or future Rabbita/Lepusa browser surface can render without
+owning terrain derivation.
 
 ## Core Contracts
 

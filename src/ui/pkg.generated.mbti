@@ -1,0 +1,83 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/ui"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/site",
+}
+
+// Values
+pub fn first_trusted_square_json() -> Json
+
+pub fn first_trusted_square_markdown() -> String
+
+pub fn first_trusted_square_view_model() -> TrustedSquareViewModel
+
+pub fn from_site_dossier(@site.SiteDossier) -> TrustedSquareViewModel
+
+pub fn render_json(TrustedSquareViewModel) -> Json
+
+pub fn render_markdown(TrustedSquareViewModel) -> String
+
+pub fn view_layer_kind_label(ViewLayerKind) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct InspectorFact {
+  fact_id : String
+  label : String
+  value : String
+  status : String
+  evidence_path : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RouteView {
+  route_id : String
+  label : String
+  selected : Bool
+  decision : String
+  score : Int
+  max_grade : Double
+  roughness_m : Double
+  evidence_tile_id : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainCellView {
+  cell_id : String
+  row : Int
+  col : Int
+  elevation_m : Double
+  hazard : String
+  confidence : Double
+  source_dataset_id : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TrustedSquareViewModel {
+  view_id : String
+  site_id : String
+  title : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  layers : Array[ViewLayerKind]
+  selected_route_id : String
+  terrain_cells : Array[TerrainCellView]
+  routes : Array[RouteView]
+  inspector_facts : Array[InspectorFact]
+  blockers : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum ViewLayerKind {
+  ElevationLayer
+  HazardLayer
+  RouteLayer
+  EvidenceLayer
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

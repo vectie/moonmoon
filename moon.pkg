@@ -4,5 +4,6 @@ import {
   "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/ui",
   "moonbitlang/core/json",
 }

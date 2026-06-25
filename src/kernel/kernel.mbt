@@ -221,9 +221,9 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       label: "Operator viewer",
       owns: "renderer-neutral layer view models and Rabbita lunar inspection UI",
       source_contract: "site dossier -> terrain/hazard/route layer view state",
-      current_artifact: "planned src/ui/",
-      readiness: Planned,
-      next_output: "first terrain layer view model before any decorative viewer",
+      current_artifact: "src/ui/view_model.mbt",
+      readiness: NeedsEvidence,
+      next_output: "browser-facing Rabbita lunar inspection UI backed by the renderer-neutral view model",
     },
   ]
 }

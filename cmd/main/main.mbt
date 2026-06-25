@@ -11,6 +11,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- site summary json
     #|  moon run cmd/main -- terrain fixture
     #|  moon run cmd/main -- terrain fixture json
+    #|  moon run cmd/main -- ui view
+    #|  moon run cmd/main -- ui view json
     #|  moon run cmd/main -- moonbook dossier
     #|  moon run cmd/main -- moonbook dossier json
     #|  moon run cmd/main -- moonclaw proposals
@@ -120,6 +122,12 @@ fn main {
       println(@terrain.first_trusted_square_fixture_json().stringify(indent=2))
     } else {
       println(@terrain.first_trusted_square_fixture_markdown())
+    }
+  } else if args.contains("ui") && args.contains("view") {
+    if output_json {
+      println(@ui.first_trusted_square_json().stringify(indent=2))
+    } else {
+      println(@ui.first_trusted_square_markdown())
     }
   } else if output_json {
     println(@site.first_trusted_square_json().stringify(indent=2))
