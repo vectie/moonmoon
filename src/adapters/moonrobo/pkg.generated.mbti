@@ -63,6 +63,7 @@ pub(all) struct MoonroboTaskHandoff {
   target_body : String
   decision : @mission.TraverseDecision
   mission_readiness : @mission.MissionSimulationReadiness
+  clearance_plan : @mission.MissionClearancePlan
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String

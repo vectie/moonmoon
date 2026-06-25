@@ -376,6 +376,15 @@
       "summary": "block with 1265 Wh required and 234.938073 Wh verified available: revise rover power model, route count, or site window before simulation"
     },
     {
+      "entry_id": "mission/first-trusted-square/selected-route-clearance",
+      "title": "Selected route clearance plan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "SelectedRouteClearance",
+      "claim_kind": "Derived",
+      "confidence": 0.62,
+      "path": "mission/first-trusted-square/selected-route-clearance.json",
+      "summary": "block northeast-stepout: 4 clearance items, 4 blockers"
+    },
+    {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
       "title": "Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonroboHandoff",

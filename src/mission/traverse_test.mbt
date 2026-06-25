@@ -253,3 +253,99 @@ test "mission simulation readiness aggregates named gates" {
   )
   assert_eq(@mission.mission_simulation_readiness_label(readiness), "block")
 }
+
+///|
+test "selected route clearance plan names blocker actions" {
+  let route = @mission.first_trusted_square_route_candidates()[5]
+  let energy = @mission.first_trusted_square_energy_assessment()
+  let readiness = @mission.simulation_readiness(
+    "mission/first-trusted-square/northeast-stepout/simulation-readiness",
+    route.route_id,
+    [
+      @mission.readiness_check(
+        "terrain-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::TerrainReadiness,
+        "Selected-route terrain gate",
+        @mission.TraverseDecision::Block,
+        route.evidence_source_path,
+        route.next_action,
+      ),
+      @mission.readiness_check(
+        "illumination-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::IlluminationReadiness,
+        "Illumination and thermal gate",
+        @mission.TraverseDecision::Block,
+        route.illumination.constraint.power_window_source_path,
+        route.illumination.next_action,
+      ),
+      @mission.readiness_check(
+        "energy-window",
+        @mission.MissionReadinessCheckKind::EnergyReadiness,
+        "Rover energy window gate",
+        @mission.TraverseDecision::Block,
+        energy.budget.power_window_source_path,
+        energy.next_action,
+      ),
+      @mission.readiness_check(
+        "moonbook-review",
+        @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+        "MoonBook accepted-review gate",
+        @mission.TraverseDecision::Block,
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "MoonBook review has unresolved blockers",
+      ),
+    ],
+  )
+  let plan = @mission.selected_route_clearance_plan(
+    "mission/first-trusted-square/northeast-stepout/selected-route-clearance", route,
+    energy, readiness,
+  )
+  assert_eq(plan.route_id, "northeast-stepout")
+  assert_true(plan.decision == @mission.TraverseDecision::Block)
+  assert_eq(plan.items.length(), 4)
+  assert_eq(plan.blocking_items.length(), 4)
+  assert_eq(plan.accepted_items.length(), 0)
+  assert_eq(plan.items[0].clearance_id, "clear-terrain-grade-northeast-stepout")
+  assert_true(
+    plan.items[0].kind is @mission.MissionClearanceKind::TerrainGradeClearance,
+  )
+  assert_true(
+    plan.items[0].status is @mission.MissionClearanceStatus::ActionRequired,
+  )
+  assert_true(plan.items[0].observed.contains("grade"))
+  assert_true(plan.items[0].required.contains("roughness"))
+  assert_true(
+    plan.items[0].clearance_action.contains("smoother measured route"),
+  )
+  assert_eq(
+    plan.items[1].clearance_id,
+    "clear-illumination-confidence-northeast-stepout",
+  )
+  assert_true(plan.items[1].observed.contains("illumination confidence"))
+  assert_true(plan.items[1].required.contains("relief-shadow"))
+  assert_eq(plan.items[2].clearance_id, "clear-energy-margin")
+  assert_true(plan.items[2].observed.contains("energy margin"))
+  assert_true(plan.items[2].required.contains("accepted power"))
+  assert_eq(
+    plan.items[3].clearance_id,
+    "clear-moonbook-review-northeast-stepout",
+  )
+  assert_true(plan.items[3].evidence_path.contains("review_transitions.json"))
+  assert_true(plan.items[3].clearance_action.contains("accepted MoonBook"))
+  assert_true(
+    plan.blocking_items.contains("clear-terrain-grade-northeast-stepout"),
+  )
+  assert_true(plan.blocking_items.contains("clear-energy-margin"))
+  assert_eq(
+    @mission.mission_clearance_kind_label(
+      @mission.MissionClearanceKind::EnergyMarginClearance,
+    ),
+    "energy-margin",
+  )
+  assert_eq(
+    @mission.mission_clearance_status_label(
+      @mission.MissionClearanceStatus::ActionRequired,
+    ),
+    "action-required",
+  )
+}

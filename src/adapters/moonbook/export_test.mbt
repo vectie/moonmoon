@@ -2,8 +2,8 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 47)
-  assert_eq(dossier.review_queue.length(), 25)
+  assert_eq(dossier.entries.length(), 48)
+  assert_eq(dossier.review_queue.length(), 26)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -87,22 +87,25 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(dossier.entries[39].kind == @moonbook.BookEntryKind::EnergyWindow)
   assert_true(
-    dossier.entries[40].kind == @moonbook.BookEntryKind::MoonroboHandoff,
+    dossier.entries[40].kind == @moonbook.BookEntryKind::SelectedRouteClearance,
   )
   assert_true(
-    dossier.entries[41].kind == @moonbook.BookEntryKind::MoonClawProposal,
+    dossier.entries[41].kind == @moonbook.BookEntryKind::MoonroboHandoff,
   )
-  assert_true(dossier.entries[42].kind == @moonbook.BookEntryKind::MoonClawTask)
+  assert_true(
+    dossier.entries[42].kind == @moonbook.BookEntryKind::MoonClawProposal,
+  )
   assert_true(dossier.entries[43].kind == @moonbook.BookEntryKind::MoonClawTask)
+  assert_true(dossier.entries[44].kind == @moonbook.BookEntryKind::MoonClawTask)
   assert_true(
-    dossier.entries[44].kind == @moonbook.BookEntryKind::MoonClawReceipt,
+    dossier.entries[45].kind == @moonbook.BookEntryKind::MoonClawReceipt,
   )
   assert_true(
-    dossier.entries[45].kind ==
+    dossier.entries[46].kind ==
     @moonbook.BookEntryKind::MoonClawEphemerisReceipt,
   )
   assert_true(
-    dossier.entries[46].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
+    dossier.entries[47].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
@@ -132,45 +135,51 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[40].kind),
-    "moonrobo-handoff",
+    "selected-route-clearance",
   )
   assert_true(dossier.entries[40].summary.contains("northeast-stepout"))
+  assert_true(dossier.entries[40].summary.contains("4 clearance items"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[41].kind),
-    "moonclaw-proposal",
+    "moonrobo-handoff",
   )
-  assert_true(dossier.entries[41].summary.contains("ephemeris"))
+  assert_true(dossier.entries[41].summary.contains("northeast-stepout"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[42].kind),
-    "moonclaw-task",
+    "moonclaw-proposal",
   )
-  assert_true(
-    dossier.entries[42].summary.contains("5 artifacts with 0 blockers"),
-  )
+  assert_true(dossier.entries[42].summary.contains("ephemeris"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[43].kind),
     "moonclaw-task",
   )
   assert_true(
-    dossier.entries[43].summary.contains("81 windows with 0 blockers"),
+    dossier.entries[43].summary.contains("5 artifacts with 0 blockers"),
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[44].kind),
-    "moonclaw-receipt",
+    "moonclaw-task",
   )
-  assert_true(dossier.entries[44].summary.contains("accepted"))
-  assert_true(dossier.entries[44].summary.contains("Moonrobo handoff block"))
+  assert_true(
+    dossier.entries[44].summary.contains("81 windows with 0 blockers"),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[45].kind),
-    "moonclaw-ephemeris-receipt",
+    "moonclaw-receipt",
   )
-  assert_true(dossier.entries[45].summary.contains("energy block"))
-  assert_true(dossier.entries[45].summary.contains("accepted receipt"))
+  assert_true(dossier.entries[45].summary.contains("accepted"))
+  assert_true(dossier.entries[45].summary.contains("Moonrobo handoff block"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[46].kind),
+    "moonclaw-ephemeris-receipt",
+  )
+  assert_true(dossier.entries[46].summary.contains("energy block"))
+  assert_true(dossier.entries[46].summary.contains("accepted receipt"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[47].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[46].summary.contains("81 measured windows"))
+  assert_true(dossier.entries[47].summary.contains("81 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -238,13 +247,17 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let energy = dossier.review_queue[19]
   assert_eq(energy.item_id, "energy-window")
   assert_true(energy.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let handoff = dossier.review_queue[20]
+  let clearance = dossier.review_queue[20]
+  assert_eq(clearance.item_id, "selected-route-clearance")
+  assert_true(clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence)
+  assert_true(clearance.reason.contains("blocker-clearance actions"))
+  let handoff = dossier.review_queue[21]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let moonclaw = dossier.review_queue[21]
+  let moonclaw = dossier.review_queue[22]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let first_question = dossier.review_queue[22]
+  let first_question = dossier.review_queue[23]
   assert_eq(first_question.item_id, "question-0")
   assert_true(first_question.status == @moonbook.ReviewItemStatus::Open)
 }
@@ -263,6 +276,7 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(markdown.contains("illumination-assessment"))
   assert_true(markdown.contains("power-window-evidence"))
   assert_true(markdown.contains("energy-window"))
+  assert_true(markdown.contains("selected-route-clearance"))
   assert_true(markdown.contains("moonrobo-handoff"))
   assert_true(markdown.contains("moonclaw-proposal"))
   assert_true(markdown.contains("moonclaw-task"))
@@ -309,6 +323,7 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(json.contains("\"IlluminationAssessment\""))
   assert_true(json.contains("\"PowerWindowEvidence\""))
   assert_true(json.contains("\"EnergyWindow\""))
+  assert_true(json.contains("\"SelectedRouteClearance\""))
   assert_true(json.contains("\"MoonroboHandoff\""))
   assert_true(json.contains("\"MoonClawProposal\""))
   assert_true(json.contains("\"MoonClawTask\""))

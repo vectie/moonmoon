@@ -39,6 +39,7 @@ pub(all) struct MoonroboTaskHandoff {
   target_body : String
   decision : @mission.TraverseDecision
   mission_readiness : @mission.MissionSimulationReadiness
+  clearance_plan : @mission.MissionClearancePlan
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
@@ -257,6 +258,12 @@ pub fn route_handoff(
   route : @mission.RouteCandidate,
 ) -> MoonroboTaskHandoff {
   let readiness = mission_readiness(dossier, route)
+  let clearance_plan = @mission.selected_route_clearance_plan(
+    "mission/\{dossier.site.site_id}/\{route.route_id}/selected-route-clearance",
+    route,
+    dossier.energy,
+    readiness,
+  )
   let preconditions = preconditions_from_readiness(readiness)
   let decision = readiness.decision
   {
@@ -267,6 +274,7 @@ pub fn route_handoff(
     target_body: dossier.site.body,
     decision,
     mission_readiness: readiness,
+    clearance_plan,
     execution: execution_envelope(route, readiness),
     preconditions,
     next_action: handoff_next_action(decision),
@@ -315,9 +323,14 @@ pub fn render_markdown(handoffs : Array[MoonroboTaskHandoff]) -> String {
     text += "  - hardware: \{execution_state_label(handoff.execution.hardware_state)}\n"
     text += "  - mission readiness: \{@mission.mission_simulation_readiness_label(handoff.mission_readiness)}\n"
     text += "  - robot simulation status: \{handoff.mission_readiness.robot_simulation_status}\n"
+    text += "  - clearance plan: \{@mission.traverse_decision_label(handoff.clearance_plan.decision)}\n"
     text += "  - authority: \{handoff.execution.authority}\n"
     text += "  - hardware denial: \{handoff.execution.hardware_denial_reason}\n"
     text += "  - next action: \{handoff.next_action}\n"
+    text += "  - selected-route clearance actions:\n"
+    for item in handoff.clearance_plan.items {
+      text += "    - \{item.clearance_id} (\{@mission.mission_clearance_kind_label(item.kind)}): \{@mission.mission_clearance_status_label(item.status)} - \{item.clearance_action}\n"
+    }
     text += "  - mission readiness checks:\n"
     for check in handoff.mission_readiness.checks {
       text += "    - \{check.check_id} (\{@mission.mission_readiness_check_kind_label(check.kind)}): \{@mission.traverse_decision_label(check.decision)} - \{check.reason}\n"

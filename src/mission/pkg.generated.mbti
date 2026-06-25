@@ -36,6 +36,10 @@ pub fn first_trusted_square_traverse_score() -> TraverseScore
 
 pub fn illumination_decision_label(IlluminationAssessment) -> String
 
+pub fn mission_clearance_kind_label(MissionClearanceKind) -> String
+
+pub fn mission_clearance_status_label(MissionClearanceStatus) -> String
+
 pub fn mission_readiness_check_kind_label(MissionReadinessCheckKind) -> String
 
 pub fn mission_simulation_readiness_label(MissionSimulationReadiness) -> String
@@ -45,6 +49,8 @@ pub fn readiness_check(String, MissionReadinessCheckKind, String, TraverseDecisi
 pub fn route_candidate_status_label(RouteCandidate) -> String
 
 pub fn score_traverse(@terrain.TerrainMetrics, TraverseProfile) -> TraverseScore
+
+pub fn selected_route_clearance_plan(String, RouteCandidate, EnergyAssessment, MissionSimulationReadiness) -> MissionClearancePlan
 
 pub fn simulation_readiness(String, String, Array[MissionReadinessCheck]) -> MissionSimulationReadiness
 
@@ -130,6 +136,43 @@ pub(all) struct IlluminationConstraint {
   caution_relief_shadow_risk : Double
   min_confidence : Double
   has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionClearanceItem {
+  clearance_id : String
+  kind : MissionClearanceKind
+  label : String
+  decision : TraverseDecision
+  status : MissionClearanceStatus
+  source_check_id : String
+  evidence_path : String
+  observed : String
+  required : String
+  clearance_action : String
+  accepted_evidence_id : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MissionClearanceKind {
+  TerrainGradeClearance
+  IlluminationConfidenceClearance
+  EnergyMarginClearance
+  MoonBookReviewClearance
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionClearancePlan {
+  plan_id : String
+  route_id : String
+  decision : TraverseDecision
+  items : Array[MissionClearanceItem]
+  blocking_items : Array[String]
+  review_items : Array[String]
+  accepted_items : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MissionClearanceStatus {
+  AcceptedEvidence
+  ActionRequired
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MissionReadinessCheck {

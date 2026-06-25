@@ -72,6 +72,74 @@
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
     },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/direct-lola-window/selected-route-clearance",
+      "route_id": "direct-lola-window",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-direct-lola-window",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-direct-lola-window",
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "observed": "grade 1.1593500000000005, roughness 9.250124999999999 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep direct-lola-window out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-direct-lola-window",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-direct-lola-window",
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.3635749999999998",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for direct-lola-window before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-direct-lola-window",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route direct-lola-window",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-direct-lola-window",
+        "clear-illumination-confidence-direct-lola-window",
+        "clear-energy-margin",
+        "clear-moonbook-review-direct-lola-window"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -208,6 +276,74 @@
       ],
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/west-contour-detour/selected-route-clearance",
+      "route_id": "west-contour-detour",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-west-contour-detour",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-west-contour-detour",
+          "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
+          "observed": "grade 0.7517000000000025, roughness 8.52791666666666 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep west-contour-detour out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-west-contour-detour",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-west-contour-detour",
+          "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.32390624999999956",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for west-contour-detour before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-west-contour-detour",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route west-contour-detour",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-west-contour-detour",
+        "clear-illumination-confidence-west-contour-detour",
+        "clear-energy-margin",
+        "clear-moonbook-review-west-contour-detour"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
     },
     "execution": {
       "simulation_state": "SimulationBlocked",
@@ -346,6 +482,74 @@
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
     },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/north-rim-stepout/selected-route-clearance",
+      "route_id": "north-rim-stepout",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-north-rim-stepout",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-north-rim-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+          "observed": "grade 0.7280000000000001, roughness 7.716124999999998 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep north-rim-stepout out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-north-rim-stepout",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-north-rim-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.28963125000000006",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for north-rim-stepout before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-north-rim-stepout",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route north-rim-stepout",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-north-rim-stepout",
+        "clear-illumination-confidence-north-rim-stepout",
+        "clear-energy-margin",
+        "clear-moonbook-review-north-rim-stepout"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -482,6 +686,74 @@
       ],
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/southwest-bypass/selected-route-clearance",
+      "route_id": "southwest-bypass",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-southwest-bypass",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-southwest-bypass",
+          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+          "observed": "grade 0.6484500000000025, roughness 7.056666666666669 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep southwest-bypass out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-southwest-bypass",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-southwest-bypass",
+          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.2673000000000002",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for southwest-bypass before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-southwest-bypass",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route southwest-bypass",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-southwest-bypass",
+        "clear-illumination-confidence-southwest-bypass",
+        "clear-energy-margin",
+        "clear-moonbook-review-southwest-bypass"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
     },
     "execution": {
       "simulation_state": "SimulationBlocked",
@@ -620,6 +892,74 @@
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
     },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/south-stepout/selected-route-clearance",
+      "route_id": "south-stepout",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-south-stepout",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-south-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
+          "observed": "grade 0.7199500000000001, roughness 7.154583333333335 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep south-stepout out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-south-stepout",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-south-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.27855000000000024",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for south-stepout before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-south-stepout",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route south-stepout",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-south-stepout",
+        "clear-illumination-confidence-south-stepout",
+        "clear-energy-margin",
+        "clear-moonbook-review-south-stepout"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
+    },
     "execution": {
       "simulation_state": "SimulationBlocked",
       "replay_state": "ReplayNeedsReview",
@@ -756,6 +1096,74 @@
       ],
       "review_checks": [],
       "next_action": "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+    },
+    "clearance_plan": {
+      "plan_id": "mission/first-trusted-square/northeast-stepout/selected-route-clearance",
+      "route_id": "northeast-stepout",
+      "decision": "Block",
+      "items": [
+        {
+          "clearance_id": "clear-terrain-grade-northeast-stepout",
+          "kind": "TerrainGradeClearance",
+          "label": "Selected route grade and roughness clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "terrain-northeast-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "observed": "grade 0.5139499999999998, roughness 5.95975 m, route confidence 0.7544",
+          "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
+          "clearance_action": "accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-illumination-confidence-northeast-stepout",
+          "kind": "IlluminationConfidenceClearance",
+          "label": "Selected route illumination confidence clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "illumination-northeast-stepout",
+          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+          "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.22381250000000003",
+          "required": "confidence >= 0.7, relief-shadow risk < 0.22",
+          "clearance_action": "accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-energy-margin",
+          "kind": "EnergyMarginClearance",
+          "label": "Rover energy margin clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "energy-window",
+          "evidence_path": "mission/first-trusted-square/energy-window.json",
+          "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
+          "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
+          "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+          "accepted_evidence_id": ""
+        },
+        {
+          "clearance_id": "clear-moonbook-review-northeast-stepout",
+          "kind": "MoonBookReviewClearance",
+          "label": "MoonBook accepted review clearance",
+          "decision": "Block",
+          "status": "ActionRequired",
+          "source_check_id": "moonbook-review",
+          "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+          "observed": "MoonBook review status is block for selected route northeast-stepout",
+          "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
+          "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+          "accepted_evidence_id": ""
+        }
+      ],
+      "blocking_items": [
+        "clear-terrain-grade-northeast-stepout",
+        "clear-illumination-confidence-northeast-stepout",
+        "clear-energy-margin",
+        "clear-moonbook-review-northeast-stepout"
+      ],
+      "review_items": [],
+      "accepted_items": [],
+      "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
     },
     "execution": {
       "simulation_state": "SimulationBlocked",

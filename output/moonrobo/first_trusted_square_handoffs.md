@@ -9,9 +9,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-direct-lola-window (terrain-grade): action-required - accept a smoother measured route fixture or keep direct-lola-window out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-direct-lola-window (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for direct-lola-window before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-direct-lola-window (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-direct-lola-window (terrain): block - route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
@@ -28,9 +34,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-west-contour-detour (terrain-grade): action-required - accept a smoother measured route fixture or keep west-contour-detour out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-west-contour-detour (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for west-contour-detour before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-west-contour-detour (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-west-contour-detour (terrain): block - route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
@@ -47,9 +59,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-north-rim-stepout (terrain-grade): action-required - accept a smoother measured route fixture or keep north-rim-stepout out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-north-rim-stepout (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for north-rim-stepout before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-north-rim-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-north-rim-stepout (terrain): block - route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
@@ -66,9 +84,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-southwest-bypass (terrain-grade): action-required - accept a smoother measured route fixture or keep southwest-bypass out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-southwest-bypass (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for southwest-bypass before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-southwest-bypass (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-southwest-bypass (terrain): block - route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
@@ -85,9 +109,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-south-stepout (terrain-grade): action-required - accept a smoother measured route fixture or keep south-stepout out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-south-stepout (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for south-stepout before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-south-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-south-stepout (terrain): block - route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
@@ -104,9 +134,15 @@
   - hardware: hardware-denied
   - mission readiness: block
   - robot simulation status: simulation-blocked
+  - clearance plan: block
   - authority: moonmoon-safety-gate-only
   - hardware denial: MoonMoon never emits hardware commands; 6 blocking and 0 review preconditions must clear before any external execution authority can be requested.
   - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
+  - selected-route clearance actions:
+    - clear-terrain-grade-northeast-stepout (terrain-grade): action-required - accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile
+    - clear-illumination-confidence-northeast-stepout (illumination-confidence): action-required - accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable
+    - clear-energy-margin (energy-margin): action-required - accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+    - clear-moonbook-review-northeast-stepout (moonbook-review): action-required - record accepted MoonBook review transitions for the selected route evidence bundle before simulation
   - mission readiness checks:
     - terrain-northeast-stepout (terrain): block - route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation
     - corridor-scan-best-window (corridor): block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked

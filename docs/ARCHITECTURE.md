@@ -184,10 +184,10 @@ absence of ephemeris input. MoonBook indexes this generated boundary as a
 standalone `power-window-evidence` entry before the derived energy budget, so
 the source state remains reviewable independently from route scoring. The
 MoonBook accepts that evidence while the energy-window and local-horizon review
-items remain high-severity blockers. Moonrobo handoff packets include the same
-`power-window-evidence` precondition before the derived energy-window gate, so
-robot-facing simulation packets preserve the difference between missing source
-evidence and computed energy margin.
+items remain high-severity blockers. Moonrobo handoff packets consume the
+mission-owned readiness and clearance contracts below, so robot-facing
+simulation packets preserve the difference between missing source evidence,
+computed energy margin, and selected-route clearance action.
 
 Moonmoon now also has a mission-owned simulation readiness contract in
 `src/mission/readiness.mbt`. MoonRobo handoff packets consume that contract
@@ -195,6 +195,13 @@ instead of recomputing scattered route, illumination, energy, and review gates.
 The selected-route checklist names terrain, corridor, illumination, energy,
 MoonBook review, and robot-simulation status as one explicit allow/review/block
 result before any robot-facing simulation packet can move forward.
+
+`src/mission/clearance.mbt` turns that selected-route readiness result into the
+operator-facing blocker clearance plan. The current plan names the concrete
+action or accepted evidence needed for northeast-stepout terrain grade,
+illumination confidence, energy margin, and MoonBook review. MoonBook indexes
+the plan as `selected-route-clearance`, while MoonRobo embeds the same plan in
+its handoff packet.
 
 The current fixture now has a checked source-file boundary:
 

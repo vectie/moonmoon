@@ -112,6 +112,16 @@ def payload_for_entry(
     return site["power_window_evidence"]
   if kind == "EnergyWindow":
     return site["energy"]
+  if kind == "SelectedRouteClearance":
+    primary_handoff = next(
+      (
+        handoff
+        for handoff in moonrobo
+        if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
+      ),
+      moonrobo[0],
+    )
+    return primary_handoff["clearance_plan"]
   if kind == "MoonroboHandoff":
     return {
       "primary_handoff": next(

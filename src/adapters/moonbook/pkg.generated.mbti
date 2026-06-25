@@ -54,6 +54,7 @@ pub(all) enum BookEntryKind {
   IlluminationAssessment
   PowerWindowEvidence
   EnergyWindow
+  SelectedRouteClearance
   MoonroboHandoff
   MoonClawProposal
   MoonClawTask

@@ -55,7 +55,31 @@ test "first trusted square primary Moonrobo handoff follows promoted best corrid
     handoff.mission_readiness.readiness_id,
     "mission/first-trusted-square/northeast-stepout/simulation-readiness",
   )
+  assert_eq(
+    handoff.clearance_plan.plan_id,
+    "mission/first-trusted-square/northeast-stepout/selected-route-clearance",
+  )
   assert_eq(handoff.mission_readiness.checks.length(), 6)
+  assert_eq(handoff.clearance_plan.items.length(), 4)
+  assert_eq(handoff.clearance_plan.blocking_items.length(), 4)
+  assert_true(
+    handoff.clearance_plan.blocking_items.contains(
+      "clear-terrain-grade-northeast-stepout",
+    ),
+  )
+  assert_true(
+    handoff.clearance_plan.blocking_items.contains(
+      "clear-illumination-confidence-northeast-stepout",
+    ),
+  )
+  assert_true(
+    handoff.clearance_plan.blocking_items.contains("clear-energy-margin"),
+  )
+  assert_true(
+    handoff.clearance_plan.blocking_items.contains(
+      "clear-moonbook-review-northeast-stepout",
+    ),
+  )
   assert_true(
     handoff.preconditions.any(fn(precondition) {
       precondition.precondition_id == "terrain-northeast-stepout" &&
@@ -131,6 +155,10 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(markdown.contains("power-window evidence"))
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("mission readiness"))
+  assert_true(markdown.contains("clearance plan"))
+  assert_true(markdown.contains("selected-route clearance actions"))
+  assert_true(markdown.contains("clear-terrain-grade-northeast-stepout"))
+  assert_true(markdown.contains("clear-energy-margin"))
   assert_true(markdown.contains("moonbook-review"))
   assert_true(markdown.contains("robot-simulation"))
   assert_true(markdown.contains("must not simulate"))
@@ -146,6 +174,9 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(
     json.contains("\"robot_simulation_status\": \"simulation-blocked\""),
   )
+  assert_true(json.contains("\"clearance_plan\""))
+  assert_true(json.contains("\"clearance_id\": \"clear-energy-margin\""))
+  assert_true(json.contains("\"status\": \"ActionRequired\""))
   assert_true(json.contains("\"kind\": \"MoonBookReviewReadiness\""))
   assert_true(json.contains("\"check_id\": \"moonbook-review\""))
   assert_true(json.contains("\"precondition_id\": \"energy-window\""))

@@ -205,6 +205,11 @@
   - claim: derived
   - confidence: 0.45
   - path: mission/first-trusted-square/energy-window.json
+- mission/first-trusted-square/selected-route-clearance: Selected route clearance plan for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: selected-route-clearance
+  - claim: derived
+  - confidence: 0.62
+  - path: mission/first-trusted-square/selected-route-clearance.json
 - moonrobo/first-trusted-square/simulation-preconditions: Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moonrobo-handoff
   - claim: derived
@@ -263,6 +268,7 @@
 - illumination-northeast-stepout [high/needs-evidence] Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked -> mission-review
 - energy-window [high/needs-evidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
+- selected-route-clearance [high/needs-evidence] selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation -> mission-review
 - moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
@@ -391,6 +397,12 @@
   - append only: true
   - source: energy/first-trusted-square/conservative-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation
+- review-selected-route-clearance-request-evidence: request-evidence selected-route-clearance -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation
 - review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as moonrobo
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)

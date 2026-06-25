@@ -13,6 +13,7 @@ pub(all) enum BookEntryKind {
   IlluminationAssessment
   PowerWindowEvidence
   EnergyWindow
+  SelectedRouteClearance
   MoonroboHandoff
   MoonClawProposal
   MoonClawTask
@@ -109,6 +110,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     IlluminationAssessment => "illumination-assessment"
     PowerWindowEvidence => "power-window-evidence"
     EnergyWindow => "energy-window"
+    SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
@@ -430,6 +432,16 @@ fn review_evidence_refs(
       ),
     )
   }
+  if item.item_id == "selected-route-clearance" {
+    refs.push(
+      review_evidence_ref(
+        workspace,
+        "selected-route-clearance",
+        "mission/\{dossier.site.site_id}/selected-route-clearance",
+        "mission/\{dossier.site.site_id}/selected-route-clearance.json",
+      ),
+    )
+  }
   if item.item_id == "moonclaw-proposals" {
     refs.push(
       review_evidence_ref(
@@ -715,6 +727,22 @@ fn moonrobo_handoff_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn selected_route_clearance_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let selected_route = primary_route_candidate(dossier)
+  let handoff = @moonrobo.route_handoff(dossier, selected_route)
+  let plan = handoff.clearance_plan
+  {
+    entry_id: "mission/\{dossier.site.site_id}/selected-route-clearance",
+    title: "Selected route clearance plan for \{dossier.site.name}",
+    kind: SelectedRouteClearance,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.62,
+    path: "mission/\{dossier.site.site_id}/selected-route-clearance.json",
+    summary: "\{@mission.traverse_decision_label(plan.decision)} \{plan.route_id}: \{plan.items.length()} clearance items, \{plan.blocking_items.length()} blockers",
+  }
+}
+
+///|
 fn moonclaw_proposal_entry(dossier : @site.SiteDossier) -> BookEntry {
   let proposal = @moonclaw.ephemeris_acquisition_proposal(dossier)
   {
@@ -917,6 +945,17 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
     dossier,
     primary_route_candidate(dossier),
   )
+  if moonrobo_handoff.clearance_plan.decision !=
+    @mission.TraverseDecision::Allow {
+    items.push(
+      review_item(
+        "selected-route-clearance",
+        decision_severity(moonrobo_handoff.clearance_plan.decision),
+        "selected route \{moonrobo_handoff.route_id} needs \{moonrobo_handoff.clearance_plan.blocking_items.length()} blocker-clearance actions before simulation: \{moonrobo_handoff.clearance_plan.next_action}",
+        "mission-review",
+      ),
+    )
+  }
   if moonrobo_handoff.decision != @mission.TraverseDecision::Allow {
     items.push(
       review_item(
@@ -994,6 +1033,7 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
   }
   entries.push(power_window_evidence_entry(dossier))
   entries.push(energy_entry(dossier))
+  entries.push(selected_route_clearance_entry(dossier))
   entries.push(moonrobo_handoff_entry(dossier))
   entries.push(moonclaw_proposal_entry(dossier))
   entries.push(moonclaw_ephemeris_task_entry(dossier))

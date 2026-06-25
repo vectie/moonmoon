@@ -161,7 +161,7 @@ fn robot_gate(dossier : @site.SiteDossier) -> EvidenceGate {
     },
     proof_artifact: "output/moonrobo/first_trusted_square_handoffs.json",
     blocker: "terrain, route, illumination, and energy gates must all clear before physical execution",
-    next_action: "use the mission readiness checklist to clear selected-route terrain, illumination, energy, and review blockers before simulation",
+    next_action: "use the selected-route clearance plan to record accepted evidence or action requirements before simulation",
   }
 }
 
@@ -210,7 +210,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       } else {
         Blocked
       },
-      next_output: "selected-route blocker clearance plan",
+      next_output: "accepted-evidence transition capture for selected-route clearance",
     },
     {
       layer_id: "evidence-projection",
@@ -396,17 +396,32 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "selected-route-blocker-clearance",
-      priority: 90,
+      priority: 20,
       lane: MissionLane,
       title: "Clear the selected-route blockers that keep simulation denied",
       outcome: "The primary route can move from blocked handoff evidence toward a reviewable simulation packet",
       depends_on: [
-        "src/mission/readiness.mbt", "src/mission/traverse.mbt", "output/moonrobo/first_trusted_square_handoffs.json",
+        "src/mission/readiness.mbt", "src/mission/clearance.mbt", "output/moonrobo/first_trusted_square_handoffs.json",
       ],
       evidence: [
-        "output/site/first_trusted_square.json", "output/moonbook/workspaces/first-trusted-square/review_queue.json",
+        "output/moonrobo/first_trusted_square_handoffs.json", "output/moonbook/workspaces/first-trusted-square/review_queue.json",
       ],
-      done_when: "the selected northeast-stepout route has explicit clearance actions or accepted evidence for terrain grade, illumination confidence, energy margin, and MoonBook review",
+      done_when: "done: selected northeast-stepout route has explicit clearance actions for terrain grade, illumination confidence, energy margin, and MoonBook review",
+    },
+    {
+      task_id: "operator-clearance-transition-capture",
+      priority: 85,
+      lane: SuiteLane,
+      title: "Let operator review transitions drive selected-route clearance status",
+      outcome: "MoonBook accepted evidence can move clearance items from action-required toward accepted-evidence without changing source facts",
+      depends_on: [
+        "src/mission/clearance.mbt", "src/adapters/moonbook/export.mbt", "src/ui/rabbita_moon/page.mbt",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      done_when: "operator-authored or imported review transitions can accept/reject the selected-route terrain, illumination, energy, and MoonBook clearance items",
     },
   ]
 }

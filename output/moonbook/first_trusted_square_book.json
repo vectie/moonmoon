@@ -364,6 +364,15 @@
       "summary": "block with 1265 Wh required and 234.938073 Wh verified available: revise rover power model, route count, or site window before simulation"
     },
     {
+      "entry_id": "mission/first-trusted-square/selected-route-clearance",
+      "title": "Selected route clearance plan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "SelectedRouteClearance",
+      "claim_kind": "Derived",
+      "confidence": 0.62,
+      "path": "mission/first-trusted-square/selected-route-clearance.json",
+      "summary": "block northeast-stepout: 4 clearance items, 4 blockers"
+    },
+    {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
       "title": "Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonroboHandoff",
@@ -587,6 +596,14 @@
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-energy-window-request-evidence"
+    },
+    {
+      "item_id": "selected-route-clearance",
+      "severity": "high",
+      "reason": "selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-selected-route-clearance-request-evidence"
     },
     {
       "item_id": "moonrobo-handoff",
@@ -1049,6 +1066,27 @@
         }
       ],
       "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
+    },
+    {
+      "transition_id": "review-selected-route-clearance-request-evidence",
+      "item_id": "selected-route-clearance",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "selected-route-clearance",
+          "entry_id": "mission/first-trusted-square/selected-route-clearance",
+          "path": "mission/first-trusted-square/selected-route-clearance.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
     },
     {
       "transition_id": "review-moonrobo-handoff-request-evidence",

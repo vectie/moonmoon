@@ -164,6 +164,14 @@
       "last_transition_id": "review-energy-window-request-evidence"
     },
     {
+      "item_id": "selected-route-clearance",
+      "severity": "high",
+      "reason": "selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-selected-route-clearance-request-evidence"
+    },
+    {
       "item_id": "moonrobo-handoff",
       "severity": "high",
       "reason": "Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared",
