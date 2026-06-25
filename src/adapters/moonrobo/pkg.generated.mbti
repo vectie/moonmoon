@@ -19,15 +19,33 @@ pub fn first_trusted_square_markdown() -> String
 
 pub fn first_trusted_square_primary_handoff() -> MoonroboTaskHandoff
 
+pub fn first_trusted_square_remediation_margin_modeling_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_modeling_markdown() -> String
+
+pub fn first_trusted_square_remediation_margin_modeling_pass() -> RemediationMarginModelingPass
+
+pub fn first_trusted_square_remediation_margin_modeling_passes() -> Array[RemediationMarginModelingPass]
+
 pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
 
 pub fn handoff_status_label(MoonroboTaskHandoff) -> String
 
 pub fn precondition_status_label(RobotPrecondition) -> String
 
+pub fn remediation_margin_modeling_pass(String, String, String, String, String, String, Array[RemediationMarginModelingInput], MoonroboExecutionState, String, Bool) -> RemediationMarginModelingPass
+
+pub fn remediation_margin_modeling_result_status_label(RemediationMarginModelingResultStatus) -> String
+
+pub fn remediation_margin_modeling_state_label(RemediationMarginModelingState) -> String
+
 pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
+
+pub fn render_remediation_margin_modeling_json(Array[RemediationMarginModelingPass]) -> Json
+
+pub fn render_remediation_margin_modeling_markdown(Array[RemediationMarginModelingPass]) -> String
 
 pub fn render_simulation_review_decision_markdown(SimulationReviewCloseoutDecision) -> String
 
@@ -83,6 +101,58 @@ pub(all) struct MoonroboTaskHandoff {
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginModelingInput {
+  margin_id : String
+  source_artifact_path : String
+  receipt_status : String
+  current_state : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginModelingPass {
+  modeling_pass_id : String
+  site_id : String
+  route_id : String
+  source_receipt_id : String
+  source_receipt_path : String
+  source_task_id : String
+  source_remediation_state : String
+  state : RemediationMarginModelingState
+  active_margin_count : Int
+  cleared_margin_count : Int
+  still_blocking_margin_count : Int
+  margin_results : Array[RemediationMarginModelingResult]
+  commands_evaluated : Array[String]
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginModelingResult {
+  margin_id : String
+  source_artifact_path : String
+  receipt_status : String
+  current_state : String
+  modeling_evidence_path : String
+  modeling_command : String
+  result_status : RemediationMarginModelingResultStatus
+  cleared : Bool
+  result_rationale : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginModelingResultStatus {
+  MarginCleared
+  MarginStillBlocking
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginModelingState {
+  AllMarginsCleared
+  SomeMarginsCleared
+  AllMarginsStillBlocking
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotPrecondition {

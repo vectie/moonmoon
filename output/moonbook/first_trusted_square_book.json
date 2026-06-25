@@ -463,6 +463,15 @@
       "summary": "OpenMarginsCarriedForward with 3 remediation margins still blocking (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 cleared, and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonrobo/first-trusted-square/remediation-margin-modeling",
+      "title": "MoonRobo remediation-margin modeling pass for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboRemediationMarginModeling",
+      "claim_kind": "Derived",
+      "confidence": 0.68,
+      "path": "moonrobo/first-trusted-square/remediation-margin-modeling.json",
+      "summary": "AllMarginsStillBlocking with 3 still-blocking margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) from OpenMarginsCarriedForward; hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
       "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawEphemerisReceipt",

@@ -944,7 +944,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-modeling-pass",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Run a bounded modeling pass against remediation margins",
       outcome: "MoonRobo can see whether the terrain, horizon, and energy margin receipt clears any blocker or must carry all margins forward under HardwareDenied authority",
@@ -956,7 +956,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
         "scripts/check_moonrobo_remediation_margin_modeling.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin modeling pass that consumes the receipt, maps terrain/horizon/energy margins to cleared or still-blocking states, and preserves HardwareDenied authority",
+      done_when: "done: MoonRobo emits a remediation-margin modeling pass that consumes the receipt, maps terrain/horizon/energy margins to cleared or still-blocking states, and preserves HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-modeling-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin modeling in Rabbita",
+      outcome: "Operators can inspect the MoonRobo remediation-margin modeling pass, still-blocking terrain/horizon/energy results, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-modeling.json",
+        "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
+        "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_modeling_surface.py",
+      ],
+      done_when: "Rabbita renders the MoonRobo remediation-margin modeling pass with AllMarginsStillBlocking state, terrain/horizon/energy result ids, and HardwareDenied authority",
     },
   ]
 }

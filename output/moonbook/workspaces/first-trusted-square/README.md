@@ -15,12 +15,13 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source imported MoonClaw gap task: `output/moonclaw/first_trusted_square_moonrobo_gap_task.json`
 - Source imported MoonClaw gap receipt: `output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json`
 - Source imported MoonRobo gap modeling: `output/moonrobo/first_trusted_square_gap_remediation_modeling.json`
+- Source MoonRobo remediation-margin modeling: `output/moonrobo/first_trusted_square_remediation_margin_modeling.json`
 - Source MoonRobo simulation review packet: `output/moonrobo/first_trusted_square_simulation_review_packet.json`
 - Source MoonRobo simulation review decision: `output/moonrobo/first_trusted_square_simulation_review_decision.json`
 - Source MoonRobo simulation blocker reduction: `output/moonrobo/first_trusted_square_simulation_blocker_reduction.json`
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 59
+- Entries: 60
 - Review queue items: 29
 - Review transitions: 29

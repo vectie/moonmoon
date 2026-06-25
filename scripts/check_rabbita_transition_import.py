@@ -219,6 +219,12 @@ def materialize_temp_workspace(root: Path) -> None:
     materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON,
     [],
   )
+  moonrobo_remediation_margin_modeling = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_MODELING_JSON,
+      [],
+    )
+  )
   moonrobo_simulation_review_packet = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
@@ -259,6 +265,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_gap_receipts,
     moonrobo,
     moonrobo_gap_modeling,
+    moonrobo_remediation_margin_modeling,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,

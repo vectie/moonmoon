@@ -40,6 +40,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw corridor receipts json
     #|  moon run cmd/main -- moonrobo handoff
     #|  moon run cmd/main -- moonrobo handoff json
+    #|  moon run cmd/main -- moonrobo remediation margins
+    #|  moon run cmd/main -- moonrobo remediation margins json
     #|
   println(help)
 }
@@ -149,6 +151,20 @@ fn main {
       println(@moonrobo.first_trusted_square_json().stringify(indent=2))
     } else {
       println(@moonrobo.first_trusted_square_markdown())
+    }
+  } else if args.contains("moonrobo") &&
+    args.contains("remediation") &&
+    args.contains("margins") {
+    if output_json {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_modeling_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_modeling_markdown(),
+      )
     }
   } else if args.contains("moonbook") && args.contains("dossier") {
     if output_json {

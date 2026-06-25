@@ -336,6 +336,84 @@ test "Moonrobo execution state labels distinguish simulation replay and hardware
 }
 
 ///|
+test "Moonrobo remediation margin modeling consumes receipt contract" {
+  let pass = @moonrobo.first_trusted_square_remediation_margin_modeling_pass()
+  assert_eq(
+    pass.modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/modeling-pass",
+  )
+  assert_eq(
+    pass.source_receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/current-receipt",
+  )
+  assert_eq(
+    pass.source_task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/task",
+  )
+  assert_eq(pass.source_remediation_state, "OpenMarginsCarriedForward")
+  assert_eq(pass.route_id, "northeast-stepout")
+  assert_true(
+    pass.state
+    is @moonrobo.RemediationMarginModelingState::AllMarginsStillBlocking,
+  )
+  assert_eq(pass.active_margin_count, 3)
+  assert_eq(pass.cleared_margin_count, 0)
+  assert_eq(pass.still_blocking_margin_count, 3)
+  assert_true(
+    pass.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(pass.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(pass.hardware_denied)
+  assert_eq(pass.margin_results.length(), 3)
+  assert_true(
+    pass.margin_results.all(fn(result) {
+      result.result_status ==
+      @moonrobo.RemediationMarginModelingResultStatus::MarginStillBlocking &&
+      !result.cleared
+    }),
+  )
+  assert_true(
+    pass.margin_results.any(fn(result) {
+      result.margin_id == "terrain-northeast-stepout" &&
+      result.modeling_command.contains(
+        "check_selected_route_terrain_remediation.py",
+      ) &&
+      result.modeling_evidence_path.contains("terrain_remediation")
+    }),
+  )
+  assert_true(
+    pass.margin_results.any(fn(result) {
+      result.margin_id == "illumination-northeast-stepout" &&
+      result.modeling_command.contains("check_selected_route_horizon_model.py") &&
+      result.modeling_evidence_path.contains("horizon")
+    }),
+  )
+  assert_true(
+    pass.margin_results.any(fn(result) {
+      result.margin_id == "energy-window" &&
+      result.modeling_command.contains("check_energy_margin_remediation.py") &&
+      result.modeling_evidence_path.contains("energy_remediation")
+    }),
+  )
+  assert_true(
+    pass.next_action.contains("carry the terrain, local-horizon, and energy"),
+  )
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_modeling_markdown()
+  assert_true(markdown.contains("MoonRobo Remediation Margin Modeling Passes"))
+  assert_true(markdown.contains("AllMarginsStillBlocking"))
+  assert_true(markdown.contains("terrain-northeast-stepout"))
+  assert_true(markdown.contains("moonmoon-safety-gate-only"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_modeling_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains("\"source_remediation_state\": \"OpenMarginsCarriedForward\""),
+  )
+  assert_true(json.contains("\"MarginStillBlocking\""))
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))

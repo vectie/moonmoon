@@ -1,0 +1,27 @@
+# MoonRobo Remediation Margin Modeling Passes
+
+- pass: moonrobo/first-trusted-square/remediation-margin-v1/modeling-pass
+  - route: northeast-stepout
+  - source receipt: moonclaw/first-trusted-square/remediation-margin-v1/current-receipt
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/task
+  - source state: OpenMarginsCarriedForward
+  - state: AllMarginsStillBlocking
+  - active margins: 3
+  - cleared margins: 0
+  - still blocking margins: 3
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - next action: carry the terrain, local-horizon, and energy margins forward; regenerate their evidence before MoonRobo simulation consumption can change
+  - margin results:
+    - terrain-northeast-stepout: MarginStillBlocking
+      - command: python3 scripts/check_selected_route_terrain_remediation.py
+      - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - rationale: terrain grade and roughness evidence still carries the selected-route terrain margin
+    - illumination-northeast-stepout: MarginStillBlocking
+      - command: python3 scripts/check_selected_route_horizon_model.py
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - rationale: local horizon evidence still carries the terrain-shadow illumination margin
+    - energy-window: MarginStillBlocking
+      - command: python3 scripts/check_energy_margin_remediation.py
+      - evidence: output/mission/first_trusted_square_energy_remediation.json
+      - rationale: bounded selected-route demand evidence still carries the negative energy margin

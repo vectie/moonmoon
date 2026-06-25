@@ -36,6 +36,9 @@ MOONCLAW_GAP_RECEIPT_JSON = (
 MOONROBO_GAP_MODELING_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json"
 )
+MOONROBO_REMEDIATION_MARGIN_MODELING_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_remediation_margin_modeling.json"
+)
 MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
 )
@@ -244,6 +247,7 @@ def payload_for_entry(
   moonclaw_gap_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
   moonrobo_gap_modeling: list[dict[str, Any]],
+  moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
@@ -320,6 +324,11 @@ def payload_for_entry(
       "primary_modeling_pass": moonrobo_gap_modeling[0],
       "modeling_passes": moonrobo_gap_modeling,
     }
+  if kind == "MoonroboRemediationMarginModeling":
+    return {
+      "primary_modeling_pass": moonrobo_remediation_margin_modeling[0],
+      "modeling_passes": moonrobo_remediation_margin_modeling,
+    }
   if kind == "MoonroboSimulationReviewPacket":
     return moonrobo_simulation_review_packet
   if kind == "MoonroboSimulationReviewDecision":
@@ -395,6 +404,7 @@ def workspace_files(
   moonclaw_gap_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
   moonrobo_gap_modeling: list[dict[str, Any]],
+  moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
@@ -451,6 +461,10 @@ def workspace_files(
     source_files.append(
       "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
     )
+  if moonrobo_remediation_margin_modeling:
+    source_files.append(
+      "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
+    )
   if moonrobo_simulation_review_packet:
     source_files.append(
       "output/moonrobo/first_trusted_square_simulation_review_packet.json",
@@ -495,6 +509,7 @@ def workspace_files(
       moonclaw_gap_receipts,
       moonrobo,
       moonrobo_gap_modeling,
+      moonrobo_remediation_margin_modeling,
       moonrobo_simulation_review_packet,
       moonrobo_simulation_review_decision,
       moonrobo_simulation_blocker_reduction,
@@ -557,6 +572,8 @@ def workspace_files(
     readme += "- Source imported MoonClaw gap receipt: `output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json`\n"
   if moonrobo_gap_modeling:
     readme += "- Source imported MoonRobo gap modeling: `output/moonrobo/first_trusted_square_gap_remediation_modeling.json`\n"
+  if moonrobo_remediation_margin_modeling:
+    readme += "- Source MoonRobo remediation-margin modeling: `output/moonrobo/first_trusted_square_remediation_margin_modeling.json`\n"
   if moonrobo_simulation_review_packet:
     readme += "- Source MoonRobo simulation review packet: `output/moonrobo/first_trusted_square_simulation_review_packet.json`\n"
   if moonrobo_simulation_review_decision:
@@ -647,6 +664,10 @@ def main() -> int:
   moonclaw_gap_receipts = load_optional_json(MOONCLAW_GAP_RECEIPT_JSON, [])
   moonrobo = load_json(MOONROBO_JSON)
   moonrobo_gap_modeling = load_optional_json(MOONROBO_GAP_MODELING_JSON, [])
+  moonrobo_remediation_margin_modeling = load_optional_json(
+    MOONROBO_REMEDIATION_MARGIN_MODELING_JSON,
+    [],
+  )
   moonrobo_simulation_review_packet = load_optional_json(
     MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
     {},
@@ -677,6 +698,7 @@ def main() -> int:
     moonclaw_gap_receipts,
     moonrobo,
     moonrobo_gap_modeling,
+    moonrobo_remediation_margin_modeling,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,

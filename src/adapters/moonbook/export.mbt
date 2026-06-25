@@ -19,6 +19,7 @@ pub(all) enum BookEntryKind {
   SelectedRouteClearance
   MoonroboHandoff
   MoonroboGapModeling
+  MoonroboRemediationMarginModeling
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
@@ -122,6 +123,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboGapModeling => "moonrobo-gap-modeling"
+    MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
     MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
@@ -1003,6 +1005,25 @@ fn moonclaw_remediation_margin_receipt_entry(
 }
 
 ///|
+fn moonrobo_remediation_margin_modeling_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let pass = @moonrobo.first_trusted_square_remediation_margin_modeling_pass()
+  let margin_ids = pass.margin_results
+    .map(fn(result) { result.margin_id })
+    .join(", ")
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/remediation-margin-modeling",
+    title: "MoonRobo remediation-margin modeling pass for \{dossier.site.name}",
+    kind: MoonroboRemediationMarginModeling,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.68,
+    path: "moonrobo/\{dossier.site.site_id}/remediation-margin-modeling.json",
+    summary: "\{@moonrobo.remediation_margin_modeling_state_label(pass.state)} with \{pass.still_blocking_margin_count} still-blocking margins (\{margin_ids}) from \{pass.source_remediation_state}; hardware authority \{pass.hardware_authority} at \{@moonrobo.execution_state_label(pass.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1261,6 +1282,7 @@ fn book_entries(
   entries.push(moonclaw_remediation_margin_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_remediation_margin_receipt_entry(dossier))
+  entries.push(moonrobo_remediation_margin_modeling_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries
