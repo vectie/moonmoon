@@ -71,6 +71,7 @@ pub(all) enum BookEntryKind {
   MoonroboRemediationMarginRefreshFollowupModeling
   MoonroboRemediationMarginRefreshProjection
   MoonroboRemediationMarginRefreshFollowupProjection
+  MoonroboRemediationMarginCycleCloseoutPolicy
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask

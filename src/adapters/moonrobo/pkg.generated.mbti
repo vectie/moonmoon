@@ -19,6 +19,12 @@ pub fn first_trusted_square_markdown() -> String
 
 pub fn first_trusted_square_primary_handoff() -> MoonroboTaskHandoff
 
+pub fn first_trusted_square_remediation_margin_cycle_closeout_policy() -> RemediationMarginCycleCloseoutPolicy
+
+pub fn first_trusted_square_remediation_margin_cycle_closeout_policy_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_cycle_closeout_policy_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_modeling_json() -> Json
 
 pub fn first_trusted_square_remediation_margin_modeling_markdown() -> String
@@ -67,6 +73,14 @@ pub fn handoff_status_label(MoonroboTaskHandoff) -> String
 
 pub fn precondition_status_label(RobotPrecondition) -> String
 
+pub fn remediation_margin_cycle_closeout_policy(RemediationMarginRefreshProjection, String, RemediationMarginRefreshFollowupProjection, String) -> RemediationMarginCycleCloseoutPolicy
+
+pub fn remediation_margin_cycle_closeout_policy_json(RemediationMarginCycleCloseoutPolicy) -> Json
+
+pub fn remediation_margin_cycle_closeout_status_label(RemediationMarginCycleCloseoutStatus) -> String
+
+pub fn remediation_margin_cycle_disposition_label(RemediationMarginCycleDisposition) -> String
+
 pub fn remediation_margin_modeling_pass(String, String, String, String, String, String, Array[RemediationMarginModelingInput], MoonroboExecutionState, String, Bool) -> RemediationMarginModelingPass
 
 pub fn remediation_margin_modeling_result_status_label(RemediationMarginModelingResultStatus) -> String
@@ -106,6 +120,8 @@ pub fn remediation_margin_refresh_projection_status_label(RemediationMarginRefre
 pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
+
+pub fn render_remediation_margin_cycle_closeout_policy_markdown(RemediationMarginCycleCloseoutPolicy) -> String
 
 pub fn render_remediation_margin_modeling_json(Array[RemediationMarginModelingPass]) -> Json
 
@@ -179,6 +195,52 @@ pub(all) struct MoonroboTaskHandoff {
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginCycleCloseoutItem {
+  margin_id : String
+  refresh_id : String
+  blocker_domain : String
+  attempt_count : Int
+  disposition : RemediationMarginCycleDisposition
+  required_evidence : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginCycleCloseoutPolicy {
+  policy_id : String
+  site_id : String
+  route_id : String
+  source_refresh_projection_id : String
+  source_refresh_projection_status : RemediationMarginRefreshProjectionStatus
+  source_refresh_projection_path : String
+  source_followup_projection_id : String
+  source_followup_projection_status : RemediationMarginRefreshFollowupProjectionStatus
+  source_followup_projection_path : String
+  may_consume_simulation : Bool
+  simulation_state : MoonroboExecutionState
+  closeout_status : RemediationMarginCycleCloseoutStatus
+  refresh_cycle_count : Int
+  blocker_count : Int
+  blocking_refresh_ids : Array[String]
+  blocking_margin_ids : Array[String]
+  dispositions : Array[RemediationMarginCycleCloseoutItem]
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  reason : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginCycleCloseoutStatus {
+  NoConsumeCycleClosedForPolicy
+  CycleReadyForSimulationReview
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginCycleDisposition {
+  RetryWithNewEvidence
+  EscalateToOperatorDecision
+  FreezeUntilNewSourceEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RemediationMarginModelingInput {

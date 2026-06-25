@@ -862,6 +862,116 @@ test "Moonrobo remediation margin refresh follow-up projection blocks simulation
 }
 
 ///|
+test "Moonrobo remediation margin cycle closeout policy stops automatic follow-up loops" {
+  let policy = @moonrobo.first_trusted_square_remediation_margin_cycle_closeout_policy()
+  assert_eq(
+    policy.policy_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/cycle-closeout-policy",
+  )
+  assert_eq(policy.route_id, "northeast-stepout")
+  assert_eq(
+    policy.source_refresh_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection",
+  )
+  assert_true(
+    policy.source_refresh_projection_status
+    is @moonrobo.RemediationMarginRefreshProjectionStatus::NoConsumeRefreshSimulationBlocked,
+  )
+  assert_eq(
+    policy.source_refresh_projection_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+  )
+  assert_eq(
+    policy.source_followup_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-followup-projection",
+  )
+  assert_true(
+    policy.source_followup_projection_status
+    is @moonrobo.RemediationMarginRefreshFollowupProjectionStatus::NoConsumeFollowupRefreshSimulationBlocked,
+  )
+  assert_eq(
+    policy.source_followup_projection_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
+  )
+  assert_true(!policy.may_consume_simulation)
+  assert_true(
+    policy.simulation_state
+    is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(
+    policy.closeout_status
+    is @moonrobo.RemediationMarginCycleCloseoutStatus::NoConsumeCycleClosedForPolicy,
+  )
+  assert_eq(policy.refresh_cycle_count, 2)
+  assert_eq(policy.blocker_count, 3)
+  assert_true(
+    policy.blocking_refresh_ids.contains("refresh-terrain-northeast-stepout"),
+  )
+  assert_true(
+    policy.blocking_refresh_ids.contains(
+      "refresh-illumination-northeast-stepout",
+    ),
+  )
+  assert_true(policy.blocking_refresh_ids.contains("refresh-energy-window"))
+  assert_true(policy.blocking_margin_ids.contains("terrain-northeast-stepout"))
+  assert_true(
+    policy.blocking_margin_ids.contains("illumination-northeast-stepout"),
+  )
+  assert_true(policy.blocking_margin_ids.contains("energy-window"))
+  assert_eq(policy.dispositions.length(), 3)
+  assert_true(
+    policy.dispositions.any(fn(item) {
+      item.margin_id == "terrain-northeast-stepout" &&
+      item.blocker_domain == "terrain" &&
+      item.disposition
+      is @moonrobo.RemediationMarginCycleDisposition::EscalateToOperatorDecision
+    }),
+  )
+  assert_true(
+    policy.dispositions.any(fn(item) {
+      item.margin_id == "illumination-northeast-stepout" &&
+      item.blocker_domain == "local-horizon" &&
+      item.disposition
+      is @moonrobo.RemediationMarginCycleDisposition::RetryWithNewEvidence
+    }),
+  )
+  assert_true(
+    policy.dispositions.any(fn(item) {
+      item.margin_id == "energy-window" &&
+      item.blocker_domain == "energy" &&
+      item.disposition
+      is @moonrobo.RemediationMarginCycleDisposition::FreezeUntilNewSourceEvidence
+    }),
+  )
+  assert_true(
+    policy.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(policy.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(policy.hardware_denied)
+  assert_true(policy.reason.contains("terrain/horizon/energy blockers"))
+  assert_true(policy.next_action.contains("retry/escalate/freeze dispositions"))
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_cycle_closeout_policy_markdown()
+  assert_true(
+    markdown.contains("MoonRobo Remediation Margin Cycle Closeout Policy"),
+  )
+  assert_true(markdown.contains("NoConsumeCycleClosedForPolicy"))
+  assert_true(markdown.contains("NoConsumeRefreshSimulationBlocked"))
+  assert_true(markdown.contains("NoConsumeFollowupRefreshSimulationBlocked"))
+  assert_true(markdown.contains("EscalateToOperatorDecision"))
+  assert_true(markdown.contains("RetryWithNewEvidence"))
+  assert_true(markdown.contains("FreezeUntilNewSourceEvidence"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_cycle_closeout_policy_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"simulation_state\": \"SimulationBlocked\""))
+  assert_true(
+    json.contains("\"closeout_status\": \"NoConsumeCycleClosedForPolicy\""),
+  )
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))

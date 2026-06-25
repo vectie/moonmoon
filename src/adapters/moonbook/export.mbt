@@ -25,6 +25,7 @@ pub(all) enum BookEntryKind {
   MoonroboRemediationMarginRefreshFollowupModeling
   MoonroboRemediationMarginRefreshProjection
   MoonroboRemediationMarginRefreshFollowupProjection
+  MoonroboRemediationMarginCycleCloseoutPolicy
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
@@ -143,6 +144,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonrobo-remediation-margin-refresh-projection"
     MoonroboRemediationMarginRefreshFollowupProjection =>
       "moonrobo-remediation-margin-refresh-followup-projection"
+    MoonroboRemediationMarginCycleCloseoutPolicy =>
+      "moonrobo-remediation-margin-cycle-closeout-policy"
     MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
@@ -1217,6 +1220,29 @@ fn moonrobo_remediation_margin_refresh_followup_projection_entry(
 }
 
 ///|
+fn moonrobo_remediation_margin_cycle_closeout_policy_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let policy = @moonrobo.first_trusted_square_remediation_margin_cycle_closeout_policy()
+  let refresh_ids = policy.blocking_refresh_ids.join(", ")
+  let margin_ids = policy.blocking_margin_ids.join(", ")
+  let dispositions = policy.dispositions
+    .map(fn(item) {
+      "\{item.blocker_domain}=\{@moonrobo.remediation_margin_cycle_disposition_label(item.disposition)}"
+    })
+    .join(", ")
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/remediation-margin-cycle-closeout-policy",
+    title: "MoonRobo remediation-margin cycle closeout policy for \{dossier.site.name}",
+    kind: MoonroboRemediationMarginCycleCloseoutPolicy,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.7,
+    path: "moonrobo/\{dossier.site.site_id}/remediation-margin-cycle-closeout-policy.json",
+    summary: "\{@moonrobo.remediation_margin_cycle_closeout_status_label(policy.closeout_status)} after \{policy.refresh_cycle_count} refresh cycles with \{policy.blocker_count} terrain/horizon/energy blockers (\{refresh_ids}) over margins (\{margin_ids}); dispositions \{dispositions}; simulation \{@moonrobo.execution_state_label(policy.simulation_state)}, hardware authority \{policy.hardware_authority} at \{@moonrobo.execution_state_label(policy.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1491,6 +1517,7 @@ fn book_entries(
   entries.push(
     moonrobo_remediation_margin_refresh_followup_projection_entry(dossier),
   )
+  entries.push(moonrobo_remediation_margin_cycle_closeout_policy_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

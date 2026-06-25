@@ -1382,7 +1382,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-cycle-closeout-policy",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Close the repeated remediation-margin refresh cycle with one policy packet",
       outcome: "MoonRobo stops growing one-off follow-up loops and emits one bounded closeout policy that names whether to retry, escalate, or freeze terrain/horizon/energy blockers",
@@ -1394,7 +1394,39 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
         "scripts/check_moonrobo_remediation_margin_cycle_closeout.py",
       ],
-      done_when: "MoonRobo emits a concise remediation-margin cycle closeout policy that consumes the first refresh and follow-up projections, preserves no-consume simulation and HardwareDenied authority, and gives terrain/horizon/energy blockers explicit retry/escalate/freeze dispositions",
+      done_when: "done: MoonRobo emits a concise remediation-margin cycle closeout policy that consumes the first refresh and follow-up projections, preserves no-consume simulation and HardwareDenied authority, and gives terrain/horizon/energy blockers explicit retry/escalate/freeze dispositions",
+    },
+    {
+      task_id: "moonbook-remediation-margin-cycle-closeout-workspace",
+      priority: 20,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin cycle closeout into MoonBook",
+      outcome: "The bounded closeout policy becomes durable workspace evidence beside the refresh projections it consumes",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
+        "scripts/check_moonrobo_remediation_margin_cycle_closeout.py",
+      ],
+      done_when: "done: MoonBook indexes and materializes the remediation-margin cycle closeout policy with no-consume status, retry/escalate/freeze dispositions, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-cycle-closeout-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin cycle closeout in Rabbita",
+      outcome: "Operators can see the cycle closeout policy, three blocker dispositions, no-consume simulation status, and HardwareDenied authority before any new refresh task is issued",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_cycle_closeout_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin cycle closeout policy with NoConsumeCycleClosedForPolicy status, terrain/horizon/energy retry/escalate/freeze dispositions, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

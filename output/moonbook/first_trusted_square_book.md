@@ -310,6 +310,11 @@
   - claim: derived
   - confidence: 0.7
   - path: moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json
+- moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy: MoonRobo remediation-margin cycle closeout policy for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-remediation-margin-cycle-closeout-policy
+  - claim: derived
+  - confidence: 0.7
+  - path: moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-ephemeris-receipt
   - claim: derived

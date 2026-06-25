@@ -57,6 +57,9 @@ def assert_imported(root: Path) -> None:
     root
     / "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json",
   )
+  cycle_closeout = load_json(
+    root / "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
+  )
   workspace_entry = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json",
@@ -80,6 +83,10 @@ def assert_imported(root: Path) -> None:
   workspace_followup_projection = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection.json",
+  )
+  workspace_cycle_closeout = load_json(
+    root
+    / "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
   )
   embedded = embedded_book(root / "output/ui/rabbita/first_trusted_square.html")
 
@@ -126,6 +133,10 @@ def assert_imported(root: Path) -> None:
   if workspace_followup_projection["payload"] != followup_projection:
     raise AssertionError(
       "workspace MoonRobo refresh follow-up projection was not materialized",
+    )
+  if workspace_cycle_closeout["payload"] != cycle_closeout:
+    raise AssertionError(
+      "workspace MoonRobo remediation-margin cycle closeout was not materialized",
     )
 
   clear_statuses = {
@@ -208,6 +219,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_PROJECTION_JSON = (
     root
     / "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_projection.json"
+  )
+  materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_CYCLE_CLOSEOUT_JSON = (
+    root / "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json"
   )
   materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON = (
     root
@@ -336,6 +350,12 @@ def materialize_temp_workspace(root: Path) -> None:
       {},
     )
   )
+  moonrobo_remediation_margin_cycle_closeout = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_CYCLE_CLOSEOUT_JSON,
+      {},
+    )
+  )
   moonrobo_remediation_margin_refresh_projection = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON,
@@ -391,6 +411,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_remediation_margin_refresh_modeling,
     moonrobo_remediation_margin_refresh_followup_modeling,
     moonrobo_remediation_margin_refresh_followup_projection,
+    moonrobo_remediation_margin_cycle_closeout,
     moonrobo_remediation_margin_refresh_projection,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
