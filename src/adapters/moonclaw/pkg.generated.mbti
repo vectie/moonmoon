@@ -75,6 +75,12 @@ pub fn first_trusted_square_receipts_json() -> Json
 
 pub fn first_trusted_square_receipts_markdown() -> String
 
+pub fn first_trusted_square_regenerated_receipt_readiness_fresh_evidence_tasks() -> Array[MoonClawRegeneratedReceiptReadinessFreshEvidenceTask]
+
+pub fn first_trusted_square_regenerated_receipt_readiness_fresh_evidence_tasks_json() -> Json
+
+pub fn first_trusted_square_regenerated_receipt_readiness_fresh_evidence_tasks_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_closeout_action_task() -> MoonClawRemediationMarginCloseoutActionTask
 
 pub fn first_trusted_square_remediation_margin_closeout_action_tasks() -> Array[MoonClawRemediationMarginCloseoutActionTask]
@@ -177,6 +183,8 @@ pub fn priority_label(MoonClawJobPriority) -> String
 
 pub fn receipt_status_label(MoonClawReceiptStatus) -> String
 
+pub fn regenerated_receipt_readiness_fresh_evidence_tasks_from_gate(@moonrobo.RemediationMarginRegeneratedReceiptReadinessGate) -> Array[MoonClawRegeneratedReceiptReadinessFreshEvidenceTask]
+
 pub fn remediation_margin_fresh_evidence_action_receipt_state_label(MoonClawRemediationMarginFreshEvidenceActionReceiptState) -> String
 
 pub fn remediation_margin_fresh_evidence_action_receipts_from_task(MoonClawRemediationMarginReviewedFreshEvidenceTask) -> Array[MoonClawRemediationMarginFreshEvidenceActionReceipt]
@@ -238,6 +246,10 @@ pub fn render_markdown(Array[MoonClawProposal]) -> String
 pub fn render_receipts_json(Array[MoonClawRouteScoringReceipt]) -> Json
 
 pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
+
+pub fn render_regenerated_receipt_readiness_fresh_evidence_tasks_json(Array[MoonClawRegeneratedReceiptReadinessFreshEvidenceTask]) -> Json
+
+pub fn render_regenerated_receipt_readiness_fresh_evidence_tasks_markdown(Array[MoonClawRegeneratedReceiptReadinessFreshEvidenceTask]) -> String
 
 pub fn render_remediation_margin_closeout_action_tasks_json(Array[MoonClawRemediationMarginCloseoutActionTask]) -> Json
 
@@ -450,6 +462,53 @@ pub(all) struct MoonClawReceiptValidation {
   validation_id : String
   passed : Bool
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRegeneratedReceiptReadinessFreshEvidenceAction {
+  rank : Int
+  action_id : String
+  source_receipt_id : String
+  source_action_receipt_id : String
+  margin_id : String
+  refresh_id : String
+  blocker_domain : String
+  execution_mode : String
+  required_evidence : String
+  target_artifact_path : String
+  evidence_path : String
+  command : String
+  acceptance_check : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRegeneratedReceiptReadinessFreshEvidenceTask {
+  task_id : String
+  site_id : String
+  route_id : String
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  source_readiness_gate_id : String
+  source_readiness_state : @moonrobo.RemediationMarginRegeneratedReceiptReadinessState
+  source_receipt_bundle_path : String
+  source_workspace_entry_path : String
+  source_receipt_count : Int
+  pending_receipt_count : Int
+  ready_receipt_count : Int
+  pending_margin_ids : Array[String]
+  pending_refresh_ids : Array[String]
+  source_receipt_ids : Array[String]
+  source_action_receipt_ids : Array[String]
+  fresh_evidence_actions : Array[MoonClawRegeneratedReceiptReadinessFreshEvidenceAction]
+  may_consume_simulation : Bool
+  simulation_state : @moonrobo.MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_authority_change : Bool
+  hardware_denied : Bool
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawRemediationMarginCloseoutAction {

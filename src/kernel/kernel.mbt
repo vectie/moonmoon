@@ -1849,7 +1849,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-regenerated-receipt-readiness-fresh-evidence-task",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Issue fresh-evidence task from regenerated receipt readiness",
       outcome: "MoonClaw converts the pending MoonRobo regenerated receipt readiness gate into explicit terrain, horizon, and energy fresh-evidence work before simulation review can resume",
@@ -1861,7 +1861,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
         "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_task.py",
       ],
-      done_when: "MoonClaw emits an explicit fresh-evidence task for the three pending regenerated receipts, preserving source action receipt provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonClaw emits an explicit fresh-evidence task for the three pending regenerated receipts, preserving source action receipt provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-regenerated-receipt-readiness-fresh-evidence-task-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize regenerated readiness fresh-evidence task into MoonBook",
+      outcome: "The MoonClaw fresh-evidence task emitted from regenerated receipt readiness becomes durable workspace evidence before Rabbita or downstream action receipts inspect it",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
+        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_task.py",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json",
+        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_task_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the regenerated readiness fresh-evidence task with source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
