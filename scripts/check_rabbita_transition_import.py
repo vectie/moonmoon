@@ -187,6 +187,38 @@ def rebase_materializer(root: Path) -> None:
     root
     / "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json"
   )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_ACTION_PLAN_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEMS_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEM_RECEIPTS_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_FRESH_EVIDENCE_TASK_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_reviewed_fresh_evidence_task.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_FRESH_EVIDENCE_ACTION_RECEIPTS_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REGENERATED_REVIEWED_WORK_ITEM_RECEIPTS_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REGENERATED_RECEIPT_READINESS_FRESH_EVIDENCE_TASK_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REGENERATED_RECEIPT_READINESS_FRESH_EVIDENCE_ACTION_RECEIPTS_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json"
+  )
   materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_RECEIPT_JSON = (
     root
     / "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json"
@@ -242,6 +274,10 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON = (
     root
     / "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json"
+  )
+  materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REGENERATED_RECEIPT_READINESS_JSON = (
+    root
+    / "output/moonrobo/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json"
   )
   materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
     root / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
@@ -317,6 +353,36 @@ def materialize_temp_workspace(root: Path) -> None:
   moonclaw_remediation_margin_reviewed_work_item_receipts = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_WORK_ITEM_RECEIPTS_JSON,
+      [],
+    )
+  )
+  moonclaw_remediation_margin_reviewed_fresh_evidence_tasks = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REVIEWED_FRESH_EVIDENCE_TASK_JSON,
+      [],
+    )
+  )
+  moonclaw_remediation_margin_fresh_evidence_action_receipts = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_FRESH_EVIDENCE_ACTION_RECEIPTS_JSON,
+      [],
+    )
+  )
+  moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REGENERATED_REVIEWED_WORK_ITEM_RECEIPTS_JSON,
+      [],
+    )
+  )
+  moonclaw_regenerated_receipt_readiness_fresh_evidence_tasks = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REGENERATED_RECEIPT_READINESS_FRESH_EVIDENCE_TASK_JSON,
+      [],
+    )
+  )
+  moonclaw_regenerated_receipt_readiness_fresh_evidence_action_receipts = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REGENERATED_RECEIPT_READINESS_FRESH_EVIDENCE_ACTION_RECEIPTS_JSON,
       [],
     )
   )
@@ -402,6 +468,12 @@ def materialize_temp_workspace(root: Path) -> None:
       {},
     )
   )
+  moonrobo_remediation_margin_regenerated_receipt_readiness = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_REMEDIATION_MARGIN_REGENERATED_RECEIPT_READINESS_JSON,
+      {},
+    )
+  )
   moonrobo_simulation_review_packet = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
@@ -440,6 +512,11 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_remediation_margin_reviewed_action_plans,
     moonclaw_remediation_margin_reviewed_work_items,
     moonclaw_remediation_margin_reviewed_work_item_receipts,
+    moonclaw_remediation_margin_reviewed_fresh_evidence_tasks,
+    moonclaw_remediation_margin_fresh_evidence_action_receipts,
+    moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts,
+    moonclaw_regenerated_receipt_readiness_fresh_evidence_tasks,
+    moonclaw_regenerated_receipt_readiness_fresh_evidence_action_receipts,
     moonclaw_remediation_margin_refresh_followup_receipts,
     moonclaw_remediation_margin_refresh_receipts,
     moonclaw_remediation_margin_receipts,
@@ -457,6 +534,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_remediation_margin_refresh_followup_projection,
     moonrobo_remediation_margin_cycle_closeout,
     moonrobo_remediation_margin_refresh_projection,
+    moonrobo_remediation_margin_regenerated_receipt_readiness,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,

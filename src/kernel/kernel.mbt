@@ -1914,7 +1914,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-regenerated-receipt-readiness-fresh-evidence-action-receipts-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize regenerated readiness action receipts into MoonBook",
       outcome: "Regenerated readiness fresh-evidence action receipts become durable MoonBook workspace evidence before Rabbita or readiness recomputation consumes them",
@@ -1927,7 +1927,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
         "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_action_receipts_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes regenerated readiness fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes regenerated readiness fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-regenerated-receipt-readiness-fresh-evidence-action-receipts-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface regenerated readiness action receipts in Rabbita",
+      outcome: "Operators can inspect the durable regenerated readiness fresh-evidence action receipts and their source readiness/action receipt provenance before readiness recomputation proceeds",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
+        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_action_receipts_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_regenerated_receipt_readiness_fresh_evidence_action_receipts_surface.py",
+      ],
+      done_when: "Rabbita renders regenerated readiness fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, pending regenerated receipt state, and HardwareDenied authority",
     },
   ]
 }
