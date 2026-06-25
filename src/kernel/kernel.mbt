@@ -976,7 +976,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-clearance-projection",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Project remediation-margin modeling into MoonRobo readiness",
       outcome: "MoonRobo can turn the modeling pass into an explicit no-consume projection that keeps simulation blocked while terrain, horizon, and energy margins remain open",
@@ -989,7 +989,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
         "scripts/check_moonrobo_remediation_margin_projection.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin projection that consumes the modeling pass, preserves no-consume simulation status, and keeps HardwareDenied authority while all three margins remain still-blocking",
+      done_when: "done: MoonRobo emits a remediation-margin projection that consumes the modeling pass, preserves no-consume simulation status, and keeps HardwareDenied authority while all three margins remain still-blocking",
+    },
+    {
+      task_id: "moonbook-remediation-margin-projection-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin projection into MoonBook",
+      outcome: "The MoonRobo no-consume remediation-margin projection becomes durable workspace evidence beside the modeling pass it consumes",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-modeling.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
+        "scripts/check_moonbook_remediation_margin_projection_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin projection with no-consume simulation status, still-blocking margin ids, and HardwareDenied authority",
     },
   ]
 }

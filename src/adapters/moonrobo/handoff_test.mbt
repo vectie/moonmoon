@@ -414,6 +414,71 @@ test "Moonrobo remediation margin modeling consumes receipt contract" {
 }
 
 ///|
+test "Moonrobo remediation margin projection blocks simulation consumption" {
+  let projection = @moonrobo.first_trusted_square_remediation_margin_projection()
+  assert_eq(
+    projection.projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+  )
+  assert_eq(
+    projection.source_modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/modeling-pass",
+  )
+  assert_eq(
+    projection.source_modeling_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
+  )
+  assert_true(
+    projection.source_modeling_state
+    is @moonrobo.RemediationMarginModelingState::AllMarginsStillBlocking,
+  )
+  assert_true(!projection.may_consume_simulation)
+  assert_true(
+    projection.projection_status
+    is @moonrobo.RemediationMarginProjectionStatus::NoConsumeSimulationBlocked,
+  )
+  assert_true(
+    projection.simulation_state
+    is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_eq(projection.active_margin_count, 3)
+  assert_eq(projection.cleared_margin_count, 0)
+  assert_eq(projection.still_blocking_margin_count, 3)
+  assert_eq(projection.blocking_margin_ids.length(), 3)
+  assert_true(
+    projection.blocking_margin_ids.contains("terrain-northeast-stepout"),
+  )
+  assert_true(
+    projection.blocking_margin_ids.contains("illumination-northeast-stepout"),
+  )
+  assert_true(projection.blocking_margin_ids.contains("energy-window"))
+  assert_eq(projection.consumed_margin_result_ids.length(), 3)
+  assert_true(
+    projection.hardware_state
+    is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(projection.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(projection.hardware_denied)
+  assert_true(projection.reason.contains("no-consume projection"))
+  assert_true(projection.next_action.contains("do not let MoonRobo consume"))
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_projection_markdown()
+  assert_true(
+    markdown.contains("MoonRobo Remediation Margin Clearance Projection"),
+  )
+  assert_true(markdown.contains("NoConsumeSimulationBlocked"))
+  assert_true(markdown.contains("AllMarginsStillBlocking"))
+  assert_true(markdown.contains("simulation-blocked"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_projection_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(
+    json.contains("\"projection_status\": \"NoConsumeSimulationBlocked\""),
+  )
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))

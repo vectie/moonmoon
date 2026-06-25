@@ -1,0 +1,31 @@
+{
+  "projection_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+  "site_id": "first-trusted-square",
+  "route_id": "northeast-stepout",
+  "source_modeling_pass_id": "moonrobo/first-trusted-square/remediation-margin-v1/modeling-pass",
+  "source_modeling_path": "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
+  "source_modeling_state": "AllMarginsStillBlocking",
+  "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/current-receipt",
+  "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/task",
+  "may_consume_simulation": false,
+  "projection_status": "NoConsumeSimulationBlocked",
+  "simulation_state": "SimulationBlocked",
+  "active_margin_count": 3,
+  "cleared_margin_count": 0,
+  "still_blocking_margin_count": 3,
+  "consumed_margin_result_ids": [
+    "terrain-northeast-stepout",
+    "illumination-northeast-stepout",
+    "energy-window"
+  ],
+  "blocking_margin_ids": [
+    "terrain-northeast-stepout",
+    "illumination-northeast-stepout",
+    "energy-window"
+  ],
+  "hardware_state": "HardwareDenied",
+  "hardware_authority": "moonmoon-safety-gate-only",
+  "hardware_denied": true,
+  "reason": "no-consume projection: 3 remediation margins still block simulation consumption from AllMarginsStillBlocking; hardware authority remains moonmoon-safety-gate-only",
+  "next_action": "do not let MoonRobo consume simulation for northeast-stepout; regenerate terrain, local-horizon, and energy evidence before changing simulation state"
+}
