@@ -244,6 +244,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   border-color: color-mix(in srgb, var(--ok) 64%, var(--line));
   box-shadow: inset 3px 0 0 var(--ok);
 }
+.remediation-margin-reviewed-fresh-evidence-task-row {
+  border-color: color-mix(in srgb, var(--warn) 58%, var(--line));
+  box-shadow: inset 3px 0 0 var(--warn);
+}
 .remediation-margin-projection-row {
   border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
   box-shadow: inset 3px 0 0 var(--danger);
@@ -3177,6 +3181,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <div id="remediation-margin-reviewed-work-item-receipts" class="review-list" aria-label="MoonClaw reviewed remediation margin work item receipts with pending fresh evidence, accepted review provenance, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
     </section>
     <section class="section">
+      <h2>Remediation Margin Reviewed Fresh Evidence Task</h2>
+      <div id="remediation-margin-reviewed-fresh-evidence-task" class="review-list" aria-label="MoonClaw reviewed remediation margin fresh-evidence task with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
+    </section>
+    <section class="section">
       <h2>Closeout Action Review</h2>
       <div id="closeout-action-review" class="clearance-list" aria-label="Operator review for MoonClaw remediation margin closeout action task"></div>
       <div class="export-actions" style="margin-top: 10px;">
@@ -3553,6 +3561,14 @@ function renderRemediationMarginReviewedWorkItemReceipts() {
   );
 }
 
+function renderRemediationMarginReviewedFreshEvidenceTask() {
+  renderMoonBookEntry(
+    'remediation-margin-reviewed-fresh-evidence-task',
+    'moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task',
+    'remediation-margin-reviewed-fresh-evidence-task-row'
+  );
+}
+
 function renderRemediationMarginRefreshProjection() {
   renderMoonBookEntry(
     'remediation-margin-refresh-projection',
@@ -3842,6 +3858,7 @@ function render() {
   renderRemediationMarginReviewedActionPlan();
   renderRemediationMarginReviewedWorkItems();
   renderRemediationMarginReviewedWorkItemReceipts();
+  renderRemediationMarginReviewedFreshEvidenceTask();
   renderRemediationMarginRefreshProjection();
   renderRemediationMarginProjection();
   renderClearanceReview();

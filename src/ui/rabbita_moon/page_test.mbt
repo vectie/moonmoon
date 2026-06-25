@@ -29,6 +29,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Remediation Margin Reviewed Action Plan"))
   assert_true(html.contains("Remediation Margin Reviewed Work Items"))
   assert_true(html.contains("Remediation Margin Reviewed Work Item Receipts"))
+  assert_true(html.contains("Remediation Margin Reviewed Fresh Evidence Task"))
   assert_true(html.contains("Closeout Action Review"))
   assert_true(html.contains("Remediation Margin Refresh Projection"))
   assert_true(html.contains("Remediation Margin Projection"))
@@ -52,6 +53,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("remediation-margin-reviewed-action-plan"))
   assert_true(html.contains("remediation-margin-reviewed-work-items"))
   assert_true(html.contains("remediation-margin-reviewed-work-item-receipts"))
+  assert_true(html.contains("remediation-margin-reviewed-fresh-evidence-task"))
   assert_true(html.contains("closeout-action-review"))
   assert_true(html.contains("closeout-action-review-export"))
   assert_true(html.contains("remediation-margin-refresh-projection"))
@@ -104,6 +106,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   )
   assert_true(
     html.contains("function renderRemediationMarginReviewedWorkItemReceipts()"),
+  )
+  assert_true(
+    html.contains("function renderRemediationMarginReviewedFreshEvidenceTask()"),
   )
   assert_true(
     html.contains("function renderRemediationMarginRefreshProjection()"),
@@ -188,6 +193,11 @@ test "Rabbita Moon page renders browser inspection controls" {
       "moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts",
     ),
   )
+  assert_true(
+    html.contains(
+      "moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task",
+    ),
+  )
   assert_true(html.contains("operator/rabbita-closeout-action-review"))
   assert_true(html.contains("moonclaw-closeout-action-review"))
   assert_true(html.contains("hardware_authority_change"))
@@ -227,6 +237,12 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("accepted reviewed action plan"))
   assert_true(html.contains("3 accepted reviewed work items"))
   assert_true(html.contains("3 accepted reviewed work item receipts"))
+  assert_true(html.contains("3 pending reviewed work item receipts"))
+  assert_true(html.contains("fresh-evidence actions"))
+  assert_true(html.contains("source receipt provenance"))
+  assert_true(html.contains("operator-escalation"))
+  assert_true(html.contains("bounded-regeneration"))
+  assert_true(html.contains("manual-freeze-verification"))
   assert_true(html.contains("ReviewedWorkItemPendingFreshEvidence"))
   assert_true(html.contains("pending fresh evidence"))
   assert_true(html.contains("automatic refresh loop allowed false"))
