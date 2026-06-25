@@ -71,6 +71,14 @@ pub fn first_trusted_square_receipts_json() -> Json
 
 pub fn first_trusted_square_receipts_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_receipt() -> MoonClawRemediationMarginReceipt
+
+pub fn first_trusted_square_remediation_margin_receipts() -> Array[MoonClawRemediationMarginReceipt]
+
+pub fn first_trusted_square_remediation_margin_receipts_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_receipts_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_task() -> MoonClawRemediationMarginTask
 
 pub fn first_trusted_square_remediation_margin_tasks() -> Array[MoonClawRemediationMarginTask]
@@ -88,6 +96,12 @@ pub fn job_kind_label(MoonClawJobKind) -> String
 pub fn priority_label(MoonClawJobPriority) -> String
 
 pub fn receipt_status_label(MoonClawReceiptStatus) -> String
+
+pub fn remediation_margin_receipt(MoonClawRemediationMarginTask) -> MoonClawRemediationMarginReceipt
+
+pub fn remediation_margin_result_status_label(MoonClawRemediationMarginResultStatus) -> String
+
+pub fn remediation_margin_state_label(MoonClawRemediationMarginState) -> String
 
 pub fn remediation_margin_task_blocked_artifact_count(MoonClawRemediationMarginTask) -> Int
 
@@ -114,6 +128,10 @@ pub fn render_markdown(Array[MoonClawProposal]) -> String
 pub fn render_receipts_json(Array[MoonClawRouteScoringReceipt]) -> Json
 
 pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
+
+pub fn render_remediation_margin_receipts_json(Array[MoonClawRemediationMarginReceipt]) -> Json
+
+pub fn render_remediation_margin_receipts_markdown(Array[MoonClawRemediationMarginReceipt]) -> String
 
 pub fn render_remediation_margin_tasks_json(Array[MoonClawRemediationMarginTask]) -> Json
 
@@ -265,6 +283,42 @@ pub(all) struct MoonClawReceiptValidation {
   validation_id : String
   passed : Bool
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginReceipt {
+  receipt : MoonClawReceipt
+  site_id : String
+  route_id : String
+  source_task_id : String
+  remediation_state : MoonClawRemediationMarginState
+  active_margin_count : Int
+  cleared_margin_count : Int
+  still_blocking_margin_count : Int
+  margin_results : Array[MoonClawRemediationMarginResult]
+  validation_checks : Array[MoonClawReceiptValidation]
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginResult {
+  margin_id : String
+  source_artifact_path : String
+  status : MoonClawRemediationMarginResultStatus
+  current_state : String
+  evidence_path : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawRemediationMarginResultStatus {
+  Cleared
+  StillBlocking
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonClawRemediationMarginState {
+  AllMarginsCleared
+  OpenMarginsCarriedForward
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawRemediationMarginTask {

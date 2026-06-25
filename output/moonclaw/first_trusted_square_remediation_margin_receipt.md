@@ -1,0 +1,33 @@
+# MoonClaw Remediation Margin Receipts
+
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/current-receipt
+  - proposal: moonclaw/first-trusted-square/remediation-margin-v1
+  - status: accepted
+  - route: northeast-stepout
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/task
+  - state: OpenMarginsCarriedForward
+  - active margins: 3
+  - cleared margins: 0
+  - still blocking margins: 3
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - next action: Regenerate terrain, local-horizon, and energy remediation evidence, then re-run the MoonRobo blocker reduction and this receipt check before simulation readiness can change.
+  - validation:
+    - source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/task
+    - margin-accounting-complete: pass - 3 receipt margin results account for 3 active remediation margins
+    - result-paths-present: pass - every margin result carries a source artifact path and evidence path
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - still-blocking-margins-carried-forward: pass - all current remediation margins are carried forward until regenerated evidence clears them
+  - margin results:
+    - terrain-northeast-stepout: StillBlocking
+      - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - current: grade margin 0.16395, roughness margin 3.45975 m, blocking edges 11/24
+      - next action: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation
+    - illumination-northeast-stepout: StillBlocking
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - current: terrain-shadow margin 26.356833 deg, max horizon 26.487251 deg, max sun altitude 0.130418 deg
+      - next action: collect wider local horizon and terrain-shadow evidence before route simulation
+    - energy-window: StillBlocking
+      - evidence: output/mission/first_trusted_square_energy_remediation.json
+      - current: bounded margin -855.061927 Wh, margin gap 1105.061927 Wh, available 234.938073 Wh
+      - next action: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation

@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 52)
+  assert_eq(dossier.entries.length(), 53)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -114,10 +114,14 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(
     dossier.entries[50].kind ==
+    @moonbook.BookEntryKind::MoonClawRemediationMarginReceipt,
+  )
+  assert_true(
+    dossier.entries[51].kind ==
     @moonbook.BookEntryKind::MoonClawEphemerisReceipt,
   )
   assert_true(
-    dossier.entries[51].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
+    dossier.entries[52].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
@@ -220,15 +224,23 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(dossier.entries[49].summary.contains("Moonrobo handoff block"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[50].kind),
-    "moonclaw-ephemeris-receipt",
+    "moonclaw-remediation-margin-receipt",
   )
-  assert_true(dossier.entries[50].summary.contains("energy block"))
-  assert_true(dossier.entries[50].summary.contains("accepted receipt"))
+  assert_true(dossier.entries[50].summary.contains("OpenMarginsCarriedForward"))
+  assert_true(dossier.entries[50].summary.contains("3 remediation margins"))
+  assert_true(dossier.entries[50].summary.contains("moonmoon-safety-gate-only"))
+  assert_true(dossier.entries[50].path.contains("remediation-margin-receipt"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[51].kind),
+    "moonclaw-ephemeris-receipt",
+  )
+  assert_true(dossier.entries[51].summary.contains("energy block"))
+  assert_true(dossier.entries[51].summary.contains("accepted receipt"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[52].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[51].summary.contains("81 measured windows"))
+  assert_true(dossier.entries[52].summary.contains("81 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -473,6 +485,7 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(markdown.contains("moonclaw-proposal"))
   assert_true(markdown.contains("moonclaw-task"))
   assert_true(markdown.contains("moonclaw-receipt"))
+  assert_true(markdown.contains("moonclaw-remediation-margin-receipt"))
   assert_true(markdown.contains("moonclaw-ephemeris-receipt"))
   assert_true(markdown.contains("moonclaw-corridor-receipt"))
   assert_true(markdown.contains("## Review Queue"))
@@ -523,6 +536,7 @@ test "first trusted square MoonBook renderers expose review work" {
   assert_true(json.contains("\"MoonClawProposal\""))
   assert_true(json.contains("\"MoonClawTask\""))
   assert_true(json.contains("\"MoonClawReceipt\""))
+  assert_true(json.contains("\"MoonClawRemediationMarginReceipt\""))
   assert_true(json.contains("\"MoonClawEphemerisReceipt\""))
   assert_true(json.contains("\"MoonClawCorridorReceipt\""))
 }

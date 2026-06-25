@@ -23,6 +23,7 @@ pub(all) enum BookEntryKind {
   MoonClawProposal
   MoonClawTask
   MoonClawReceipt
+  MoonClawRemediationMarginReceipt
   MoonClawEphemerisReceipt
   MoonClawCorridorReceipt
   OpenQuestion
@@ -125,6 +126,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
     MoonClawReceipt => "moonclaw-receipt"
+    MoonClawRemediationMarginReceipt => "moonclaw-remediation-margin-receipt"
     MoonClawEphemerisReceipt => "moonclaw-ephemeris-receipt"
     MoonClawCorridorReceipt => "moonclaw-corridor-receipt"
     OpenQuestion => "open-question"
@@ -982,6 +984,22 @@ fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_remediation_margin_receipt_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let receipt = @moonclaw.first_trusted_square_remediation_margin_receipt()
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-receipt",
+    title: "MoonClaw remediation-margin receipt for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginReceipt,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.7,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-receipt.json",
+    summary: "\{@moonclaw.remediation_margin_state_label(receipt.remediation_state)} with \{receipt.still_blocking_margin_count} remediation margins still blocking, \{receipt.cleared_margin_count} cleared, and hardware authority \{receipt.hardware_authority}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1239,6 +1257,7 @@ fn book_entries(
   entries.push(moonclaw_corridor_task_entry(dossier))
   entries.push(moonclaw_remediation_margin_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
+  entries.push(moonclaw_remediation_margin_receipt_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

@@ -1,0 +1,186 @@
+{
+  "entry": {
+    "entry_id": "moonclaw/first-trusted-square/remediation-margin-receipt",
+    "title": "MoonClaw remediation-margin receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonClawRemediationMarginReceipt",
+    "claim_kind": "Derived",
+    "confidence": 0.7,
+    "path": "moonclaw/first-trusted-square/remediation-margin-receipt.json",
+    "summary": "OpenMarginsCarriedForward with 3 remediation margins still blocking, 0 cleared, and hardware authority moonmoon-safety-gate-only"
+  },
+  "payload": {
+    "primary_receipt": {
+      "receipt": {
+        "receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/current-receipt",
+        "proposal_id": "moonclaw/first-trusted-square/remediation-margin-v1",
+        "status": "Accepted",
+        "accepted_outputs": [
+          "output/moonclaw/first_trusted_square_remediation_margin_task.json",
+          "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "output/mission/first_trusted_square_energy_remediation.json"
+        ],
+        "validation_notes": [
+          "source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/task",
+          "margin-accounting-complete: pass - 3 receipt margin results account for 3 active remediation margins",
+          "result-paths-present: pass - every margin result carries a source artifact path and evidence path",
+          "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+          "still-blocking-margins-carried-forward: pass - all current remediation margins are carried forward until regenerated evidence clears them"
+        ]
+      },
+      "site_id": "first-trusted-square",
+      "route_id": "northeast-stepout",
+      "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/task",
+      "remediation_state": "OpenMarginsCarriedForward",
+      "active_margin_count": 3,
+      "cleared_margin_count": 0,
+      "still_blocking_margin_count": 3,
+      "margin_results": [
+        {
+          "margin_id": "terrain-northeast-stepout",
+          "source_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "status": "StillBlocking",
+          "current_state": "grade margin 0.16395, roughness margin 3.45975 m, blocking edges 11/24",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "next_action": "collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
+        },
+        {
+          "margin_id": "illumination-northeast-stepout",
+          "source_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "status": "StillBlocking",
+          "current_state": "terrain-shadow margin 26.356833 deg, max horizon 26.487251 deg, max sun altitude 0.130418 deg",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "next_action": "collect wider local horizon and terrain-shadow evidence before route simulation"
+        },
+        {
+          "margin_id": "energy-window",
+          "source_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+          "status": "StillBlocking",
+          "current_state": "bounded margin -855.061927 Wh, margin gap 1105.061927 Wh, available 234.938073 Wh",
+          "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+          "next_action": "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation"
+        }
+      ],
+      "validation_checks": [
+        {
+          "validation_id": "source-task-present",
+          "passed": true,
+          "note": "receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/task"
+        },
+        {
+          "validation_id": "margin-accounting-complete",
+          "passed": true,
+          "note": "3 receipt margin results account for 3 active remediation margins"
+        },
+        {
+          "validation_id": "result-paths-present",
+          "passed": true,
+          "note": "every margin result carries a source artifact path and evidence path"
+        },
+        {
+          "validation_id": "hardware-denial-preserved",
+          "passed": true,
+          "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+        },
+        {
+          "validation_id": "still-blocking-margins-carried-forward",
+          "passed": true,
+          "note": "all current remediation margins are carried forward until regenerated evidence clears them"
+        }
+      ],
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "next_action": "Regenerate terrain, local-horizon, and energy remediation evidence, then re-run the MoonRobo blocker reduction and this receipt check before simulation readiness can change."
+    },
+    "receipts": [
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/current-receipt",
+          "proposal_id": "moonclaw/first-trusted-square/remediation-margin-v1",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "output/moonclaw/first_trusted_square_remediation_margin_task.json",
+            "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "output/mission/first_trusted_square_energy_remediation.json"
+          ],
+          "validation_notes": [
+            "source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/task",
+            "margin-accounting-complete: pass - 3 receipt margin results account for 3 active remediation margins",
+            "result-paths-present: pass - every margin result carries a source artifact path and evidence path",
+            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+            "still-blocking-margins-carried-forward: pass - all current remediation margins are carried forward until regenerated evidence clears them"
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/task",
+        "remediation_state": "OpenMarginsCarriedForward",
+        "active_margin_count": 3,
+        "cleared_margin_count": 0,
+        "still_blocking_margin_count": 3,
+        "margin_results": [
+          {
+            "margin_id": "terrain-northeast-stepout",
+            "source_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "status": "StillBlocking",
+            "current_state": "grade margin 0.16395, roughness margin 3.45975 m, blocking edges 11/24",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "next_action": "collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
+          },
+          {
+            "margin_id": "illumination-northeast-stepout",
+            "source_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "status": "StillBlocking",
+            "current_state": "terrain-shadow margin 26.356833 deg, max horizon 26.487251 deg, max sun altitude 0.130418 deg",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "next_action": "collect wider local horizon and terrain-shadow evidence before route simulation"
+          },
+          {
+            "margin_id": "energy-window",
+            "source_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+            "status": "StillBlocking",
+            "current_state": "bounded margin -855.061927 Wh, margin gap 1105.061927 Wh, available 234.938073 Wh",
+            "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+            "next_action": "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation"
+          }
+        ],
+        "validation_checks": [
+          {
+            "validation_id": "source-task-present",
+            "passed": true,
+            "note": "receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/task"
+          },
+          {
+            "validation_id": "margin-accounting-complete",
+            "passed": true,
+            "note": "3 receipt margin results account for 3 active remediation margins"
+          },
+          {
+            "validation_id": "result-paths-present",
+            "passed": true,
+            "note": "every margin result carries a source artifact path and evidence path"
+          },
+          {
+            "validation_id": "hardware-denial-preserved",
+            "passed": true,
+            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+          },
+          {
+            "validation_id": "still-blocking-margins-carried-forward",
+            "passed": true,
+            "note": "all current remediation margins are carried forward until regenerated evidence clears them"
+          }
+        ],
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_denied": true,
+        "next_action": "Regenerate terrain, local-horizon, and energy remediation evidence, then re-run the MoonRobo blocker reduction and this receipt check before simulation readiness can change."
+      }
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

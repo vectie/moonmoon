@@ -10,6 +10,7 @@
     "output/moonclaw/first_trusted_square_ephemeris_tasks.json",
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_remediation_margin_task.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
     "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
@@ -474,6 +475,15 @@
       "confidence": 0.7,
       "path": "moonclaw/first-trusted-square/receipts.json",
       "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-receipt",
+      "title": "MoonClaw remediation-margin receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonclaw/first-trusted-square/remediation-margin-receipt.json",
+      "summary": "OpenMarginsCarriedForward with 3 remediation margins still blocking, 0 cleared, and hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
