@@ -255,6 +255,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--warn) 64%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--warn);
     #|}
+    #|.remediation-margin-reviewed-work-item-receipts-row {
+    #|  border-color: color-mix(in srgb, var(--ok) 64%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--ok);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -692,6 +696,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginReviewedWorkItemReceipts() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-reviewed-work-item-receipts',
+    #|    'moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts',
+    #|    'remediation-margin-reviewed-work-item-receipts-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -980,6 +992,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginCloseoutAction();
     #|  renderRemediationMarginReviewedActionPlan();
     #|  renderRemediationMarginReviewedWorkItems();
+    #|  renderRemediationMarginReviewedWorkItemReceipts();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -1132,6 +1145,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Reviewed Work Items</h2>
     $|      <div id="remediation-margin-reviewed-work-items" class="review-list" aria-label="MoonClaw reviewed remediation margin work items with terrain escalation, horizon retry-with-new-evidence, energy freeze, no automatic refresh loop, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Reviewed Work Item Receipts</h2>
+    $|      <div id="remediation-margin-reviewed-work-item-receipts" class="review-list" aria-label="MoonClaw reviewed remediation margin work item receipts with pending fresh evidence, accepted review provenance, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Closeout Action Review</h2>

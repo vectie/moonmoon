@@ -1637,7 +1637,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-reviewed-work-item-receipts-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface reviewed remediation-margin work item receipts in Rabbita",
       outcome: "Operators can inspect the three accepted reviewed work item receipts from MoonBook before fresh evidence execution or downstream simulation review",
@@ -1649,7 +1649,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_work_item_receipts_surface.py",
       ],
-      done_when: "Rabbita renders the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-reviewed-fresh-evidence-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit reviewed remediation-margin fresh evidence task",
+      outcome: "The three pending reviewed work item receipts become an explicit MoonClaw fresh-evidence task packet for terrain escalation, horizon retry-with-new-evidence, and energy freeze verification",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_work_item_receipts_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_fresh_evidence_task.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_fresh_evidence_task.py",
+      ],
+      done_when: "MoonClaw emits a reviewed remediation-margin fresh-evidence task that consumes pending work item receipts, preserves accepted review provenance, keeps no automatic refresh loop and no simulation consumption, and records HardwareDenied authority",
     },
   ]
 }
