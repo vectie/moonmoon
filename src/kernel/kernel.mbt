@@ -1123,7 +1123,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-refresh-modeling-pass",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Run MoonRobo remediation-margin modeling from the refresh receipt",
       outcome: "MoonRobo can consume the MoonClaw refresh receipt as durable evidence and decide whether terrain, horizon, or energy margins remain blocked without changing hardware authority",
@@ -1136,7 +1136,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
         "scripts/check_moonrobo_remediation_margin_refresh_modeling.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin refresh modeling pass that consumes the refresh receipt, maps terrain/horizon/energy refresh results to still-blocking or refreshed states, preserves no-consume simulation status, and keeps HardwareDenied authority",
+      done_when: "done: MoonRobo emits a remediation-margin refresh modeling pass that consumes the refresh receipt, maps terrain/horizon/energy refresh results to still-blocking or refreshed states, preserves no-consume simulation status, and keeps HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-modeling-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh modeling into MoonBook",
+      outcome: "The refresh modeling pass becomes durable MoonBook evidence beside the refresh receipt it audits",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
+        "scripts/check_moonbook_remediation_margin_refresh_modeling_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin refresh modeling pass with still-blocking terrain/horizon/energy refresh results, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

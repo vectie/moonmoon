@@ -1,0 +1,71 @@
+[
+  {
+    "modeling_pass_id": "moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass",
+    "site_id": "first-trusted-square",
+    "route_id": "northeast-stepout",
+    "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt",
+    "source_receipt_path": "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+    "source_task_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+    "source_projection_id": "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+    "source_refresh_state": "RefreshesCarriedForward",
+    "state": "AllRefreshesStillBlocking",
+    "refresh_action_count": 3,
+    "refreshed_count": 0,
+    "still_blocking_count": 3,
+    "refresh_results": [
+      {
+        "rank": 1,
+        "margin_id": "terrain-northeast-stepout",
+        "refresh_id": "refresh-terrain-northeast-stepout",
+        "receipt_status": "RefreshStillBlocking",
+        "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "modeling_command": "python3 scripts/check_selected_route_terrain_remediation.py",
+        "result_status": "RefreshStillBlocking",
+        "refreshed": false,
+        "result_rationale": "terrain refresh evidence is still carried forward because selected-route grade, roughness, and edge margins remain open",
+        "next_action": "Refresh selected-route terrain evidence first because grade, roughness, and blocking-edge margins feed every downstream route-consume decision for northeast-stepout."
+      },
+      {
+        "rank": 2,
+        "margin_id": "illumination-northeast-stepout",
+        "refresh_id": "refresh-illumination-northeast-stepout",
+        "receipt_status": "RefreshStillBlocking",
+        "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+        "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+        "modeling_command": "python3 scripts/check_selected_route_horizon_model.py",
+        "result_status": "RefreshStillBlocking",
+        "refreshed": false,
+        "result_rationale": "local-horizon refresh evidence is still carried forward because terrain-shadow illumination confidence remains open",
+        "next_action": "Refresh local-horizon evidence for northeast-stepout after terrain so illumination keeps using bounded terrain-shadow geometry before simulation consumption changes."
+      },
+      {
+        "rank": 3,
+        "margin_id": "energy-window",
+        "refresh_id": "refresh-energy-window",
+        "receipt_status": "RefreshStillBlocking",
+        "source_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "modeling_command": "python3 scripts/check_energy_margin_remediation.py",
+        "result_status": "RefreshStillBlocking",
+        "refreshed": false,
+        "result_rationale": "energy refresh evidence is still carried forward because the bounded route energy margin remains negative",
+        "next_action": "Refresh bounded energy evidence for northeast-stepout after terrain and horizon because route demand and sunlit-window margins depend on those constraints."
+      }
+    ],
+    "commands_evaluated": [
+      "python3 scripts/check_selected_route_terrain_remediation.py",
+      "python3 scripts/check_selected_route_horizon_model.py",
+      "python3 scripts/check_energy_margin_remediation.py"
+    ],
+    "may_consume_simulation": false,
+    "simulation_state": "SimulationBlocked",
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_denied": true,
+    "next_action": "carry the terrain, local-horizon, and energy refreshes forward; do not let MoonRobo consume simulation inputs until refreshed evidence clears the margins"
+  }
+]
