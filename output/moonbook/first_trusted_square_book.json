@@ -535,6 +535,15 @@
       "summary": "FollowupRefreshesCarriedForward with 3 still-blocking follow-up refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 refreshed, source task moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task, source projection moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection, simulation simulation-blocked, may consume false, and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling",
+      "title": "MoonRobo remediation-margin refresh follow-up modeling pass for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboRemediationMarginRefreshFollowupModeling",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json",
+      "summary": "AllFollowupRefreshesStillBlocking with 3 still-blocking follow-up refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 refreshed, source receipt moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt, source projection moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection, no-consume simulation simulation-blocked, and hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
       "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawEphemerisReceipt",

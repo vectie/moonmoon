@@ -662,6 +662,110 @@ test "Moonrobo remediation margin refresh projection blocks simulation consumpti
 }
 
 ///|
+test "Moonrobo remediation margin refresh follow-up modeling consumes follow-up receipt contract" {
+  let pass = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_modeling_pass()
+  assert_eq(
+    pass.modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-followup-modeling-pass",
+  )
+  assert_eq(
+    pass.source_receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt",
+  )
+  assert_eq(
+    pass.source_task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task",
+  )
+  assert_eq(
+    pass.source_refresh_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection",
+  )
+  assert_eq(
+    pass.source_modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass",
+  )
+  assert_eq(pass.source_modeling_state, "AllRefreshesStillBlocking")
+  assert_eq(pass.source_projection_status, "NoConsumeRefreshSimulationBlocked")
+  assert_eq(pass.source_followup_state, "FollowupRefreshesCarriedForward")
+  assert_true(
+    pass.state
+    is @moonrobo.RemediationMarginRefreshFollowupModelingState::AllFollowupRefreshesStillBlocking,
+  )
+  assert_eq(pass.followup_action_count, 3)
+  assert_eq(pass.refreshed_count, 0)
+  assert_eq(pass.still_blocking_count, 3)
+  assert_true(!pass.may_consume_simulation)
+  assert_true(
+    pass.simulation_state is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(
+    pass.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(pass.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(pass.hardware_denied)
+  assert_eq(pass.followup_results.length(), 3)
+  assert_true(
+    pass.followup_results.all(fn(result) {
+      result.result_status ==
+      @moonrobo.RemediationMarginRefreshFollowupModelingResultStatus::FollowupRefreshStillBlocking &&
+      !result.refreshed
+    }),
+  )
+  assert_true(
+    pass.followup_results.any(fn(result) {
+      result.rank == 1 &&
+      result.margin_id == "terrain-northeast-stepout" &&
+      result.refresh_id == "refresh-terrain-northeast-stepout" &&
+      result.modeling_command.contains(
+        "check_selected_route_terrain_remediation.py",
+      )
+    }),
+  )
+  assert_true(
+    pass.followup_results.any(fn(result) {
+      result.rank == 2 &&
+      result.margin_id == "illumination-northeast-stepout" &&
+      result.modeling_command.contains("check_selected_route_horizon_model.py")
+    }),
+  )
+  assert_true(
+    pass.followup_results.any(fn(result) {
+      result.rank == 3 &&
+      result.margin_id == "energy-window" &&
+      result.modeling_command.contains("check_energy_margin_remediation.py")
+    }),
+  )
+  assert_true(pass.next_action.contains("do not let MoonRobo consume"))
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_modeling_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonRobo Remediation Margin Refresh Follow-Up Modeling Passes",
+    ),
+  )
+  assert_true(markdown.contains("AllFollowupRefreshesStillBlocking"))
+  assert_true(markdown.contains("FollowupRefreshesCarriedForward"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("simulation-blocked"))
+  assert_true(markdown.contains("FollowupRefreshStillBlocking"))
+  assert_true(markdown.contains("terrain-northeast-stepout"))
+  assert_true(markdown.contains("moonmoon-safety-gate-only"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_refresh_followup_modeling_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"source_followup_state\": \"FollowupRefreshesCarriedForward\"",
+    ),
+  )
+  assert_true(
+    json.contains("\"result_status\": \"FollowupRefreshStillBlocking\""),
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"simulation_state\": \"SimulationBlocked\""))
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   let markdown = @moonrobo.first_trusted_square_markdown()
   assert_true(markdown.contains("Moonrobo Simulation Preconditions"))

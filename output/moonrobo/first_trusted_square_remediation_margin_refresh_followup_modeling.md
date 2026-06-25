@@ -1,0 +1,36 @@
+# MoonRobo Remediation Margin Refresh Follow-Up Modeling Passes
+
+- pass: moonrobo/first-trusted-square/remediation-margin-v1/refresh-followup-modeling-pass
+  - route: northeast-stepout
+  - source receipt: moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-receipt
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task
+  - source refresh projection: moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection
+  - source modeling pass: moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass
+  - source modeling state: AllRefreshesStillBlocking
+  - source projection status: NoConsumeRefreshSimulationBlocked
+  - source follow-up state: FollowupRefreshesCarriedForward
+  - state: AllFollowupRefreshesStillBlocking
+  - follow-up actions: 3
+  - refreshed: 0
+  - still blocking: 3
+  - may consume simulation: false
+  - simulation state: simulation-blocked
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - next action: carry the terrain, local-horizon, and energy follow-up refreshes forward; do not let MoonRobo consume simulation inputs until refreshed evidence clears the projection-derived blockers
+  - follow-up results:
+    - 1. refresh-terrain-northeast-stepout: terrain-northeast-stepout - FollowupRefreshStillBlocking
+      - command: python3 scripts/check_selected_route_terrain_remediation.py
+      - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - target: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - rationale: terrain follow-up refresh remains carried forward because selected-route grade, roughness, and blocking-edge evidence still do not clear simulation consumption
+    - 2. refresh-illumination-northeast-stepout: illumination-northeast-stepout - FollowupRefreshStillBlocking
+      - command: python3 scripts/check_selected_route_horizon_model.py
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - rationale: local-horizon follow-up refresh remains carried forward because terrain-shadow illumination confidence still does not clear simulation consumption
+    - 3. refresh-energy-window: energy-window - FollowupRefreshStillBlocking
+      - command: python3 scripts/check_energy_margin_remediation.py
+      - evidence: output/mission/first_trusted_square_energy_remediation.json
+      - target: output/mission/first_trusted_square_energy_remediation.json
+      - rationale: energy follow-up refresh remains carried forward because the bounded route energy margin remains negative

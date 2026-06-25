@@ -1285,7 +1285,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-refresh-followup-modeling-pass",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Run MoonRobo modeling from the refresh follow-up receipt",
       outcome: "MoonRobo can consume the durable follow-up receipt and decide whether terrain, horizon, or energy refresh blockers remain before simulation consumption changes",
@@ -1298,7 +1298,39 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json",
         "scripts/check_moonrobo_remediation_margin_refresh_followup_modeling.py",
       ],
-      done_when: "MoonRobo emits a remediation-margin refresh follow-up modeling pass that consumes the follow-up receipt, maps terrain/horizon/energy follow-up refresh results to still-blocking or refreshed states, preserves no-consume simulation status, and keeps HardwareDenied authority",
+      done_when: "done: MoonRobo emits a remediation-margin refresh follow-up modeling pass that consumes the follow-up receipt, maps terrain/horizon/energy follow-up refresh results to still-blocking or refreshed states, preserves no-consume simulation status, and keeps HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-followup-modeling-workspace",
+      priority: 20,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh follow-up modeling into MoonBook",
+      outcome: "The MoonRobo follow-up modeling pass becomes durable evidence beside the MoonClaw follow-up receipt it audits",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json",
+        "scripts/check_moonrobo_remediation_margin_refresh_followup_modeling.py",
+      ],
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh follow-up modeling pass with AllFollowupRefreshesStillBlocking state, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-followup-modeling-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh follow-up modeling in Rabbita",
+      outcome: "Operators can inspect the durable MoonRobo follow-up modeling pass, still-blocking terrain/horizon/energy follow-up results, no-consume simulation status, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon", "scripts/check_moonrobo_remediation_margin_refresh_followup_modeling.py",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_modeling_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh follow-up modeling pass with AllFollowupRefreshesStillBlocking state, terrain/horizon/energy follow-up result ids, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

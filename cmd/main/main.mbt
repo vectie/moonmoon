@@ -52,6 +52,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonrobo remediation margins json
     #|  moon run cmd/main -- moonrobo remediation refresh modeling
     #|  moon run cmd/main -- moonrobo remediation refresh modeling json
+    #|  moon run cmd/main -- moonrobo remediation refresh followup modeling
+    #|  moon run cmd/main -- moonrobo remediation refresh followup modeling json
     #|  moon run cmd/main -- moonrobo remediation refresh projection
     #|  moon run cmd/main -- moonrobo remediation refresh projection json
     #|  moon run cmd/main -- moonrobo remediation projection
@@ -225,6 +227,22 @@ fn main {
       println(@moonrobo.first_trusted_square_json().stringify(indent=2))
     } else {
       println(@moonrobo.first_trusted_square_markdown())
+    }
+  } else if args.contains("moonrobo") &&
+    args.contains("remediation") &&
+    args.contains("refresh") &&
+    args.contains("followup") &&
+    args.contains("modeling") {
+    if output_json {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_refresh_followup_modeling_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_refresh_followup_modeling_markdown(),
+      )
     }
   } else if args.contains("moonrobo") &&
     args.contains("remediation") &&

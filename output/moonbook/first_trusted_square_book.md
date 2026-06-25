@@ -300,6 +300,11 @@
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt.json
+- moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling: MoonRobo remediation-margin refresh follow-up modeling pass for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-remediation-margin-refresh-followup-modeling
+  - claim: derived
+  - confidence: 0.7
+  - path: moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-ephemeris-receipt
   - claim: derived

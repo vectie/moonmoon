@@ -60,6 +60,10 @@ MOONROBO_REMEDIATION_MARGIN_REFRESH_MODELING_JSON = (
   ROOT
   / "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json"
 )
+MOONROBO_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_MODELING_JSON = (
+  ROOT
+  / "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json"
+)
 MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON = (
   ROOT
   / "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json"
@@ -279,6 +283,7 @@ def payload_for_entry(
   moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_projection: dict[str, Any],
   moonrobo_remediation_margin_refresh_modeling: list[dict[str, Any]],
+  moonrobo_remediation_margin_refresh_followup_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_refresh_projection: dict[str, Any],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
@@ -367,6 +372,13 @@ def payload_for_entry(
     return {
       "primary_modeling_pass": moonrobo_remediation_margin_refresh_modeling[0],
       "modeling_passes": moonrobo_remediation_margin_refresh_modeling,
+    }
+  if kind == "MoonroboRemediationMarginRefreshFollowupModeling":
+    return {
+      "primary_modeling_pass": moonrobo_remediation_margin_refresh_followup_modeling[
+        0
+      ],
+      "modeling_passes": moonrobo_remediation_margin_refresh_followup_modeling,
     }
   if kind == "MoonroboRemediationMarginRefreshProjection":
     return moonrobo_remediation_margin_refresh_projection
@@ -472,6 +484,7 @@ def workspace_files(
   moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_projection: dict[str, Any],
   moonrobo_remediation_margin_refresh_modeling: list[dict[str, Any]],
+  moonrobo_remediation_margin_refresh_followup_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_refresh_projection: dict[str, Any],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
@@ -545,6 +558,10 @@ def workspace_files(
     source_files.append(
       "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
     )
+  if moonrobo_remediation_margin_refresh_followup_modeling:
+    source_files.append(
+      "output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json",
+    )
   if moonrobo_remediation_margin_refresh_projection:
     source_files.append(
       "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
@@ -600,6 +617,7 @@ def workspace_files(
       moonrobo_remediation_margin_modeling,
       moonrobo_remediation_margin_projection,
       moonrobo_remediation_margin_refresh_modeling,
+      moonrobo_remediation_margin_refresh_followup_modeling,
       moonrobo_remediation_margin_refresh_projection,
       moonrobo_simulation_review_packet,
       moonrobo_simulation_review_decision,
@@ -673,6 +691,8 @@ def workspace_files(
     readme += "- Source MoonRobo remediation-margin projection: `output/moonrobo/first_trusted_square_remediation_margin_projection.json`\n"
   if moonrobo_remediation_margin_refresh_modeling:
     readme += "- Source MoonRobo remediation-margin refresh modeling: `output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json`\n"
+  if moonrobo_remediation_margin_refresh_followup_modeling:
+    readme += "- Source MoonRobo remediation-margin refresh follow-up modeling: `output/moonrobo/first_trusted_square_remediation_margin_refresh_followup_modeling.json`\n"
   if moonrobo_remediation_margin_refresh_projection:
     readme += "- Source MoonRobo remediation-margin refresh projection: `output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json`\n"
   if moonrobo_simulation_review_packet:
@@ -793,6 +813,10 @@ def main() -> int:
     MOONROBO_REMEDIATION_MARGIN_REFRESH_MODELING_JSON,
     [],
   )
+  moonrobo_remediation_margin_refresh_followup_modeling = load_optional_json(
+    MOONROBO_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_MODELING_JSON,
+    [],
+  )
   moonrobo_remediation_margin_refresh_projection = load_optional_json(
     MOONROBO_REMEDIATION_MARGIN_REFRESH_PROJECTION_JSON,
     {},
@@ -834,6 +858,7 @@ def main() -> int:
     moonrobo_remediation_margin_modeling,
     moonrobo_remediation_margin_projection,
     moonrobo_remediation_margin_refresh_modeling,
+    moonrobo_remediation_margin_refresh_followup_modeling,
     moonrobo_remediation_margin_refresh_projection,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
