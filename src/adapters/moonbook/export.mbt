@@ -26,6 +26,7 @@ pub(all) enum BookEntryKind {
   MoonroboRemediationMarginRefreshProjection
   MoonroboRemediationMarginRefreshFollowupProjection
   MoonroboRemediationMarginCycleCloseoutPolicy
+  MoonroboRemediationMarginRegeneratedReceiptReadiness
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
@@ -153,6 +154,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonrobo-remediation-margin-refresh-followup-projection"
     MoonroboRemediationMarginCycleCloseoutPolicy =>
       "moonrobo-remediation-margin-cycle-closeout-policy"
+    MoonroboRemediationMarginRegeneratedReceiptReadiness =>
+      "moonrobo-remediation-margin-regenerated-receipt-readiness"
     MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
@@ -1439,6 +1442,25 @@ fn moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts_entry(
 }
 
 ///|
+fn moonrobo_remediation_margin_regenerated_receipt_readiness_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let gate = @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_gate()
+  let margin_ids = gate.pending_margin_ids.join(", ")
+  let refresh_ids = gate.pending_refresh_ids.join(", ")
+  let execution_modes = gate.execution_modes.join(", ")
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/remediation-margin-regenerated-receipt-readiness",
+    title: "MoonRobo regenerated receipt readiness for \{dossier.site.name}",
+    kind: MoonroboRemediationMarginRegeneratedReceiptReadiness,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.8,
+    path: "moonrobo/\{dossier.site.site_id}/remediation-margin-regenerated-receipt-readiness.json",
+    summary: "\{@moonrobo.remediation_margin_regenerated_receipt_readiness_state_label(gate.readiness_state)} with \{gate.pending_receipt_count} pending regenerated receipts and \{gate.ready_receipt_count} ready receipts for terrain/horizon/energy margins (\{margin_ids}) over refreshes (\{refresh_ids}); execution modes \{execution_modes}; source action receipt provenance, no automatic refresh loop, no simulation consumption, simulation \{@moonrobo.execution_state_label(gate.simulation_state)}, may consume \{gate.may_consume_simulation}, hardware authority \{gate.hardware_authority} at \{@moonrobo.execution_state_label(gate.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1730,6 +1752,9 @@ fn book_entries(
     moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts_entry(
       dossier,
     ),
+  )
+  entries.push(
+    moonrobo_remediation_margin_regenerated_receipt_readiness_entry(dossier),
   )
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))

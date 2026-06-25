@@ -1816,7 +1816,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-regenerated-receipt-readiness-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize regenerated receipt readiness into MoonBook",
       outcome: "MoonRobo regenerated receipt readiness becomes durable MoonBook evidence before Rabbita surface or any simulation review",
@@ -1829,7 +1829,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
         "scripts/check_moonbook_remediation_margin_regenerated_receipt_readiness_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-regenerated-receipt-readiness-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface regenerated receipt readiness in Rabbita",
+      outcome: "Operators can inspect the durable MoonRobo regenerated receipt readiness gate before any simulation review consumes it",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
+        "scripts/check_moonbook_remediation_margin_regenerated_receipt_readiness_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_regenerated_receipt_readiness_surface.py",
+      ],
+      done_when: "Rabbita renders regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
