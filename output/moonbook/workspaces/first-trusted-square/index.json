@@ -214,13 +214,13 @@
       "summary": "block with score 20: choose alternate route or improve terrain evidence"
     },
     {
-      "entry_id": "corridor/first-trusted-square/first-trusted-square-5x5",
-      "title": "5x5 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "entry_id": "corridor/first-trusted-square/first-trusted-square-9x9",
+      "title": "9x9 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "CorridorScan",
       "claim_kind": "Derived",
       "confidence": 0.75,
       "path": "mission/first-trusted-square/corridor-scan.json",
-      "summary": "best window r+8-c-8 rank 1 selects southwest-bypass: block with grade 0.64845 and roughness 7.056667 m"
+      "summary": "best window r-12-c+16 rank 1 selects no promoted route yet: block with grade 0.51395 and roughness 5.95975 m"
     },
     {
       "entry_id": "route/first-trusted-square/direct-lola-window",
@@ -337,7 +337,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/handoffs.json",
-      "summary": "block primary route southwest-bypass: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "summary": "block primary route direct-lola-window: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
@@ -364,7 +364,7 @@
       "claim_kind": "Derived",
       "confidence": 0.65,
       "path": "moonclaw/first-trusted-square/corridor-task.json",
-      "summary": "needs-review task plans 81 windows with 2 blockers before route promotion"
+      "summary": "accepted task plans 81 windows with 0 blockers before route promotion"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
@@ -373,7 +373,7 @@
       "claim_kind": "Derived",
       "confidence": 0.7,
       "path": "moonclaw/first-trusted-square/receipts.json",
-      "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+      "summary": "needs-review receipt keeps primary Moonrobo handoff block: MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
@@ -391,7 +391,7 @@
       "claim_kind": "Derived",
       "confidence": 0.75,
       "path": "moonclaw/first-trusted-square/corridor-receipts.json",
-      "summary": "accepted receipt covers 25 measured windows and keeps best window r+8-c-8 block: MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
+      "summary": "accepted receipt covers 81 measured windows and keeps best window r-12-c+16 block: MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
     }
   ],
   "review_queue_path": "review_queue.json",

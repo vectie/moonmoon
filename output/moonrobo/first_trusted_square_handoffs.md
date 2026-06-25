@@ -10,7 +10,7 @@
     - illumination-direct-lola-window: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
     - power-window-evidence: block - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
-    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions
   - route: west-contour-detour
   - decision: block
@@ -21,7 +21,7 @@
     - illumination-west-contour-detour: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
     - power-window-evidence: block - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
-    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions
   - route: north-rim-stepout
   - decision: block
@@ -32,7 +32,7 @@
     - illumination-north-rim-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
     - power-window-evidence: block - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
-    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions
   - route: southwest-bypass
   - decision: block
@@ -43,7 +43,7 @@
     - illumination-southwest-bypass: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
     - power-window-evidence: block - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
-    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - moonrobo/first-trusted-square/south-stepout/simulation-preconditions
   - route: south-stepout
   - decision: block
@@ -54,5 +54,5 @@
     - illumination-south-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
     - power-window-evidence: block - power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source
     - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
-    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+    - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 

@@ -115,7 +115,7 @@
   - claim: derived
   - confidence: 0.7544
   - path: mission/first-trusted-square/traverse.json
-- corridor/first-trusted-square/first-trusted-square-5x5: 5x5 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile
+- corridor/first-trusted-square/first-trusted-square-9x9: 9x9 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: corridor-scan
   - claim: derived
   - confidence: 0.75
@@ -234,15 +234,14 @@
 - illumination-southwest-bypass [high/needs-evidence] Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
 - route-south-stepout [high/needs-evidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
 - illumination-south-stepout [high/needs-evidence] South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation -> power-thermal-review
-- corridor-scan-best-window [high/needs-evidence] best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked -> mission-review
+- corridor-scan-best-window [high/needs-evidence] best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked -> mission-review
 - power-window-evidence [high/needs-evidence] power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review -> power-thermal-review
 - energy-window [high/needs-evidence] energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation -> power-thermal-review
 - moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
 - moonclaw-ephemeris-task [high/needs-evidence] MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input -> moonclaw
-- moonclaw-corridor-task [high/needs-evidence] MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
-- question-1 [low/open] Continue widening the corridor search because the best measured southwest window is still blocked. -> moonclaw
+- question-1 [low/open] Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates. -> moonclaw
 - question-2 [low/open] Review the materialized LunarBook workspace entries and close accepted or rejected queue items. -> moonclaw
 
 ## Review Transitions
@@ -297,7 +296,7 @@
   - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation
 - review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
   - reviewer: moonbook-policy-v1
-  - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+  - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - review-power-window-evidence-request-evidence: request-evidence power-window-evidence -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-missing-v1 has source status missing-source; pin official ephemeris source, checksum, and time window before energy review
@@ -313,9 +312,6 @@
 - review-moonclaw-ephemeris-task-request-evidence: request-evidence moonclaw-ephemeris-task -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input
-- review-moonclaw-corridor-task-request-evidence: request-evidence moonclaw-corridor-task -> needs-evidence
-  - reviewer: moonbook-policy-v1
-  - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence
 - review-question-0-keep-open: keep-open question-0 -> open
   - reviewer: moonbook-policy-v1
   - rationale: left open for moonclaw follow-up

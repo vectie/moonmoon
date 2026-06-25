@@ -137,7 +137,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
     },
     {
       "transition_id": "review-power-window-evidence-request-evidence",
@@ -178,14 +178,6 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 2 blocking artifacts before power-window evidence can become robot-facing input"
-    },
-    {
-      "transition_id": "review-moonclaw-corridor-task-request-evidence",
-      "item_id": "moonclaw-corridor-task",
-      "decision": "RequestEvidence",
-      "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence"
     },
     {
       "transition_id": "review-question-0-keep-open",

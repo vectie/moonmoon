@@ -6,14 +6,14 @@
     "claim_kind": "Derived",
     "confidence": 0.7,
     "path": "moonclaw/first-trusted-square/receipts.json",
-    "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    "summary": "needs-review receipt keeps primary Moonrobo handoff block: MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
   },
   "payload": {
     "primary_receipt": {
       "receipt": {
         "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
         "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
-        "status": "Accepted",
+        "status": "NeedsReview",
         "accepted_outputs": [
           "route-scoreboard",
           "moonrobo-handoff-compatibility",
@@ -21,7 +21,7 @@
         ],
         "validation_notes": [
           "route-candidates-present: pass - 5 route candidates are available for scoring.",
-          "selected-route-present: pass - corridor-selected route southwest-bypass exists in the current route candidate set.",
+          "selected-route-present: fail - corridor-selected route  exists in the current route candidate set.",
           "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
           "proposal-blockers-current: pass - route-scoring proposal blockers remain active: corridor-scan-best-window, energy-window, moonrobo-handoff.",
           "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
@@ -29,7 +29,7 @@
         ]
       },
       "site_id": "first-trusted-square",
-      "selected_route_id": "southwest-bypass",
+      "selected_route_id": "",
       "route_scores": [
         {
           "route_id": "direct-lola-window",
@@ -105,8 +105,8 @@
         },
         {
           "validation_id": "selected-route-present",
-          "passed": true,
-          "note": "corridor-selected route southwest-bypass exists in the current route candidate set."
+          "passed": false,
+          "note": "corridor-selected route  exists in the current route candidate set."
         },
         {
           "validation_id": "source-checksums-verified",
@@ -130,14 +130,14 @@
         }
       ],
       "moonrobo_handoff_decision": "Block",
-      "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+      "next_action": "MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
     },
     "receipts": [
       {
         "receipt": {
           "receipt_id": "moonclaw/first-trusted-square/route-scoring-v1/current-receipt",
           "proposal_id": "moonclaw/first-trusted-square/route-scoring-v1",
-          "status": "Accepted",
+          "status": "NeedsReview",
           "accepted_outputs": [
             "route-scoreboard",
             "moonrobo-handoff-compatibility",
@@ -145,7 +145,7 @@
           ],
           "validation_notes": [
             "route-candidates-present: pass - 5 route candidates are available for scoring.",
-            "selected-route-present: pass - corridor-selected route southwest-bypass exists in the current route candidate set.",
+            "selected-route-present: fail - corridor-selected route  exists in the current route candidate set.",
             "source-checksums-verified: pass - 5 of 5 dataset source fingerprints match their manifests.",
             "proposal-blockers-current: pass - route-scoring proposal blockers remain active: corridor-scan-best-window, energy-window, moonrobo-handoff.",
             "energy-blocker-current: pass - current energy assessment is block and must remain a scoring blocker until ephemeris evidence is attached.",
@@ -153,7 +153,7 @@
           ]
         },
         "site_id": "first-trusted-square",
-        "selected_route_id": "southwest-bypass",
+        "selected_route_id": "",
         "route_scores": [
           {
             "route_id": "direct-lola-window",
@@ -229,8 +229,8 @@
           },
           {
             "validation_id": "selected-route-present",
-            "passed": true,
-            "note": "corridor-selected route southwest-bypass exists in the current route candidate set."
+            "passed": false,
+            "note": "corridor-selected route  exists in the current route candidate set."
           },
           {
             "validation_id": "source-checksums-verified",
@@ -254,7 +254,7 @@
           }
         ],
         "moonrobo_handoff_decision": "Block",
-        "next_action": "MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+        "next_action": "MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
       }
     ]
   },

@@ -134,7 +134,7 @@
     {
       "item_id": "corridor-scan-best-window",
       "severity": "high",
-      "reason": "best measured corridor window r+8-c-8 selects southwest-bypass but remains block: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked",
+      "reason": "best measured corridor window r-12-c+16 selects no promoted route yet and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked",
       "owner": "mission-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
@@ -180,14 +180,6 @@
       "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
     },
     {
-      "item_id": "moonclaw-corridor-task",
-      "severity": "high",
-      "reason": "MoonClaw corridor task has 2 blocking artifacts before the planned 81-window search can update route evidence",
-      "owner": "moonclaw",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-moonclaw-corridor-task-request-evidence"
-    },
-    {
       "item_id": "question-0",
       "severity": "low",
       "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
@@ -198,7 +190,7 @@
     {
       "item_id": "question-1",
       "severity": "low",
-      "reason": "Continue widening the corridor search because the best measured southwest window is still blocked.",
+      "reason": "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
       "owner": "moonclaw",
       "status": "Open",
       "last_transition_id": "review-question-1-keep-open"

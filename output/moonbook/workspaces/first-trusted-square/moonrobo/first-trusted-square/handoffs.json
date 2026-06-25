@@ -6,29 +6,29 @@
     "claim_kind": "Derived",
     "confidence": 0.6,
     "path": "moonrobo/first-trusted-square/handoffs.json",
-    "summary": "block primary route southwest-bypass: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    "summary": "block primary route direct-lola-window: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
   },
   "payload": {
     "primary_handoff": {
-      "handoff_id": "moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions",
+      "handoff_id": "moonrobo/first-trusted-square/direct-lola-window/simulation-preconditions",
       "site_id": "first-trusted-square",
-      "route_id": "southwest-bypass",
+      "route_id": "direct-lola-window",
       "task_kind": "route-simulation-precondition",
       "target_body": "Moon",
       "decision": "Block",
       "preconditions": [
         {
-          "precondition_id": "route-southwest-bypass",
+          "precondition_id": "route-direct-lola-window",
           "label": "Route terrain gate",
           "decision": "Block",
-          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
-          "reason": "continue corridor search beyond the southwest bypass before simulation"
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "reason": "do not traverse directly; use this as the baseline hazard case"
         },
         {
-          "precondition_id": "illumination-southwest-bypass",
+          "precondition_id": "illumination-direct-lola-window",
           "label": "Illumination and thermal gate",
           "decision": "Block",
-          "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+          "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
           "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
         },
         {
@@ -50,7 +50,7 @@
           "label": "Measured corridor search gate",
           "decision": "Block",
           "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-          "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+          "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
         }
       ],
       "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -97,7 +97,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -143,7 +143,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -189,7 +189,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -235,7 +235,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
@@ -281,7 +281,7 @@
             "label": "Measured corridor search gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/corridor-scan.json",
-            "reason": "lowest max-neighbor-grade window in this measured 5x5 scan; still blocked"
+            "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked"
           }
         ],
         "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"

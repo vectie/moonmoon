@@ -2,7 +2,7 @@
 
 Purpose: Software proof slice for lunar terrain, uncertainty, and robot traverse reasoning.
 
-Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 5x5 route-corridor scan, and a conservative rover energy-window budget.
+Summary: One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, and a conservative rover energy-window budget.
 
 ## Source Datasets
 
@@ -256,21 +256,21 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 
 ## Corridor Scan
 
-- scan: first-trusted-square-5x5-corridor-scan-v1
-- windows ranked: 25
-- best measured window: r+8-c-8 (rank 1)
-- offset: row 8, col -8
-- selected route: southwest-bypass
+- scan: first-trusted-square-9x9-corridor-scan-v2
+- windows ranked: 81
+- best measured window: r-12-c+16 (rank 1)
+- offset: row -12, col 16
+- selected route: none promoted yet
 - decision: block
-- max neighbor grade: 0.64845
-- roughness: 7.056667 m
-- note: lowest max-neighbor-grade window in this measured 5x5 scan; still blocked
+- max neighbor grade: 0.51395
+- roughness: 5.95975 m
+- note: lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
 - top windows:
-  - #1 r+8-c-8: grade 0.64845, roughness 7.056667 m, decision block, route southwest-bypass
-  - #2 r+4-c-8: grade 0.6913, roughness 9.079875 m, decision block
-  - #3 r+0-c+8: grade 0.7054, roughness 8.517167 m, decision block
-  - #4 r-4-c-8: grade 0.7091, roughness 8.112583 m, decision block
-  - #5 r-4-c+8: grade 0.7125, roughness 8.56275 m, decision block
+  - #1 r-12-c+16: grade 0.51395, roughness 5.95975 m, decision block
+  - #2 r+0-c+12: grade 0.579, roughness 7.380708 m, decision block
+  - #3 r+0-c-16: grade 0.61575, roughness 8.107167 m, decision block
+  - #4 r-12-c+12: grade 0.6223, roughness 6.90775 m, decision block
+  - #5 r+16-c+4: grade 0.62295, roughness 7.475292 m, decision block
 
 ## Power Window Evidence
 
@@ -464,6 +464,6 @@ Summary: One small lunar site model with explicit provenance, uncertainty, terra
 ## Next Questions
 
 - Attach time-windowed solar ephemeris for robot energy and thermal constraints.
-- Continue widening the corridor search because the best measured southwest window is still blocked.
+- Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.
 - Review the materialized LunarBook workspace entries and close accepted or rejected queue items.
 

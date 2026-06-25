@@ -3,18 +3,18 @@
 - moonclaw/first-trusted-square/corridor-expansion-v1/search-task
   - proposal: moonclaw/first-trusted-square/corridor-expansion-v1
   - priority: high
-  - state: needs-review
-  - objective: Search beyond the current 5x5 corridor ranking to either find a rover-reviewable local window or prove the bounded site remains blocked.
-  - current scan: first-trusted-square-5x5-corridor-scan-v1 (25 windows)
+  - state: accepted
+  - objective: Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.
+  - current scan: first-trusted-square-9x9-corridor-scan-v2 (81 windows)
   - planned scan: first-trusted-square-9x9-corridor-scan-v2 (81 windows, radius 16, step 4)
-  - safety gate: Do not promote a widened route candidate until the 9x9 CSV is pinned, MoonBit generation reads it, and Moonrobo handoffs are regenerated from the updated corridor evidence.
-  - next action: Promote the pinned 9x9 LOLA CSV into generated MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.
+  - safety gate: Do not promote a widened route candidate until the best 9x9 window has its own route fixture and Moonrobo handoffs are regenerated from that route evidence.
+  - next action: Extract and review a route fixture for the best 9x9 measured window r-12-c+16 before changing Moonrobo route candidates.
   - inputs:
-    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits.
-    - selected-route: mission/first-trusted-square/routes/southwest-bypass.json - Lowest-risk route candidate found so far; it is progress evidence, not a safe route.
+    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture.
+    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route.
     - source-extraction: source-extractions/first-trusted-square-southwest-bypass-20m.json - Existing byte-range extraction pattern for adding adjacent LOLA evidence windows.
   - artifacts:
-    - current-5x5-scan: data/sources/lro_lola/first_trusted_square_corridor_scan.csv
+    - baseline-5x5-scan: data/sources/lro_lola/first_trusted_square_corridor_scan.csv
       - producer: scripts/scan_lola_corridor.py
       - required: verified 5x5 baseline corridor scan remains pinned for comparison
       - current: first-trusted-square-5x5-corridor-scan-v1
@@ -35,16 +35,14 @@
     - generated-corridor-scan: src/mission/generated_first_trusted_square_corridor_scan.mbt
       - producer: scripts/generate_corridor_scan.py
       - required: MoonBit corridor scan mirrors the reviewed widened CSV
-      - current: current 5x5 generated scan
-      - ready: false
-      - blocking: generated MoonBit still mirrors the 5x5 scan until the pinned 9x9 CSV is promoted
+      - current: generated from pinned first-trusted-square-9x9-corridor-scan-v2
+      - ready: true
       - gate: python3 scripts/generate_corridor_scan.py --check
     - moonbook-corridor-workspace: output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/corridor-scan.json
       - producer: scripts/build_moonmoon_dossier.sh
       - required: MoonBook workspace carries the widened scan and updated route blockers
-      - current: current 5x5 workspace payload
-      - ready: false
-      - blocking: MoonBook workspace still carries the 5x5 scan result
+      - current: workspace carries first-trusted-square-9x9-corridor-scan-v2
+      - ready: true
       - gate: python3 scripts/materialize_moonbook_workspace.py --check
   - commands:
     - python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4
@@ -55,5 +53,5 @@
   - acceptance:
     - bounded-search: Publish the search radius, sampled windows, ordering rule, CSV checksum, and generator command.
     - route-outcome: Return at least one lower-risk route candidate or a measured proof that every sampled window remains blocked.
-    - workspace-refresh: Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the result as files.
+    - workspace-refresh: Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files.
 

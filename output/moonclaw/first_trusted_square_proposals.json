@@ -57,20 +57,20 @@
     "site_id": "first-trusted-square",
     "job_kind": "CorridorExpansion",
     "priority": "High",
-    "title": "Widen the LOLA route-corridor search",
-    "objective": "Search beyond the current 5x5 corridor ranking to either find a rover-reviewable local window or prove the bounded site remains blocked.",
+    "title": "Promote the LOLA route-corridor search",
+    "objective": "Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.",
     "inputs": [
       {
         "input_id": "corridor-scan",
         "evidence_path": "mission/first-trusted-square/corridor-scan.json",
         "claim_kind": "Derived",
-        "summary": "Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits."
+        "summary": "Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture."
       },
       {
         "input_id": "selected-route",
-        "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
+        "evidence_path": "mission/first-trusted-square/routes/*.json",
         "claim_kind": "Derived",
-        "summary": "Lowest-risk route candidate found so far; it is progress evidence, not a safe route."
+        "summary": "Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route."
       },
       {
         "input_id": "source-extraction",
@@ -90,12 +90,12 @@
       },
       {
         "criterion_id": "workspace-refresh",
-        "description": "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the result as files."
+        "description": "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files."
       }
     ],
     "blocked_by": [
       "corridor-scan-best-window",
-      "route-southwest-bypass",
+      "unpromoted-best-window",
       "moonrobo-handoff"
     ],
     "expected_outputs": [

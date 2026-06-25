@@ -22,17 +22,17 @@
 - moonclaw/first-trusted-square/corridor-expansion-v1
   - kind: corridor-expansion
   - priority: high
-  - title: Widen the LOLA route-corridor search
-  - objective: Search beyond the current 5x5 corridor ranking to either find a rover-reviewable local window or prove the bounded site remains blocked.
-  - blocked by: corridor-scan-best-window, route-southwest-bypass, moonrobo-handoff
+  - title: Promote the LOLA route-corridor search
+  - objective: Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.
+  - blocked by: corridor-scan-best-window, unpromoted-best-window, moonrobo-handoff
   - inputs:
-    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits.
-    - selected-route: mission/first-trusted-square/routes/southwest-bypass.json - Lowest-risk route candidate found so far; it is progress evidence, not a safe route.
+    - corridor-scan: mission/first-trusted-square/corridor-scan.json - Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture.
+    - selected-route: mission/first-trusted-square/routes/*.json - Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route.
     - source-extraction: source-extractions/first-trusted-square-southwest-bypass-20m.json - Existing byte-range extraction pattern for adding adjacent LOLA evidence windows.
   - acceptance:
     - bounded-search: Publish the search radius, sampled windows, ordering rule, CSV checksum, and generator command.
     - route-outcome: Return at least one lower-risk route candidate or a measured proof that every sampled window remains blocked.
-    - workspace-refresh: Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the result as files.
+    - workspace-refresh: Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files.
   - expected outputs:
     - data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
     - src/mission/generated_first_trusted_square_corridor_scan.mbt
