@@ -37,6 +37,7 @@ test "Rabbita Moon page renders browser inspection controls" {
     html.contains("Remediation Margin Regenerated Reviewed Work Item Receipts"),
   )
   assert_true(html.contains("Remediation Margin Regenerated Receipt Readiness"))
+  assert_true(html.contains("Regenerated Readiness Fresh Evidence Task"))
   assert_true(html.contains("Closeout Action Review"))
   assert_true(html.contains("Remediation Margin Refresh Projection"))
   assert_true(html.contains("Remediation Margin Projection"))
@@ -68,6 +69,9 @@ test "Rabbita Moon page renders browser inspection controls" {
     html.contains("remediation-margin-regenerated-reviewed-work-item-receipts"),
   )
   assert_true(html.contains("remediation-margin-regenerated-receipt-readiness"))
+  assert_true(
+    html.contains("regenerated-receipt-readiness-fresh-evidence-task"),
+  )
   assert_true(html.contains("closeout-action-review"))
   assert_true(html.contains("closeout-action-review-export"))
   assert_true(html.contains("remediation-margin-refresh-projection"))
@@ -137,6 +141,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains(
       "function renderRemediationMarginRegeneratedReceiptReadiness()",
+    ),
+  )
+  assert_true(
+    html.contains(
+      "function renderRegeneratedReceiptReadinessFreshEvidenceTask()",
     ),
   )
   assert_true(
@@ -240,6 +249,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains(
       "moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness",
+    ),
+  )
+  assert_true(
+    html.contains(
+      "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task",
     ),
   )
   assert_true(html.contains("operator/rabbita-closeout-action-review"))

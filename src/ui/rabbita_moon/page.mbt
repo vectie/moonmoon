@@ -275,6 +275,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--danger) 58%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
     #|}
+    #|.regenerated-receipt-readiness-fresh-evidence-task-row {
+    #|  border-color: color-mix(in srgb, var(--warn) 66%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--warn);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -752,6 +756,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRegeneratedReceiptReadinessFreshEvidenceTask() {
+    #|  renderMoonBookEntry(
+    #|    'regenerated-receipt-readiness-fresh-evidence-task',
+    #|    'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task',
+    #|    'regenerated-receipt-readiness-fresh-evidence-task-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -1045,6 +1057,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginFreshEvidenceActionReceipts();
     #|  renderRemediationMarginRegeneratedReviewedWorkItemReceipts();
     #|  renderRemediationMarginRegeneratedReceiptReadiness();
+    #|  renderRegeneratedReceiptReadinessFreshEvidenceTask();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -1217,6 +1230,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Regenerated Receipt Readiness</h2>
     $|      <div id="remediation-margin-regenerated-receipt-readiness" class="review-list" aria-label="MoonRobo regenerated receipt readiness gate with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Regenerated Readiness Fresh Evidence Task</h2>
+    $|      <div id="regenerated-receipt-readiness-fresh-evidence-task" class="review-list" aria-label="MoonClaw regenerated readiness fresh-evidence task with source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Closeout Action Review</h2>
