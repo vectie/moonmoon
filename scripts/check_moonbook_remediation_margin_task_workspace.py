@@ -50,6 +50,9 @@ def assert_remediation_margin_workspace(root: Path) -> None:
     raise AssertionError(entry["path"])
   for text in [
     "3 active remediation margins",
+    "terrain-northeast-stepout",
+    "illumination-northeast-stepout",
+    "energy-window",
     "3 blockers",
     "moonmoon-safety-gate-only",
     "hardware-denied",

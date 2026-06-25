@@ -211,6 +211,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
     #|}
+    #|.remediation-margin-task-row {
+    #|  border-color: color-mix(in srgb, var(--warn) 52%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--warn);
+    #|}
     #|.decision-group {
     #|  display: grid;
     #|  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -524,6 +528,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginTask() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-task',
+    #|    'moonclaw/first-trusted-square/remediation-margin-task',
+    #|    'remediation-margin-task-row'
+    #|  );
+    #|}
+    #|
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
@@ -671,6 +683,7 @@ fn app_script() -> String {
     #|  renderSimulationReviewPacket();
     #|  renderSimulationReviewDecision();
     #|  renderSimulationBlockerReduction();
+    #|  renderRemediationMarginTask();
     #|  renderClearanceReview();
     #|}
     #|
@@ -762,6 +775,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Simulation Blocker Reduction</h2>
     $|      <div id="simulation-blocker-reduction" class="review-list" aria-label="Selected route simulation blocker reduction with hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Task</h2>
+    $|      <div id="remediation-margin-task" class="review-list" aria-label="MoonClaw remediation margin task with three active blockers and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>

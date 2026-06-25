@@ -442,7 +442,7 @@
       "claim_kind": "Derived",
       "confidence": 0.68,
       "path": "moonclaw/first-trusted-square/remediation-margin-task.json",
-      "summary": "accepted task preserves 3 active remediation margins with 3 blockers and hardware authority moonmoon-safety-gate-only at hardware-denied"
+      "summary": "accepted task preserves 3 active remediation margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) with 3 blockers and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",

@@ -955,6 +955,7 @@ fn moonclaw_remediation_margin_task_entry(
 ) -> BookEntry {
   let task = @moonclaw.first_trusted_square_remediation_margin_task()
   let blockers = @moonclaw.remediation_margin_task_blocked_artifact_count(task)
+  let margin_ids = task.active_margin_ids.join(", ")
   {
     entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-task",
     title: "MoonClaw remediation-margin task for \{dossier.site.name}",
@@ -962,7 +963,7 @@ fn moonclaw_remediation_margin_task_entry(
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.68,
     path: "moonclaw/\{dossier.site.site_id}/remediation-margin-task.json",
-    summary: "\{@moonclaw.receipt_status_label(task.state)} task preserves \{task.active_margin_count} active remediation margins with \{blocker_count_label(blockers)} and hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task preserves \{task.active_margin_count} active remediation margins (\{margin_ids}) with \{blocker_count_label(blockers)} and hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
   }
 }
 

@@ -14,11 +14,13 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Simulation Review Packet"))
   assert_true(html.contains("Simulation Review Decision"))
   assert_true(html.contains("Simulation Blocker Reduction"))
+  assert_true(html.contains("Remediation Margin Task"))
   assert_true(html.contains("Selected Route Clearance"))
   assert_true(html.contains("selected-route-remediation"))
   assert_true(html.contains("simulation-review-packet"))
   assert_true(html.contains("simulation-review-decision"))
   assert_true(html.contains("simulation-blocker-reduction"))
+  assert_true(html.contains("remediation-margin-task"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
   assert_true(html.contains("first_trusted_square_clearance_transitions.json"))
@@ -33,6 +35,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function renderSimulationReviewPacket()"))
   assert_true(html.contains("function renderSimulationReviewDecision()"))
   assert_true(html.contains("function renderSimulationBlockerReduction()"))
+  assert_true(html.contains("function renderRemediationMarginTask()"))
   assert_true(html.contains("function renderClearanceReview()"))
   assert_true(
     html.contains("moonrobo/first-trusted-square/simulation-review-packet"),
@@ -43,6 +46,11 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains("moonrobo/first-trusted-square/simulation-blocker-reduction"),
   )
+  assert_true(
+    html.contains("moonclaw/first-trusted-square/remediation-margin-task"),
+  )
+  assert_true(html.contains("terrain-northeast-stepout"))
+  assert_true(html.contains("illumination-northeast-stepout"))
   assert_true(
     html.contains("terrain-remediation/first-trusted-square/northeast-stepout"),
   )

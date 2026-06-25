@@ -204,6 +204,11 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(
     dossier.entries[48].summary.contains("3 active remediation margins"),
   )
+  assert_true(dossier.entries[48].summary.contains("terrain-northeast-stepout"))
+  assert_true(
+    dossier.entries[48].summary.contains("illumination-northeast-stepout"),
+  )
+  assert_true(dossier.entries[48].summary.contains("energy-window"))
   assert_true(dossier.entries[48].summary.contains("3 blockers"))
   assert_true(dossier.entries[48].summary.contains("moonmoon-safety-gate-only"))
   assert_true(dossier.entries[48].path.contains("remediation-margin-task"))
