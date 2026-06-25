@@ -1,0 +1,78 @@
+[
+  {
+    "task_id": "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task",
+    "site_id": "first-trusted-square",
+    "route_id": "northeast-stepout",
+    "priority": "Critical",
+    "state": "Accepted",
+    "source_refresh_projection_id": "moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection",
+    "source_refresh_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+    "source_modeling_pass_id": "moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass",
+    "source_modeling_state": "AllRefreshesStillBlocking",
+    "source_projection_status": "NoConsumeRefreshSimulationBlocked",
+    "source_simulation_state": "SimulationBlocked",
+    "may_consume_simulation": false,
+    "blocking_refresh_count": 3,
+    "blocking_refresh_ids": [
+      "refresh-terrain-northeast-stepout",
+      "refresh-illumination-northeast-stepout",
+      "refresh-energy-window"
+    ],
+    "blocking_margin_ids": [
+      "terrain-northeast-stepout",
+      "illumination-northeast-stepout",
+      "energy-window"
+    ],
+    "followup_actions": [
+      {
+        "rank": 1,
+        "margin_id": "terrain-northeast-stepout",
+        "refresh_id": "refresh-terrain-northeast-stepout",
+        "source_refresh_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "command": "python3 scripts/generate_selected_route_terrain_remediation.py --check",
+        "acceptance_check": "python3 scripts/check_selected_route_terrain_remediation.py",
+        "reason": "Re-run the terrain refresh first because moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection still blocks simulation consumption on selected-route grade, roughness, and blocking-edge evidence."
+      },
+      {
+        "rank": 2,
+        "margin_id": "illumination-northeast-stepout",
+        "refresh_id": "refresh-illumination-northeast-stepout",
+        "source_refresh_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+        "command": "python3 scripts/generate_selected_route_horizon.py --check",
+        "acceptance_check": "python3 scripts/check_selected_route_horizon_model.py",
+        "reason": "Re-run the local-horizon refresh after terrain so illumination evidence remains tied to bounded terrain-shadow geometry for northeast-stepout."
+      },
+      {
+        "rank": 3,
+        "margin_id": "energy-window",
+        "refresh_id": "refresh-energy-window",
+        "source_refresh_projection_path": "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+        "target_artifact_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "command": "python3 scripts/check_energy_margin_remediation.py",
+        "acceptance_check": "python3 scripts/check_energy_margin_remediation.py",
+        "reason": "Re-run bounded energy refresh last because demand and reserve evidence should consume the refreshed terrain and local-horizon constraints for northeast-stepout."
+      }
+    ],
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_denied": true,
+    "acceptance_criteria": [
+      {
+        "criterion_id": "refresh-projection-consumed",
+        "description": "Follow-up task source id, status, blocking refresh ids, and no-consume simulation state match the durable MoonRobo refresh projection."
+      },
+      {
+        "criterion_id": "visible-before-dispatch",
+        "description": "Follow-up task is emitted only after the refresh projection is materialized in MoonBook and surfaced in Rabbita."
+      },
+      {
+        "criterion_id": "hardware-denial-preserved",
+        "description": "Hardware state remains HardwareDenied under moonmoon-safety-gate-only while follow-up refresh work is open."
+      }
+    ],
+    "safety_gate": "This follow-up may only refresh terrain, local-horizon, and energy evidence named by the no-consume refresh projection; it must not authorize MoonRobo simulation consumption or hardware execution.",
+    "next_action": "Execute the follow-up terrain, local-horizon, and energy refresh commands, rebuild the dossier, then regenerate refresh receipt, refresh modeling, and refresh projection evidence before simulation consumption can change."
+  }
+]

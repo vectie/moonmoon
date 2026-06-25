@@ -11,6 +11,7 @@
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
     "output/moonclaw/first_trusted_square_receipts.json",
@@ -544,6 +545,15 @@
       "confidence": 0.7,
       "path": "moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
       "summary": "NoConsumeRefreshSimulationBlocked from AllRefreshesStillBlocking with 3 still-blocking refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-refresh-followup-task",
+      "title": "MoonClaw remediation-margin refresh follow-up task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginRefreshFollowupTask",
+      "claim_kind": "Derived",
+      "confidence": 0.72,
+      "path": "moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json",
+      "summary": "accepted follow-up task consumes NoConsumeRefreshSimulationBlocked from AllRefreshesStillBlocking with 3 blocking refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",

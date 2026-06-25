@@ -243,6 +243,110 @@ test "MoonClaw remediation margin refresh renderers expose no-consume task" {
 }
 
 ///|
+test "first trusted square remediation margin refresh follow-up consumes refresh projection" {
+  let task = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_task()
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task",
+  )
+  assert_eq(
+    task.source_refresh_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection",
+  )
+  assert_eq(
+    task.source_refresh_projection_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
+  )
+  assert_eq(
+    task.source_modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass",
+  )
+  assert_true(
+    task.source_modeling_state ==
+    @moonrobo.RemediationMarginRefreshModelingState::AllRefreshesStillBlocking,
+  )
+  assert_true(
+    task.source_projection_status ==
+    @moonrobo.RemediationMarginRefreshProjectionStatus::NoConsumeRefreshSimulationBlocked,
+  )
+  assert_true(
+    task.source_simulation_state ==
+    @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(!task.may_consume_simulation)
+  assert_eq(task.blocking_refresh_count, 3)
+  assert_eq(task.blocking_refresh_ids[0], "refresh-terrain-northeast-stepout")
+  assert_eq(
+    task.blocking_refresh_ids[1],
+    "refresh-illumination-northeast-stepout",
+  )
+  assert_eq(task.blocking_refresh_ids[2], "refresh-energy-window")
+  assert_eq(task.blocking_margin_ids[0], "terrain-northeast-stepout")
+  assert_eq(task.blocking_margin_ids[1], "illumination-northeast-stepout")
+  assert_eq(task.blocking_margin_ids[2], "energy-window")
+  assert_eq(task.followup_actions.length(), 3)
+  assert_eq(task.followup_actions[0].rank, 1)
+  assert_eq(task.followup_actions[1].rank, 2)
+  assert_eq(task.followup_actions[2].rank, 3)
+  assert_true(
+    task.followup_actions[0].refresh_id == "refresh-terrain-northeast-stepout",
+  )
+  assert_true(
+    task.followup_actions[1].acceptance_check.contains(
+      "check_selected_route_horizon_model.py",
+    ),
+  )
+  assert_true(
+    task.followup_actions[2].target_artifact_path.contains(
+      "first_trusted_square_energy_remediation.json",
+    ),
+  )
+  assert_true(
+    task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(task.hardware_denied)
+}
+
+///|
+test "MoonClaw remediation margin refresh follow-up renderers expose no-consume projection" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_tasks_markdown()
+  assert_true(
+    markdown.contains("MoonClaw Remediation Margin Refresh Follow-Up Tasks"),
+  )
+  assert_true(markdown.contains("NoConsumeRefreshSimulationBlocked"))
+  assert_true(markdown.contains("AllRefreshesStillBlocking"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("refresh-terrain-northeast-stepout"))
+  assert_true(markdown.contains("refresh-illumination-northeast-stepout"))
+  assert_true(markdown.contains("refresh-energy-window"))
+  assert_true(markdown.contains("terrain-northeast-stepout"))
+  assert_true(markdown.contains("illumination-northeast-stepout"))
+  assert_true(markdown.contains("energy-window"))
+  assert_true(
+    markdown.contains("hardware authority: moonmoon-safety-gate-only"),
+  )
+  let json = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"task_id\": \"moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task\"",
+    ),
+  )
+  assert_true(
+    json.contains(
+      "\"source_projection_status\": \"NoConsumeRefreshSimulationBlocked\"",
+    ),
+  )
+  assert_true(
+    json.contains("\"source_modeling_state\": \"AllRefreshesStillBlocking\""),
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}
+
+///|
 test "first trusted square remediation margin refresh receipt carries ranked refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_receipt()
   assert_eq(

@@ -517,6 +517,15 @@
       "summary": "NoConsumeRefreshSimulationBlocked from AllRefreshesStillBlocking with 3 still-blocking refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-refresh-followup-task",
+      "title": "MoonClaw remediation-margin refresh follow-up task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginRefreshFollowupTask",
+      "claim_kind": "Derived",
+      "confidence": 0.72,
+      "path": "moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json",
+      "summary": "accepted follow-up task consumes NoConsumeRefreshSimulationBlocked from AllRefreshesStillBlocking with 3 blocking refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window) over margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
       "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawEphemerisReceipt",

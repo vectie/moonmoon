@@ -1,0 +1,46 @@
+# MoonClaw Remediation Margin Refresh Follow-Up Tasks
+
+- moonclaw/first-trusted-square/remediation-margin-v1/refresh-followup-task
+  - priority: critical
+  - state: accepted
+  - route: northeast-stepout
+  - source refresh projection: moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection
+  - source refresh projection path: output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json
+  - source modeling pass: moonrobo/first-trusted-square/remediation-margin-v1/refresh-modeling-pass
+  - source modeling state: AllRefreshesStillBlocking
+  - projection status: NoConsumeRefreshSimulationBlocked
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - blocking refreshes: 3
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - safety gate: This follow-up may only refresh terrain, local-horizon, and energy evidence named by the no-consume refresh projection; it must not authorize MoonRobo simulation consumption or hardware execution.
+  - next action: Execute the follow-up terrain, local-horizon, and energy refresh commands, rebuild the dossier, then regenerate refresh receipt, refresh modeling, and refresh projection evidence before simulation consumption can change.
+  - blocking refresh ids:
+    - refresh-terrain-northeast-stepout
+    - refresh-illumination-northeast-stepout
+    - refresh-energy-window
+  - blocking margin ids:
+    - terrain-northeast-stepout
+    - illumination-northeast-stepout
+    - energy-window
+  - follow-up actions:
+    - 1. refresh-terrain-northeast-stepout: terrain-northeast-stepout
+      - target: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - command: python3 scripts/generate_selected_route_terrain_remediation.py --check
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+      - reason: Re-run the terrain refresh first because moonrobo/first-trusted-square/remediation-margin-v1/refresh-projection still blocks simulation consumption on selected-route grade, roughness, and blocking-edge evidence.
+    - 2. refresh-illumination-northeast-stepout: illumination-northeast-stepout
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+      - reason: Re-run the local-horizon refresh after terrain so illumination evidence remains tied to bounded terrain-shadow geometry for northeast-stepout.
+    - 3. refresh-energy-window: energy-window
+      - target: output/mission/first_trusted_square_energy_remediation.json
+      - command: python3 scripts/check_energy_margin_remediation.py
+      - check: python3 scripts/check_energy_margin_remediation.py
+      - reason: Re-run bounded energy refresh last because demand and reserve evidence should consume the refreshed terrain and local-horizon constraints for northeast-stepout.
+  - acceptance:
+    - refresh-projection-consumed: Follow-up task source id, status, blocking refresh ids, and no-consume simulation state match the durable MoonRobo refresh projection.
+    - visible-before-dispatch: Follow-up task is emitted only after the refresh projection is materialized in MoonBook and surfaced in Rabbita.
+    - hardware-denial-preserved: Hardware state remains HardwareDenied under moonmoon-safety-gate-only while follow-up refresh work is open.

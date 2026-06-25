@@ -79,6 +79,14 @@ pub fn first_trusted_square_remediation_margin_receipts_json() -> Json
 
 pub fn first_trusted_square_remediation_margin_receipts_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_refresh_followup_task() -> MoonClawRemediationMarginRefreshFollowupTask
+
+pub fn first_trusted_square_remediation_margin_refresh_followup_tasks() -> Array[MoonClawRemediationMarginRefreshFollowupTask]
+
+pub fn first_trusted_square_remediation_margin_refresh_followup_tasks_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_refresh_followup_tasks_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_refresh_receipt() -> MoonClawRemediationMarginRefreshReceipt
 
 pub fn first_trusted_square_remediation_margin_refresh_receipts() -> Array[MoonClawRemediationMarginRefreshReceipt]
@@ -154,6 +162,10 @@ pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
 pub fn render_remediation_margin_receipts_json(Array[MoonClawRemediationMarginReceipt]) -> Json
 
 pub fn render_remediation_margin_receipts_markdown(Array[MoonClawRemediationMarginReceipt]) -> String
+
+pub fn render_remediation_margin_refresh_followup_tasks_json(Array[MoonClawRemediationMarginRefreshFollowupTask]) -> Json
+
+pub fn render_remediation_margin_refresh_followup_tasks_markdown(Array[MoonClawRemediationMarginRefreshFollowupTask]) -> String
 
 pub fn render_remediation_margin_refresh_receipts_json(Array[MoonClawRemediationMarginRefreshReceipt]) -> Json
 
@@ -341,6 +353,42 @@ pub(all) struct MoonClawRemediationMarginRefreshAction {
   command : String
   acceptance_check : String
   reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginRefreshFollowupAction {
+  rank : Int
+  margin_id : String
+  refresh_id : String
+  source_refresh_projection_path : String
+  target_artifact_path : String
+  command : String
+  acceptance_check : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginRefreshFollowupTask {
+  task_id : String
+  site_id : String
+  route_id : String
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  source_refresh_projection_id : String
+  source_refresh_projection_path : String
+  source_modeling_pass_id : String
+  source_modeling_state : @moonrobo.RemediationMarginRefreshModelingState
+  source_projection_status : @moonrobo.RemediationMarginRefreshProjectionStatus
+  source_simulation_state : @moonrobo.MoonroboExecutionState
+  may_consume_simulation : Bool
+  blocking_refresh_count : Int
+  blocking_refresh_ids : Array[String]
+  blocking_margin_ids : Array[String]
+  followup_actions : Array[MoonClawRemediationMarginRefreshFollowupAction]
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawRemediationMarginRefreshReceipt {

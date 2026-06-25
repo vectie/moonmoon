@@ -27,6 +27,7 @@ pub(all) enum BookEntryKind {
   MoonClawProposal
   MoonClawTask
   MoonClawRemediationMarginRefreshTask
+  MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginRefreshReceipt
   MoonClawReceipt
   MoonClawRemediationMarginReceipt
@@ -140,6 +141,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawTask => "moonclaw-task"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
+    MoonClawRemediationMarginRefreshFollowupTask =>
+      "moonclaw-remediation-margin-refresh-followup-task"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawReceipt => "moonclaw-receipt"
@@ -1129,6 +1132,24 @@ fn moonrobo_remediation_margin_refresh_projection_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_refresh_followup_task_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let task = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_task()
+  let refresh_ids = task.blocking_refresh_ids.join(", ")
+  let margin_ids = task.blocking_margin_ids.join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-refresh-followup-task",
+    title: "MoonClaw remediation-margin refresh follow-up task for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginRefreshFollowupTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.72,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-refresh-followup-task.json",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} follow-up task consumes \{@moonrobo.remediation_margin_refresh_projection_status_label(task.source_projection_status)} from \{@moonrobo.remediation_margin_refresh_modeling_state_label(task.source_modeling_state)} with \{task.blocking_refresh_count} blocking refreshes (\{refresh_ids}) over margins (\{margin_ids}); simulation \{@moonrobo.execution_state_label(task.source_simulation_state)}, may consume \{task.may_consume_simulation}, hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1393,6 +1414,7 @@ fn book_entries(
   entries.push(moonrobo_remediation_margin_projection_entry(dossier))
   entries.push(moonrobo_remediation_margin_refresh_modeling_entry(dossier))
   entries.push(moonrobo_remediation_margin_refresh_projection_entry(dossier))
+  entries.push(moonclaw_remediation_margin_refresh_followup_task_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

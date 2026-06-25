@@ -1220,7 +1220,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-refresh-followup-task",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Issue the next remediation-margin refresh task from visible projection evidence",
       outcome: "MoonClaw gets the next bounded refresh packet only after the no-consume refresh projection is durable and visible in Rabbita",
@@ -1232,7 +1232,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
         "scripts/check_moonclaw_remediation_margin_refresh_followup_task.py",
       ],
-      done_when: "MoonClaw emits the next remediation-margin refresh task from the durable refresh projection, preserving no-consume simulation status, terrain/horizon/energy blockers, and HardwareDenied authority",
+      done_when: "done: MoonClaw emits the next remediation-margin refresh task from the durable refresh projection, preserving no-consume simulation status, terrain/horizon/energy blockers, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-followup-task-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh follow-up task in Rabbita",
+      outcome: "Operators can inspect the projection-derived MoonClaw follow-up refresh packet, blocking refresh ids, target commands, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_followup_task.py",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_followup_task_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh follow-up task with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, follow-up target commands, and HardwareDenied authority",
     },
   ]
 }

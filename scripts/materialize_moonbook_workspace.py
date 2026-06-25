@@ -27,6 +27,10 @@ MOONCLAW_REMEDIATION_MARGIN_TASK_JSON = (
 MOONCLAW_REMEDIATION_MARGIN_REFRESH_TASK_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json"
 )
+MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_TASK_JSON = (
+  ROOT
+  / "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json"
+)
 MOONCLAW_REMEDIATION_MARGIN_REFRESH_RECEIPT_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json"
 )
@@ -257,6 +261,7 @@ def payload_for_entry(
   moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_tasks: list[dict[str, Any]],
+  moonclaw_remediation_margin_refresh_followup_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_receipts: list[dict[str, Any]],
   moonclaw_gap_tasks: list[dict[str, Any]],
@@ -396,6 +401,11 @@ def payload_for_entry(
       "primary_task": moonclaw_remediation_margin_refresh_tasks[0],
       "tasks": moonclaw_remediation_margin_refresh_tasks,
     }
+  if kind == "MoonClawRemediationMarginRefreshFollowupTask":
+    return {
+      "primary_task": moonclaw_remediation_margin_refresh_followup_tasks[0],
+      "tasks": moonclaw_remediation_margin_refresh_followup_tasks,
+    }
   if kind == "MoonClawRemediationMarginRefreshReceipt":
     return {
       "primary_receipt": moonclaw_remediation_margin_refresh_receipts[0],
@@ -438,6 +448,7 @@ def workspace_files(
   moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_tasks: list[dict[str, Any]],
+  moonclaw_remediation_margin_refresh_followup_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_receipts: list[dict[str, Any]],
   moonclaw_remediation_margin_receipts: list[dict[str, Any]],
   moonclaw_gap_tasks: list[dict[str, Any]],
@@ -487,6 +498,7 @@ def workspace_files(
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
     "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
     "output/moonclaw/first_trusted_square_receipts.json",
@@ -562,6 +574,7 @@ def workspace_files(
       moonclaw_corridor_tasks,
       moonclaw_remediation_margin_tasks,
       moonclaw_remediation_margin_refresh_tasks,
+      moonclaw_remediation_margin_refresh_followup_tasks,
       moonclaw_remediation_margin_refresh_receipts,
       moonclaw_remediation_margin_receipts,
       moonclaw_gap_tasks,
@@ -627,6 +640,7 @@ def workspace_files(
     "- Source MoonClaw corridor tasks: `output/moonclaw/first_trusted_square_corridor_tasks.json`\n"
     "- Source MoonClaw remediation-margin task: `output/moonclaw/first_trusted_square_remediation_margin_task.json`\n"
     "- Source MoonClaw remediation-margin refresh task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json`\n"
+    "- Source MoonClaw remediation-margin refresh follow-up task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json`\n"
     "- Source MoonClaw remediation-margin refresh receipt: `output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json`\n"
     "- Source MoonClaw remediation-margin receipt: `output/moonclaw/first_trusted_square_remediation_margin_receipt.json`\n"
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
@@ -730,6 +744,10 @@ def main() -> int:
     MOONCLAW_REMEDIATION_MARGIN_REFRESH_TASK_JSON,
     [],
   )
+  moonclaw_remediation_margin_refresh_followup_tasks = load_optional_json(
+    MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_TASK_JSON,
+    [],
+  )
   moonclaw_remediation_margin_refresh_receipts = load_optional_json(
     MOONCLAW_REMEDIATION_MARGIN_REFRESH_RECEIPT_JSON,
     [],
@@ -784,6 +802,7 @@ def main() -> int:
     moonclaw_corridor_tasks,
     moonclaw_remediation_margin_tasks,
     moonclaw_remediation_margin_refresh_tasks,
+    moonclaw_remediation_margin_refresh_followup_tasks,
     moonclaw_remediation_margin_refresh_receipts,
     moonclaw_remediation_margin_receipts,
     moonclaw_gap_tasks,
