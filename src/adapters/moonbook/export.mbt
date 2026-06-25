@@ -39,6 +39,7 @@ pub(all) enum BookEntryKind {
   MoonClawRemediationMarginReviewedFreshEvidenceTask
   MoonClawRemediationMarginFreshEvidenceActionReceipts
   MoonClawRemediationMarginRegeneratedReviewedWorkItemReceipts
+  MoonClawRegeneratedReceiptReadinessFreshEvidenceTask
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt
@@ -177,6 +178,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonclaw-remediation-margin-fresh-evidence-action-receipts"
     MoonClawRemediationMarginRegeneratedReviewedWorkItemReceipts =>
       "moonclaw-remediation-margin-regenerated-reviewed-work-item-receipts"
+    MoonClawRegeneratedReceiptReadinessFreshEvidenceTask =>
+      "moonclaw-regenerated-receipt-readiness-fresh-evidence-task"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawRemediationMarginRefreshFollowupReceipt =>
@@ -1461,6 +1464,28 @@ fn moonrobo_remediation_margin_regenerated_receipt_readiness_entry(
 }
 
 ///|
+fn moonclaw_regenerated_receipt_readiness_fresh_evidence_task_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let tasks = @moonclaw.first_trusted_square_regenerated_receipt_readiness_fresh_evidence_tasks()
+  let task = tasks[0]
+  let margin_ids = task.pending_margin_ids.join(", ")
+  let refresh_ids = task.pending_refresh_ids.join(", ")
+  let actions = task.fresh_evidence_actions
+    .map(fn(action) { "\{action.blocker_domain}=\{action.execution_mode}" })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/regenerated-receipt-readiness-fresh-evidence-task",
+    title: "MoonClaw regenerated receipt readiness fresh evidence task for \{dossier.site.name}",
+    kind: MoonClawRegeneratedReceiptReadinessFreshEvidenceTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.81,
+    path: "moonclaw/\{dossier.site.site_id}/regenerated-receipt-readiness-fresh-evidence-task.json",
+    summary: "\{task.pending_receipt_count} pending regenerated receipts and \{task.ready_receipt_count} ready receipts become explicit fresh-evidence actions for terrain/horizon/energy margins (\{margin_ids}) over refreshes (\{refresh_ids}); readiness \{@moonrobo.remediation_margin_regenerated_receipt_readiness_state_label(task.source_readiness_state)}; actions \{actions}; source action receipt provenance, source readiness gate \{task.source_readiness_gate_id}, no automatic refresh loop, no simulation consumption, simulation \{@moonrobo.execution_state_label(task.simulation_state)}, may consume \{task.may_consume_simulation}, hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1755,6 +1780,9 @@ fn book_entries(
   )
   entries.push(
     moonrobo_remediation_margin_regenerated_receipt_readiness_entry(dossier),
+  )
+  entries.push(
+    moonclaw_regenerated_receipt_readiness_fresh_evidence_task_entry(dossier),
   )
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))

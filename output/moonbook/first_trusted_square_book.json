@@ -634,6 +634,15 @@
       "summary": "RegeneratedReceiptsPendingFreshEvidence with 3 pending regenerated receipts and 0 ready receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); execution modes operator-escalation, bounded-regeneration, manual-freeze-verification; source action receipt provenance, no automatic refresh loop, no simulation consumption, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task",
+      "title": "MoonClaw regenerated receipt readiness fresh evidence task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRegeneratedReceiptReadinessFreshEvidenceTask",
+      "claim_kind": "Derived",
+      "confidence": 0.81,
+      "path": "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json",
+      "summary": "3 pending regenerated receipts and 0 ready receipts become explicit fresh-evidence actions for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); readiness RegeneratedReceiptsPendingFreshEvidence; actions terrain=operator-escalation, local-horizon=bounded-regeneration, energy=manual-freeze-verification; source action receipt provenance, source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness, no automatic refresh loop, no simulation consumption, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
       "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawEphemerisReceipt",
