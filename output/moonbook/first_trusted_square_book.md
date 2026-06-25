@@ -268,7 +268,10 @@
 - illumination-northeast-stepout [high/needs-evidence] Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked -> mission-review
 - energy-window [high/needs-evidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
-- selected-route-clearance [high/needs-evidence] selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation -> mission-review
+- clear-terrain-grade-northeast-stepout [high/needs-evidence] Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile -> mission-review
+- clear-illumination-confidence-northeast-stepout [high/needs-evidence] Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable -> power-thermal-review
+- clear-energy-margin [high/needs-evidence] Rover energy margin clearance: accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation -> power-thermal-review
+- clear-moonbook-review-northeast-stepout [high/needs-evidence] MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation -> mission-review
 - moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
@@ -397,12 +400,30 @@
   - append only: true
   - source: energy/first-trusted-square/conservative-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation
-- review-selected-route-clearance-request-evidence: request-evidence selected-route-clearance -> needs-evidence
+- review-clear-terrain-grade-northeast-stepout-request-evidence: request-evidence clear-terrain-grade-northeast-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
-  - rationale: kept in review with a request for stronger measured evidence before mission use: selected route northeast-stepout needs 4 blocker-clearance actions before simulation: clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile
+- review-clear-illumination-confidence-northeast-stepout-request-evidence: request-evidence clear-illumination-confidence-northeast-stepout -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable
+- review-clear-energy-margin-request-evidence: request-evidence clear-energy-margin -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation
+- review-clear-moonbook-review-northeast-stepout-request-evidence: request-evidence clear-moonbook-review-northeast-stepout -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
+  - append only: true
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation
 - review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as moonrobo
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)

@@ -9,7 +9,27 @@ pub(all) enum MissionClearanceKind {
 ///|
 pub(all) enum MissionClearanceStatus {
   AcceptedEvidence
+  RejectedEvidence
+  NeedsEvidence
   ActionRequired
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) enum MissionClearanceReviewDecision {
+  ClearanceAccept
+  ClearanceReject
+  ClearanceRequestEvidence
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MissionClearanceTransition {
+  transition_id : String
+  clearance_id : String
+  decision : MissionClearanceReviewDecision
+  reviewer_id : String
+  recorded_at_utc : String
+  evidence_ref : String
+  rationale : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -36,6 +56,7 @@ pub(all) struct MissionClearancePlan {
   blocking_items : Array[String]
   review_items : Array[String]
   accepted_items : Array[String]
+  rejected_items : Array[String]
   next_action : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -55,12 +76,48 @@ pub fn mission_clearance_status_label(
 ) -> String {
   match status {
     AcceptedEvidence => "accepted-evidence"
+    RejectedEvidence => "rejected-evidence"
+    NeedsEvidence => "needs-evidence"
     ActionRequired => "action-required"
   }
 }
 
 ///|
-fn clearance_status(decision : TraverseDecision) -> MissionClearanceStatus {
+pub fn mission_clearance_review_decision_label(
+  decision : MissionClearanceReviewDecision,
+) -> String {
+  match decision {
+    ClearanceAccept => "accept"
+    ClearanceReject => "reject"
+    ClearanceRequestEvidence => "request-evidence"
+  }
+}
+
+///|
+pub fn clearance_transition(
+  transition_id : String,
+  clearance_id : String,
+  decision : MissionClearanceReviewDecision,
+  reviewer_id : String,
+  recorded_at_utc : String,
+  evidence_ref : String,
+  rationale : String,
+) -> MissionClearanceTransition {
+  {
+    transition_id,
+    clearance_id,
+    decision,
+    reviewer_id,
+    recorded_at_utc,
+    evidence_ref,
+    rationale,
+  }
+}
+
+///|
+fn initial_clearance_status(
+  decision : TraverseDecision,
+) -> MissionClearanceStatus {
   match decision {
     Allow => AcceptedEvidence
     Review | Block => ActionRequired
@@ -95,7 +152,7 @@ fn clearance_item(
     kind,
     label,
     decision,
-    status: clearance_status(decision),
+    status: initial_clearance_status(decision),
     source_check_id,
     evidence_path,
     observed,
@@ -103,6 +160,93 @@ fn clearance_item(
     clearance_action,
     accepted_evidence_id: accepted_evidence_id(decision, evidence_path),
   }
+}
+
+///|
+fn clearance_transition_for(
+  transitions : Array[MissionClearanceTransition],
+  clearance_id : String,
+) -> MissionClearanceTransition? {
+  for transition in transitions {
+    if transition.clearance_id == clearance_id {
+      return Some(transition)
+    }
+  }
+  None
+}
+
+///|
+fn transition_decision(
+  decision : MissionClearanceReviewDecision,
+) -> TraverseDecision {
+  match decision {
+    ClearanceAccept => Allow
+    ClearanceReject | ClearanceRequestEvidence => Block
+  }
+}
+
+///|
+fn transition_status(
+  decision : MissionClearanceReviewDecision,
+) -> MissionClearanceStatus {
+  match decision {
+    ClearanceAccept => AcceptedEvidence
+    ClearanceReject => RejectedEvidence
+    ClearanceRequestEvidence => NeedsEvidence
+  }
+}
+
+///|
+fn transition_evidence_id(transition : MissionClearanceTransition) -> String {
+  match transition.decision {
+    ClearanceAccept => transition.evidence_ref
+    ClearanceReject | ClearanceRequestEvidence => ""
+  }
+}
+
+///|
+fn transition_clearance_action(
+  item : MissionClearanceItem,
+  transition : MissionClearanceTransition,
+) -> String {
+  let decision = mission_clearance_review_decision_label(transition.decision)
+  "\{decision} by \{transition.reviewer_id} at \{transition.recorded_at_utc}: \{transition.rationale}; prior action was \{item.clearance_action}"
+}
+
+///|
+fn apply_clearance_transition(
+  item : MissionClearanceItem,
+  transition : MissionClearanceTransition,
+) -> MissionClearanceItem {
+  {
+    clearance_id: item.clearance_id,
+    kind: item.kind,
+    label: item.label,
+    decision: transition_decision(transition.decision),
+    status: transition_status(transition.decision),
+    source_check_id: item.source_check_id,
+    evidence_path: item.evidence_path,
+    observed: item.observed,
+    required: item.required,
+    clearance_action: transition_clearance_action(item, transition),
+    accepted_evidence_id: transition_evidence_id(transition),
+  }
+}
+
+///|
+fn apply_clearance_transitions(
+  items : Array[MissionClearanceItem],
+  transitions : Array[MissionClearanceTransition],
+) -> Array[MissionClearanceItem] {
+  let reviewed : Array[MissionClearanceItem] = []
+  for item in items {
+    match clearance_transition_for(transitions, item.clearance_id) {
+      Some(transition) =>
+        reviewed.push(apply_clearance_transition(item, transition))
+      None => reviewed.push(item)
+    }
+  }
+  reviewed
 }
 
 ///|
@@ -145,6 +289,17 @@ fn accepted_clearance_ids(items : Array[MissionClearanceItem]) -> Array[String] 
   let ids : Array[String] = []
   for item in items {
     if item.status == MissionClearanceStatus::AcceptedEvidence {
+      ids.push(item.clearance_id)
+    }
+  }
+  ids
+}
+
+///|
+fn rejected_clearance_ids(items : Array[MissionClearanceItem]) -> Array[String] {
+  let ids : Array[String] = []
+  for item in items {
+    if item.status == MissionClearanceStatus::RejectedEvidence {
       ids.push(item.clearance_id)
     }
   }
@@ -295,12 +450,30 @@ pub fn selected_route_clearance_plan(
   energy : EnergyAssessment,
   readiness : MissionSimulationReadiness,
 ) -> MissionClearancePlan {
-  let items = [
+  selected_route_clearance_plan_with_transitions(
+    plan_id,
+    route,
+    energy,
+    readiness,
+    [],
+  )
+}
+
+///|
+pub fn selected_route_clearance_plan_with_transitions(
+  plan_id : String,
+  route : RouteCandidate,
+  energy : EnergyAssessment,
+  readiness : MissionSimulationReadiness,
+  transitions : Array[MissionClearanceTransition],
+) -> MissionClearancePlan {
+  let base_items = [
     terrain_clearance_item(route, readiness),
     illumination_clearance_item(route, readiness),
     energy_clearance_item(energy, readiness),
     moonbook_clearance_item(route, readiness),
   ]
+  let items = apply_clearance_transitions(base_items, transitions)
   let decision = clearance_decision(items)
   {
     plan_id,
@@ -310,6 +483,7 @@ pub fn selected_route_clearance_plan(
     blocking_items: clearance_ids_with_decision(items, Block),
     review_items: clearance_ids_with_decision(items, Review),
     accepted_items: accepted_clearance_ids(items),
+    rejected_items: rejected_clearance_ids(items),
     next_action: clearance_next_action(decision),
   }
 }

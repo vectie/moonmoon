@@ -201,7 +201,9 @@ operator-facing blocker clearance plan. The current plan names the concrete
 action or accepted evidence needed for northeast-stepout terrain grade,
 illumination confidence, energy margin, and MoonBook review. MoonBook indexes
 the plan as `selected-route-clearance`, while MoonRobo embeds the same plan in
-its handoff packet.
+its handoff packet. MoonBook review transitions now map back into mission
+clearance transitions, so imported operator decisions can accept, reject, or
+request evidence for each clearance item without mutating source facts.
 
 The current fixture now has a checked source-file boundary:
 

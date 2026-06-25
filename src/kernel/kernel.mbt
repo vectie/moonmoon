@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "connect Moondesk or Rabbita controls to append new operator-authored transitions",
+    next_action: "connect Rabbita clearance controls to export operator-authored review transitions",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "operator-authored transition capture from the inspection surface",
+      next_output: "Rabbita-authored selected-route clearance transition export",
     },
     {
       layer_id: "operator-viewer",
@@ -228,7 +228,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "site dossier -> terrain/hazard/route layer view state",
       current_artifact: "src/ui/types.mbt + src/ui/rabbita_moon/page.mbt",
       readiness: Ready,
-      next_output: "operator transition capture from the Rabbita inspection surface",
+      next_output: "clearance review controls in the Rabbita inspection surface",
     },
   ]
 }
@@ -410,7 +410,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "operator-clearance-transition-capture",
-      priority: 85,
+      priority: 20,
       lane: SuiteLane,
       title: "Let operator review transitions drive selected-route clearance status",
       outcome: "MoonBook accepted evidence can move clearance items from action-required toward accepted-evidence without changing source facts",
@@ -421,7 +421,21 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
         "output/ui/rabbita/first_trusted_square.html",
       ],
-      done_when: "operator-authored or imported review transitions can accept/reject the selected-route terrain, illumination, energy, and MoonBook clearance items",
+      done_when: "done: imported review transitions can accept/reject the selected-route terrain, illumination, energy, and MoonBook clearance items",
+    },
+    {
+      task_id: "rabbita-clearance-review-controls",
+      priority: 80,
+      lane: ViewerLane,
+      title: "Add Rabbita controls for selected-route clearance review decisions",
+      outcome: "Operators can author accept, reject, or request-evidence transitions against the four selected-route clearance items from the browser surface",
+      depends_on: [
+        "src/ui/rabbita_moon/page.mbt", "src/adapters/moonbook/export.mbt", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "output/moonbook/workspaces/first-trusted-square/review_queue.json",
+      ],
+      done_when: "Rabbita can emit an importable review transition for each selected-route terrain, illumination, energy, and MoonBook clearance item",
     },
   ]
 }

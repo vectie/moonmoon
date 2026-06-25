@@ -257,12 +257,22 @@ pub fn route_handoff(
   dossier : @site.SiteDossier,
   route : @mission.RouteCandidate,
 ) -> MoonroboTaskHandoff {
+  route_handoff_with_clearance_transitions(dossier, route, [])
+}
+
+///|
+pub fn route_handoff_with_clearance_transitions(
+  dossier : @site.SiteDossier,
+  route : @mission.RouteCandidate,
+  clearance_transitions : Array[@mission.MissionClearanceTransition],
+) -> MoonroboTaskHandoff {
   let readiness = mission_readiness(dossier, route)
-  let clearance_plan = @mission.selected_route_clearance_plan(
+  let clearance_plan = @mission.selected_route_clearance_plan_with_transitions(
     "mission/\{dossier.site.site_id}/\{route.route_id}/selected-route-clearance",
     route,
     dossier.energy,
     readiness,
+    clearance_transitions,
   )
   let preconditions = preconditions_from_readiness(readiness)
   let decision = readiness.decision

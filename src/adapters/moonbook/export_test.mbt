@@ -3,7 +3,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 48)
-  assert_eq(dossier.review_queue.length(), 26)
+  assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -247,19 +247,159 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let energy = dossier.review_queue[19]
   assert_eq(energy.item_id, "energy-window")
   assert_true(energy.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let clearance = dossier.review_queue[20]
-  assert_eq(clearance.item_id, "selected-route-clearance")
-  assert_true(clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  assert_true(clearance.reason.contains("blocker-clearance actions"))
-  let handoff = dossier.review_queue[21]
+  let terrain_clearance = dossier.review_queue[20]
+  assert_eq(terrain_clearance.item_id, "clear-terrain-grade-northeast-stepout")
+  assert_true(
+    terrain_clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence,
+  )
+  assert_true(terrain_clearance.reason.contains("grade and roughness"))
+  let illumination_clearance = dossier.review_queue[21]
+  assert_eq(
+    illumination_clearance.item_id,
+    "clear-illumination-confidence-northeast-stepout",
+  )
+  assert_true(
+    illumination_clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence,
+  )
+  let energy_clearance = dossier.review_queue[22]
+  assert_eq(energy_clearance.item_id, "clear-energy-margin")
+  assert_true(
+    energy_clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence,
+  )
+  let moonbook_clearance = dossier.review_queue[23]
+  assert_eq(
+    moonbook_clearance.item_id,
+    "clear-moonbook-review-northeast-stepout",
+  )
+  assert_true(
+    moonbook_clearance.status == @moonbook.ReviewItemStatus::NeedsEvidence,
+  )
+  let handoff = dossier.review_queue[24]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let moonclaw = dossier.review_queue[22]
+  let moonclaw = dossier.review_queue[25]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let first_question = dossier.review_queue[23]
+  let first_question = dossier.review_queue[26]
   assert_eq(first_question.item_id, "question-0")
   assert_true(first_question.status == @moonbook.ReviewItemStatus::Open)
+}
+
+///|
+fn imported_accept_transition(
+  clearance_id : String,
+) -> @moonbook.ReviewTransition {
+  {
+    transition_id: "operator-\{clearance_id}-accept",
+    item_id: clearance_id,
+    previous_status: @moonbook.ReviewItemStatus::Open,
+    decision: @moonbook.ReviewDecision::Accept,
+    resulting_status: @moonbook.ReviewItemStatus::Accepted,
+    reviewer_id: "operator/manual-clearance-import",
+    reviewer_role: "mission-review",
+    timestamp_policy: "operator-imported",
+    recorded_at_utc: "2026-06-25T00:00:00Z",
+    append_only: true,
+    source_evidence_refs: [
+      {
+        ref_id: clearance_id,
+        entry_id: "mission/first-trusted-square/selected-route-clearance",
+        path: "mission/first-trusted-square/selected-route-clearance.json",
+        immutable_uri: "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#\{clearance_id}",
+      },
+    ],
+    rationale: "operator accepted imported clearance evidence for \{clearance_id}",
+  }
+}
+
+///|
+fn imported_reject_transition(
+  clearance_id : String,
+) -> @moonbook.ReviewTransition {
+  {
+    transition_id: "operator-\{clearance_id}-reject",
+    item_id: clearance_id,
+    previous_status: @moonbook.ReviewItemStatus::Open,
+    decision: @moonbook.ReviewDecision::Reject,
+    resulting_status: @moonbook.ReviewItemStatus::Rejected,
+    reviewer_id: "operator/manual-clearance-import",
+    reviewer_role: "mission-review",
+    timestamp_policy: "operator-imported",
+    recorded_at_utc: "2026-06-25T00:00:00Z",
+    append_only: true,
+    source_evidence_refs: [
+      {
+        ref_id: clearance_id,
+        entry_id: "mission/first-trusted-square/selected-route-clearance",
+        path: "mission/first-trusted-square/selected-route-clearance.json",
+        immutable_uri: "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#\{clearance_id}",
+      },
+    ],
+    rationale: "operator rejected imported clearance evidence for \{clearance_id}",
+  }
+}
+
+///|
+test "imported review transitions drive selected route clearance" {
+  let imported = [
+    imported_accept_transition("clear-terrain-grade-northeast-stepout"),
+    imported_accept_transition(
+      "clear-illumination-confidence-northeast-stepout",
+    ),
+    imported_accept_transition("clear-energy-margin"),
+    imported_accept_transition("clear-moonbook-review-northeast-stepout"),
+  ]
+  let dossier = @moonbook.from_site_dossier_with_review_transitions(
+    @site.first_trusted_square_dossier(),
+    imported,
+  )
+  let clearance_transitions = @moonbook.clearance_transitions_from_review_transitions(
+    dossier.review_transitions,
+  )
+  assert_eq(clearance_transitions.length(), 4)
+  assert_eq(
+    clearance_transitions[0].clearance_id,
+    "clear-terrain-grade-northeast-stepout",
+  )
+  assert_true(
+    clearance_transitions[0].decision
+    is @mission.MissionClearanceReviewDecision::ClearanceAccept,
+  )
+  assert_eq(
+    dossier.review_queue[20].item_id,
+    "clear-terrain-grade-northeast-stepout",
+  )
+  assert_true(
+    dossier.review_queue[20].status == @moonbook.ReviewItemStatus::Accepted,
+  )
+  assert_eq(
+    dossier.review_queue[23].item_id,
+    "clear-moonbook-review-northeast-stepout",
+  )
+  assert_true(
+    dossier.review_queue[23].status == @moonbook.ReviewItemStatus::Accepted,
+  )
+  assert_true(dossier.entries[40].summary.contains("allow northeast-stepout"))
+  assert_true(dossier.entries[40].summary.contains("0 blockers"))
+  let rejected_dossier = @moonbook.from_site_dossier_with_review_transitions(
+    @site.first_trusted_square_dossier(),
+    [imported_reject_transition("clear-energy-margin")],
+  )
+  let rejected_clearance_transitions = @moonbook.clearance_transitions_from_review_transitions(
+    rejected_dossier.review_transitions,
+  )
+  assert_true(
+    rejected_clearance_transitions.any(fn(transition) {
+      transition.clearance_id == "clear-energy-margin" &&
+      transition.decision
+      is @mission.MissionClearanceReviewDecision::ClearanceReject
+    }),
+  )
+  assert_true(
+    rejected_dossier.review_queue[22].status ==
+    @moonbook.ReviewItemStatus::Rejected,
+  )
+  assert_true(rejected_dossier.entries[40].summary.contains("4 blockers"))
 }
 
 ///|

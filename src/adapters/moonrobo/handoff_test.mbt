@@ -125,6 +125,41 @@ test "first trusted square primary Moonrobo handoff follows promoted best corrid
 }
 
 ///|
+test "Moonrobo handoff can consume selected-route clearance transitions" {
+  let dossier = @site.first_trusted_square_dossier()
+  let route = dossier.route_candidates[5]
+  let handoff = @moonrobo.route_handoff_with_clearance_transitions(
+    dossier,
+    route,
+    [
+      @mission.clearance_transition(
+        "operator-clear-terrain-grade-northeast-stepout-accept",
+        "clear-terrain-grade-northeast-stepout",
+        @mission.MissionClearanceReviewDecision::ClearanceAccept,
+        "operator/moonbook-policy-v2",
+        "2026-06-25T00:00:00Z",
+        "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#terrain",
+        "terrain route fixture accepted for simulation rehearsal",
+      ),
+    ],
+  )
+  assert_eq(handoff.clearance_plan.accepted_items.length(), 1)
+  assert_true(
+    handoff.clearance_plan.accepted_items.contains(
+      "clear-terrain-grade-northeast-stepout",
+    ),
+  )
+  assert_true(
+    handoff.clearance_plan.items[0].status
+    is @mission.MissionClearanceStatus::AcceptedEvidence,
+  )
+  assert_true(
+    handoff.clearance_plan.items[0].accepted_evidence_id.contains("terrain"),
+  )
+  assert_true(handoff.decision == @mission.TraverseDecision::Block)
+}
+
+///|
 test "Moonrobo execution state labels distinguish simulation replay and hardware" {
   assert_eq(
     @moonrobo.execution_state_label(

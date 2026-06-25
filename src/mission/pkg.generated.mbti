@@ -12,6 +12,8 @@ pub fn assess_energy_window(Array[RouteCandidate], EnergyBudget) -> EnergyAssess
 
 pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint) -> IlluminationAssessment
 
+pub fn clearance_transition(String, String, MissionClearanceReviewDecision, String, String, String, String) -> MissionClearanceTransition
+
 pub fn conservative_energy_budget() -> EnergyBudget
 
 pub fn conservative_illumination_constraint() -> IlluminationConstraint
@@ -38,6 +40,8 @@ pub fn illumination_decision_label(IlluminationAssessment) -> String
 
 pub fn mission_clearance_kind_label(MissionClearanceKind) -> String
 
+pub fn mission_clearance_review_decision_label(MissionClearanceReviewDecision) -> String
+
 pub fn mission_clearance_status_label(MissionClearanceStatus) -> String
 
 pub fn mission_readiness_check_kind_label(MissionReadinessCheckKind) -> String
@@ -51,6 +55,8 @@ pub fn route_candidate_status_label(RouteCandidate) -> String
 pub fn score_traverse(@terrain.TerrainMetrics, TraverseProfile) -> TraverseScore
 
 pub fn selected_route_clearance_plan(String, RouteCandidate, EnergyAssessment, MissionSimulationReadiness) -> MissionClearancePlan
+
+pub fn selected_route_clearance_plan_with_transitions(String, RouteCandidate, EnergyAssessment, MissionSimulationReadiness, Array[MissionClearanceTransition]) -> MissionClearancePlan
 
 pub fn simulation_readiness(String, String, Array[MissionReadinessCheck]) -> MissionSimulationReadiness
 
@@ -167,12 +173,31 @@ pub(all) struct MissionClearancePlan {
   blocking_items : Array[String]
   review_items : Array[String]
   accepted_items : Array[String]
+  rejected_items : Array[String]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MissionClearanceReviewDecision {
+  ClearanceAccept
+  ClearanceReject
+  ClearanceRequestEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) enum MissionClearanceStatus {
   AcceptedEvidence
+  RejectedEvidence
+  NeedsEvidence
   ActionRequired
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionClearanceTransition {
+  transition_id : String
+  clearance_id : String
+  decision : MissionClearanceReviewDecision
+  reviewer_id : String
+  recorded_at_utc : String
+  evidence_ref : String
+  rationale : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MissionReadinessCheck {

@@ -349,3 +349,122 @@ test "selected route clearance plan names blocker actions" {
     "action-required",
   )
 }
+
+///|
+test "selected route clearance plan consumes operator transitions" {
+  let route = @mission.first_trusted_square_route_candidates()[5]
+  let energy = @mission.first_trusted_square_energy_assessment()
+  let readiness = @mission.simulation_readiness(
+    "mission/first-trusted-square/northeast-stepout/simulation-readiness",
+    route.route_id,
+    [
+      @mission.readiness_check(
+        "terrain-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::TerrainReadiness,
+        "Selected-route terrain gate",
+        @mission.TraverseDecision::Block,
+        route.evidence_source_path,
+        route.next_action,
+      ),
+      @mission.readiness_check(
+        "illumination-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::IlluminationReadiness,
+        "Illumination and thermal gate",
+        @mission.TraverseDecision::Block,
+        route.illumination.constraint.power_window_source_path,
+        route.illumination.next_action,
+      ),
+      @mission.readiness_check(
+        "energy-window",
+        @mission.MissionReadinessCheckKind::EnergyReadiness,
+        "Rover energy window gate",
+        @mission.TraverseDecision::Block,
+        energy.budget.power_window_source_path,
+        energy.next_action,
+      ),
+      @mission.readiness_check(
+        "moonbook-review",
+        @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+        "MoonBook accepted-review gate",
+        @mission.TraverseDecision::Block,
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "MoonBook review has unresolved blockers",
+      ),
+    ],
+  )
+  let transitions = [
+    @mission.clearance_transition(
+      "review-clear-terrain-grade-northeast-stepout-accept",
+      "clear-terrain-grade-northeast-stepout",
+      @mission.MissionClearanceReviewDecision::ClearanceAccept,
+      "operator/moonbook-policy-v2",
+      "2026-06-25T00:00:00Z",
+      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json",
+      "accepted measured route fixture for simulation rehearsal",
+    ),
+    @mission.clearance_transition(
+      "review-clear-illumination-confidence-northeast-stepout-reject",
+      "clear-illumination-confidence-northeast-stepout",
+      @mission.MissionClearanceReviewDecision::ClearanceReject,
+      "operator/moonbook-policy-v2",
+      "2026-06-25T00:00:00Z",
+      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "local horizon confidence remains too weak",
+    ),
+    @mission.clearance_transition(
+      "review-clear-energy-margin-request-evidence",
+      "clear-energy-margin",
+      @mission.MissionClearanceReviewDecision::ClearanceRequestEvidence,
+      "operator/moonbook-policy-v2",
+      "2026-06-25T00:00:00Z",
+      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json",
+      "energy margin needs stronger thermal assumptions",
+    ),
+  ]
+  let plan = @mission.selected_route_clearance_plan_with_transitions(
+    "mission/first-trusted-square/northeast-stepout/selected-route-clearance", route,
+    energy, readiness, transitions,
+  )
+  assert_true(plan.decision == @mission.TraverseDecision::Block)
+  assert_eq(plan.accepted_items.length(), 1)
+  assert_eq(plan.rejected_items.length(), 1)
+  assert_true(
+    plan.accepted_items.contains("clear-terrain-grade-northeast-stepout"),
+  )
+  assert_true(
+    plan.rejected_items.contains(
+      "clear-illumination-confidence-northeast-stepout",
+    ),
+  )
+  assert_true(
+    plan.blocking_items.contains(
+      "clear-illumination-confidence-northeast-stepout",
+    ),
+  )
+  assert_true(plan.blocking_items.contains("clear-energy-margin"))
+  assert_true(
+    plan.items[0].status is @mission.MissionClearanceStatus::AcceptedEvidence,
+  )
+  assert_true(
+    plan.items[1].status is @mission.MissionClearanceStatus::RejectedEvidence,
+  )
+  assert_true(
+    plan.items[2].status is @mission.MissionClearanceStatus::NeedsEvidence,
+  )
+  assert_true(
+    plan.items[0].accepted_evidence_id.contains("northeast-stepout.json"),
+  )
+  assert_true(plan.items[1].clearance_action.contains("reject by"))
+  assert_eq(
+    @mission.mission_clearance_review_decision_label(
+      @mission.MissionClearanceReviewDecision::ClearanceRequestEvidence,
+    ),
+    "request-evidence",
+  )
+  assert_eq(
+    @mission.mission_clearance_status_label(
+      @mission.MissionClearanceStatus::RejectedEvidence,
+    ),
+    "rejected-evidence",
+  )
+}

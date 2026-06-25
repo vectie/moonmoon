@@ -268,6 +268,19 @@ fn review_decision_for_item(item : ReviewQueueItem) -> ReviewDecision {
 }
 
 ///|
+fn review_transition_for_item(
+  transitions : Array[ReviewTransition],
+  item_id : String,
+) -> ReviewTransition? {
+  for transition in transitions {
+    if transition.item_id == item_id {
+      return Some(transition)
+    }
+  }
+  None
+}
+
+///|
 fn resulting_status_for_decision(decision : ReviewDecision) -> ReviewItemStatus {
   match decision {
     KeepOpen => Open
@@ -442,6 +455,22 @@ fn review_evidence_refs(
       ),
     )
   }
+  let primary_handoff = @moonrobo.route_handoff(
+    dossier,
+    primary_route_candidate(dossier),
+  )
+  for clearance in primary_handoff.clearance_plan.items {
+    if item.item_id == clearance.clearance_id {
+      refs.push(
+        review_evidence_ref(
+          workspace,
+          clearance.clearance_id,
+          "mission/\{dossier.site.site_id}/selected-route-clearance",
+          "mission/\{dossier.site.site_id}/selected-route-clearance.json",
+        ),
+      )
+    }
+  }
   if item.item_id == "moonclaw-proposals" {
     refs.push(
       review_evidence_ref(
@@ -528,12 +557,77 @@ fn apply_review_transition(
 fn review_transitions_for_queue(
   items : Array[ReviewQueueItem],
   dossier : @site.SiteDossier,
+  imported_transitions : Array[ReviewTransition],
 ) -> Array[ReviewTransition] {
   let transitions : Array[ReviewTransition] = []
   for item in items {
-    transitions.push(make_review_transition(item, dossier))
+    match review_transition_for_item(imported_transitions, item.item_id) {
+      Some(transition) => transitions.push(transition)
+      None => transitions.push(make_review_transition(item, dossier))
+    }
   }
   transitions
+}
+
+///|
+fn clearance_review_decision(
+  decision : ReviewDecision,
+) -> @mission.MissionClearanceReviewDecision? {
+  match decision {
+    Accept => Some(@mission.MissionClearanceReviewDecision::ClearanceAccept)
+    Reject => Some(@mission.MissionClearanceReviewDecision::ClearanceReject)
+    RequestEvidence =>
+      Some(@mission.MissionClearanceReviewDecision::ClearanceRequestEvidence)
+    KeepOpen => None
+  }
+}
+
+///|
+fn first_evidence_ref(transition : ReviewTransition) -> String {
+  if transition.source_evidence_refs.is_empty() {
+    ""
+  } else {
+    transition.source_evidence_refs[0].immutable_uri
+  }
+}
+
+///|
+fn clearance_transition_from_review_transition(
+  transition : ReviewTransition,
+) -> @mission.MissionClearanceTransition? {
+  if !transition.item_id.has_prefix("clear-") {
+    return None
+  }
+  match clearance_review_decision(transition.decision) {
+    Some(decision) =>
+      Some(
+        @mission.clearance_transition(
+          transition.transition_id,
+          transition.item_id,
+          decision,
+          transition.reviewer_id,
+          transition.recorded_at_utc,
+          first_evidence_ref(transition),
+          transition.rationale,
+        ),
+      )
+    None => None
+  }
+}
+
+///|
+pub fn clearance_transitions_from_review_transitions(
+  transitions : Array[ReviewTransition],
+) -> Array[@mission.MissionClearanceTransition] {
+  let clearance_transitions : Array[@mission.MissionClearanceTransition] = []
+  for transition in transitions {
+    match clearance_transition_from_review_transition(transition) {
+      Some(clearance_transition) =>
+        clearance_transitions.push(clearance_transition)
+      None => ()
+    }
+  }
+  clearance_transitions
 }
 
 ///|
@@ -712,9 +806,14 @@ fn primary_route_candidate(
 }
 
 ///|
-fn moonrobo_handoff_entry(dossier : @site.SiteDossier) -> BookEntry {
+fn moonrobo_handoff_entry(
+  dossier : @site.SiteDossier,
+  clearance_transitions : Array[@mission.MissionClearanceTransition],
+) -> BookEntry {
   let selected_route = primary_route_candidate(dossier)
-  let handoff = @moonrobo.route_handoff(dossier, selected_route)
+  let handoff = @moonrobo.route_handoff_with_clearance_transitions(
+    dossier, selected_route, clearance_transitions,
+  )
   {
     entry_id: "moonrobo/\{dossier.site.site_id}/simulation-preconditions",
     title: "Moonrobo simulation preconditions for \{dossier.site.name}",
@@ -727,9 +826,14 @@ fn moonrobo_handoff_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
-fn selected_route_clearance_entry(dossier : @site.SiteDossier) -> BookEntry {
+fn selected_route_clearance_entry(
+  dossier : @site.SiteDossier,
+  clearance_transitions : Array[@mission.MissionClearanceTransition],
+) -> BookEntry {
   let selected_route = primary_route_candidate(dossier)
-  let handoff = @moonrobo.route_handoff(dossier, selected_route)
+  let handoff = @moonrobo.route_handoff_with_clearance_transitions(
+    dossier, selected_route, clearance_transitions,
+  )
   let plan = handoff.clearance_plan
   {
     entry_id: "mission/\{dossier.site.site_id}/selected-route-clearance",
@@ -947,14 +1051,16 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
   )
   if moonrobo_handoff.clearance_plan.decision !=
     @mission.TraverseDecision::Allow {
-    items.push(
-      review_item(
-        "selected-route-clearance",
-        decision_severity(moonrobo_handoff.clearance_plan.decision),
-        "selected route \{moonrobo_handoff.route_id} needs \{moonrobo_handoff.clearance_plan.blocking_items.length()} blocker-clearance actions before simulation: \{moonrobo_handoff.clearance_plan.next_action}",
-        "mission-review",
-      ),
-    )
+    for clearance in moonrobo_handoff.clearance_plan.items {
+      items.push(
+        review_item(
+          clearance.clearance_id,
+          decision_severity(clearance.decision),
+          "\{clearance.label}: \{clearance.clearance_action}",
+          clearance_owner(clearance.kind),
+        ),
+      )
+    }
   }
   if moonrobo_handoff.decision != @mission.TraverseDecision::Allow {
     items.push(
@@ -1005,7 +1111,20 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
 }
 
 ///|
-pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
+fn clearance_owner(kind : @mission.MissionClearanceKind) -> String {
+  match kind {
+    TerrainGradeClearance => "mission-review"
+    IlluminationConfidenceClearance => "power-thermal-review"
+    EnergyMarginClearance => "power-thermal-review"
+    MoonBookReviewClearance => "mission-review"
+  }
+}
+
+///|
+fn book_entries(
+  dossier : @site.SiteDossier,
+  clearance_transitions : Array[@mission.MissionClearanceTransition],
+) -> Array[BookEntry] {
   let entries = dataset_entries(dossier)
   for entry in source_candidate_entries(dossier) {
     entries.push(entry)
@@ -1033,23 +1152,39 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
   }
   entries.push(power_window_evidence_entry(dossier))
   entries.push(energy_entry(dossier))
-  entries.push(selected_route_clearance_entry(dossier))
-  entries.push(moonrobo_handoff_entry(dossier))
+  entries.push(selected_route_clearance_entry(dossier, clearance_transitions))
+  entries.push(moonrobo_handoff_entry(dossier, clearance_transitions))
   entries.push(moonclaw_proposal_entry(dossier))
   entries.push(moonclaw_ephemeris_task_entry(dossier))
   entries.push(moonclaw_corridor_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
+  entries
+}
+
+///|
+pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
+  from_site_dossier_with_review_transitions(dossier, [])
+}
+
+///|
+pub fn from_site_dossier_with_review_transitions(
+  dossier : @site.SiteDossier,
+  imported_transitions : Array[ReviewTransition],
+) -> MoonBookDossier {
   let raw_review_queue = open_review_queue(dossier)
   let review_transitions = review_transitions_for_queue(
-    raw_review_queue, dossier,
+    raw_review_queue, dossier, imported_transitions,
+  )
+  let clearance_transitions = clearance_transitions_from_review_transitions(
+    review_transitions,
   )
   {
     workspace: "moonbook://moonmoon/first-trusted-square",
     site_id: dossier.site.site_id,
     title: "Moonmoon evidence dossier: \{dossier.site.name}",
-    entries,
+    entries: book_entries(dossier, clearance_transitions),
     review_queue: apply_review_transitions(raw_review_queue, review_transitions),
     review_transitions,
   }

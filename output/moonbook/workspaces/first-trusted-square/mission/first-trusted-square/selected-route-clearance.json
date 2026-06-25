@@ -18,12 +18,12 @@
         "kind": "TerrainGradeClearance",
         "label": "Selected route grade and roughness clearance",
         "decision": "Block",
-        "status": "ActionRequired",
+        "status": "NeedsEvidence",
         "source_check_id": "terrain-northeast-stepout",
         "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
         "observed": "grade 0.5139499999999998, roughness 5.95975 m, route confidence 0.7544",
         "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-        "clearance_action": "accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
+        "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
         "accepted_evidence_id": ""
       },
       {
@@ -31,12 +31,12 @@
         "kind": "IlluminationConfidenceClearance",
         "label": "Selected route illumination confidence clearance",
         "decision": "Block",
-        "status": "ActionRequired",
+        "status": "NeedsEvidence",
         "source_check_id": "illumination-northeast-stepout",
         "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
         "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.22381250000000003",
         "required": "confidence >= 0.7, relief-shadow risk < 0.22",
-        "clearance_action": "accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
+        "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
         "accepted_evidence_id": ""
       },
       {
@@ -44,12 +44,12 @@
         "kind": "EnergyMarginClearance",
         "label": "Rover energy margin clearance",
         "decision": "Block",
-        "status": "ActionRequired",
+        "status": "NeedsEvidence",
         "source_check_id": "energy-window",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
         "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
         "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
-        "clearance_action": "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+        "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation; prior action was accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
         "accepted_evidence_id": ""
       },
       {
@@ -57,12 +57,12 @@
         "kind": "MoonBookReviewClearance",
         "label": "MoonBook accepted review clearance",
         "decision": "Block",
-        "status": "ActionRequired",
+        "status": "NeedsEvidence",
         "source_check_id": "moonbook-review",
         "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
         "observed": "MoonBook review status is block for selected route northeast-stepout",
         "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
-        "clearance_action": "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+        "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
         "accepted_evidence_id": ""
       }
     ],
@@ -74,6 +74,7 @@
     ],
     "review_items": [],
     "accepted_items": [],
+    "rejected_items": [],
     "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",

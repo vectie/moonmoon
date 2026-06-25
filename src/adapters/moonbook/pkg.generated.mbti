@@ -5,11 +5,14 @@ import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
   "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",
 }
 
 // Values
 pub fn book_entry_kind_label(BookEntryKind) -> String
+
+pub fn clearance_transitions_from_review_transitions(Array[ReviewTransition]) -> Array[@mission.MissionClearanceTransition]
 
 pub fn first_trusted_square_book_dossier() -> MoonBookDossier
 
@@ -18,6 +21,8 @@ pub fn first_trusted_square_book_json() -> Json
 pub fn first_trusted_square_book_markdown() -> String
 
 pub fn from_site_dossier(@site.SiteDossier) -> MoonBookDossier
+
+pub fn from_site_dossier_with_review_transitions(@site.SiteDossier, Array[ReviewTransition]) -> MoonBookDossier
 
 pub fn render_json(MoonBookDossier) -> Json
 

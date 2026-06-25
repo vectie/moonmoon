@@ -31,6 +31,8 @@ pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
 pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
 
+pub fn route_handoff_with_clearance_transitions(@site.SiteDossier, @mission.RouteCandidate, Array[@mission.MissionClearanceTransition]) -> MoonroboTaskHandoff
+
 // Errors
 
 // Types and methods

@@ -57,9 +57,137 @@ def route_id_from_entry(entry_id: str) -> str:
   return entry_id.rsplit("/", 1)[-1]
 
 
+def first_transition_evidence_ref(transition: dict[str, Any]) -> str:
+  refs = transition.get("source_evidence_refs", [])
+  if not refs:
+    return ""
+  return refs[0].get("immutable_uri", "")
+
+
+def clearance_transition_by_id(
+  review_transitions: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+  return {
+    transition["item_id"]: transition
+    for transition in review_transitions
+    if transition["item_id"].startswith("clear-")
+    and transition["decision"] in {"Accept", "Reject", "RequestEvidence"}
+  }
+
+
+def apply_clearance_transition(
+  item: dict[str, Any],
+  transition: dict[str, Any],
+) -> dict[str, Any]:
+  decision = transition["decision"]
+  next_item = dict(item)
+  if decision == "Accept":
+    next_item["decision"] = "Allow"
+    next_item["status"] = "AcceptedEvidence"
+    next_item["accepted_evidence_id"] = first_transition_evidence_ref(transition)
+  elif decision == "Reject":
+    next_item["decision"] = "Block"
+    next_item["status"] = "RejectedEvidence"
+    next_item["accepted_evidence_id"] = ""
+  else:
+    next_item["decision"] = "Block"
+    next_item["status"] = "NeedsEvidence"
+    next_item["accepted_evidence_id"] = ""
+  label = {
+    "Accept": "accept",
+    "Reject": "reject",
+    "RequestEvidence": "request-evidence",
+  }[decision]
+  next_item["clearance_action"] = (
+    f"{label} by {transition['reviewer_id']} at "
+    f"{transition['recorded_at_utc']}: {transition['rationale']}; "
+    f"prior action was {item['clearance_action']}"
+  )
+  return next_item
+
+
+def clearance_plan_with_review_transitions(
+  plan: dict[str, Any],
+  review_transitions: list[dict[str, Any]],
+) -> dict[str, Any]:
+  transitions = clearance_transition_by_id(review_transitions)
+  next_plan = dict(plan)
+  items = [
+    apply_clearance_transition(item, transitions[item["clearance_id"]])
+    if item["clearance_id"] in transitions
+    else dict(item)
+    for item in plan["items"]
+  ]
+  next_plan["items"] = items
+  next_plan["blocking_items"] = [
+    item["clearance_id"] for item in items if item["decision"] == "Block"
+  ]
+  next_plan["review_items"] = [
+    item["clearance_id"] for item in items if item["decision"] == "Review"
+  ]
+  next_plan["accepted_items"] = [
+    item["clearance_id"]
+    for item in items
+    if item["status"] == "AcceptedEvidence"
+  ]
+  next_plan["rejected_items"] = [
+    item["clearance_id"]
+    for item in items
+    if item["status"] == "RejectedEvidence"
+  ]
+  if next_plan["blocking_items"]:
+    next_plan["decision"] = "Block"
+    next_plan["next_action"] = (
+      "clear required terrain grade, illumination confidence, energy margin, "
+      "and MoonBook review actions before simulation"
+    )
+  elif next_plan["review_items"]:
+    next_plan["decision"] = "Review"
+    next_plan["next_action"] = (
+      "resolve review clearance items before MoonRobo consumes the "
+      "selected-route simulation packet"
+    )
+  else:
+    next_plan["decision"] = "Allow"
+    next_plan["next_action"] = (
+      "selected-route blockers are cleared; simulation packet can advance "
+      "to MoonRobo review"
+    )
+  return next_plan
+
+
+def handoff_with_reviewed_clearance(
+  handoff: dict[str, Any],
+  book: dict[str, Any],
+) -> dict[str, Any]:
+  next_handoff = dict(handoff)
+  next_handoff["clearance_plan"] = clearance_plan_with_review_transitions(
+    handoff["clearance_plan"],
+    book["review_transitions"],
+  )
+  return next_handoff
+
+
+def selected_moonrobo_handoff(
+  site: dict[str, Any],
+  book: dict[str, Any],
+  moonrobo: list[dict[str, Any]],
+) -> dict[str, Any]:
+  primary_handoff = next(
+    (
+      handoff
+      for handoff in moonrobo
+      if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
+    ),
+    moonrobo[0],
+  )
+  return handoff_with_reviewed_clearance(primary_handoff, book)
+
+
 def payload_for_entry(
   entry: dict[str, Any],
   site: dict[str, Any],
+  book: dict[str, Any],
   moonclaw: list[dict[str, Any]],
   moonclaw_ephemeris_tasks: list[dict[str, Any]],
   moonclaw_corridor_tasks: list[dict[str, Any]],
@@ -113,26 +241,16 @@ def payload_for_entry(
   if kind == "EnergyWindow":
     return site["energy"]
   if kind == "SelectedRouteClearance":
-    primary_handoff = next(
-      (
-        handoff
-        for handoff in moonrobo
-        if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
-      ),
-      moonrobo[0],
-    )
-    return primary_handoff["clearance_plan"]
+    return selected_moonrobo_handoff(site, book, moonrobo)["clearance_plan"]
   if kind == "MoonroboHandoff":
+    primary_handoff = selected_moonrobo_handoff(site, book, moonrobo)
     return {
-      "primary_handoff": next(
-        (
-          handoff
-          for handoff in moonrobo
-          if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
-        ),
-        moonrobo[0],
-      ),
-      "handoffs": moonrobo,
+      "primary_handoff": primary_handoff,
+      "handoffs": [
+        primary_handoff if handoff["route_id"] == primary_handoff["route_id"]
+        else handoff
+        for handoff in moonrobo
+      ],
     }
   if kind == "MoonClawProposal":
     return {
@@ -229,6 +347,7 @@ def workspace_files(
     payload = payload_for_entry(
       entry,
       site,
+      book,
       moonclaw,
       moonclaw_ephemeris_tasks,
       moonclaw_corridor_tasks,
