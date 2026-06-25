@@ -33,6 +33,9 @@ MOONROBO_GAP_MODELING_JSON = (
 MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
 )
+MOONROBO_SIMULATION_REVIEW_DECISION_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_simulation_review_decision.json"
+)
 MOONCLAW_RECEIPTS_JSON = ROOT / "output/moonclaw/first_trusted_square_receipts.json"
 MOONCLAW_EPHEMERIS_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_ephemeris_receipts.json"
@@ -231,6 +234,7 @@ def payload_for_entry(
   moonrobo: list[dict[str, Any]],
   moonrobo_gap_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
+  moonrobo_simulation_review_decision: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
   lookups: dict[str, dict[str, dict[str, Any]]],
 ) -> Any:
@@ -306,6 +310,8 @@ def payload_for_entry(
     }
   if kind == "MoonroboSimulationReviewPacket":
     return moonrobo_simulation_review_packet
+  if kind == "MoonroboSimulationReviewDecision":
+    return moonrobo_simulation_review_decision
   if kind == "MoonClawProposal":
     return {
       "primary_proposal": moonclaw[0],
@@ -364,6 +370,7 @@ def workspace_files(
   moonrobo: list[dict[str, Any]],
   moonrobo_gap_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
+  moonrobo_simulation_review_decision: dict[str, Any],
   mission_horizon: dict[str, Any],
   mission_terrain_remediation: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
@@ -419,6 +426,10 @@ def workspace_files(
     source_files.append(
       "output/moonrobo/first_trusted_square_simulation_review_packet.json",
     )
+  if moonrobo_simulation_review_decision:
+    source_files.append(
+      "output/moonrobo/first_trusted_square_simulation_review_decision.json",
+    )
 
   index = {
     "workspace": book["workspace"],
@@ -450,6 +461,7 @@ def workspace_files(
       moonrobo,
       moonrobo_gap_modeling,
       moonrobo_simulation_review_packet,
+      moonrobo_simulation_review_decision,
       mission_energy_remediation,
       lookups,
     )
@@ -509,6 +521,8 @@ def workspace_files(
     readme += "- Source imported MoonRobo gap modeling: `output/moonrobo/first_trusted_square_gap_remediation_modeling.json`\n"
   if moonrobo_simulation_review_packet:
     readme += "- Source MoonRobo simulation review packet: `output/moonrobo/first_trusted_square_simulation_review_packet.json`\n"
+  if moonrobo_simulation_review_decision:
+    readme += "- Source MoonRobo simulation review decision: `output/moonrobo/first_trusted_square_simulation_review_decision.json`\n"
   if mission_horizon:
     readme += "- Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`\n"
   if mission_terrain_remediation:
@@ -589,6 +603,10 @@ def main() -> int:
     MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
     {},
   )
+  moonrobo_simulation_review_decision = load_optional_json(
+    MOONROBO_SIMULATION_REVIEW_DECISION_JSON,
+    {},
+  )
   mission_horizon = load_json(MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(MISSION_TERRAIN_REMEDIATION_JSON)
   mission_energy_remediation = load_json(MISSION_ENERGY_REMEDIATION_JSON)
@@ -606,6 +624,7 @@ def main() -> int:
     moonrobo,
     moonrobo_gap_modeling,
     moonrobo_simulation_review_packet,
+    moonrobo_simulation_review_decision,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

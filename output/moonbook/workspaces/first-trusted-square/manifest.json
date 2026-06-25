@@ -2,7 +2,7 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 55,
+  "entry_count": 56,
   "review_queue_count": 29,
   "review_transition_count": 29,
   "entry_paths": [
@@ -60,7 +60,8 @@
     "moonclaw/first-trusted-square/moonrobo-gap-task.json",
     "moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
     "moonrobo/first-trusted-square/gap-remediation-modeling.json",
-    "moonrobo/first-trusted-square/simulation-review-packet.json"
+    "moonrobo/first-trusted-square/simulation-review-packet.json",
+    "moonrobo/first-trusted-square/simulation-review-decision.json"
   ],
   "review_queue_path": "review_queue.json",
   "review_transitions_path": "review_transitions.json"

@@ -280,6 +280,11 @@
   - claim: derived
   - confidence: 0.84
   - path: moonrobo/first-trusted-square/simulation-review-packet.json
+- moonrobo/first-trusted-square/simulation-review-decision: MoonRobo selected-route simulation review decision
+  - kind: moonrobo-simulation-review-decision
+  - claim: derived
+  - confidence: 0.84
+  - path: moonrobo/first-trusted-square/simulation-review-decision.json
 
 ## Review Queue
 

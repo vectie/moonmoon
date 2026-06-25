@@ -1,0 +1,49 @@
+{
+  "entry": {
+    "entry_id": "moonrobo/first-trusted-square/simulation-review-decision",
+    "title": "MoonRobo selected-route simulation review decision",
+    "kind": "MoonroboSimulationReviewDecision",
+    "claim_kind": "Derived",
+    "confidence": 0.84,
+    "path": "moonrobo/first-trusted-square/simulation-review-decision.json",
+    "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 3 non-margin blockers, hardware authority denied at HardwareDenied"
+  },
+  "payload": {
+    "decision_id": "moonrobo-simulation-review-decision/first-trusted-square/northeast-stepout",
+    "generated_by": "scripts/import_rabbita_transitions.py",
+    "source_packet_id": "moonrobo-simulation-review-packet/first-trusted-square/northeast-stepout",
+    "source_packet_path": "output/moonrobo/first_trusted_square_simulation_review_packet.json",
+    "route_id": "northeast-stepout",
+    "may_consume_simulation_packet": false,
+    "decision": "SimulationBlocked",
+    "reason": "simulation packet remains blocked: 3 remediation margins and 3 non-margin blockers remain; hardware authority remains moonmoon-safety-gate-only",
+    "blocking_margin_count": 3,
+    "accepted_clearance_transition_count": 4,
+    "remaining_non_margin_blocker_count": 3,
+    "blocking_margin_checks": [
+      "terrain-northeast-stepout",
+      "illumination-northeast-stepout",
+      "energy-window"
+    ],
+    "remaining_non_margin_blockers": [
+      "corridor-scan-best-window",
+      "moonbook-review",
+      "robot-simulation"
+    ],
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_denied": true,
+    "hardware_denial_invariants": [
+      "hardware_state must remain HardwareDenied",
+      "hardware_authority must remain moonmoon-safety-gate-only",
+      "MoonMoon must not emit hardware commands or physical execution authority",
+      "simulation readiness must be regenerated from mission checks, not from clearance acceptance alone",
+      "current hardware_state is HardwareDenied",
+      "current hardware_authority is moonmoon-safety-gate-only"
+    ],
+    "next_action": "do not let MoonRobo consume moonrobo-simulation-review-packet/first-trusted-square/northeast-stepout; clear the listed margins and blockers, regenerate the packet, and keep hardware denied"
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

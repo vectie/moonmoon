@@ -788,7 +788,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-simulation-review-decision-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize selected-route simulation review decision into MoonBook",
       outcome: "The MoonRobo closeout decision becomes durable MoonBook evidence beside the simulation packet it audits",
@@ -800,7 +800,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
         "scripts/check_moonbook_simulation_review_decision_workspace.py",
       ],
-      done_when: "selected-route simulation review decision is indexed, materialized, and validated in the MoonBook workspace with hardware authority denied",
+      done_when: "done: selected-route simulation review decision is indexed, materialized, and validated in the MoonBook workspace with hardware authority denied",
+    },
+    {
+      task_id: "rabbita-simulation-review-decision-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface selected-route simulation review decision in Rabbita",
+      outcome: "Operators can see the simulation consume/no-consume result, remaining blockers, and hardware denial state from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_review_decision_surface.py",
+      ],
+      done_when: "Rabbita renders the simulation review closeout decision with no-consume status, blocker counts, and HardwareDenied authority from embedded MoonBook evidence",
     },
   ]
 }
