@@ -1735,7 +1735,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-fresh-evidence-action-receipts-surface",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Surface fresh-evidence action receipts in Rabbita",
       outcome: "Operators can inspect the materialized fresh-evidence action receipts before reviewed work item receipt regeneration or downstream simulation review",
@@ -1747,7 +1747,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_fresh_evidence_action_receipts_surface.py",
       ],
-      done_when: "Rabbita renders the fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, pending reviewed work item state, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, pending reviewed work item state, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-regenerated-reviewed-work-item-receipts",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Regenerate reviewed work item receipts from fresh evidence actions",
+      outcome: "Fresh-evidence action receipts feed a new reviewed work item receipt pass before any downstream MoonRobo simulation review",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_fresh_evidence_action_receipts_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+        "scripts/check_moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts.py",
+      ],
+      done_when: "MoonClaw emits regenerated reviewed work item receipts that consume the fresh-evidence action receipts, preserve source receipt and review provenance, keep no automatic refresh loop and no simulation consumption, and preserve HardwareDenied authority",
     },
   ]
 }

@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "rabbita-remediation-margin-fresh-evidence-action-receipts-surface",
+    "moonclaw-remediation-margin-regenerated-reviewed-work-item-receipts",
   )
 }
 
@@ -269,6 +269,11 @@ test "kernel markdown names suite roles and next product output" {
       "rabbita-remediation-margin-fresh-evidence-action-receipts-surface",
     ),
   )
+  assert_true(
+    markdown.contains(
+      "moonclaw-remediation-margin-regenerated-reviewed-work-item-receipts",
+    ),
+  )
   assert_true(markdown.contains("NoConsumeCycleClosedForPolicy"))
   assert_true(markdown.contains("retry/escalate/freeze dispositions"))
   assert_true(markdown.contains("terrain escalate"))
@@ -293,6 +298,7 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(markdown.contains("terrain/horizon/energy execution modes"))
   assert_true(markdown.contains("fresh-evidence action receipts"))
   assert_true(markdown.contains("materialized fresh-evidence action receipts"))
+  assert_true(markdown.contains("Regenerate reviewed work item receipts"))
   assert_true(
     markdown.contains(
       "Operators can inspect the three accepted reviewed work item receipts",
