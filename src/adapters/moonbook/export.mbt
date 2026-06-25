@@ -950,6 +950,23 @@ fn moonclaw_corridor_task_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_remediation_margin_task_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let task = @moonclaw.first_trusted_square_remediation_margin_task()
+  let blockers = @moonclaw.remediation_margin_task_blocked_artifact_count(task)
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-task",
+    title: "MoonClaw remediation-margin task for \{dossier.site.name}",
+    kind: MoonClawTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.68,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-task.json",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} task preserves \{task.active_margin_count} active remediation margins with \{blocker_count_label(blockers)} and hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.route_scoring_receipt(dossier)
   {
@@ -1219,6 +1236,7 @@ fn book_entries(
   entries.push(moonclaw_proposal_entry(dossier))
   entries.push(moonclaw_ephemeris_task_entry(dossier))
   entries.push(moonclaw_corridor_task_entry(dossier))
+  entries.push(moonclaw_remediation_margin_task_entry(dossier))
   entries.push(moonclaw_receipt_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))

@@ -1,0 +1,220 @@
+{
+  "entry": {
+    "entry_id": "moonclaw/first-trusted-square/remediation-margin-task",
+    "title": "MoonClaw remediation-margin task for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonClawTask",
+    "claim_kind": "Derived",
+    "confidence": 0.68,
+    "path": "moonclaw/first-trusted-square/remediation-margin-task.json",
+    "summary": "accepted task preserves 3 active remediation margins with 3 blockers and hardware authority moonmoon-safety-gate-only at hardware-denied"
+  },
+  "payload": {
+    "primary_task": {
+      "task_id": "moonclaw/first-trusted-square/remediation-margin-v1/task",
+      "proposal_id": "moonclaw/first-trusted-square/remediation-margin-v1",
+      "site_id": "first-trusted-square",
+      "route_id": "northeast-stepout",
+      "priority": "Critical",
+      "state": "Accepted",
+      "objective": "Convert the remaining selected-route terrain, local-horizon, and energy margins into one executable MoonClaw work packet before MoonRobo simulation consumption.",
+      "active_margin_count": 3,
+      "active_margin_ids": [
+        "terrain-northeast-stepout",
+        "illumination-northeast-stepout",
+        "energy-window"
+      ],
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "inputs": [
+        {
+          "input_id": "selected-route-terrain-remediation",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "claim_kind": "Derived",
+          "summary": "Bounded selected-route terrain still blocks on grade, roughness, and blocking-edge margins."
+        },
+        {
+          "input_id": "selected-route-local-horizon",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "claim_kind": "Derived",
+          "summary": "Bounded local horizon still blocks illumination because terrain-shadow margin exceeds the sampled sun altitude."
+        },
+        {
+          "input_id": "selected-route-energy-remediation",
+          "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+          "claim_kind": "Derived",
+          "summary": "Bounded route energy still blocks because available energy does not satisfy conservative reserve and survival demand."
+        },
+        {
+          "input_id": "simulation-blocker-reduction",
+          "evidence_path": "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+          "claim_kind": "Derived",
+          "summary": "MoonRobo reduction closes stale non-margin blockers and preserves these three active remediation margins."
+        }
+      ],
+      "artifacts": [
+        {
+          "artifact_id": "terrain-northeast-stepout",
+          "path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "producer": "scripts/generate_selected_route_terrain_remediation.py",
+          "required_state": "selected route terrain clears grade and roughness limits with reviewed source evidence",
+          "current_state": "grade margin 0.16395, roughness margin 3.45975 m, blocking edges 11/24",
+          "ready": false,
+          "blocking_reason": "collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation",
+          "validation_gate": "python3 scripts/generate_selected_route_terrain_remediation.py --check"
+        },
+        {
+          "artifact_id": "illumination-northeast-stepout",
+          "path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "producer": "scripts/generate_selected_route_horizon.py",
+          "required_state": "selected route local horizon clears terrain-shadow margin against the power window",
+          "current_state": "terrain-shadow margin 26.356833 deg, max horizon 26.487251 deg, max sun altitude 0.130418 deg",
+          "ready": false,
+          "blocking_reason": "collect wider local horizon and terrain-shadow evidence before route simulation",
+          "validation_gate": "python3 scripts/generate_selected_route_horizon.py --check"
+        },
+        {
+          "artifact_id": "energy-window",
+          "path": "output/mission/first_trusted_square_energy_remediation.json",
+          "producer": "src/mission/traverse.mbt",
+          "required_state": "selected route bounded energy demand leaves at least the conservative minimum margin",
+          "current_state": "bounded margin -855.061927 Wh, margin gap 1105.061927 Wh, available 234.938073 Wh",
+          "ready": false,
+          "blocking_reason": "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
+          "validation_gate": "python3 scripts/check_energy_margin_remediation.py"
+        }
+      ],
+      "commands": [
+        "python3 scripts/generate_selected_route_terrain_remediation.py --check",
+        "python3 scripts/generate_selected_route_horizon.py --check",
+        "python3 scripts/check_energy_margin_remediation.py",
+        "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
+        "python3 scripts/check_moonrobo_simulation_blocker_reduction.py",
+        "python3 scripts/check_moonclaw_remediation_margin_task.py",
+        "/Users/kq/.moon/bin/moon test"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "all-active-margins-preserved",
+          "description": "Task carries terrain-northeast-stepout, illumination-northeast-stepout, and energy-window as explicit active blockers."
+        },
+        {
+          "criterion_id": "ranked-remediation-work",
+          "description": "Artifacts preserve current margin values and next actions so MoonClaw can work terrain, horizon, then energy without losing evidence paths."
+        },
+        {
+          "criterion_id": "hardware-denial-preserved",
+          "description": "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only while the task is open."
+        }
+      ],
+      "safety_gate": "Do not allow MoonRobo simulation consumption or hardware execution until all three margin artifacts become ready under regenerated MoonMoon evidence; hardware authority stays moonmoon-safety-gate-only.",
+      "next_action": "Execute the terrain, local-horizon, and energy remediation commands, regenerate the dossier, and re-run the MoonRobo blocker-reduction checks."
+    },
+    "tasks": [
+      {
+        "task_id": "moonclaw/first-trusted-square/remediation-margin-v1/task",
+        "proposal_id": "moonclaw/first-trusted-square/remediation-margin-v1",
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "priority": "Critical",
+        "state": "Accepted",
+        "objective": "Convert the remaining selected-route terrain, local-horizon, and energy margins into one executable MoonClaw work packet before MoonRobo simulation consumption.",
+        "active_margin_count": 3,
+        "active_margin_ids": [
+          "terrain-northeast-stepout",
+          "illumination-northeast-stepout",
+          "energy-window"
+        ],
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_denied": true,
+        "inputs": [
+          {
+            "input_id": "selected-route-terrain-remediation",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "claim_kind": "Derived",
+            "summary": "Bounded selected-route terrain still blocks on grade, roughness, and blocking-edge margins."
+          },
+          {
+            "input_id": "selected-route-local-horizon",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "claim_kind": "Derived",
+            "summary": "Bounded local horizon still blocks illumination because terrain-shadow margin exceeds the sampled sun altitude."
+          },
+          {
+            "input_id": "selected-route-energy-remediation",
+            "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+            "claim_kind": "Derived",
+            "summary": "Bounded route energy still blocks because available energy does not satisfy conservative reserve and survival demand."
+          },
+          {
+            "input_id": "simulation-blocker-reduction",
+            "evidence_path": "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+            "claim_kind": "Derived",
+            "summary": "MoonRobo reduction closes stale non-margin blockers and preserves these three active remediation margins."
+          }
+        ],
+        "artifacts": [
+          {
+            "artifact_id": "terrain-northeast-stepout",
+            "path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "producer": "scripts/generate_selected_route_terrain_remediation.py",
+            "required_state": "selected route terrain clears grade and roughness limits with reviewed source evidence",
+            "current_state": "grade margin 0.16395, roughness margin 3.45975 m, blocking edges 11/24",
+            "ready": false,
+            "blocking_reason": "collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation",
+            "validation_gate": "python3 scripts/generate_selected_route_terrain_remediation.py --check"
+          },
+          {
+            "artifact_id": "illumination-northeast-stepout",
+            "path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+            "producer": "scripts/generate_selected_route_horizon.py",
+            "required_state": "selected route local horizon clears terrain-shadow margin against the power window",
+            "current_state": "terrain-shadow margin 26.356833 deg, max horizon 26.487251 deg, max sun altitude 0.130418 deg",
+            "ready": false,
+            "blocking_reason": "collect wider local horizon and terrain-shadow evidence before route simulation",
+            "validation_gate": "python3 scripts/generate_selected_route_horizon.py --check"
+          },
+          {
+            "artifact_id": "energy-window",
+            "path": "output/mission/first_trusted_square_energy_remediation.json",
+            "producer": "src/mission/traverse.mbt",
+            "required_state": "selected route bounded energy demand leaves at least the conservative minimum margin",
+            "current_state": "bounded margin -855.061927 Wh, margin gap 1105.061927 Wh, available 234.938073 Wh",
+            "ready": false,
+            "blocking_reason": "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
+            "validation_gate": "python3 scripts/check_energy_margin_remediation.py"
+          }
+        ],
+        "commands": [
+          "python3 scripts/generate_selected_route_terrain_remediation.py --check",
+          "python3 scripts/generate_selected_route_horizon.py --check",
+          "python3 scripts/check_energy_margin_remediation.py",
+          "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
+          "python3 scripts/check_moonrobo_simulation_blocker_reduction.py",
+          "python3 scripts/check_moonclaw_remediation_margin_task.py",
+          "/Users/kq/.moon/bin/moon test"
+        ],
+        "acceptance_criteria": [
+          {
+            "criterion_id": "all-active-margins-preserved",
+            "description": "Task carries terrain-northeast-stepout, illumination-northeast-stepout, and energy-window as explicit active blockers."
+          },
+          {
+            "criterion_id": "ranked-remediation-work",
+            "description": "Artifacts preserve current margin values and next actions so MoonClaw can work terrain, horizon, then energy without losing evidence paths."
+          },
+          {
+            "criterion_id": "hardware-denial-preserved",
+            "description": "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only while the task is open."
+          }
+        ],
+        "safety_gate": "Do not allow MoonRobo simulation consumption or hardware execution until all three margin artifacts become ready under regenerated MoonMoon evidence; hardware authority stays moonmoon-safety-gate-only.",
+        "next_action": "Execute the terrain, local-horizon, and energy remediation commands, regenerate the dossier, and re-run the MoonRobo blocker-reduction checks."
+      }
+    ]
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

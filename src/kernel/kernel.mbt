@@ -883,7 +883,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-task-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin task into MoonBook",
       outcome: "The MoonClaw remediation-margin packet becomes durable workspace evidence linked to terrain, horizon, energy, and MoonRobo blocker reduction inputs",
@@ -895,7 +895,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
         "scripts/check_moonbook_remediation_margin_task_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin task with 3 active margin blockers and HardwareDenied authority preserved",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin task with 3 active margin blockers and HardwareDenied authority preserved",
+    },
+    {
+      task_id: "rabbita-remediation-margin-task-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin task in Rabbita",
+      outcome: "Operators can see the MoonClaw margin task, three active remediation blockers, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_task_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin task with 3 active margins, terrain/horizon/energy blocker ids, and HardwareDenied authority",
     },
   ]
 }

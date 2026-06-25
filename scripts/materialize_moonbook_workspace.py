@@ -21,6 +21,9 @@ MOONCLAW_EPHEMERIS_TASKS_JSON = (
 MOONCLAW_CORRIDOR_TASKS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_corridor_tasks.json"
 )
+MOONCLAW_REMEDIATION_MARGIN_TASK_JSON = (
+  ROOT / "output/moonclaw/first_trusted_square_remediation_margin_task.json"
+)
 MOONCLAW_GAP_TASK_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json"
 )
@@ -229,6 +232,7 @@ def payload_for_entry(
   moonclaw: list[dict[str, Any]],
   moonclaw_ephemeris_tasks: list[dict[str, Any]],
   moonclaw_corridor_tasks: list[dict[str, Any]],
+  moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_gap_tasks: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
@@ -329,6 +333,11 @@ def payload_for_entry(
         "primary_task": moonclaw_gap_tasks[0],
         "tasks": moonclaw_gap_tasks,
       }
+    if entry_id.endswith("/remediation-margin-task"):
+      return {
+        "primary_task": moonclaw_remediation_margin_tasks[0],
+        "tasks": moonclaw_remediation_margin_tasks,
+      }
     if entry_id.endswith("/corridor-expansion-task"):
       return {
         "primary_task": moonclaw_corridor_tasks[0],
@@ -368,6 +377,7 @@ def workspace_files(
   moonclaw: list[dict[str, Any]],
   moonclaw_ephemeris_tasks: list[dict[str, Any]],
   moonclaw_corridor_tasks: list[dict[str, Any]],
+  moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_gap_tasks: list[dict[str, Any]],
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
@@ -409,6 +419,7 @@ def workspace_files(
     "output/moonclaw/first_trusted_square_proposals.json",
     "output/moonclaw/first_trusted_square_ephemeris_tasks.json",
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
@@ -464,6 +475,7 @@ def workspace_files(
       moonclaw,
       moonclaw_ephemeris_tasks,
       moonclaw_corridor_tasks,
+      moonclaw_remediation_margin_tasks,
       moonclaw_gap_tasks,
       moonclaw_receipts,
       moonclaw_ephemeris_receipts,
@@ -521,6 +533,7 @@ def workspace_files(
     "- Source MoonClaw proposals: `output/moonclaw/first_trusted_square_proposals.json`\n"
     "- Source MoonClaw ephemeris tasks: `output/moonclaw/first_trusted_square_ephemeris_tasks.json`\n"
     "- Source MoonClaw corridor tasks: `output/moonclaw/first_trusted_square_corridor_tasks.json`\n"
+    "- Source MoonClaw remediation-margin task: `output/moonclaw/first_trusted_square_remediation_margin_task.json`\n"
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
     "- Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`\n"
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
@@ -606,6 +619,10 @@ def main() -> int:
   moonclaw = load_json(MOONCLAW_JSON)
   moonclaw_ephemeris_tasks = load_json(MOONCLAW_EPHEMERIS_TASKS_JSON)
   moonclaw_corridor_tasks = load_json(MOONCLAW_CORRIDOR_TASKS_JSON)
+  moonclaw_remediation_margin_tasks = load_optional_json(
+    MOONCLAW_REMEDIATION_MARGIN_TASK_JSON,
+    [],
+  )
   moonclaw_gap_tasks = load_optional_json(MOONCLAW_GAP_TASK_JSON, [])
   moonclaw_receipts = load_json(MOONCLAW_RECEIPTS_JSON)
   moonclaw_ephemeris_receipts = load_json(MOONCLAW_EPHEMERIS_RECEIPTS_JSON)
@@ -634,6 +651,7 @@ def main() -> int:
     moonclaw,
     moonclaw_ephemeris_tasks,
     moonclaw_corridor_tasks,
+    moonclaw_remediation_margin_tasks,
     moonclaw_gap_tasks,
     moonclaw_receipts,
     moonclaw_ephemeris_receipts,

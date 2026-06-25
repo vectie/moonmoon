@@ -9,6 +9,7 @@
     "output/moonclaw/first_trusted_square_proposals.json",
     "output/moonclaw/first_trusted_square_ephemeris_tasks.json",
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
+    "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_receipts.json",
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
@@ -455,6 +456,15 @@
       "confidence": 0.65,
       "path": "moonclaw/first-trusted-square/corridor-task.json",
       "summary": "accepted task plans 81 windows with 0 blockers before route promotion"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-task",
+      "title": "MoonClaw remediation-margin task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.68,
+      "path": "moonclaw/first-trusted-square/remediation-margin-task.json",
+      "summary": "accepted task preserves 3 active remediation margins with 3 blockers and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",

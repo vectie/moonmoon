@@ -123,6 +123,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONCLAW_CORRIDOR_TASKS_JSON = (
     root / "output/moonclaw/first_trusted_square_corridor_tasks.json"
   )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_TASK_JSON = (
+    root / "output/moonclaw/first_trusted_square_remediation_margin_task.json"
+  )
   materialize_moonbook_workspace.MOONCLAW_GAP_TASK_JSON = (
     root / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json"
   )
@@ -179,6 +182,12 @@ def materialize_temp_workspace(root: Path) -> None:
   moonclaw_corridor_tasks = load_json(
     materialize_moonbook_workspace.MOONCLAW_CORRIDOR_TASKS_JSON,
   )
+  moonclaw_remediation_margin_tasks = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_TASK_JSON,
+      [],
+    )
+  )
   moonclaw_gap_tasks = materialize_moonbook_workspace.load_optional_json(
     materialize_moonbook_workspace.MOONCLAW_GAP_TASK_JSON,
     [],
@@ -232,6 +241,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw,
     moonclaw_ephemeris_tasks,
     moonclaw_corridor_tasks,
+    moonclaw_remediation_margin_tasks,
     moonclaw_gap_tasks,
     moonclaw_receipts,
     moonclaw_ephemeris_receipts,
