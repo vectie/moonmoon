@@ -142,6 +142,11 @@ Current implementation status:
   the same contract for future Rabbita/Lepusa browser surfaces.
 - `scripts/build_moonmoon_dossier.sh` publishes the current UI contract under
   `output/ui/first_trusted_square_view.{md,json}`.
+- Rabbita Moon now initializes selected-route clearance controls from the
+  embedded MoonBook review queue and transition ledger. Imported accepted,
+  rejected, and request-evidence states render back into the controls and the
+  next export JSON instead of resetting every clearance item to
+  request-evidence.
 
 ## Milestone 3: MoonBook Evidence Loop
 

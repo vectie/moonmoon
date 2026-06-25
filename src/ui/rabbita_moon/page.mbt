@@ -183,6 +183,18 @@ fn app_styles() -> String {
     #|  display: grid;
     #|  gap: 8px;
     #|}
+    #|.clearance-row[data-review-decision="Accept"] {
+    #|  border-color: color-mix(in srgb, var(--ok) 55%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--ok);
+    #|}
+    #|.clearance-row[data-review-decision="Reject"] {
+    #|  border-color: color-mix(in srgb, var(--danger) 55%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
+    #|.clearance-row[data-review-decision="RequestEvidence"] {
+    #|  border-color: color-mix(in srgb, var(--warn) 45%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--warn);
+    #|}
     #|.route-row[aria-current="true"] {
     #|  border-color: var(--route);
     #|  box-shadow: inset 3px 0 0 var(--route);
@@ -289,7 +301,7 @@ fn app_script() -> String {
     #|const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
     #|const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
     #|const clearanceItems = book.review_queue.filter(item => item.item_id.startsWith('clear-'));
-    #|const clearanceDecisions = new Map(clearanceItems.map(item => [item.item_id, 'RequestEvidence']));
+    #|const clearanceDecisions = new Map(clearanceItems.map(item => [item.item_id, initialClearanceDecision(item)]));
     #|const decisionOptions = [
     #|  ['Accept', 'Accept'],
     #|  ['Reject', 'Reject'],
@@ -428,6 +440,26 @@ fn app_script() -> String {
     #|  return 'NeedsEvidence';
     #|}
     #|
+    #|function initialClearanceDecision(item) {
+    #|  const transition = transitionByItem.get(item.item_id);
+    #|  if (transition && transition.decision) return transition.decision;
+    #|  if (item.status === 'Accepted') return 'Accept';
+    #|  if (item.status === 'Rejected') return 'Reject';
+    #|  return 'RequestEvidence';
+    #|}
+    #|
+    #|function clearanceReviewStatus(item) {
+    #|  const transition = transitionByItem.get(item.item_id);
+    #|  if (transition && transition.resulting_status) return transition.resulting_status;
+    #|  return item.status;
+    #|}
+    #|
+    #|function clearanceReviewNote(item) {
+    #|  const transition = transitionByItem.get(item.item_id);
+    #|  if (transition && transition.rationale) return transition.rationale;
+    #|  return item.reason;
+    #|}
+    #|
     #|function transitionSuffix(decision) {
     #|  if (decision === 'Accept') return 'accept';
     #|  if (decision === 'Reject') return 'reject';
@@ -482,6 +514,7 @@ fn app_script() -> String {
     #|  const list = document.getElementById('clearance-review');
     #|  list.replaceChildren(...clearanceItems.map(item => {
     #|    const selected = clearanceDecisions.get(item.item_id) || 'RequestEvidence';
+    #|    const reviewStatus = clearanceReviewStatus(item);
     #|    const controls = el('div', { className: 'decision-group', role: 'group', 'aria-label': item.item_id },
     #|      decisionOptions.map(([decision, label]) => {
     #|        const button = el('button', {
@@ -498,9 +531,13 @@ fn app_script() -> String {
     #|        return button;
     #|      })
     #|    );
-    #|    return el('div', { className: 'clearance-row' }, [
-    #|      el('b', { text: `${item.item_id} - ${item.status}` }),
-    #|      el('span', { text: item.reason }),
+    #|    return el('div', {
+    #|      className: 'clearance-row',
+    #|      'data-review-decision': selected,
+    #|      'data-review-status': reviewStatus,
+    #|    }, [
+    #|      el('b', { text: `${item.item_id} - ${reviewStatus}` }),
+    #|      el('span', { text: clearanceReviewNote(item) }),
     #|      controls
     #|    ]);
     #|  }));

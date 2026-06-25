@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "make Rabbita initialize its review controls from imported transition state",
+    next_action: "project imported clearance decisions into a robot-facing simulation readiness preview",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "imported review state feedback for Rabbita",
+      next_output: "reviewed simulation readiness projection for imported clearance states",
     },
     {
       layer_id: "operator-viewer",
@@ -228,7 +228,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "site dossier -> terrain/hazard/route layer view state",
       current_artifact: "src/ui/types.mbt + src/ui/rabbita_moon/page.mbt",
       readiness: Ready,
-      next_output: "review-transition import feedback in the Rabbita inspection surface",
+      next_output: "imported transition summaries in route and robot readiness surfaces",
     },
   ]
 }
@@ -455,7 +455,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-import-feedback-state",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Initialize Rabbita clearance controls from imported review state",
       outcome: "Operators can reload imported clearance decisions without every item reverting to request-evidence controls",
@@ -464,9 +464,25 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
       ],
       evidence: [
-        "output/ui/rabbita/first_trusted_square.html", "data/fixtures/rabbita_clearance_transitions_accept.json",
+        "output/ui/rabbita/first_trusted_square.html", "data/fixtures/rabbita_clearance_transitions_mixed.json",
+        "scripts/check_rabbita_feedback_state.py",
       ],
-      done_when: "Rabbita renders accepted, rejected, and request-evidence imported states from the embedded MoonBook review queue and transitions",
+      done_when: "done: Rabbita renders accepted, rejected, and request-evidence imported states from the embedded MoonBook review queue and transitions",
+    },
+    {
+      task_id: "moonrobo-imported-clearance-readiness-preview",
+      priority: 70,
+      lane: RobotLane,
+      title: "Project imported clearance decisions into a MoonRobo readiness preview",
+      outcome: "Accepted operator clearance can be inspected as robot-facing readiness evidence while hardware authority stays denied",
+      depends_on: [
+        "scripts/import_rabbita_transitions.py", "src/adapters/moonrobo/handoff.mbt",
+        "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      evidence: [
+        "data/fixtures/rabbita_clearance_transitions_accept.json", "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      done_when: "the all-accepted transition fixture regenerates a MoonRobo preview packet showing selected-route clearance allowed while physical execution remains denied until mission readiness gates clear",
     },
   ]
 }
