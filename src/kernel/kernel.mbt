@@ -1446,7 +1446,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-closeout-action-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin closeout action task into MoonBook",
       outcome: "The bounded MoonClaw closeout action task becomes durable workspace evidence beside the closeout policy it consumes",
@@ -1459,7 +1459,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
         "scripts/check_moonbook_remediation_margin_closeout_action_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin closeout action task with NeedsReview state, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin closeout action task with NeedsReview state, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-closeout-action-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin closeout action task in Rabbita",
+      outcome: "Operators can review the bounded MoonClaw closeout action task, NeedsReview state, no-consume simulation status, and terrain/horizon/energy dispositions before any new remediation task is emitted",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin closeout action task with NeedsReview state, NoConsumeCycleClosedForPolicy source status, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

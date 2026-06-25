@@ -31,6 +31,7 @@ pub(all) enum BookEntryKind {
   MoonClawTask
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
+  MoonClawRemediationMarginCloseoutActionTask
   MoonClawRemediationMarginRefreshReceipt
   MoonClawRemediationMarginRefreshFollowupReceipt
   MoonClawReceipt
@@ -153,6 +154,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
       "moonclaw-remediation-margin-refresh-task"
     MoonClawRemediationMarginRefreshFollowupTask =>
       "moonclaw-remediation-margin-refresh-followup-task"
+    MoonClawRemediationMarginCloseoutActionTask =>
+      "moonclaw-remediation-margin-closeout-action-task"
     MoonClawRemediationMarginRefreshReceipt =>
       "moonclaw-remediation-margin-refresh-receipt"
     MoonClawRemediationMarginRefreshFollowupReceipt =>
@@ -1243,6 +1246,29 @@ fn moonrobo_remediation_margin_cycle_closeout_policy_entry(
 }
 
 ///|
+fn moonclaw_remediation_margin_closeout_action_task_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let task = @moonclaw.first_trusted_square_remediation_margin_closeout_action_task()
+  let refresh_ids = task.blocking_refresh_ids.join(", ")
+  let margin_ids = task.blocking_margin_ids.join(", ")
+  let actions = task.closeout_actions
+    .map(fn(action) {
+      "\{action.blocker_domain}=\{@moonrobo.remediation_margin_cycle_disposition_label(action.disposition)}"
+    })
+    .join(", ")
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/remediation-margin-closeout-action-task",
+    title: "MoonClaw remediation-margin closeout action task for \{dossier.site.name}",
+    kind: MoonClawRemediationMarginCloseoutActionTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.72,
+    path: "moonclaw/\{dossier.site.site_id}/remediation-margin-closeout-action-task.json",
+    summary: "\{@moonclaw.receipt_status_label(task.state)} closeout action task consumes \{@moonrobo.remediation_margin_cycle_closeout_status_label(task.source_closeout_status)} after \{task.refresh_cycle_count} refresh cycles with \{task.blocker_count} terrain/horizon/energy blockers (\{refresh_ids}) over margins (\{margin_ids}); actions \{actions}; simulation \{@moonrobo.execution_state_label(task.simulation_state)}, may consume \{task.may_consume_simulation}, hardware authority \{task.hardware_authority} at \{@moonrobo.execution_state_label(task.hardware_state)}",
+  }
+}
+
+///|
 fn moonclaw_ephemeris_receipt_entry(dossier : @site.SiteDossier) -> BookEntry {
   let receipt = @moonclaw.ephemeris_acquisition_receipt(dossier)
   {
@@ -1518,6 +1544,7 @@ fn book_entries(
     moonrobo_remediation_margin_refresh_followup_projection_entry(dossier),
   )
   entries.push(moonrobo_remediation_margin_cycle_closeout_policy_entry(dossier))
+  entries.push(moonclaw_remediation_margin_closeout_action_task_entry(dossier))
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries

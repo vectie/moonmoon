@@ -60,6 +60,10 @@ def assert_imported(root: Path) -> None:
   cycle_closeout = load_json(
     root / "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
   )
+  closeout_action_task = load_json(
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
+  )[0]
   workspace_entry = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json",
@@ -87,6 +91,10 @@ def assert_imported(root: Path) -> None:
   workspace_cycle_closeout = load_json(
     root
     / "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
+  )
+  workspace_closeout_action_task = load_json(
+    root
+    / "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
   )
   embedded = embedded_book(root / "output/ui/rabbita/first_trusted_square.html")
 
@@ -138,6 +146,10 @@ def assert_imported(root: Path) -> None:
     raise AssertionError(
       "workspace MoonRobo remediation-margin cycle closeout was not materialized",
     )
+  if workspace_closeout_action_task["payload"]["primary_task"] != closeout_action_task:
+    raise AssertionError(
+      "workspace MoonClaw remediation-margin closeout action task was not materialized",
+    )
 
   clear_statuses = {
     item["item_id"]: item["status"]
@@ -170,6 +182,10 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_TASK_JSON = (
     root
     / "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json"
+  )
+  materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_CLOSEOUT_ACTION_TASK_JSON = (
+    root
+    / "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json"
   )
   materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_RECEIPT_JSON = (
     root
@@ -277,6 +293,12 @@ def materialize_temp_workspace(root: Path) -> None:
   moonclaw_remediation_margin_refresh_followup_tasks = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_REFRESH_FOLLOWUP_TASK_JSON,
+      [],
+    )
+  )
+  moonclaw_remediation_margin_closeout_action_tasks = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONCLAW_REMEDIATION_MARGIN_CLOSEOUT_ACTION_TASK_JSON,
       [],
     )
   )
@@ -396,6 +418,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonclaw_remediation_margin_tasks,
     moonclaw_remediation_margin_refresh_tasks,
     moonclaw_remediation_margin_refresh_followup_tasks,
+    moonclaw_remediation_margin_closeout_action_tasks,
     moonclaw_remediation_margin_refresh_followup_receipts,
     moonclaw_remediation_margin_refresh_receipts,
     moonclaw_remediation_margin_receipts,
