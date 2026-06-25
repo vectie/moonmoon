@@ -519,7 +519,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-imported-moonclaw-gap-task-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize imported MoonClaw remediation task into MoonBook workspace",
       outcome: "Imported operator clearance produces durable MoonBook evidence for the MoonClaw task that resolves remaining MoonRobo blocker gaps",
@@ -531,7 +531,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-task.json",
         "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
       ],
-      done_when: "imported transition builds materialize the MoonRobo gap remediation task into the MoonBook workspace index, manifest, and per-entry payloads",
+      done_when: "done: imported transition builds materialize the MoonRobo gap remediation task into the MoonBook workspace index, manifest, and per-entry payloads",
+    },
+    {
+      task_id: "moonclaw-gap-remediation-receipt-loop",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Close MoonRobo gap remediation with a MoonClaw receipt loop",
+      outcome: "Each imported-clearance MoonRobo blocker gap can be proved cleared or carried forward with explicit evidence before simulation readiness changes",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-task.json",
+        "output/moonrobo/first_trusted_square_readiness_preview.json", "scripts/import_rabbita_transitions.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json", "scripts/check_moonclaw_gap_remediation_receipt.py",
+      ],
+      done_when: "MoonClaw emits a receipt for the imported gap task that maps every blocker gap to cleared evidence or a still-blocking next action while preserving MoonRobo hardware denial",
     },
   ]
 }

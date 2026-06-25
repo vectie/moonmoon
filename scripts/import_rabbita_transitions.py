@@ -148,6 +148,34 @@ def update_selected_route_entry(
       entry["summary"] = summary
 
 
+def moonclaw_gap_task_entry(gap_task: dict[str, Any]) -> dict[str, Any]:
+  gap_count = len(gap_task["blocker_gap_report"])
+  return {
+    "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-task",
+    "title": "MoonClaw MoonRobo gap remediation task",
+    "kind": "MoonClawTask",
+    "claim_kind": "Derived",
+    "confidence": 0.82,
+    "path": "moonclaw/first-trusted-square/moonrobo-gap-task.json",
+    "summary": (
+      f"{gap_task['state'].lower()} remediation task for {gap_count} "
+      "MoonRobo blocker gaps with hardware authority denied"
+    ),
+  }
+
+
+def update_moonclaw_gap_task_entry(
+  book: dict[str, Any],
+  gap_task: dict[str, Any],
+) -> None:
+  next_entry = moonclaw_gap_task_entry(gap_task)
+  for index, entry in enumerate(book["entries"]):
+    if entry["entry_id"] == next_entry["entry_id"]:
+      book["entries"][index] = next_entry
+      return
+  book["entries"].append(next_entry)
+
+
 def update_moonrobo(
   moonrobo: list[dict[str, Any]],
   plan: dict[str, Any],
@@ -512,6 +540,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_moonrobo(moonrobo, plan)
   preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
   gap_task = moonclaw_gap_task(preview, transition_file)
+  update_moonclaw_gap_task_entry(book, gap_task)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)

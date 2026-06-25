@@ -159,6 +159,10 @@ Current implementation status:
   gap report. The packet names the accepted clearance input, remaining blocker
   artifacts, concrete remediation commands, acceptance checks, and robot-safety
   invariants that keep hardware authority denied.
+- Imported transition builds now materialize that MoonClaw remediation task
+  into the MoonBook workspace index, manifest, and per-entry payloads, giving
+  the generated task the same durable evidence surface as baseline MoonClaw
+  tasks.
 
 ## Milestone 3: MoonBook Evidence Loop
 
