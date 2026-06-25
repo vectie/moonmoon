@@ -67,6 +67,7 @@ pub(all) enum BookEntryKind {
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection
+  MoonroboRemediationMarginRefreshModeling
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask

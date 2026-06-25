@@ -48,6 +48,10 @@ MOONROBO_REMEDIATION_MARGIN_MODELING_JSON = (
 MOONROBO_REMEDIATION_MARGIN_PROJECTION_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_remediation_margin_projection.json"
 )
+MOONROBO_REMEDIATION_MARGIN_REFRESH_MODELING_JSON = (
+  ROOT
+  / "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json"
+)
 MOONROBO_SIMULATION_REVIEW_PACKET_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
 )
@@ -260,6 +264,7 @@ def payload_for_entry(
   moonrobo_gap_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_projection: dict[str, Any],
+  moonrobo_remediation_margin_refresh_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
@@ -343,6 +348,11 @@ def payload_for_entry(
     }
   if kind == "MoonroboRemediationMarginProjection":
     return moonrobo_remediation_margin_projection
+  if kind == "MoonroboRemediationMarginRefreshModeling":
+    return {
+      "primary_modeling_pass": moonrobo_remediation_margin_refresh_modeling[0],
+      "modeling_passes": moonrobo_remediation_margin_refresh_modeling,
+    }
   if kind == "MoonroboSimulationReviewPacket":
     return moonrobo_simulation_review_packet
   if kind == "MoonroboSimulationReviewDecision":
@@ -432,6 +442,7 @@ def workspace_files(
   moonrobo_gap_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_modeling: list[dict[str, Any]],
   moonrobo_remediation_margin_projection: dict[str, Any],
+  moonrobo_remediation_margin_refresh_modeling: list[dict[str, Any]],
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
@@ -498,6 +509,10 @@ def workspace_files(
     source_files.append(
       "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
     )
+  if moonrobo_remediation_margin_refresh_modeling:
+    source_files.append(
+      "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
+    )
   if moonrobo_simulation_review_packet:
     source_files.append(
       "output/moonrobo/first_trusted_square_simulation_review_packet.json",
@@ -546,6 +561,7 @@ def workspace_files(
       moonrobo_gap_modeling,
       moonrobo_remediation_margin_modeling,
       moonrobo_remediation_margin_projection,
+      moonrobo_remediation_margin_refresh_modeling,
       moonrobo_simulation_review_packet,
       moonrobo_simulation_review_decision,
       moonrobo_simulation_blocker_reduction,
@@ -614,6 +630,8 @@ def workspace_files(
     readme += "- Source MoonRobo remediation-margin modeling: `output/moonrobo/first_trusted_square_remediation_margin_modeling.json`\n"
   if moonrobo_remediation_margin_projection:
     readme += "- Source MoonRobo remediation-margin projection: `output/moonrobo/first_trusted_square_remediation_margin_projection.json`\n"
+  if moonrobo_remediation_margin_refresh_modeling:
+    readme += "- Source MoonRobo remediation-margin refresh modeling: `output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json`\n"
   if moonrobo_simulation_review_packet:
     readme += "- Source MoonRobo simulation review packet: `output/moonrobo/first_trusted_square_simulation_review_packet.json`\n"
   if moonrobo_simulation_review_decision:
@@ -720,6 +738,10 @@ def main() -> int:
     MOONROBO_REMEDIATION_MARGIN_PROJECTION_JSON,
     {},
   )
+  moonrobo_remediation_margin_refresh_modeling = load_optional_json(
+    MOONROBO_REMEDIATION_MARGIN_REFRESH_MODELING_JSON,
+    [],
+  )
   moonrobo_simulation_review_packet = load_optional_json(
     MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
     {},
@@ -754,6 +776,7 @@ def main() -> int:
     moonrobo_gap_modeling,
     moonrobo_remediation_margin_modeling,
     moonrobo_remediation_margin_projection,
+    moonrobo_remediation_margin_refresh_modeling,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,

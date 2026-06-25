@@ -1140,7 +1140,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-refresh-modeling-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin refresh modeling into MoonBook",
       outcome: "The refresh modeling pass becomes durable MoonBook evidence beside the refresh receipt it audits",
@@ -1153,7 +1153,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
         "scripts/check_moonbook_remediation_margin_refresh_modeling_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin refresh modeling pass with still-blocking terrain/horizon/energy refresh results, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh modeling pass with still-blocking terrain/horizon/energy refresh results, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-modeling-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh modeling in Rabbita",
+      outcome: "Operators can inspect the durable MoonRobo refresh modeling pass, still-blocking terrain/horizon/energy results, no-consume simulation status, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_modeling_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh modeling pass with AllRefreshesStillBlocking state, terrain/horizon/energy refresh result ids, no-consume simulation status, and HardwareDenied authority",
     },
   ]
 }

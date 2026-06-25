@@ -25,6 +25,7 @@
     "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
     "output/moonrobo/first_trusted_square_remediation_margin_modeling.json",
     "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+    "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
     "output/moonrobo/first_trusted_square_simulation_review_packet.json",
     "output/moonrobo/first_trusted_square_simulation_review_decision.json",
     "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json"
@@ -524,6 +525,15 @@
       "confidence": 0.7,
       "path": "moonrobo/first-trusted-square/remediation-margin-projection.json",
       "summary": "NoConsumeSimulationBlocked from AllMarginsStillBlocking with 3 still-blocking margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/remediation-margin-refresh-modeling",
+      "title": "MoonRobo remediation-margin refresh modeling pass for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboRemediationMarginRefreshModeling",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
+      "summary": "AllRefreshesStillBlocking with 3 still-blocking refreshes (terrain-northeast-stepout, illumination-northeast-stepout, energy-window), 0 refreshed, source receipt moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt, no-consume simulation simulation-blocked, and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
