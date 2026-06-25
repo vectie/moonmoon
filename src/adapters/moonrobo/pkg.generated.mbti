@@ -9,6 +9,8 @@ import {
 }
 
 // Values
+pub fn execution_state_label(MoonroboExecutionState) -> String
+
 pub fn first_trusted_square_handoffs() -> Array[MoonroboTaskHandoff]
 
 pub fn first_trusted_square_json() -> Json
@@ -32,6 +34,27 @@ pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTask
 // Errors
 
 // Types and methods
+pub(all) struct MoonroboExecutionEnvelope {
+  simulation_state : MoonroboExecutionState
+  replay_state : MoonroboExecutionState
+  hardware_state : MoonroboExecutionState
+  authority : String
+  simulation_packet_path : String
+  replay_source_path : String
+  hardware_denial_reason : String
+  blocking_preconditions : Array[String]
+  review_preconditions : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum MoonroboExecutionState {
+  SimulationReady
+  SimulationNeedsReview
+  SimulationBlocked
+  ReplayReady
+  ReplayNeedsReview
+  HardwareDenied
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct MoonroboTaskHandoff {
   handoff_id : String
   site_id : String
@@ -39,6 +62,7 @@ pub(all) struct MoonroboTaskHandoff {
   task_kind : String
   target_body : String
   decision : @mission.TraverseDecision
+  execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

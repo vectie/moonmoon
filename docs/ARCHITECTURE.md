@@ -249,8 +249,9 @@ dossiers.
 The current Moonrobo boundary is deliberately one-way: Moonmoon emits
 simulation precondition packets under `output/moonrobo/`, and MoonBook indexes
 those packets as evidence. A packet names the route candidate, target body, task
-kind, combined decision, and the route, illumination, energy, and corridor
-preconditions that must be cleared. It does not command hardware or imply
+kind, route/illumination/energy/corridor preconditions, a summary decision, and
+a `MoonroboExecutionEnvelope`. That envelope separates simulation readiness,
+replay readiness, and hardware denial. It does not command hardware or imply
 physical execution authority.
 
 The current MoonClaw boundary is also one-way: Moonmoon emits bounded modeling

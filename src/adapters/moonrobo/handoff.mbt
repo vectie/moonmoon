@@ -8,6 +8,29 @@ pub(all) struct RobotPrecondition {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) enum MoonroboExecutionState {
+  SimulationReady
+  SimulationNeedsReview
+  SimulationBlocked
+  ReplayReady
+  ReplayNeedsReview
+  HardwareDenied
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MoonroboExecutionEnvelope {
+  simulation_state : MoonroboExecutionState
+  replay_state : MoonroboExecutionState
+  hardware_state : MoonroboExecutionState
+  authority : String
+  simulation_packet_path : String
+  replay_source_path : String
+  hardware_denial_reason : String
+  blocking_preconditions : Array[String]
+  review_preconditions : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct MoonroboTaskHandoff {
   handoff_id : String
   site_id : @core.SiteId
@@ -15,6 +38,7 @@ pub(all) struct MoonroboTaskHandoff {
   task_kind : String
   target_body : String
   decision : @mission.TraverseDecision
+  execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -30,6 +54,18 @@ pub fn handoff_status_label(handoff : MoonroboTaskHandoff) -> String {
 }
 
 ///|
+pub fn execution_state_label(state : MoonroboExecutionState) -> String {
+  match state {
+    SimulationReady => "simulation-ready"
+    SimulationNeedsReview => "simulation-needs-review"
+    SimulationBlocked => "simulation-blocked"
+    ReplayReady => "replay-ready"
+    ReplayNeedsReview => "replay-needs-review"
+    HardwareDenied => "hardware-denied"
+  }
+}
+
+///|
 fn combine_decision(
   left : @mission.TraverseDecision,
   right : @mission.TraverseDecision,
@@ -42,6 +78,73 @@ fn combine_decision(
     @mission.TraverseDecision::Review
   } else {
     @mission.TraverseDecision::Allow
+  }
+}
+
+///|
+fn blocking_precondition_ids(
+  preconditions : Array[RobotPrecondition],
+) -> Array[String] {
+  let ids : Array[String] = []
+  for precondition in preconditions {
+    if precondition.decision == @mission.TraverseDecision::Block {
+      ids.push(precondition.precondition_id)
+    }
+  }
+  ids
+}
+
+///|
+fn review_precondition_ids(
+  preconditions : Array[RobotPrecondition],
+) -> Array[String] {
+  let ids : Array[String] = []
+  for precondition in preconditions {
+    if precondition.decision == @mission.TraverseDecision::Review {
+      ids.push(precondition.precondition_id)
+    }
+  }
+  ids
+}
+
+///|
+fn simulation_state(
+  decision : @mission.TraverseDecision,
+) -> MoonroboExecutionState {
+  match decision {
+    Allow => SimulationReady
+    Review => SimulationNeedsReview
+    Block => SimulationBlocked
+  }
+}
+
+///|
+fn replay_state(decision : @mission.TraverseDecision) -> MoonroboExecutionState {
+  match decision {
+    Allow => ReplayReady
+    Review => ReplayNeedsReview
+    Block => ReplayNeedsReview
+  }
+}
+
+///|
+fn execution_envelope(
+  route : @mission.RouteCandidate,
+  decision : @mission.TraverseDecision,
+  preconditions : Array[RobotPrecondition],
+) -> MoonroboExecutionEnvelope {
+  let blocking = blocking_precondition_ids(preconditions)
+  let review = review_precondition_ids(preconditions)
+  {
+    simulation_state: simulation_state(decision),
+    replay_state: replay_state(decision),
+    hardware_state: HardwareDenied,
+    authority: "moonmoon-safety-gate-only",
+    simulation_packet_path: "output/moonrobo/first_trusted_square_handoffs.json#\{route.route_id}",
+    replay_source_path: "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+    hardware_denial_reason: "MoonMoon never emits hardware commands; \{blocking.length()} blocking and \{review.length()} review preconditions must clear before any external execution authority can be requested.",
+    blocking_preconditions: blocking,
+    review_preconditions: review,
   }
 }
 
@@ -124,11 +227,12 @@ fn handoff_decision(
 ///|
 fn handoff_next_action(decision : @mission.TraverseDecision) -> String {
   match decision {
-    Allow => "Moonrobo simulation may consume this task precondition packet"
+    Allow =>
+      "Moonrobo simulation may consume this packet; hardware remains denied until an external execution authority is issued"
     Review =>
-      "operator must review Moonmoon preconditions before Moonrobo simulation"
+      "operator must review Moonmoon preconditions before simulation; replay remains review-only and hardware is denied"
     Block =>
-      "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
   }
 }
 
@@ -152,6 +256,7 @@ pub fn route_handoff(
     task_kind: "route-simulation-precondition",
     target_body: dossier.site.body,
     decision,
+    execution: execution_envelope(route, decision, preconditions),
     preconditions,
     next_action: handoff_next_action(decision),
   }
@@ -194,6 +299,11 @@ pub fn render_markdown(handoffs : Array[MoonroboTaskHandoff]) -> String {
     text += "  - route: \{handoff.route_id}\n"
     text += "  - decision: \{handoff_status_label(handoff)}\n"
     text += "  - task: \{handoff.task_kind}\n"
+    text += "  - simulation: \{execution_state_label(handoff.execution.simulation_state)}\n"
+    text += "  - replay: \{execution_state_label(handoff.execution.replay_state)}\n"
+    text += "  - hardware: \{execution_state_label(handoff.execution.hardware_state)}\n"
+    text += "  - authority: \{handoff.execution.authority}\n"
+    text += "  - hardware denial: \{handoff.execution.hardware_denial_reason}\n"
     text += "  - next action: \{handoff.next_action}\n"
     text += "  - preconditions:\n"
     for precondition in handoff.preconditions {

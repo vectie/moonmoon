@@ -282,7 +282,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     {
       task_id: "promote-best-9x9-route-fixture",
       priority: if route_promoted {
-        70
+        45
       } else {
         100
       },
@@ -310,7 +310,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     {
       task_id: "replace-missing-power-window",
       priority: if dossier.power_window_evidence.has_time_window_ephemeris {
-        65
+        40
       } else {
         95
       },
@@ -332,7 +332,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-layer-view-model",
-      priority: 55,
+      priority: 35,
       lane: ViewerLane,
       title: "Build the renderer-neutral lunar layer view model before UI decoration",
       outcome: "Rabbita can render elevation, hazard, route, and evidence state from one typed model",
@@ -344,15 +344,27 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-simulation-contract-v2",
-      priority: 80,
+      priority: 50,
       lane: RobotLane,
       title: "Tighten MoonRobo packet semantics around simulation, replay, and hardware denial",
       outcome: "physical execution stays impossible until route, power, and review gates are all accepted",
       depends_on: ["src/adapters/moonrobo/handoff.mbt"],
       evidence: [
-        "MoonRobo handoff JSON", "energy assessment", "route candidate",
+        "src/adapters/moonrobo/handoff.mbt", "output/moonrobo/first_trusted_square_handoffs.json",
       ],
-      done_when: "each packet distinguishes simulation-ready, replay-ready, and hardware-denied states",
+      done_when: "done: each packet distinguishes simulation-ready, replay-ready, and hardware-denied states",
+    },
+    {
+      task_id: "moonbook-review-transition-log",
+      priority: 75,
+      lane: SuiteLane,
+      title: "Add append-only operator review transitions for MoonBook evidence",
+      outcome: "MoonBook can record human review movement without mutating MoonMoon source facts",
+      depends_on: ["src/adapters/moonbook/export.mbt"],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/review_queue.json", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      done_when: "review transitions include reviewer identity, timestamp policy, accepted/rejected state changes, and immutable source evidence references",
     },
   ]
 }

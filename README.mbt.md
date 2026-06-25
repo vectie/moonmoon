@@ -140,11 +140,11 @@ viewer or robot integration grows around it. The kernel is the product spine:
 it names the model layers, evidence gates, MoonSuite boundaries, and highest
 priority build queue from the current executable site dossier.
 
-The current top priority is deliberately large rather than cosmetic: tighten
-MoonRobo packet semantics so simulation, replay, and hardware denial are
-separate states. The terrain, power, and renderer-neutral UI evidence now exist;
-the next product gap is making the robot-facing contract impossible to
-misinterpret.
+The current top priority is deliberately large rather than cosmetic: add
+append-only MoonBook review transitions with reviewer identity and immutable
+evidence references. Terrain, power, renderer-neutral UI evidence, and
+robot-facing simulation/replay/hardware packet semantics now exist; the next
+product gap is durable human review movement.
 
 ## Documents
 

@@ -4,7 +4,12 @@
   - route: direct-lola-window
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-direct-lola-window: block - do not traverse directly; use this as the baseline hazard case
     - illumination-direct-lola-window: block - widen local horizon and terrain-shadow evidence before route simulation
@@ -15,7 +20,12 @@
   - route: west-contour-detour
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-west-contour-detour: block - widen the west corridor extraction before simulation
     - illumination-west-contour-detour: block - widen local horizon and terrain-shadow evidence before route simulation
@@ -26,7 +36,12 @@
   - route: north-rim-stepout
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-north-rim-stepout: block - widen the north corridor extraction and add illumination review
     - illumination-north-rim-stepout: block - widen local horizon and terrain-shadow evidence before route simulation
@@ -37,7 +52,12 @@
   - route: southwest-bypass
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-southwest-bypass: block - continue corridor search beyond the southwest bypass before simulation
     - illumination-southwest-bypass: block - widen local horizon and terrain-shadow evidence before route simulation
@@ -48,7 +68,12 @@
   - route: south-stepout
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-south-stepout: block - continue south corridor extraction and add ephemeris-backed illumination review
     - illumination-south-stepout: block - widen local horizon and terrain-shadow evidence before route simulation
@@ -59,7 +84,12 @@
   - route: northeast-stepout
   - decision: block
   - task: route-simulation-precondition
-  - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - simulation: simulation-blocked
+  - replay: replay-needs-review
+  - hardware: hardware-denied
+  - authority: moonmoon-safety-gate-only
+  - hardware denial: MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.
+  - next action: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-northeast-stepout: block - review the promoted route fixture and attach ephemeris-backed illumination before simulation
     - illumination-northeast-stepout: block - widen local horizon and terrain-shadow evidence before route simulation

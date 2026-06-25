@@ -311,8 +311,11 @@ Current implementation status:
   `RobotPrecondition` contracts.
 - The first trusted square exports one handoff per route candidate and a
   primary handoff selected from the best measured corridor route.
-- Every handoff currently blocks, because terrain, illumination, corridor, and
-  energy preconditions are not safe for simulation.
+- Every handoff now carries a `MoonroboExecutionEnvelope` that separates
+  simulation readiness, replay readiness, and hardware denial. Current packets
+  are `simulation-blocked`, `replay-needs-review`, and `hardware-denied`
+  because terrain, illumination, corridor, and energy preconditions are not
+  safe for simulation.
 - `scripts/build_moonmoon_dossier.sh` writes
   `output/moonrobo/first_trusted_square_handoffs.md` and `.json`.
 

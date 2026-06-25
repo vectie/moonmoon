@@ -24,6 +24,20 @@ test "first trusted square exports Moonrobo simulation preconditions" {
   )
   assert_eq(@moonrobo.handoff_status_label(handoffs[0]), "block")
   assert_true(handoffs[0].next_action.contains("must not simulate"))
+  assert_true(
+    handoffs[0].execution.simulation_state
+    is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(
+    handoffs[0].execution.replay_state
+    is @moonrobo.MoonroboExecutionState::ReplayNeedsReview,
+  )
+  assert_true(
+    handoffs[0].execution.hardware_state
+    is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(handoffs[0].execution.authority, "moonmoon-safety-gate-only")
+  assert_true(handoffs[0].execution.blocking_preconditions.length() >= 3)
 }
 
 ///|
@@ -52,6 +66,37 @@ test "first trusted square primary Moonrobo handoff follows promoted best corrid
       precondition.reason.contains("northeast-stepout")
     }),
   )
+  assert_true(
+    handoff.execution.blocking_preconditions.contains("energy-window"),
+  )
+  assert_true(
+    handoff.execution.blocking_preconditions.contains("route-northeast-stepout"),
+  )
+  assert_true(
+    handoff.execution.hardware_denial_reason.contains("hardware commands"),
+  )
+}
+
+///|
+test "Moonrobo execution state labels distinguish simulation replay and hardware" {
+  assert_eq(
+    @moonrobo.execution_state_label(
+      @moonrobo.MoonroboExecutionState::SimulationReady,
+    ),
+    "simulation-ready",
+  )
+  assert_eq(
+    @moonrobo.execution_state_label(
+      @moonrobo.MoonroboExecutionState::ReplayReady,
+    ),
+    "replay-ready",
+  )
+  assert_eq(
+    @moonrobo.execution_state_label(
+      @moonrobo.MoonroboExecutionState::HardwareDenied,
+    ),
+    "hardware-denied",
+  )
 }
 
 ///|
@@ -64,6 +109,9 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(markdown.contains("source status ready"))
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("must not simulate"))
+  assert_true(markdown.contains("simulation-blocked"))
+  assert_true(markdown.contains("replay-needs-review"))
+  assert_true(markdown.contains("hardware-denied"))
   let json = @moonrobo.first_trusted_square_json().stringify(indent=2)
   assert_true(json.contains("\"task_kind\": \"route-simulation-precondition\""))
   assert_true(json.contains("\"route_id\": \"southwest-bypass\""))
@@ -75,5 +123,9 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
     ),
   )
   assert_true(json.contains("\"precondition_id\": \"energy-window\""))
+  assert_true(json.contains("\"simulation_state\": \"SimulationBlocked\""))
+  assert_true(json.contains("\"replay_state\": \"ReplayNeedsReview\""))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+  assert_true(json.contains("\"authority\": \"moonmoon-safety-gate-only\""))
   assert_true(json.contains("\"Block\""))
 }

@@ -166,7 +166,7 @@
     {
       "item_id": "moonrobo-handoff",
       "severity": "high",
-      "reason": "Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared",
+      "reason": "Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared",
       "owner": "moonrobo",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonrobo-handoff-request-evidence"

@@ -370,7 +370,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/handoffs.json",
-      "summary": "block primary route northeast-stepout: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "summary": "block primary route northeast-stepout: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
@@ -591,7 +591,7 @@
     {
       "item_id": "moonrobo-handoff",
       "severity": "high",
-      "reason": "Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared",
+      "reason": "Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared",
       "owner": "moonrobo",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonrobo-handoff-request-evidence"
@@ -796,7 +796,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
     },
     {
       "transition_id": "review-moonclaw-proposals-request-evidence",

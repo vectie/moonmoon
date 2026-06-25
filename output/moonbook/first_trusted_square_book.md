@@ -263,7 +263,7 @@
 - illumination-northeast-stepout [high/needs-evidence] Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation -> power-thermal-review
 - corridor-scan-best-window [high/needs-evidence] best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked -> mission-review
 - energy-window [high/needs-evidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
-- moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared -> moonrobo
+- moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low/open] Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor. -> moonclaw
@@ -333,7 +333,7 @@
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation
 - review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
   - reviewer: moonbook-policy-v1
-  - rationale: kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
 - review-moonclaw-proposals-request-evidence: request-evidence moonclaw-proposals -> needs-evidence
   - reviewer: moonbook-policy-v1
   - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable

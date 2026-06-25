@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.6,
     "path": "moonrobo/first-trusted-square/handoffs.json",
-    "summary": "block primary route northeast-stepout: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+    "summary": "block primary route northeast-stepout: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
   },
   "payload": {
     "primary_handoff": {
@@ -16,6 +16,22 @@
       "task_kind": "route-simulation-precondition",
       "target_body": "Moon",
       "decision": "Block",
+      "execution": {
+        "simulation_state": "SimulationBlocked",
+        "replay_state": "ReplayNeedsReview",
+        "hardware_state": "HardwareDenied",
+        "authority": "moonmoon-safety-gate-only",
+        "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#northeast-stepout",
+        "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+        "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+        "blocking_preconditions": [
+          "route-northeast-stepout",
+          "illumination-northeast-stepout",
+          "energy-window",
+          "corridor-scan-best-window"
+        ],
+        "review_preconditions": []
+      },
       "preconditions": [
         {
           "precondition_id": "route-northeast-stepout",
@@ -53,7 +69,7 @@
           "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
         }
       ],
-      "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
     },
     "handoffs": [
       {
@@ -63,6 +79,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#direct-lola-window",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-direct-lola-window",
+            "illumination-direct-lola-window",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-direct-lola-window",
@@ -100,7 +132,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       },
       {
         "handoff_id": "moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions",
@@ -109,6 +141,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#west-contour-detour",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-west-contour-detour",
+            "illumination-west-contour-detour",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-west-contour-detour",
@@ -146,7 +194,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       },
       {
         "handoff_id": "moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions",
@@ -155,6 +203,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#north-rim-stepout",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-north-rim-stepout",
+            "illumination-north-rim-stepout",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-north-rim-stepout",
@@ -192,7 +256,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       },
       {
         "handoff_id": "moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions",
@@ -201,6 +265,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#southwest-bypass",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-southwest-bypass",
+            "illumination-southwest-bypass",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-southwest-bypass",
@@ -238,7 +318,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       },
       {
         "handoff_id": "moonrobo/first-trusted-square/south-stepout/simulation-preconditions",
@@ -247,6 +327,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#south-stepout",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-south-stepout",
+            "illumination-south-stepout",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-south-stepout",
@@ -284,7 +380,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       },
       {
         "handoff_id": "moonrobo/first-trusted-square/northeast-stepout/simulation-preconditions",
@@ -293,6 +389,22 @@
         "task_kind": "route-simulation-precondition",
         "target_body": "Moon",
         "decision": "Block",
+        "execution": {
+          "simulation_state": "SimulationBlocked",
+          "replay_state": "ReplayNeedsReview",
+          "hardware_state": "HardwareDenied",
+          "authority": "moonmoon-safety-gate-only",
+          "simulation_packet_path": "output/moonrobo/first_trusted_square_handoffs.json#northeast-stepout",
+          "replay_source_path": "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/handoffs.json",
+          "hardware_denial_reason": "MoonMoon never emits hardware commands; 4 blocking and 0 review preconditions must clear before any external execution authority can be requested.",
+          "blocking_preconditions": [
+            "route-northeast-stepout",
+            "illumination-northeast-stepout",
+            "energy-window",
+            "corridor-scan-best-window"
+          ],
+          "review_preconditions": []
+        },
         "preconditions": [
           {
             "precondition_id": "route-northeast-stepout",
@@ -330,7 +442,7 @@
             "reason": "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
           }
         ],
-        "next_action": "Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+        "next_action": "Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
       }
     ]
   },

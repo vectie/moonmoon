@@ -169,7 +169,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
     },
     {
       "transition_id": "review-moonclaw-proposals-request-evidence",
