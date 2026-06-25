@@ -852,7 +852,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-simulation-blocker-reduction-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface simulation blocker reduction in Rabbita",
       outcome: "Operators can see the closed non-margin blockers, active robot-simulation blocker, and remaining remediation margins from the review surface",
@@ -863,7 +863,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_blocker_reduction_surface.py",
       ],
-      done_when: "Rabbita renders blocker-reduction evidence with closed count 2, active count 1, active robot-simulation blocker, and HardwareDenied authority",
+      done_when: "done: Rabbita renders blocker-reduction evidence with closed count 2, active count 1, active robot-simulation blocker, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-task-packet",
+      priority: 70,
+      lane: MissionLane,
+      title: "Create a MoonClaw task packet for remaining remediation margins",
+      outcome: "Terrain, local-horizon, and energy blockers become one executable evidence packet for collecting or modeling the next route-clearance inputs",
+      depends_on: [
+        "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "output/mission/first_trusted_square_northeast_stepout_horizon.json", "output/mission/first_trusted_square_energy_remediation.json",
+        "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_task.json", "scripts/check_moonclaw_remediation_margin_task.py",
+      ],
+      done_when: "MoonClaw has one task packet that preserves all 3 active margin blockers, ranks terrain/horizon/energy work, and keeps hardware authority denied",
     },
   ]
 }

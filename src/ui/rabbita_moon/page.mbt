@@ -483,15 +483,15 @@ fn app_script() -> String {
     #|  ));
     #|}
     #|
-    #|function renderSimulationReviewPacket() {
-    #|  const entry = entryById('moonrobo/first-trusted-square/simulation-review-packet');
-    #|  const target = document.getElementById('simulation-review-packet');
+    #|function renderMoonBookEntry(targetId, entryId, rowClass) {
+    #|  const entry = entryById(entryId);
+    #|  const target = document.getElementById(targetId);
     #|  if (!entry) {
     #|    target.replaceChildren();
     #|    return;
     #|  }
     #|  target.replaceChildren(el('div', {
-    #|    className: 'review-row simulation-packet-row',
+    #|    className: `review-row ${rowClass}`,
     #|    'data-entry-id': entry.entry_id
     #|  }, [
     #|    el('b', { text: `${entry.title} - ${entry.kind}` }),
@@ -500,21 +500,28 @@ fn app_script() -> String {
     #|  ]));
     #|}
     #|
+    #|function renderSimulationReviewPacket() {
+    #|  renderMoonBookEntry(
+    #|    'simulation-review-packet',
+    #|    'moonrobo/first-trusted-square/simulation-review-packet',
+    #|    'simulation-packet-row'
+    #|  );
+    #|}
+    #|
     #|function renderSimulationReviewDecision() {
-    #|  const entry = entryById('moonrobo/first-trusted-square/simulation-review-decision');
-    #|  const target = document.getElementById('simulation-review-decision');
-    #|  if (!entry) {
-    #|    target.replaceChildren();
-    #|    return;
-    #|  }
-    #|  target.replaceChildren(el('div', {
-    #|    className: 'review-row simulation-decision-row',
-    #|    'data-entry-id': entry.entry_id
-    #|  }, [
-    #|    el('b', { text: `${entry.title} - ${entry.kind}` }),
-    #|    el('span', { text: entry.summary }),
-    #|    el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
-    #|  ]));
+    #|  renderMoonBookEntry(
+    #|    'simulation-review-decision',
+    #|    'moonrobo/first-trusted-square/simulation-review-decision',
+    #|    'simulation-decision-row'
+    #|  );
+    #|}
+    #|
+    #|function renderSimulationBlockerReduction() {
+    #|  renderMoonBookEntry(
+    #|    'simulation-blocker-reduction',
+    #|    'moonrobo/first-trusted-square/simulation-blocker-reduction',
+    #|    'simulation-blocker-reduction-row'
+    #|  );
     #|}
     #|
     #|function transitionDecisionStatus(decision) {
@@ -663,6 +670,7 @@ fn app_script() -> String {
     #|  renderRemediationEvidence();
     #|  renderSimulationReviewPacket();
     #|  renderSimulationReviewDecision();
+    #|  renderSimulationBlockerReduction();
     #|  renderClearanceReview();
     #|}
     #|
@@ -750,6 +758,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Simulation Review Decision</h2>
     $|      <div id="simulation-review-decision" class="review-list" aria-label="Selected route simulation review closeout decision with no-consume status"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Simulation Blocker Reduction</h2>
+    $|      <div id="simulation-blocker-reduction" class="review-list" aria-label="Selected route simulation blocker reduction with hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>
