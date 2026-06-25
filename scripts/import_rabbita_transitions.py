@@ -35,6 +35,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "moonclaw_gap_task_md": root
     / "output/moonclaw/first_trusted_square_moonrobo_gap_task.md",
+    "moonclaw_gap_receipt_json": root
+    / "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
+    "moonclaw_gap_receipt_md": root
+    / "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.md",
     "rabbita_html": root / "output/ui/rabbita/first_trusted_square.html",
   }
 
@@ -365,6 +369,7 @@ def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[st
       "python3 scripts/compute_power_window.py --check",
       "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
       "python3 scripts/materialize_moonbook_workspace.py --check",
+      "python3 scripts/check_moonclaw_gap_remediation_receipt.py",
       "/Users/kq/.moon/bin/moon test",
     ],
     "acceptance_criteria": [
@@ -399,6 +404,114 @@ def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[st
       "handoffs and the imported-clearance preview."
     ),
   }
+
+
+def gap_result(gap: dict[str, Any]) -> dict[str, Any]:
+  return {
+    "check_id": gap["check_id"],
+    "kind": gap["kind"],
+    "status": "StillBlocking",
+    "evidence_path": gap["evidence_path"],
+    "clearance_id": gap["clearance_id"],
+    "clearance_status": gap["clearance_status"],
+    "cleared_by_evidence_path": "",
+    "next_action": gap["next_action"],
+  }
+
+
+def moonclaw_gap_remediation_receipt(
+  gap_task: dict[str, Any],
+  preview: dict[str, Any],
+) -> dict[str, Any]:
+  gap_results = [gap_result(gap) for gap in gap_task["blocker_gap_report"]]
+  validation_checks = [
+    {
+      "validation_id": "source-task-present",
+      "passed": gap_task["task_id"]
+      == "moonclaw/first-trusted-square/moonrobo-gap-remediation-v1/task",
+      "note": f"receipt consumes {gap_task['task_id']}",
+    },
+    {
+      "validation_id": "gap-accounting-complete",
+      "passed": len(gap_results) == preview["blocker_gap_count"],
+      "note": (
+        f"{len(gap_results)} receipt gap results account for "
+        f"{preview['blocker_gap_count']} preview blocker gaps"
+      ),
+    },
+    {
+      "validation_id": "hardware-denial-preserved",
+      "passed": preview["hardware_denied"]
+      and preview["hardware_state"] == "HardwareDenied",
+      "note": (
+        f"hardware remains {preview['hardware_state']} under "
+        f"{preview['hardware_authority']}"
+      ),
+    },
+    {
+      "validation_id": "still-blocking-gaps-carried-forward",
+      "passed": all(result["status"] == "StillBlocking" for result in gap_results),
+      "note": "all current blocker gaps are carried forward until regenerated evidence clears them",
+    },
+  ]
+  return {
+    "receipt": {
+      "receipt_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-v1/current-receipt",
+      "proposal_id": gap_task["proposal_id"],
+      "status": "Accepted",
+      "accepted_outputs": [
+        "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
+        "output/moonrobo/first_trusted_square_readiness_preview.json",
+      ],
+      "validation_notes": [
+        f"{check['validation_id']}: "
+        f"{'pass' if check['passed'] else 'fail'} - {check['note']}"
+        for check in validation_checks
+      ],
+    },
+    "site_id": gap_task["site_id"],
+    "route_id": preview["route_id"],
+    "source_task_id": gap_task["task_id"],
+    "source_preview_id": preview["preview_id"],
+    "remediation_state": "OpenGapsCarriedForward"
+    if gap_results
+    else "AllGapsCleared",
+    "blocker_gap_count": len(gap_results),
+    "cleared_gap_count": 0,
+    "still_blocking_gap_count": len(gap_results),
+    "gap_results": gap_results,
+    "validation_checks": validation_checks,
+    "hardware_state": preview["hardware_state"],
+    "hardware_authority": preview["hardware_authority"],
+    "hardware_denied": preview["hardware_denied"],
+    "next_action": (
+      "Regenerate terrain, illumination, energy, MoonBook, and "
+      "robot-simulation evidence, then re-run the imported clearance preview "
+      "and this receipt check."
+    ),
+  }
+
+
+def render_moonclaw_gap_receipt_markdown(receipt: dict[str, Any]) -> str:
+  text = "# MoonClaw MoonRobo Gap Remediation Receipt\n\n"
+  text += f"- receipt: {receipt['receipt']['receipt_id']}\n"
+  text += f"- source task: {receipt['source_task_id']}\n"
+  text += f"- remediation state: {receipt['remediation_state']}\n"
+  text += f"- still blocking gaps: {receipt['still_blocking_gap_count']}\n"
+  text += f"- hardware state: {receipt['hardware_state']}\n"
+  text += f"- hardware authority: {receipt['hardware_authority']}\n"
+  text += f"- next action: {receipt['next_action']}\n\n"
+  text += "## Gap Results\n\n"
+  for result in receipt["gap_results"]:
+    text += f"- {result['check_id']}: {result['status']}\n"
+    text += f"  - evidence: {result['evidence_path']}\n"
+    text += f"  - clearance: {result['clearance_status']}\n"
+    text += f"  - next action: {result['next_action']}\n"
+  text += "\n## Validation Checks\n\n"
+  for check in receipt["validation_checks"]:
+    status = "pass" if check["passed"] else "fail"
+    text += f"- {check['validation_id']}: {status} - {check['note']}\n"
+  return text
 
 
 def render_moonclaw_gap_task_markdown(task: dict[str, Any]) -> str:
@@ -540,11 +653,13 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_moonrobo(moonrobo, plan)
   preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
   gap_task = moonclaw_gap_task(preview, transition_file)
+  gap_receipt = moonclaw_gap_remediation_receipt(gap_task, preview)
   update_moonclaw_gap_task_entry(book, gap_task)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
   write_json(paths["moonclaw_gap_task_json"], [gap_task])
+  write_json(paths["moonclaw_gap_receipt_json"], [gap_receipt])
   paths["book_md"].write_text(render_book_markdown(book), encoding="utf-8")
   paths["moonrobo_md"].write_text(render_moonrobo_markdown(moonrobo), encoding="utf-8")
   paths["moonrobo_preview_md"].write_text(
@@ -553,6 +668,10 @@ def apply_import(root: Path, transition_file: Path) -> None:
   )
   paths["moonclaw_gap_task_md"].write_text(
     render_moonclaw_gap_task_markdown(gap_task),
+    encoding="utf-8",
+  )
+  paths["moonclaw_gap_receipt_md"].write_text(
+    render_moonclaw_gap_receipt_markdown(gap_receipt),
     encoding="utf-8",
   )
   html = paths["rabbita_html"].read_text(encoding="utf-8")

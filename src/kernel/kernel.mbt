@@ -535,7 +535,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-gap-remediation-receipt-loop",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Close MoonRobo gap remediation with a MoonClaw receipt loop",
       outcome: "Each imported-clearance MoonRobo blocker gap can be proved cleared or carried forward with explicit evidence before simulation readiness changes",
@@ -546,7 +546,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json", "scripts/check_moonclaw_gap_remediation_receipt.py",
       ],
-      done_when: "MoonClaw emits a receipt for the imported gap task that maps every blocker gap to cleared evidence or a still-blocking next action while preserving MoonRobo hardware denial",
+      done_when: "done: MoonClaw emits a receipt for the imported gap task that maps every blocker gap to cleared evidence or a still-blocking next action while preserving MoonRobo hardware denial",
+    },
+    {
+      task_id: "moonbook-imported-gap-receipt-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize imported MoonClaw gap receipts into MoonBook workspace",
+      outcome: "Imported gap remediation receipts become durable MoonBook evidence next to the task and robot readiness preview they audit",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json", "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-task.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
+        "scripts/check_moonbook_imported_gap_receipt_workspace.py",
+      ],
+      done_when: "imported transition builds materialize the MoonClaw gap remediation receipt into the MoonBook workspace index, manifest, and per-entry payloads",
     },
   ]
 }

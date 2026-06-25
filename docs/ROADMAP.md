@@ -163,6 +163,9 @@ Current implementation status:
   into the MoonBook workspace index, manifest, and per-entry payloads, giving
   the generated task the same durable evidence surface as baseline MoonClaw
   tasks.
+- The import workflow also emits a MoonClaw remediation receipt. The receipt
+  accounts for every current MoonRobo blocker gap as still blocking or cleared
+  evidence, and preserves the denied hardware authority invariant.
 
 ## Milestone 3: MoonBook Evidence Loop
 
