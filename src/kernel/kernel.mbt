@@ -1010,7 +1010,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-projection-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin projection in Rabbita",
       outcome: "Operators can inspect MoonRobo no-consume simulation status, still-blocking margin ids, and HardwareDenied authority from the Rabbita review surface",
@@ -1021,7 +1021,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_projection_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin projection with NoConsumeSimulationBlocked status, AllMarginsStillBlocking source state, terrain/horizon/energy blockers, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin projection with NoConsumeSimulationBlocked status, AllMarginsStillBlocking source state, terrain/horizon/energy blockers, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-refresh-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Issue a refresh task from the no-consume remediation projection",
+      outcome: "MoonClaw gets a new bounded task packet that targets the terrain, horizon, and energy evidence refreshes required before MoonRobo simulation can consume anything",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
+        "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+        "src/adapters/moonclaw",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+        "scripts/check_moonclaw_remediation_margin_refresh_task.py",
+      ],
+      done_when: "MoonClaw emits a refresh task that consumes the no-consume projection, ranks terrain/horizon/energy evidence refreshes, and preserves HardwareDenied authority",
     },
   ]
 }

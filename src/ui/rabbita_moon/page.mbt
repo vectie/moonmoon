@@ -223,6 +223,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 48%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-projection-row {
+    #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
     #|.decision-group {
     #|  display: grid;
     #|  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -560,6 +564,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginProjection() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-projection',
+    #|    'moonrobo/first-trusted-square/remediation-margin-projection',
+    #|    'remediation-margin-projection-row'
+    #|  );
+    #|}
+    #|
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
@@ -710,6 +722,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginTask();
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
+    #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
     #|}
     #|
@@ -813,6 +826,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Modeling</h2>
     $|      <div id="remediation-margin-modeling" class="review-list" aria-label="MoonRobo remediation margin modeling pass with still-blocking margin results and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Projection</h2>
+    $|      <div id="remediation-margin-projection" class="review-list" aria-label="MoonRobo remediation margin projection with no-consume simulation status and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>
