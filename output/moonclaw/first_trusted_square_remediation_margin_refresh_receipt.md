@@ -1,0 +1,48 @@
+# MoonClaw Remediation Margin Refresh Receipts
+
+- receipt: moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt
+  - proposal: moonrobo/first-trusted-square/remediation-margin-v1/projection
+  - status: accepted
+  - route: northeast-stepout
+  - source task: moonclaw/first-trusted-square/remediation-margin-v1/refresh-task
+  - source projection: moonrobo/first-trusted-square/remediation-margin-v1/projection
+  - state: RefreshesCarriedForward
+  - refresh actions: 3
+  - refreshed: 0
+  - still blocking: 3
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - next action: Execute the ranked terrain, local-horizon, and energy refresh commands, rebuild the dossier, and re-run the MoonRobo remediation-margin projection before simulation consumption can change.
+  - ranked margins:
+    - terrain-northeast-stepout
+    - illumination-northeast-stepout
+    - energy-window
+  - validation:
+    - source-task-present: pass - receipt consumes moonclaw/first-trusted-square/remediation-margin-v1/refresh-task
+    - projection-source-present: pass - source projection moonrobo/first-trusted-square/remediation-margin-v1/projection remains NoConsumeSimulationBlocked with may-consume=false
+    - ranked-refresh-accounting-complete: pass - 3 receipt refresh results account for 3 ranked actions
+    - result-paths-present: pass - every refresh result carries projection, target, command, check, and evidence paths
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - refreshes-carried-forward: pass - all current refresh actions are carried forward until refreshed evidence clears them
+  - refresh results:
+    - 1. refresh-terrain-northeast-stepout: terrain-northeast-stepout - RefreshStillBlocking
+      - target: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+      - command: python3 scripts/generate_selected_route_terrain_remediation.py --check
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+      - current: refresh requested; refreshed evidence has not yet cleared this remediation margin
+      - next action: Refresh selected-route terrain evidence first because grade, roughness, and blocking-edge margins feed every downstream route-consume decision for northeast-stepout.
+    - 2. refresh-illumination-northeast-stepout: illumination-northeast-stepout - RefreshStillBlocking
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+      - current: refresh requested; refreshed evidence has not yet cleared this remediation margin
+      - next action: Refresh local-horizon evidence for northeast-stepout after terrain so illumination keeps using bounded terrain-shadow geometry before simulation consumption changes.
+    - 3. refresh-energy-window: energy-window - RefreshStillBlocking
+      - target: output/mission/first_trusted_square_energy_remediation.json
+      - evidence: output/mission/first_trusted_square_energy_remediation.json
+      - command: python3 scripts/check_energy_margin_remediation.py
+      - check: python3 scripts/check_energy_margin_remediation.py
+      - current: refresh requested; refreshed evidence has not yet cleared this remediation margin
+      - next action: Refresh bounded energy evidence for northeast-stepout after terrain and horizon because route demand and sunlit-window margins depend on those constraints.

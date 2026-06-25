@@ -1074,7 +1074,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-refresh-receipt-loop",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Close remediation-margin refresh task with a MoonClaw receipt",
       outcome: "Each projection-driven terrain, horizon, and energy refresh action can be proved executed or carried forward before MoonRobo remediation modeling changes",
@@ -1087,7 +1087,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
         "scripts/check_moonclaw_remediation_margin_refresh_receipt.py",
       ],
-      done_when: "MoonClaw emits a remediation-margin refresh receipt that maps each ranked terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
+      done_when: "done: MoonClaw emits a remediation-margin refresh receipt that maps each ranked terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-receipt-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh receipt into MoonBook",
+      outcome: "The projection-driven MoonClaw refresh receipt becomes durable workspace evidence before Rabbita or downstream modeling loops inspect it",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
+        "scripts/check_moonbook_remediation_margin_refresh_receipt_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin refresh receipt with terrain/horizon/energy result accounting and HardwareDenied authority",
     },
   ]
 }

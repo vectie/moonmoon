@@ -241,3 +241,100 @@ test "MoonClaw remediation margin refresh renderers expose no-consume task" {
   assert_true(json.contains("\"may_consume_simulation\": false"))
   assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
 }
+
+///|
+test "first trusted square remediation margin refresh receipt carries ranked refreshes forward" {
+  let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_receipt()
+  assert_eq(
+    receipt.receipt.receipt_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-receipt",
+  )
+  assert_eq(
+    receipt.source_task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+  )
+  assert_eq(
+    receipt.source_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+  )
+  assert_eq(receipt.route_id, "northeast-stepout")
+  assert_true(
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
+  )
+  assert_true(
+    receipt.refresh_state ==
+    @moonclaw.MoonClawRemediationMarginRefreshState::RefreshesCarriedForward,
+  )
+  assert_eq(receipt.refresh_action_count, 3)
+  assert_eq(receipt.refreshed_count, 0)
+  assert_eq(receipt.still_blocking_count, 3)
+  assert_eq(receipt.ranked_margin_ids[0], "terrain-northeast-stepout")
+  assert_eq(receipt.ranked_margin_ids[1], "illumination-northeast-stepout")
+  assert_eq(receipt.ranked_margin_ids[2], "energy-window")
+  assert_true(
+    receipt.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(receipt.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(receipt.hardware_denied)
+  assert_eq(receipt.refresh_results.length(), 3)
+  assert_true(
+    receipt.refresh_results.all(fn(result) {
+      result.status ==
+      @moonclaw.MoonClawRemediationMarginRefreshResultStatus::RefreshStillBlocking &&
+      result.target_artifact_path != "" &&
+      result.command != "" &&
+      result.acceptance_check != ""
+    }),
+  )
+  assert_true(
+    receipt.refresh_results.any(fn(result) {
+      result.rank == 1 &&
+      result.margin_id == "terrain-northeast-stepout" &&
+      result.command.contains("generate_selected_route_terrain_remediation.py")
+    }),
+  )
+  assert_true(
+    receipt.refresh_results.any(fn(result) {
+      result.rank == 2 &&
+      result.margin_id == "illumination-northeast-stepout" &&
+      result.acceptance_check.contains("check_selected_route_horizon_model.py")
+    }),
+  )
+  assert_true(
+    receipt.refresh_results.any(fn(result) {
+      result.rank == 3 &&
+      result.margin_id == "energy-window" &&
+      result.evidence_path.contains(
+        "first_trusted_square_energy_remediation.json",
+      )
+    }),
+  )
+  assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    receipt.receipt.validation_notes.any(fn(note) {
+      note.contains("hardware-denial-preserved: pass")
+    }),
+  )
+}
+
+///|
+test "MoonClaw remediation margin refresh receipt renderers expose state and authority" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_refresh_receipts_markdown()
+  assert_true(markdown.contains("MoonClaw Remediation Margin Refresh Receipts"))
+  assert_true(markdown.contains("RefreshesCarriedForward"))
+  assert_true(markdown.contains("still blocking: 3"))
+  assert_true(markdown.contains("refresh-terrain-northeast-stepout"))
+  assert_true(markdown.contains("refresh-illumination-northeast-stepout"))
+  assert_true(markdown.contains("refresh-energy-window"))
+  assert_true(markdown.contains("NoConsumeSimulationBlocked"))
+  assert_true(
+    markdown.contains("hardware authority: moonmoon-safety-gate-only"),
+  )
+  let json = @moonclaw.first_trusted_square_remediation_margin_refresh_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"refresh_state\": \"RefreshesCarriedForward\""))
+  assert_true(json.contains("\"still_blocking_count\": 3"))
+  assert_true(json.contains("\"status\": \"RefreshStillBlocking\""))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}
