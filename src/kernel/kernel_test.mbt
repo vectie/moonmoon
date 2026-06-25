@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "moonclaw-regenerated-receipt-readiness-fresh-evidence-action-receipts",
+    "moonbook-regenerated-receipt-readiness-fresh-evidence-action-receipts-workspace",
   )
 }
 
@@ -317,6 +317,11 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(
     markdown.contains(
       "moonclaw-regenerated-receipt-readiness-fresh-evidence-action-receipts",
+    ),
+  )
+  assert_true(
+    markdown.contains(
+      "moonbook-regenerated-receipt-readiness-fresh-evidence-action-receipts-workspace",
     ),
   )
   assert_true(markdown.contains("regenerated receipt readiness"))
