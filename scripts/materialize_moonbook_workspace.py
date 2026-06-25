@@ -24,6 +24,9 @@ MOONCLAW_CORRIDOR_TASKS_JSON = (
 MOONCLAW_GAP_TASK_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json"
 )
+MOONCLAW_GAP_RECEIPT_JSON = (
+  ROOT / "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json"
+)
 MOONCLAW_RECEIPTS_JSON = ROOT / "output/moonclaw/first_trusted_square_receipts.json"
 MOONCLAW_EPHEMERIS_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_ephemeris_receipts.json"
@@ -208,6 +211,7 @@ def payload_for_entry(
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
+  moonclaw_gap_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
   lookups: dict[str, dict[str, dict[str, Any]]],
 ) -> Any:
@@ -301,6 +305,11 @@ def payload_for_entry(
       "primary_receipt": moonclaw_corridor_receipts[0],
       "receipts": moonclaw_corridor_receipts,
     }
+  if kind == "MoonClawGapReceipt":
+    return {
+      "primary_receipt": moonclaw_gap_receipts[0],
+      "receipts": moonclaw_gap_receipts,
+    }
 
   raise ValueError(f"unsupported entry kind {kind!r} for {entry_id}")
 
@@ -315,6 +324,7 @@ def workspace_files(
   moonclaw_receipts: list[dict[str, Any]],
   moonclaw_ephemeris_receipts: list[dict[str, Any]],
   moonclaw_corridor_receipts: list[dict[str, Any]],
+  moonclaw_gap_receipts: list[dict[str, Any]],
   moonrobo: list[dict[str, Any]],
 ) -> dict[Path, str]:
   lookups = {
@@ -353,6 +363,10 @@ def workspace_files(
     source_files.append(
       "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     )
+  if moonclaw_gap_receipts:
+    source_files.append(
+      "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
+    )
 
   index = {
     "workspace": book["workspace"],
@@ -380,6 +394,7 @@ def workspace_files(
       moonclaw_receipts,
       moonclaw_ephemeris_receipts,
       moonclaw_corridor_receipts,
+      moonclaw_gap_receipts,
       moonrobo,
       lookups,
     )
@@ -433,6 +448,8 @@ def workspace_files(
   )
   if moonclaw_gap_tasks:
     readme += "- Source imported MoonClaw gap task: `output/moonclaw/first_trusted_square_moonrobo_gap_task.json`\n"
+  if moonclaw_gap_receipts:
+    readme += "- Source imported MoonClaw gap receipt: `output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json`\n"
   readme += (
     f"- Entries: {len(entries)}\n"
     f"- Review queue items: {len(review_queue)}\n"
@@ -500,6 +517,7 @@ def main() -> int:
   moonclaw_receipts = load_json(MOONCLAW_RECEIPTS_JSON)
   moonclaw_ephemeris_receipts = load_json(MOONCLAW_EPHEMERIS_RECEIPTS_JSON)
   moonclaw_corridor_receipts = load_json(MOONCLAW_CORRIDOR_RECEIPTS_JSON)
+  moonclaw_gap_receipts = load_optional_json(MOONCLAW_GAP_RECEIPT_JSON, [])
   moonrobo = load_json(MOONROBO_JSON)
   files = workspace_files(
     site,
@@ -511,6 +529,7 @@ def main() -> int:
     moonclaw_receipts,
     moonclaw_ephemeris_receipts,
     moonclaw_corridor_receipts,
+    moonclaw_gap_receipts,
     moonrobo,
   )
   if args.check:

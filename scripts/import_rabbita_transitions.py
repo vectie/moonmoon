@@ -180,6 +180,33 @@ def update_moonclaw_gap_task_entry(
   book["entries"].append(next_entry)
 
 
+def moonclaw_gap_receipt_entry(receipt: dict[str, Any]) -> dict[str, Any]:
+  return {
+    "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt",
+    "title": "MoonClaw MoonRobo gap remediation receipt",
+    "kind": "MoonClawGapReceipt",
+    "claim_kind": "Derived",
+    "confidence": 0.82,
+    "path": "moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
+    "summary": (
+      f"{receipt['remediation_state']} with "
+      f"{receipt['still_blocking_gap_count']} MoonRobo gaps still blocking"
+    ),
+  }
+
+
+def update_moonclaw_gap_receipt_entry(
+  book: dict[str, Any],
+  receipt: dict[str, Any],
+) -> None:
+  next_entry = moonclaw_gap_receipt_entry(receipt)
+  for index, entry in enumerate(book["entries"]):
+    if entry["entry_id"] == next_entry["entry_id"]:
+      book["entries"][index] = next_entry
+      return
+  book["entries"].append(next_entry)
+
+
 def update_moonrobo(
   moonrobo: list[dict[str, Any]],
   plan: dict[str, Any],
@@ -655,6 +682,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
   gap_task = moonclaw_gap_task(preview, transition_file)
   gap_receipt = moonclaw_gap_remediation_receipt(gap_task, preview)
   update_moonclaw_gap_task_entry(book, gap_task)
+  update_moonclaw_gap_receipt_entry(book, gap_receipt)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
