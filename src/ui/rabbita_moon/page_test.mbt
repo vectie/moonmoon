@@ -25,6 +25,8 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Remediation Margin Refresh Follow-Up Modeling"))
   assert_true(html.contains("Remediation Margin Refresh Follow-Up Projection"))
   assert_true(html.contains("Remediation Margin Cycle Closeout"))
+  assert_true(html.contains("Remediation Margin Closeout Action"))
+  assert_true(html.contains("Closeout Action Review"))
   assert_true(html.contains("Remediation Margin Refresh Projection"))
   assert_true(html.contains("Remediation Margin Projection"))
   assert_true(html.contains("Selected Route Clearance"))
@@ -43,12 +45,19 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("remediation-margin-refresh-followup-modeling"))
   assert_true(html.contains("remediation-margin-refresh-followup-projection"))
   assert_true(html.contains("remediation-margin-cycle-closeout"))
+  assert_true(html.contains("remediation-margin-closeout-action"))
+  assert_true(html.contains("closeout-action-review"))
+  assert_true(html.contains("closeout-action-review-export"))
   assert_true(html.contains("remediation-margin-refresh-projection"))
   assert_true(html.contains("remediation-margin-projection"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
   assert_true(html.contains("first_trusted_square_clearance_transitions.json"))
+  assert_true(html.contains("first_trusted_square_closeout_action_review.json"))
   assert_true(html.contains("function buildClearanceTransition(item)"))
+  assert_true(html.contains("function buildCloseoutActionReviewTransition()"))
+  assert_true(html.contains("function closeoutActionReviewExport()"))
+  assert_true(html.contains("function renderCloseoutActionReview()"))
   assert_true(html.contains("function initialClearanceDecision(item)"))
   assert_true(html.contains("function clearanceReviewStatus(item)"))
   assert_true(html.contains("function clearanceTransitionExport()"))
@@ -80,6 +89,7 @@ test "Rabbita Moon page renders browser inspection controls" {
     html.contains("function renderRemediationMarginRefreshFollowupProjection()"),
   )
   assert_true(html.contains("function renderRemediationMarginCycleCloseout()"))
+  assert_true(html.contains("function renderRemediationMarginCloseoutAction()"))
   assert_true(
     html.contains("function renderRemediationMarginRefreshProjection()"),
   )
@@ -148,6 +158,11 @@ test "Rabbita Moon page renders browser inspection controls" {
       "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
     ),
   )
+  assert_true(html.contains("operator/rabbita-closeout-action-review"))
+  assert_true(html.contains("moonclaw-closeout-action-review"))
+  assert_true(html.contains("hardware_authority_change"))
+  assert_true(html.contains("Defer"))
+  assert_true(html.contains("Deferred"))
   assert_true(
     html.contains(
       "moonrobo/first-trusted-square/remediation-margin-refresh-projection",

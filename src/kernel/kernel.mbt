@@ -1478,7 +1478,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-closeout-action-review-export",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Export operator review for remediation-margin closeout action",
       outcome: "Rabbita can emit an importable operator review transition for the closeout action task before MoonClaw schedules the explicit retry, escalation, and freeze work",
@@ -1489,7 +1489,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_review_export.py",
       ],
-      done_when: "Rabbita exports an append-only closeout action review transition with Accept, RequestEvidence, and Defer choices, immutable MoonBook evidence refs, operator identity, timestamp policy, and no hardware authority change",
+      done_when: "done: Rabbita exports an append-only closeout action review transition with Accept, RequestEvidence, and Defer choices, immutable MoonBook evidence refs, operator identity, timestamp policy, and no hardware authority change",
+    },
+    {
+      task_id: "moonbook-remediation-margin-closeout-action-review-import",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Import remediation-margin closeout action review into MoonBook",
+      outcome: "MoonBook can consume the Rabbita closeout-action review transition, preserve append-only evidence, and update the closeout action task review state without changing hardware authority",
+      depends_on: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_closeout_action_review_export.py",
+        "scripts/import_rabbita_transitions.py",
+      ],
+      evidence: [
+        "data/fixtures/rabbita_closeout_action_review_accept.json", "scripts/check_rabbita_closeout_action_review_import.py",
+      ],
+      done_when: "Imported closeout action review transitions accept, request evidence, or defer the MoonClaw closeout action task in MoonBook with immutable evidence refs, reviewer identity, timestamp policy, append-only semantics, and HardwareDenied authority preserved",
     },
   ]
 }

@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "rabbita-remediation-margin-closeout-action-review-export",
+    "moonbook-remediation-margin-closeout-action-review-import",
   )
 }
 
@@ -199,6 +199,11 @@ test "kernel markdown names suite roles and next product output" {
       "rabbita-remediation-margin-closeout-action-review-export",
     ),
   )
+  assert_true(
+    markdown.contains(
+      "moonbook-remediation-margin-closeout-action-review-import",
+    ),
+  )
   assert_true(markdown.contains("NoConsumeCycleClosedForPolicy"))
   assert_true(markdown.contains("retry/escalate/freeze dispositions"))
   assert_true(markdown.contains("terrain escalate"))
@@ -206,6 +211,7 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(
     markdown.contains("append-only closeout action review transition"),
   )
+  assert_true(markdown.contains("Imported closeout action review transitions"))
   assert_true(markdown.contains("NoConsumeFollowupRefreshSimulationBlocked"))
   assert_true(markdown.contains("FollowupRefreshesCarriedForward state"))
   assert_true(markdown.contains("AllFollowupRefreshesStillBlocking state"))

@@ -362,10 +362,18 @@ fn app_script() -> String {
     #|const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
     #|const clearanceItems = book.review_queue.filter(item => item.item_id.startsWith('clear-'));
     #|const clearanceDecisions = new Map(clearanceItems.map(item => [item.item_id, initialClearanceDecision(item)]));
+    #|const closeoutActionEntryId = 'moonclaw/first-trusted-square/remediation-margin-closeout-action-task';
+    #|const closeoutActionReviewItemId = 'moonclaw-remediation-margin-closeout-action-review';
+    #|let closeoutActionDecision = 'RequestEvidence';
     #|const decisionOptions = [
     #|  ['Accept', 'Accept'],
     #|  ['Reject', 'Reject'],
     #|  ['RequestEvidence', 'Need evidence'],
+    #|];
+    #|const closeoutActionDecisionOptions = [
+    #|  ['Accept', 'Accept'],
+    #|  ['RequestEvidence', 'Need evidence'],
+    #|  ['Defer', 'Defer'],
     #|];
     #|
     #|function layerValue(cell, id) {
@@ -687,6 +695,7 @@ fn app_script() -> String {
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
+    #|  if (decision === 'Defer') return 'Deferred';
     #|  return 'NeedsEvidence';
     #|}
     #|
@@ -713,6 +722,7 @@ fn app_script() -> String {
     #|function transitionSuffix(decision) {
     #|  if (decision === 'Accept') return 'accept';
     #|  if (decision === 'Reject') return 'reject';
+    #|  if (decision === 'Defer') return 'defer';
     #|  return 'request-evidence';
     #|}
     #|
@@ -794,6 +804,90 @@ fn app_script() -> String {
     #|  renderTransitionExport();
     #|}
     #|
+    #|function closeoutActionEntry() {
+    #|  return entryById(closeoutActionEntryId);
+    #|}
+    #|
+    #|function closeoutActionEvidenceRefs(entry) {
+    #|  if (!entry) return [];
+    #|  return [{
+    #|    ref_id: closeoutActionReviewItemId,
+    #|    entry_id: entry.entry_id,
+    #|    path: entry.path,
+    #|    immutable_uri: `moonbook://moonmoon/first-trusted-square/${entry.path}#${closeoutActionReviewItemId}`
+    #|  }];
+    #|}
+    #|
+    #|function buildCloseoutActionReviewTransition() {
+    #|  const entry = closeoutActionEntry();
+    #|  return {
+    #|    transition_id: `rabbita-${closeoutActionReviewItemId}-${transitionSuffix(closeoutActionDecision)}`,
+    #|    item_id: closeoutActionReviewItemId,
+    #|    entry_id: closeoutActionEntryId,
+    #|    previous_status: 'NeedsReview',
+    #|    decision: closeoutActionDecision,
+    #|    resulting_status: transitionDecisionStatus(closeoutActionDecision),
+    #|    reviewer_id: 'operator/rabbita-closeout-action-review',
+    #|    reviewer_role: 'moonclaw-closeout-action-review',
+    #|    timestamp_policy: 'operator-browser-export',
+    #|    recorded_at_utc: new Date().toISOString(),
+    #|    append_only: true,
+    #|    hardware_authority_change: false,
+    #|    hardware_state: 'HardwareDenied',
+    #|    hardware_authority: 'moonmoon-safety-gate-only',
+    #|    source_evidence_refs: closeoutActionEvidenceRefs(entry),
+    #|    rationale: `Rabbita ${transitionSuffix(closeoutActionDecision)} decision for ${closeoutActionReviewItemId}: ${entry ? entry.summary : 'closeout action entry missing'}`
+    #|  };
+    #|}
+    #|
+    #|function closeoutActionReviewExport() {
+    #|  return {
+    #|    workspace: book.workspace,
+    #|    site_id: book.site_id,
+    #|    generated_by: 'output/ui/rabbita/first_trusted_square.html',
+    #|    review_kind: 'moonclaw-remediation-margin-closeout-action',
+    #|    transitions: [buildCloseoutActionReviewTransition()]
+    #|  };
+    #|}
+    #|
+    #|function renderCloseoutActionReviewExport() {
+    #|  const box = document.getElementById('closeout-action-review-export');
+    #|  if (!box) return;
+    #|  box.value = JSON.stringify(closeoutActionReviewExport(), null, 2);
+    #|}
+    #|
+    #|function renderCloseoutActionReview() {
+    #|  const list = document.getElementById('closeout-action-review');
+    #|  if (!list) return;
+    #|  const entry = closeoutActionEntry();
+    #|  const controls = el('div', { className: 'decision-group', role: 'group', 'aria-label': closeoutActionReviewItemId },
+    #|    closeoutActionDecisionOptions.map(([decision, label]) => {
+    #|      const button = el('button', {
+    #|        className: 'decision-button',
+    #|        type: 'button',
+    #|        'aria-pressed': String(decision === closeoutActionDecision),
+    #|        text: label
+    #|      });
+    #|      button.addEventListener('click', () => {
+    #|        closeoutActionDecision = decision;
+    #|        renderCloseoutActionReview();
+    #|      });
+    #|      return button;
+    #|    })
+    #|  );
+    #|  list.replaceChildren(el('div', {
+    #|    className: 'clearance-row closeout-action-review-row',
+    #|    'data-review-decision': closeoutActionDecision,
+    #|    'data-review-status': transitionDecisionStatus(closeoutActionDecision),
+    #|    'data-entry-id': closeoutActionEntryId,
+    #|  }, [
+    #|    el('b', { text: `${closeoutActionReviewItemId} - ${transitionDecisionStatus(closeoutActionDecision)}` }),
+    #|    el('span', { text: entry ? entry.summary : 'Closeout action entry is missing from MoonBook' }),
+    #|    controls
+    #|  ]));
+    #|  renderCloseoutActionReviewExport();
+    #|}
+    #|
     #|function copyTransitionExport() {
     #|  const box = document.getElementById('transition-export');
     #|  const status = document.getElementById('transition-export-status');
@@ -815,6 +909,31 @@ fn app_script() -> String {
     #|  const link = document.createElement('a');
     #|  link.href = URL.createObjectURL(blob);
     #|  link.download = 'first_trusted_square_clearance_transitions.json';
+    #|  link.click();
+    #|  URL.revokeObjectURL(link.href);
+    #|}
+    #|
+    #|function copyCloseoutActionReviewExport() {
+    #|  const box = document.getElementById('closeout-action-review-export');
+    #|  const status = document.getElementById('closeout-action-review-export-status');
+    #|  if (!navigator.clipboard) {
+    #|    box.select();
+    #|    status.textContent = 'Select the export JSON manually';
+    #|    return;
+    #|  }
+    #|  navigator.clipboard.writeText(box.value).then(() => {
+    #|    status.textContent = 'Closeout action review JSON copied';
+    #|  }).catch(() => {
+    #|    box.select();
+    #|    status.textContent = 'Select the export JSON manually';
+    #|  });
+    #|}
+    #|
+    #|function downloadCloseoutActionReviewExport() {
+    #|  const blob = new Blob([document.getElementById('closeout-action-review-export').value], { type: 'application/json' });
+    #|  const link = document.createElement('a');
+    #|  link.href = URL.createObjectURL(blob);
+    #|  link.download = 'first_trusted_square_closeout_action_review.json';
     #|  link.click();
     #|  URL.revokeObjectURL(link.href);
     #|}
@@ -846,10 +965,13 @@ fn app_script() -> String {
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
+    #|  renderCloseoutActionReview();
     #|}
     #|
     #|document.getElementById('copy-transition-export').addEventListener('click', copyTransitionExport);
     #|document.getElementById('download-transition-export').addEventListener('click', downloadTransitionExport);
+    #|document.getElementById('copy-closeout-action-review-export').addEventListener('click', copyCloseoutActionReviewExport);
+    #|document.getElementById('download-closeout-action-review-export').addEventListener('click', downloadCloseoutActionReviewExport);
     #|render();
     #|</script>
     #|
@@ -984,6 +1106,16 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Closeout Action</h2>
     $|      <div id="remediation-margin-closeout-action" class="review-list" aria-label="MoonClaw remediation margin closeout action task with needs-review state, retry/escalate/freeze actions, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Closeout Action Review</h2>
+    $|      <div id="closeout-action-review" class="clearance-list" aria-label="Operator review for MoonClaw remediation margin closeout action task"></div>
+    $|      <div class="export-actions" style="margin-top: 10px;">
+    $|        <button id="copy-closeout-action-review-export" class="export-button" type="button">Copy</button>
+    $|        <button id="download-closeout-action-review-export" class="export-button" type="button">Download</button>
+    $|      </div>
+    $|      <p id="closeout-action-review-export-status" class="export-status" aria-live="polite"></p>
+    $|      <textarea id="closeout-action-review-export" class="export-box" aria-label="Importable MoonClaw closeout action review transition" readonly></textarea>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Projection</h2>
