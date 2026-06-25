@@ -23,9 +23,9 @@
   - clearance: AcceptedEvidence
   - next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
 - energy-window: StillBlocking
-  - evidence: mission/first-trusted-square/energy-window.json
+  - evidence: output/mission/first_trusted_square_energy_remediation.json
   - clearance: AcceptedEvidence
-  - next action: energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+  - next action: energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation
 - moonbook-review: StillBlocking
   - evidence: output/moonbook/workspaces/first-trusted-square/review_transitions.json
   - clearance: AcceptedEvidence

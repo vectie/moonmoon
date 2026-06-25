@@ -69,8 +69,8 @@
       "kind": "EnergyReadiness",
       "label": "Rover energy window gate",
       "decision": "Block",
-      "evidence_path": "mission/first-trusted-square/energy-window.json",
-      "next_action": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation",
+      "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+      "next_action": "energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
       "clearance_id": "clear-energy-margin",
       "clearance_status": "AcceptedEvidence",
       "clearance_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"

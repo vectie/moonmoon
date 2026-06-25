@@ -295,7 +295,7 @@
 - energy-window [high/needsevidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
 - clear-terrain-grade-northeast-stepout [high/accepted] Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile -> mission-review
 - clear-illumination-confidence-northeast-stepout [high/accepted] Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable -> power-thermal-review
-- clear-energy-margin [high/accepted] Rover energy margin clearance: accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation -> power-thermal-review
+- clear-energy-margin [high/accepted] Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation -> power-thermal-review
 - clear-moonbook-review-northeast-stepout [high/accepted] MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation -> mission-review
 - moonrobo-handoff [high/needsevidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
 - moonclaw-proposals [high/needsevidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw

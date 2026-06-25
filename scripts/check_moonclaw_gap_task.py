@@ -51,7 +51,7 @@ def assert_gap_task(root: Path) -> None:
   for required in [
     "check_moonrobo_readiness_preview.py",
     "scan_lola_corridor.py --plan",
-    "compute_power_window.py --check",
+    "check_energy_margin_remediation.py",
     "build_moonmoon_dossier.sh --review-transitions",
     "materialize_moonbook_workspace.py --check",
     "/Users/kq/.moon/bin/moon test",

@@ -80,7 +80,7 @@ def assert_modeling_pass(root: Path) -> None:
   for required in [
     "check_selected_route_terrain_remediation.py",
     "check_selected_route_horizon_model.py",
-    "compute_power_window.py --check",
+    "check_energy_margin_remediation.py",
     "materialize_moonbook_workspace.py --check",
     "check_moonrobo_readiness_preview.py",
   ]:

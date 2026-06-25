@@ -21,9 +21,9 @@
   - clearance: AcceptedEvidence
   - next action: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
 - energy-window (energy-readiness)
-  - evidence: mission/first-trusted-square/energy-window.json
+  - evidence: output/mission/first_trusted_square_energy_remediation.json
   - clearance: AcceptedEvidence
-  - next action: energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation
+  - next action: energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation
 - moonbook-review (moon-book-review-readiness)
   - evidence: output/moonbook/workspaces/first-trusted-square/review_transitions.json
   - clearance: AcceptedEvidence
@@ -37,7 +37,7 @@
 
 - `python3 scripts/check_moonrobo_readiness_preview.py`
 - `python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4`
-- `python3 scripts/compute_power_window.py --check`
+- `python3 scripts/check_energy_margin_remediation.py`
 - `bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json`
 - `python3 scripts/materialize_moonbook_workspace.py --check`
 - `python3 scripts/check_moonclaw_gap_remediation_receipt.py`

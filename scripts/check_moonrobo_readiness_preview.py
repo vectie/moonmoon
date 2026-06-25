@@ -65,7 +65,7 @@ def assert_preview(root: Path) -> None:
     ),
     "energy-window": (
       "EnergyReadiness",
-      "mission/first-trusted-square/energy-window.json",
+      "output/mission/first_trusted_square_energy_remediation.json",
       "AcceptedEvidence",
     ),
     "moonbook-review": (

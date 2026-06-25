@@ -24,9 +24,9 @@
   - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
   - rationale: bounded local horizon evidence records a positive terrain-shadow margin, so illumination remains blocked
 - energy-window: StillBlocking
-  - command: `python3 scripts/compute_power_window.py --check`
-  - evidence: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
-  - rationale: computed ephemeris-backed power evidence is present, but verified available energy remains below the conservative requirement
+  - command: `python3 scripts/check_energy_margin_remediation.py`
+  - evidence: output/mission/first_trusted_square_energy_remediation.json
+  - rationale: bounded selected-route demand evidence records a negative energy margin, so energy remains blocked
 - moonbook-review: StillBlocking
   - command: `python3 scripts/materialize_moonbook_workspace.py --check`
   - evidence: output/moonbook/workspaces/first-trusted-square/review_transitions.json

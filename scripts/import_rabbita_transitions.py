@@ -424,7 +424,7 @@ def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[st
     "commands": [
       "python3 scripts/check_moonrobo_readiness_preview.py",
       "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
-      "python3 scripts/compute_power_window.py --check",
+      "python3 scripts/check_energy_margin_remediation.py",
       "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
       "python3 scripts/materialize_moonbook_workspace.py --check",
       "python3 scripts/check_moonclaw_gap_remediation_receipt.py",
@@ -480,9 +480,9 @@ def remediation_model_for_gap(gap: dict[str, Any]) -> dict[str, str]:
     }
   if check_id == "energy-window":
     return {
-      "modeling_command": "python3 scripts/compute_power_window.py --check",
-      "modeling_evidence_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-      "result_rationale": "computed ephemeris-backed power evidence is present, but verified available energy remains below the conservative requirement",
+      "modeling_command": "python3 scripts/check_energy_margin_remediation.py",
+      "modeling_evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+      "result_rationale": "bounded selected-route demand evidence records a negative energy margin, so energy remains blocked",
     }
   if check_id == "moonbook-review":
     return {

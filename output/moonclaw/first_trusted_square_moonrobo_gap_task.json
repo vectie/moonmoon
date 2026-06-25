@@ -59,8 +59,8 @@
         "kind": "EnergyReadiness",
         "label": "Rover energy window gate",
         "decision": "Block",
-        "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "next_action": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation",
+        "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "next_action": "energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
         "clearance_id": "clear-energy-margin",
         "clearance_status": "AcceptedEvidence",
         "clearance_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
@@ -131,12 +131,12 @@
       },
       {
         "artifact_id": "gap-energy-window",
-        "path": "mission/first-trusted-square/energy-window.json",
+        "path": "output/mission/first_trusted_square_energy_remediation.json",
         "producer": "moonmoon mission and MoonRobo evidence generators",
         "required_state": "Rover energy window gate no longer blocks MoonRobo simulation, with reviewed evidence and refreshed handoff output",
-        "current_state": "Block; clearance AcceptedEvidence; energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation",
+        "current_state": "Block; clearance AcceptedEvidence; energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
         "ready": false,
-        "blocking_reason": "energy gate reads power-window evidence first-trusted-square-power-window-computed-v1: revise rover power model, route count, or site window before simulation",
+        "blocking_reason": "energy remediation reports bounded selected-route margin -855.061927 Wh and margin gap 1105.061927 Wh from power-window evidence first-trusted-square-power-window-computed-v1: reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation",
         "validation_gate": "bash scripts/build_moonmoon_dossier.sh && python3 scripts/materialize_moonbook_workspace.py --check"
       },
       {
@@ -163,7 +163,7 @@
     "commands": [
       "python3 scripts/check_moonrobo_readiness_preview.py",
       "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
-      "python3 scripts/compute_power_window.py --check",
+      "python3 scripts/check_energy_margin_remediation.py",
       "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
       "python3 scripts/materialize_moonbook_workspace.py --check",
       "python3 scripts/check_moonclaw_gap_remediation_receipt.py",

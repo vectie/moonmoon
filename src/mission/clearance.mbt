@@ -393,23 +393,34 @@ fn illumination_clearance_item(
 ///|
 fn energy_clearance_item(
   energy : EnergyAssessment,
+  route : RouteCandidate,
   readiness : MissionSimulationReadiness,
 ) -> MissionClearanceItem {
   let check_id = "energy-window"
+  let horizon_path = if route.illumination.local_horizon.output_path != "" {
+    route.illumination.local_horizon.output_path
+  } else {
+    "mission/first-trusted-square/routes/\{route.route_id}.illumination.json"
+  }
+  let remediation = energy_remediation_for_selected_route(
+    energy,
+    route.route_id,
+    route.terrain_remediation.output_path,
+    horizon_path,
+    check_evidence_path(
+      readiness, check_id, "output/mission/first_trusted_square_energy_remediation.json",
+    ),
+  )
   clearance_item(
     "clear-energy-margin",
     EnergyMarginClearance,
     "Rover energy margin clearance",
-    check_decision(readiness, check_id, energy.decision),
+    check_decision(readiness, check_id, remediation.decision),
     check_id,
-    check_evidence_path(
-      readiness,
-      check_id,
-      energy.budget.power_window_source_path,
-    ),
-    "energy margin \{energy.margin_wh} Wh, available \{energy.available_energy_wh} Wh, required \{energy.required_energy_wh} Wh",
-    "margin >= \{energy.budget.min_energy_margin_wh} Wh with accepted power, drive, comms, and thermal assumptions",
-    "accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+    remediation.output_path,
+    "bounded energy margin \{remediation.bounded_margin_wh} Wh, available \{remediation.verified_available_energy_wh} Wh, required \{remediation.bounded_required_energy_wh} Wh, gap \{remediation.margin_gap_wh} Wh",
+    "bounded margin >= \{remediation.minimum_margin_wh} Wh with accepted power, selected-route drive, comms, and thermal assumptions",
+    "accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
   )
 }
 
@@ -474,7 +485,7 @@ pub fn selected_route_clearance_plan_with_transitions(
   let base_items = [
     terrain_clearance_item(route, readiness),
     illumination_clearance_item(route, readiness),
-    energy_clearance_item(energy, readiness),
+    energy_clearance_item(energy, route, readiness),
     moonbook_clearance_item(route, readiness),
   ]
   let items = apply_clearance_transitions(base_items, transitions)

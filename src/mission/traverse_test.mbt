@@ -204,6 +204,30 @@ test "first trusted square energy window blocks insufficient computed power" {
   )
   assert_eq(@mission.energy_decision_label(assessment), "block")
   assert_true(assessment.next_action.contains("revise rover power model"))
+  let remediation = @mission.first_trusted_square_energy_remediation()
+  assert_eq(
+    remediation.evidence_id,
+    "first-trusted-square-energy-remediation-v1",
+  )
+  assert_eq(remediation.route_id, "northeast-stepout")
+  assert_eq(
+    remediation.output_path,
+    "output/mission/first_trusted_square_energy_remediation.json",
+  )
+  assert_true(remediation.decision == Block)
+  assert_eq(remediation.selected_route_count, 1)
+  assert_true(
+    remediation.bounded_required_energy_wh <
+    remediation.all_route_required_energy_wh,
+  )
+  assert_true(remediation.bounded_margin_wh < 0.0)
+  assert_true(remediation.margin_gap_wh > 0.0)
+  assert_true(
+    remediation.thermal_survival_energy_wh >
+    remediation.verified_available_energy_wh,
+  )
+  assert_eq(@mission.energy_remediation_decision_label(remediation), "block")
+  assert_true(remediation.next_action.contains("increase verified power"))
 }
 
 ///|

@@ -165,6 +165,44 @@ pub(all) struct EnergyAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct EnergyRemediationEvidence {
+  evidence_id : String
+  site_id : String
+  route_id : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  terrain_evidence_path : String
+  horizon_evidence_path : String
+  output_path : String
+  method_id : String
+  generated_by : String
+  source_budget_id : String
+  route_count_before_bound : Int
+  selected_route_count : Int
+  blocked_route_count : Int
+  all_route_required_energy_wh : Double
+  bounded_required_energy_wh : Double
+  verified_available_energy_wh : Double
+  all_route_margin_wh : Double
+  bounded_margin_wh : Double
+  minimum_margin_wh : Double
+  margin_gap_wh : Double
+  route_count_demand_reduction_wh : Double
+  selected_route_drive_hours : Double
+  dark_survival_hours : Double
+  reserve_wh : Double
+  drive_energy_wh : Double
+  comms_energy_wh : Double
+  thermal_survival_energy_wh : Double
+  max_dark_survival_hours_for_min_margin : Double
+  dark_survival_reduction_needed_hours : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RouteCandidate {
   route_id : String
   label : String
@@ -248,6 +286,13 @@ pub fn energy_decision_label(assessment : EnergyAssessment) -> String {
 }
 
 ///|
+pub fn energy_remediation_decision_label(
+  evidence : EnergyRemediationEvidence,
+) -> String {
+  traverse_decision_label(evidence.decision)
+}
+
+///|
 pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence {
   generated_first_trusted_square_power_window_evidence()
 }
@@ -277,6 +322,54 @@ pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String {
   text += "- max sun altitude: \{evidence.max_sun_altitude_deg} deg\n"
   text += "- terrain-shadow margin: \{evidence.terrain_shadow_margin_deg} deg\n"
   text += "- confidence: \{evidence.confidence}\n\n"
+  text += "## Reasons\n\n"
+  for reason in evidence.reasons {
+    text += "- \{reason}\n"
+  }
+  text += "\n## Next Action\n\n"
+  text += evidence.next_action
+  text += "\n"
+  text
+}
+
+///|
+pub fn first_trusted_square_energy_remediation() -> EnergyRemediationEvidence {
+  energy_remediation_for_selected_route(
+    first_trusted_square_energy_assessment(),
+    "northeast-stepout",
+    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+    "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+    "output/mission/first_trusted_square_energy_remediation.json",
+  )
+}
+
+///|
+pub fn first_trusted_square_energy_remediation_json() -> Json {
+  first_trusted_square_energy_remediation().to_json()
+}
+
+///|
+pub fn first_trusted_square_energy_remediation_markdown() -> String {
+  let evidence = first_trusted_square_energy_remediation()
+  let mut text = "# Selected Route Energy Remediation\n\n"
+  text += "- evidence: \{evidence.evidence_id}\n"
+  text += "- site: \{evidence.site_id}\n"
+  text += "- route: \{evidence.route_id}\n"
+  text += "- power window: \{evidence.power_window_evidence_id}\n"
+  text += "- decision: \{energy_remediation_decision_label(evidence)}\n"
+  text += "- all-route required energy: \{evidence.all_route_required_energy_wh} Wh\n"
+  text += "- bounded required energy: \{evidence.bounded_required_energy_wh} Wh\n"
+  text += "- verified available energy: \{evidence.verified_available_energy_wh} Wh\n"
+  text += "- bounded margin: \{evidence.bounded_margin_wh} Wh\n"
+  text += "- margin gap: \{evidence.margin_gap_wh} Wh\n"
+  text += "- selected-route drive hours: \{evidence.selected_route_drive_hours}\n"
+  text += "- dark survival hours: \{evidence.dark_survival_hours}\n"
+  text += "- route-count demand reduction: \{evidence.route_count_demand_reduction_wh} Wh\n\n"
+  text += "## Demand Components\n\n"
+  text += "- reserve: \{evidence.reserve_wh} Wh\n"
+  text += "- drive: \{evidence.drive_energy_wh} Wh\n"
+  text += "- comms: \{evidence.comms_energy_wh} Wh\n"
+  text += "- thermal survival: \{evidence.thermal_survival_energy_wh} Wh\n\n"
   text += "## Reasons\n\n"
   for reason in evidence.reasons {
     text += "- \{reason}\n"
@@ -705,6 +798,144 @@ pub fn assess_energy_window(
         } else {
           "revise rover power model, route count, or site window before simulation"
         }
+    },
+  }
+}
+
+///|
+pub fn energy_remediation_for_selected_route(
+  energy : EnergyAssessment,
+  route_id : String,
+  terrain_evidence_path : String,
+  horizon_evidence_path : String,
+  output_path : String,
+) -> EnergyRemediationEvidence {
+  let budget = energy.budget
+  let selected_route_drive_hours = 0.25
+  let drive_energy_wh = budget.drive_power_w * selected_route_drive_hours
+  let comms_energy_wh = budget.comms_power_w * selected_route_drive_hours
+  let thermal_survival_energy_wh = budget.thermal_survival_power_w *
+    energy.estimated_dark_survival_hours
+  let bounded_required_energy_wh = budget.reserve_wh +
+    drive_energy_wh +
+    comms_energy_wh +
+    thermal_survival_energy_wh
+  let bounded_margin_wh = energy.available_energy_wh -
+    bounded_required_energy_wh
+  let margin_gap_wh = if bounded_margin_wh >= budget.min_energy_margin_wh {
+    0.0
+  } else {
+    budget.min_energy_margin_wh - bounded_margin_wh
+  }
+  let route_count_demand_reduction_wh = energy.required_energy_wh -
+    bounded_required_energy_wh
+  let raw_max_dark_survival_hours_for_min_margin = (
+      energy.available_energy_wh -
+      budget.reserve_wh -
+      drive_energy_wh -
+      comms_energy_wh -
+      budget.min_energy_margin_wh
+    ) /
+    budget.thermal_survival_power_w
+  let max_dark_survival_hours_for_min_margin = if raw_max_dark_survival_hours_for_min_margin <=
+    0.0 {
+    0.0
+  } else {
+    raw_max_dark_survival_hours_for_min_margin
+  }
+  let dark_survival_reduction_needed_hours = if max_dark_survival_hours_for_min_margin >=
+    energy.estimated_dark_survival_hours {
+    0.0
+  } else if max_dark_survival_hours_for_min_margin <= 0.0 {
+    energy.estimated_dark_survival_hours
+  } else {
+    energy.estimated_dark_survival_hours -
+    max_dark_survival_hours_for_min_margin
+  }
+  let reasons : Array[String] = []
+  add_reason_if(
+    reasons,
+    !budget.has_time_window_ephemeris,
+    "no time-windowed solar ephemeris is attached for bounded energy remediation",
+  )
+  add_reason_if(
+    reasons,
+    bounded_margin_wh < 0.0,
+    "selected-route bounded demand still exceeds verified available energy by \{0.0 - bounded_margin_wh} Wh",
+  )
+  add_reason_if(
+    reasons,
+    bounded_margin_wh >= 0.0 && bounded_margin_wh < budget.min_energy_margin_wh,
+    "selected-route bounded margin is below the minimum margin by \{margin_gap_wh} Wh",
+  )
+  add_reason_if(
+    reasons,
+    route_count_demand_reduction_wh > 0.0,
+    "bounding demand from \{energy.route_count} candidate routes to one selected route removes \{route_count_demand_reduction_wh} Wh but does not clear the gate",
+  )
+  add_reason_if(
+    reasons,
+    thermal_survival_energy_wh > energy.available_energy_wh,
+    "thermal survival demand \{thermal_survival_energy_wh} Wh exceeds verified available energy \{energy.available_energy_wh} Wh",
+  )
+  add_reason_if(
+    reasons,
+    energy.blocked_route_count > 0,
+    "\{energy.blocked_route_count} route candidates remain blocked before energy can move out of review",
+  )
+  let decision = if !budget.has_time_window_ephemeris || bounded_margin_wh < 0.0 {
+    Block
+  } else if bounded_margin_wh < budget.min_energy_margin_wh ||
+    energy.blocked_route_count > 0 {
+    Review
+  } else {
+    Allow
+  }
+  {
+    evidence_id: "first-trusted-square-energy-remediation-v1",
+    site_id: "first-trusted-square",
+    route_id,
+    power_window_evidence_id: budget.power_window_evidence_id,
+    power_window_source_path: budget.power_window_source_path,
+    terrain_evidence_path,
+    horizon_evidence_path,
+    output_path,
+    method_id: "bounded-selected-route-energy-remediation-v1",
+    generated_by: "src/mission/traverse.mbt",
+    source_budget_id: budget.budget_id,
+    route_count_before_bound: energy.route_count,
+    selected_route_count: 1,
+    blocked_route_count: energy.blocked_route_count,
+    all_route_required_energy_wh: energy.required_energy_wh,
+    bounded_required_energy_wh,
+    verified_available_energy_wh: energy.available_energy_wh,
+    all_route_margin_wh: energy.margin_wh,
+    bounded_margin_wh,
+    minimum_margin_wh: budget.min_energy_margin_wh,
+    margin_gap_wh,
+    route_count_demand_reduction_wh,
+    selected_route_drive_hours,
+    dark_survival_hours: energy.estimated_dark_survival_hours,
+    reserve_wh: budget.reserve_wh,
+    drive_energy_wh,
+    comms_energy_wh,
+    thermal_survival_energy_wh,
+    max_dark_survival_hours_for_min_margin,
+    dark_survival_reduction_needed_hours,
+    confidence: if decision == Allow {
+      0.78
+    } else {
+      0.66
+    },
+    decision,
+    reasons,
+    next_action: match decision {
+      Allow =>
+        "selected-route energy remediation clears the conservative power-demand gate"
+      Review =>
+        "review route blockers and bounded energy margin before simulation"
+      Block =>
+        "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation"
     },
   }
 }

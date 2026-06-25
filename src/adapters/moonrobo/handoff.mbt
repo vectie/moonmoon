@@ -142,6 +142,24 @@ fn terrain_evidence_path(route : @mission.RouteCandidate) -> String {
 }
 
 ///|
+fn energy_remediation(
+  dossier : @site.SiteDossier,
+  route : @mission.RouteCandidate,
+) -> @mission.EnergyRemediationEvidence {
+  @mission.energy_remediation_for_selected_route(
+    dossier.energy,
+    route.route_id,
+    terrain_evidence_path(route),
+    if route.illumination.local_horizon.output_path != "" {
+      route.illumination.local_horizon.output_path
+    } else {
+      "mission/first-trusted-square/routes/\{route.route_id}.illumination.json"
+    },
+    "output/mission/first_trusted_square_energy_remediation.json",
+  )
+}
+
+///|
 fn moonbook_review_decision(
   route : @mission.RouteCandidate,
 ) -> @mission.TraverseDecision {
@@ -175,6 +193,7 @@ fn readiness_checks(
   } else {
     "mission/first-trusted-square/routes/\{route.route_id}.illumination.json"
   }
+  let energy = energy_remediation(dossier, route)
   [
     @mission.readiness_check(
       "terrain-\{route.route_id}",
@@ -204,9 +223,9 @@ fn readiness_checks(
       "energy-window",
       @mission.MissionReadinessCheckKind::EnergyReadiness,
       "Rover energy window gate",
-      dossier.energy.decision,
-      "mission/first-trusted-square/energy-window.json",
-      "energy gate reads power-window evidence \{dossier.energy.budget.power_window_evidence_id}: \{dossier.energy.next_action}",
+      energy.decision,
+      energy.output_path,
+      "energy remediation reports bounded selected-route margin \{energy.bounded_margin_wh} Wh and margin gap \{energy.margin_gap_wh} Wh from power-window evidence \{energy.power_window_evidence_id}: \{energy.next_action}",
     ),
     @mission.readiness_check(
       "moonbook-review",

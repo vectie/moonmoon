@@ -46,10 +46,10 @@
         "decision": "Allow",
         "status": "AcceptedEvidence",
         "source_check_id": "energy-window",
-        "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "observed": "energy margin -1030.061927 Wh, available 234.938073 Wh, required 1265 Wh",
-        "required": "margin >= 250 Wh with accepted power, drive, comms, and thermal assumptions",
-        "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-energy-margin: imported fixture; prior action was accept an energy budget with non-negative conservative margin or reduce route/survival demand before simulation",
+        "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
+        "observed": "bounded energy margin -855.061927 Wh, available 234.938073 Wh, required 1090 Wh, gap 1105.061927 Wh",
+        "required": "bounded margin >= 250 Wh with accepted power, selected-route drive, comms, and thermal assumptions",
+        "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-energy-margin: imported fixture; prior action was accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
         "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
       },
       {

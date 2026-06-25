@@ -24,11 +24,21 @@ pub fn corridor_scan_window_status_label(CorridorScanWindow) -> String
 
 pub fn energy_decision_label(EnergyAssessment) -> String
 
+pub fn energy_remediation_decision_label(EnergyRemediationEvidence) -> String
+
+pub fn energy_remediation_for_selected_route(EnergyAssessment, String, String, String, String) -> EnergyRemediationEvidence
+
 pub fn first_trusted_square_best_corridor_window() -> CorridorScanWindow
 
 pub fn first_trusted_square_corridor_scan() -> Array[CorridorScanWindow]
 
 pub fn first_trusted_square_energy_assessment() -> EnergyAssessment
+
+pub fn first_trusted_square_energy_remediation() -> EnergyRemediationEvidence
+
+pub fn first_trusted_square_energy_remediation_json() -> Json
+
+pub fn first_trusted_square_energy_remediation_markdown() -> String
 
 pub fn first_trusted_square_northeast_stepout_horizon_evidence() -> LocalHorizonEvidence
 
@@ -127,6 +137,43 @@ pub(all) struct EnergyBudget {
   assumed_dark_survival_hours : Double
   verified_available_energy_wh : Double
   has_time_window_ephemeris : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct EnergyRemediationEvidence {
+  evidence_id : String
+  site_id : String
+  route_id : String
+  power_window_evidence_id : String
+  power_window_source_path : String
+  terrain_evidence_path : String
+  horizon_evidence_path : String
+  output_path : String
+  method_id : String
+  generated_by : String
+  source_budget_id : String
+  route_count_before_bound : Int
+  selected_route_count : Int
+  blocked_route_count : Int
+  all_route_required_energy_wh : Double
+  bounded_required_energy_wh : Double
+  verified_available_energy_wh : Double
+  all_route_margin_wh : Double
+  bounded_margin_wh : Double
+  minimum_margin_wh : Double
+  margin_gap_wh : Double
+  route_count_demand_reduction_wh : Double
+  selected_route_drive_hours : Double
+  dark_survival_hours : Double
+  reserve_wh : Double
+  drive_energy_wh : Double
+  comms_energy_wh : Double
+  thermal_survival_energy_wh : Double
+  max_dark_survival_hours_for_min_margin : Double
+  dark_survival_reduction_needed_hours : Double
+  confidence : Double
+  decision : TraverseDecision
+  reasons : Array[String]
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct IlluminationAssessment {

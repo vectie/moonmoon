@@ -89,7 +89,10 @@ test "first trusted square primary Moonrobo handoff follows promoted best corrid
   assert_true(
     handoff.preconditions.any(fn(precondition) {
       precondition.precondition_id == "energy-window" &&
-      precondition.decision == @mission.TraverseDecision::Block
+      precondition.decision == @mission.TraverseDecision::Block &&
+      precondition.evidence_path ==
+      "output/mission/first_trusted_square_energy_remediation.json" &&
+      precondition.reason.contains("bounded selected-route margin")
     }),
   )
   assert_true(
@@ -189,6 +192,7 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(markdown.contains("northeast-stepout"))
   assert_true(markdown.contains("power-window evidence"))
   assert_true(markdown.contains("energy-window"))
+  assert_true(markdown.contains("bounded selected-route margin"))
   assert_true(markdown.contains("mission readiness"))
   assert_true(markdown.contains("clearance plan"))
   assert_true(markdown.contains("selected-route clearance actions"))
@@ -205,6 +209,7 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(json.contains("\"route_id\": \"southwest-bypass\""))
   assert_true(json.contains("\"route_id\": \"northeast-stepout\""))
   assert_true(json.contains("power-window evidence"))
+  assert_true(json.contains("first_trusted_square_energy_remediation.json"))
   assert_true(json.contains("\"mission_readiness\""))
   assert_true(
     json.contains("\"robot_simulation_status\": \"simulation-blocked\""),
