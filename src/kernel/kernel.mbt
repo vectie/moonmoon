@@ -1556,7 +1556,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-reviewed-work-items",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Emit reviewed remediation-margin work items",
       outcome: "The accepted reviewed action plan becomes three explicit MoonClaw work items for terrain escalation, horizon retry-with-new-evidence, and energy freeze without opening a refresh loop",
@@ -1568,7 +1568,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
         "scripts/check_moonclaw_remediation_margin_reviewed_work_items.py",
       ],
-      done_when: "MoonClaw emits three reviewed remediation-margin work items that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonClaw emits three reviewed remediation-margin work items that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-reviewed-work-items-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize reviewed remediation-margin work items into MoonBook",
+      outcome: "The three accepted MoonClaw reviewed work items become durable MoonBook workspace evidence before execution or downstream simulation review",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_work_items.py", "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
+        "scripts/check_moonbook_remediation_margin_reviewed_work_items_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the three reviewed remediation-margin work items with accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
     },
   ]
 }

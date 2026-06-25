@@ -573,6 +573,96 @@ test "MoonClaw reviewed remediation margin action plan renderers expose accepted
 }
 
 ///|
+test "first trusted square reviewed work items split accepted action plan" {
+  let items = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items()
+  assert_eq(items.length(), 3)
+  assert_eq(items[0].rank, 1)
+  assert_eq(items[0].margin_id, "terrain-northeast-stepout")
+  assert_true(
+    items[0].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::EscalateToOperatorDecision,
+  )
+  assert_true(items[0].command.contains("manual: review DEM"))
+  assert_eq(items[1].rank, 2)
+  assert_eq(items[1].margin_id, "illumination-northeast-stepout")
+  assert_true(
+    items[1].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::RetryWithNewEvidence,
+  )
+  assert_true(
+    items[1].command.contains("generate_selected_route_horizon.py --check"),
+  )
+  assert_eq(items[2].rank, 3)
+  assert_eq(items[2].margin_id, "energy-window")
+  assert_true(
+    items[2].disposition ==
+    @moonrobo.RemediationMarginCycleDisposition::FreezeUntilNewSourceEvidence,
+  )
+  assert_true(items[2].command.contains("manual: keep energy-window frozen"))
+  for item in items {
+    assert_true(item.state == @moonclaw.MoonClawReceiptStatus::Accepted)
+    assert_eq(
+      item.plan_id,
+      "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan",
+    )
+    assert_eq(
+      item.source_review_transition_id,
+      "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
+    )
+    assert_true(
+      item.source_review_decision ==
+      @moonclaw.MoonClawCloseoutActionReviewDecision::Accept,
+    )
+    assert_true(!item.may_consume_simulation)
+    assert_true(!item.automatic_refresh_loop_allowed)
+    assert_true(!item.hardware_authority_change)
+    assert_true(
+      item.simulation_state ==
+      @moonrobo.MoonroboExecutionState::SimulationBlocked,
+    )
+    assert_true(
+      item.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+    )
+    assert_eq(item.hardware_authority, "moonmoon-safety-gate-only")
+    assert_true(item.hardware_denied)
+  }
+}
+
+///|
+test "MoonClaw reviewed remediation margin work item renderers expose safety invariants" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items_markdown()
+  assert_true(
+    markdown.contains("MoonClaw Remediation Margin Reviewed Work Items"),
+  )
+  assert_true(markdown.contains("work-item-1-terrain-northeast-stepout"))
+  assert_true(markdown.contains("work-item-2-illumination-northeast-stepout"))
+  assert_true(markdown.contains("work-item-3-energy-window"))
+  assert_true(markdown.contains("review decision: Accept"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("automatic refresh loop allowed: false"))
+  assert_true(markdown.contains("hardware authority change: false"))
+  assert_true(markdown.contains("moonmoon-safety-gate-only"))
+  assert_true(markdown.contains("hardware-denied"))
+  assert_true(markdown.contains("EscalateToOperatorDecision"))
+  assert_true(markdown.contains("RetryWithNewEvidence"))
+  assert_true(markdown.contains("FreezeUntilNewSourceEvidence"))
+  let json = @moonclaw.first_trusted_square_remediation_margin_reviewed_work_items_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"work_item_id\": \"moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout\"",
+    ),
+  )
+  assert_true(json.contains("\"source_review_decision\": \"Accept\""))
+  assert_true(json.contains("\"state\": \"Accepted\""))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"automatic_refresh_loop_allowed\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+  assert_true(json.contains("\"hardware_authority_change\": false"))
+}
+
+///|
 test "first trusted square remediation margin refresh follow-up receipt carries follow-up refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_receipt()
   assert_eq(

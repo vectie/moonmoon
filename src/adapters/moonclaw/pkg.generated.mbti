@@ -129,6 +129,12 @@ pub fn first_trusted_square_remediation_margin_reviewed_action_plans_json() -> J
 
 pub fn first_trusted_square_remediation_margin_reviewed_action_plans_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_reviewed_work_items() -> Array[MoonClawRemediationMarginReviewedWorkItem]
+
+pub fn first_trusted_square_remediation_margin_reviewed_work_items_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_reviewed_work_items_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_task() -> MoonClawRemediationMarginTask
 
 pub fn first_trusted_square_remediation_margin_tasks() -> Array[MoonClawRemediationMarginTask]
@@ -164,6 +170,8 @@ pub fn remediation_margin_refresh_state_label(MoonClawRemediationMarginRefreshSt
 pub fn remediation_margin_result_status_label(MoonClawRemediationMarginResultStatus) -> String
 
 pub fn remediation_margin_reviewed_action_plans_from_review(MoonClawRemediationMarginCloseoutActionReview) -> Array[MoonClawRemediationMarginReviewedActionPlan]
+
+pub fn remediation_margin_reviewed_work_items_from_plans(Array[MoonClawRemediationMarginReviewedActionPlan]) -> Array[MoonClawRemediationMarginReviewedWorkItem]
 
 pub fn remediation_margin_state_label(MoonClawRemediationMarginState) -> String
 
@@ -220,6 +228,10 @@ pub fn render_remediation_margin_refresh_tasks_markdown(Array[MoonClawRemediatio
 pub fn render_remediation_margin_reviewed_action_plans_json(Array[MoonClawRemediationMarginReviewedActionPlan]) -> Json
 
 pub fn render_remediation_margin_reviewed_action_plans_markdown(Array[MoonClawRemediationMarginReviewedActionPlan]) -> String
+
+pub fn render_remediation_margin_reviewed_work_items_json(Array[MoonClawRemediationMarginReviewedWorkItem]) -> Json
+
+pub fn render_remediation_margin_reviewed_work_items_markdown(Array[MoonClawRemediationMarginReviewedWorkItem]) -> String
 
 pub fn render_remediation_margin_tasks_json(Array[MoonClawRemediationMarginTask]) -> Json
 
@@ -666,6 +678,36 @@ pub(all) struct MoonClawRemediationMarginReviewedActionPlan {
   hardware_authority_change : Bool
   hardware_denied : Bool
   acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginReviewedWorkItem {
+  work_item_id : String
+  plan_id : String
+  site_id : String
+  route_id : String
+  rank : Int
+  state : MoonClawReceiptStatus
+  margin_id : String
+  refresh_id : String
+  blocker_domain : String
+  disposition : @moonrobo.RemediationMarginCycleDisposition
+  required_evidence : String
+  target_artifact_path : String
+  command : String
+  acceptance_check : String
+  source_review_transition_id : String
+  source_review_decision : MoonClawCloseoutActionReviewDecision
+  reviewer_id : String
+  reviewed_at_utc : String
+  may_consume_simulation : Bool
+  simulation_state : @moonrobo.MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_authority_change : Bool
+  hardware_denied : Bool
   safety_gate : String
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
