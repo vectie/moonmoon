@@ -22,12 +22,12 @@ fn app_styles() -> String {
     #|<style>
     #|:root {
     #|  color-scheme: light;
-    #|  --paper: #f7f4ee;
+    #|  --paper: #eef2f3;
     #|  --panel: #ffffff;
     #|  --ink: #1f2428;
     #|  --muted: #697177;
-    #|  --line: #d8d3c8;
-    #|  --line-strong: #9c9488;
+    #|  --line: #ccd3d6;
+    #|  --line-strong: #87979f;
     #|  --danger: #b2362e;
     #|  --warn: #b67818;
     #|  --ok: #28765f;
@@ -85,7 +85,7 @@ fn app_styles() -> String {
     #|  min-height: 30px;
     #|  padding: 4px 10px;
     #|  border: 1px solid var(--line-strong);
-    #|  background: #fffaf2;
+    #|  background: #f6fbfa;
     #|  color: var(--ink);
     #|  font-size: 13px;
     #|  white-space: nowrap;
@@ -100,7 +100,7 @@ fn app_styles() -> String {
     #|  min-height: 34px;
     #|  padding: 6px 10px;
     #|  border: 1px solid var(--line);
-    #|  background: #fffdf9;
+    #|  background: #fbfcfd;
     #|  color: var(--ink);
     #|  cursor: pointer;
     #|}
@@ -120,7 +120,7 @@ fn app_styles() -> String {
     #|  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
     #|  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
     #|  border: 1px solid var(--line-strong);
-    #|  background: #272621;
+    #|  background: #1e2628;
     #|  position: relative;
     #|  overflow: hidden;
     #|}
@@ -167,14 +167,72 @@ fn app_styles() -> String {
     #|  display: grid;
     #|  gap: 8px;
     #|}
+    #|.clearance-list {
+    #|  display: grid;
+    #|  gap: 10px;
+    #|}
     #|.route-row, .fact-row, .review-row {
     #|  border: 1px solid var(--line);
-    #|  background: #fffdf9;
+    #|  background: #fbfcfd;
     #|  padding: 10px;
+    #|}
+    #|.clearance-row {
+    #|  border: 1px solid var(--line);
+    #|  background: #fbfcfd;
+    #|  padding: 10px;
+    #|  display: grid;
+    #|  gap: 8px;
     #|}
     #|.route-row[aria-current="true"] {
     #|  border-color: var(--route);
     #|  box-shadow: inset 3px 0 0 var(--route);
+    #|}
+    #|.decision-group {
+    #|  display: grid;
+    #|  grid-template-columns: repeat(3, minmax(0, 1fr));
+    #|  gap: 6px;
+    #|}
+    #|.decision-button {
+    #|  min-height: 34px;
+    #|  border: 1px solid var(--line);
+    #|  background: #f6fbfa;
+    #|  color: var(--ink);
+    #|  cursor: pointer;
+    #|  padding: 6px 8px;
+    #|}
+    #|.decision-button[aria-pressed="true"] {
+    #|  border-color: var(--teal);
+    #|  background: #eef9f7;
+    #|}
+    #|.export-actions {
+    #|  display: flex;
+    #|  gap: 8px;
+    #|  flex-wrap: wrap;
+    #|}
+    #|.export-button {
+    #|  min-height: 34px;
+    #|  border: 1px solid var(--line-strong);
+    #|  background: #f6fbfa;
+    #|  color: var(--ink);
+    #|  cursor: pointer;
+    #|  padding: 6px 10px;
+    #|}
+    #|.export-box {
+    #|  width: 100%;
+    #|  min-height: 160px;
+    #|  resize: vertical;
+    #|  border: 1px solid var(--line);
+    #|  background: #fbfcfd;
+    #|  color: var(--ink);
+    #|  padding: 10px;
+    #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    #|  font-size: 12px;
+    #|  line-height: 1.35;
+    #|}
+    #|.export-status {
+    #|  min-height: 18px;
+    #|  color: var(--muted);
+    #|  font-size: 12px;
     #|}
     #|.section {
     #|  padding: 14px 0;
@@ -188,7 +246,7 @@ fn app_styles() -> String {
     #|}
     #|.metric {
     #|  border: 1px solid var(--line);
-    #|  background: #fffdf9;
+    #|  background: #fbfcfd;
     #|  padding: 10px;
     #|  min-height: 66px;
     #|}
@@ -213,6 +271,7 @@ fn app_styles() -> String {
     #|  .side-pane { max-height: none; }
     #|  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
     #|  .metrics { grid-template-columns: 1fr; }
+    #|  .decision-group { grid-template-columns: 1fr; }
     #|}
     #|</style>
     #|
@@ -229,6 +288,13 @@ fn app_script() -> String {
     #|let selectedCellId = view.selected_cell_id;
     #|const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
     #|const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
+    #|const clearanceItems = book.review_queue.filter(item => item.item_id.startsWith('clear-'));
+    #|const clearanceDecisions = new Map(clearanceItems.map(item => [item.item_id, 'RequestEvidence']));
+    #|const decisionOptions = [
+    #|  ['Accept', 'Accept'],
+    #|  ['Reject', 'Reject'],
+    #|  ['RequestEvidence', 'Need evidence'],
+    #|];
     #|
     #|function layerValue(cell, id) {
     #|  return cell.layer_values.find(value => value.layer_id === id) || cell.layer_values[0];
@@ -356,6 +422,116 @@ fn app_script() -> String {
     #|  ));
     #|}
     #|
+    #|function transitionDecisionStatus(decision) {
+    #|  if (decision === 'Accept') return 'Accepted';
+    #|  if (decision === 'Reject') return 'Rejected';
+    #|  return 'NeedsEvidence';
+    #|}
+    #|
+    #|function transitionSuffix(decision) {
+    #|  if (decision === 'Accept') return 'accept';
+    #|  if (decision === 'Reject') return 'reject';
+    #|  return 'request-evidence';
+    #|}
+    #|
+    #|function transitionEvidenceRefs(item) {
+    #|  const transition = transitionByItem.get(item.item_id);
+    #|  if (transition && transition.source_evidence_refs.length) return transition.source_evidence_refs;
+    #|  return [{
+    #|    ref_id: item.item_id,
+    #|    entry_id: 'mission/first-trusted-square/selected-route-clearance',
+    #|    path: 'mission/first-trusted-square/selected-route-clearance.json',
+    #|    immutable_uri: `moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#${item.item_id}`
+    #|  }];
+    #|}
+    #|
+    #|function buildClearanceTransition(item) {
+    #|  const decision = clearanceDecisions.get(item.item_id) || 'RequestEvidence';
+    #|  return {
+    #|    transition_id: `rabbita-${item.item_id}-${transitionSuffix(decision)}`,
+    #|    item_id: item.item_id,
+    #|    previous_status: item.status,
+    #|    decision,
+    #|    resulting_status: transitionDecisionStatus(decision),
+    #|    reviewer_id: 'operator/rabbita-clearance-review',
+    #|    reviewer_role: item.owner,
+    #|    timestamp_policy: 'operator-browser-export',
+    #|    recorded_at_utc: new Date().toISOString(),
+    #|    append_only: true,
+    #|    source_evidence_refs: transitionEvidenceRefs(item),
+    #|    rationale: `Rabbita ${transitionSuffix(decision)} decision for ${item.item_id}: ${item.reason}`
+    #|  };
+    #|}
+    #|
+    #|function clearanceTransitionExport() {
+    #|  return {
+    #|    workspace: book.workspace,
+    #|    site_id: book.site_id,
+    #|    generated_by: 'output/ui/rabbita/first_trusted_square.html',
+    #|    transitions: clearanceItems.map(buildClearanceTransition)
+    #|  };
+    #|}
+    #|
+    #|function renderTransitionExport() {
+    #|  const box = document.getElementById('transition-export');
+    #|  if (!box) return;
+    #|  box.value = JSON.stringify(clearanceTransitionExport(), null, 2);
+    #|}
+    #|
+    #|function renderClearanceReview() {
+    #|  const list = document.getElementById('clearance-review');
+    #|  list.replaceChildren(...clearanceItems.map(item => {
+    #|    const selected = clearanceDecisions.get(item.item_id) || 'RequestEvidence';
+    #|    const controls = el('div', { className: 'decision-group', role: 'group', 'aria-label': item.item_id },
+    #|      decisionOptions.map(([decision, label]) => {
+    #|        const button = el('button', {
+    #|          className: 'decision-button',
+    #|          type: 'button',
+    #|          'aria-pressed': String(decision === selected),
+    #|          text: label
+    #|        });
+    #|        button.addEventListener('click', () => {
+    #|          clearanceDecisions.set(item.item_id, decision);
+    #|          renderClearanceReview();
+    #|          renderTransitionExport();
+    #|        });
+    #|        return button;
+    #|      })
+    #|    );
+    #|    return el('div', { className: 'clearance-row' }, [
+    #|      el('b', { text: `${item.item_id} - ${item.status}` }),
+    #|      el('span', { text: item.reason }),
+    #|      controls
+    #|    ]);
+    #|  }));
+    #|  renderTransitionExport();
+    #|}
+    #|
+    #|function copyTransitionExport() {
+    #|  const box = document.getElementById('transition-export');
+    #|  const status = document.getElementById('transition-export-status');
+    #|  if (!navigator.clipboard) {
+    #|    box.select();
+    #|    status.textContent = 'Select the export JSON manually';
+    #|    return;
+    #|  }
+    #|  navigator.clipboard.writeText(box.value).then(() => {
+    #|    status.textContent = 'Transition JSON copied';
+    #|  }).catch(() => {
+    #|    box.select();
+    #|    status.textContent = 'Select the export JSON manually';
+    #|  });
+    #|}
+    #|
+    #|function downloadTransitionExport() {
+    #|  const blob = new Blob([document.getElementById('transition-export').value], { type: 'application/json' });
+    #|  const link = document.createElement('a');
+    #|  link.href = URL.createObjectURL(blob);
+    #|  link.download = 'first_trusted_square_clearance_transitions.json';
+    #|  link.click();
+    #|  URL.revokeObjectURL(link.href);
+    #|}
+    #|
     #|function render() {
     #|  renderToolbar();
     #|  renderGrid();
@@ -363,8 +539,11 @@ fn app_script() -> String {
     #|  renderRoutes();
     #|  renderFacts();
     #|  renderReview();
+    #|  renderClearanceReview();
     #|}
     #|
+    #|document.getElementById('copy-transition-export').addEventListener('click', copyTransitionExport);
+    #|document.getElementById('download-transition-export').addEventListener('click', downloadTransitionExport);
     #|render();
     #|</script>
     #|
@@ -431,6 +610,16 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>MoonBook Review Status</h2>
     $|      <div id="review" class="review-list"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Selected Route Clearance</h2>
+    $|      <div id="clearance-review" class="clearance-list"></div>
+    $|      <div class="export-actions" style="margin-top: 10px;">
+    $|        <button id="copy-transition-export" class="export-button" type="button">Copy</button>
+    $|        <button id="download-transition-export" class="export-button" type="button">Download</button>
+    $|      </div>
+    $|      <p id="transition-export-status" class="export-status" aria-live="polite"></p>
+    $|      <textarea id="transition-export" class="export-box" aria-label="Importable selected-route clearance review transitions" readonly></textarea>
     $|    </section>
     $|  </aside>
     $|</main>

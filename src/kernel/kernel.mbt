@@ -174,7 +174,7 @@ fn moonbook_gate(_dossier : @site.SiteDossier) -> EvidenceGate {
     readiness: Ready,
     proof_artifact: "output/moonbook/workspaces/first-trusted-square/",
     blocker: "none",
-    next_action: "connect Rabbita clearance controls to export operator-authored review transitions",
+    next_action: "wire exported Rabbita clearance transitions into the MoonBook import workflow",
   }
 }
 
@@ -219,7 +219,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "typed MoonBit dossier -> materialized workspace files",
       current_artifact: "src/adapters/moonbook/export.mbt",
       readiness: Ready,
-      next_output: "Rabbita-authored selected-route clearance transition export",
+      next_output: "review-transition import workflow for Rabbita exports",
     },
     {
       layer_id: "operator-viewer",
@@ -228,7 +228,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       source_contract: "site dossier -> terrain/hazard/route layer view state",
       current_artifact: "src/ui/types.mbt + src/ui/rabbita_moon/page.mbt",
       readiness: Ready,
-      next_output: "clearance review controls in the Rabbita inspection surface",
+      next_output: "review-transition import feedback in the Rabbita inspection surface",
     },
   ]
 }
@@ -425,7 +425,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-clearance-review-controls",
-      priority: 80,
+      priority: 20,
       lane: ViewerLane,
       title: "Add Rabbita controls for selected-route clearance review decisions",
       outcome: "Operators can author accept, reject, or request-evidence transitions against the four selected-route clearance items from the browser surface",
@@ -435,7 +435,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "output/moonbook/workspaces/first-trusted-square/review_queue.json",
       ],
-      done_when: "Rabbita can emit an importable review transition for each selected-route terrain, illumination, energy, and MoonBook clearance item",
+      done_when: "done: Rabbita can emit an importable review transition for each selected-route terrain, illumination, energy, and MoonBook clearance item",
+    },
+    {
+      task_id: "rabbita-transition-import-workflow",
+      priority: 75,
+      lane: SuiteLane,
+      title: "Import Rabbita clearance review transitions into MoonBook regeneration",
+      outcome: "Operator-exported clearance decisions can regenerate MoonBook, MoonRobo, and workspace payloads without manual source edits",
+      depends_on: [
+        "src/adapters/moonbook/export.mbt", "scripts/materialize_moonbook_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+        "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      done_when: "a Rabbita-exported transition JSON file can be passed into the dossier build to update selected-route clearance status and materialized handoff evidence",
     },
   ]
 }
