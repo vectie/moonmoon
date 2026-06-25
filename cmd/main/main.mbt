@@ -30,6 +30,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw corridor tasks json
     #|  moon run cmd/main -- moonclaw remediation margins
     #|  moon run cmd/main -- moonclaw remediation margins json
+    #|  moon run cmd/main -- moonclaw remediation refresh
+    #|  moon run cmd/main -- moonclaw remediation refresh json
     #|  moon run cmd/main -- moonclaw remediation receipts
     #|  moon run cmd/main -- moonclaw remediation receipts json
     #|  moon run cmd/main -- moonclaw receipts
@@ -81,6 +83,20 @@ fn main {
       )
     } else {
       println(@moonclaw.first_trusted_square_corridor_tasks_markdown())
+    }
+  } else if args.contains("moonclaw") &&
+    args.contains("remediation") &&
+    args.contains("refresh") {
+    if output_json {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_refresh_tasks_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonclaw.first_trusted_square_remediation_margin_refresh_tasks_markdown(),
+      )
     }
   } else if args.contains("moonclaw") &&
     args.contains("remediation") &&

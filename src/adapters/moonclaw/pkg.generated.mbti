@@ -79,6 +79,14 @@ pub fn first_trusted_square_remediation_margin_receipts_json() -> Json
 
 pub fn first_trusted_square_remediation_margin_receipts_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_refresh_task() -> MoonClawRemediationMarginRefreshTask
+
+pub fn first_trusted_square_remediation_margin_refresh_tasks() -> Array[MoonClawRemediationMarginRefreshTask]
+
+pub fn first_trusted_square_remediation_margin_refresh_tasks_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_refresh_tasks_markdown() -> String
+
 pub fn first_trusted_square_remediation_margin_task() -> MoonClawRemediationMarginTask
 
 pub fn first_trusted_square_remediation_margin_tasks() -> Array[MoonClawRemediationMarginTask]
@@ -132,6 +140,10 @@ pub fn render_receipts_markdown(Array[MoonClawRouteScoringReceipt]) -> String
 pub fn render_remediation_margin_receipts_json(Array[MoonClawRemediationMarginReceipt]) -> Json
 
 pub fn render_remediation_margin_receipts_markdown(Array[MoonClawRemediationMarginReceipt]) -> String
+
+pub fn render_remediation_margin_refresh_tasks_json(Array[MoonClawRemediationMarginRefreshTask]) -> Json
+
+pub fn render_remediation_margin_refresh_tasks_markdown(Array[MoonClawRemediationMarginRefreshTask]) -> String
 
 pub fn render_remediation_margin_tasks_json(Array[MoonClawRemediationMarginTask]) -> Json
 
@@ -299,6 +311,40 @@ pub(all) struct MoonClawRemediationMarginReceipt {
   hardware_state : @moonrobo.MoonroboExecutionState
   hardware_authority : String
   hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginRefreshAction {
+  rank : Int
+  margin_id : String
+  refresh_id : String
+  source_projection_path : String
+  target_artifact_path : String
+  command : String
+  acceptance_check : String
+  reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawRemediationMarginRefreshTask {
+  task_id : String
+  site_id : String
+  route_id : String
+  priority : MoonClawJobPriority
+  state : MoonClawReceiptStatus
+  source_projection_id : String
+  source_projection_path : String
+  source_modeling_pass_id : String
+  source_projection_status : @moonrobo.RemediationMarginProjectionStatus
+  source_simulation_state : @moonrobo.MoonroboExecutionState
+  may_consume_simulation : Bool
+  blocking_margin_count : Int
+  ranked_margin_ids : Array[String]
+  refresh_actions : Array[MoonClawRemediationMarginRefreshAction]
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  acceptance_criteria : Array[MoonClawAcceptanceCriterion]
+  safety_gate : String
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

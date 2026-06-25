@@ -154,3 +154,90 @@ test "MoonClaw remediation margin receipt renderers expose state and authority" 
   assert_true(json.contains("\"status\": \"StillBlocking\""))
   assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
 }
+
+///|
+test "first trusted square remediation margin refresh task consumes projection" {
+  let task = @moonclaw.first_trusted_square_remediation_margin_refresh_task()
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/refresh-task",
+  )
+  assert_eq(
+    task.source_projection_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/projection",
+  )
+  assert_eq(
+    task.source_projection_path,
+    "output/moonrobo/first_trusted_square_remediation_margin_projection.json",
+  )
+  assert_eq(
+    task.source_modeling_pass_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/modeling-pass",
+  )
+  assert_true(
+    task.source_projection_status ==
+    @moonrobo.RemediationMarginProjectionStatus::NoConsumeSimulationBlocked,
+  )
+  assert_true(
+    task.source_simulation_state ==
+    @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(!task.may_consume_simulation)
+  assert_eq(task.blocking_margin_count, 3)
+  assert_eq(task.refresh_actions.length(), 3)
+  assert_eq(task.ranked_margin_ids[0], "terrain-northeast-stepout")
+  assert_eq(task.ranked_margin_ids[1], "illumination-northeast-stepout")
+  assert_eq(task.ranked_margin_ids[2], "energy-window")
+  assert_eq(task.refresh_actions[0].rank, 1)
+  assert_eq(task.refresh_actions[1].rank, 2)
+  assert_eq(task.refresh_actions[2].rank, 3)
+  assert_true(
+    task.refresh_actions[0].command.contains(
+      "generate_selected_route_terrain_remediation.py --check",
+    ),
+  )
+  assert_true(
+    task.refresh_actions[1].acceptance_check.contains(
+      "check_selected_route_horizon_model.py",
+    ),
+  )
+  assert_true(
+    task.refresh_actions[2].target_artifact_path.contains(
+      "first_trusted_square_energy_remediation.json",
+    ),
+  )
+  assert_true(
+    task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(task.hardware_denied)
+}
+
+///|
+test "MoonClaw remediation margin refresh renderers expose no-consume task" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_refresh_tasks_markdown()
+  assert_true(markdown.contains("MoonClaw Remediation Margin Refresh Tasks"))
+  assert_true(markdown.contains("NoConsumeSimulationBlocked"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("terrain-northeast-stepout"))
+  assert_true(markdown.contains("illumination-northeast-stepout"))
+  assert_true(markdown.contains("energy-window"))
+  assert_true(
+    markdown.contains("hardware authority: moonmoon-safety-gate-only"),
+  )
+  let json = @moonclaw.first_trusted_square_remediation_margin_refresh_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"task_id\": \"moonclaw/first-trusted-square/remediation-margin-v1/refresh-task\"",
+    ),
+  )
+  assert_true(
+    json.contains(
+      "\"source_projection_status\": \"NoConsumeSimulationBlocked\"",
+    ),
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}

@@ -1025,7 +1025,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonclaw-remediation-margin-refresh-task",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Issue a refresh task from the no-consume remediation projection",
       outcome: "MoonClaw gets a new bounded task packet that targets the terrain, horizon, and energy evidence refreshes required before MoonRobo simulation can consume anything",
@@ -1038,7 +1038,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
         "scripts/check_moonclaw_remediation_margin_refresh_task.py",
       ],
-      done_when: "MoonClaw emits a refresh task that consumes the no-consume projection, ranks terrain/horizon/energy evidence refreshes, and preserves HardwareDenied authority",
+      done_when: "done: MoonClaw emits a refresh task that consumes the no-consume projection, ranks terrain/horizon/energy evidence refreshes, and preserves HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-refresh-task-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize remediation-margin refresh task into MoonBook",
+      outcome: "The projection-driven MoonClaw refresh packet becomes durable workspace evidence before Rabbita or downstream task loops inspect it",
+      depends_on: [
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
+        "scripts/check_moonbook_remediation_margin_refresh_task_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes the remediation-margin refresh task with ranked terrain/horizon/energy refreshes and HardwareDenied authority",
     },
   ]
 }
