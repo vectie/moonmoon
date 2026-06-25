@@ -1540,7 +1540,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-reviewed-action-plan-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface reviewed remediation-margin action plan in Rabbita",
       outcome: "Operators can inspect the accepted MoonClaw reviewed action plan from MoonBook before terrain escalation, horizon retry, or energy freeze work is scheduled",
@@ -1552,7 +1552,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_action_plan_surface.py",
       ],
-      done_when: "Rabbita renders the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-reviewed-work-items",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit reviewed remediation-margin work items",
+      outcome: "The accepted reviewed action plan becomes three explicit MoonClaw work items for terrain escalation, horizon retry-with-new-evidence, and energy freeze without opening a refresh loop",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_reviewed_action_plan_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
+        "scripts/check_moonclaw_remediation_margin_reviewed_work_items.py",
+      ],
+      done_when: "MoonClaw emits three reviewed remediation-margin work items that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

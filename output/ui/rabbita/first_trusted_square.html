@@ -3134,6 +3134,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <div id="remediation-margin-closeout-action" class="review-list" aria-label="MoonClaw remediation margin closeout action task with needs-review state, retry/escalate/freeze actions, no-consume simulation status, and hardware-denial authority"></div>
     </section>
     <section class="section">
+      <h2>Remediation Margin Reviewed Action Plan</h2>
+      <div id="remediation-margin-reviewed-action-plan" class="review-list" aria-label="MoonClaw reviewed remediation margin action plan with accepted review provenance, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
+    </section>
+    <section class="section">
       <h2>Closeout Action Review</h2>
       <div id="closeout-action-review" class="clearance-list" aria-label="Operator review for MoonClaw remediation margin closeout action task"></div>
       <div class="export-actions" style="margin-top: 10px;">
@@ -3486,6 +3490,14 @@ function renderRemediationMarginCloseoutAction() {
   );
 }
 
+function renderRemediationMarginReviewedActionPlan() {
+  renderMoonBookEntry(
+    'remediation-margin-reviewed-action-plan',
+    'moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan',
+    'remediation-margin-reviewed-action-plan-row'
+  );
+}
+
 function renderRemediationMarginRefreshProjection() {
   renderMoonBookEntry(
     'remediation-margin-refresh-projection',
@@ -3772,6 +3784,7 @@ function render() {
   renderRemediationMarginRefreshFollowupProjection();
   renderRemediationMarginCycleCloseout();
   renderRemediationMarginCloseoutAction();
+  renderRemediationMarginReviewedActionPlan();
   renderRemediationMarginRefreshProjection();
   renderRemediationMarginProjection();
   renderClearanceReview();

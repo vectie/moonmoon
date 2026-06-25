@@ -676,6 +676,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginReviewedActionPlan() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-reviewed-action-plan',
+    #|    'moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan',
+    #|    'remediation-margin-reviewed-action-plan-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -962,6 +970,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginRefreshFollowupProjection();
     #|  renderRemediationMarginCycleCloseout();
     #|  renderRemediationMarginCloseoutAction();
+    #|  renderRemediationMarginReviewedActionPlan();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -1106,6 +1115,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Closeout Action</h2>
     $|      <div id="remediation-margin-closeout-action" class="review-list" aria-label="MoonClaw remediation margin closeout action task with needs-review state, retry/escalate/freeze actions, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Reviewed Action Plan</h2>
+    $|      <div id="remediation-margin-reviewed-action-plan" class="review-list" aria-label="MoonClaw reviewed remediation margin action plan with accepted review provenance, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Closeout Action Review</h2>
