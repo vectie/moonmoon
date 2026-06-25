@@ -6,17 +6,17 @@
     "claim_kind": "Derived",
     "confidence": 0.45,
     "path": "mission/first-trusted-square/energy-window.json",
-    "summary": "block with 880 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    "summary": "block with 1265 Wh required and 234.938073 Wh verified available: revise rover power model, route count, or site window before simulation"
   },
   "payload": {
     "budget": {
       "budget_id": "conservative-south-pole-energy-v1",
       "label": "Conservative South Pole Rover Energy Budget",
-      "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
+      "power_window_evidence_id": "first-trusted-square-power-window-computed-v1",
       "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-      "power_window_source_status": "source-files-ready",
-      "time_start_utc": "pending",
-      "time_end_utc": "pending",
+      "power_window_source_status": "ready",
+      "time_start_utc": "2026-06-25T00:00:00Z",
+      "time_end_utc": "2026-07-09T00:00:00Z",
       "battery_capacity_wh": 1200,
       "reserve_wh": 600,
       "drive_power_w": 120,
@@ -24,25 +24,23 @@
       "comms_power_w": 20,
       "min_energy_margin_wh": 250,
       "required_sunlit_hours": 4,
-      "assumed_dark_survival_hours": 2,
-      "verified_available_energy_wh": 0,
-      "has_time_window_ephemeris": false
+      "assumed_dark_survival_hours": 13,
+      "verified_available_energy_wh": 234.938073,
+      "has_time_window_ephemeris": true
     },
     "route_count": 6,
     "blocked_route_count": 6,
     "estimated_drive_hours": 1.5,
-    "estimated_dark_survival_hours": 2,
-    "required_energy_wh": 880,
-    "available_energy_wh": 0,
-    "margin_wh": -880,
+    "estimated_dark_survival_hours": 13,
+    "required_energy_wh": 1265,
+    "available_energy_wh": 234.938073,
+    "margin_wh": -1030.061927,
     "decision": "Block",
     "reasons": [
-      "no time-windowed solar ephemeris is attached for energy planning",
-      "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
       "estimated energy demand exceeds verified available energy",
       "6 route candidates remain blocked before energy simulation"
     ],
-    "next_action": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+    "next_action": "revise rover power model, route count, or site window before simulation"
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

@@ -19,21 +19,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",
@@ -65,21 +65,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",
@@ -111,21 +111,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",
@@ -157,21 +157,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",
@@ -203,21 +203,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",
@@ -249,21 +249,21 @@
         "label": "Illumination and thermal gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
-        "reason": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        "reason": "widen local horizon and terrain-shadow evidence before route simulation"
       },
       {
         "precondition_id": "power-window-evidence",
         "label": "Power-window source evidence gate",
-        "decision": "Block",
+        "decision": "Allow",
         "evidence_path": "mission/first-trusted-square/power-window-evidence.json",
-        "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready"
+        "reason": "power-window evidence first-trusted-square-power-window-computed-v1 has source status ready"
       },
       {
         "precondition_id": "energy-window",
         "label": "Rover energy window gate",
         "decision": "Block",
         "evidence_path": "mission/first-trusted-square/energy-window.json",
-        "reason": "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        "reason": "revise rover power model, route count, or site window before simulation"
       },
       {
         "precondition_id": "corridor-scan-best-window",

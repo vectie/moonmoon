@@ -3,7 +3,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 47)
-  assert_eq(dossier.review_queue.length(), 27)
+  assert_eq(dossier.review_queue.length(), 25)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -44,7 +44,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(
     dossier.entries[9].summary.contains(
-      "generated_first_trusted_square_power_window.mbt",
+      "local horizon and rover power assumptions",
     ),
   )
   assert_true(
@@ -121,12 +121,15 @@ test "first trusted square exports a MoonBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[38].kind),
     "power-window-evidence",
   )
-  assert_true(dossier.entries[38].summary.contains("source-files-ready"))
+  assert_true(dossier.entries[38].summary.contains("ready"))
+  assert_true(dossier.entries[38].summary.contains("234.938073 Wh verified"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[39].kind),
     "energy-window",
   )
-  assert_true(dossier.entries[39].summary.contains("0 Wh verified available"))
+  assert_true(
+    dossier.entries[39].summary.contains("234.938073 Wh verified available"),
+  )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[40].kind),
     "moonrobo-handoff",
@@ -142,7 +145,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
     "moonclaw-task",
   )
   assert_true(
-    dossier.entries[42].summary.contains("5 artifacts with 1 blocker"),
+    dossier.entries[42].summary.contains("5 artifacts with 0 blockers"),
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[43].kind),
@@ -162,6 +165,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
     "moonclaw-ephemeris-receipt",
   )
   assert_true(dossier.entries[45].summary.contains("energy block"))
+  assert_true(dossier.entries[45].summary.contains("accepted receipt"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[46].kind),
     "moonclaw-corridor-receipt",
@@ -200,30 +204,16 @@ test "first trusted square exports a MoonBook evidence dossier" {
   let corridor = dossier.review_queue[18]
   assert_eq(corridor.item_id, "corridor-scan-best-window")
   assert_true(corridor.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let power = dossier.review_queue[19]
-  assert_eq(power.item_id, "power-window-evidence")
-  assert_true(power.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  assert_true(power.reason.contains("time-windowed power result"))
-  assert_true(
-    dossier.review_transitions[19].decision ==
-    @moonbook.ReviewDecision::RequestEvidence,
-  )
-  let energy = dossier.review_queue[20]
+  let energy = dossier.review_queue[19]
   assert_eq(energy.item_id, "energy-window")
   assert_true(energy.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let handoff = dossier.review_queue[21]
+  let handoff = dossier.review_queue[20]
   assert_eq(handoff.item_id, "moonrobo-handoff")
   assert_true(handoff.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let moonclaw = dossier.review_queue[22]
+  let moonclaw = dossier.review_queue[21]
   assert_eq(moonclaw.item_id, "moonclaw-proposals")
   assert_true(moonclaw.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  let ephemeris_task = dossier.review_queue[23]
-  assert_eq(ephemeris_task.item_id, "moonclaw-ephemeris-task")
-  assert_true(
-    ephemeris_task.status == @moonbook.ReviewItemStatus::NeedsEvidence,
-  )
-  assert_true(ephemeris_task.reason.contains("1 blocker"))
-  let first_question = dossier.review_queue[24]
+  let first_question = dossier.review_queue[22]
   assert_eq(first_question.item_id, "question-0")
   assert_true(first_question.status == @moonbook.ReviewItemStatus::Open)
 }

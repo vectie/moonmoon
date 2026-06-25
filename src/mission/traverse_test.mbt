@@ -31,7 +31,7 @@ test "first trusted square route candidates use measured adjacent windows" {
   assert_true(routes[1].illumination.relief_shadow_risk > 0.3)
   assert_true(
     routes[1].illumination.reasons.any(fn(reason) {
-      reason.contains("solar ephemeris")
+      reason.contains("local relief shadow")
     }),
   )
   assert_eq(
@@ -87,18 +87,18 @@ test "first trusted square corridor scan ranks measured route windows" {
 }
 
 ///|
-test "first trusted square illumination gate blocks missing time window evidence" {
+test "first trusted square illumination gate uses computed time window evidence" {
   let evidence = @mission.first_trusted_square_power_window_evidence()
   assert_eq(
     evidence.evidence_id,
-    "first-trusted-square-power-window-sources-ready-v1",
+    "first-trusted-square-power-window-computed-v1",
   )
-  assert_eq(evidence.source_status, "source-files-ready")
+  assert_eq(evidence.source_status, "ready")
   assert_eq(
     evidence.local_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
-  assert_true(!evidence.has_time_window_ephemeris)
+  assert_true(evidence.has_time_window_ephemeris)
   assert_eq(evidence.source_files.length(), 5)
   assert_eq(evidence.source_files[0].file_id, "naif0012.tls")
   assert_eq(evidence.source_files[0].status, "ready")
@@ -117,7 +117,13 @@ test "first trusted square illumination gate blocks missing time window evidence
     "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
   )
   assert_eq(evidence.computation.method_id, "south-pole-power-window-v1")
-  assert_eq(evidence.computation.status, "not-computed")
+  assert_eq(evidence.computation.status, "computed")
+  assert_eq(evidence.time_start_utc, "2026-06-25T00:00:00Z")
+  assert_eq(evidence.time_end_utc, "2026-07-09T00:00:00Z")
+  assert_eq(evidence.sunlit_hours, 323.0)
+  assert_eq(evidence.dark_hours, 13.0)
+  assert_true(evidence.available_energy_wh > 230.0)
+  assert_true(evidence.available_energy_wh < 240.0)
   let assessment = @mission.assess_illumination(
     @terrain.first_trusted_square_grid(),
     @mission.conservative_illumination_constraint(),
@@ -131,41 +137,40 @@ test "first trusted square illumination gate blocks missing time window evidence
     assessment.constraint.power_window_evidence_id,
     evidence.evidence_id,
   )
-  assert_eq(
-    assessment.constraint.power_window_source_status,
-    "source-files-ready",
-  )
+  assert_eq(assessment.constraint.power_window_source_status, "ready")
   assert_true(assessment.relief_shadow_risk > 0.3)
   assert_true(assessment.confidence < 0.5)
   assert_true(
-    assessment.reasons.any(fn(reason) {
-      reason.contains("time-windowed solar ephemeris")
-    }),
+    assessment.reasons.any(fn(reason) { reason.contains("local relief shadow") }),
   )
-  assert_true(assessment.next_action.contains("solar ephemeris"))
+  assert_true(assessment.next_action.contains("local horizon"))
 }
 
 ///|
-test "first trusted square energy window blocks missing ephemeris budget" {
+test "first trusted square energy window blocks insufficient computed power" {
   let assessment = @mission.first_trusted_square_energy_assessment()
   assert_true(assessment.decision == Block)
   assert_eq(assessment.budget.budget_id, "conservative-south-pole-energy-v1")
   assert_eq(
     assessment.budget.power_window_evidence_id,
-    "first-trusted-square-power-window-sources-ready-v1",
+    "first-trusted-square-power-window-computed-v1",
   )
-  assert_eq(assessment.budget.power_window_source_status, "source-files-ready")
+  assert_eq(assessment.budget.power_window_source_status, "ready")
   assert_eq(
     assessment.budget.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
   assert_eq(assessment.route_count, 6)
   assert_eq(assessment.blocked_route_count, 6)
-  assert_true(assessment.required_energy_wh > 800.0)
-  assert_eq(assessment.available_energy_wh, 0.0)
+  assert_eq(assessment.budget.assumed_dark_survival_hours, 13.0)
+  assert_true(assessment.required_energy_wh > 1200.0)
+  assert_true(assessment.available_energy_wh > 230.0)
+  assert_true(assessment.available_energy_wh < 240.0)
   assert_true(assessment.margin_wh < 0.0)
   assert_true(
-    assessment.reasons.any(fn(reason) { reason.contains("solar ephemeris") }),
+    assessment.reasons.any(fn(reason) {
+      reason.contains("energy demand exceeds")
+    }),
   )
   assert_true(
     assessment.reasons.any(fn(reason) {
@@ -173,4 +178,5 @@ test "first trusted square energy window blocks missing ephemeris budget" {
     }),
   )
   assert_eq(@mission.energy_decision_label(assessment), "block")
+  assert_true(assessment.next_action.contains("revise rover power model"))
 }

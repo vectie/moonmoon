@@ -17,6 +17,7 @@ mkdir -p "$MOONROBO_OUT"
 cd "$ROOT"
 
 bash scripts/verify_moonmoon_sources.sh
+python3 scripts/compute_power_window.py --check
 python3 scripts/generate_moonmoon_fixture.py
 python3 scripts/generate_corridor_scan.py
 python3 scripts/generate_power_window.py

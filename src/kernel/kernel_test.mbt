@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "replace-missing-power-window",
+    "rabbita-layer-view-model",
   )
 }
 
@@ -17,11 +17,9 @@ test "kernel preserves progress and current hard blockers instead of hiding them
   let route_gate = kernel.evidence_gates[0]
   let power_gate = kernel.evidence_gates[1]
   assert_true(route_gate.readiness is @kernel.ReadinessState::Ready)
-  assert_true(power_gate.readiness is @kernel.ReadinessState::Blocked)
+  assert_true(power_gate.readiness is @kernel.ReadinessState::Ready)
   assert_eq(route_gate.blocker, "none")
-  assert_true(
-    power_gate.blocker.contains("verified available energy remains zero"),
-  )
+  assert_eq(power_gate.blocker, "none")
 }
 
 ///|
@@ -32,5 +30,6 @@ test "kernel markdown names suite roles and next product output" {
   )
   assert_true(markdown.contains("src/ui/view_model.mbt"))
   assert_true(markdown.contains("promote-best-9x9-route-fixture"))
+  assert_true(markdown.contains("rabbita-layer-view-model"))
   assert_true(markdown.contains("replace-missing-power-window"))
 }

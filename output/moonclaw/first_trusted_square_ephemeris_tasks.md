@@ -3,10 +3,10 @@
 - moonclaw/first-trusted-square/ephemeris-energy-v1/acquisition-task
   - proposal: moonclaw/first-trusted-square/ephemeris-energy-v1
   - priority: critical
-  - state: needs-review
+  - state: accepted
   - objective: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed.
   - safety gate: Do not allow Moonrobo simulation until power-window-json is ready, generated MoonBit evidence is current, and Moonrobo preconditions no longer block on power-window-evidence.
-  - next action: MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached
+  - next action: MoonClaw ephemeris acquisition is accepted; Moonrobo remains blocked by terrain, horizon, and energy-margin gates
   - inputs:
     - energy-window: mission/first-trusted-square/energy-window.json - Conservative rover energy budget currently blocks because no verified sunlit power window is attached.
     - route-illumination: mission/first-trusted-square/routes/*.illumination.json - Per-route illumination gates use measured relief as a shadow-risk proxy and require time-windowed replacement evidence.
@@ -15,20 +15,19 @@
     - source-discovery-record: data/sources/lunar_ephemeris/README.md
       - producer: operator-or-moonclaw-source-agent
       - required: official ephemeris or illumination source family selected with citation
-      - current: 5 ready source files; computation pending
+      - current: 5 ready source files
       - ready: true
       - gate: source-acquisition plan must pin exact official files and the power-window computation before energy can unblock
     - power-window-json: data/sources/lunar_ephemeris/first_trusted_square_power_window.json
       - producer: scripts/generate_power_window.py input
       - required: ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh
-      - current: source-files-ready
-      - ready: false
-      - blocking: current power-window evidence is source-files-ready; no computed time-windowed ephemeris is attached
-      - gate: scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check
+      - current: ready
+      - ready: true
+      - gate: scripts/verify_moonmoon_sources.sh, scripts/compute_power_window.py --check, and scripts/generate_power_window.py --check
     - generated-moonbit-window: src/mission/generated_first_trusted_square_power_window.mbt
       - producer: scripts/generate_power_window.py
       - required: MoonBit evidence mirrors the cited power-window JSON without hand edits
-      - current: generated-uncomputed-power-window-evidence
+      - current: generated-time-window-evidence
       - ready: true
       - gate: moon test src/mission
     - site-energy-output: output/site/first_trusted_square.json
@@ -45,6 +44,7 @@
       - gate: moon run cmd/main -- moonrobo handoff json
   - commands:
     - bash scripts/verify_moonmoon_sources.sh
+    - python3 scripts/compute_power_window.py --check
     - python3 scripts/generate_power_window.py --check
     - /Users/kq/.moon/bin/moon test src/mission
     - python3 scripts/materialize_moonbook_workspace.py --check

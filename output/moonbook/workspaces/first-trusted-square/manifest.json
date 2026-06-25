@@ -3,8 +3,8 @@
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
   "entry_count": 47,
-  "review_queue_count": 27,
-  "review_transition_count": 27,
+  "review_queue_count": 25,
+  "review_transition_count": 25,
   "entry_paths": [
     "datasets/lro-lola-first-trusted-square-dem-v1.json",
     "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json",

@@ -165,19 +165,18 @@ Moonrobo still stays blocked by absent time-windowed solar evidence.
 
 The first power-window evidence boundary is now executable but intentionally
 negative. `data/sources/lunar_ephemeris/first_trusted_square_power_window.json`
-records the source-files-ready status, target coordinate, intended local
-evidence path, pinned NAIF source files, computation placeholder, zero verified
-Wh, and blocking reasons. The source-file entries are locally checksummed, but
-the sunlit/dark window remains uncomputed. `scripts/generate_power_window.py`
+records ready source status, target coordinate, intended local evidence path,
+pinned NAIF source files, computed sunlit/dark hours, low verified Wh, and
+blocking reasons. `scripts/compute_power_window.py` computes the JSON from the
+pinned DE440s SPK, and `scripts/generate_power_window.py`
 mirrors that JSON into
 `src/mission/generated_first_trusted_square_power_window.mbt`, and the mission
 energy/illumination gates read the generated evidence instead of hard-coding the
 absence of ephemeris input. MoonBook indexes this generated boundary as a
 standalone `power-window-evidence` entry before the derived energy budget, so
 the source state remains reviewable independently from route scoring. The
-MoonBook review queue treats that evidence as a high-severity computation
-blocker until a real time window replaces the checked source-files-ready
-fixture. Moonrobo handoff packets include the same
+MoonBook accepts that evidence while the energy-window and local-horizon review
+items remain high-severity blockers. Moonrobo handoff packets include the same
 `power-window-evidence` precondition before the derived energy-window gate, so
 robot-facing simulation packets preserve the difference between missing source
 evidence and computed energy margin.

@@ -75,7 +75,7 @@ test "first trusted square declares an ephemeris power source candidate" {
   assert_true(candidate.next_action.contains("energy gate"))
   assert_eq(
     @dataset.source_candidate_status_label(candidate),
-    "needs-source-upgrade",
+    "needs-human-review",
   )
 }
 
@@ -126,7 +126,7 @@ test "first trusted square has an ephemeris acquisition plan" {
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
   assert_true(
-    plan.trust_gate.contains("generated_first_trusted_square_power_window.mbt"),
+    plan.trust_gate.contains("local horizon and rover power assumptions"),
   )
   assert_eq(@dataset.acquisition_plan_progress_label(plan), "recorded:5-steps")
 }

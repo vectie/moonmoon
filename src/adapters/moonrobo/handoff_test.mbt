@@ -36,7 +36,8 @@ test "first trusted square primary Moonrobo handoff follows promoted best corrid
   assert_true(
     handoff.preconditions.any(fn(precondition) {
       precondition.precondition_id == "power-window-evidence" &&
-      precondition.reason.contains("source-files-ready")
+      precondition.decision == @mission.TraverseDecision::Allow &&
+      precondition.reason.contains("source status ready")
     }),
   )
   assert_true(
@@ -60,7 +61,7 @@ test "first trusted square Moonrobo renderers expose blocked handoff evidence" {
   assert_true(markdown.contains("southwest-bypass"))
   assert_true(markdown.contains("northeast-stepout"))
   assert_true(markdown.contains("power-window-evidence"))
-  assert_true(markdown.contains("source-files-ready"))
+  assert_true(markdown.contains("source status ready"))
   assert_true(markdown.contains("energy-window"))
   assert_true(markdown.contains("must not simulate"))
   let json = @moonrobo.first_trusted_square_json().stringify(indent=2)

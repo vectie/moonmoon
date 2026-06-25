@@ -73,7 +73,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
-      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate."
+      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate."
     },
     {
       "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
@@ -91,7 +91,7 @@
       "claim_kind": "Unknown",
       "confidence": 0,
       "path": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1.json",
-      "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block."
+      "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block."
     },
     {
       "entry_id": "source-product/select-ldem-875s-20m-float-v1",
@@ -298,7 +298,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
-      "summary": "block with relief-shadow risk 0.3635749999999998: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.3635749999999998: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "illumination/first-trusted-square/west-contour-detour",
@@ -307,7 +307,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
-      "summary": "block with relief-shadow risk 0.32390624999999956: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.32390624999999956: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "illumination/first-trusted-square/north-rim-stepout",
@@ -316,7 +316,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
-      "summary": "block with relief-shadow risk 0.28963125000000006: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.28963125000000006: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "illumination/first-trusted-square/southwest-bypass",
@@ -325,7 +325,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
-      "summary": "block with relief-shadow risk 0.2673000000000002: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.2673000000000002: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "illumination/first-trusted-square/south-stepout",
@@ -334,7 +334,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
-      "summary": "block with relief-shadow risk 0.27855000000000024: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.27855000000000024: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "illumination/first-trusted-square/northeast-stepout",
@@ -343,16 +343,16 @@
       "claim_kind": "Derived",
       "confidence": 0.45263999999999993,
       "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
-      "summary": "block with relief-shadow risk 0.22381250000000003: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "summary": "block with relief-shadow risk 0.22381250000000003: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "entry_id": "power-window/first-trusted-square/ephemeris-evidence",
       "title": "Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "PowerWindowEvidence",
       "claim_kind": "Derived",
-      "confidence": 0,
+      "confidence": 0.62,
       "path": "mission/first-trusted-square/power-window-evidence.json",
-      "summary": "source-files-ready first-trusted-square-power-window-sources-ready-v1: 0 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+      "summary": "ready first-trusted-square-power-window-computed-v1: 234.938073 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
     },
     {
       "entry_id": "energy/first-trusted-square/conservative-window",
@@ -361,7 +361,7 @@
       "claim_kind": "Derived",
       "confidence": 0.45,
       "path": "mission/first-trusted-square/energy-window.json",
-      "summary": "block with 880 Wh required and 0 Wh verified available: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      "summary": "block with 1265 Wh required and 234.938073 Wh verified available: revise rover power model, route count, or site window before simulation"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
@@ -388,7 +388,7 @@
       "claim_kind": "Derived",
       "confidence": 0.6,
       "path": "moonclaw/first-trusted-square/ephemeris-task.json",
-      "summary": "needs-review task tracks 5 artifacts with 1 blocker before Moonrobo power evidence can unblock"
+      "summary": "accepted task tracks 5 artifacts with 0 blockers before Moonrobo power evidence can unblock"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/corridor-expansion-task",
@@ -415,7 +415,7 @@
       "claim_kind": "Derived",
       "confidence": 0.55,
       "path": "moonclaw/first-trusted-square/ephemeris-receipts.json",
-      "summary": "needs-review receipt keeps energy block with 0 Wh verified available: MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
+      "summary": "accepted receipt keeps energy block with 234.938073 Wh verified available: MoonClaw ephemeris acquisition is accepted; Moonrobo remains blocked by terrain, horizon, and energy-margin gates"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/corridor-expansion-receipt",
@@ -439,7 +439,7 @@
     {
       "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
       "severity": "medium",
-      "reason": "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
+      "reason": "Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate.",
       "owner": "data-review",
       "status": "Open",
       "last_transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open"
@@ -487,7 +487,7 @@
     {
       "item_id": "illumination-direct-lola-window",
       "severity": "high",
-      "reason": "Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-direct-lola-window-request-evidence"
@@ -503,7 +503,7 @@
     {
       "item_id": "illumination-west-contour-detour",
       "severity": "high",
-      "reason": "West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-west-contour-detour-request-evidence"
@@ -519,7 +519,7 @@
     {
       "item_id": "illumination-north-rim-stepout",
       "severity": "high",
-      "reason": "North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-north-rim-stepout-request-evidence"
@@ -535,7 +535,7 @@
     {
       "item_id": "illumination-southwest-bypass",
       "severity": "high",
-      "reason": "Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-southwest-bypass-request-evidence"
@@ -551,7 +551,7 @@
     {
       "item_id": "illumination-south-stepout",
       "severity": "high",
-      "reason": "South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-south-stepout-request-evidence"
@@ -567,7 +567,7 @@
     {
       "item_id": "illumination-northeast-stepout",
       "severity": "high",
-      "reason": "Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation",
+      "reason": "Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-illumination-northeast-stepout-request-evidence"
@@ -581,17 +581,9 @@
       "last_transition_id": "review-corridor-scan-best-window-request-evidence"
     },
     {
-      "item_id": "power-window-evidence",
-      "severity": "high",
-      "reason": "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review",
-      "owner": "power-thermal-review",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-power-window-evidence-request-evidence"
-    },
-    {
       "item_id": "energy-window",
       "severity": "high",
-      "reason": "energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation",
+      "reason": "energy window budget: revise rover power model, route count, or site window before simulation",
       "owner": "power-thermal-review",
       "status": "NeedsEvidence",
       "last_transition_id": "review-energy-window-request-evidence"
@@ -611,14 +603,6 @@
       "owner": "moonclaw",
       "status": "NeedsEvidence",
       "last_transition_id": "review-moonclaw-proposals-request-evidence"
-    },
-    {
-      "item_id": "moonclaw-ephemeris-task",
-      "severity": "high",
-      "reason": "MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input",
-      "owner": "moonclaw",
-      "status": "NeedsEvidence",
-      "last_transition_id": "review-moonclaw-ephemeris-task-request-evidence"
     },
     {
       "item_id": "question-0",
@@ -708,7 +692,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-west-contour-detour-request-evidence",
@@ -724,7 +708,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-north-rim-stepout-request-evidence",
@@ -740,7 +724,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-southwest-bypass-request-evidence",
@@ -756,7 +740,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-south-stepout-request-evidence",
@@ -772,7 +756,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-northeast-stepout-request-evidence",
@@ -788,7 +772,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-corridor-scan-best-window-request-evidence",
@@ -799,20 +783,12 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
-      "transition_id": "review-power-window-evidence-request-evidence",
-      "item_id": "power-window-evidence",
-      "decision": "RequestEvidence",
-      "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review"
-    },
-    {
       "transition_id": "review-energy-window-request-evidence",
       "item_id": "energy-window",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
     },
     {
       "transition_id": "review-moonrobo-handoff-request-evidence",
@@ -829,14 +805,6 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
-    },
-    {
-      "transition_id": "review-moonclaw-ephemeris-task-request-evidence",
-      "item_id": "moonclaw-ephemeris-task",
-      "decision": "RequestEvidence",
-      "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input"
     },
     {
       "transition_id": "review-question-0-keep-open",

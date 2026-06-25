@@ -111,10 +111,10 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
   assert_eq(
     dossier.power_window_evidence.evidence_id,
-    "first-trusted-square-power-window-sources-ready-v1",
+    "first-trusted-square-power-window-computed-v1",
   )
-  assert_eq(dossier.power_window_evidence.source_status, "source-files-ready")
-  assert_eq(dossier.power_window_evidence.available_energy_wh, 0.0)
+  assert_eq(dossier.power_window_evidence.source_status, "ready")
+  assert_true(dossier.power_window_evidence.available_energy_wh > 230.0)
   assert_eq(dossier.energy.route_count, 6)
   assert_eq(dossier.energy.blocked_route_count, 6)
   assert_eq(dossier.blockers.length(), 2)
@@ -128,15 +128,13 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),
   )
   assert_true(markdown.contains("SPICE kernels"))
-  assert_true(markdown.contains("needs-source-upgrade"))
+  assert_true(markdown.contains("needs-human-review"))
   assert_true(markdown.contains("## Source Acquisition Plans"))
   assert_true(markdown.contains("lro-lola-gdr-south-pole-selection"))
   assert_true(markdown.contains("lunar-solar-ephemeris-power-window"))
   assert_true(markdown.contains("source metadata sha256"))
   assert_true(markdown.contains("active software-proof fixtures"))
-  assert_true(
-    markdown.contains("generated_first_trusted_square_power_window.mbt"),
-  )
+  assert_true(markdown.contains("local horizon and rover power assumptions"))
   assert_true(markdown.contains("## Source Product Selections"))
   assert_true(markdown.contains("ldem_875s_20m_float"))
   assert_true(markdown.contains("Polar Stereographic"))
@@ -162,21 +160,19 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("selected route: northeast-stepout"))
   assert_true(markdown.contains("## Energy Window"))
   assert_true(markdown.contains("## Power Window Evidence"))
-  assert_true(markdown.contains("source status: source-files-ready"))
+  assert_true(markdown.contains("source status: ready"))
   assert_true(markdown.contains("source bytes: 45745465"))
   assert_true(markdown.contains("naif0012.tls"))
   assert_true(markdown.contains("de440s.bsp"))
   assert_true(markdown.contains("moon_de440_250416.tf"))
   assert_true(markdown.contains("south-pole-power-window-v1"))
-  assert_true(markdown.contains("has time-windowed ephemeris: false"))
+  assert_true(markdown.contains("has time-windowed ephemeris: true"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
   assert_true(
-    markdown.contains("first-trusted-square-power-window-sources-ready-v1"),
+    markdown.contains("first-trusted-square-power-window-computed-v1"),
   )
-  assert_true(
-    markdown.contains("power-window source status: source-files-ready"),
-  )
-  assert_true(markdown.contains("verified available energy: 0"))
+  assert_true(markdown.contains("power-window source status: ready"))
+  assert_true(markdown.contains("verified available energy: 234.938073"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
   assert_true(markdown.contains("north-rim-stepout"))
@@ -187,7 +183,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("west-adjacent LOLA window is measured"))
   assert_true(markdown.contains("illumination decision: block"))
   assert_true(markdown.contains("illumination risk"))
-  assert_true(markdown.contains("no time-windowed solar ephemeris is attached"))
+  assert_true(markdown.contains("local relief shadow proxy exceeds"))
   assert_true(
     markdown.contains("provenance: lro-lola-first-trusted-square-dem-v1"),
   )
@@ -260,13 +256,11 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(
     text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
   )
-  assert_true(text.contains("\"available_energy_wh\": 0"))
-  assert_true(
-    text.contains("\"power_window_source_status\": \"source-files-ready\""),
-  )
+  assert_true(text.contains("\"available_energy_wh\": 234.938073"))
+  assert_true(text.contains("\"power_window_source_status\": \"ready\""))
   assert_true(
     text.contains(
-      "\"power_window_evidence_id\": \"first-trusted-square-power-window-sources-ready-v1\"",
+      "\"power_window_evidence_id\": \"first-trusted-square-power-window-computed-v1\"",
     ),
   )
   assert_true(text.contains("\"route_candidates\""))

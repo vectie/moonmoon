@@ -485,7 +485,7 @@ fn corridor_receipt_next_action(best : @mission.CorridorScanWindow) -> String {
 
 ///|
 fn ephemeris_receipt_next_action() -> String {
-  "MoonClaw ephemeris acquisition has pinned source files but cannot clear the energy gate until a computed sunlit/dark window is attached"
+  "MoonClaw ephemeris acquisition is accepted; Moonrobo remains blocked by terrain, horizon, and energy-margin gates"
 }
 
 ///|
@@ -664,8 +664,13 @@ pub fn ephemeris_acquisition_task(
         "ready source status with source SHA-256, byte count, time window, sunlit hours, dark hours, and verified Wh",
         evidence.source_status,
         evidence.has_time_window_ephemeris && evidence.source_status == "ready",
-        "current power-window evidence is \{evidence.source_status}; no computed time-windowed ephemeris is attached",
-        "scripts/verify_moonmoon_sources.sh and scripts/generate_power_window.py --check",
+        if evidence.has_time_window_ephemeris &&
+          evidence.source_status == "ready" {
+          ""
+        } else {
+          "current power-window evidence is \{evidence.source_status}; no computed time-windowed ephemeris is attached"
+        },
+        "scripts/verify_moonmoon_sources.sh, scripts/compute_power_window.py --check, and scripts/generate_power_window.py --check",
       ),
       task_artifact(
         "generated-moonbit-window",
@@ -698,8 +703,9 @@ pub fn ephemeris_acquisition_task(
       ),
     ],
     commands: [
-      "bash scripts/verify_moonmoon_sources.sh", "python3 scripts/generate_power_window.py --check",
-      "/Users/kq/.moon/bin/moon test src/mission", "python3 scripts/materialize_moonbook_workspace.py --check",
+      "bash scripts/verify_moonmoon_sources.sh", "python3 scripts/compute_power_window.py --check",
+      "python3 scripts/generate_power_window.py --check", "/Users/kq/.moon/bin/moon test src/mission",
+      "python3 scripts/materialize_moonbook_workspace.py --check",
     ],
     acceptance_criteria: proposal.acceptance_criteria,
     safety_gate: "Do not allow Moonrobo simulation until power-window-json is ready, generated MoonBit evidence is current, and Moonrobo preconditions no longer block on power-window-evidence.",
@@ -1051,6 +1057,11 @@ pub fn ephemeris_acquisition_receipt(
   let proposal = ephemeris_acquisition_proposal(dossier)
   let energy = dossier.energy
   let evidence = @mission.first_trusted_square_power_window_evidence()
+  let evidence_ready = energy.budget.has_time_window_ephemeris &&
+    evidence.has_time_window_ephemeris &&
+    evidence.source_status == "ready" &&
+    evidence.computation.status == "computed" &&
+    all_power_source_files_ready(evidence)
   let checks = [
     validation(
       "energy-window-present",
@@ -1058,21 +1069,28 @@ pub fn ephemeris_acquisition_receipt(
       "\{energy.route_count} route candidates are represented in the current energy assessment.",
     ),
     validation(
-      "time-window-ephemeris-not-computed",
-      !energy.budget.has_time_window_ephemeris &&
-      !evidence.has_time_window_ephemeris,
-      "current energy budget explicitly reads \{evidence.evidence_id}, whose pinned sources have not produced a time-windowed computation.",
+      "time-window-ephemeris-computed",
+      energy.budget.has_time_window_ephemeris &&
+      evidence.has_time_window_ephemeris &&
+      evidence.computation.status == "computed",
+      "current energy budget reads computed evidence \{evidence.evidence_id} for \{evidence.time_start_utc} through \{evidence.time_end_utc}.",
     ),
     validation(
-      "power-window-source-files-ready",
-      evidence.source_status == "source-files-ready" &&
+      "power-window-source-ready",
+      evidence.source_status == "ready" &&
       all_power_source_files_ready(evidence),
       "generated power-window evidence source status is \{evidence.source_status}.",
     ),
     validation(
-      "verified-available-energy-zero",
-      energy.available_energy_wh == 0.0,
-      "verified available energy remains zero without a time-windowed power source.",
+      "verified-available-energy-positive",
+      energy.available_energy_wh > 0.0,
+      "verified available energy is \{energy.available_energy_wh} Wh from the computed time-windowed power source.",
+    ),
+    validation(
+      "energy-margin-remains-blocked",
+      energy.decision == @mission.TraverseDecision::Block &&
+      energy.margin_wh < 0.0,
+      "computed power remains insufficient for the conservative route set; energy margin is \{energy.margin_wh} Wh.",
     ),
     validation(
       "source-checksums-verified",
@@ -1089,8 +1107,16 @@ pub fn ephemeris_acquisition_receipt(
     receipt: {
       receipt_id: "moonclaw/\{dossier.site.site_id}/ephemeris-energy-v1/current-receipt",
       proposal_id: proposal.proposal_id,
-      status: NeedsReview,
-      accepted_outputs: [],
+      status: if evidence_ready {
+        Accepted
+      } else {
+        NeedsReview
+      },
+      accepted_outputs: if evidence_ready {
+        proposal.expected_outputs
+      } else {
+        []
+      },
       validation_notes: validation_notes(checks),
     },
     site_id: dossier.site.site_id,
@@ -1105,7 +1131,11 @@ pub fn ephemeris_acquisition_receipt(
     assumed_dark_survival_hours: energy.estimated_dark_survival_hours,
     required_energy_wh: energy.required_energy_wh,
     verified_available_energy_wh: energy.available_energy_wh,
-    missing_outputs: proposal.expected_outputs,
+    missing_outputs: if evidence_ready {
+      []
+    } else {
+      proposal.expected_outputs
+    },
     validation_checks: checks,
     next_action: ephemeris_receipt_next_action(),
   }

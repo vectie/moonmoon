@@ -253,6 +253,11 @@ pub fn conservative_illumination_constraint() -> IlluminationConstraint {
 ///|
 pub fn conservative_energy_budget() -> EnergyBudget {
   let evidence = first_trusted_square_power_window_evidence()
+  let assumed_dark_survival_hours = if evidence.has_time_window_ephemeris {
+    evidence.dark_hours
+  } else {
+    2.0
+  }
   {
     budget_id: "conservative-south-pole-energy-v1",
     label: "Conservative South Pole Rover Energy Budget",
@@ -268,7 +273,7 @@ pub fn conservative_energy_budget() -> EnergyBudget {
     comms_power_w: 20.0,
     min_energy_margin_wh: 250.0,
     required_sunlit_hours: 4.0,
-    assumed_dark_survival_hours: 2.0,
+    assumed_dark_survival_hours,
     verified_available_energy_wh: verified_available_energy_wh(evidence),
     has_time_window_ephemeris: evidence.has_time_window_ephemeris,
   }
@@ -464,7 +469,11 @@ pub fn assess_illumination(
       Allow => "illumination gate may advance to energy simulation"
       Review => "review illumination window before route simulation"
       Block =>
-        "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        if missing_ephemeris {
+          "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+        } else {
+          "widen local horizon and terrain-shadow evidence before route simulation"
+        }
     },
   }
 }
@@ -549,7 +558,11 @@ pub fn assess_energy_window(
       Allow => "energy window may advance to route simulation"
       Review => "review route blockers and energy margin before simulation"
       Block =>
-        "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        if !budget.has_time_window_ephemeris {
+          "attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+        } else {
+          "revise rover power model, route count, or site window before simulation"
+        }
     },
   }
 }

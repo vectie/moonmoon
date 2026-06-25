@@ -63,7 +63,6 @@ COMPUTATION_FIELDS = {
 ALLOWED_SOURCE_FILE_STATUSES = {"missing", "candidate", "ready"}
 ALLOWED_MISSING_COMPUTATION_STATUSES = {"not-computed", "blocked"}
 INCOMPLETE_SOURCE_STATUSES = {"candidate-source"}
-PINNED_SOURCE_STATUS = "source-files-ready"
 READY_SOURCE_STATUS = "ready"
 
 
@@ -114,7 +113,6 @@ def read_evidence() -> dict[str, Any]:
         if not isinstance(evidence["computation"][field], expected_type):
             raise SystemExit(f"{SOURCE.relative_to(ROOT)} computation field {field!r} has wrong type")
     source_file_statuses = {source_file["status"] for source_file in evidence["source_files"]}
-    all_source_files_ready = bool(evidence["source_files"]) and source_file_statuses == {"ready"}
     if not evidence["has_time_window_ephemeris"]:
         if evidence["available_energy_wh"] != 0:
             raise SystemExit("missing ephemeris evidence must not verify available energy")
@@ -125,11 +123,6 @@ def read_evidence() -> dict[str, Any]:
                 raise SystemExit("incomplete ephemeris source evidence must leave bundle checksum pending")
             if "ready" in source_file_statuses:
                 raise SystemExit("incomplete ephemeris source evidence must not list ready source files")
-        elif evidence["source_status"] == PINNED_SOURCE_STATUS:
-            if not all_source_files_ready:
-                raise SystemExit("source-files-ready evidence must list only ready source files")
-            if evidence["source_sha256"] == "" or evidence["source_bytes"] <= 0:
-                raise SystemExit("source-files-ready evidence must pin bundle checksum and bytes")
         else:
             raise SystemExit(
                 f"incomplete ephemeris evidence has unsupported source_status={evidence['source_status']!r}"

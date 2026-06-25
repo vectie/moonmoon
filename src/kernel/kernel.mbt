@@ -136,15 +136,14 @@ fn power_gate(dossier : @site.SiteDossier) -> EvidenceGate {
     proof_artifact: power.local_source_path,
     blocker: if power.has_time_window_ephemeris {
       "none"
-    } else if power.source_status == "source-files-ready" {
-      "power-window sources are pinned but no computed sunlit/dark window is attached; verified available energy remains zero"
     } else {
-      "power-window source is \{power.source_status}; verified available energy remains zero"
+      "computed power-window evidence is incomplete; verified available energy remains zero"
     },
-    next_action: if power.source_status == "source-files-ready" {
-      "compute the local sunlit/dark window from pinned ephemeris files and regenerate power-window evidence"
+    next_action: if power.has_time_window_ephemeris &&
+      power.source_status == "ready" {
+      "review energy margin, horizon confidence, and robot gates before simulation"
     } else {
-      "pin exact ephemeris source files, checksum them, and regenerate power-window evidence"
+      "pin exact ephemeris source files, compute the sunlit/dark window, and regenerate power-window evidence"
     },
   }
 }
@@ -310,7 +309,11 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "replace-missing-power-window",
-      priority: 95,
+      priority: if dossier.power_window_evidence.has_time_window_ephemeris {
+        65
+      } else {
+        95
+      },
       lane: DataLane,
       title: "Compute the pinned-source power window with ephemeris-backed evidence",
       outcome: "route decisions become time-window aware instead of permanently blocked by zero verified Wh",
@@ -321,7 +324,11 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         dossier.power_window_evidence.evidence_id,
         dossier.power_window_evidence.source_status,
       ],
-      done_when: "power evidence names exact source files, SHA-256 checksums, sunlit hours, dark hours, and available Wh",
+      done_when: if dossier.power_window_evidence.has_time_window_ephemeris {
+        "done: power evidence names exact source files, SHA-256 checksums, sunlit hours, dark hours, and available Wh"
+      } else {
+        "power evidence names exact source files, SHA-256 checksums, sunlit hours, dark hours, and available Wh"
+      },
     },
     {
       task_id: "rabbita-layer-view-model",

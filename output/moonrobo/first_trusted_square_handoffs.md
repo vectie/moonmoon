@@ -7,9 +7,9 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-direct-lola-window: block - do not traverse directly; use this as the baseline hazard case
-    - illumination-direct-lola-window: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-direct-lola-window: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - moonrobo/first-trusted-square/west-contour-detour/simulation-preconditions
   - route: west-contour-detour
@@ -18,9 +18,9 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-west-contour-detour: block - widen the west corridor extraction before simulation
-    - illumination-west-contour-detour: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-west-contour-detour: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - moonrobo/first-trusted-square/north-rim-stepout/simulation-preconditions
   - route: north-rim-stepout
@@ -29,9 +29,9 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-north-rim-stepout: block - widen the north corridor extraction and add illumination review
-    - illumination-north-rim-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-north-rim-stepout: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - moonrobo/first-trusted-square/southwest-bypass/simulation-preconditions
   - route: southwest-bypass
@@ -40,9 +40,9 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-southwest-bypass: block - continue corridor search beyond the southwest bypass before simulation
-    - illumination-southwest-bypass: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-southwest-bypass: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - moonrobo/first-trusted-square/south-stepout/simulation-preconditions
   - route: south-stepout
@@ -51,9 +51,9 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-south-stepout: block - continue south corridor extraction and add ephemeris-backed illumination review
-    - illumination-south-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-south-stepout: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 - moonrobo/first-trusted-square/northeast-stepout/simulation-preconditions
   - route: northeast-stepout
@@ -62,8 +62,8 @@
   - next action: Moonrobo must not simulate or execute this route until blocking Moonmoon preconditions are cleared
   - preconditions:
     - route-northeast-stepout: block - review the promoted route fixture and attach ephemeris-backed illumination before simulation
-    - illumination-northeast-stepout: block - attach time-windowed solar ephemeris and widen terrain evidence before route simulation
-    - power-window-evidence: block - power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready
-    - energy-window: block - attach time-windowed solar ephemeris and verify rover energy budget before simulation
+    - illumination-northeast-stepout: block - widen local horizon and terrain-shadow evidence before route simulation
+    - power-window-evidence: allow - power-window evidence first-trusted-square-power-window-computed-v1 has source status ready
+    - energy-window: block - revise rover power model, route count, or site window before simulation
     - corridor-scan-best-window: block - lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 

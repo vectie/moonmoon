@@ -1,6 +1,6 @@
 {
-  "evidence_id": "first-trusted-square-power-window-sources-ready-v1",
-  "source_status": "source-files-ready",
+  "evidence_id": "first-trusted-square-power-window-computed-v1",
+  "source_status": "ready",
   "source_family_url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
   "local_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   "source_sha256": "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
@@ -59,24 +59,25 @@
   ],
   "computation": {
     "method_id": "south-pole-power-window-v1",
-    "generated_by": "pending ephemeris acquisition",
-    "time_step_minutes": 0,
-    "horizon_model": "pending local horizon model",
+    "generated_by": "scripts/compute_power_window.py",
+    "time_step_minutes": 60,
+    "horizon_model": "iau-moon-spherical-zero-horizon-v1",
     "rover_power_model": "conservative-south-pole-energy-v1",
-    "status": "not-computed"
+    "status": "computed"
   },
-  "time_start_utc": "pending",
-  "time_end_utc": "pending",
+  "time_start_utc": "2026-06-25T00:00:00Z",
+  "time_end_utc": "2026-07-09T00:00:00Z",
   "target_lat_deg": -89.88,
   "target_lon_deg": 0.12,
-  "sunlit_hours": 0.0,
-  "dark_hours": 0.0,
-  "available_energy_wh": 0.0,
-  "confidence": 0.0,
-  "has_time_window_ephemeris": false,
+  "sunlit_hours": 323.0,
+  "dark_hours": 13.0,
+  "available_energy_wh": 234.938073,
+  "confidence": 0.62,
+  "has_time_window_ephemeris": true,
   "reasons": [
-    "official NAIF kernel files are locally pinned with byte counts and checksums",
-    "local power-window computation has not produced sunlit or dark hours yet",
-    "energy gate must remain blocked until generated evidence carries a computed time window"
+    "official NAIF DE440 source files are locally pinned with byte counts and checksums",
+    "Sun/Moon geometry was sampled hourly from DE440s over the declared UTC window",
+    "spherical zero-horizon model found sun altitude between -0.012003 and 0.130418 degrees",
+    "local terrain-shadow and panel-attitude modeling remain conservative review blockers"
   ]
 }

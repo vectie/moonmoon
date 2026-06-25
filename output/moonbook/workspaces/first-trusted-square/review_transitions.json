@@ -65,7 +65,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-west-contour-detour-request-evidence",
@@ -81,7 +81,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-north-rim-stepout-request-evidence",
@@ -97,7 +97,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-southwest-bypass-request-evidence",
@@ -113,7 +113,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-south-stepout-request-evidence",
@@ -129,7 +129,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-route-northeast-stepout-request-evidence",
@@ -145,7 +145,7 @@
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
     },
     {
       "transition_id": "review-corridor-scan-best-window-request-evidence",
@@ -156,20 +156,12 @@
       "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
     },
     {
-      "transition_id": "review-power-window-evidence-request-evidence",
-      "item_id": "power-window-evidence",
-      "decision": "RequestEvidence",
-      "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready; compute and review a time-windowed power result before energy review"
-    },
-    {
       "transition_id": "review-energy-window-request-evidence",
       "item_id": "energy-window",
       "decision": "RequestEvidence",
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: attach time-windowed solar ephemeris and verify rover energy budget before simulation"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
     },
     {
       "transition_id": "review-moonrobo-handoff-request-evidence",
@@ -186,14 +178,6 @@
       "resulting_status": "NeedsEvidence",
       "reviewer": "moonbook-policy-v1",
       "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
-    },
-    {
-      "transition_id": "review-moonclaw-ephemeris-task-request-evidence",
-      "item_id": "moonclaw-ephemeris-task",
-      "decision": "RequestEvidence",
-      "resulting_status": "NeedsEvidence",
-      "reviewer": "moonbook-policy-v1",
-      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw ephemeris task has 1 blocker before power-window evidence can become robot-facing input"
     },
     {
       "transition_id": "review-question-0-keep-open",

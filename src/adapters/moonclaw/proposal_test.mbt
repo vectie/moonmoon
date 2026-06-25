@@ -60,12 +60,12 @@ test "first trusted square ephemeris task names executable source gates" {
     "moonclaw/first-trusted-square/ephemeris-energy-v1",
   )
   assert_true(task.priority == @moonclaw.MoonClawJobPriority::Critical)
-  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
+  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::Accepted)
   assert_true(task.objective.contains("time-windowed solar ephemeris"))
   assert_true(task.safety_gate.contains("Do not allow Moonrobo simulation"))
   assert_true(task.inputs.length() == 3)
   assert_true(task.artifacts.length() == 5)
-  assert_eq(@moonclaw.task_blocked_artifact_count(task), 1)
+  assert_eq(@moonclaw.task_blocked_artifact_count(task), 0)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "source-discovery-record" &&
@@ -77,9 +77,9 @@ test "first trusted square ephemeris task names executable source gates" {
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "power-window-json" &&
-      artifact.current_state == "source-files-ready" &&
-      !artifact.ready &&
-      artifact.blocking_reason.contains("no computed time-windowed ephemeris") &&
+      artifact.current_state == "ready" &&
+      artifact.ready &&
+      artifact.blocking_reason == "" &&
       artifact.path ==
       "data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
     }),
@@ -110,20 +110,20 @@ test "MoonClaw ephemeris task renderers expose artifact gates" {
   assert_true(markdown.contains("MoonClaw Ephemeris Acquisition Tasks"))
   assert_true(markdown.contains("power-window-json"))
   assert_true(markdown.contains("5 ready source files"))
-  assert_true(markdown.contains("source-files-ready"))
-  assert_true(markdown.contains("ready: false"))
-  assert_true(markdown.contains("blocking: current power-window evidence"))
+  assert_true(markdown.contains("current: ready"))
+  assert_true(markdown.contains("ready: true"))
   assert_true(markdown.contains("moonrobo-preconditions"))
+  assert_true(markdown.contains("compute_power_window.py --check"))
   assert_true(markdown.contains("generate_power_window.py --check"))
   let json = @moonclaw.first_trusted_square_ephemeris_tasks_json().stringify(
     indent=2,
   )
   assert_true(json.contains("\"MoonClawEphemerisAcquisitionTask\"") == false)
   assert_true(json.contains("\"artifacts\""))
-  assert_true(json.contains("\"ready\": false"))
+  assert_true(json.contains("\"ready\": true"))
   assert_true(json.contains("\"blocking_reason\""))
   assert_true(json.contains("\"safety_gate\""))
-  assert_true(json.contains("\"state\": \"NeedsReview\""))
+  assert_true(json.contains("\"state\": \"Accepted\""))
 }
 
 ///|
@@ -269,42 +269,42 @@ test "first trusted square corridor receipt validates bounded search result" {
 }
 
 ///|
-test "first trusted square ephemeris receipt records uncomputed power evidence" {
+test "first trusted square ephemeris receipt accepts computed power evidence" {
   let receipt = @moonclaw.first_trusted_square_ephemeris_acquisition_receipt()
   assert_eq(
     receipt.receipt.proposal_id,
     "moonclaw/first-trusted-square/ephemeris-energy-v1",
   )
   assert_true(
-    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::NeedsReview,
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
   )
   assert_true(receipt.energy_decision == @mission.TraverseDecision::Block)
-  assert_true(!receipt.has_time_window_ephemeris)
+  assert_true(receipt.has_time_window_ephemeris)
   assert_eq(
     receipt.power_window_evidence_id,
-    "first-trusted-square-power-window-sources-ready-v1",
+    "first-trusted-square-power-window-computed-v1",
   )
-  assert_eq(receipt.power_window_source_status, "source-files-ready")
+  assert_eq(receipt.power_window_source_status, "ready")
   assert_eq(
     receipt.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
   assert_eq(receipt.route_count, 6)
   assert_eq(receipt.blocked_route_count, 6)
-  assert_eq(receipt.verified_available_energy_wh, 0.0)
-  assert_true(receipt.missing_outputs.length() >= 4)
+  assert_true(receipt.verified_available_energy_wh > 230.0)
+  assert_eq(receipt.missing_outputs.length(), 0)
   assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {
-      note.contains("time-window-ephemeris-not-computed")
+      note.contains("time-window-ephemeris-computed")
     }),
   )
   assert_true(
     receipt.receipt.validation_notes.any(fn(note) {
-      note.contains("power-window-source-files-ready")
+      note.contains("power-window-source-ready")
     }),
   )
-  assert_true(receipt.next_action.contains("cannot clear the energy gate"))
+  assert_true(receipt.next_action.contains("ephemeris acquisition is accepted"))
 }
 
 ///|
@@ -324,28 +324,24 @@ test "MoonClaw receipt renderers expose route scoring result" {
 }
 
 ///|
-test "MoonClaw ephemeris receipt renderers expose uncomputed source contract" {
+test "MoonClaw ephemeris receipt renderers expose computed source contract" {
   let markdown = @moonclaw.first_trusted_square_ephemeris_receipts_markdown()
   assert_true(markdown.contains("MoonClaw Ephemeris Receipts"))
   assert_true(markdown.contains("ephemeris-energy-v1/current-receipt"))
-  assert_true(markdown.contains("needs-review"))
-  assert_true(markdown.contains("time-window-ephemeris-not-computed"))
+  assert_true(markdown.contains("accepted"))
+  assert_true(markdown.contains("time-window-ephemeris-computed"))
   assert_true(
-    markdown.contains("first-trusted-square-power-window-sources-ready-v1"),
+    markdown.contains("first-trusted-square-power-window-computed-v1"),
   )
-  assert_true(
-    markdown.contains("power-window source status: source-files-ready"),
-  )
+  assert_true(markdown.contains("power-window source status: ready"))
   assert_true(markdown.contains("first_trusted_square_power_window.json"))
   let json = @moonclaw.first_trusted_square_ephemeris_receipts_json().stringify(
     indent=2,
   )
   assert_true(json.contains("\"missing_outputs\""))
-  assert_true(json.contains("\"NeedsReview\""))
+  assert_true(json.contains("\"Accepted\""))
   assert_true(json.contains("\"has_time_window_ephemeris\""))
-  assert_true(
-    json.contains("\"power_window_source_status\": \"source-files-ready\""),
-  )
+  assert_true(json.contains("\"power_window_source_status\": \"ready\""))
 }
 
 ///|

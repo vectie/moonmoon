@@ -344,11 +344,11 @@ pub fn first_trusted_square_ephemeris_candidate() -> SourceCandidate {
     access_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
     local_target_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
     intended_use: "Attach time-windowed Sun/Moon geometry, local sunlit hours, and rover power-window evidence to the first trusted square.",
-    next_action: "Compute a local sunlit/dark window from the pinned SPICE kernels and generate the MoonBit power-window module before clearing the energy gate.",
-    review_status: NeedsSourceUpgrade,
+    next_action: "Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate.",
+    review_status: NeedsHumanReview,
     notes: [
-      "The current illumination and energy gates deliberately block because only relief-shadow proxies exist.",
-      "The NAIF source files are pinned locally, but the power gate still needs a time-bounded Sun/Moon geometry computation plus local horizon assumptions.",
+      "The current illumination and energy gates deliberately block because computed power remains below the conservative route demand.",
+      "The NAIF source files and first time-bounded Sun/Moon geometry computation are pinned locally.",
       "This candidate turns the ephemeris evidence from prose into a typed MoonBook-visible source contract.",
     ],
   }
@@ -370,7 +370,7 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> SourceAcquisitionPla
     local_source_directory: "data/sources/lunar_ephemeris/",
     local_metadata_path: "data/sources/lunar_ephemeris/README.md",
     extracted_fixture_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    trust_gate: "Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block.",
+    trust_gate: "Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block.",
     steps: [
       {
         step_id: "discover-source",
@@ -391,14 +391,14 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> SourceAcquisitionPla
         title: "Compute local power window",
         action: "Evaluate the first trusted square over a declared time span and emit sunlit hours, dark survival hours, incidence notes, and confidence.",
         expected_evidence: "A generated JSON fixture at data/sources/lunar_ephemeris/first_trusted_square_power_window.json.",
-        done_when: "The JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty.",
+        done_when: "done: the JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty.",
       },
       {
         step_id: "generate-moonbit-window",
         title: "Generate MoonBit evidence",
         action: "Mirror the checked JSON into src/mission/generated_first_trusted_square_power_window.mbt for deterministic mission tests.",
         expected_evidence: "Generated MoonBit power-window module and tests tied to the JSON checksum.",
-        done_when: "moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh.",
+        done_when: "done: moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh.",
       },
       {
         step_id: "review-energy-gate",

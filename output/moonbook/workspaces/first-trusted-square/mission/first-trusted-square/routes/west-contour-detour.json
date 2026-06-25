@@ -23,17 +23,17 @@
       "constraint": {
         "constraint_id": "conservative-south-pole-power-v1",
         "label": "Conservative South Pole Power/Thermal Gate",
-        "power_window_evidence_id": "first-trusted-square-power-window-sources-ready-v1",
+        "power_window_evidence_id": "first-trusted-square-power-window-computed-v1",
         "power_window_source_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-        "power_window_source_status": "source-files-ready",
-        "time_start_utc": "pending",
-        "time_end_utc": "pending",
+        "power_window_source_status": "ready",
+        "time_start_utc": "2026-06-25T00:00:00Z",
+        "time_end_utc": "2026-07-09T00:00:00Z",
         "min_sunlit_hours": 4,
         "max_dark_hours": 2,
         "max_relief_shadow_risk": 0.22,
         "caution_relief_shadow_risk": 0.14,
         "min_confidence": 0.7,
-        "has_time_window_ephemeris": false
+        "has_time_window_ephemeris": true
       },
       "evidence_dataset_id": "lro-lola-first-trusted-square-west-contour-dem-v1",
       "evidence_tile_id": "first-trusted-square-west-contour-lola",
@@ -41,12 +41,10 @@
       "confidence": 0.45263999999999993,
       "decision": "Block",
       "reasons": [
-        "no time-windowed solar ephemeris is attached",
-        "power-window evidence first-trusted-square-power-window-sources-ready-v1 has source status source-files-ready",
         "local relief shadow proxy exceeds conservative limit",
         "illumination confidence below power planning threshold"
       ],
-      "next_action": "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
+      "next_action": "widen local horizon and terrain-shadow evidence before route simulation"
     },
     "decision": "Block",
     "score": 6,

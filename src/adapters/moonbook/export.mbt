@@ -695,7 +695,7 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
       review_item(
         "power-window-evidence",
         "high",
-        "power-window evidence \{dossier.power_window_evidence.evidence_id} has source status \{dossier.power_window_evidence.source_status}; compute and review a time-windowed power result before energy review",
+        "power-window evidence \{dossier.power_window_evidence.evidence_id} is not computed-ready; compute and review a time-windowed power result before energy review",
         "power-thermal-review",
       ),
     )

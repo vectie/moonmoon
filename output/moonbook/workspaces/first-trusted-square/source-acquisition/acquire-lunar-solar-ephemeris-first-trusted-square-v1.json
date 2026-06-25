@@ -6,7 +6,7 @@
     "claim_kind": "Unknown",
     "confidence": 0,
     "path": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1.json",
-    "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block."
+    "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block."
   },
   "payload": {
     "plan_id": "acquire-lunar-solar-ephemeris-first-trusted-square-v1",
@@ -22,7 +22,7 @@
     "local_source_directory": "data/sources/lunar_ephemeris/",
     "local_metadata_path": "data/sources/lunar_ephemeris/README.md",
     "extracted_fixture_path": "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    "trust_gate": "Must cite official ephemeris/illumination source, pin source checksums, compute sunlit/dark hours, and regenerate src/mission/generated_first_trusted_square_power_window.mbt before energy can move out of block.",
+    "trust_gate": "Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block.",
     "steps": [
       {
         "step_id": "discover-source",
@@ -43,14 +43,14 @@
         "title": "Compute local power window",
         "action": "Evaluate the first trusted square over a declared time span and emit sunlit hours, dark survival hours, incidence notes, and confidence.",
         "expected_evidence": "A generated JSON fixture at data/sources/lunar_ephemeris/first_trusted_square_power_window.json.",
-        "done_when": "The JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty."
+        "done_when": "done: the JSON records time range, source checksums, local coordinate, sunlit hours, dark hours, and uncertainty."
       },
       {
         "step_id": "generate-moonbit-window",
         "title": "Generate MoonBit evidence",
         "action": "Mirror the checked JSON into src/mission/generated_first_trusted_square_power_window.mbt for deterministic mission tests.",
         "expected_evidence": "Generated MoonBit power-window module and tests tied to the JSON checksum.",
-        "done_when": "moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh."
+        "done_when": "done: moon test proves the mission energy gate reads generated ephemeris evidence instead of hard-coded zero Wh."
       },
       {
         "step_id": "review-energy-gate",
