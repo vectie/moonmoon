@@ -13,6 +13,7 @@
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
     "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
@@ -369,6 +370,15 @@
       "confidence": 0.66,
       "path": "mission/first-trusted-square/northeast-stepout-horizon.json",
       "summary": "block with terrain-shadow margin 26.356833 deg from data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv"
+    },
+    {
+      "entry_id": "terrain-remediation/first-trusted-square/northeast-stepout",
+      "title": "Terrain remediation evidence for Northeast 9x9 step-out candidate",
+      "kind": "TerrainRemediationEvidence",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
+      "summary": "block with grade margin 0.16395 and roughness margin 3.45975 m from data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv"
     },
     {
       "entry_id": "power-window/first-trusted-square/ephemeris-evidence",

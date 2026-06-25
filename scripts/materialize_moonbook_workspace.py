@@ -41,6 +41,10 @@ MOONROBO_JSON = ROOT / "output/moonrobo/first_trusted_square_handoffs.json"
 MISSION_HORIZON_JSON = (
   ROOT / "output/mission/first_trusted_square_northeast_stepout_horizon.json"
 )
+MISSION_TERRAIN_REMEDIATION_JSON = (
+  ROOT
+  / "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json"
+)
 WORKSPACE = ROOT / "output/moonbook/workspaces/first-trusted-square"
 GENERATOR = "scripts/materialize_moonbook_workspace.py"
 
@@ -265,6 +269,10 @@ def payload_for_entry(
     return lookups["route_candidates"][route_id_from_entry(entry_id)][
       "illumination"
     ]["local_horizon"]
+  if kind == "TerrainRemediationEvidence":
+    return lookups["route_candidates"][route_id_from_entry(entry_id)][
+      "terrain_remediation"
+    ]
   if kind == "PowerWindowEvidence":
     return site["power_window_evidence"]
   if kind == "EnergyWindow":
@@ -344,6 +352,7 @@ def workspace_files(
   moonrobo: list[dict[str, Any]],
   moonrobo_gap_modeling: list[dict[str, Any]],
   mission_horizon: dict[str, Any],
+  mission_terrain_remediation: dict[str, Any],
 ) -> dict[Path, str]:
   lookups = {
     "datasets": by_key(site["datasets"], "dataset_id"),
@@ -376,6 +385,7 @@ def workspace_files(
     "output/moonclaw/first_trusted_square_ephemeris_receipts.json",
     "output/moonclaw/first_trusted_square_corridor_receipts.json",
     "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
   ]
   if moonclaw_gap_tasks:
@@ -478,6 +488,8 @@ def workspace_files(
     readme += "- Source imported MoonRobo gap modeling: `output/moonrobo/first_trusted_square_gap_remediation_modeling.json`\n"
   if mission_horizon:
     readme += "- Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`\n"
+  if mission_terrain_remediation:
+    readme += "- Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`\n"
   readme += (
     f"- Entries: {len(entries)}\n"
     f"- Review queue items: {len(review_queue)}\n"
@@ -549,6 +561,7 @@ def main() -> int:
   moonrobo = load_json(MOONROBO_JSON)
   moonrobo_gap_modeling = load_optional_json(MOONROBO_GAP_MODELING_JSON, [])
   mission_horizon = load_json(MISSION_HORIZON_JSON)
+  mission_terrain_remediation = load_json(MISSION_TERRAIN_REMEDIATION_JSON)
   files = workspace_files(
     site,
     book,
@@ -563,6 +576,7 @@ def main() -> int:
     moonrobo,
     moonrobo_gap_modeling,
     mission_horizon,
+    mission_terrain_remediation,
   )
   if args.check:
     return check_workspace(files)

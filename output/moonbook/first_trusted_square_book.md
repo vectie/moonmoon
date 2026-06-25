@@ -200,6 +200,11 @@
   - claim: derived
   - confidence: 0.66
   - path: mission/first-trusted-square/northeast-stepout-horizon.json
+- terrain-remediation/first-trusted-square/northeast-stepout: Terrain remediation evidence for Northeast 9x9 step-out candidate
+  - kind: terrain-remediation-evidence
+  - claim: derived
+  - confidence: 0.7544
+  - path: mission/first-trusted-square/northeast-stepout-terrain-remediation.json
 - power-window/first-trusted-square/ephemeris-evidence: Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: power-window-evidence
   - claim: derived

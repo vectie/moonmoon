@@ -662,7 +662,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-selected-route-terrain-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize selected-route terrain remediation into MoonBook",
       outcome: "The selected-route terrain remediation artifact becomes durable MoonBook workspace evidence next to route, horizon, and robot readiness packets",
@@ -674,7 +674,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
         "scripts/check_moonbook_selected_route_terrain_workspace.py",
       ],
-      done_when: "selected-route terrain remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
+      done_when: "done: selected-route terrain remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
+    },
+    {
+      task_id: "moonrobo-energy-margin-remediation",
+      priority: 70,
+      lane: RobotLane,
+      title: "Remediate selected-route energy blocker with bounded power-demand evidence",
+      outcome: "MoonRobo energy readiness consumes an explicit remediation model for the negative energy margin instead of carrying a generic power blocker",
+      depends_on: [
+        "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "output/mission/first_trusted_square_northeast_stepout_horizon.json", "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
+        "src/mission",
+      ],
+      evidence: [
+        "output/mission/first_trusted_square_energy_remediation.json", "scripts/check_energy_margin_remediation.py",
+      ],
+      done_when: "energy readiness either clears against bounded power-demand evidence or records quantitative margin evidence explaining why it remains blocked",
     },
   ]
 }

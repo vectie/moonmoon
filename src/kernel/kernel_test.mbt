@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "moonbook-selected-route-terrain-workspace",
+    "moonrobo-energy-margin-remediation",
   )
 }
 
@@ -60,4 +60,5 @@ test "kernel markdown names suite roles and next product output" {
   assert_true(markdown.contains("moonbook-selected-route-horizon-workspace"))
   assert_true(markdown.contains("moonrobo-selected-route-terrain-remediation"))
   assert_true(markdown.contains("moonbook-selected-route-terrain-workspace"))
+  assert_true(markdown.contains("moonrobo-energy-margin-remediation"))
 }
