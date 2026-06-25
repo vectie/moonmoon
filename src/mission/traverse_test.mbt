@@ -99,6 +99,11 @@ test "first trusted square illumination gate blocks missing time window evidence
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
   assert_true(!evidence.has_time_window_ephemeris)
+  assert_eq(evidence.source_files.length(), 1)
+  assert_eq(evidence.source_files[0].file_id, "spice-kernel-set-pending")
+  assert_eq(evidence.source_files[0].status, "missing")
+  assert_eq(evidence.computation.method_id, "south-pole-power-window-v1")
+  assert_eq(evidence.computation.status, "not-computed")
   let assessment = @mission.assess_illumination(
     @terrain.first_trusted_square_grid(),
     @mission.conservative_illumination_constraint(),

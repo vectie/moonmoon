@@ -164,6 +164,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Power Window Evidence"))
   assert_true(markdown.contains("source status: missing-source"))
   assert_true(markdown.contains("source sha256: pending"))
+  assert_true(markdown.contains("spice-kernel-set-pending"))
+  assert_true(markdown.contains("south-pole-power-window-v1"))
   assert_true(markdown.contains("has time-windowed ephemeris: false"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
   assert_true(markdown.contains("first-trusted-square-power-window-missing-v1"))

@@ -90,6 +90,9 @@ Current implementation status:
   stores a checked missing-source power-window fixture, and
   `scripts/generate_power_window.py` mirrors it into generated MoonBit evidence
   consumed by the mission energy and illumination gates.
+- The power-window fixture now carries structured source-file and computation
+  metadata, so future ready evidence must pin source checksums and report a
+  computed local window instead of only flipping a status string.
 - `src/site` combines site, dataset, terrain, traverse, blockers, and next
   questions into a site dossier.
 - `src/adapters/moonrobo` exports robot-facing simulation precondition packets

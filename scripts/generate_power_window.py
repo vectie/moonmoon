@@ -26,6 +26,8 @@ REQUIRED_FIELDS = {
     "local_source_path": str,
     "source_sha256": str,
     "source_bytes": int,
+    "source_files": list,
+    "computation": dict,
     "time_start_utc": str,
     "time_end_utc": str,
     "target_lat_deg": (int, float),
@@ -36,6 +38,26 @@ REQUIRED_FIELDS = {
     "confidence": (int, float),
     "has_time_window_ephemeris": bool,
     "reasons": list,
+}
+
+SOURCE_FILE_FIELDS = {
+    "file_id": str,
+    "label": str,
+    "source_url": str,
+    "local_path": str,
+    "sha256": str,
+    "bytes": int,
+    "role": str,
+    "status": str,
+}
+
+COMPUTATION_FIELDS = {
+    "method_id": str,
+    "generated_by": str,
+    "time_step_minutes": int,
+    "horizon_model": str,
+    "rover_power_model": str,
+    "status": str,
 }
 
 
@@ -52,11 +74,45 @@ def read_evidence() -> dict[str, Any]:
     for reason in evidence["reasons"]:
         if not isinstance(reason, str):
             raise SystemExit(f"{SOURCE.relative_to(ROOT)} reasons must be strings")
+    for source_file in evidence["source_files"]:
+        if not isinstance(source_file, dict):
+            raise SystemExit(f"{SOURCE.relative_to(ROOT)} source_files must be objects")
+        for field, expected_type in SOURCE_FILE_FIELDS.items():
+            if field not in source_file:
+                raise SystemExit(f"{SOURCE.relative_to(ROOT)} source_files entry missing {field!r}")
+            if not isinstance(source_file[field], expected_type):
+                raise SystemExit(
+                    f"{SOURCE.relative_to(ROOT)} source_files field {field!r} has wrong type"
+                )
+    for field, expected_type in COMPUTATION_FIELDS.items():
+        if field not in evidence["computation"]:
+            raise SystemExit(f"{SOURCE.relative_to(ROOT)} computation missing {field!r}")
+        if not isinstance(evidence["computation"][field], expected_type):
+            raise SystemExit(f"{SOURCE.relative_to(ROOT)} computation field {field!r} has wrong type")
     if not evidence["has_time_window_ephemeris"]:
         if evidence["available_energy_wh"] != 0:
             raise SystemExit("missing ephemeris evidence must not verify available energy")
         if evidence["source_sha256"] != "" or evidence["source_bytes"] != 0:
             raise SystemExit("missing ephemeris evidence must leave source checksum pending")
+        if evidence["computation"]["status"] not in {"not-computed", "blocked"}:
+            raise SystemExit("missing ephemeris evidence must not report a completed computation")
+        for source_file in evidence["source_files"]:
+            if source_file["status"] == "ready":
+                raise SystemExit("missing ephemeris evidence must not list ready source files")
+    else:
+        if evidence["source_status"] != "ready":
+            raise SystemExit("time-windowed ephemeris evidence must have source_status='ready'")
+        if evidence["source_sha256"] == "" or evidence["source_bytes"] <= 0:
+            raise SystemExit("ready ephemeris evidence must pin aggregate checksum and bytes")
+        if not evidence["source_files"]:
+            raise SystemExit("ready ephemeris evidence must list source files")
+        if evidence["computation"]["status"] != "computed":
+            raise SystemExit("ready ephemeris evidence must report a computed power window")
+        for source_file in evidence["source_files"]:
+            if source_file["status"] != "ready":
+                raise SystemExit("ready ephemeris evidence must only list ready source files")
+            if source_file["sha256"] == "" or source_file["bytes"] <= 0:
+                raise SystemExit("ready ephemeris source files must pin checksum and bytes")
     return evidence
 
 
@@ -74,6 +130,21 @@ def moon_number(value: int | float) -> str:
 
 def render() -> str:
     evidence = read_evidence()
+    source_file_lines = []
+    for source_file in evidence["source_files"]:
+        source_file_lines.append(
+            f'''      {{
+        file_id: "{moon_string(source_file["file_id"])}",
+        label: "{moon_string(source_file["label"])}",
+        source_url: "{moon_string(source_file["source_url"])}",
+        local_path: "{moon_string(source_file["local_path"])}",
+        sha256: "{moon_string(source_file["sha256"])}",
+        bytes: {source_file["bytes"]},
+        role: "{moon_string(source_file["role"])}",
+        status: "{moon_string(source_file["status"])}",
+      }},'''
+        )
+    source_files_literal = "\n".join(source_file_lines)
     reason_values = [f'"{moon_string(reason)}"' for reason in evidence["reasons"]]
     reason_lines = []
     while reason_values:
@@ -85,6 +156,7 @@ def render() -> str:
             reason_values = []
     reasons_literal = "\n".join(reason_lines)
     source_label = SOURCE.relative_to(ROOT)
+    computation = evidence["computation"]
     return f'''///| Generated from {source_label} by scripts/generate_power_window.py.
 
 ///|
@@ -97,6 +169,17 @@ fn generated_first_trusted_square_power_window_evidence() -> PowerWindowEvidence
     local_source_path: "{moon_string(evidence["local_source_path"])}",
     source_sha256: "{moon_string(evidence["source_sha256"])}",
     source_bytes: {evidence["source_bytes"]},
+    source_files: [
+{source_files_literal}
+    ],
+    computation: {{
+      method_id: "{moon_string(computation["method_id"])}",
+      generated_by: "{moon_string(computation["generated_by"])}",
+      time_step_minutes: {computation["time_step_minutes"]},
+      horizon_model: "{moon_string(computation["horizon_model"])}",
+      rover_power_model: "{moon_string(computation["rover_power_model"])}",
+      status: "{moon_string(computation["status"])}",
+    }},
     time_start_utc: "{moon_string(evidence["time_start_utc"])}",
     time_end_utc: "{moon_string(evidence["time_end_utc"])}",
     target_lat_deg: {moon_number(evidence["target_lat_deg"])},

@@ -76,6 +76,28 @@ pub(all) struct EnergyBudget {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct PowerWindowSourceFile {
+  file_id : String
+  label : String
+  source_url : String
+  local_path : String
+  sha256 : String
+  bytes : Int
+  role : String
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct PowerWindowComputation {
+  method_id : String
+  generated_by : String
+  time_step_minutes : Int
+  horizon_model : String
+  rover_power_model : String
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct PowerWindowEvidence {
   evidence_id : String
   source_status : String
@@ -83,6 +105,8 @@ pub(all) struct PowerWindowEvidence {
   local_source_path : String
   source_sha256 : String
   source_bytes : Int
+  source_files : Array[PowerWindowSourceFile]
+  computation : PowerWindowComputation
   time_start_utc : String
   time_end_utc : String
   target_lat_deg : Double
