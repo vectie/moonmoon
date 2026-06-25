@@ -226,9 +226,9 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       label: "Operator viewer",
       owns: "renderer-neutral layer view models and Rabbita lunar inspection UI",
       source_contract: "site dossier -> terrain/hazard/route layer view state",
-      current_artifact: "src/ui/types.mbt + src/ui/view_model.mbt",
+      current_artifact: "src/ui/types.mbt + src/ui/rabbita_moon/page.mbt",
       readiness: Ready,
-      next_output: "browser-facing Rabbita lunar inspection UI backed by the renderer-neutral view model",
+      next_output: "operator transition capture from the Rabbita inspection surface",
     },
   ]
 }
@@ -344,7 +344,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-simulation-contract-v2",
-      priority: 50,
+      priority: 30,
       lane: RobotLane,
       title: "Tighten MoonRobo packet semantics around simulation, replay, and hardware denial",
       outcome: "physical execution stays impossible until route, power, and review gates are all accepted",
@@ -368,7 +368,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-browser-inspection-surface",
-      priority: 80,
+      priority: 25,
       lane: ViewerLane,
       title: "Build the browser-facing Rabbita lunar inspection surface",
       outcome: "Operators can inspect terrain, hazard, route, source, and review state from the generated view model",
@@ -376,9 +376,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "src/ui/view_model.mbt", "output/ui/first_trusted_square_view.json", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
       ],
       evidence: [
-        "src/ui/types.mbt", "src/ui/view_model.mbt", "output/ui/first_trusted_square_view.json",
+        "src/ui/types.mbt", "src/ui/rabbita_moon/page.mbt", "output/ui/rabbita/first_trusted_square.html",
       ],
-      done_when: "Rabbita renders selectable cells, layer toggles, route overlays, source evidence, and MoonBook review status in one browser-facing inspection view",
+      done_when: "done: Rabbita renders selectable cells, layer toggles, route overlays, source evidence, and MoonBook review status in one browser-facing inspection view",
+    },
+    {
+      task_id: "mission-simulation-readiness-gate",
+      priority: 85,
+      lane: MissionLane,
+      title: "Make simulation readiness a single mission-owned gate",
+      outcome: "MoonRobo simulation packets depend on one reviewable mission readiness checklist instead of scattered route, power, and review blockers",
+      depends_on: [
+        "src/mission/traverse.mbt", "src/adapters/moonrobo/handoff.mbt", "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      evidence: [
+        "output/site/first_trusted_square.json", "output/moonrobo/first_trusted_square_handoffs.json",
+      ],
+      done_when: "selected route readiness names terrain, corridor, illumination, energy, MoonBook review, and robot-simulation status with one explicit allow/block result",
     },
   ]
 }

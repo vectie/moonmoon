@@ -6,6 +6,7 @@ import {
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/terrain",
   "vectie/moonmoon/src/ui",
+  "vectie/moonmoon/src/ui/rabbita_moon",
   "moonbitlang/core/env",
 }
 

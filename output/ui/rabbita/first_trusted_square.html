@@ -1,0 +1,2721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rabbita Moon - First Trusted Square / Shackleton Rim rehearsal tile</title>
+<style>
+:root {
+  color-scheme: light;
+  --paper: #f7f4ee;
+  --panel: #ffffff;
+  --ink: #1f2428;
+  --muted: #697177;
+  --line: #d8d3c8;
+  --line-strong: #9c9488;
+  --danger: #b2362e;
+  --warn: #b67818;
+  --ok: #28765f;
+  --teal: #287d84;
+  --route: #2f5f93;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+button, select { font: inherit; }
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(360px, 520px);
+  gap: 0;
+}
+.map-pane {
+  padding: 24px;
+  border-right: 1px solid var(--line);
+}
+.side-pane {
+  padding: 20px;
+  background: var(--panel);
+  overflow: auto;
+  max-height: 100vh;
+}
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+p { margin: 0; color: var(--muted); line-height: 1.45; }
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  background: #fffaf2;
+  color: var(--ink);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+.layer-button {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  background: #fffdf9;
+  color: var(--ink);
+  cursor: pointer;
+}
+.layer-button[aria-pressed="true"] {
+  border-color: var(--teal);
+  outline: 2px solid color-mix(in srgb, var(--teal) 20%, transparent);
+}
+.map-wrap {
+  display: grid;
+  gap: 14px;
+  align-items: start;
+}
+.terrain-grid {
+  width: min(100%, 760px);
+  aspect-ratio: 1.57;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+  border: 1px solid var(--line-strong);
+  background: #272621;
+  position: relative;
+  overflow: hidden;
+}
+.terrain-cell {
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 7px;
+  text-align: left;
+}
+.terrain-cell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 0 solid transparent;
+  pointer-events: none;
+}
+.terrain-cell[aria-selected="true"]::after {
+  border-width: 4px;
+  border-color: #ffffff;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.cell-label {
+  position: relative;
+  z-index: 1;
+  font-size: 12px;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.65);
+}
+.legend {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 13px;
+}
+.route-list, .fact-list, .review-list {
+  display: grid;
+  gap: 8px;
+}
+.route-row, .fact-row, .review-row {
+  border: 1px solid var(--line);
+  background: #fffdf9;
+  padding: 10px;
+}
+.route-row[aria-current="true"] {
+  border-color: var(--route);
+  box-shadow: inset 3px 0 0 var(--route);
+}
+.section {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+.section:first-child { border-top: 0; padding-top: 0; }
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.metric {
+  border: 1px solid var(--line);
+  background: #fffdf9;
+  padding: 10px;
+  min-height: 66px;
+}
+.metric b, .route-row b, .fact-row b, .review-row b {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.metric span, .route-row span, .fact-row span, .review-row span {
+  font-size: 14px;
+  line-height: 1.3;
+}
+.source-path {
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+@media (max-width: 880px) {
+  .shell { grid-template-columns: 1fr; }
+  .side-pane { max-height: none; }
+  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
+  .metrics { grid-template-columns: 1fr; }
+}
+</style>
+
+</head>
+<body>
+<script id="moonmoon-view-model" type="application/json">
+{
+  "view_id": "ui/first-trusted-square/operator-view-v2",
+  "site_id": "first-trusted-square",
+  "title": "First Trusted Square / Shackleton Rim rehearsal tile",
+  "viewport": {
+    "rows": 4,
+    "cols": 4,
+    "cell_size_m": 20,
+    "tile_width_px": 88,
+    "tile_height_px": 56,
+    "viewport_width_px": 352,
+    "viewport_height_px": 224
+  },
+  "layers": [
+    {
+      "layer_id": "elevation",
+      "kind": "ElevationLayer",
+      "label": "Elevation",
+      "visible": true,
+      "value_unit": "m",
+      "legend_min": 441.521,
+      "legend_max": 499.693,
+      "status": "measured"
+    },
+    {
+      "layer_id": "slope",
+      "kind": "SlopeLayer",
+      "label": "Slope",
+      "visible": true,
+      "value_unit": "grade",
+      "legend_min": 0,
+      "legend_max": 1.1593500000000005,
+      "status": "derived"
+    },
+    {
+      "layer_id": "roughness",
+      "kind": "RoughnessLayer",
+      "label": "Roughness",
+      "visible": false,
+      "value_unit": "m",
+      "legend_min": 0,
+      "legend_max": 9.250124999999999,
+      "status": "derived"
+    },
+    {
+      "layer_id": "hazard",
+      "kind": "HazardLayer",
+      "label": "Hazard",
+      "visible": true,
+      "value_unit": "risk",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "blocked"
+    },
+    {
+      "layer_id": "route",
+      "kind": "RouteLayer",
+      "label": "Routes",
+      "visible": true,
+      "value_unit": "state",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "blocked"
+    },
+    {
+      "layer_id": "evidence",
+      "kind": "EvidenceLayer",
+      "label": "Evidence",
+      "visible": false,
+      "value_unit": "state",
+      "legend_min": 0,
+      "legend_max": 1,
+      "status": "ready"
+    },
+    {
+      "layer_id": "power",
+      "kind": "PowerLayer",
+      "label": "Power",
+      "visible": false,
+      "value_unit": "Wh",
+      "legend_min": 0,
+      "legend_max": 234.938073,
+      "status": "block"
+    }
+  ],
+  "active_layer_id": "hazard",
+  "selected_cell_id": "first-trusted-square-lola/r3-c2",
+  "selected_route_id": "northeast-stepout",
+  "terrain_cells": [
+    {
+      "cell_id": "first-trusted-square-lola/r0-c0",
+      "row": 0,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 0,
+      "elevation_m": 499.693,
+      "slope_grade": 0.8539999999999992,
+      "roughness_m": 13.367999999999995,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 499.693,
+          "value_label": "499.693 m",
+          "status": "measured",
+          "intensity": 1
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8539999999999992,
+          "value_label": "0.8539999999999992 grade",
+          "status": "derived",
+          "intensity": 0.736619657566739
+        },
+        {
+          "layer_id": "roughness",
+          "value": 13.367999999999995,
+          "value_label": "13.367999999999995 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c1",
+      "row": 0,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 0,
+      "elevation_m": 482.613,
+      "slope_grade": 0.8729000000000013,
+      "roughness_m": 13.603000000000009,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 482.613,
+          "value_label": "482.613 m",
+          "status": "measured",
+          "intensity": 0.7063879529670634
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8729000000000013,
+          "value_label": "0.8729000000000013 grade",
+          "status": "derived",
+          "intensity": 0.7529218958899391
+        },
+        {
+          "layer_id": "roughness",
+          "value": 13.603000000000009,
+          "value_label": "13.603000000000009 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c2",
+      "row": 0,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 0,
+      "elevation_m": 465.155,
+      "slope_grade": 0.8729000000000013,
+      "roughness_m": 12.944999999999993,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 465.155,
+          "value_label": "465.155 m",
+          "status": "measured",
+          "intensity": 0.40627793440142973
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8729000000000013,
+          "value_label": "0.8729000000000013 grade",
+          "status": "derived",
+          "intensity": 0.7529218958899391
+        },
+        {
+          "layer_id": "roughness",
+          "value": 12.944999999999993,
+          "value_label": "12.944999999999993 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r0-c3",
+      "row": 0,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 0,
+      "elevation_m": 448.988,
+      "slope_grade": 0.8083499999999987,
+      "roughness_m": 9.079999999999984,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 448.988,
+          "value_label": "448.988 m",
+          "status": "measured",
+          "intensity": 0.12836072337206883
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8083499999999987,
+          "value_label": "0.8083499999999987 grade",
+          "status": "derived",
+          "intensity": 0.697244145426315
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.079999999999984,
+          "value_label": "9.079999999999984 m",
+          "status": "derived",
+          "intensity": 0.9816083566438275
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c0",
+      "row": 1,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 56,
+      "elevation_m": 490.037,
+      "slope_grade": 0.6847499999999996,
+      "roughness_m": 9.164333333333332,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 490.037,
+          "value_label": "490.037 m",
+          "status": "measured",
+          "intensity": 0.8340094891012857
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6847499999999996,
+          "value_label": "0.6847499999999996 grade",
+          "status": "derived",
+          "intensity": 0.5906326821063521
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.164333333333332,
+          "value_label": "9.164333333333332 m",
+          "status": "derived",
+          "intensity": 0.9907253505583258
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c1",
+      "row": 1,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 56,
+      "elevation_m": 476.342,
+      "slope_grade": 0.8198499999999995,
+      "roughness_m": 9.308250000000001,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 476.342,
+          "value_label": "476.342 m",
+          "status": "measured",
+          "intensity": 0.5985869490476516
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8198499999999995,
+          "value_label": "0.8198499999999995 grade",
+          "status": "derived",
+          "intensity": 0.707163496786992
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.308250000000001,
+          "value_label": "9.308250000000001 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c2",
+      "row": 1,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 56,
+      "elevation_m": 459.945,
+      "slope_grade": 0.8198499999999995,
+      "roughness_m": 8.58175,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 459.945,
+          "value_label": "459.945 m",
+          "status": "measured",
+          "intensity": 0.3167159458158562
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.8198499999999995,
+          "value_label": "0.8198499999999995 grade",
+          "status": "derived",
+          "intensity": 0.707163496786992
+        },
+        {
+          "layer_id": "roughness",
+          "value": 8.58175,
+          "value_label": "8.58175 m",
+          "status": "derived",
+          "intensity": 0.9277442196727071
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r1-c3",
+      "row": 1,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 56,
+      "elevation_m": 450.981,
+      "slope_grade": 0.44819999999999993,
+      "roughness_m": 3.7123333333333335,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 450.981,
+          "value_label": "450.981 m",
+          "status": "measured",
+          "intensity": 0.16262119232620478
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.44819999999999993,
+          "value_label": "0.44819999999999993 grade",
+          "status": "derived",
+          "intensity": 0.38659593737870335
+        },
+        {
+          "layer_id": "roughness",
+          "value": 3.7123333333333335,
+          "value_label": "3.7123333333333335 m",
+          "status": "derived",
+          "intensity": 0.4013279099831985
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c0",
+      "row": 2,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 112,
+      "elevation_m": 485.895,
+      "slope_grade": 0.5211500000000001,
+      "roughness_m": 5.596999999999999,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 485.895,
+          "value_label": "485.895 m",
+          "status": "measured",
+          "intensity": 0.7628068486557105
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.5211500000000001,
+          "value_label": "0.5211500000000001 grade",
+          "status": "derived",
+          "intensity": 0.44951912709708014
+        },
+        {
+          "layer_id": "roughness",
+          "value": 5.596999999999999,
+          "value_label": "5.596999999999999 m",
+          "status": "derived",
+          "intensity": 0.6050729044202104
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c1",
+      "row": 2,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 112,
+      "elevation_m": 475.472,
+      "slope_grade": 0.5885499999999979,
+      "roughness_m": 6.201499999999996,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 475.472,
+          "value_label": "475.472 m",
+          "status": "measured",
+          "intensity": 0.5836313002819223
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.5885499999999979,
+          "value_label": "0.5885499999999979 grade",
+          "status": "derived",
+          "intensity": 0.5076551515935633
+        },
+        {
+          "layer_id": "roughness",
+          "value": 6.201499999999996,
+          "value_label": "6.201499999999996 m",
+          "status": "derived",
+          "intensity": 0.6704233726571259
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c2",
+      "row": 2,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 112,
+      "elevation_m": 463.701,
+      "slope_grade": 0.6450000000000017,
+      "roughness_m": 9.525250000000014,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 463.701,
+          "value_label": "463.701 m",
+          "status": "measured",
+          "intensity": 0.3812830915216946
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6450000000000017,
+          "value_label": "0.6450000000000017 grade",
+          "status": "derived",
+          "intensity": 0.5563462284901034
+        },
+        {
+          "layer_id": "roughness",
+          "value": 9.525250000000014,
+          "value_label": "9.525250000000014 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r2-c3",
+      "row": 2,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 112,
+      "elevation_m": 450.801,
+      "slope_grade": 0.6450000000000017,
+      "roughness_m": 7.453333333333338,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 450.801,
+          "value_label": "450.801 m",
+          "status": "measured",
+          "intensity": 0.15952692016777792
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6450000000000017,
+          "value_label": "0.6450000000000017 grade",
+          "status": "derived",
+          "intensity": 0.5563462284901034
+        },
+        {
+          "layer_id": "roughness",
+          "value": 7.453333333333338,
+          "value_label": "7.453333333333338 m",
+          "status": "derived",
+          "intensity": 0.8057548771863449
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c0",
+      "row": 3,
+      "col": 0,
+      "x_px": 0,
+      "y_px": 168,
+      "elevation_m": 483.669,
+      "slope_grade": 0.3227499999999992,
+      "roughness_m": 4.340499999999992,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 483.669,
+          "value_label": "483.669 m",
+          "status": "measured",
+          "intensity": 0.7245410162964999
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.3227499999999992,
+          "value_label": "0.3227499999999992 grade",
+          "status": "derived",
+          "intensity": 0.27838875231810845
+        },
+        {
+          "layer_id": "roughness",
+          "value": 4.340499999999992,
+          "value_label": "4.340499999999992 m",
+          "status": "derived",
+          "intensity": 0.4692369022040234
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c1",
+      "row": 3,
+      "col": 1,
+      "x_px": 88,
+      "y_px": 168,
+      "elevation_m": 477.214,
+      "slope_grade": 1.1593500000000005,
+      "roughness_m": 10.461333333333338,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 477.214,
+          "value_label": "477.214 m",
+          "status": "measured",
+          "intensity": 0.6135769786151414
+        },
+        {
+          "layer_id": "slope",
+          "value": 1.1593500000000005,
+          "value_label": "1.1593500000000005 grade",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "roughness",
+          "value": 10.461333333333338,
+          "value_label": "10.461333333333338 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c2",
+      "row": 3,
+      "col": 2,
+      "x_px": 176,
+      "y_px": 168,
+      "elevation_m": 454.027,
+      "slope_grade": 1.1593500000000005,
+      "roughness_m": 15.122333333333339,
+      "hazard": "blocked",
+      "selected": true,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 454.027,
+          "value_label": "454.027 m",
+          "status": "measured",
+          "intensity": 0.21498315340713708
+        },
+        {
+          "layer_id": "slope",
+          "value": 1.1593500000000005,
+          "value_label": "1.1593500000000005 grade",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "roughness",
+          "value": 15.122333333333339,
+          "value_label": "15.122333333333339 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    },
+    {
+      "cell_id": "first-trusted-square-lola/r3-c3",
+      "row": 3,
+      "col": 3,
+      "x_px": 264,
+      "y_px": 168,
+      "elevation_m": 441.521,
+      "slope_grade": 0.6252999999999986,
+      "roughness_m": 10.892999999999972,
+      "hazard": "blocked",
+      "selected": false,
+      "confidence": 0.82,
+      "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+      "layer_values": [
+        {
+          "layer_id": "elevation",
+          "value": 441.521,
+          "value_label": "441.521 m",
+          "status": "measured",
+          "intensity": 0
+        },
+        {
+          "layer_id": "slope",
+          "value": 0.6252999999999986,
+          "value_label": "0.6252999999999986 grade",
+          "status": "derived",
+          "intensity": 0.5393539483331162
+        },
+        {
+          "layer_id": "roughness",
+          "value": 10.892999999999972,
+          "value_label": "10.892999999999972 m",
+          "status": "derived",
+          "intensity": 1
+        },
+        {
+          "layer_id": "hazard",
+          "value": 1,
+          "value_label": "blocked",
+          "status": "blocked",
+          "intensity": 1
+        },
+        {
+          "layer_id": "power",
+          "value": 234.938073,
+          "value_label": "234.938073 Wh",
+          "status": "block",
+          "intensity": 0.18572179683794465
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "route_id": "direct-lola-window",
+      "label": "Direct traverse across measured LOLA patch",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 1.1593500000000005,
+      "roughness_m": 9.250124999999999,
+      "evidence_tile_id": "first-trusted-square-lola",
+      "next_action": "do not traverse directly; use this as the baseline hazard case"
+    },
+    {
+      "route_id": "west-contour-detour",
+      "label": "West contour detour candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7517000000000025,
+      "roughness_m": 8.52791666666666,
+      "evidence_tile_id": "first-trusted-square-west-contour-lola",
+      "next_action": "widen the west corridor extraction before simulation"
+    },
+    {
+      "route_id": "north-rim-stepout",
+      "label": "North rim step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7280000000000001,
+      "roughness_m": 7.716124999999998,
+      "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "next_action": "widen the north corridor extraction and add illumination review"
+    },
+    {
+      "route_id": "southwest-bypass",
+      "label": "Southwest widened bypass candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.6484500000000025,
+      "roughness_m": 7.056666666666669,
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "next_action": "continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "route_id": "south-stepout",
+      "label": "South step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.7199500000000001,
+      "roughness_m": 7.154583333333335,
+      "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+      "next_action": "continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "route_id": "northeast-stepout",
+      "label": "Northeast 9x9 step-out candidate",
+      "selected": true,
+      "decision": "block",
+      "score": 6,
+      "max_grade": 0.5139499999999998,
+      "roughness_m": 5.95975,
+      "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "next_action": "review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    }
+  ],
+  "route_overlays": [
+    {
+      "overlay_id": "route-overlay/direct-lola-window",
+      "route_id": "direct-lola-window",
+      "label": "Direct traverse across measured LOLA patch",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-lola",
+      "status": "block",
+      "summary": "first-trusted-square-lola: grade 1.1593500000000005, roughness 9.250124999999999 m"
+    },
+    {
+      "overlay_id": "route-overlay/west-contour-detour",
+      "route_id": "west-contour-detour",
+      "label": "West contour detour candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-west-contour-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-west-contour-lola",
+      "status": "block",
+      "summary": "first-trusted-square-west-contour-lola: grade 0.7517000000000025, roughness 8.52791666666666 m"
+    },
+    {
+      "overlay_id": "route-overlay/north-rim-stepout",
+      "route_id": "north-rim-stepout",
+      "label": "North rim step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-north-rim-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-north-rim-lola",
+      "status": "block",
+      "summary": "first-trusted-square-north-rim-lola: grade 0.7280000000000001, roughness 7.716124999999998 m"
+    },
+    {
+      "overlay_id": "route-overlay/southwest-bypass",
+      "route_id": "southwest-bypass",
+      "label": "Southwest widened bypass candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-southwest-bypass-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-southwest-bypass-lola",
+      "status": "block",
+      "summary": "first-trusted-square-southwest-bypass-lola: grade 0.6484500000000025, roughness 7.056666666666669 m"
+    },
+    {
+      "overlay_id": "route-overlay/south-stepout",
+      "route_id": "south-stepout",
+      "label": "South step-out candidate",
+      "selected": false,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-south-stepout-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-south-stepout-lola",
+      "status": "block",
+      "summary": "first-trusted-square-south-stepout-lola: grade 0.7199500000000001, roughness 7.154583333333335 m"
+    },
+    {
+      "overlay_id": "route-overlay/northeast-stepout",
+      "route_id": "northeast-stepout",
+      "label": "Northeast 9x9 step-out candidate",
+      "selected": true,
+      "decision": "block",
+      "evidence_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "viewport_ref": "evidence-window:first-trusted-square-northeast-stepout-lola",
+      "status": "block",
+      "summary": "first-trusted-square-northeast-stepout-lola: grade 0.5139499999999998, roughness 5.95975 m"
+    }
+  ],
+  "selected_tile": {
+    "cell_id": "first-trusted-square-lola/r3-c2",
+    "row": 3,
+    "col": 2,
+    "elevation_m": 454.027,
+    "slope_grade": 1.1593500000000005,
+    "roughness_m": 15.122333333333339,
+    "hazard": "blocked",
+    "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "claim": "measured",
+    "uncertainty_label": "medium",
+    "confidence": 0.82,
+    "layer_values": [
+      {
+        "layer_id": "elevation",
+        "value": 454.027,
+        "value_label": "454.027 m",
+        "status": "measured",
+        "intensity": 0.21498315340713708
+      },
+      {
+        "layer_id": "slope",
+        "value": 1.1593500000000005,
+        "value_label": "1.1593500000000005 grade",
+        "status": "derived",
+        "intensity": 1
+      },
+      {
+        "layer_id": "roughness",
+        "value": 15.122333333333339,
+        "value_label": "15.122333333333339 m",
+        "status": "derived",
+        "intensity": 1
+      },
+      {
+        "layer_id": "hazard",
+        "value": 1,
+        "value_label": "blocked",
+        "status": "blocked",
+        "intensity": 1
+      },
+      {
+        "layer_id": "power",
+        "value": 234.938073,
+        "value_label": "234.938073 Wh",
+        "status": "block",
+        "intensity": 0.18572179683794465
+      }
+    ],
+    "notes": [
+      "selected by highest local slope and roughness in the active viewport",
+      "active route overlay: northeast-stepout",
+      "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification."
+    ]
+  },
+  "source_panel": {
+    "dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "source_title": "LOLA Shackleton Rim DEM byte-range fixture",
+    "source_url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    "local_source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "claim": "measured",
+    "review_status": "accepted-for-software-proof",
+    "checksum": "inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521",
+    "generated_by": "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt"
+  },
+  "scorecard": {
+    "decision": "block",
+    "score": 20,
+    "terrain_hazard": "blocked",
+    "route_candidates": 6,
+    "blocked_route_candidates": 6,
+    "selected_route_id": "northeast-stepout",
+    "available_energy_wh": 234.938073,
+    "energy_margin_wh": -1030.061927,
+    "confidence": 0.7544,
+    "next_action": "revise rover power model, route count, or site window before simulation"
+  },
+  "inspector_facts": [
+    {
+      "fact_id": "selected-cell",
+      "label": "Selected cell",
+      "value": "first-trusted-square-lola/r3-c2",
+      "status": "inspecting",
+      "evidence_path": "ui/first-trusted-square/view-model.json"
+    },
+    {
+      "fact_id": "source-datasets",
+      "label": "Source datasets",
+      "value": "6 checked datasets",
+      "status": "ready",
+      "evidence_path": "output/moonbook/workspaces/first-trusted-square/index.json"
+    },
+    {
+      "fact_id": "best-corridor-window",
+      "label": "Best corridor window",
+      "value": "r-12-c+16 -> northeast-stepout",
+      "status": "block",
+      "evidence_path": "mission/first-trusted-square/corridor-scan.json"
+    },
+    {
+      "fact_id": "power-window-evidence",
+      "label": "Power-window evidence",
+      "value": "ready",
+      "status": "ready",
+      "evidence_path": "mission/first-trusted-square/power-window-evidence.json"
+    },
+    {
+      "fact_id": "energy-window",
+      "label": "Energy window",
+      "value": "-1030.061927 Wh margin",
+      "status": "block",
+      "evidence_path": "mission/first-trusted-square/energy-window.json"
+    }
+  ],
+  "blockers": [
+    "terrain exceeds early traverse limits",
+    "requires alternate route or stronger dataset"
+  ]
+}
+</script>
+<script id="moonmoon-moonbook" type="application/json">
+{
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "title": "Moonmoon evidence dossier: First Trusted Square / Shackleton Rim rehearsal tile",
+  "entries": [
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-dem-v1",
+      "title": "LOLA Shackleton Rim DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-west-contour-dem-v1",
+      "title": "LOLA west-contour route-window DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-north-rim-dem-v1",
+      "title": "LOLA north-rim route-window DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "title": "LOLA southwest-bypass corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "title": "LOLA south-stepout corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "dataset/lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "title": "LOLA northeast-stepout 9x9 corridor DEM byte-range fixture",
+      "kind": "SourceDataset",
+      "claim_kind": "Measured",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-northeast-stepout-dem-v1.json",
+      "summary": "Dataset manifest with coverage, trust, source path, source SHA-256, extractor, checksum, citation, and review status."
+    },
+    {
+      "entry_id": "source-candidate/candidate-lro-lola-sldem-first-trusted-square",
+      "title": "LRO LOLA derived gridded topography candidate",
+      "kind": "SourceUpgradeCandidate",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-candidates/candidate-lro-lola-sldem-first-trusted-square.json",
+      "summary": "LOLA GDR/SLDEM derived gridded terrain: Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim."
+    },
+    {
+      "entry_id": "source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square",
+      "title": "Lunar solar ephemeris power-window candidate",
+      "kind": "SourceUpgradeCandidate",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
+      "summary": "SPICE kernels Sun/Moon ephemeris and lunar orientation kernels: Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate."
+    },
+    {
+      "entry_id": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1",
+      "title": "Acquire lro-lola-gdr-south-pole-selection",
+      "kind": "SourceAcquisitionPlan",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-acquisition/acquire-lro-lola-gdr-south-pole-20m-v1.json",
+      "summary": "recorded:5-steps for Shackleton rim rehearsal tile near 89.88S, 0.12E: The active software-proof fixtures must keep product family URL, metadata URL, selected product URL, SHA-256, extraction windows, and generated CSV checksums recorded."
+    },
+    {
+      "entry_id": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1",
+      "title": "Acquire lunar-solar-ephemeris-power-window",
+      "kind": "SourceAcquisitionPlan",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-acquisition/acquire-lunar-solar-ephemeris-first-trusted-square-v1.json",
+      "summary": "recorded:5-steps for First Trusted Square near Shackleton rim, 89.88S, 0.12E: Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block."
+    },
+    {
+      "entry_id": "source-product/select-ldem-875s-20m-float-v1",
+      "title": "Select ldem_875s_20m_float",
+      "kind": "SourceProductSelection",
+      "claim_kind": "Unknown",
+      "confidence": 0,
+      "path": "source-products/select-ldem-875s-20m-float-v1.json",
+      "summary": "Polar Stereographic 20 m/pixel label pinned at 10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53; The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image."
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-first-trusted-square-v1",
+      "title": "Extract first-trusted-square-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-first-trusted-square-v1.json",
+      "summary": "4x4 window at row 3972, col 3790; 7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-west-contour-v1",
+      "title": "Extract first-trusted-square-west-contour-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-west-contour-v1.json",
+      "summary": "4x4 window at row 3972, col 3786; 1beb22d539285fe1cf1c83cedb268368e9ed67bd47919c75525e46639e0aa4f6"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-north-rim-v1",
+      "title": "Extract first-trusted-square-north-rim-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-north-rim-v1.json",
+      "summary": "4x4 window at row 3968, col 3790; 40b0ad0e3d85dc6cb9e98a35973efe42d892370a1a3494e66e4af3e200035b28"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-southwest-bypass-v1",
+      "title": "Extract first-trusted-square-southwest-bypass-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-southwest-bypass-v1.json",
+      "summary": "4x4 window at row 3980, col 3782; c47b837a8ed5bb818c865782396d44dae01b15b03a2a6a83c372548092c1ace5"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-south-stepout-v1",
+      "title": "Extract first-trusted-square-south-stepout-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-south-stepout-v1.json",
+      "summary": "4x4 window at row 3980, col 3790; dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c"
+    },
+    {
+      "entry_id": "source-extraction/extract-ldem-875s-20m-northeast-stepout-v1",
+      "title": "Extract first-trusted-square-northeast-stepout-lola",
+      "kind": "SourceExtractionCandidate",
+      "claim_kind": "Measured",
+      "confidence": 0,
+      "path": "source-extractions/extract-ldem-875s-20m-northeast-stepout-v1.json",
+      "summary": "4x4 window at row 3960, col 3806; b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-west-contour-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-west-contour-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-west-contour-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-north-rim-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-north-rim-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-north-rim-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-southwest-bypass-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-southwest-bypass-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-south-stepout-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-south-stepout-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "validation/lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "title": "Source validation for lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+      "kind": "SourceValidation",
+      "claim_kind": "Derived",
+      "confidence": 1,
+      "path": "datasets/lro-lola-first-trusted-square-northeast-stepout-dem-v1.validation.json",
+      "summary": "verified: source fingerprint matches manifest"
+    },
+    {
+      "entry_id": "terrain/first-trusted-square/metrics",
+      "title": "Terrain metrics for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "DerivedTerrain",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "terrain/first-trusted-square/metrics.json",
+      "summary": "blocked hazard, 58.17199999999997 m elevation range, 9.250124999999999 m roughness."
+    },
+    {
+      "entry_id": "mission/first-trusted-square/traverse",
+      "title": "Traverse readiness for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MissionDecision",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/traverse.json",
+      "summary": "block with score 20: choose alternate route or improve terrain evidence"
+    },
+    {
+      "entry_id": "corridor/first-trusted-square/first-trusted-square-9x9",
+      "title": "9x9 LOLA corridor scan for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "CorridorScan",
+      "claim_kind": "Derived",
+      "confidence": 0.75,
+      "path": "mission/first-trusted-square/corridor-scan.json",
+      "summary": "best window r-12-c+16 rank 1 selects northeast-stepout: block with grade 0.51395 and roughness 5.95975 m"
+    },
+    {
+      "entry_id": "route/first-trusted-square/direct-lola-window",
+      "title": "Direct traverse across measured LOLA patch",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/direct-lola-window.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case"
+    },
+    {
+      "entry_id": "route/first-trusted-square/west-contour-detour",
+      "title": "West contour detour candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/west-contour-detour.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
+    },
+    {
+      "entry_id": "route/first-trusted-square/north-rim-stepout",
+      "title": "North rim step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+    },
+    {
+      "entry_id": "route/first-trusted-square/southwest-bypass",
+      "title": "Southwest widened bypass candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/southwest-bypass.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "entry_id": "route/first-trusted-square/south-stepout",
+      "title": "South step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/south-stepout.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "entry_id": "route/first-trusted-square/northeast-stepout",
+      "title": "Northeast 9x9 step-out candidate",
+      "kind": "RouteAlternative",
+      "claim_kind": "Derived",
+      "confidence": 0.7544,
+      "path": "mission/first-trusted-square/routes/northeast-stepout.json",
+      "summary": "block with score 6 from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/direct-lola-window",
+      "title": "Illumination gate for Direct traverse across measured LOLA patch",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+      "summary": "block with relief-shadow risk 0.3635749999999998: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/west-contour-detour",
+      "title": "Illumination gate for West contour detour candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+      "summary": "block with relief-shadow risk 0.32390624999999956: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/north-rim-stepout",
+      "title": "Illumination gate for North rim step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.28963125000000006: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/southwest-bypass",
+      "title": "Illumination gate for Southwest widened bypass candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+      "summary": "block with relief-shadow risk 0.2673000000000002: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/south-stepout",
+      "title": "Illumination gate for South step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.27855000000000024: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "illumination/first-trusted-square/northeast-stepout",
+      "title": "Illumination gate for Northeast 9x9 step-out candidate",
+      "kind": "IlluminationAssessment",
+      "claim_kind": "Derived",
+      "confidence": 0.45263999999999993,
+      "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+      "summary": "block with relief-shadow risk 0.22381250000000003: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "entry_id": "power-window/first-trusted-square/ephemeris-evidence",
+      "title": "Power-window evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "PowerWindowEvidence",
+      "claim_kind": "Derived",
+      "confidence": 0.62,
+      "path": "mission/first-trusted-square/power-window-evidence.json",
+      "summary": "ready first-trusted-square-power-window-computed-v1: 234.938073 Wh verified from data/sources/lunar_ephemeris/first_trusted_square_power_window.json"
+    },
+    {
+      "entry_id": "energy/first-trusted-square/conservative-window",
+      "title": "Energy window budget for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "EnergyWindow",
+      "claim_kind": "Derived",
+      "confidence": 0.45,
+      "path": "mission/first-trusted-square/energy-window.json",
+      "summary": "block with 1265 Wh required and 234.938073 Wh verified available: revise rover power model, route count, or site window before simulation"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
+      "title": "Moonrobo simulation preconditions for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboHandoff",
+      "claim_kind": "Derived",
+      "confidence": 0.6,
+      "path": "moonrobo/first-trusted-square/handoffs.json",
+      "summary": "block primary route northeast-stepout: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
+      "title": "MoonClaw modeling proposals for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawProposal",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/proposals.json",
+      "summary": "critical ephemeris-acquisition job: Replace relief-shadow and zero-available-energy proxies with time-windowed solar ephemeris evidence before Moonrobo simulation is allowed."
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/ephemeris-acquisition-task",
+      "title": "MoonClaw ephemeris acquisition task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.6,
+      "path": "moonclaw/first-trusted-square/ephemeris-task.json",
+      "summary": "accepted task tracks 5 artifacts with 0 blockers before Moonrobo power evidence can unblock"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/corridor-expansion-task",
+      "title": "MoonClaw corridor expansion task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.65,
+      "path": "moonclaw/first-trusted-square/corridor-task.json",
+      "summary": "accepted task plans 81 windows with 0 blockers before route promotion"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
+      "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.7,
+      "path": "moonclaw/first-trusted-square/receipts.json",
+      "summary": "accepted receipt keeps primary Moonrobo handoff block: MoonClaw route scoring accepts the current evidence result but keeps Moonrobo blocked until corridor and power evidence improve"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",
+      "title": "MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawEphemerisReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.55,
+      "path": "moonclaw/first-trusted-square/ephemeris-receipts.json",
+      "summary": "accepted receipt keeps energy block with 234.938073 Wh verified available: MoonClaw ephemeris acquisition is accepted; Moonrobo remains blocked by terrain, horizon, and energy-margin gates"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/corridor-expansion-receipt",
+      "title": "MoonClaw corridor-expansion receipt for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawCorridorReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.75,
+      "path": "moonclaw/first-trusted-square/corridor-receipts.json",
+      "summary": "accepted receipt covers 81 measured windows and keeps best window r-12-c+16 block: MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
+    }
+  ],
+  "review_queue": [
+    {
+      "item_id": "workspace-materialized",
+      "severity": "low",
+      "reason": "MoonBook workspace files are materialized from the current generated dossier",
+      "owner": "moonbook",
+      "status": "Accepted",
+      "last_transition_id": "review-workspace-materialized-accept"
+    },
+    {
+      "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+      "severity": "medium",
+      "reason": "Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate.",
+      "owner": "data-review",
+      "status": "Open",
+      "last_transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open"
+    },
+    {
+      "item_id": "blocker-0",
+      "severity": "high",
+      "reason": "terrain exceeds early traverse limits",
+      "owner": "operator",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-blocker-0-request-evidence"
+    },
+    {
+      "item_id": "blocker-1",
+      "severity": "high",
+      "reason": "requires alternate route or stronger dataset",
+      "owner": "operator",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-blocker-1-request-evidence"
+    },
+    {
+      "item_id": "traverse-0",
+      "severity": "high",
+      "reason": "max neighbor grade exceeds rover hard limit",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-traverse-0-request-evidence"
+    },
+    {
+      "item_id": "traverse-1",
+      "severity": "high",
+      "reason": "roughness exceeds rover hard limit",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-traverse-1-request-evidence"
+    },
+    {
+      "item_id": "route-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case",
+      "owner": "mission-review",
+      "status": "Rejected",
+      "last_transition_id": "review-route-direct-lola-window-reject"
+    },
+    {
+      "item_id": "illumination-direct-lola-window",
+      "severity": "high",
+      "reason": "Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-direct-lola-window-request-evidence"
+    },
+    {
+      "item_id": "route-west-contour-detour",
+      "severity": "high",
+      "reason": "West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-west-contour-detour-request-evidence"
+    },
+    {
+      "item_id": "illumination-west-contour-detour",
+      "severity": "high",
+      "reason": "West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-west-contour-detour-request-evidence"
+    },
+    {
+      "item_id": "route-north-rim-stepout",
+      "severity": "high",
+      "reason": "North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-north-rim-stepout-request-evidence"
+    },
+    {
+      "item_id": "illumination-north-rim-stepout",
+      "severity": "high",
+      "reason": "North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-north-rim-stepout-request-evidence"
+    },
+    {
+      "item_id": "route-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-southwest-bypass-request-evidence"
+    },
+    {
+      "item_id": "illumination-southwest-bypass",
+      "severity": "high",
+      "reason": "Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-southwest-bypass-request-evidence"
+    },
+    {
+      "item_id": "route-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-south-stepout-request-evidence"
+    },
+    {
+      "item_id": "illumination-south-stepout",
+      "severity": "high",
+      "reason": "South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-south-stepout-request-evidence"
+    },
+    {
+      "item_id": "route-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-route-northeast-stepout-request-evidence"
+    },
+    {
+      "item_id": "illumination-northeast-stepout",
+      "severity": "high",
+      "reason": "Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-illumination-northeast-stepout-request-evidence"
+    },
+    {
+      "item_id": "corridor-scan-best-window",
+      "severity": "high",
+      "reason": "best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked",
+      "owner": "mission-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-corridor-scan-best-window-request-evidence"
+    },
+    {
+      "item_id": "energy-window",
+      "severity": "high",
+      "reason": "energy window budget: revise rover power model, route count, or site window before simulation",
+      "owner": "power-thermal-review",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-energy-window-request-evidence"
+    },
+    {
+      "item_id": "moonrobo-handoff",
+      "severity": "high",
+      "reason": "Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared",
+      "owner": "moonrobo",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonrobo-handoff-request-evidence"
+    },
+    {
+      "item_id": "moonclaw-proposals",
+      "severity": "high",
+      "reason": "MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable",
+      "owner": "moonclaw",
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-moonclaw-proposals-request-evidence"
+    },
+    {
+      "item_id": "question-0",
+      "severity": "low",
+      "reason": "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
+      "owner": "moonclaw",
+      "status": "Open",
+      "last_transition_id": "review-question-0-keep-open"
+    },
+    {
+      "item_id": "question-1",
+      "severity": "low",
+      "reason": "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
+      "owner": "moonclaw",
+      "status": "Open",
+      "last_transition_id": "review-question-1-keep-open"
+    },
+    {
+      "item_id": "question-2",
+      "severity": "low",
+      "reason": "Review the materialized MoonBook workspace entries and close accepted or rejected queue items.",
+      "owner": "moonclaw",
+      "status": "Open",
+      "last_transition_id": "review-question-2-keep-open"
+    }
+  ],
+  "review_transitions": [
+    {
+      "transition_id": "review-workspace-materialized-accept",
+      "item_id": "workspace-materialized",
+      "previous_status": "Open",
+      "decision": "Accept",
+      "resulting_status": "Accepted",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonbook",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "workspace-index",
+          "entry_id": "workspace/index",
+          "path": "index.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/index.json"
+        }
+      ],
+      "rationale": "accepted because the materialized workspace is present in generated MoonBook output"
+    },
+    {
+      "transition_id": "review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open",
+      "item_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+      "previous_status": "Open",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "data-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square",
+          "entry_id": "source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square",
+          "path": "source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json"
+        }
+      ],
+      "rationale": "left open for data-review follow-up"
+    },
+    {
+      "transition_id": "review-blocker-0-request-evidence",
+      "item_id": "blocker-0",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "operator",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-blocker-0",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits"
+    },
+    {
+      "transition_id": "review-blocker-1-request-evidence",
+      "item_id": "blocker-1",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "operator",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-blocker-1",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset"
+    },
+    {
+      "transition_id": "review-traverse-0-request-evidence",
+      "item_id": "traverse-0",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-reason-0",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit"
+    },
+    {
+      "transition_id": "review-traverse-1-request-evidence",
+      "item_id": "traverse-1",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "traverse-reason-1",
+          "entry_id": "mission/first-trusted-square/traverse",
+          "path": "mission/first-trusted-square/traverse.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: roughness exceeds rover hard limit"
+    },
+    {
+      "transition_id": "review-route-direct-lola-window-reject",
+      "item_id": "route-direct-lola-window",
+      "previous_status": "Open",
+      "decision": "Reject",
+      "resulting_status": "Rejected",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-direct-lola-window",
+          "entry_id": "route/first-trusted-square/direct-lola-window",
+          "path": "mission/first-trusted-square/routes/direct-lola-window.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.json"
+        }
+      ],
+      "rationale": "rejected for this proof slice because the evidence explicitly says not to traverse directly"
+    },
+    {
+      "transition_id": "review-illumination-direct-lola-window-request-evidence",
+      "item_id": "illumination-direct-lola-window",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-direct-lola-window",
+          "entry_id": "illumination/first-trusted-square/direct-lola-window",
+          "path": "mission/first-trusted-square/routes/direct-lola-window.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-west-contour-detour-request-evidence",
+      "item_id": "route-west-contour-detour",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-west-contour-detour",
+          "entry_id": "route/first-trusted-square/west-contour-detour",
+          "path": "mission/first-trusted-square/routes/west-contour-detour.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation"
+    },
+    {
+      "transition_id": "review-illumination-west-contour-detour-request-evidence",
+      "item_id": "illumination-west-contour-detour",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-west-contour-detour",
+          "entry_id": "illumination/first-trusted-square/west-contour-detour",
+          "path": "mission/first-trusted-square/routes/west-contour-detour.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-north-rim-stepout-request-evidence",
+      "item_id": "route-north-rim-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-north-rim-stepout",
+          "entry_id": "route/first-trusted-square/north-rim-stepout",
+          "path": "mission/first-trusted-square/routes/north-rim-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review"
+    },
+    {
+      "transition_id": "review-illumination-north-rim-stepout-request-evidence",
+      "item_id": "illumination-north-rim-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-north-rim-stepout",
+          "entry_id": "illumination/first-trusted-square/north-rim-stepout",
+          "path": "mission/first-trusted-square/routes/north-rim-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-southwest-bypass-request-evidence",
+      "item_id": "route-southwest-bypass",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-southwest-bypass",
+          "entry_id": "route/first-trusted-square/southwest-bypass",
+          "path": "mission/first-trusted-square/routes/southwest-bypass.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation"
+    },
+    {
+      "transition_id": "review-illumination-southwest-bypass-request-evidence",
+      "item_id": "illumination-southwest-bypass",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-southwest-bypass",
+          "entry_id": "illumination/first-trusted-square/southwest-bypass",
+          "path": "mission/first-trusted-square/routes/southwest-bypass.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-south-stepout-request-evidence",
+      "item_id": "route-south-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-south-stepout",
+          "entry_id": "route/first-trusted-square/south-stepout",
+          "path": "mission/first-trusted-square/routes/south-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review"
+    },
+    {
+      "transition_id": "review-illumination-south-stepout-request-evidence",
+      "item_id": "illumination-south-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-south-stepout",
+          "entry_id": "illumination/first-trusted-square/south-stepout",
+          "path": "mission/first-trusted-square/routes/south-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: South step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-route-northeast-stepout-request-evidence",
+      "item_id": "route-northeast-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "route-northeast-stepout",
+          "entry_id": "route/first-trusted-square/northeast-stepout",
+          "path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+    },
+    {
+      "transition_id": "review-illumination-northeast-stepout-request-evidence",
+      "item_id": "illumination-northeast-stepout",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "illumination-northeast-stepout",
+          "entry_id": "illumination/first-trusted-square/northeast-stepout",
+          "path": "mission/first-trusted-square/routes/northeast-stepout.illumination.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: widen local horizon and terrain-shadow evidence before route simulation"
+    },
+    {
+      "transition_id": "review-corridor-scan-best-window-request-evidence",
+      "item_id": "corridor-scan-best-window",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "mission-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "corridor-scan-best-window",
+          "entry_id": "corridor/first-trusted-square/first-trusted-square-9x9",
+          "path": "mission/first-trusted-square/corridor-scan.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/corridor-scan.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked"
+    },
+    {
+      "transition_id": "review-energy-window-request-evidence",
+      "item_id": "energy-window",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "power-thermal-review",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "energy-window",
+          "entry_id": "energy/first-trusted-square/conservative-window",
+          "path": "mission/first-trusted-square/energy-window.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
+    },
+    {
+      "transition_id": "review-moonrobo-handoff-request-evidence",
+      "item_id": "moonrobo-handoff",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonrobo",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "moonrobo-handoff",
+          "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
+          "path": "moonrobo/first-trusted-square/handoffs.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonrobo/first-trusted-square/handoffs.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared"
+    },
+    {
+      "transition_id": "review-moonclaw-proposals-request-evidence",
+      "item_id": "moonclaw-proposals",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "moonclaw-proposals",
+          "entry_id": "moonclaw/first-trusted-square/modeling-proposals",
+          "path": "moonclaw/first-trusted-square/proposals.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/proposals.json"
+        }
+      ],
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable"
+    },
+    {
+      "transition_id": "review-question-0-keep-open",
+      "item_id": "question-0",
+      "previous_status": "Open",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-0",
+          "entry_id": "site/first-trusted-square/next-question-0",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
+      "rationale": "left open for moonclaw follow-up"
+    },
+    {
+      "transition_id": "review-question-1-keep-open",
+      "item_id": "question-1",
+      "previous_status": "Open",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-1",
+          "entry_id": "site/first-trusted-square/next-question-1",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
+      "rationale": "left open for moonclaw follow-up"
+    },
+    {
+      "transition_id": "review-question-2-keep-open",
+      "item_id": "question-2",
+      "previous_status": "Open",
+      "decision": "KeepOpen",
+      "resulting_status": "Open",
+      "reviewer_id": "operator/moonbook-policy-v1",
+      "reviewer_role": "moonclaw",
+      "timestamp_policy": "deterministic-evidence-window-start",
+      "recorded_at_utc": "2026-06-25T00:00:00Z",
+      "append_only": true,
+      "source_evidence_refs": [
+        {
+          "ref_id": "question-2",
+          "entry_id": "site/first-trusted-square/next-question-2",
+          "path": "review_queue.json",
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/review_queue.json"
+        }
+      ],
+      "rationale": "left open for moonclaw follow-up"
+    }
+  ]
+}
+</script>
+
+<main class="shell">
+  <section class="map-pane" aria-label="Lunar terrain inspection">
+    <div class="topline">
+      <div>
+        <h1>Rabbita Moon - First Trusted Square / Shackleton Rim rehearsal tile</h1>
+        <p>revise rover power model, route count, or site window before simulation</p>
+      </div>
+      <span class="status-pill">mission: block</span>
+    </div>
+    <div id="layer-toolbar" class="toolbar" aria-label="Layer toggles"></div>
+    <div class="map-wrap">
+      <div id="terrain-grid" class="terrain-grid" role="grid" aria-label="Selectable lunar terrain cells"></div>
+      <div class="legend">
+        <span id="selected-cell"></span>
+        <span id="active-layer"></span>
+      </div>
+    </div>
+  </section>
+  <aside class="side-pane" aria-label="Inspection details">
+    <section class="section">
+      <h2>Selected Cell</h2>
+      <div id="metrics" class="metrics"></div>
+    </section>
+    <section class="section">
+      <h2>Route Overlays</h2>
+      <div id="routes" class="route-list"></div>
+    </section>
+    <section class="section">
+      <h2>Source Evidence</h2>
+      <div class="fact-row">
+        <b>LOLA Shackleton Rim DEM byte-range fixture - accepted-for-software-proof</b>
+        <span class="source-path">data/sources/lro_lola/first_trusted_square_dem.csv</span>
+      </div>
+      <div id="facts" class="fact-list" style="margin-top: 8px;"></div>
+    </section>
+    <section class="section">
+      <h2>MoonBook Review Status</h2>
+      <div id="review" class="review-list"></div>
+    </section>
+  </aside>
+</main>
+<script>
+const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
+const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent);
+let activeLayer = view.active_layer_id;
+let selectedCellId = view.selected_cell_id;
+const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
+const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
+
+function layerValue(cell, id) {
+  return cell.layer_values.find(value => value.layer_id === id) || cell.layer_values[0];
+}
+
+function colorFor(value) {
+  const x = Math.max(0, Math.min(1, Number(value.intensity || 0)));
+  if (activeLayer === 'hazard') return value.status === 'blocked'
+    ? `rgb(${150 + 70 * x}, ${52 - 16 * x}, ${42 - 10 * x})`
+    : `rgb(48, ${128 + 60 * x}, 96)`;
+  if (activeLayer === 'power') return `rgb(${72 + 130 * x}, ${116 + 56 * x}, ${126 - 42 * x})`;
+  if (activeLayer === 'route') return `rgb(${44 + 45 * x}, ${82 + 55 * x}, ${138 + 45 * x})`;
+  if (activeLayer === 'evidence') return `rgb(${62 + 30 * x}, ${118 + 70 * x}, ${103 + 35 * x})`;
+  return `rgb(${72 + 95 * x}, ${74 + 80 * x}, ${70 + 36 * x})`;
+}
+
+function el(tag, attrs = {}, children = []) {
+  const node = document.createElement(tag);
+  for (const [key, value] of Object.entries(attrs)) {
+    if (key === 'className') node.className = value;
+    else if (key === 'text') node.textContent = value;
+    else node.setAttribute(key, value);
+  }
+  for (const child of children) node.append(child);
+  return node;
+}
+
+function renderToolbar() {
+  const toolbar = document.getElementById('layer-toolbar');
+  toolbar.replaceChildren(...view.layers.map(layer => {
+    const button = el('button', {
+      className: 'layer-button',
+      type: 'button',
+      'aria-pressed': String(layer.layer_id === activeLayer),
+      title: `${layer.label}: ${layer.status}`,
+      text: layer.label
+    });
+    button.addEventListener('click', () => {
+      activeLayer = layer.layer_id;
+      render();
+    });
+    return button;
+  }));
+}
+
+function renderGrid() {
+  const grid = document.getElementById('terrain-grid');
+  grid.style.setProperty('--rows', view.viewport.rows);
+  grid.style.setProperty('--cols', view.viewport.cols);
+  grid.replaceChildren(...view.terrain_cells.map(cell => {
+    const value = layerValue(cell, activeLayer);
+    const button = el('button', {
+      className: 'terrain-cell',
+      type: 'button',
+      'aria-selected': String(cell.cell_id === selectedCellId),
+      title: `${cell.cell_id}: ${value.value_label}`,
+    }, [el('span', {
+      className: 'cell-label',
+      text: `r${cell.row} c${cell.col}\n${value.value_label}`
+    })]);
+    button.style.background = colorFor(value);
+    button.addEventListener('click', () => {
+      selectedCellId = cell.cell_id;
+      render();
+    });
+    return button;
+  }));
+}
+
+function selectedCell() {
+  return view.terrain_cells.find(cell => cell.cell_id === selectedCellId) || view.terrain_cells[0];
+}
+
+function renderInspector() {
+  const cell = selectedCell();
+  const value = layerValue(cell, activeLayer);
+  document.getElementById('selected-cell').textContent = cell.cell_id;
+  document.getElementById('active-layer').textContent = `${activeLayer}: ${value.value_label}`;
+  const metrics = [
+    ['Elevation', `${cell.elevation_m} m`],
+    ['Slope', `${cell.slope_grade.toFixed(3)} grade`],
+    ['Roughness', `${cell.roughness_m.toFixed(3)} m`],
+    ['Hazard', cell.hazard],
+    ['Source', cell.source_dataset_id],
+    ['Confidence', `${Math.round(cell.confidence * 100)}%`],
+  ];
+  document.getElementById('metrics').replaceChildren(...metrics.map(([label, value]) =>
+    el('div', { className: 'metric' }, [
+      el('b', { text: label }),
+      el('span', { text: value })
+    ])
+  ));
+}
+
+function renderRoutes() {
+  document.getElementById('routes').replaceChildren(...view.routes.map(route =>
+    el('div', { className: 'route-row', 'aria-current': String(route.selected) }, [
+      el('b', { text: `${route.label} - ${route.decision}` }),
+      el('span', { text: `score ${route.score}, grade ${route.max_grade}, roughness ${route.roughness_m} m` }),
+      el('p', { text: route.next_action })
+    ])
+  ));
+}
+
+function renderFacts() {
+  document.getElementById('facts').replaceChildren(...view.inspector_facts.map(fact =>
+    el('div', { className: 'fact-row' }, [
+      el('b', { text: `${fact.label} - ${fact.status}` }),
+      el('span', { text: fact.value }),
+      el('p', { className: 'source-path', text: fact.evidence_path })
+    ])
+  ));
+}
+
+function renderReview() {
+  const rows = ['workspace-materialized', 'route-direct-lola-window', 'corridor-scan-best-window', 'energy-window', 'moonrobo-handoff']
+    .map(id => ({ item: reviewByItem.get(id), transition: transitionByItem.get(id) }))
+    .filter(row => row.item && row.transition);
+  document.getElementById('review').replaceChildren(...rows.map(row =>
+    el('div', { className: 'review-row' }, [
+      el('b', { text: `${row.item.item_id} - ${row.item.status}` }),
+      el('span', { text: row.item.reason }),
+      el('p', { className: 'source-path', text: row.transition.source_evidence_refs.map(ref => ref.immutable_uri).join(' | ') })
+    ])
+  ));
+}
+
+function render() {
+  renderToolbar();
+  renderGrid();
+  renderInspector();
+  renderRoutes();
+  renderFacts();
+  renderReview();
+}
+
+render();
+</script>
+
+</body>
+</html>
+

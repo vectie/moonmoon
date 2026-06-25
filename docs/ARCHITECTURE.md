@@ -47,7 +47,7 @@ The first real implementation can follow this package shape:
 - `src/ui`
   Renderer-agnostic view models for terrain tiles, layers, inspectors, and
   uncertainty displays.
-- `src/ui/rabbita-moon`
+- `src/ui/rabbita_moon`
   Browser-facing lunar viewer and operator tool.
 - `cmd/main`
   CLI entry point for fixtures, model summaries, exports, and later serve/bundle
@@ -67,6 +67,7 @@ The current implementation has started this shape with:
 - `src/adapters/moonclaw`
 - `src/adapters/moonrobo`
 - `src/ui`
+- `src/ui/rabbita_moon`
 - `cmd/main`
 
 Each package owns typed contracts plus deterministic tests. The exported files
@@ -84,6 +85,13 @@ The first `src/ui` slice is renderer-neutral. It projects the trusted-square
 dossier into terrain cells, route rows, selected-route state, and inspector
 facts that a CLI or future Rabbita/Lepusa browser surface can render without
 owning terrain derivation.
+
+The first `src/ui/rabbita_moon` slice is browser-facing but still generated
+from MoonBit-owned contracts. It renders a self-contained Rabbita Moon HTML
+inspection surface under `output/ui/rabbita/`, embedding the generated
+renderer-neutral view model and MoonBook review ledger as JSON. The page owns
+only presentation state such as layer selection and selected terrain cell; it
+does not recompute terrain, route, energy, or review facts.
 
 ## Core Contracts
 

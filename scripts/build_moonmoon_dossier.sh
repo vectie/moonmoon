@@ -8,6 +8,7 @@ MOONBOOK_OUT="$ROOT/output/moonbook"
 MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
 UI_OUT="$ROOT/output/ui"
+RABBITA_OUT="$UI_OUT/rabbita"
 
 mkdir -p "$OUT"
 mkdir -p "$TERRAIN_OUT"
@@ -15,6 +16,7 @@ mkdir -p "$MOONBOOK_OUT"
 mkdir -p "$MOONCLAW_OUT"
 mkdir -p "$MOONROBO_OUT"
 mkdir -p "$UI_OUT"
+mkdir -p "$RABBITA_OUT"
 
 cd "$ROOT"
 
@@ -46,6 +48,7 @@ python3 scripts/generate_power_window.py
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo handoff json > "$MOONROBO_OUT/first_trusted_square_handoffs.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
+/Users/kq/.moon/bin/moon run cmd/main -- ui rabbita > "$RABBITA_OUT/first_trusted_square.html"
 python3 scripts/materialize_moonbook_workspace.py
 
 printf 'wrote %s\n' "$OUT/first_trusted_square.md"
@@ -70,4 +73,5 @@ printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_handoffs.json"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"
+printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
 printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"
