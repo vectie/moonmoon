@@ -1042,7 +1042,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-remediation-margin-refresh-task-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize remediation-margin refresh task into MoonBook",
       outcome: "The projection-driven MoonClaw refresh packet becomes durable workspace evidence before Rabbita or downstream task loops inspect it",
@@ -1055,7 +1055,22 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
         "scripts/check_moonbook_remediation_margin_refresh_task_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes the remediation-margin refresh task with ranked terrain/horizon/energy refreshes and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes the remediation-margin refresh task with ranked terrain/horizon/energy refreshes and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-remediation-margin-refresh-task-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface remediation-margin refresh task in Rabbita",
+      outcome: "Operators can inspect the projection-driven MoonClaw refresh order, target artifacts, commands, and HardwareDenied authority from the review surface",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
+        "output/ui/rabbita/first_trusted_square.html", "src/ui/rabbita_moon",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_task_surface.py",
+      ],
+      done_when: "Rabbita renders the remediation-margin refresh task with NoConsumeSimulationBlocked status, ranked terrain/horizon/energy refreshes, target artifact paths, and HardwareDenied authority",
     },
   ]
 }

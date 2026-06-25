@@ -445,6 +445,15 @@
       "summary": "accepted task preserves 3 active remediation margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) with 3 blockers and hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
+      "entry_id": "moonclaw/first-trusted-square/remediation-margin-refresh-task",
+      "title": "MoonClaw remediation-margin refresh task for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawRemediationMarginRefreshTask",
+      "claim_kind": "Derived",
+      "confidence": 0.72,
+      "path": "moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
+      "summary": "accepted refresh task consumes NoConsumeSimulationBlocked with 3 ranked refreshes (terrain-northeast-stepout, illumination-northeast-stepout, energy-window); simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
       "entry_id": "moonclaw/first-trusted-square/route-scoring-receipt",
       "title": "MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonClawReceipt",
