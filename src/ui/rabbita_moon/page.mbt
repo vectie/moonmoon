@@ -271,6 +271,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 66%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-regenerated-receipt-readiness-row {
+    #|  border-color: color-mix(in srgb, var(--danger) 58%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -740,6 +744,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRegeneratedReceiptReadiness() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-regenerated-receipt-readiness',
+    #|    'moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness',
+    #|    'remediation-margin-regenerated-receipt-readiness-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -1032,6 +1044,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginReviewedFreshEvidenceTask();
     #|  renderRemediationMarginFreshEvidenceActionReceipts();
     #|  renderRemediationMarginRegeneratedReviewedWorkItemReceipts();
+    #|  renderRemediationMarginRegeneratedReceiptReadiness();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -1200,6 +1213,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Regenerated Reviewed Work Item Receipts</h2>
     $|      <div id="remediation-margin-regenerated-reviewed-work-item-receipts" class="review-list" aria-label="MoonClaw regenerated reviewed work item receipts with source action receipt provenance, source receipt and review provenance, terrain/horizon/energy execution modes, pending fresh evidence state, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Regenerated Receipt Readiness</h2>
+    $|      <div id="remediation-margin-regenerated-receipt-readiness" class="review-list" aria-label="MoonRobo regenerated receipt readiness gate with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Closeout Action Review</h2>

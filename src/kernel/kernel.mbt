@@ -1833,7 +1833,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-regenerated-receipt-readiness-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface regenerated receipt readiness in Rabbita",
       outcome: "Operators can inspect the durable MoonRobo regenerated receipt readiness gate before any simulation review consumes it",
@@ -1845,7 +1845,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_regenerated_receipt_readiness_surface.py",
       ],
-      done_when: "Rabbita renders regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: Rabbita renders regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-regenerated-receipt-readiness-fresh-evidence-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Issue fresh-evidence task from regenerated receipt readiness",
+      outcome: "MoonClaw converts the pending MoonRobo regenerated receipt readiness gate into explicit terrain, horizon, and energy fresh-evidence work before simulation review can resume",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
+        "scripts/check_rabbita_remediation_margin_regenerated_receipt_readiness_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
+        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_task.py",
+      ],
+      done_when: "MoonClaw emits an explicit fresh-evidence task for the three pending regenerated receipts, preserving source action receipt provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }
