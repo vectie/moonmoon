@@ -239,6 +239,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 60%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-refresh-followup-modeling-row {
+    #|  border-color: color-mix(in srgb, var(--teal) 66%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--teal);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -620,6 +624,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshFollowupModeling() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-followup-modeling',
+    #|    'moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling',
+    #|    'remediation-margin-refresh-followup-modeling-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -791,6 +803,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
     #|  renderRemediationMarginRefreshModeling();
+    #|  renderRemediationMarginRefreshFollowupModeling();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -916,6 +929,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Modeling</h2>
     $|      <div id="remediation-margin-refresh-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh modeling pass with still-blocking refresh results, no-consume simulation status, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Follow-Up Modeling</h2>
+    $|      <div id="remediation-margin-refresh-followup-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh follow-up modeling pass with still-blocking follow-up refresh results, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Projection</h2>

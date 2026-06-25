@@ -7,7 +7,7 @@ test "system kernel keeps MoonMoon standalone boundaries explicit" {
   assert_eq(kernel.suite_boundaries.length(), 5)
   assert_eq(
     @kernel.top_priority_task(kernel).task_id,
-    "rabbita-remediation-margin-refresh-followup-modeling-surface",
+    "moonrobo-remediation-margin-refresh-followup-projection",
   )
 }
 
@@ -162,6 +162,9 @@ test "kernel markdown names suite roles and next product output" {
     markdown.contains(
       "rabbita-remediation-margin-refresh-followup-modeling-surface",
     ),
+  )
+  assert_true(
+    markdown.contains("moonrobo-remediation-margin-refresh-followup-projection"),
   )
   assert_true(markdown.contains("FollowupRefreshesCarriedForward state"))
   assert_true(markdown.contains("AllFollowupRefreshesStillBlocking state"))
