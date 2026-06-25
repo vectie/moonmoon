@@ -1,0 +1,76 @@
+# MoonClaw Remediation Margin Reviewed Fresh Evidence Tasks
+
+- moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task
+  - priority: critical
+  - state: accepted
+  - route: northeast-stepout
+  - source plan: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan
+  - review transition: rabbita-moonclaw-remediation-margin-closeout-action-review-accept
+  - review decision: Accept
+  - reviewer: operator/rabbita-closeout-action-review
+  - reviewed at: 2026-06-25T00:00:00Z
+  - source receipts: 3
+  - pending receipts: 3
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - automatic refresh loop allowed: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - safety gate: Execute only the fresh-evidence actions named by the accepted reviewed work item receipts; do not start an automatic refresh loop, consume simulation, or change MoonRobo hardware authority.
+  - next action: Run the terrain escalation, local-horizon retry-with-new-evidence, and energy freeze verification actions, rebuild the dossier, then regenerate reviewed work item receipts before any downstream MoonRobo simulation review.
+  - source receipt ids:
+    - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt
+    - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt
+    - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt
+  - pending margin ids:
+    - terrain-northeast-stepout
+    - illumination-northeast-stepout
+    - energy-window
+  - pending refresh ids:
+    - refresh-terrain-northeast-stepout
+    - refresh-illumination-northeast-stepout
+    - refresh-energy-window
+  - fresh evidence actions:
+    - 1. terrain-fresh-evidence-refresh-terrain-northeast-stepout: terrain-northeast-stepout / refresh-terrain-northeast-stepout
+      - source receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt
+      - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout
+      - blocker domain: terrain
+      - disposition: EscalateToOperatorDecision
+      - result status: ReviewedWorkItemPendingFreshEvidence
+      - execution mode: operator-escalation
+      - required evidence: operator-reviewed DEM slope and roughness evidence before another terrain refresh
+      - target: operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation
+      - evidence: operator/rabbita-remediation-margin-cycle-closeout#terrain-escalation
+      - command: manual: review DEM slope/roughness evidence for terrain-northeast-stepout before any terrain refresh is retried
+      - check: python3 scripts/check_selected_route_terrain_remediation.py
+    - 2. local-horizon-fresh-evidence-refresh-illumination-northeast-stepout: illumination-northeast-stepout / refresh-illumination-northeast-stepout
+      - source receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt
+      - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout
+      - blocker domain: local-horizon
+      - disposition: RetryWithNewEvidence
+      - result status: ReviewedWorkItemPendingFreshEvidence
+      - execution mode: bounded-regeneration
+      - required evidence: new local-horizon or ephemeris evidence before retrying the horizon refresh
+      - target: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - evidence: output/mission/first_trusted_square_northeast_stepout_horizon.json
+      - command: python3 scripts/generate_selected_route_horizon.py --check
+      - check: python3 scripts/check_selected_route_horizon_model.py
+    - 3. energy-fresh-evidence-refresh-energy-window: energy-window / refresh-energy-window
+      - source receipt: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt
+      - source work item: moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window
+      - blocker domain: energy
+      - disposition: FreezeUntilNewSourceEvidence
+      - result status: ReviewedWorkItemPendingFreshEvidence
+      - execution mode: manual-freeze-verification
+      - required evidence: new power-window source evidence or rover energy profile before unfreezing energy
+      - target: operator/rabbita-remediation-margin-cycle-closeout#energy-freeze
+      - evidence: operator/rabbita-remediation-margin-cycle-closeout#energy-freeze
+      - command: manual: keep energy-window frozen until new power-window source evidence or rover energy profile is attached
+      - check: python3 scripts/check_energy_margin_remediation.py
+  - acceptance:
+    - pending-receipts-consumed: Task consumes only accepted reviewed work item receipts that are still pending fresh evidence.
+    - one-action-per-pending-receipt: Task carries exactly one fresh-evidence action for each pending terrain, horizon, and energy work item receipt.
+    - review-provenance-preserved: Accepted closeout action review provenance remains attached to every fresh-evidence action.
+    - no-refresh-loop-or-simulation: Task does not open an automatic refresh loop or allow MoonRobo simulation consumption.
+    - hardware-denial-preserved: Hardware state remains HardwareDenied under moonmoon-safety-gate-only with no hardware authority change.

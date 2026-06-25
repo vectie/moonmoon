@@ -758,6 +758,117 @@ test "MoonClaw reviewed remediation margin work item receipt renderers expose ac
 }
 
 ///|
+test "first trusted square reviewed fresh evidence task consumes pending receipts" {
+  let tasks = @moonclaw.first_trusted_square_remediation_margin_reviewed_fresh_evidence_tasks()
+  assert_eq(tasks.length(), 1)
+  let task = tasks[0]
+  assert_eq(
+    task.task_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task",
+  )
+  assert_eq(
+    task.source_plan_id,
+    "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan",
+  )
+  assert_eq(
+    task.source_review_transition_id,
+    "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
+  )
+  assert_true(
+    task.source_review_decision ==
+    @moonclaw.MoonClawCloseoutActionReviewDecision::Accept,
+  )
+  assert_true(task.state == @moonclaw.MoonClawReceiptStatus::Accepted)
+  assert_eq(task.source_receipt_count, 3)
+  assert_eq(task.pending_receipt_count, 3)
+  assert_eq(task.pending_margin_ids[0], "terrain-northeast-stepout")
+  assert_eq(task.pending_margin_ids[1], "illumination-northeast-stepout")
+  assert_eq(task.pending_margin_ids[2], "energy-window")
+  assert_eq(task.pending_refresh_ids[0], "refresh-terrain-northeast-stepout")
+  assert_eq(
+    task.pending_refresh_ids[1],
+    "refresh-illumination-northeast-stepout",
+  )
+  assert_eq(task.pending_refresh_ids[2], "refresh-energy-window")
+  assert_true(!task.may_consume_simulation)
+  assert_true(!task.automatic_refresh_loop_allowed)
+  assert_true(!task.hardware_authority_change)
+  assert_true(
+    task.simulation_state == @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(
+    task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(task.hardware_denied)
+  assert_eq(task.fresh_evidence_actions.length(), 3)
+  assert_true(
+    task.fresh_evidence_actions.all(fn(action) {
+      action.result_status ==
+      @moonclaw.MoonClawRemediationMarginReviewedWorkItemResultStatus::ReviewedWorkItemPendingFreshEvidence &&
+      action.source_receipt_id.contains("/receipt") &&
+      action.command != "" &&
+      action.acceptance_check != "" &&
+      action.target_artifact_path != ""
+    }),
+  )
+  assert_true(
+    task.fresh_evidence_actions.any(fn(action) {
+      action.blocker_domain == "terrain" &&
+      action.execution_mode == "operator-escalation" &&
+      action.disposition ==
+      @moonrobo.RemediationMarginCycleDisposition::EscalateToOperatorDecision
+    }),
+  )
+  assert_true(
+    task.fresh_evidence_actions.any(fn(action) {
+      action.blocker_domain == "local-horizon" &&
+      action.execution_mode == "bounded-regeneration" &&
+      action.acceptance_check.contains("check_selected_route_horizon_model.py")
+    }),
+  )
+  assert_true(
+    task.fresh_evidence_actions.any(fn(action) {
+      action.blocker_domain == "energy" &&
+      action.execution_mode == "manual-freeze-verification" &&
+      action.acceptance_check.contains("check_energy_margin_remediation.py")
+    }),
+  )
+}
+
+///|
+test "MoonClaw reviewed fresh evidence task renderers expose commands and gates" {
+  let markdown = @moonclaw.first_trusted_square_remediation_margin_reviewed_fresh_evidence_tasks_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonClaw Remediation Margin Reviewed Fresh Evidence Tasks",
+    ),
+  )
+  assert_true(markdown.contains("reviewed-fresh-evidence-task"))
+  assert_true(markdown.contains("pending receipts: 3"))
+  assert_true(markdown.contains("ReviewedWorkItemPendingFreshEvidence"))
+  assert_true(markdown.contains("operator-escalation"))
+  assert_true(markdown.contains("bounded-regeneration"))
+  assert_true(markdown.contains("manual-freeze-verification"))
+  assert_true(markdown.contains("may consume simulation: false"))
+  assert_true(markdown.contains("automatic refresh loop allowed: false"))
+  assert_true(markdown.contains("hardware authority change: false"))
+  assert_true(markdown.contains("moonmoon-safety-gate-only"))
+  let json = @moonclaw.first_trusted_square_remediation_margin_reviewed_fresh_evidence_tasks_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"pending_receipt_count\": 3"))
+  assert_true(json.contains("\"execution_mode\": \"operator-escalation\""))
+  assert_true(json.contains("\"execution_mode\": \"bounded-regeneration\""))
+  assert_true(
+    json.contains("\"execution_mode\": \"manual-freeze-verification\""),
+  )
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"automatic_refresh_loop_allowed\": false"))
+  assert_true(json.contains("\"hardware_state\": \"HardwareDenied\""))
+}
+
+///|
 test "first trusted square remediation margin refresh follow-up receipt carries follow-up refreshes forward" {
   let receipt = @moonclaw.first_trusted_square_remediation_margin_refresh_followup_receipt()
   assert_eq(
