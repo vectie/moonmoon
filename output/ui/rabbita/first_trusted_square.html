@@ -216,6 +216,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   border-color: color-mix(in srgb, var(--teal) 48%, var(--line));
   box-shadow: inset 3px 0 0 var(--teal);
 }
+.remediation-margin-refresh-modeling-row {
+  border-color: color-mix(in srgb, var(--teal) 60%, var(--line));
+  box-shadow: inset 3px 0 0 var(--teal);
+}
 .remediation-margin-projection-row {
   border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
   box-shadow: inset 3px 0 0 var(--danger);
@@ -2985,6 +2989,10 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <div id="remediation-margin-modeling" class="review-list" aria-label="MoonRobo remediation margin modeling pass with still-blocking margin results and hardware-denial authority"></div>
     </section>
     <section class="section">
+      <h2>Remediation Margin Refresh Modeling</h2>
+      <div id="remediation-margin-refresh-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh modeling pass with still-blocking refresh results, no-consume simulation status, and hardware-denial authority"></div>
+    </section>
+    <section class="section">
       <h2>Remediation Margin Projection</h2>
       <div id="remediation-margin-projection" class="review-list" aria-label="MoonRobo remediation margin projection with no-consume simulation status and hardware-denial authority"></div>
     </section>
@@ -3259,6 +3267,14 @@ function renderRemediationMarginModeling() {
   );
 }
 
+function renderRemediationMarginRefreshModeling() {
+  renderMoonBookEntry(
+    'remediation-margin-refresh-modeling',
+    'moonrobo/first-trusted-square/remediation-margin-refresh-modeling',
+    'remediation-margin-refresh-modeling-row'
+  );
+}
+
 function renderRemediationMarginProjection() {
   renderMoonBookEntry(
     'remediation-margin-projection',
@@ -3419,6 +3435,7 @@ function render() {
   renderRemediationMarginRefreshReceipt();
   renderRemediationMarginReceipt();
   renderRemediationMarginModeling();
+  renderRemediationMarginRefreshModeling();
   renderRemediationMarginProjection();
   renderClearanceReview();
 }

@@ -231,6 +231,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 48%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-refresh-modeling-row {
+    #|  border-color: color-mix(in srgb, var(--teal) 60%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--teal);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -588,6 +592,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshModeling() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-modeling',
+    #|    'moonrobo/first-trusted-square/remediation-margin-refresh-modeling',
+    #|    'remediation-margin-refresh-modeling-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-projection',
@@ -748,6 +760,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginRefreshReceipt();
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
+    #|  renderRemediationMarginRefreshModeling();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
     #|}
@@ -860,6 +873,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Modeling</h2>
     $|      <div id="remediation-margin-modeling" class="review-list" aria-label="MoonRobo remediation margin modeling pass with still-blocking margin results and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Modeling</h2>
+    $|      <div id="remediation-margin-refresh-modeling" class="review-list" aria-label="MoonRobo remediation margin refresh modeling pass with still-blocking refresh results, no-consume simulation status, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Projection</h2>
