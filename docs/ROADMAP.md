@@ -155,6 +155,10 @@ Current implementation status:
   terrain, illumination, energy, MoonBook, and robot-simulation gates with
   evidence paths, clearance status, and next actions after imported clearance
   has been accepted.
+- The import workflow now emits a MoonClaw remediation task packet from that
+  gap report. The packet names the accepted clearance input, remaining blocker
+  artifacts, concrete remediation commands, acceptance checks, and robot-safety
+  invariants that keep hardware authority denied.
 
 ## Milestone 3: MoonBook Evidence Loop
 

@@ -31,6 +31,10 @@ def output_paths(root: Path) -> dict[str, Path]:
     / "output/moonrobo/first_trusted_square_readiness_preview.json",
     "moonrobo_preview_md": root
     / "output/moonrobo/first_trusted_square_readiness_preview.md",
+    "moonclaw_gap_task_json": root
+    / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
+    "moonclaw_gap_task_md": root
+    / "output/moonclaw/first_trusted_square_moonrobo_gap_task.md",
     "rabbita_html": root / "output/ui/rabbita/first_trusted_square.html",
   }
 
@@ -263,6 +267,137 @@ def render_moonrobo_preview_markdown(preview: dict[str, Any]) -> str:
   return text
 
 
+def moonclaw_gap_task_artifacts(preview: dict[str, Any]) -> list[dict[str, Any]]:
+  artifacts: list[dict[str, Any]] = [
+    {
+      "artifact_id": "imported-clearance-preview",
+      "path": "output/moonrobo/first_trusted_square_readiness_preview.json",
+      "producer": "scripts/import_rabbita_transitions.py",
+      "required_state": "preview consumes accepted Rabbita clearance transitions and reports remaining MoonRobo gaps",
+      "current_state": (
+        f"{preview['blocker_gap_count']} blocker gaps; "
+        f"clearance {preview['clearance_decision']}; "
+        f"simulation {preview['robot_simulation_status']}"
+      ),
+      "ready": True,
+      "blocking_reason": "",
+      "validation_gate": "python3 scripts/check_moonrobo_readiness_preview.py",
+    }
+  ]
+  for gap in preview["blocker_gap_report"]:
+    artifacts.append({
+      "artifact_id": f"gap-{gap['check_id']}",
+      "path": gap["evidence_path"],
+      "producer": "moonmoon mission and MoonRobo evidence generators",
+      "required_state": (
+        f"{gap['label']} no longer blocks MoonRobo simulation, with "
+        "reviewed evidence and refreshed handoff output"
+      ),
+      "current_state": (
+        f"{gap['decision']}; clearance {gap['clearance_status']}; "
+        f"{gap['next_action']}"
+      ),
+      "ready": False,
+      "blocking_reason": gap["next_action"],
+      "validation_gate": "bash scripts/build_moonmoon_dossier.sh && python3 scripts/materialize_moonbook_workspace.py --check",
+    })
+  return artifacts
+
+
+def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[str, Any]:
+  return {
+    "task_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-v1/task",
+    "proposal_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-v1",
+    "site_id": "first-trusted-square",
+    "priority": "Critical",
+    "state": "Accepted",
+    "objective": (
+      "Consume the imported-clearance MoonRobo readiness gap report and "
+      "produce the next bounded modeling updates required before simulation."
+    ),
+    "inputs": [
+      {
+        "input_id": "imported-clearance-transitions",
+        "evidence_path": str(transition_file),
+        "claim_kind": "Assumed",
+        "summary": "Operator-exported Rabbita transitions accept selected-route clearance items without changing source facts.",
+      },
+      {
+        "input_id": "moonrobo-readiness-preview",
+        "evidence_path": "output/moonrobo/first_trusted_square_readiness_preview.json",
+        "claim_kind": "Derived",
+        "summary": "Preview shows selected-route clearance is allowed while mission readiness and hardware authority remain blocked.",
+      },
+    ],
+    "blocker_gap_report": preview["blocker_gap_report"],
+    "artifacts": moonclaw_gap_task_artifacts(preview),
+    "commands": [
+      "python3 scripts/check_moonrobo_readiness_preview.py",
+      "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+      "python3 scripts/compute_power_window.py --check",
+      "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
+      "python3 scripts/materialize_moonbook_workspace.py --check",
+      "/Users/kq/.moon/bin/moon test",
+    ],
+    "acceptance_criteria": [
+      {
+        "criterion_id": "gap-report-consumed",
+        "description": "Task input names the imported-clearance preview and includes every current blocker gap with evidence path and next action.",
+      },
+      {
+        "criterion_id": "remediation-commands",
+        "description": "Commands cover terrain/corridor review, power-window verification, imported transition rebuild, workspace check, and MoonBit tests.",
+      },
+      {
+        "criterion_id": "robot-safety-invariant",
+        "description": "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only while remediation is incomplete.",
+      },
+    ],
+    "safety_gate": (
+      "Do not allow MoonRobo hardware execution. Simulation may only become "
+      "consumable after the blocker gap report is empty or all remaining gaps "
+      "are explicitly moved to reviewed non-blocking states by regenerated "
+      "MoonMoon evidence."
+    ),
+    "robot_safety_invariants": [
+      "hardware_state must remain HardwareDenied",
+      "hardware_authority must remain moonmoon-safety-gate-only",
+      "physical execution authority must not be emitted by MoonMoon",
+      "simulation readiness must be regenerated from mission checks, not from clearance acceptance alone",
+    ],
+    "next_action": (
+      "Run bounded terrain, illumination, energy, MoonBook, and robot-simulation "
+      "remediation work from the blocker gap report, then regenerate MoonRobo "
+      "handoffs and the imported-clearance preview."
+    ),
+  }
+
+
+def render_moonclaw_gap_task_markdown(task: dict[str, Any]) -> str:
+  text = "# MoonClaw MoonRobo Gap Remediation Task\n\n"
+  text += f"- task: {task['task_id']}\n"
+  text += f"- priority: {task['priority']}\n"
+  text += f"- state: {task['state']}\n"
+  text += f"- objective: {task['objective']}\n"
+  text += f"- safety gate: {task['safety_gate']}\n\n"
+  text += "## Blocker Gaps\n\n"
+  for gap in task["blocker_gap_report"]:
+    text += f"- {gap['check_id']} ({book_entry_kind_label(gap['kind'])})\n"
+    text += f"  - evidence: {gap['evidence_path']}\n"
+    text += f"  - clearance: {gap['clearance_status']}\n"
+    text += f"  - next action: {gap['next_action']}\n"
+  text += "\n## Commands\n\n"
+  for command in task["commands"]:
+    text += f"- `{command}`\n"
+  text += "\n## Acceptance Criteria\n\n"
+  for criterion in task["acceptance_criteria"]:
+    text += f"- {criterion['criterion_id']}: {criterion['description']}\n"
+  text += "\n## Robot Safety Invariants\n\n"
+  for invariant in task["robot_safety_invariants"]:
+    text += f"- {invariant}\n"
+  return text
+
+
 def book_entry_kind_label(kind: str) -> str:
   out = []
   for index, char in enumerate(kind):
@@ -376,13 +511,19 @@ def apply_import(root: Path, transition_file: Path) -> None:
   update_selected_route_entry(book, plan)
   update_moonrobo(moonrobo, plan)
   preview = moonrobo_readiness_preview(selected_handoff(moonrobo), transition_file)
+  gap_task = moonclaw_gap_task(preview, transition_file)
   write_json(paths["book_json"], book)
   write_json(paths["moonrobo_json"], moonrobo)
   write_json(paths["moonrobo_preview_json"], preview)
+  write_json(paths["moonclaw_gap_task_json"], [gap_task])
   paths["book_md"].write_text(render_book_markdown(book), encoding="utf-8")
   paths["moonrobo_md"].write_text(render_moonrobo_markdown(moonrobo), encoding="utf-8")
   paths["moonrobo_preview_md"].write_text(
     render_moonrobo_preview_markdown(preview),
+    encoding="utf-8",
+  )
+  paths["moonclaw_gap_task_md"].write_text(
+    render_moonclaw_gap_task_markdown(gap_task),
     encoding="utf-8",
   )
   html = paths["rabbita_html"].read_text(encoding="utf-8")

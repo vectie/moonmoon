@@ -24,7 +24,9 @@ def load_json(path: Path) -> Any:
 def assert_preview(root: Path) -> None:
   preview_path = root / "output/moonrobo/first_trusted_square_readiness_preview.json"
   markdown_path = root / "output/moonrobo/first_trusted_square_readiness_preview.md"
+  task_path = root / "output/moonclaw/first_trusted_square_moonrobo_gap_task.json"
   preview = load_json(preview_path)
+  tasks = load_json(task_path)
   markdown = markdown_path.read_text(encoding="utf-8")
 
   if preview["route_id"] != "northeast-stepout":
@@ -101,6 +103,8 @@ def assert_preview(root: Path) -> None:
     raise AssertionError(markdown)
   if "moonbook-review" not in markdown:
     raise AssertionError(markdown)
+  if tasks[0]["blocker_gap_report"] != preview["blocker_gap_report"]:
+    raise AssertionError(tasks[0]["blocker_gap_report"])
 
 
 def main() -> int:
