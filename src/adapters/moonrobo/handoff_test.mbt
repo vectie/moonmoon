@@ -414,6 +414,86 @@ test "Moonrobo remediation margin modeling consumes receipt contract" {
 }
 
 ///|
+test "Moonrobo regenerated receipt readiness blocks simulation consumption" {
+  let gate = @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_gate()
+  assert_eq(
+    gate.readiness_gate_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+  )
+  assert_eq(gate.route_id, "northeast-stepout")
+  assert_eq(
+    gate.source_receipt_bundle_path,
+    "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+  )
+  assert_eq(
+    gate.source_workspace_entry_path,
+    "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+  )
+  assert_true(
+    gate.readiness_state
+    is @moonrobo.RemediationMarginRegeneratedReceiptReadinessState::RegeneratedReceiptsPendingFreshEvidence,
+  )
+  assert_eq(gate.source_receipt_count, 3)
+  assert_eq(gate.ready_receipt_count, 0)
+  assert_eq(gate.pending_receipt_count, 3)
+  assert_true(!gate.may_consume_simulation)
+  assert_true(
+    gate.simulation_state is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(!gate.automatic_refresh_loop_allowed)
+  assert_true(
+    gate.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(gate.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(gate.hardware_denied)
+  assert_eq(gate.pending_margin_ids.length(), 3)
+  assert_true(gate.pending_margin_ids.contains("terrain-northeast-stepout"))
+  assert_true(
+    gate.pending_margin_ids.contains("illumination-northeast-stepout"),
+  )
+  assert_true(gate.pending_margin_ids.contains("energy-window"))
+  assert_eq(gate.source_action_receipt_ids.length(), 3)
+  assert_true(
+    gate.source_action_receipt_ids[0].contains(
+      "action-1-terrain-northeast-stepout/receipt",
+    ),
+  )
+  assert_true(gate.execution_modes.contains("operator-escalation"))
+  assert_true(gate.execution_modes.contains("bounded-regeneration"))
+  assert_true(gate.execution_modes.contains("manual-freeze-verification"))
+  assert_true(gate.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    gate.validation_checks.any(fn(check) {
+      check.validation_id == "simulation-consumption-blocked"
+    }),
+  )
+  assert_true(
+    gate.next_action.contains("do not let MoonRobo consume simulation inputs"),
+  )
+  let markdown = @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonRobo Remediation Margin Regenerated Receipt Readiness",
+    ),
+  )
+  assert_true(markdown.contains("RegeneratedReceiptsPendingFreshEvidence"))
+  assert_true(markdown.contains("operator-escalation"))
+  assert_true(markdown.contains("simulation-blocked"))
+  assert_true(markdown.contains("hardware-denied"))
+  let json = @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"readiness_state\": \"RegeneratedReceiptsPendingFreshEvidence\"",
+    ),
+  )
+  assert_true(json.contains("\"pending_receipt_count\": 3"))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "Moonrobo remediation margin projection blocks simulation consumption" {
   let projection = @moonrobo.first_trusted_square_remediation_margin_projection()
   assert_eq(

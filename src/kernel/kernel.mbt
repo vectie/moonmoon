@@ -1800,7 +1800,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-remediation-margin-regenerated-receipt-readiness-gate",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Gate MoonRobo readiness on regenerated reviewed work item receipts",
       outcome: "MoonRobo can see that regenerated reviewed work item receipts still block simulation until terrain, horizon, and energy evidence checks pass",
@@ -1812,7 +1812,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json",
         "scripts/check_moonrobo_remediation_margin_regenerated_receipt_readiness.py",
       ],
-      done_when: "MoonRobo readiness records the regenerated reviewed work item receipts as pending fresh evidence, keeps simulation consumption blocked, preserves terrain/horizon/energy execution modes, and keeps HardwareDenied authority",
+      done_when: "done: MoonRobo readiness records the regenerated reviewed work item receipts as pending fresh evidence, keeps simulation consumption blocked, preserves terrain/horizon/energy execution modes, and keeps HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-remediation-margin-regenerated-receipt-readiness-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize regenerated receipt readiness into MoonBook",
+      outcome: "MoonRobo regenerated receipt readiness becomes durable MoonBook evidence before Rabbita surface or any simulation review",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json",
+        "scripts/check_moonrobo_remediation_margin_regenerated_receipt_readiness.py",
+        "scripts/materialize_moonbook_workspace.py",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
+        "scripts/check_moonbook_remediation_margin_regenerated_receipt_readiness_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

@@ -62,6 +62,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw corridor receipts json
     #|  moon run cmd/main -- moonrobo handoff
     #|  moon run cmd/main -- moonrobo handoff json
+    #|  moon run cmd/main -- moonrobo remediation regenerated receipt readiness
+    #|  moon run cmd/main -- moonrobo remediation regenerated receipt readiness json
     #|  moon run cmd/main -- moonrobo remediation margins
     #|  moon run cmd/main -- moonrobo remediation margins json
     #|  moon run cmd/main -- moonrobo remediation refresh modeling
@@ -463,6 +465,22 @@ fn main {
     } else {
       println(
         @moonrobo.first_trusted_square_remediation_margin_projection_markdown(),
+      )
+    }
+  } else if args.contains("moonrobo") &&
+    args.contains("remediation") &&
+    args.contains("regenerated") &&
+    args.contains("receipt") &&
+    args.contains("readiness") {
+    if output_json {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonrobo.first_trusted_square_remediation_margin_regenerated_receipt_readiness_markdown(),
       )
     }
   } else if args.contains("moonrobo") &&

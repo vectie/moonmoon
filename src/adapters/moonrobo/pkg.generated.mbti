@@ -67,6 +67,12 @@ pub fn first_trusted_square_remediation_margin_refresh_projection_json() -> Json
 
 pub fn first_trusted_square_remediation_margin_refresh_projection_markdown() -> String
 
+pub fn first_trusted_square_remediation_margin_regenerated_receipt_readiness_gate() -> RemediationMarginRegeneratedReceiptReadinessGate
+
+pub fn first_trusted_square_remediation_margin_regenerated_receipt_readiness_json() -> Json
+
+pub fn first_trusted_square_remediation_margin_regenerated_receipt_readiness_markdown() -> String
+
 pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
 
 pub fn handoff_status_label(MoonroboTaskHandoff) -> String
@@ -117,6 +123,10 @@ pub fn remediation_margin_refresh_projection_json(RemediationMarginRefreshProjec
 
 pub fn remediation_margin_refresh_projection_status_label(RemediationMarginRefreshProjectionStatus) -> String
 
+pub fn remediation_margin_regenerated_receipt_readiness_gate(String, String, String, String, Array[RemediationMarginRegeneratedReceiptInput]) -> RemediationMarginRegeneratedReceiptReadinessGate
+
+pub fn remediation_margin_regenerated_receipt_readiness_state_label(RemediationMarginRegeneratedReceiptReadinessState) -> String
+
 pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
@@ -140,6 +150,10 @@ pub fn render_remediation_margin_refresh_modeling_json(Array[RemediationMarginRe
 pub fn render_remediation_margin_refresh_modeling_markdown(Array[RemediationMarginRefreshModelingPass]) -> String
 
 pub fn render_remediation_margin_refresh_projection_markdown(RemediationMarginRefreshProjection) -> String
+
+pub fn render_remediation_margin_regenerated_receipt_readiness_json(RemediationMarginRegeneratedReceiptReadinessGate) -> Json
+
+pub fn render_remediation_margin_regenerated_receipt_readiness_markdown(RemediationMarginRegeneratedReceiptReadinessGate) -> String
 
 pub fn render_simulation_review_decision_markdown(SimulationReviewCloseoutDecision) -> String
 
@@ -195,6 +209,12 @@ pub(all) struct MoonroboTaskHandoff {
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RegeneratedReceiptReadinessValidation {
+  validation_id : String
+  passed : Bool
+  note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RemediationMarginCycleCloseoutItem {
@@ -513,6 +533,57 @@ pub(all) struct RemediationMarginRefreshProjection {
 pub(all) enum RemediationMarginRefreshProjectionStatus {
   RefreshSimulationConsumeAllowed
   NoConsumeRefreshSimulationBlocked
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginRegeneratedReceiptInput {
+  receipt_id : String
+  source_action_receipt_id : String
+  source_receipt_id : String
+  source_work_item_id : String
+  margin_id : String
+  refresh_id : String
+  execution_mode : String
+  result_status : String
+  evidence_path : String
+  acceptance_check : String
+  may_consume_simulation : Bool
+  simulation_state : MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_authority_change : Bool
+  hardware_denied : Bool
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RemediationMarginRegeneratedReceiptReadinessGate {
+  readiness_gate_id : String
+  site_id : String
+  route_id : String
+  source_receipt_bundle_path : String
+  source_workspace_entry_path : String
+  source_receipt_count : Int
+  ready_receipt_count : Int
+  pending_receipt_count : Int
+  pending_margin_ids : Array[String]
+  pending_refresh_ids : Array[String]
+  source_receipt_ids : Array[String]
+  source_action_receipt_ids : Array[String]
+  execution_modes : Array[String]
+  readiness_state : RemediationMarginRegeneratedReceiptReadinessState
+  may_consume_simulation : Bool
+  simulation_state : MoonroboExecutionState
+  automatic_refresh_loop_allowed : Bool
+  hardware_state : MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  validation_checks : Array[RegeneratedReceiptReadinessValidation]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum RemediationMarginRegeneratedReceiptReadinessState {
+  RegeneratedReceiptsReady
+  RegeneratedReceiptsPendingFreshEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotPrecondition {

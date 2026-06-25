@@ -1,0 +1,32 @@
+# MoonRobo Remediation Margin Regenerated Receipt Readiness
+
+- gate: moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness
+- route: northeast-stepout
+- source receipts: output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json
+- source workspace entry: output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json
+- readiness: RegeneratedReceiptsPendingFreshEvidence
+- source receipt count: 3
+- ready receipt count: 0
+- pending receipt count: 3
+- may consume simulation: false
+- simulation state: simulation-blocked
+- automatic refresh loop allowed: false
+- hardware state: hardware-denied
+- hardware authority: moonmoon-safety-gate-only
+- pending margins:
+  - terrain-northeast-stepout: refresh-terrain-northeast-stepout via operator-escalation
+  - illumination-northeast-stepout: refresh-illumination-northeast-stepout via bounded-regeneration
+  - energy-window: refresh-energy-window via manual-freeze-verification
+- source action receipts:
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt
+- validation:
+  - regenerated-receipts-present: pass - readiness gate consumed 3 regenerated reviewed work item receipts from output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json
+  - all-receipts-pending-fresh-evidence: pass - 3/3 regenerated receipts remain pending fresh evidence
+  - source-action-provenance-present: pass - every regenerated receipt carries source action receipt, source receipt, and work item provenance
+  - execution-modes-preserved: pass - terrain/horizon/energy execution modes remain operator-escalation, bounded-regeneration, and manual-freeze-verification
+  - no-automatic-refresh-loop: pass - regenerated readiness does not open an automatic refresh loop
+  - simulation-consumption-blocked: pass - regenerated receipts remain no-consume with simulation blocked
+  - hardware-denial-preserved: pass - hardware remains denied under moonmoon-safety-gate-only
+- next action: keep regenerated terrain, local-horizon, and energy receipts pending fresh evidence; do not let MoonRobo consume simulation inputs until a later ready bundle passes its checks
