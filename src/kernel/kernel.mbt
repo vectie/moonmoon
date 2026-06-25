@@ -646,7 +646,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-selected-route-terrain-remediation",
-      priority: 70,
+      priority: 20,
       lane: RobotLane,
       title: "Remediate selected-route terrain blocker with bounded route evidence",
       outcome: "MoonRobo terrain readiness consumes a selected-route terrain remediation model instead of only carrying the original hard blocker forward",
@@ -658,7 +658,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
         "scripts/check_selected_route_terrain_remediation.py",
       ],
-      done_when: "selected-route terrain readiness either clears against bounded local terrain evidence or records quantitative grade and roughness evidence explaining why it remains blocked",
+      done_when: "done: selected-route terrain readiness records quantitative grade and roughness evidence explaining why it remains blocked",
+    },
+    {
+      task_id: "moonbook-selected-route-terrain-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize selected-route terrain remediation into MoonBook",
+      outcome: "The selected-route terrain remediation artifact becomes durable MoonBook workspace evidence next to route, horizon, and robot readiness packets",
+      depends_on: [
+        "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "scripts/materialize_moonbook_workspace.py", "src/adapters/moonbook",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
+        "scripts/check_moonbook_selected_route_terrain_workspace.py",
+      ],
+      done_when: "selected-route terrain remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
     },
   ]
 }

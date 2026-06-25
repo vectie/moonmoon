@@ -20,10 +20,10 @@
         "decision": "Allow",
         "status": "AcceptedEvidence",
         "source_check_id": "terrain-northeast-stepout",
-        "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-        "observed": "grade 0.5139499999999998, roughness 5.95975 m, route confidence 0.7544",
-        "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-        "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
+        "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+        "observed": "grade 0.51395, roughness 5.95975 m, blocking edges 11/24, route confidence 0.7544",
+        "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+        "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
         "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
       },
       {

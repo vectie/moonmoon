@@ -9,9 +9,9 @@
 ## Blocker Gaps
 
 - terrain-northeast-stepout (terrain-readiness)
-  - evidence: mission/first-trusted-square/routes/northeast-stepout.json
+  - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
   - clearance: AcceptedEvidence
-  - next action: route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation
+  - next action: route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation
 - corridor-scan-best-window (corridor-readiness)
   - evidence: mission/first-trusted-square/corridor-scan.json
   - clearance: NotClearanceGated

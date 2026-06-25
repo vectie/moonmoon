@@ -23,14 +23,14 @@
         {
           "check_id": "terrain-northeast-stepout",
           "kind": "TerrainReadiness",
-          "input_evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-          "modeling_evidence_path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
-          "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+          "input_evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "modeling_evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "modeling_command": "python3 scripts/check_selected_route_terrain_remediation.py",
           "result_status": "StillBlocking",
           "cleared": false,
           "clearance_status": "AcceptedEvidence",
-          "result_rationale": "bounded LOLA corridor modeling has a promoted northeast-stepout fixture, but the selected route still exceeds conservative terrain limits",
-          "next_action": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+          "result_rationale": "bounded selected-route terrain evidence records blocking grade and roughness margins, so terrain remains blocked",
+          "next_action": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
         },
         {
           "check_id": "corridor-scan-best-window",
@@ -96,9 +96,9 @@
       "commands_evaluated": [
         "python3 scripts/check_moonrobo_readiness_preview.py",
         "python3 scripts/check_selected_route_horizon_model.py",
+        "python3 scripts/check_selected_route_terrain_remediation.py",
         "python3 scripts/compute_power_window.py --check",
-        "python3 scripts/materialize_moonbook_workspace.py --check",
-        "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4"
+        "python3 scripts/materialize_moonbook_workspace.py --check"
       ],
       "hardware_state": "HardwareDenied",
       "hardware_authority": "moonmoon-safety-gate-only",
@@ -120,14 +120,14 @@
           {
             "check_id": "terrain-northeast-stepout",
             "kind": "TerrainReadiness",
-            "input_evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-            "modeling_evidence_path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
-            "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
+            "input_evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "modeling_evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "modeling_command": "python3 scripts/check_selected_route_terrain_remediation.py",
             "result_status": "StillBlocking",
             "cleared": false,
             "clearance_status": "AcceptedEvidence",
-            "result_rationale": "bounded LOLA corridor modeling has a promoted northeast-stepout fixture, but the selected route still exceeds conservative terrain limits",
-            "next_action": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+            "result_rationale": "bounded selected-route terrain evidence records blocking grade and roughness margins, so terrain remains blocked",
+            "next_action": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
           },
           {
             "check_id": "corridor-scan-best-window",
@@ -193,9 +193,9 @@
         "commands_evaluated": [
           "python3 scripts/check_moonrobo_readiness_preview.py",
           "python3 scripts/check_selected_route_horizon_model.py",
+          "python3 scripts/check_selected_route_terrain_remediation.py",
           "python3 scripts/compute_power_window.py --check",
-          "python3 scripts/materialize_moonbook_workspace.py --check",
-          "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4"
+          "python3 scripts/materialize_moonbook_workspace.py --check"
         ],
         "hardware_state": "HardwareDenied",
         "hardware_authority": "moonmoon-safety-gate-only",

@@ -12,9 +12,9 @@
 ## Gap Results
 
 - terrain-northeast-stepout: StillBlocking
-  - command: `python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4`
-  - evidence: data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv
-  - rationale: bounded LOLA corridor modeling has a promoted northeast-stepout fixture, but the selected route still exceeds conservative terrain limits
+  - command: `python3 scripts/check_selected_route_terrain_remediation.py`
+  - evidence: output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json
+  - rationale: bounded selected-route terrain evidence records blocking grade and roughness margins, so terrain remains blocked
 - corridor-scan-best-window: StillBlocking
   - command: `python3 scripts/check_moonrobo_readiness_preview.py`
   - evidence: output/moonrobo/first_trusted_square_readiness_preview.json

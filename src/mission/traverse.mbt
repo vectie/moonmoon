@@ -173,6 +173,7 @@ pub(all) struct RouteCandidate {
   evidence_tile_id : String
   evidence_source_path : String
   evidence_summary : String
+  terrain_remediation : TerrainRemediationEvidence
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double
@@ -731,6 +732,9 @@ fn make_route_candidate(
   let expected_max_grade = metrics.max_neighbor_grade
   let expected_roughness_m = metrics.roughness_m
   let confidence = metrics.uncertainty.confidence
+  let terrain_remediation = terrain_remediation_evidence(
+    route_id, grid, metrics, profile,
+  )
   let illumination = assess_illumination(
     grid,
     conservative_illumination_constraint(),
@@ -760,13 +764,7 @@ fn make_route_candidate(
   if extra_reason != "" {
     reasons.push(extra_reason)
   }
-  let terrain_decision = if grade_blocked || roughness_blocked {
-    Block
-  } else if grade_review || roughness_review || confidence_review {
-    Review
-  } else {
-    Allow
-  }
+  let terrain_decision = terrain_remediation.decision
   let decision = combine_decisions(terrain_decision, illumination.decision)
   if illumination.decision != Allow {
     reasons.push(
@@ -781,6 +779,7 @@ fn make_route_candidate(
     evidence_tile_id: grid.tile_id,
     evidence_source_path: grid.source_manifest.source_path,
     evidence_summary: "\{@terrain.hazard_label(metrics.hazard_class)} measured window; elevation range \{metrics.elevation_range_m} m",
+    terrain_remediation,
     expected_max_grade,
     expected_roughness_m,
     confidence,

@@ -356,10 +356,14 @@ fn terrain_clearance_item(
     "Selected route grade and roughness clearance",
     check_decision(readiness, check_id, route.decision),
     check_id,
-    check_evidence_path(readiness, check_id, route.evidence_source_path),
-    "grade \{route.expected_max_grade}, roughness \{route.expected_roughness_m} m, route confidence \{route.confidence}",
-    "grade < \{profile.max_grade}, roughness < \{profile.max_roughness_m} m, confidence >= \{profile.min_confidence}",
-    "accept a smoother measured route fixture or keep \{route.route_id} out of simulation until grade and roughness clear the rover profile",
+    check_evidence_path(
+      readiness,
+      check_id,
+      route.terrain_remediation.output_path,
+    ),
+    "grade \{route.terrain_remediation.max_neighbor_grade}, roughness \{route.terrain_remediation.roughness_m} m, blocking edges \{route.terrain_remediation.blocking_edge_count}/\{route.terrain_remediation.edge_count}, route confidence \{route.terrain_remediation.confidence}",
+    "grade < \{profile.max_grade}, roughness < \{profile.max_roughness_m} m, blocking edges 0, confidence >= \{profile.min_confidence}",
+    "accept a smoother measured route fixture or keep \{route.route_id} out of simulation until terrain remediation clears the rover profile",
   )
 }
 

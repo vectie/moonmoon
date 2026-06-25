@@ -55,7 +55,7 @@ def assert_preview(root: Path) -> None:
   expected_gaps = {
     "terrain-northeast-stepout": (
       "TerrainReadiness",
-      "mission/first-trusted-square/routes/northeast-stepout.json",
+      "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
       "AcceptedEvidence",
     ),
     "illumination-northeast-stepout": (

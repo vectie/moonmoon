@@ -78,7 +78,8 @@ def assert_modeling_pass(root: Path) -> None:
 
   commands = "\n".join(modeling["commands_evaluated"])
   for required in [
-    "scan_lola_corridor.py --plan",
+    "check_selected_route_terrain_remediation.py",
+    "check_selected_route_horizon_model.py",
     "compute_power_window.py --check",
     "materialize_moonbook_workspace.py --check",
     "check_moonrobo_readiness_preview.py",

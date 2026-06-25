@@ -65,6 +65,20 @@ test "first trusted square route candidates use measured adjacent windows" {
     "first-trusted-square-northeast-stepout-lola",
   )
   assert_true(routes[5].expected_max_grade < routes[4].expected_max_grade)
+  assert_eq(
+    routes[5].terrain_remediation.evidence_id,
+    "first-trusted-square-northeast-stepout-terrain-remediation-v1",
+  )
+  assert_eq(
+    routes[5].terrain_remediation.output_path,
+    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+  )
+  assert_true(routes[5].terrain_remediation.decision == Block)
+  assert_true(routes[5].terrain_remediation.blocking_edge_count > 0)
+  assert_true(
+    routes[5].terrain_remediation.max_neighbor_grade >
+    routes[5].terrain_remediation.grade_limit,
+  )
 }
 
 ///|

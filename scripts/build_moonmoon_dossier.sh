@@ -46,6 +46,7 @@ python3 scripts/generate_moonmoon_fixture.py
 python3 scripts/generate_corridor_scan.py
 python3 scripts/generate_power_window.py
 python3 scripts/generate_selected_route_horizon.py
+python3 scripts/generate_selected_route_terrain_remediation.py
 
 /Users/kq/.moon/bin/moon run cmd/main > "$OUT/first_trusted_square.md"
 /Users/kq/.moon/bin/moon run cmd/main -- json > "$OUT/first_trusted_square.json"
@@ -53,6 +54,8 @@ python3 scripts/generate_selected_route_horizon.py
 /Users/kq/.moon/bin/moon run cmd/main -- terrain fixture json > "$TERRAIN_OUT/first_trusted_square_grid.json"
 /Users/kq/.moon/bin/moon run cmd/main -- mission horizon > "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.md"
 /Users/kq/.moon/bin/moon run cmd/main -- mission horizon json > "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.json"
+/Users/kq/.moon/bin/moon run cmd/main -- mission terrain > "$MISSION_OUT/first_trusted_square_northeast_stepout_terrain_remediation.md"
+/Users/kq/.moon/bin/moon run cmd/main -- mission terrain json > "$MISSION_OUT/first_trusted_square_northeast_stepout_terrain_remediation.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier > "$MOONBOOK_OUT/first_trusted_square_book.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonbook dossier json > "$MOONBOOK_OUT/first_trusted_square_book.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonclaw proposals > "$MOONCLAW_OUT/first_trusted_square_proposals.md"
@@ -83,6 +86,8 @@ printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.md"
 printf 'wrote %s\n' "$TERRAIN_OUT/first_trusted_square_grid.json"
 printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.md"
 printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_horizon.json"
+printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_terrain_remediation.md"
+printf 'wrote %s\n' "$MISSION_OUT/first_trusted_square_northeast_stepout_terrain_remediation.json"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.md"
 printf 'wrote %s\n' "$MOONBOOK_OUT/first_trusted_square_book.json"
 printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_proposals.md"

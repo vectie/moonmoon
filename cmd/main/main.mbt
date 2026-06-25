@@ -13,6 +13,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- terrain fixture json
     #|  moon run cmd/main -- mission horizon
     #|  moon run cmd/main -- mission horizon json
+    #|  moon run cmd/main -- mission terrain
+    #|  moon run cmd/main -- mission terrain json
     #|  moon run cmd/main -- ui view
     #|  moon run cmd/main -- ui view json
     #|  moon run cmd/main -- ui rabbita
@@ -136,6 +138,18 @@ fn main {
     } else {
       println(
         @mission.first_trusted_square_northeast_stepout_horizon_markdown(),
+      )
+    }
+  } else if args.contains("mission") && args.contains("terrain") {
+    if output_json {
+      println(
+        @mission.first_trusted_square_northeast_stepout_terrain_remediation_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @mission.first_trusted_square_northeast_stepout_terrain_remediation_markdown(),
       )
     }
   } else if args.contains("ui") && args.contains("rabbita") {

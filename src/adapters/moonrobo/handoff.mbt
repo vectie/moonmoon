@@ -123,25 +123,22 @@ fn handoff_next_action(decision : @mission.TraverseDecision) -> String {
 fn terrain_decision(
   route : @mission.RouteCandidate,
 ) -> @mission.TraverseDecision {
-  let profile = @mission.conservative_rover_profile()
-  let grade_blocked = route.expected_max_grade >= profile.max_grade
-  let roughness_blocked = route.expected_roughness_m >= profile.max_roughness_m
-  let grade_review = route.expected_max_grade >= profile.caution_grade
-  let roughness_review = route.expected_roughness_m >=
-    profile.caution_roughness_m
-  let confidence_review = route.confidence < profile.min_confidence
-  if grade_blocked || roughness_blocked {
-    @mission.TraverseDecision::Block
-  } else if grade_review || roughness_review || confidence_review {
-    @mission.TraverseDecision::Review
-  } else {
-    @mission.TraverseDecision::Allow
-  }
+  route.terrain_remediation.decision
 }
 
 ///|
 fn terrain_reason(route : @mission.RouteCandidate) -> String {
-  "route terrain evidence reports grade \{route.expected_max_grade}, roughness \{route.expected_roughness_m} m, confidence \{route.confidence}: \{route.next_action}"
+  let terrain = route.terrain_remediation
+  "route terrain remediation reports grade \{terrain.max_neighbor_grade}, roughness \{terrain.roughness_m} m, blocking edges \{terrain.blocking_edge_count}/\{terrain.edge_count}: \{terrain.next_action}"
+}
+
+///|
+fn terrain_evidence_path(route : @mission.RouteCandidate) -> String {
+  if route.terrain_remediation.output_path != "" {
+    route.terrain_remediation.output_path
+  } else {
+    "mission/first-trusted-square/routes/\{route.route_id}.json"
+  }
 }
 
 ///|
@@ -184,7 +181,7 @@ fn readiness_checks(
       @mission.MissionReadinessCheckKind::TerrainReadiness,
       "Selected-route terrain gate",
       terrain_decision(route),
-      "mission/first-trusted-square/routes/\{route.route_id}.json",
+      terrain_evidence_path(route),
       terrain_reason(route),
     ),
     @mission.readiness_check(

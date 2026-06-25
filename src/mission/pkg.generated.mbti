@@ -36,6 +36,12 @@ pub fn first_trusted_square_northeast_stepout_horizon_json() -> Json
 
 pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String
 
+pub fn first_trusted_square_northeast_stepout_terrain_remediation() -> TerrainRemediationEvidence
+
+pub fn first_trusted_square_northeast_stepout_terrain_remediation_json() -> Json
+
+pub fn first_trusted_square_northeast_stepout_terrain_remediation_markdown() -> String
+
 pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence
 
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
@@ -313,12 +319,41 @@ pub(all) struct RouteCandidate {
   evidence_tile_id : String
   evidence_source_path : String
   evidence_summary : String
+  terrain_remediation : TerrainRemediationEvidence
   expected_max_grade : Double
   expected_roughness_m : Double
   confidence : Double
   illumination : IlluminationAssessment
   decision : TraverseDecision
   score : Int
+  reasons : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainRemediationEvidence {
+  evidence_id : String
+  route_id : String
+  site_id : String
+  source_dataset_id : String
+  source_tile_id : String
+  source_path : String
+  output_path : String
+  method_id : String
+  generated_by : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  edge_count : Int
+  blocking_edge_count : Int
+  max_neighbor_delta_m : Double
+  max_neighbor_grade : Double
+  roughness_m : Double
+  grade_limit : Double
+  roughness_limit_m : Double
+  grade_margin : Double
+  roughness_margin_m : Double
+  confidence : Double
+  decision : TraverseDecision
   reasons : Array[String]
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

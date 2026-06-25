@@ -468,9 +468,9 @@ def remediation_model_for_gap(gap: dict[str, Any]) -> dict[str, str]:
   check_id = gap["check_id"]
   if check_id == "terrain-northeast-stepout":
     return {
-      "modeling_command": "python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
-      "modeling_evidence_path": "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
-      "result_rationale": "bounded LOLA corridor modeling has a promoted northeast-stepout fixture, but the selected route still exceeds conservative terrain limits",
+      "modeling_command": "python3 scripts/check_selected_route_terrain_remediation.py",
+      "modeling_evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+      "result_rationale": "bounded selected-route terrain evidence records blocking grade and roughness margins, so terrain remains blocked",
     }
   if check_id == "illumination-northeast-stepout":
     return {

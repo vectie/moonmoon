@@ -27,8 +27,8 @@
             "kind": "TerrainReadiness",
             "label": "Selected-route terrain gate",
             "decision": "Block",
-            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-            "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "reason": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
           },
           {
             "check_id": "corridor-scan-best-window",
@@ -94,10 +94,10 @@
             "decision": "Allow",
             "status": "AcceptedEvidence",
             "source_check_id": "terrain-northeast-stepout",
-            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-            "observed": "grade 0.5139499999999998, roughness 5.95975 m, route confidence 0.7544",
-            "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "observed": "grade 0.51395, roughness 5.95975 m, blocking edges 11/24, route confidence 0.7544",
+            "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
             "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
           },
           {
@@ -174,8 +174,8 @@
           "precondition_id": "terrain-northeast-stepout",
           "label": "Selected-route terrain gate",
           "decision": "Block",
-          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-          "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+          "reason": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
         },
         {
           "precondition_id": "corridor-scan-best-window",
@@ -235,7 +235,7 @@
               "label": "Selected-route terrain gate",
               "decision": "Block",
               "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
-              "reason": "route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case"
+              "reason": "route terrain remediation reports grade 1.1593500000000005, roughness 9.250124999999999 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -302,9 +302,9 @@
               "status": "ActionRequired",
               "source_check_id": "terrain-direct-lola-window",
               "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
-              "observed": "grade 1.1593500000000005, roughness 9.250124999999999 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept a smoother measured route fixture or keep direct-lola-window out of simulation until grade and roughness clear the rover profile",
+              "observed": "grade 1.1593500000000005, roughness 9.250124999999999 m, blocking edges 1/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept a smoother measured route fixture or keep direct-lola-window out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": ""
             },
             {
@@ -382,7 +382,7 @@
             "label": "Selected-route terrain gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/routes/direct-lola-window.json",
-            "reason": "route terrain evidence reports grade 1.1593500000000005, roughness 9.250124999999999 m, confidence 0.7544: do not traverse directly; use this as the baseline hazard case"
+            "reason": "route terrain remediation reports grade 1.1593500000000005, roughness 9.250124999999999 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",
@@ -441,7 +441,7 @@
               "label": "Selected-route terrain gate",
               "decision": "Block",
               "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
-              "reason": "route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation"
+              "reason": "route terrain remediation reports grade 0.7517000000000025, roughness 8.52791666666666 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -508,9 +508,9 @@
               "status": "ActionRequired",
               "source_check_id": "terrain-west-contour-detour",
               "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
-              "observed": "grade 0.7517000000000025, roughness 8.52791666666666 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept a smoother measured route fixture or keep west-contour-detour out of simulation until grade and roughness clear the rover profile",
+              "observed": "grade 0.7517000000000025, roughness 8.52791666666666 m, blocking edges 1/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept a smoother measured route fixture or keep west-contour-detour out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": ""
             },
             {
@@ -588,7 +588,7 @@
             "label": "Selected-route terrain gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/routes/west-contour-detour.json",
-            "reason": "route terrain evidence reports grade 0.7517000000000025, roughness 8.52791666666666 m, confidence 0.7544: widen the west corridor extraction before simulation"
+            "reason": "route terrain remediation reports grade 0.7517000000000025, roughness 8.52791666666666 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",
@@ -647,7 +647,7 @@
               "label": "Selected-route terrain gate",
               "decision": "Block",
               "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-              "reason": "route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review"
+              "reason": "route terrain remediation reports grade 0.7280000000000001, roughness 7.716124999999998 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -714,9 +714,9 @@
               "status": "ActionRequired",
               "source_check_id": "terrain-north-rim-stepout",
               "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-              "observed": "grade 0.7280000000000001, roughness 7.716124999999998 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept a smoother measured route fixture or keep north-rim-stepout out of simulation until grade and roughness clear the rover profile",
+              "observed": "grade 0.7280000000000001, roughness 7.716124999999998 m, blocking edges 1/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept a smoother measured route fixture or keep north-rim-stepout out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": ""
             },
             {
@@ -794,7 +794,7 @@
             "label": "Selected-route terrain gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/routes/north-rim-stepout.json",
-            "reason": "route terrain evidence reports grade 0.7280000000000001, roughness 7.716124999999998 m, confidence 0.7544: widen the north corridor extraction and add illumination review"
+            "reason": "route terrain remediation reports grade 0.7280000000000001, roughness 7.716124999999998 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",
@@ -853,7 +853,7 @@
               "label": "Selected-route terrain gate",
               "decision": "Block",
               "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
-              "reason": "route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation"
+              "reason": "route terrain remediation reports grade 0.6484500000000025, roughness 7.056666666666669 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -920,9 +920,9 @@
               "status": "ActionRequired",
               "source_check_id": "terrain-southwest-bypass",
               "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
-              "observed": "grade 0.6484500000000025, roughness 7.056666666666669 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept a smoother measured route fixture or keep southwest-bypass out of simulation until grade and roughness clear the rover profile",
+              "observed": "grade 0.6484500000000025, roughness 7.056666666666669 m, blocking edges 1/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept a smoother measured route fixture or keep southwest-bypass out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": ""
             },
             {
@@ -1000,7 +1000,7 @@
             "label": "Selected-route terrain gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/routes/southwest-bypass.json",
-            "reason": "route terrain evidence reports grade 0.6484500000000025, roughness 7.056666666666669 m, confidence 0.7544: continue corridor search beyond the southwest bypass before simulation"
+            "reason": "route terrain remediation reports grade 0.6484500000000025, roughness 7.056666666666669 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",
@@ -1059,7 +1059,7 @@
               "label": "Selected-route terrain gate",
               "decision": "Block",
               "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
-              "reason": "route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review"
+              "reason": "route terrain remediation reports grade 0.7199500000000001, roughness 7.154583333333335 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -1126,9 +1126,9 @@
               "status": "ActionRequired",
               "source_check_id": "terrain-south-stepout",
               "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
-              "observed": "grade 0.7199500000000001, roughness 7.154583333333335 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept a smoother measured route fixture or keep south-stepout out of simulation until grade and roughness clear the rover profile",
+              "observed": "grade 0.7199500000000001, roughness 7.154583333333335 m, blocking edges 1/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept a smoother measured route fixture or keep south-stepout out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": ""
             },
             {
@@ -1206,7 +1206,7 @@
             "label": "Selected-route terrain gate",
             "decision": "Block",
             "evidence_path": "mission/first-trusted-square/routes/south-stepout.json",
-            "reason": "route terrain evidence reports grade 0.7199500000000001, roughness 7.154583333333335 m, confidence 0.7544: continue south corridor extraction and add ephemeris-backed illumination review"
+            "reason": "route terrain remediation reports grade 0.7199500000000001, roughness 7.154583333333335 m, blocking edges 1/24: generate bounded terrain remediation evidence before MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",
@@ -1264,8 +1264,8 @@
               "kind": "TerrainReadiness",
               "label": "Selected-route terrain gate",
               "decision": "Block",
-              "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-              "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+              "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+              "reason": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
             },
             {
               "check_id": "corridor-scan-best-window",
@@ -1331,10 +1331,10 @@
               "decision": "Allow",
               "status": "AcceptedEvidence",
               "source_check_id": "terrain-northeast-stepout",
-              "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-              "observed": "grade 0.5139499999999998, roughness 5.95975 m, route confidence 0.7544",
-              "required": "grade < 0.35, roughness < 2.5 m, confidence >= 0.7",
-              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until grade and roughness clear the rover profile",
+              "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+              "observed": "grade 0.51395, roughness 5.95975 m, blocking edges 11/24, route confidence 0.7544",
+              "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
+              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
               "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
             },
             {
@@ -1411,8 +1411,8 @@
             "precondition_id": "terrain-northeast-stepout",
             "label": "Selected-route terrain gate",
             "decision": "Block",
-            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
-            "reason": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+            "reason": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
           },
           {
             "precondition_id": "corridor-scan-best-window",

@@ -41,11 +41,11 @@
           "check_id": "terrain-northeast-stepout",
           "kind": "TerrainReadiness",
           "status": "StillBlocking",
-          "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
           "clearance_id": "clear-terrain-grade-northeast-stepout",
           "clearance_status": "AcceptedEvidence",
           "cleared_by_evidence_path": "",
-          "next_action": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+          "next_action": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
         },
         {
           "check_id": "corridor-scan-best-window",
@@ -163,11 +163,11 @@
             "check_id": "terrain-northeast-stepout",
             "kind": "TerrainReadiness",
             "status": "StillBlocking",
-            "evidence_path": "mission/first-trusted-square/routes/northeast-stepout.json",
+            "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
             "clearance_id": "clear-terrain-grade-northeast-stepout",
             "clearance_status": "AcceptedEvidence",
             "cleared_by_evidence_path": "",
-            "next_action": "route terrain evidence reports grade 0.5139499999999998, roughness 5.95975 m, confidence 0.7544: review the promoted route fixture and attach ephemeris-backed illumination before simulation"
+            "next_action": "route terrain remediation reports grade 0.51395, roughness 5.95975 m, blocking edges 11/24: collect a wider smoother selected-route corridor or keep northeast-stepout out of MoonRobo simulation"
           },
           {
             "check_id": "corridor-scan-best-window",
