@@ -1415,7 +1415,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-cycle-closeout-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin cycle closeout in Rabbita",
       outcome: "Operators can see the cycle closeout policy, three blocker dispositions, no-consume simulation status, and HardwareDenied authority before any new refresh task is issued",
@@ -1426,7 +1426,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_cycle_closeout_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin cycle closeout policy with NoConsumeCycleClosedForPolicy status, terrain/horizon/energy retry/escalate/freeze dispositions, no-consume simulation status, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin cycle closeout policy with NoConsumeCycleClosedForPolicy status, terrain/horizon/energy retry/escalate/freeze dispositions, no-consume simulation status, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonclaw-remediation-margin-closeout-action-task",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Emit one bounded MoonClaw task from remediation-margin closeout",
+      outcome: "The closeout policy turns into one operator-reviewable action packet with terrain escalation, horizon retry-with-new-evidence, and energy freeze dispositions instead of a new automatic refresh loop",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json",
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_cycle_closeout_surface.py",
+      ],
+      evidence: [
+        "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
+        "scripts/check_moonclaw_remediation_margin_closeout_action_task.py",
+      ],
+      done_when: "MoonClaw emits one remediation-margin closeout action task that consumes the closeout policy, preserves no-consume simulation and HardwareDenied authority, and names the terrain escalate, horizon retry-with-new-evidence, and energy freeze actions with required evidence",
     },
   ]
 }

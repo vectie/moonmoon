@@ -247,6 +247,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--danger) 52%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
     #|}
+    #|.remediation-margin-cycle-closeout-row {
+    #|  border-color: color-mix(in srgb, var(--danger) 60%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
     #|.remediation-margin-projection-row {
     #|  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--danger);
@@ -644,6 +648,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginCycleCloseout() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-cycle-closeout',
+    #|    'moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy',
+    #|    'remediation-margin-cycle-closeout-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginRefreshProjection() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-refresh-projection',
@@ -817,6 +829,7 @@ fn app_script() -> String {
     #|  renderRemediationMarginRefreshModeling();
     #|  renderRemediationMarginRefreshFollowupModeling();
     #|  renderRemediationMarginRefreshFollowupProjection();
+    #|  renderRemediationMarginCycleCloseout();
     #|  renderRemediationMarginRefreshProjection();
     #|  renderRemediationMarginProjection();
     #|  renderClearanceReview();
@@ -950,6 +963,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Follow-Up Projection</h2>
     $|      <div id="remediation-margin-refresh-followup-projection" class="review-list" aria-label="MoonRobo remediation margin refresh follow-up projection with no-consume simulation status, terrain/horizon/energy follow-up blockers, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Cycle Closeout</h2>
+    $|      <div id="remediation-margin-cycle-closeout" class="review-list" aria-label="MoonRobo remediation margin cycle closeout policy with no-consume status, retry/escalate/freeze blocker dispositions, and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Projection</h2>
