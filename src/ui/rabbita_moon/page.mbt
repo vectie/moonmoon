@@ -219,6 +219,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 52%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.remediation-margin-refresh-receipt-row {
+    #|  border-color: color-mix(in srgb, var(--ok) 48%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--ok);
+    #|}
     #|.remediation-margin-receipt-row {
     #|  border-color: color-mix(in srgb, var(--ok) 44%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--ok);
@@ -560,6 +564,14 @@ fn app_script() -> String {
     #|  );
     #|}
     #|
+    #|function renderRemediationMarginRefreshReceipt() {
+    #|  renderMoonBookEntry(
+    #|    'remediation-margin-refresh-receipt',
+    #|    'moonclaw/first-trusted-square/remediation-margin-refresh-receipt',
+    #|    'remediation-margin-refresh-receipt-row'
+    #|  );
+    #|}
+    #|
     #|function renderRemediationMarginReceipt() {
     #|  renderMoonBookEntry(
     #|    'remediation-margin-receipt',
@@ -733,6 +745,7 @@ fn app_script() -> String {
     #|  renderSimulationBlockerReduction();
     #|  renderRemediationMarginTask();
     #|  renderRemediationMarginRefreshTask();
+    #|  renderRemediationMarginRefreshReceipt();
     #|  renderRemediationMarginReceipt();
     #|  renderRemediationMarginModeling();
     #|  renderRemediationMarginProjection();
@@ -835,6 +848,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Remediation Margin Refresh Task</h2>
     $|      <div id="remediation-margin-refresh-task" class="review-list" aria-label="MoonClaw remediation margin refresh task with no-consume projection status, ranked evidence refreshes, and hardware-denial authority"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Remediation Margin Refresh Receipt</h2>
+    $|      <div id="remediation-margin-refresh-receipt" class="review-list" aria-label="MoonClaw remediation margin refresh receipt with still-blocking refresh results and hardware-denial authority"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Remediation Margin Receipt</h2>

@@ -1108,7 +1108,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-margin-refresh-receipt-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface remediation-margin refresh receipt in Rabbita",
       outcome: "Operators can inspect the MoonClaw refresh receipt, still-blocking terrain/horizon/energy refresh results, and HardwareDenied authority from the review surface",
@@ -1119,7 +1119,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_margin_refresh_receipt_surface.py",
       ],
-      done_when: "Rabbita renders the remediation-margin refresh receipt with RefreshesCarriedForward state, 3 still-blocking refreshes, terrain/horizon/energy result ids, and HardwareDenied authority",
+      done_when: "done: Rabbita renders the remediation-margin refresh receipt with RefreshesCarriedForward state, 3 still-blocking refreshes, terrain/horizon/energy result ids, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonrobo-remediation-margin-refresh-modeling-pass",
+      priority: 70,
+      lane: RobotLane,
+      title: "Run MoonRobo remediation-margin modeling from the refresh receipt",
+      outcome: "MoonRobo can consume the MoonClaw refresh receipt as durable evidence and decide whether terrain, horizon, or energy margins remain blocked without changing hardware authority",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
+        "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
+        "src/adapters/moonrobo",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_remediation_margin_refresh_modeling.json",
+        "scripts/check_moonrobo_remediation_margin_refresh_modeling.py",
+      ],
+      done_when: "MoonRobo emits a remediation-margin refresh modeling pass that consumes the refresh receipt, maps terrain/horizon/energy refresh results to still-blocking or refreshed states, preserves no-consume simulation status, and keeps HardwareDenied authority",
     },
   ]
 }

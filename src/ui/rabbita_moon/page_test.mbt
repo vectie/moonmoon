@@ -16,6 +16,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Simulation Blocker Reduction"))
   assert_true(html.contains("Remediation Margin Task"))
   assert_true(html.contains("Remediation Margin Refresh Task"))
+  assert_true(html.contains("Remediation Margin Refresh Receipt"))
   assert_true(html.contains("Remediation Margin Receipt"))
   assert_true(html.contains("Remediation Margin Modeling"))
   assert_true(html.contains("Remediation Margin Projection"))
@@ -26,6 +27,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("simulation-blocker-reduction"))
   assert_true(html.contains("remediation-margin-task"))
   assert_true(html.contains("remediation-margin-refresh-task"))
+  assert_true(html.contains("remediation-margin-refresh-receipt"))
   assert_true(html.contains("remediation-margin-receipt"))
   assert_true(html.contains("remediation-margin-modeling"))
   assert_true(html.contains("remediation-margin-projection"))
@@ -45,6 +47,7 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function renderSimulationBlockerReduction()"))
   assert_true(html.contains("function renderRemediationMarginTask()"))
   assert_true(html.contains("function renderRemediationMarginRefreshTask()"))
+  assert_true(html.contains("function renderRemediationMarginRefreshReceipt()"))
   assert_true(html.contains("function renderRemediationMarginReceipt()"))
   assert_true(html.contains("function renderRemediationMarginModeling()"))
   assert_true(html.contains("function renderRemediationMarginProjection()"))
@@ -67,6 +70,11 @@ test "Rabbita Moon page renders browser inspection controls" {
     ),
   )
   assert_true(
+    html.contains(
+      "moonclaw/first-trusted-square/remediation-margin-refresh-receipt",
+    ),
+  )
+  assert_true(
     html.contains("moonclaw/first-trusted-square/remediation-margin-receipt"),
   )
   assert_true(
@@ -75,6 +83,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(
     html.contains("moonrobo/first-trusted-square/remediation-margin-projection"),
   )
+  assert_true(html.contains("RefreshesCarriedForward"))
+  assert_true(html.contains("3 still-blocking refreshes"))
+  assert_true(html.contains("0 refreshed"))
   assert_true(html.contains("OpenMarginsCarriedForward"))
   assert_true(html.contains("AllMarginsStillBlocking"))
   assert_true(html.contains("NoConsumeSimulationBlocked"))
