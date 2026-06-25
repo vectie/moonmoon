@@ -60,7 +60,7 @@ Moontown
   lanes, and coordinates mission-planning loops.
 
 Moondesk
-  lets humans browse LunarBook workspaces, inspect model evidence, and launch
+  lets humans browse MoonBook workspaces, inspect model evidence, and launch
   lunar tools.
 
 Moonrobo

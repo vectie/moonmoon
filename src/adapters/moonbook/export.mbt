@@ -70,7 +70,7 @@ pub(all) struct ReviewTransition {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) struct LunarBookDossier {
+pub(all) struct MoonBookDossier {
   workspace : String
   site_id : @core.SiteId
   title : String
@@ -752,7 +752,7 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
 }
 
 ///|
-pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
+pub fn from_site_dossier(dossier : @site.SiteDossier) -> MoonBookDossier {
   let entries = dataset_entries(dossier)
   for entry in source_candidate_entries(dossier) {
     entries.push(entry)
@@ -800,12 +800,12 @@ pub fn from_site_dossier(dossier : @site.SiteDossier) -> LunarBookDossier {
 }
 
 ///|
-pub fn first_trusted_square_book_dossier() -> LunarBookDossier {
+pub fn first_trusted_square_book_dossier() -> MoonBookDossier {
   from_site_dossier(@site.first_trusted_square_dossier())
 }
 
 ///|
-pub fn render_markdown(dossier : LunarBookDossier) -> String {
+pub fn render_markdown(dossier : MoonBookDossier) -> String {
   let mut text = "# \{dossier.title}\n\n"
   text += "- workspace: \{dossier.workspace}\n"
   text += "- site: \{dossier.site_id}\n\n"
@@ -844,7 +844,7 @@ pub fn first_trusted_square_book_markdown() -> String {
 }
 
 ///|
-pub fn render_json(dossier : LunarBookDossier) -> Json {
+pub fn render_json(dossier : MoonBookDossier) -> Json {
   dossier.to_json()
 }
 

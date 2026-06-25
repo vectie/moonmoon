@@ -128,11 +128,11 @@ Goal: make the trusted square inspectable.
 
 Done when a human can inspect one site without reading JSON.
 
-## Milestone 3: LunarBook Evidence Loop
+## Milestone 3: MoonBook Evidence Loop
 
 Goal: make Moonmoon outputs durable.
 
-- Define a LunarBook dossier layout.
+- Define a MoonBook dossier layout.
 - Export source manifests and derived layer reports into a MoonBook workspace.
 - Record source links, checksums, assumptions, and review status.
 - Add a review queue for low-confidence or simulated claims.

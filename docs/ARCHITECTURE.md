@@ -39,7 +39,7 @@ The first real implementation can follow this package shape:
   Route constraints, traverse windows, energy assumptions, construction-pad
   checks, mining-zone checks, and robot-facing task constraints.
 - `src/adapters/moonbook`
-  LunarBook dossier and evidence export contracts.
+  MoonBook dossier and evidence export contracts.
 - `src/adapters/moonclaw`
   Modeling job proposal packets and result receipts.
 - `src/adapters/moonrobo`
@@ -136,7 +136,7 @@ authoritative source file
   -> source manifest with URL, citation, coverage, resolution, checksum
   -> extracted tiny fixture with reproducible checksum
   -> derived terrain metrics
-  -> site dossier and LunarBook evidence queue
+  -> site dossier and MoonBook evidence queue
 ```
 
 Because that source file is now selected, checked in, and reproducibly fetched,

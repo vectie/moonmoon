@@ -11,17 +11,17 @@ import {
 // Values
 pub fn book_entry_kind_label(BookEntryKind) -> String
 
-pub fn first_trusted_square_book_dossier() -> LunarBookDossier
+pub fn first_trusted_square_book_dossier() -> MoonBookDossier
 
 pub fn first_trusted_square_book_json() -> Json
 
 pub fn first_trusted_square_book_markdown() -> String
 
-pub fn from_site_dossier(@site.SiteDossier) -> LunarBookDossier
+pub fn from_site_dossier(@site.SiteDossier) -> MoonBookDossier
 
-pub fn render_json(LunarBookDossier) -> Json
+pub fn render_json(MoonBookDossier) -> Json
 
-pub fn render_markdown(LunarBookDossier) -> String
+pub fn render_markdown(MoonBookDossier) -> String
 
 pub fn review_decision_label(ReviewDecision) -> String
 
@@ -63,7 +63,7 @@ pub(all) enum BookEntryKind {
   OpenQuestion
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
-pub(all) struct LunarBookDossier {
+pub(all) struct MoonBookDossier {
   workspace : String
   site_id : String
   title : String
