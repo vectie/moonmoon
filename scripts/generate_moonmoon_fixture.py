@@ -48,6 +48,14 @@ SOURCES = [
         / "lro_lola"
         / "first_trusted_square_south_stepout_dem.csv",
     ),
+    (
+        "first_trusted_square_northeast_stepout",
+        ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_northeast_stepout_dem.csv",
+    ),
 ]
 
 

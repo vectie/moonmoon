@@ -272,13 +272,22 @@ fn suite_boundaries() -> Array[SuiteBoundary] {
 ///|
 fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
   let best = dossier.corridor_scan[0]
+  let route_promoted = best.selected_route_id != ""
   [
     {
       task_id: "promote-best-9x9-route-fixture",
-      priority: 100,
+      priority: if route_promoted {
+        70
+      } else {
+        100
+      },
       lane: TerrainLane,
       title: "Promote the best measured 9x9 corridor window into terrain and route model",
-      outcome: "MoonMoon stops reporting a discovered but unpromoted corridor window",
+      outcome: if route_promoted {
+        "MoonMoon has a named route fixture for the best measured corridor window"
+      } else {
+        "MoonMoon stops reporting a discovered but unpromoted corridor window"
+      },
       depends_on: [
         "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv",
       ],
@@ -287,7 +296,11 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         best.window_id,
         "src/terrain/generated_first_trusted_square_fixture.mbt",
       ],
-      done_when: "the \{best.window_id} DEM fixture, route candidate, MoonBook entry, MoonClaw receipt, and MoonRobo handoff all reference one route id",
+      done_when: if route_promoted {
+        "done: \{best.window_id} now selects \{best.selected_route_id}"
+      } else {
+        "the \{best.window_id} DEM fixture, route candidate, MoonBook entry, MoonClaw receipt, and MoonRobo handoff all reference one route id"
+      },
     },
     {
       task_id: "replace-missing-power-window",

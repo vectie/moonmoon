@@ -1,7 +1,29 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "vectie/moonmoon"
 
+import {
+  "vectie/moonmoon/src/kernel",
+  "vectie/moonmoon/src/site",
+}
+
 // Values
+pub fn product_kernel() -> @kernel.MoonMoonKernel
+
+pub fn product_kernel_json() -> Json
+
+pub fn product_kernel_markdown() -> String
+
+pub fn trusted_square_book_json() -> Json
+
+pub fn trusted_square_dossier() -> @site.SiteDossier
+
+pub fn trusted_square_json() -> Json
+
+pub fn trusted_square_markdown() -> String
+
+pub fn trusted_square_moonclaw_json() -> Json
+
+pub fn trusted_square_moonrobo_json() -> Json
 
 // Errors
 

@@ -2,7 +2,7 @@
 test "first trusted square dossier renders the first Moonmoon evidence surface" {
   let dossier = @site.first_trusted_square_dossier()
   assert_eq(dossier.site.site_id, "first-trusted-square")
-  assert_eq(dossier.datasets.length(), 5)
+  assert_eq(dossier.datasets.length(), 6)
   assert_eq(
     dossier.datasets[0].dataset_id,
     "lro-lola-first-trusted-square-dem-v1",
@@ -23,7 +23,11 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.datasets[4].dataset_id,
     "lro-lola-first-trusted-square-south-stepout-dem-v1",
   )
-  assert_eq(dossier.validations.length(), 5)
+  assert_eq(
+    dossier.datasets[5].dataset_id,
+    "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+  )
+  assert_eq(dossier.validations.length(), 6)
   assert_true(
     dossier.validations[0].status == @dataset.DatasetValidationStatus::Verified,
   )
@@ -38,6 +42,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_true(
     dossier.validations[4].status == @dataset.DatasetValidationStatus::Verified,
+  )
+  assert_true(
+    dossier.validations[5].status == @dataset.DatasetValidationStatus::Verified,
   )
   assert_eq(dossier.source_candidates.length(), 2)
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
@@ -56,7 +63,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.source_product_selections[0].product_id,
     "ldem_875s_20m_float",
   )
-  assert_eq(dossier.source_extraction_candidates.length(), 5)
+  assert_eq(dossier.source_extraction_candidates.length(), 6)
   assert_eq(
     dossier.source_extraction_candidates[0].tile_id,
     "first-trusted-square-lola",
@@ -77,15 +84,19 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.source_extraction_candidates[4].tile_id,
     "first-trusted-square-south-stepout-lola",
   )
+  assert_eq(
+    dossier.source_extraction_candidates[5].tile_id,
+    "first-trusted-square-northeast-stepout-lola",
+  )
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Blocked)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Block)
   assert_eq(dossier.corridor_scan.length(), 81)
   assert_eq(dossier.corridor_scan[0].window_id, "r-12-c+16")
-  assert_eq(dossier.corridor_scan[0].selected_route_id, "")
+  assert_eq(dossier.corridor_scan[0].selected_route_id, "northeast-stepout")
   assert_true(
     dossier.corridor_scan[0].decision == @mission.TraverseDecision::Block,
   )
-  assert_eq(dossier.route_candidates.length(), 5)
+  assert_eq(dossier.route_candidates.length(), 6)
   assert_eq(dossier.route_candidates[0].route_id, "direct-lola-window")
   assert_eq(dossier.route_candidates[1].route_id, "west-contour-detour")
   assert_true(
@@ -96,6 +107,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.route_candidates[3].expected_max_grade <
     dossier.route_candidates[1].expected_max_grade,
   )
+  assert_eq(dossier.route_candidates[5].route_id, "northeast-stepout")
   assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
   assert_eq(
     dossier.power_window_evidence.evidence_id,
@@ -103,8 +115,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_eq(dossier.power_window_evidence.source_status, "missing-source")
   assert_eq(dossier.power_window_evidence.available_energy_wh, 0.0)
-  assert_eq(dossier.energy.route_count, 5)
-  assert_eq(dossier.energy.blocked_route_count, 5)
+  assert_eq(dossier.energy.route_count, 6)
+  assert_eq(dossier.energy.blocked_route_count, 6)
   assert_eq(dossier.blockers.length(), 2)
   let markdown = @site.render_markdown(dossier)
   assert_true(markdown.contains("# First Trusted Square"))
@@ -135,6 +147,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("first-trusted-square-north-rim-lola"))
   assert_true(markdown.contains("first-trusted-square-southwest-bypass-lola"))
   assert_true(markdown.contains("first-trusted-square-south-stepout-lola"))
+  assert_true(markdown.contains("first-trusted-square-northeast-stepout-lola"))
   assert_true(
     markdown.contains(
       "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
@@ -146,7 +159,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Corridor Scan"))
   assert_true(markdown.contains("first-trusted-square-9x9-corridor-scan-v2"))
   assert_true(markdown.contains("r-12-c+16"))
-  assert_true(markdown.contains("selected route: none promoted yet"))
+  assert_true(markdown.contains("selected route: northeast-stepout"))
   assert_true(markdown.contains("## Energy Window"))
   assert_true(markdown.contains("## Power Window Evidence"))
   assert_true(markdown.contains("source status: missing-source"))
@@ -161,6 +174,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("north-rim-stepout"))
   assert_true(markdown.contains("southwest-bypass"))
   assert_true(markdown.contains("south-stepout"))
+  assert_true(markdown.contains("northeast-stepout"))
   assert_true(markdown.contains("evidence dataset"))
   assert_true(markdown.contains("west-adjacent LOLA window is measured"))
   assert_true(markdown.contains("illumination decision: block"))
@@ -211,11 +225,17 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(
     text.contains("\"tile_id\": \"first-trusted-square-south-stepout-lola\""),
   )
+  assert_true(
+    text.contains(
+      "\"tile_id\": \"first-trusted-square-northeast-stepout-lola\"",
+    ),
+  )
   assert_true(text.contains("\"output_bytes\": 636"))
   assert_true(text.contains("\"output_bytes\": 844"))
   assert_true(text.contains("\"output_bytes\": 796"))
   assert_true(text.contains("\"output_bytes\": 908"))
   assert_true(text.contains("\"output_bytes\": 860"))
+  assert_true(text.contains("\"output_bytes\": 924"))
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"Authoritative\""))
@@ -242,6 +262,7 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"route_candidates\""))
   assert_true(text.contains("\"route_id\": \"west-contour-detour\""))
   assert_true(text.contains("\"route_id\": \"southwest-bypass\""))
+  assert_true(text.contains("\"route_id\": \"northeast-stepout\""))
   assert_true(text.contains("\"evidence_dataset_id\""))
   assert_true(text.contains("\"illumination\""))
   assert_true(

@@ -32,6 +32,10 @@ pub fn first_trusted_square_north_rim_lola_extraction_candidate() -> SourceExtra
 
 pub fn first_trusted_square_north_rim_manifest() -> DatasetManifest
 
+pub fn first_trusted_square_northeast_stepout_lola_extraction_candidate() -> SourceExtractionCandidate
+
+pub fn first_trusted_square_northeast_stepout_manifest() -> DatasetManifest
+
 pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest]
 
 pub fn first_trusted_square_source_acquisition_plans() -> Array[SourceAcquisitionPlan]

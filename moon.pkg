@@ -1,1 +1,8 @@
-
+import {
+  "vectie/moonmoon/src/adapters/moonbook",
+  "vectie/moonmoon/src/adapters/moonclaw",
+  "vectie/moonmoon/src/adapters/moonrobo",
+  "vectie/moonmoon/src/kernel",
+  "vectie/moonmoon/src/site",
+  "moonbitlang/core/json",
+}

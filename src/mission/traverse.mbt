@@ -663,6 +663,15 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "south widened corridor is measured and smoother than the active patch but still blocked",
       "continue south corridor extraction and add ephemeris-backed illumination review",
     ),
+    make_route_candidate(
+      "northeast-stepout",
+      "Northeast 9x9 step-out candidate",
+      "Promote the best measured window from the active 9x9 corridor scan into a named route fixture.",
+      @terrain.first_trusted_square_northeast_stepout_grid(),
+      profile,
+      "best active 9x9 corridor window is measured and selected but still blocked",
+      "review the promoted route fixture and attach ephemeris-backed illumination before simulation",
+    ),
   ]
 }
 

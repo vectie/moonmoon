@@ -1,5 +1,5 @@
 scan_id,window_id,rank,row_offset,col_offset,source_row_start,source_col_start,min_elevation_m,max_elevation_m,elevation_range_m,max_neighbor_grade,roughness_m,hazard,selected_route_id,note
-first-trusted-square-9x9-corridor-scan-v2,r-12-c+16,1,-12,16,3960,3806,305.726000,341.536000,35.810000,0.513950,5.959750,blocked,,lowest max-neighbor-grade window in this measured 9x9 scan; still blocked
+first-trusted-square-9x9-corridor-scan-v2,r-12-c+16,1,-12,16,3960,3806,305.726000,341.536000,35.810000,0.513950,5.959750,blocked,northeast-stepout,lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
 first-trusted-square-9x9-corridor-scan-v2,r+0-c+12,2,0,12,3972,3802,298.754000,343.999000,45.245000,0.579000,7.380708,blocked,,measured scan window; not promoted as a route candidate
 first-trusted-square-9x9-corridor-scan-v2,r+0-c-16,3,0,-16,3972,3774,633.070000,684.567000,51.497000,0.615750,8.107167,blocked,,measured scan window; not promoted as a route candidate
 first-trusted-square-9x9-corridor-scan-v2,r-12-c+12,4,-12,12,3960,3802,339.980000,379.498000,39.518000,0.622300,6.907750,blocked,,measured scan window; not promoted as a route candidate

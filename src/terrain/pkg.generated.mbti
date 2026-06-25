@@ -23,6 +23,10 @@ pub fn first_trusted_square_north_rim_grid() -> TerrainGrid
 
 pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_northeast_stepout_grid() -> TerrainGrid
+
+pub fn first_trusted_square_northeast_stepout_metrics() -> TerrainMetrics
+
 pub fn first_trusted_square_route_grids() -> Array[TerrainGrid]
 
 pub fn first_trusted_square_south_stepout_grid() -> TerrainGrid

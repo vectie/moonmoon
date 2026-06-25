@@ -82,6 +82,16 @@ WINDOWS = [
         row_offset=WINDOW_ROWS * 2,
         col_offset=0,
     ),
+    ExtractionWindow(
+        tile_id="first-trusted-square-northeast-stepout-lola",
+        target=ROOT
+        / "data"
+        / "sources"
+        / "lro_lola"
+        / "first_trusted_square_northeast_stepout_dem.csv",
+        row_offset=-WINDOW_ROWS * 3,
+        col_offset=WINDOW_COLS * 4,
+    ),
 ]
 
 

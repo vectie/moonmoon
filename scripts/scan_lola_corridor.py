@@ -26,6 +26,7 @@ ROUTE_IDS = {
     (-4, 0): "north-rim-stepout",
     (8, -8): "southwest-bypass",
     (8, 0): "south-stepout",
+    (-12, 16): "northeast-stepout",
 }
 
 
@@ -171,6 +172,8 @@ def window_content_from_rows(
 
 def note(rank: int, route_id: str, shape_label: str) -> str:
     if rank == 1:
+        if route_id:
+            return f"lowest max-neighbor-grade window in this measured {shape_label} scan; selects route {route_id} and still blocked"
         return f"lowest max-neighbor-grade window in this measured {shape_label} scan; still blocked"
     if route_id:
         return "promoted route evidence window; still blocked"

@@ -75,6 +75,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
   let north_grid = @terrain.first_trusted_square_north_rim_grid()
   let southwest_grid = @terrain.first_trusted_square_southwest_bypass_grid()
   let south_grid = @terrain.first_trusted_square_south_stepout_grid()
+  let northeast_grid = @terrain.first_trusted_square_northeast_stepout_grid()
   let terrain = @terrain.analyze(grid)
   let traverse = @mission.score_traverse(
     terrain,
@@ -89,6 +90,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       north_grid.source_manifest,
       southwest_grid.source_manifest,
       south_grid.source_manifest,
+      northeast_grid.source_manifest,
     ],
     validations: [
       @terrain.validate_grid_source(grid),
@@ -96,6 +98,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       @terrain.validate_grid_source(north_grid),
       @terrain.validate_grid_source(southwest_grid),
       @terrain.validate_grid_source(south_grid),
+      @terrain.validate_grid_source(northeast_grid),
     ],
     source_candidates: @dataset.first_trusted_square_source_candidates(),
     source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
@@ -110,11 +113,11 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       route_candidates,
       @mission.conservative_energy_budget(),
     ),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, and a conservative rover energy-window budget.",
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, promoted best-window route evidence, and a conservative rover energy-window budget.",
     blockers: terrain_blockers(terrain),
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
-      "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
+      "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
     ],
   }

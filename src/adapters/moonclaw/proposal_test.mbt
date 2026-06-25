@@ -148,7 +148,7 @@ test "first trusted square corridor task names promoted 9x9 search gates" {
       artifact.ready &&
       artifact.blocking_reason == "" &&
       artifact.current_state.contains(
-        "e8d6aac5110a5903c1bdaa52d7bdb631200b5a5174508ad801862f2523f1d12a",
+        "9d303140bde14fe5f6be4b697f8464bdbc93889c8149f22b4b8b32de4d95c52e",
       )
     }),
   )
@@ -196,19 +196,19 @@ test "first trusted square route scoring receipt validates blocked evidence" {
     "moonclaw/first-trusted-square/route-scoring-v1",
   )
   assert_true(
-    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::NeedsReview,
+    receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted,
   )
-  assert_eq(receipt.selected_route_id, "")
+  assert_eq(receipt.selected_route_id, "northeast-stepout")
   assert_true(
     receipt.moonrobo_handoff_decision == @mission.TraverseDecision::Block,
   )
-  assert_eq(receipt.route_scores.length(), 5)
-  let southwest = receipt.route_scores[3]
-  assert_eq(southwest.route_id, "southwest-bypass")
-  assert_eq(southwest.rank, 1)
+  assert_eq(receipt.route_scores.length(), 6)
+  let northeast = receipt.route_scores[5]
+  assert_eq(northeast.route_id, "northeast-stepout")
+  assert_eq(northeast.rank, 1)
   assert_true(
     receipt.validation_checks.any(fn(check) {
-      check.validation_id == "selected-route-present" && !check.passed
+      check.validation_id == "selected-route-present" && check.passed
     }),
   )
   assert_true(
@@ -226,7 +226,7 @@ test "first trusted square route scoring receipt validates blocked evidence" {
       note.contains("proposal-blockers-current")
     }),
   )
-  assert_true(receipt.next_action.contains("promoted route fixture"))
+  assert_true(receipt.next_action.contains("Moonrobo blocked"))
 }
 
 ///|
@@ -241,7 +241,7 @@ test "first trusted square corridor receipt validates bounded search result" {
   )
   assert_eq(receipt.sampled_window_count, 81)
   assert_eq(receipt.best_window_id, "r-12-c+16")
-  assert_eq(receipt.selected_route_id, "")
+  assert_eq(receipt.selected_route_id, "northeast-stepout")
   assert_true(receipt.window_scores.length() == 81)
   assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
   assert_true(
@@ -280,8 +280,8 @@ test "first trusted square ephemeris receipt records missing power evidence" {
     receipt.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
-  assert_eq(receipt.route_count, 5)
-  assert_eq(receipt.blocked_route_count, 5)
+  assert_eq(receipt.route_count, 6)
+  assert_eq(receipt.blocked_route_count, 6)
   assert_eq(receipt.verified_available_energy_wh, 0.0)
   assert_true(receipt.missing_outputs.length() >= 4)
   assert_true(receipt.validation_checks.all(fn(check) { check.passed }))
@@ -306,11 +306,11 @@ test "MoonClaw receipt renderers expose route scoring result" {
   assert_true(markdown.contains("moonrobo-handoff-compatible"))
   assert_true(markdown.contains("source-checksums-verified"))
   assert_true(markdown.contains("proposal-blockers-current"))
-  assert_true(markdown.contains("selected route: none promoted yet"))
+  assert_true(markdown.contains("selected route: northeast-stepout"))
   let json = @moonclaw.first_trusted_square_receipts_json().stringify(indent=2)
   assert_true(json.contains("\"MoonClawRouteScoringReceipt\"") == false)
   assert_true(json.contains("\"route_scores\""))
-  assert_true(json.contains("\"NeedsReview\""))
+  assert_true(json.contains("\"Accepted\""))
   assert_true(json.contains("\"moonrobo_handoff_decision\""))
 }
 
@@ -343,7 +343,7 @@ test "MoonClaw corridor receipt renderers expose bounded search result" {
   assert_true(markdown.contains("bounded-search-size"))
   assert_true(markdown.contains("all-sampled-windows-blocked"))
   assert_true(markdown.contains("r-12-c+16"))
-  assert_true(markdown.contains("none promoted yet"))
+  assert_true(markdown.contains("northeast-stepout"))
   let json = @moonclaw.first_trusted_square_corridor_receipts_json().stringify(
     indent=2,
   )

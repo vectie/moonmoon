@@ -196,7 +196,7 @@ test "first trusted square tracks LOLA extraction candidates" {
   )
   assert_eq(
     @dataset.first_trusted_square_source_extraction_candidates().length(),
-    5,
+    6,
   )
   let west = @dataset.first_trusted_square_west_contour_lola_extraction_candidate()
   assert_eq(west.tile_id, "first-trusted-square-west-contour-lola")
@@ -234,8 +234,17 @@ test "first trusted square tracks LOLA extraction candidates" {
     "dde783fcf74ac0567bb2d6bb8eead6c2f83b620603319690aa51011486d7a19c",
   )
   assert_eq(south.output_bytes, 860)
+  let northeast = @dataset.first_trusted_square_northeast_stepout_lola_extraction_candidate()
+  assert_eq(northeast.tile_id, "first-trusted-square-northeast-stepout-lola")
+  assert_eq(northeast.source_row_start, 3960)
+  assert_eq(northeast.source_col_start, 3806)
+  assert_eq(
+    northeast.output_sha256,
+    "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+  )
+  assert_eq(northeast.output_bytes, 924)
   let route_manifests = @dataset.first_trusted_square_route_manifests()
-  assert_eq(route_manifests.length(), 4)
+  assert_eq(route_manifests.length(), 5)
   assert_eq(
     route_manifests[0].dataset_id,
     "lro-lola-first-trusted-square-west-contour-dem-v1",
@@ -251,5 +260,9 @@ test "first trusted square tracks LOLA extraction candidates" {
   assert_eq(
     route_manifests[3].dataset_id,
     "lro-lola-first-trusted-square-south-stepout-dem-v1",
+  )
+  assert_eq(
+    route_manifests[4].dataset_id,
+    "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
   )
 }

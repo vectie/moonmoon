@@ -607,6 +607,34 @@ pub fn first_trusted_square_south_stepout_lola_extraction_candidate() -> SourceE
 }
 
 ///|
+pub fn first_trusted_square_northeast_stepout_lola_extraction_candidate() -> SourceExtractionCandidate {
+  {
+    extraction_id: "extract-ldem-875s-20m-northeast-stepout-v1",
+    selection_id: "select-ldem-875s-20m-float-v1",
+    generated_by: "scripts/extract_lola_trusted_square.py",
+    output_path: "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+    output_sha256: "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+    output_bytes: 924,
+    tile_id: "first-trusted-square-northeast-stepout-lola",
+    center_lat_deg: -89.76,
+    center_lon_deg: 0.28,
+    source_row_start: 3960,
+    source_col_start: 3806,
+    rows: 4,
+    cols: 4,
+    cell_size_m: 20.0,
+    elevation_unit: "meters relative to 1737.4 km reference radius",
+    claim_kind: @core.ClaimKind::Measured,
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "Generated from the best measured window in the active 9x9 LOLA corridor scan.",
+      "This window now has a named route fixture and route id instead of staying only as a ranked scan row.",
+      "The route remains blocked by conservative terrain and power gates before simulation.",
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_source_extraction_candidates() -> Array[
   SourceExtractionCandidate,
 ] {
@@ -616,6 +644,7 @@ pub fn first_trusted_square_source_extraction_candidates() -> Array[
     first_trusted_square_north_rim_lola_extraction_candidate(),
     first_trusted_square_southwest_bypass_lola_extraction_candidate(),
     first_trusted_square_south_stepout_lola_extraction_candidate(),
+    first_trusted_square_northeast_stepout_lola_extraction_candidate(),
   ]
 }
 
@@ -789,11 +818,43 @@ pub fn first_trusted_square_south_stepout_manifest() -> DatasetManifest {
 }
 
 ///|
+pub fn first_trusted_square_northeast_stepout_manifest() -> DatasetManifest {
+  {
+    dataset_id: "lro-lola-first-trusted-square-northeast-stepout-dem-v1",
+    title: "LOLA northeast-stepout 9x9 corridor DEM byte-range fixture",
+    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
+    license: "Apache-2.0",
+    product_type: "lola-gdr-byte-range-corridor-dem-fixture",
+    trust: Authoritative,
+    claim_kind: @core.ClaimKind::Measured,
+    coverage: {
+      south_deg: -89.78,
+      north_deg: -89.74,
+      west_deg: 0.26,
+      east_deg: 0.30,
+    },
+    resolution_m: 20.0,
+    source_path: "data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv",
+    source_sha256: "b04648fc553a9c55effd9b6900039cc722b05de8b284dae353c9eba660c18b4c",
+    extractor: "scripts/extract_lola_trusted_square.py -> data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv -> scripts/generate_moonmoon_fixture.py -> src/terrain/generated_first_trusted_square_fixture.mbt",
+    checksum_kind: InlineFixtureFingerprint,
+    checksum: "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
+    citation: "LRO LOLA GDR product ldem_875s_20m_float, northeast 9x9 corridor byte-range extraction for Moonmoon route evidence.",
+    review_status: AcceptedForSoftwareProof,
+    notes: [
+      "This is measured local terrain evidence for the best ranked window in the active 9x9 scan, not proof that the route is safe.",
+      "The selected route remains blocked until terrain review, wider sampling, and time-windowed power evidence improve.",
+    ],
+  }
+}
+
+///|
 pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest] {
   [
     first_trusted_square_west_contour_manifest(),
     first_trusted_square_north_rim_manifest(),
     first_trusted_square_southwest_bypass_manifest(),
     first_trusted_square_south_stepout_manifest(),
+    first_trusted_square_northeast_stepout_manifest(),
   ]
 }

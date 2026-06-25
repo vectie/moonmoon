@@ -213,9 +213,9 @@ now point at adjacent measured LOLA windows, and both remain `block` because
 their local grade and roughness still exceed the conservative rover limits. A
 first 5x5 corridor scan then promoted southwest-bypass and south-stepout
 windows; those named route fixtures remain `block`. The active 9x9 corridor
-scan now finds `r-12-c+16` as the lowest-grade measured window, but that window
-has no route fixture yet and still remains `block`, so the system records
-progress without pretending it found a safe route.
+scan finds `r-12-c+16` as the lowest-grade measured window and promotes it as
+the `northeast-stepout` route fixture. That route still remains `block`, so the
+system records real progress without pretending it found a safe route.
 
 Moonmoon now also attaches a conservative illumination/power gate to each route
 candidate. The first version is intentionally limited: it uses local measured
@@ -226,8 +226,7 @@ specific lunar day/night window." Moonmoon also records a conservative rover
 energy-window budget: estimated drive hours, dark survival hours, required Wh,
 verified available Wh, and margin. With no time-windowed ephemeris attached,
 the verified available energy is deliberately zero and the energy gate blocks.
-The next modeling step is to extract and review a route fixture for the best
-9x9 route-corridor window, then execute the ephemeris acquisition plan so the
+The next modeling step is to execute the ephemeris acquisition plan so the
 relief/energy proxies can be replaced with ephemeris-backed sun/thermal
 windows.
 

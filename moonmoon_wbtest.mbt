@@ -1,3 +1,6 @@
-// Whitebox tests run within the package scope.
-// Use them to validate internal helpers or invariants.
-// Keep them focused; public behavior belongs in `_test.mbt`.
+///|
+test "facade markdown stays product-facing" {
+  let text = product_kernel_markdown()
+  assert_true(text.contains("# MoonMoon Kernel"))
+  assert_true(text.contains("time-windowed-power-evidence"))
+}

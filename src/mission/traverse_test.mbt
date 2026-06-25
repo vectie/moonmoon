@@ -11,7 +11,7 @@ test "first trusted square traverse score blocks measured rough terrain" {
 ///|
 test "first trusted square route candidates use measured adjacent windows" {
   let routes = @mission.first_trusted_square_route_candidates()
-  assert_eq(routes.length(), 5)
+  assert_eq(routes.length(), 6)
   assert_eq(routes[0].route_id, "direct-lola-window")
   assert_true(routes[0].decision == Block)
   assert_true(routes[0].reasons.any(fn(reason) { reason.contains("blocked") }))
@@ -58,6 +58,13 @@ test "first trusted square route candidates use measured adjacent windows" {
     routes[4].evidence_tile_id,
     "first-trusted-square-south-stepout-lola",
   )
+  assert_eq(routes[5].route_id, "northeast-stepout")
+  assert_true(routes[5].decision == Block)
+  assert_eq(
+    routes[5].evidence_tile_id,
+    "first-trusted-square-northeast-stepout-lola",
+  )
+  assert_true(routes[5].expected_max_grade < routes[4].expected_max_grade)
 }
 
 ///|
@@ -70,7 +77,7 @@ test "first trusted square corridor scan ranks measured route windows" {
   assert_eq(best.rank, 1)
   assert_eq(best.row_offset, -12)
   assert_eq(best.col_offset, 16)
-  assert_eq(best.selected_route_id, "")
+  assert_eq(best.selected_route_id, "northeast-stepout")
   assert_true(best.decision == Block)
   assert_true(best.max_neighbor_grade < 0.52)
   assert_true(best.roughness_m < 6.0)
@@ -130,8 +137,8 @@ test "first trusted square energy window blocks missing ephemeris budget" {
     assessment.budget.power_window_source_path,
     "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
   )
-  assert_eq(assessment.route_count, 5)
-  assert_eq(assessment.blocked_route_count, 5)
+  assert_eq(assessment.route_count, 6)
+  assert_eq(assessment.blocked_route_count, 6)
   assert_true(assessment.required_energy_wh > 800.0)
   assert_eq(assessment.available_energy_wh, 0.0)
   assert_true(assessment.margin_wh < 0.0)

@@ -144,3 +144,32 @@ fn generated_first_trusted_square_south_stepout_elevations() -> Array[
     [439.388, 431.991, 420.269, 409.003],
   ]
 }
+
+///| Generated from data/sources/lro_lola/first_trusted_square_northeast_stepout_dem.csv by scripts/generate_moonmoon_fixture.py.
+
+///|
+fn generated_first_trusted_square_northeast_stepout_tile_id() -> String {
+  "first-trusted-square-northeast-stepout-lola"
+}
+
+///|
+fn generated_first_trusted_square_northeast_stepout_rows() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_northeast_stepout_cols() -> Int {
+  4
+}
+
+///|
+fn generated_first_trusted_square_northeast_stepout_elevations() -> Array[
+  Array[Double],
+] {
+  [
+    [341.536, 332.075, 325.045, 318.160],
+    [339.786, 330.196, 321.057, 313.479],
+    [337.032, 326.753, 318.107, 309.947],
+    [331.956, 324.070, 315.028, 305.726],
+  ]
+}

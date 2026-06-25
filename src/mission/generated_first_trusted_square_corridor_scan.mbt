@@ -18,8 +18,8 @@ fn generated_first_trusted_square_corridor_scan() -> Array[CorridorScanWindow] {
       max_neighbor_grade: 0.513950,
       roughness_m: 5.959750,
       decision: Block,
-      selected_route_id: "",
-      note: "lowest max-neighbor-grade window in this measured 9x9 scan; still blocked",
+      selected_route_id: "northeast-stepout",
+      note: "lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked",
     },
     {
       scan_id: "first-trusted-square-9x9-corridor-scan-v2",

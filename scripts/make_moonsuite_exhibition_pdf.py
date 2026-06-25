@@ -158,7 +158,7 @@ def footer(c):
     c.line(18 * mm, 14 * mm, w - 18 * mm, 14 * mm)
     c.setFillColor(COLORS["muted"])
     c.setFont(FONT, 7.8)
-    c.drawString(18 * mm, 8.8 * mm, "MoonSuite / 月栖智能项目组 - Agentic system from digital work to physical robotics to lunar operations")
+    c.drawString(18 * mm, 8.8 * mm, "向量贴贴 Vectie / MoonSuite - Agentic operating system for robotics and lunar operations")
 
 
 def draw_moon_network(c, cx, cy, r, scale=1.0):
@@ -173,10 +173,10 @@ def draw_moon_network(c, cx, cy, r, scale=1.0):
     nodes = [
         ("MoonBook", cx - r * 1.22, cy + r * 0.72, COLORS["green"]),
         ("MoonClaw", cx - r * 1.42, cy - r * 0.08, COLORS["blue"]),
-        ("Moontown", cx - r * 0.78, cy - r * 0.9, COLORS["amber"]),
-        ("Moonrobo", cx + r * 0.78, cy - r * 0.9, COLORS["red"]),
+        ("MoonTown", cx - r * 0.78, cy - r * 0.9, COLORS["amber"]),
+        ("MoonRobo", cx + r * 0.78, cy - r * 0.9, COLORS["red"]),
         ("Moondesk", cx + r * 1.42, cy - r * 0.08, COLORS["cyan"]),
-        ("Moonmoon", cx + r * 1.15, cy + r * 0.74, COLORS["navy"]),
+        ("MoonMoon", cx + r * 1.15, cy + r * 0.74, COLORS["navy"]),
     ]
     c.setLineWidth(1)
     for name, x, y, color in nodes:
@@ -221,8 +221,8 @@ def draw_cover(c):
     c.line(x, 76 * mm, w - 22 * mm, 76 * mm)
     highlights = [
         ("技术核心", "MoonBit + Rabbita + Lepusa + agent runtime"),
-        ("产品方向", "机器人任务、月球数字孪生、证据化运营"),
-        ("商业目标", "面向科研、教育、机器人与空间资源企业"),
+        ("首批客户", "机器人团队、科研院所、空间教育与工业自动化实验室"),
+        ("业务目标", "先做可交付的机器人任务操作台，再扩展到月球数字孪生"),
     ]
     yy = 63 * mm
     for label, text in highlights:
@@ -262,7 +262,7 @@ def draw_info_page(c):
         w - 36 * mm,
         38 * mm,
         "公司介绍",
-        "MoonSuite / 月栖智能项目组专注于智能体基础设施、机器人操作系统与月球数字孪生。团队以 MoonBit 为核心工程语言，围绕 MoonBook、MoonClaw、Moontown、Moondesk、Moonrobo、Moonmoon 构建一套从数字知识工作到物理机器人执行的产品矩阵。我们的目标不是再做一个聊天入口，而是让复杂任务变成可计划、可验证、可复盘、可持续运行的工程系统。",
+        "向量贴贴 Vectie 正在建设 MoonSuite（月栖智能体系统）：一套面向机器人、科研和未来月球任务的智能体操作系统。我们以 MoonBit 为核心工程语言，围绕 MoonBook、MoonClaw、MoonTown、Moondesk、MoonRobo、MoonMoon 构建从数字知识工作到物理机器人执行的产品矩阵。公司的判断很简单：下一代 AI 价值不在“多回答几句话”，而在让复杂任务可计划、可验证、可复盘，并能安全地进入真实世界。",
         COLORS["green"],
     )
     y -= 46 * mm
@@ -273,7 +273,7 @@ def draw_info_page(c):
         w - 36 * mm,
         50 * mm,
         "项目介绍",
-        "MoonSuite 是一个面向下一代智能体与机器人协作的系统套件。它把“目标 - 计划 - 工具 - 数据 - 机器人 - 证据 - 复盘”放在同一个闭环里。短期服务地球上的知识工作、软件工程、企业运营和机器人任务；中期进入科研教育、工业自动化与机器人集成；长期面向月球探索、建设、采矿和巡检。Moonmoon 负责月球硬世界模型，Moonrobo 负责物理执行边界，Moontown 负责编排，MoonClaw 负责执行，MoonBook 负责证据与知识，Moondesk 负责本地操作入口。",
+        "MoonSuite 把“目标 - 计划 - 工具 - 数据 - 机器人 - 证据 - 复盘”放在同一个闭环里。短期产品是本地优先的智能体工作台和机器人任务网关，帮助团队把 AI 执行过程、数据来源、评审结论和机器人安全门控沉淀下来；中期进入科研教育、工业自动化与机器人集成；长期面向月球探索、建设、采矿和巡检。MoonMoon 负责月球硬世界模型，MoonRobo 负责物理执行边界，MoonTown 负责编排，MoonClaw 负责执行，MoonBook 负责证据与知识，Moondesk 负责本地操作入口。",
         COLORS["cyan"],
     )
     y -= 59 * mm
@@ -282,10 +282,10 @@ def draw_info_page(c):
     c.roundRect(x, y - 69 * mm, w - 36 * mm, 69 * mm, 3 * mm, stroke=1, fill=1)
     para(c, "商业计划书", x + 7 * mm, y - 7 * mm, w - 50 * mm, "CardTitle")
     business = [
-        ("目标客户", "空间科技企业、机器人公司、科研院所、高校实验室、科普展馆、智能制造与能源企业。"),
-        ("产品形态", "本地桌面软件、企业私有化部署、机器人任务网关、月球数字孪生数据包、行业解决方案与技术服务。"),
-        ("收入模式", "软件授权、项目制交付、数据/模型订阅、机器人集成服务、教育展示套件、长期运维支持。"),
-        ("阶段目标", "先落地地球上的机器人与智能体闭环，再用 Moonmoon 建立可信月球场景模型，最终服务月面建设、采矿、巡检与科研任务。核心壁垒来自可复用的执行证据、任务协议、机器人安全数据和月球场景模型。"),
+        ("切入场景", "机器人实验室和科研团队需要把任务计划、数据来源、模型结果、安全门控和复盘报告连起来，这是 MoonSuite 的第一个可交付场景。"),
+        ("产品包装", "Moondesk 本地操作台 + MoonBook 证据库 + MoonClaw 任务执行器 + MoonRobo 安全前置条件；MoonMoon 作为月球/极端环境样板模型。"),
+        ("收入结构", "早期以项目制 PoC、私有化部署和展教套件收回现金流；成熟后进入软件授权、模型数据包、机器人网关和长期运维订阅。"),
+        ("12个月目标", "完成 1 个可演示的机器人任务闭环、1 个 MoonMoon 月球证据工作区、2-3 个合作试点，并沉淀可复用协议、输出模板和安全门控。"),
     ]
     yy = y - 24 * mm
     for k, v in business:
@@ -299,13 +299,13 @@ def draw_info_page(c):
 
 
 def draw_spotlights_page(c):
-    page_header(c, "MoonSuite 的独特洞察", "02")
+    page_header(c, "商业假设与机会", "02")
     w, h = A4
     x = 18 * mm
     y = h - 31 * mm
     para(
         c,
-        "MoonSuite 真正想做的不是“更会说话的 AI”，而是把智能体推进到工程世界：它必须懂数据来源、懂任务边界、懂机器人的风险，也懂什么时候应该停下来让人类确认。",
+        "MoonSuite 的商业假设：AI 会从“聊天工具”进入“任务基础设施”。真正愿意付费的客户，不只需要一个回答，而需要系统把计划、工具、数据、机器人、安全、证据和交付结果连接起来。",
         x,
         y,
         w - 36 * mm,
@@ -315,28 +315,28 @@ def draw_spotlights_page(c):
     y -= 30 * mm
     spotlights = [
         (
-            "从聊天窗口到执行系统",
-            "大多数 AI 产品停在对话层。MoonSuite 关注的是任务能否被拆解、运行、验证、复盘，并形成长期可积累的组织能力。",
+            "客户痛点明确",
+            "机器人与科研项目里，数据、脚本、报告、设备状态和人为决策分散在不同地方，交付很难复盘，也很难规模化复制。",
             COLORS["blue"],
         ),
         (
-            "证据化智能体",
-            "每一次工具调用、数据引用、机器人指令、执行结果都应该留下证据。投资人看到的不是一句回答，而是一条可审计的行动链。",
+            "先服务地球场景",
+            "先做机器人实验、工业巡检、科研建模和展教演示，再把同一套协议推进到月球数字孪生和空间机器人任务。",
             COLORS["green"],
         ),
         (
-            "人类仍在驾驶席",
-            "系统强调 human-in-the-loop：AI 可以计划和执行，但关键边界、物理动作、风险升级和外部交付都要能被人类看见、暂停、确认。",
+            "可销售产品形态",
+            "本地工作台、私有化知识库、任务执行器、机器人安全网关和行业数据包可以拆开卖，也可以组合成项目方案。",
             COLORS["amber"],
         ),
         (
-            "数字与物理同构",
-            "软件任务、企业流程、机器人动作和月球任务使用同一类协议：目标、上下文、约束、执行、证据、复盘。",
+            "不是黑箱外包",
+            "每一次工具调用、数据引用、机器人指令、执行结果都留下证据，客户买到的是可审计流程，而不是不可解释的自动化。",
             COLORS["cyan"],
         ),
         (
-            "Moonmoon 是硬世界模型",
-            "月球不是背景图，而是带有地形、光照、资源、风险和不确定性的真实约束。它让智能体在物理现实里推理。",
+            "长期壁垒",
+            "协议、任务图谱、机器人安全数据、证据工作区和月球/极端环境模型会持续积累，形成工程资产和客户迁移成本。",
             colors.HexColor("#2F5D7C"),
         ),
         (
@@ -362,7 +362,7 @@ def draw_spotlights_page(c):
     c.drawString(
         x + 8 * mm,
         bottom + 10 * mm,
-        "MoonSuite 把智能体从“会回答”推进到“能在真实世界安全工作”。",
+        "MoonSuite 把智能体从“会回答”推进到“能交付、能审计、能接机器人”。",
     )
     footer(c)
     c.showPage()
@@ -375,7 +375,7 @@ def draw_stack_page(c):
     top = h - 32 * mm
     para(
         c,
-        "MoonSuite 的技术栈可以用一句话理解：<b>MoonBit 做可信核心，Rabbita 做交互界面，Lepusa 做本地桌面外壳，MoonBook/MoonClaw/Moontown/Moonrobo/Moonmoon 组成从知识到行动的闭环。</b>",
+        "MoonSuite 的技术栈可以用一句话理解：<b>MoonBit 做可信核心，Rabbita 做交互界面，Lepusa 做本地桌面外壳，MoonBook/MoonClaw/MoonTown/MoonRobo/MoonMoon 组成从知识到行动的闭环。</b>",
         x,
         top,
         w - 36 * mm,
@@ -387,9 +387,9 @@ def draw_stack_page(c):
         ("Lepusa", "本地桌面宿主。把 MoonBit 服务和 Rabbita UI 打包成本地应用，适合企业内网、实验室和展会演示。", COLORS["green"]),
         ("MoonBook", "可执行知识库。保存数据、报告、模型来源、评审队列、研究记录和项目复盘。", COLORS["amber"]),
         ("MoonClaw", "智能体运行时。把目标拆解成有边界的任务，运行工具，生成证据，返回可审查结果。", COLORS["red"]),
-        ("Moontown", "长期编排层。管理 standing goals、调度、路由、健康状态、多个 MoonBook 和多个 MoonClaw worker。", COLORS["navy"]),
-        ("Moonrobo", "物理机器人边界。处理机器人身份、遥测、安全门控、指令意图、回放、执行证明和紧急停止。", colors.HexColor("#7A4BD8")),
-        ("Moonmoon", "月球世界模型。处理月球地形、光照、资源、风险、不确定性、路线和建造/采矿约束。", colors.HexColor("#2F5D7C")),
+        ("MoonTown", "长期编排层。管理 standing goals、调度、路由、健康状态、多个 MoonBook 和多个 MoonClaw worker。", COLORS["navy"]),
+        ("MoonRobo", "物理机器人边界。处理机器人身份、遥测、安全门控、指令意图、回放、执行证明和紧急停止。", colors.HexColor("#7A4BD8")),
+        ("MoonMoon", "月球世界模型。处理月球地形、光照、资源、风险、不确定性、路线和建造/采矿约束。", colors.HexColor("#2F5D7C")),
     ]
     col_w = (w - 42 * mm) / 2
     y = top - 30 * mm
@@ -404,9 +404,9 @@ def draw_stack_page(c):
     c.drawString(x, yy, "从一个想法到一次可靠行动")
     steps = [
         "1. 人类提出目标：研究、巡检、建造、采矿或演示。",
-        "2. Moontown 编排长期任务，MoonClaw 执行有边界的分析与工具调用。",
+        "2. MoonTown 编排长期任务，MoonClaw 执行有边界的分析与工具调用。",
         "3. MoonBook 保存数据、证据、报告和评审结论。",
-        "4. Moonmoon 提供月球地形与任务约束，Moonrobo 验证机器人执行边界。",
+        "4. MoonMoon 提供月球地形与任务约束，MoonRobo 验证机器人执行边界。",
         "5. Rabbita/Lepusa 给操作员一个清晰、可解释、可展示的控制界面。",
     ]
     yy -= 9 * mm
@@ -431,7 +431,7 @@ def draw_focus_page(c):
     para(c, "展示图片说明", x + 8 * mm, y - 88 * mm, left_w - 16 * mm, "CardTitle")
     para(
         c,
-        "展板主视觉建议使用本 PDF 第 6 页，物理尺寸为 20cm 宽、30cm 高。它把地球操作员、智能体套件、月球地形模型和月面机器人放在同一个画面里，适合现场讲解。",
+        "展板主视觉建议使用本 PDF 第 6 页。它把地球操作员、智能体套件、月球地形模型和月面机器人放在同一个画面里，适合现场讲解。",
         x + 8 * mm,
         y - 103 * mm,
         left_w - 16 * mm,
@@ -440,13 +440,13 @@ def draw_focus_page(c):
 
     c.setFillColor(COLORS["navy"])
     c.setFont(FONT, 14)
-    c.drawString(right_x, y, "现场讲解主线")
+    c.drawString(right_x, y, "商业计划主线")
     talking = [
-        ("一句话", "MoonSuite 不是聊天机器人，而是把智能体变成可执行、可验证、可落地的操作系统。"),
-        ("现在能做", "知识库、任务编排、桌面操作台、智能体运行、机器人安全边界已经形成产品矩阵。"),
-        ("为什么重要", "未来机器人会越来越多地代替人在危险、遥远、复杂环境中工作，系统必须能解释每一步。"),
-        ("月球愿景", "人类坐在地球上，机器人在月球采矿、建设、巡检。Moonmoon 先把月球建成可信模型。"),
-        ("投资价值", "短期服务企业智能体和机器人，中期进入科研教育与工业场景，长期面向空间机器人基础设施。"),
+        ("定位", "MoonSuite 是面向机器人与硬科技团队的智能体任务操作系统。"),
+        ("MVP", "用 Moondesk + MoonBook + MoonClaw 打通本地任务、证据、报告和可复现输出。"),
+        ("试点", "优先找机器人实验室、科研教育展馆、工业巡检团队做 2-3 个付费或联合试点。"),
+        ("扩展", "把 MoonRobo 接入真实设备，把 MoonMoon 做成月球/极端环境建模样板。"),
+        ("融资用途", "产品化本地工作台、完善任务协议、建设示范数据集、推进机器人集成合作。"),
     ]
     yy = y - 12 * mm
     for title, body in talking:
@@ -464,9 +464,9 @@ def draw_focus_page(c):
     c.drawString(x, y2, "投资人容易听懂的差异点")
     row_y = y2 - 12 * mm
     diffs = [
-        ("不是单点工具", "是一套从数据、智能体、桌面、机器人到月球模型的完整系统。"),
-        ("不是黑箱自动化", "所有任务都强调证据、评审、回放、安全门控和可解释状态。"),
-        ("不是遥远概念", "地球上的机器人与企业智能体闭环可先商业化，月球模型是长期战略延展。"),
+        ("先小后大", "先做本地工作台和机器人任务闭环，再做月球模型，不把长期愿景当作短期收入。"),
+        ("可交付资产", "每个项目都会沉淀任务协议、证据包、模型数据和复盘模板，可复制到下一位客户。"),
+        ("安全优先", "所有物理动作都经过证据、评审、回放和安全门控，适合机器人与硬科技场景。"),
     ]
     for i, (title, body) in enumerate(diffs):
         card(c, x + i * ((w - 42 * mm) / 3 + 3 * mm), row_y, (w - 48 * mm) / 3, 39 * mm, title, body, [COLORS["green"], COLORS["amber"], COLORS["red"]][i])
@@ -513,9 +513,9 @@ def draw_display_page(c):
     c.setFont(FONT, 12)
     c.drawString(panel_x + 7 * mm, panel_y + 70 * mm, "核心能力")
     capabilities = [
-        ("Moonmoon", "月球地形、光照、资源、风险建模"),
-        ("Moonrobo", "机器人数字孪生、安全门控、执行证据"),
-        ("Moontown", "长期目标、调度、任务编排"),
+        ("MoonMoon", "月球地形、光照、资源、风险建模"),
+        ("MoonRobo", "机器人数字孪生、安全门控、执行证据"),
+        ("MoonTown", "长期目标、调度、任务编排"),
         ("MoonClaw", "智能体运行、工具调用、报告生成"),
         ("MoonBook", "知识库、数据、评审、复盘"),
     ]
@@ -538,13 +538,10 @@ def draw_display_page(c):
     c.setFillAlpha(1)
     c.setFillColor(colors.white)
     c.setFont(FONT, 10)
-    c.drawString(22 * mm, bottom_y + 19 * mm, "商业路径")
+    c.drawString(22 * mm, bottom_y + 19 * mm, "向量贴贴 Vectie")
     c.setFillColor(colors.HexColor("#C7D6EA"))
     c.setFont(FONT, 7.8)
-    c.drawString(22 * mm, bottom_y + 10 * mm, "企业智能体和机器人闭环 -> 科研教育与工业场景 -> 月球数字孪生与空间机器人基础设施")
-    c.setFillColor(colors.HexColor("#9FB2CC"))
-    c.setFont(FONT, 6.8)
-    c.drawRightString(w - 16 * mm, 8 * mm, "展示图尺寸：20cm 宽 × 30cm 高")
+    c.drawString(22 * mm, bottom_y + 10 * mm, "郭嘉安 / MoonSuite 发起人 / WeChat: vectie")
     c.showPage()
     c.setPageSize(A4)
 
@@ -553,7 +550,7 @@ def build():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     c = canvas.Canvas(str(OUT), pagesize=A4, invariant=1)
     c.setTitle("MoonSuite Exhibition Profile")
-    c.setAuthor("MoonSuite / 月栖智能项目组")
+    c.setAuthor("向量贴贴 Vectie / 郭嘉安")
     draw_cover(c)
     draw_info_page(c)
     draw_spotlights_page(c)
