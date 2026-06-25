@@ -27,9 +27,9 @@ test "first trusted square exports Moonrobo simulation preconditions" {
 }
 
 ///|
-test "first trusted square primary Moonrobo handoff follows best corridor route" {
+test "first trusted square primary Moonrobo handoff falls back until best corridor window is promoted" {
   let handoff = @moonrobo.first_trusted_square_primary_handoff()
-  assert_eq(handoff.route_id, "southwest-bypass")
+  assert_eq(handoff.route_id, "direct-lola-window")
   assert_true(handoff.decision == @mission.TraverseDecision::Block)
   assert_eq(handoff.site_id, "first-trusted-square")
   assert_eq(handoff.target_body, "Moon")
@@ -48,7 +48,7 @@ test "first trusted square primary Moonrobo handoff follows best corridor route"
   assert_true(
     handoff.preconditions.any(fn(precondition) {
       precondition.precondition_id == "corridor-scan-best-window" &&
-      precondition.reason.contains("still blocked")
+      precondition.reason.contains("9x9 scan")
     }),
   )
 }

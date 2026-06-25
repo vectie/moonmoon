@@ -189,11 +189,10 @@ scan is mirrored separately by `scripts/generate_corridor_scan.py` into
 `src/mission/generated_first_trusted_square_corridor_scan.mbt`. Those generated
 modules are now the terrain and mission packages' source for the
 trusted-square elevations, the first adjacent route-window elevations, the first
-widened corridor elevations, and the 25-window corridor ranking. The pinned v2
-9x9 CSV extends that source boundary to 81 measured corridor windows, but it is
-not yet the active generated MoonBit mission scan. Replacing or extending the
-CSV set with tiny authoritative LOLA-derived extractions should keep the same
-pipeline shape.
+widened corridor elevations, and the active 81-window corridor ranking. The 5x5
+CSV remains a pinned baseline, while the pinned v2 9x9 CSV is the generated
+MoonBit mission scan. Replacing or extending the CSV set with tiny
+authoritative LOLA-derived extractions should keep the same pipeline shape.
 
 The first measured LOLA patch blocks the conservative rover profile. Moonmoon
 therefore records route alternatives as derived mission-planning claims tied to
@@ -201,10 +200,11 @@ local measured evidence windows, not as safe corridor claims. The direct route
 preserves the measured blocked result; west-contour and north-rim alternatives
 now point at adjacent measured LOLA windows, and both remain `block` because
 their local grade and roughness still exceed the conservative rover limits. A
-first 5x5 corridor scan then promotes southwest-bypass and south-stepout
-windows; southwest is the lowest-grade local sample found so far, but it also
-remains `block`, so the system records progress without pretending it found a
-safe route.
+first 5x5 corridor scan then promoted southwest-bypass and south-stepout
+windows; those named route fixtures remain `block`. The active 9x9 corridor
+scan now finds `r-12-c+16` as the lowest-grade measured window, but that window
+has no route fixture yet and still remains `block`, so the system records
+progress without pretending it found a safe route.
 
 Moonmoon now also attaches a conservative illumination/power gate to each route
 candidate. The first version is intentionally limited: it uses local measured
@@ -215,10 +215,10 @@ specific lunar day/night window." Moonmoon also records a conservative rover
 energy-window budget: estimated drive hours, dark survival hours, required Wh,
 verified available Wh, and margin. With no time-windowed ephemeris attached,
 the verified available energy is deliberately zero and the energy gate blocks.
-The next modeling step is to promote the pinned 9x9 route-corridor CSV into
-generated MoonBit and MoonBook outputs, then execute the ephemeris acquisition
-plan so the relief/energy proxies can be replaced with ephemeris-backed
-sun/thermal windows.
+The next modeling step is to extract and review a route fixture for the best
+9x9 route-corridor window, then execute the ephemeris acquisition plan so the
+relief/energy proxies can be replaced with ephemeris-backed sun/thermal
+windows.
 
 The current MoonBook boundary is a generated workspace tree under
 `output/moonbook/workspaces/first-trusted-square/`. Its `index.json` preserves
@@ -245,14 +245,14 @@ proposal into an operator/agent checklist: current inputs, required source
 artifacts, readiness booleans, blocker reasons, generator commands, validation
 gates, and the Moonrobo safety condition that must stay blocked until power
 evidence is ready. The corridor task packet does the same for terrain search:
-it names the current 5x5 scan, the planned 9x9/81-window extraction, missing
-source CSV, generated MoonBit update, MoonBook refresh, and the safety condition
-that prevents route promotion before those artifacts are pinned. The first route
-receipt validates the current route-scoring job against route IDs, selected
-route, source checksums, proposal blockers, energy blocker, and Moonrobo
-handoff compatibility. The first corridor receipt validates that the bounded
-5x5 LOLA search ran, that 25 sampled windows are present, and that every
-sampled window remains blocked. The first ephemeris receipt validates the
+it names the baseline 5x5 scan, the active 9x9/81-window extraction, exact
+commands, and the safety condition that prevents route promotion before the
+best measured window has its own route fixture. The first route receipt
+validates the current route-scoring job against route IDs, selected route,
+source checksums, proposal blockers, energy blocker, and Moonrobo handoff
+compatibility. The first corridor receipt validates that the bounded 9x9 LOLA
+search ran, that 81 sampled windows are present, and that every sampled window
+remains blocked. The first ephemeris receipt validates the
 current absence of time-windowed solar evidence, records the missing output
 contract, and keeps the power gate in review. Together these task and receipt
 packets separate agent progress from physical execution authority.

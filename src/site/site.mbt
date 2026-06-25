@@ -28,6 +28,15 @@ fn pending_label(value : String) -> String {
 }
 
 ///|
+fn selected_route_label(value : String) -> String {
+  if value == "" {
+    "none promoted yet"
+  } else {
+    value
+  }
+}
+
+///|
 pub fn first_trusted_square_site() -> @core.LunarSite {
   {
     site_id: "first-trusted-square",
@@ -101,11 +110,11 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       route_candidates,
       @mission.conservative_energy_budget(),
     ),
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 5x5 route-corridor scan, and a conservative rover energy-window budget.",
+    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, and a conservative rover energy-window budget.",
     blockers: terrain_blockers(terrain),
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
-      "Continue widening the corridor search because the best measured southwest window is still blocked.",
+      "Extract a route fixture for the best measured 9x9 corridor window before changing Moonrobo route candidates.",
       "Review the materialized LunarBook workspace entries and close accepted or rejected queue items.",
     ],
   }
@@ -240,7 +249,7 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   text += "- windows ranked: \{dossier.corridor_scan.length()}\n"
   text += "- best measured window: \{best_window.window_id} (rank \{best_window.rank})\n"
   text += "- offset: row \{best_window.row_offset}, col \{best_window.col_offset}\n"
-  text += "- selected route: \{best_window.selected_route_id}\n"
+  text += "- selected route: \{selected_route_label(best_window.selected_route_id)}\n"
   text += "- decision: \{@mission.corridor_scan_window_status_label(best_window)}\n"
   text += "- max neighbor grade: \{best_window.max_neighbor_grade}\n"
   text += "- roughness: \{best_window.roughness_m} m\n"

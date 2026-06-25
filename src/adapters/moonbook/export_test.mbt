@@ -3,7 +3,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
   assert_eq(dossier.entries.length(), 42)
-  assert_eq(dossier.review_queue.length(), 26)
+  assert_eq(dossier.review_queue.length(), 25)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
     dossier.entries[0].entry_id,
@@ -108,7 +108,8 @@ test "first trusted square exports a LunarBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[22].kind),
     "corridor-scan",
   )
-  assert_true(dossier.entries[22].summary.contains("r+8-c-8"))
+  assert_true(dossier.entries[22].summary.contains("r-12-c+16"))
+  assert_true(dossier.entries[22].summary.contains("no promoted route yet"))
   assert_true(dossier.entries[24].summary.contains("west-contour"))
   assert_true(dossier.entries[26].summary.contains("southwest"))
   assert_true(dossier.entries[31].summary.contains("relief-shadow risk"))
@@ -126,7 +127,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[35].kind),
     "moonrobo-handoff",
   )
-  assert_true(dossier.entries[35].summary.contains("southwest-bypass"))
+  assert_true(dossier.entries[35].summary.contains("direct-lola-window"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[36].kind),
     "moonclaw-proposal",
@@ -144,13 +145,14 @@ test "first trusted square exports a LunarBook evidence dossier" {
     "moonclaw-task",
   )
   assert_true(
-    dossier.entries[38].summary.contains("81 windows with 2 blockers"),
+    dossier.entries[38].summary.contains("81 windows with 0 blockers"),
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[39].kind),
     "moonclaw-receipt",
   )
-  assert_true(dossier.entries[39].summary.contains("Moonrobo handoff block"))
+  assert_true(dossier.entries[39].summary.contains("needs-review"))
+  assert_true(dossier.entries[39].summary.contains("promoted route fixture"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[40].kind),
     "moonclaw-ephemeris-receipt",
@@ -160,7 +162,7 @@ test "first trusted square exports a LunarBook evidence dossier" {
     @moonbook.book_entry_kind_label(dossier.entries[41].kind),
     "moonclaw-corridor-receipt",
   )
-  assert_true(dossier.entries[41].summary.contains("25 measured windows"))
+  assert_true(dossier.entries[41].summary.contains("81 measured windows"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,
@@ -217,11 +219,9 @@ test "first trusted square exports a LunarBook evidence dossier" {
     ephemeris_task.status == @moonbook.ReviewItemStatus::NeedsEvidence,
   )
   assert_true(ephemeris_task.reason.contains("2 blocking artifacts"))
-  let corridor_task = dossier.review_queue[22]
-  assert_eq(corridor_task.item_id, "moonclaw-corridor-task")
-  assert_true(corridor_task.status == @moonbook.ReviewItemStatus::NeedsEvidence)
-  assert_true(corridor_task.reason.contains("2 blocking artifacts"))
-  assert_true(corridor_task.reason.contains("81-window search"))
+  let first_question = dossier.review_queue[22]
+  assert_eq(first_question.item_id, "question-0")
+  assert_true(first_question.status == @moonbook.ReviewItemStatus::Open)
 }
 
 ///|

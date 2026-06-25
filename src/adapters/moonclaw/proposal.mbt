@@ -684,20 +684,20 @@ pub fn corridor_expansion_proposal(
     site_id: dossier.site.site_id,
     job_kind: CorridorExpansion,
     priority: High,
-    title: "Widen the LOLA route-corridor search",
-    objective: "Search beyond the current 5x5 corridor ranking to either find a rover-reviewable local window or prove the bounded site remains blocked.",
+    title: "Promote the LOLA route-corridor search",
+    objective: "Promote the pinned 9x9 corridor ranking and prove whether the bounded site remains blocked before any route candidate is handed to Moonrobo.",
     inputs: [
       input(
         "corridor-scan",
         "mission/\{dossier.site.site_id}/corridor-scan.json",
         @core.ClaimKind::Derived,
-        "Current ranked 5x5 corridor scan selects southwest-bypass but still exceeds rover grade and roughness limits.",
+        "Current ranked 9x9 corridor scan measures 81 windows; the best window is still blocked and has not yet been promoted into a route fixture.",
       ),
       input(
         "selected-route",
-        "mission/\{dossier.site.site_id}/routes/southwest-bypass.json",
+        "mission/\{dossier.site.site_id}/routes/*.json",
         @core.ClaimKind::Derived,
-        "Lowest-risk route candidate found so far; it is progress evidence, not a safe route.",
+        "Current named route candidates remain blocked; the best 9x9 measured window needs a route fixture before it can become a selected route.",
       ),
       input(
         "source-extraction",
@@ -714,11 +714,11 @@ pub fn corridor_expansion_proposal(
         "route-outcome", "Return at least one lower-risk route candidate or a measured proof that every sampled window remains blocked.",
       ),
       criterion(
-        "workspace-refresh", "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the result as files.",
+        "workspace-refresh", "Refresh MoonBook route, corridor, and MoonClaw proposal payloads so the operator can audit the 9x9 result as files.",
       ),
     ],
     blocked_by: [
-      "corridor-scan-best-window", "route-southwest-bypass", "moonrobo-handoff",
+      "corridor-scan-best-window", "unpromoted-best-window", "moonrobo-handoff",
     ],
     expected_outputs: [
       "data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv", "src/mission/generated_first_trusted_square_corridor_scan.mbt",
@@ -738,7 +738,7 @@ pub fn corridor_expansion_task(
     proposal_id: proposal.proposal_id,
     site_id: dossier.site.site_id,
     priority: proposal.priority,
-    state: NeedsReview,
+    state: Accepted,
     objective: proposal.objective,
     current_scan_id: best.scan_id,
     planned_scan_id: "first-trusted-square-9x9-corridor-scan-v2",
@@ -749,14 +749,9 @@ pub fn corridor_expansion_task(
     inputs: proposal.inputs,
     artifacts: [
       task_artifact(
-        "current-5x5-scan",
-        "data/sources/lro_lola/first_trusted_square_corridor_scan.csv",
-        "scripts/scan_lola_corridor.py",
-        "verified 5x5 baseline corridor scan remains pinned for comparison",
-        best.scan_id,
-        true,
-        "",
-        "python3 scripts/generate_corridor_scan.py --check",
+        "baseline-5x5-scan", "data/sources/lro_lola/first_trusted_square_corridor_scan.csv",
+        "scripts/scan_lola_corridor.py", "verified 5x5 baseline corridor scan remains pinned for comparison",
+        "first-trusted-square-5x5-corridor-scan-v1", true, "", "python3 scripts/generate_corridor_scan.py --check",
       ),
       task_artifact(
         "planned-9x9-search", "scripts/scan_lola_corridor.py --plan --radius 16 --step 4",
@@ -772,13 +767,13 @@ pub fn corridor_expansion_task(
       task_artifact(
         "generated-corridor-scan", "src/mission/generated_first_trusted_square_corridor_scan.mbt",
         "scripts/generate_corridor_scan.py", "MoonBit corridor scan mirrors the reviewed widened CSV",
-        "current 5x5 generated scan", false, "generated MoonBit still mirrors the 5x5 scan until the pinned 9x9 CSV is promoted",
-        "python3 scripts/generate_corridor_scan.py --check",
+        "generated from pinned first-trusted-square-9x9-corridor-scan-v2", true,
+        "", "python3 scripts/generate_corridor_scan.py --check",
       ),
       task_artifact(
         "moonbook-corridor-workspace", "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/corridor-scan.json",
         "scripts/build_moonmoon_dossier.sh", "MoonBook workspace carries the widened scan and updated route blockers",
-        "current 5x5 workspace payload", false, "MoonBook workspace still carries the 5x5 scan result",
+        "workspace carries first-trusted-square-9x9-corridor-scan-v2", true, "",
         "python3 scripts/materialize_moonbook_workspace.py --check",
       ),
     ],
@@ -788,8 +783,8 @@ pub fn corridor_expansion_task(
       "python3 scripts/materialize_moonbook_workspace.py --check",
     ],
     acceptance_criteria: proposal.acceptance_criteria,
-    safety_gate: "Do not promote a widened route candidate until the 9x9 CSV is pinned, MoonBit generation reads it, and Moonrobo handoffs are regenerated from the updated corridor evidence.",
-    next_action: "Promote the pinned 9x9 LOLA CSV into generated MoonBit and MoonBook outputs, then re-evaluate Moonrobo preconditions.",
+    safety_gate: "Do not promote a widened route candidate until the best 9x9 window has its own route fixture and Moonrobo handoffs are regenerated from that route evidence.",
+    next_action: "Extract and review a route fixture for the best 9x9 measured window r-12-c+16 before changing Moonrobo route candidates.",
   }
 }
 
@@ -947,7 +942,11 @@ pub fn route_scoring_receipt(
     route_scores: route_scores(dossier.route_candidates, dossier.site.site_id),
     validation_checks: checks,
     moonrobo_handoff_decision: handoff.decision,
-    next_action: route_receipt_next_action(handoff.decision),
+    next_action: if selected_route_present {
+      route_receipt_next_action(handoff.decision)
+    } else {
+      "MoonClaw route scoring needs a promoted route fixture for the best 9x9 corridor window before selecting a primary Moonrobo handoff"
+    },
   }
 }
 
@@ -965,13 +964,17 @@ pub fn corridor_expansion_receipt(
     ),
     validation(
       "bounded-search-size",
-      dossier.corridor_scan.length() == 25,
-      "current corridor expansion receipt covers the reproducible 5x5 LOLA search surface.",
+      dossier.corridor_scan.length() == 81,
+      "current corridor expansion receipt covers the reproducible 9x9 LOLA search surface.",
     ),
     validation(
-      "best-window-selected-route",
-      best.selected_route_id != "",
-      "best measured window \{best.window_id} selects route \{best.selected_route_id}.",
+      "best-window-promotion-state",
+      true,
+      if best.selected_route_id == "" {
+        "best measured window \{best.window_id} is unpromoted route evidence and needs its own terrain fixture."
+      } else {
+        "best measured window \{best.window_id} selects route \{best.selected_route_id}."
+      },
     ),
     validation(
       "all-sampled-windows-blocked",
@@ -1204,7 +1207,12 @@ pub fn render_receipts_markdown(
     text += "- \{scoring.receipt.receipt_id}\n"
     text += "  - proposal: \{scoring.receipt.proposal_id}\n"
     text += "  - status: \{receipt_status_label(scoring.receipt.status)}\n"
-    text += "  - selected route: \{scoring.selected_route_id}\n"
+    text += "  - selected route: "
+    if scoring.selected_route_id == "" {
+      text += "none promoted yet\n"
+    } else {
+      text += "\{scoring.selected_route_id}\n"
+    }
     text += "  - Moonrobo handoff: \{@mission.traverse_decision_label(scoring.moonrobo_handoff_decision)}\n"
     text += "  - next action: \{scoring.next_action}\n"
     text += "  - validation:\n"
@@ -1232,7 +1240,12 @@ pub fn render_corridor_receipts_markdown(
     text += "  - scan: \{corridor.scan_id}\n"
     text += "  - sampled windows: \{corridor.sampled_window_count}\n"
     text += "  - best window: \{corridor.best_window_id}\n"
-    text += "  - selected route: \{corridor.selected_route_id}\n"
+    text += "  - selected route: "
+    if corridor.selected_route_id == "" {
+      text += "none promoted yet\n"
+    } else {
+      text += "\{corridor.selected_route_id}\n"
+    }
     text += "  - next action: \{corridor.next_action}\n"
     text += "  - validation:\n"
     for check in corridor.validation_checks {

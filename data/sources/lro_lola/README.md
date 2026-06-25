@@ -104,9 +104,8 @@ Widened ranked corridor scan:
 - Search offsets: rows `-16`, `-12`, `-8`, `-4`, `0`, `4`, `8`, `12`, `16`; columns `-16`, `-12`, `-8`, `-4`, `0`, `4`, `8`, `12`, `16`
 - Best measured window: `r-12-c+16`, rank `1`, no promoted route candidate
 - Current result: all 81 sampled windows remain blocked by conservative rover
-  grade and roughness limits. This CSV is pinned source evidence, but the
-  active MoonBit corridor scan still mirrors the 5x5 baseline until the
-  generator promotion step is reviewed.
+  grade and roughness limits. This CSV is the active MoonBit corridor scan
+  source; the best measured window is not yet promoted into a route fixture.
 
 ## Reproduction
 
@@ -129,7 +128,7 @@ from HTTP byte ranges:
 python3 scripts/extract_lola_trusted_square.py
 ```
 
-Regenerate the ranked 5x5 corridor scan from HTTP byte ranges:
+Regenerate the ranked 5x5 corridor baseline from HTTP byte ranges:
 
 ```bash
 python3 scripts/scan_lola_corridor.py
@@ -145,8 +144,8 @@ Inspect a wider search plan without network access before fetching byte ranges:
 python3 scripts/scan_lola_corridor.py --plan --radius 16 --step 4
 ```
 
-Generate the planned 9x9 scan into a separate source artifact, leaving the
-current 5x5 baseline untouched:
+Generate the active 9x9 scan into its pinned source artifact, leaving the 5x5
+baseline untouched:
 
 ```bash
 python3 scripts/scan_lola_corridor.py --radius 16 --step 4 --target data/sources/lro_lola/first_trusted_square_corridor_scan_v2.csv

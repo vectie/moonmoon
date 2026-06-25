@@ -115,7 +115,12 @@ def payload_for_entry(
   if kind == "MoonroboHandoff":
     return {
       "primary_handoff": next(
-        handoff for handoff in moonrobo if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
+        (
+          handoff
+          for handoff in moonrobo
+          if handoff["route_id"] == site["corridor_scan"][0]["selected_route_id"]
+        ),
+        moonrobo[0],
       ),
       "handoffs": moonrobo,
     }

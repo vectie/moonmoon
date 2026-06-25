@@ -79,9 +79,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_true(dossier.terrain.hazard_class == @terrain.HazardClass::Blocked)
   assert_true(dossier.traverse.decision == @mission.TraverseDecision::Block)
-  assert_eq(dossier.corridor_scan.length(), 25)
-  assert_eq(dossier.corridor_scan[0].window_id, "r+8-c-8")
-  assert_eq(dossier.corridor_scan[0].selected_route_id, "southwest-bypass")
+  assert_eq(dossier.corridor_scan.length(), 81)
+  assert_eq(dossier.corridor_scan[0].window_id, "r-12-c+16")
+  assert_eq(dossier.corridor_scan[0].selected_route_id, "")
   assert_true(
     dossier.corridor_scan[0].decision == @mission.TraverseDecision::Block,
   )
@@ -144,9 +144,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
   assert_true(markdown.contains("## Corridor Scan"))
-  assert_true(markdown.contains("first-trusted-square-5x5-corridor-scan-v1"))
-  assert_true(markdown.contains("r+8-c-8"))
-  assert_true(markdown.contains("selected route: southwest-bypass"))
+  assert_true(markdown.contains("first-trusted-square-9x9-corridor-scan-v2"))
+  assert_true(markdown.contains("r-12-c+16"))
+  assert_true(markdown.contains("selected route: none promoted yet"))
   assert_true(markdown.contains("## Energy Window"))
   assert_true(markdown.contains("## Power Window Evidence"))
   assert_true(markdown.contains("source status: missing-source"))
@@ -222,9 +222,9 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"profile_id\": \"conservative-lunar-rover-v1\""))
   assert_true(text.contains("\"corridor_scan\""))
   assert_true(
-    text.contains("\"scan_id\": \"first-trusted-square-5x5-corridor-scan-v1\""),
+    text.contains("\"scan_id\": \"first-trusted-square-9x9-corridor-scan-v2\""),
   )
-  assert_true(text.contains("\"window_id\": \"r+8-c-8\""))
+  assert_true(text.contains("\"window_id\": \"r-12-c+16\""))
   assert_true(text.contains("\"energy\""))
   assert_true(text.contains("\"power_window_evidence\""))
   assert_true(

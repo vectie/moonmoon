@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "data" / "sources" / "lro_lola" / "first_trusted_square_corridor_scan.csv"
+SOURCE = ROOT / "data" / "sources" / "lro_lola" / "first_trusted_square_corridor_scan_v2.csv"
 TARGET = ROOT / "src" / "mission" / "generated_first_trusted_square_corridor_scan.mbt"
 
 

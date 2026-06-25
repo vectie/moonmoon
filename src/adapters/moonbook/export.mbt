@@ -396,14 +396,19 @@ fn traverse_entry(dossier : @site.SiteDossier) -> BookEntry {
 ///|
 fn corridor_scan_entry(dossier : @site.SiteDossier) -> BookEntry {
   let best = dossier.corridor_scan[0]
+  let selected_route = if best.selected_route_id == "" {
+    "no promoted route yet"
+  } else {
+    best.selected_route_id
+  }
   {
-    entry_id: "corridor/\{dossier.site.site_id}/first-trusted-square-5x5",
-    title: "5x5 LOLA corridor scan for \{dossier.site.name}",
+    entry_id: "corridor/\{dossier.site.site_id}/first-trusted-square-9x9",
+    title: "9x9 LOLA corridor scan for \{dossier.site.name}",
     kind: CorridorScan,
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.75,
     path: "mission/\{dossier.site.site_id}/corridor-scan.json",
-    summary: "best window \{best.window_id} rank \{best.rank} selects \{best.selected_route_id}: \{@mission.corridor_scan_window_status_label(best)} with grade \{best.max_neighbor_grade} and roughness \{best.roughness_m} m",
+    summary: "best window \{best.window_id} rank \{best.rank} selects \{selected_route}: \{@mission.corridor_scan_window_status_label(best)} with grade \{best.max_neighbor_grade} and roughness \{best.roughness_m} m",
   }
 }
 
@@ -658,12 +663,17 @@ fn open_review_queue(dossier : @site.SiteDossier) -> Array[ReviewQueueItem] {
     }
   }
   let best = dossier.corridor_scan[0]
+  let selected_route = if best.selected_route_id == "" {
+    "no promoted route yet"
+  } else {
+    best.selected_route_id
+  }
   if best.decision != @mission.TraverseDecision::Allow {
     items.push(
       review_item(
         "corridor-scan-best-window",
         decision_severity(best.decision),
-        "best measured corridor window \{best.window_id} selects \{best.selected_route_id} but remains \{@mission.corridor_scan_window_status_label(best)}: \{best.note}",
+        "best measured corridor window \{best.window_id} selects \{selected_route} and remains \{@mission.corridor_scan_window_status_label(best)}: \{best.note}",
         "mission-review",
       ),
     )

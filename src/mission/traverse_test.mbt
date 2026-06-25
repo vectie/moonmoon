@@ -63,20 +63,20 @@ test "first trusted square route candidates use measured adjacent windows" {
 ///|
 test "first trusted square corridor scan ranks measured route windows" {
   let windows = @mission.first_trusted_square_corridor_scan()
-  assert_eq(windows.length(), 25)
+  assert_eq(windows.length(), 81)
   let best = @mission.first_trusted_square_best_corridor_window()
-  assert_eq(best.scan_id, "first-trusted-square-5x5-corridor-scan-v1")
-  assert_eq(best.window_id, "r+8-c-8")
+  assert_eq(best.scan_id, "first-trusted-square-9x9-corridor-scan-v2")
+  assert_eq(best.window_id, "r-12-c+16")
   assert_eq(best.rank, 1)
-  assert_eq(best.row_offset, 8)
-  assert_eq(best.col_offset, -8)
-  assert_eq(best.selected_route_id, "southwest-bypass")
+  assert_eq(best.row_offset, -12)
+  assert_eq(best.col_offset, 16)
+  assert_eq(best.selected_route_id, "")
   assert_true(best.decision == Block)
-  assert_true(best.max_neighbor_grade < 0.7)
-  assert_true(best.roughness_m > 7.0)
+  assert_true(best.max_neighbor_grade < 0.52)
+  assert_true(best.roughness_m < 6.0)
   assert_eq(@mission.corridor_scan_window_status_label(best), "block")
-  assert_eq(windows[24].window_id, "r+0-c+0")
-  assert_eq(windows[24].selected_route_id, "direct-lola-window")
+  assert_eq(windows[80].window_id, "r+0-c+0")
+  assert_eq(windows[80].selected_route_id, "direct-lola-window")
 }
 
 ///|
