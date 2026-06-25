@@ -207,6 +207,10 @@ fn app_styles() -> String {
     #|  border-color: color-mix(in srgb, var(--teal) 45%, var(--line));
     #|  box-shadow: inset 3px 0 0 var(--teal);
     #|}
+    #|.simulation-decision-row {
+    #|  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--danger);
+    #|}
     #|.decision-group {
     #|  display: grid;
     #|  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -496,6 +500,23 @@ fn app_script() -> String {
     #|  ]));
     #|}
     #|
+    #|function renderSimulationReviewDecision() {
+    #|  const entry = entryById('moonrobo/first-trusted-square/simulation-review-decision');
+    #|  const target = document.getElementById('simulation-review-decision');
+    #|  if (!entry) {
+    #|    target.replaceChildren();
+    #|    return;
+    #|  }
+    #|  target.replaceChildren(el('div', {
+    #|    className: 'review-row simulation-decision-row',
+    #|    'data-entry-id': entry.entry_id
+    #|  }, [
+    #|    el('b', { text: `${entry.title} - ${entry.kind}` }),
+    #|    el('span', { text: entry.summary }),
+    #|    el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
+    #|  ]));
+    #|}
+    #|
     #|function transitionDecisionStatus(decision) {
     #|  if (decision === 'Accept') return 'Accepted';
     #|  if (decision === 'Reject') return 'Rejected';
@@ -641,6 +662,7 @@ fn app_script() -> String {
     #|  renderGapEvidence();
     #|  renderRemediationEvidence();
     #|  renderSimulationReviewPacket();
+    #|  renderSimulationReviewDecision();
     #|  renderClearanceReview();
     #|}
     #|
@@ -724,6 +746,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>Simulation Review Packet</h2>
     $|      <div id="simulation-review-packet" class="review-list" aria-label="Selected route simulation review packet with hardware-denial invariants"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Simulation Review Decision</h2>
+    $|      <div id="simulation-review-decision" class="review-list" aria-label="Selected route simulation review closeout decision with no-consume status"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>

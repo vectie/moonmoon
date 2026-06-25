@@ -804,7 +804,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-simulation-review-decision-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface selected-route simulation review decision in Rabbita",
       outcome: "Operators can see the simulation consume/no-consume result, remaining blockers, and hardware denial state from the review surface",
@@ -815,7 +815,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_simulation_review_decision_surface.py",
       ],
-      done_when: "Rabbita renders the simulation review closeout decision with no-consume status, blocker counts, and HardwareDenied authority from embedded MoonBook evidence",
+      done_when: "done: Rabbita renders the simulation review closeout decision with no-consume status, blocker counts, and HardwareDenied authority from embedded MoonBook evidence",
+    },
+    {
+      task_id: "moonrobo-simulation-blocker-reduction-pass",
+      priority: 70,
+      lane: RobotLane,
+      title: "Reduce selected-route simulation blockers from the closeout decision",
+      outcome: "MoonRobo's no-consume decision stops carrying stale non-margin blockers once corridor, MoonBook review, and robot-simulation evidence have explicit closeout states",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_simulation_review_decision.json", "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
+        "src/mission/readiness.mbt",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
+        "scripts/check_moonrobo_simulation_blocker_reduction.py",
+      ],
+      done_when: "selected-route simulation decision records which non-margin blockers are closed by existing evidence, which remain active, and why hardware authority still stays denied",
     },
   ]
 }
