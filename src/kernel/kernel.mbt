@@ -710,7 +710,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-remediation-evidence-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface selected-route remediation evidence in Rabbita",
       outcome: "Rabbita exposes the materialized terrain, horizon, and energy remediation artifacts from the selected-route review flow instead of only listing clearance status",
@@ -723,7 +723,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_remediation_evidence_surface.py",
       ],
-      done_when: "Rabbita review output links each selected-route remediation artifact and displays the quantitative blocker margin needed for operator review",
+      done_when: "done: Rabbita review output links each selected-route remediation artifact and displays the quantitative blocker margin needed for operator review",
+    },
+    {
+      task_id: "moonrobo-selected-route-simulation-review-packet",
+      priority: 70,
+      lane: RobotLane,
+      title: "Assemble selected-route simulation review packet",
+      outcome: "MoonRobo receives one review packet that joins selected-route terrain, horizon, energy remediation evidence, accepted clearance transitions, and hardware-denial invariants before any simulation handoff can be considered",
+      depends_on: [
+        "output/ui/rabbita/first_trusted_square.html", "output/moonrobo/first_trusted_square_handoffs.json",
+        "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/energy-remediation.json",
+        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_simulation_review_packet.json", "scripts/check_moonrobo_simulation_review_packet.py",
+      ],
+      done_when: "selected-route simulation review packet names every blocking remediation margin, accepted clearance transition, and hardware-denied invariant",
     },
   ]
 }

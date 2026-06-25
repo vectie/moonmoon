@@ -199,6 +199,10 @@ fn app_styles() -> String {
     #|  border-color: var(--route);
     #|  box-shadow: inset 3px 0 0 var(--route);
     #|}
+    #|.remediation-row {
+    #|  border-color: color-mix(in srgb, var(--warn) 38%, var(--line));
+    #|  box-shadow: inset 3px 0 0 var(--warn);
+    #|}
     #|.decision-group {
     #|  display: grid;
     #|  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -434,19 +438,39 @@ fn app_script() -> String {
     #|  ));
     #|}
     #|
+    #|function entryById(id) {
+    #|  return book.entries.find(entry => entry.entry_id === id);
+    #|}
+    #|
     #|function renderGapEvidence() {
     #|  const ids = [
     #|    'moonclaw/first-trusted-square/moonrobo-gap-remediation-task',
     #|    'moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt'
     #|  ];
     #|  const entries = ids
-    #|    .map(id => book.entries.find(entry => entry.entry_id === id))
+    #|    .map(entryById)
     #|    .filter(Boolean);
     #|  document.getElementById('moonclaw-gap-evidence').replaceChildren(...entries.map(entry =>
     #|    el('div', { className: 'review-row', 'data-entry-id': entry.entry_id }, [
     #|      el('b', { text: `${entry.title} - ${entry.kind}` }),
     #|      el('span', { text: entry.summary }),
     #|      el('p', { className: 'source-path', text: entry.path })
+    #|    ])
+    #|  ));
+    #|}
+    #|
+    #|function renderRemediationEvidence() {
+    #|  const ids = [
+    #|    'terrain-remediation/first-trusted-square/northeast-stepout',
+    #|    'local-horizon/first-trusted-square/northeast-stepout',
+    #|    'energy-remediation/first-trusted-square/northeast-stepout'
+    #|  ];
+    #|  const entries = ids.map(entryById).filter(Boolean);
+    #|  document.getElementById('selected-route-remediation').replaceChildren(...entries.map(entry =>
+    #|    el('div', { className: 'review-row remediation-row', 'data-entry-id': entry.entry_id }, [
+    #|      el('b', { text: `${entry.title} - ${entry.kind}` }),
+    #|      el('span', { text: entry.summary }),
+    #|      el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
     #|    ])
     #|  ));
     #|}
@@ -594,6 +618,7 @@ fn app_script() -> String {
     #|  renderFacts();
     #|  renderReview();
     #|  renderGapEvidence();
+    #|  renderRemediationEvidence();
     #|  renderClearanceReview();
     #|}
     #|
@@ -669,6 +694,10 @@ pub fn render_html(
     $|    <section class="section">
     $|      <h2>MoonClaw Gap Evidence</h2>
     $|      <div id="moonclaw-gap-evidence" class="review-list"></div>
+    $|    </section>
+    $|    <section class="section">
+    $|      <h2>Selected Route Remediation Evidence</h2>
+    $|      <div id="selected-route-remediation" class="review-list" aria-label="Selected route remediation evidence"></div>
     $|    </section>
     $|    <section class="section">
     $|      <h2>Selected Route Clearance</h2>

@@ -10,7 +10,9 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("Route Overlays"))
   assert_true(html.contains("Source Evidence"))
   assert_true(html.contains("MoonBook Review Status"))
+  assert_true(html.contains("Selected Route Remediation Evidence"))
   assert_true(html.contains("Selected Route Clearance"))
+  assert_true(html.contains("selected-route-remediation"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
   assert_true(html.contains("first_trusted_square_clearance_transitions.json"))
@@ -20,7 +22,33 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("function clearanceTransitionExport()"))
   assert_true(html.contains("function renderGrid()"))
   assert_true(html.contains("function renderReview()"))
+  assert_true(html.contains("function renderRemediationEvidence()"))
   assert_true(html.contains("function renderClearanceReview()"))
+  assert_true(
+    html.contains("terrain-remediation/first-trusted-square/northeast-stepout"),
+  )
+  assert_true(
+    html.contains("local-horizon/first-trusted-square/northeast-stepout"),
+  )
+  assert_true(
+    html.contains("energy-remediation/first-trusted-square/northeast-stepout"),
+  )
+  assert_true(
+    html.contains(
+      "mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
+    ),
+  )
+  assert_true(
+    html.contains("mission/first-trusted-square/northeast-stepout-horizon.json"),
+  )
+  assert_true(
+    html.contains("mission/first-trusted-square/energy-remediation.json"),
+  )
+  assert_true(html.contains("grade margin"))
+  assert_true(html.contains("roughness margin"))
+  assert_true(html.contains("terrain-shadow margin"))
+  assert_true(html.contains("bounded margin"))
+  assert_true(html.contains("margin gap"))
   assert_true(html.contains("data-review-decision"))
   assert_true(html.contains("data-review-status"))
   assert_true(html.contains("route-direct-lola-window"))
