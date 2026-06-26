@@ -68,28 +68,6 @@
     return multiply(matrix, t);
   }
 
-  function rotateX(matrix, angle) {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
-    return multiply(matrix, [
-      1, 0, 0, 0,
-      0, c, s, 0,
-      0, -s, c, 0,
-      0, 0, 0, 1
-    ]);
-  }
-
-  function rotateY(matrix, angle) {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
-    return multiply(matrix, [
-      c, 0, -s, 0,
-      0, 1, 0, 0,
-      s, 0, c, 0,
-      0, 0, 0, 1
-    ]);
-  }
-
   function transform(matrix, point, w) {
     return [
       matrix[0] * point[0] + matrix[4] * point[1] + matrix[8] * point[2] + matrix[12] * w,
@@ -102,6 +80,89 @@
   function normalize(point) {
     const length = Math.hypot(point[0], point[1], point[2]) || 1;
     return [point[0] / length, point[1] / length, point[2] / length];
+  }
+
+  function quatNormalize(quat) {
+    const length = Math.hypot(quat[0], quat[1], quat[2], quat[3]) || 1;
+    return [quat[0] / length, quat[1] / length, quat[2] / length, quat[3] / length];
+  }
+
+  function quatConjugate(quat) {
+    return [-quat[0], -quat[1], -quat[2], quat[3]];
+  }
+
+  function quatMultiply(a, b) {
+    return [
+      a[3] * b[0] + a[0] * b[3] + a[1] * b[2] - a[2] * b[1],
+      a[3] * b[1] - a[0] * b[2] + a[1] * b[3] + a[2] * b[0],
+      a[3] * b[2] + a[0] * b[1] - a[1] * b[0] + a[2] * b[3],
+      a[3] * b[3] - a[0] * b[0] - a[1] * b[1] - a[2] * b[2]
+    ];
+  }
+
+  function quatFromAxisAngle(axis, angle) {
+    const half = angle / 2;
+    const scale = Math.sin(half);
+    return quatNormalize([axis[0] * scale, axis[1] * scale, axis[2] * scale, Math.cos(half)]);
+  }
+
+  function quatFromAngles(rotationX, rotationY) {
+    return quatMultiply(
+      quatFromAxisAngle([0, 1, 0], rotationY),
+      quatFromAxisAngle([1, 0, 0], rotationX)
+    );
+  }
+
+  function quatSlerp(a, b, amount) {
+    let bx = b[0];
+    let by = b[1];
+    let bz = b[2];
+    let bw = b[3];
+    let dot = a[0] * bx + a[1] * by + a[2] * bz + a[3] * bw;
+    if (dot < 0) {
+      dot = -dot;
+      bx = -bx;
+      by = -by;
+      bz = -bz;
+      bw = -bw;
+    }
+    if (dot > 0.9995) {
+      return quatNormalize([
+        a[0] + (bx - a[0]) * amount,
+        a[1] + (by - a[1]) * amount,
+        a[2] + (bz - a[2]) * amount,
+        a[3] + (bw - a[3]) * amount
+      ]);
+    }
+    const theta = Math.acos(clamp(dot, -1, 1));
+    const sinTheta = Math.sin(theta);
+    const startScale = Math.sin((1 - amount) * theta) / sinTheta;
+    const endScale = Math.sin(amount * theta) / sinTheta;
+    return [
+      a[0] * startScale + bx * endScale,
+      a[1] * startScale + by * endScale,
+      a[2] * startScale + bz * endScale,
+      a[3] * startScale + bw * endScale
+    ];
+  }
+
+  function quatToMatrix(quat) {
+    const [x, y, z, w] = quat;
+    const xx = x * x;
+    const yy = y * y;
+    const zz = z * z;
+    const xy = x * y;
+    const xz = x * z;
+    const yz = y * z;
+    const wx = w * x;
+    const wy = w * y;
+    const wz = w * z;
+    return [
+      1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy), 0,
+      2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx), 0,
+      2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy), 0,
+      0, 0, 0, 1
+    ];
   }
 
   function sphereMesh(latBands, lonBands) {
@@ -245,6 +306,7 @@
     const state = {
       rotationX: -1.18,
       rotationY: 0,
+      rotation: quatFromAngles(-1.18, 0),
       zoom: 3.6,
       dragging: false,
       lastX: 0,
@@ -262,7 +324,7 @@
     }
 
     function modelMatrix() {
-      return rotateX(rotateY(identity(), state.rotationY), state.rotationX);
+      return quatToMatrix(state.rotation);
     }
 
     function mvpMatrix() {
@@ -274,7 +336,7 @@
     }
 
     function inverseModelMatrix() {
-      return rotateY(rotateX(identity(), -state.rotationX), -state.rotationY);
+      return quatToMatrix(quatConjugate(state.rotation));
     }
 
     function resizeCanvas() {
@@ -620,6 +682,7 @@
     function animateTo(next) {
       if (reducedMotion) {
         Object.assign(state, next);
+        state.rotation = quatFromAngles(next.rotationX, next.rotationY);
         render();
         return;
       }
@@ -628,6 +691,8 @@
         rotationY: state.rotationY,
         zoom: state.zoom
       };
+      const startRotation = state.rotation;
+      const nextRotation = quatFromAngles(next.rotationX, next.rotationY);
       const started = performance.now();
       const duration = 760;
       function tick(now) {
@@ -635,6 +700,7 @@
         const ease = 1 - Math.pow(1 - t, 3);
         state.rotationX = start.rotationX + (next.rotationX - start.rotationX) * ease;
         state.rotationY = start.rotationY + (next.rotationY - start.rotationY) * ease;
+        state.rotation = quatSlerp(startRotation, nextRotation, ease);
         state.zoom = start.zoom + (next.zoom - start.zoom) * ease;
         render();
         if (t < 1) requestAnimationFrame(tick);
@@ -676,8 +742,13 @@
       const dy = event.clientY - state.lastY;
       state.lastX = event.clientX;
       state.lastY = event.clientY;
+      const dragRotation = quatMultiply(
+        quatFromAxisAngle([0, 1, 0], dx * DRAG_SENSITIVITY),
+        quatFromAxisAngle([1, 0, 0], dy * DRAG_SENSITIVITY)
+      );
+      state.rotation = quatNormalize(quatMultiply(dragRotation, state.rotation));
       state.rotationY += dx * DRAG_SENSITIVITY;
-      state.rotationX = clamp(state.rotationX - dy * DRAG_SENSITIVITY, MIN_ROTATION_X, MAX_ROTATION_X);
+      state.rotationX = clamp(state.rotationX + dy * DRAG_SENSITIVITY, MIN_ROTATION_X, MAX_ROTATION_X);
       render();
       updateInstruments(screenCoordinate(event.clientX, event.clientY));
     });

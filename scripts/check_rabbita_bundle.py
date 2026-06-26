@@ -59,8 +59,10 @@ def main() -> None:
     raise AssertionError("Rabbita scripts must load evidence, app, then globe")
 
   globe_source = (SOURCE_ASSETS / "moon_globe.js").read_text(encoding="utf-8")
-  if "state.rotationX - dy * DRAG_SENSITIVITY" not in globe_source:
-    raise AssertionError("Moon globe vertical drag must follow pointer movement")
+  if "quatMultiply(dragRotation, state.rotation)" not in globe_source:
+    raise AssertionError("Moon globe drag must update orientation in screen space")
+  if "quatFromAxisAngle([1, 0, 0], dy * DRAG_SENSITIVITY)" not in globe_source:
+    raise AssertionError("Moon globe vertical drag must keep pointer-down movement screen-relative")
 
   for asset in sorted(expected):
     source = SOURCE_ASSETS / asset
