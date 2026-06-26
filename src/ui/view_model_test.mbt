@@ -15,6 +15,9 @@ test "first trusted square view model exposes terrain and routes" {
     view.globe_overlay.selected_route_trace.path_id,
     "globe-route/northeast-stepout",
   )
+  assert_eq(view.globe_overlay.corridor_windows.length(), 81)
+  assert_eq(view.globe_overlay.hardware_authority, "hardware denied")
+  assert_true(view.globe_overlay.blocker_count > 0)
   assert_eq(view.corridor_windows.length(), 81)
   assert_eq(view.corridor_windows[0].window_id, "r-12-c+16")
   assert_eq(view.corridor_windows[0].selected_route_id, "northeast-stepout")
@@ -102,6 +105,7 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("site-footprint/ne"))
   assert_true(json.contains("globe-route/northeast-stepout"))
   assert_true(json.contains("corridor_windows"))
+  assert_true(json.contains("hardware_authority"))
   assert_true(json.contains("selected_tile"))
   assert_true(json.contains("energy-window"))
 }

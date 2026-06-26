@@ -204,6 +204,18 @@ fn app_styles() -> String {
     #|  stroke-width: 1.5;
     #|  vector-effect: non-scaling-stroke;
     #|}
+    #|.moon-globe-corridor {
+    #|  fill: rgba(245,247,244,0.42);
+    #|  stroke: rgba(7,17,18,0.76);
+    #|  stroke-width: 0.7;
+    #|  vector-effect: non-scaling-stroke;
+    #|}
+    #|.moon-globe-corridor-selected {
+    #|  fill: #75d1c5;
+    #|  stroke: #071112;
+    #|  stroke-width: 1.2;
+    #|  filter: drop-shadow(0 0 5px rgba(117,209,197,0.78));
+    #|}
     #|.moon-globe-controls {
     #|  position: absolute;
     #|  right: 14px;
@@ -240,6 +252,18 @@ fn app_styles() -> String {
     #|  color: rgba(245,247,244,0.78);
     #|  font-size: 12px;
     #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    #|}
+    #|.moon-globe-authority {
+    #|  position: absolute;
+    #|  left: 18px;
+    #|  top: 40px;
+    #|  z-index: 4;
+    #|  max-width: 210px;
+    #|  color: #ffd7cf;
+    #|  font-size: 12px;
+    #|  line-height: 1.25;
+    #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    #|  text-shadow: 0 1px 5px rgba(0,0,0,0.86);
     #|}
     #|.landscape-target {
     #|  position: absolute;
@@ -1558,6 +1582,7 @@ pub fn render_html(
     $|          <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
     $|        </div>
     $|        <span class="moon-globe-status">loading globe</span>
+    $|        <span class="moon-globe-authority" data-globe-authority>hardware denied</span>
     $|        <svg class="moon-globe-overlay" aria-hidden="true"></svg>
     $|        <div class="moon-globe-marker" hidden aria-hidden="true"></div>
     $|        <div class="moon-globe-controls" aria-label="Moon globe controls">
@@ -1567,6 +1592,7 @@ pub fn render_html(
     $|          <button type="button" data-globe-action="site" title="Fly to trusted square">S</button>
     $|          <button type="button" data-globe-layer="footprint" aria-pressed="true" title="Toggle trusted square footprint">F</button>
     $|          <button type="button" data-globe-layer="route" aria-pressed="true" title="Toggle promoted route trace">R</button>
+    $|          <button type="button" data-globe-layer="corridor" aria-pressed="true" title="Toggle measured corridor windows">C</button>
     $|        </div>
     $|        <div class="landscape-caption">
     $|          <div>

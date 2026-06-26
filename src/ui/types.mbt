@@ -104,6 +104,21 @@ pub(all) struct GlobeOverlayPath {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct GlobeOverlayWindow {
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  latitude_deg : Double
+  longitude_deg : Double
+  decision : String
+  selected : Bool
+  selected_route_id : String
+  max_neighbor_grade : Double
+  roughness_m : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct GlobeOverlayView {
   overlay_id : String
   source_dataset_id : String
@@ -111,6 +126,9 @@ pub(all) struct GlobeOverlayView {
   claim : String
   footprint : Array[GlobeOverlayPoint]
   selected_route_trace : GlobeOverlayPath
+  corridor_windows : Array[GlobeOverlayWindow]
+  hardware_authority : String
+  blocker_count : Int
   status : String
   summary : String
 } derive(Debug, Eq, ToJson, FromJson)

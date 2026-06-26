@@ -133,6 +133,45 @@ fn selected_route_trace(
 }
 
 ///|
+fn globe_corridor_window(
+  site : @core.LunarSite,
+  selected_route_id : String,
+  window : @mission.CorridorScanWindow,
+) -> GlobeOverlayWindow {
+  {
+    window_id: window.window_id,
+    rank: window.rank,
+    row_offset: window.row_offset,
+    col_offset: window.col_offset,
+    latitude_deg: signed_site_latitude(site, window.row_offset),
+    longitude_deg: signed_site_longitude(site, window.col_offset),
+    decision: @mission.corridor_scan_window_status_label(window),
+    selected: window.selected_route_id == selected_route_id,
+    selected_route_id: window.selected_route_id,
+    max_neighbor_grade: window.max_neighbor_grade,
+    roughness_m: window.roughness_m,
+  }
+}
+
+///|
+fn globe_corridor_windows(
+  site : @core.LunarSite,
+  windows : Array[@mission.CorridorScanWindow],
+  selected_route_id : String,
+) -> Array[GlobeOverlayWindow] {
+  windows.map(window => globe_corridor_window(site, selected_route_id, window))
+}
+
+///|
+fn hardware_authority(blocker_count : Int) -> String {
+  if blocker_count > 0 {
+    "hardware denied"
+  } else {
+    "operator review"
+  }
+}
+
+///|
 fn globe_overlay(
   dossier : @site.SiteDossier,
   grid : @terrain.TerrainGrid,
@@ -147,6 +186,7 @@ fn globe_overlay(
     selected_window,
     selected_route_id,
   )
+  let blocker_count = dossier.blockers.length()
   {
     overlay_id: "globe-overlay/\{dossier.site.site_id}",
     source_dataset_id: grid.source_manifest.dataset_id,
@@ -154,7 +194,14 @@ fn globe_overlay(
     claim: "projected site bounds and promoted route window for browser globe context",
     footprint: site_footprint(dossier.site),
     selected_route_trace: trace,
+    corridor_windows: globe_corridor_windows(
+      dossier.site,
+      dossier.corridor_scan,
+      selected_route_id,
+    ),
+    hardware_authority: hardware_authority(blocker_count),
+    blocker_count,
     status: trace.status,
-    summary: "trusted square bounds and \{selected_route_id} route window projected from MoonBit view-model data",
+    summary: "trusted square bounds, 81 measured corridor windows, and \{selected_route_id} route window projected from MoonBit view-model data",
   }
 }

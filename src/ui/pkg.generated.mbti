@@ -75,8 +75,25 @@ pub(all) struct GlobeOverlayView {
   claim : String
   footprint : Array[GlobeOverlayPoint]
   selected_route_trace : GlobeOverlayPath
+  corridor_windows : Array[GlobeOverlayWindow]
+  hardware_authority : String
+  blocker_count : Int
   status : String
   summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct GlobeOverlayWindow {
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  latitude_deg : Double
+  longitude_deg : Double
+  decision : String
+  selected : Bool
+  selected_route_id : String
+  max_neighbor_grade : Double
+  roughness_m : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct InspectorFact {

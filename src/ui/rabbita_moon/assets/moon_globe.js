@@ -136,6 +136,7 @@
     const marker = root.querySelector('.moon-globe-marker');
     const overlaySvg = root.querySelector('.moon-globe-overlay');
     const status = root.querySelector('.moon-globe-status');
+    const authority = root.querySelector('[data-globe-authority]');
     const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
     const overlay = view.globe_overlay || null;
     const textureUrl = root.getAttribute('data-texture');
@@ -234,8 +235,12 @@
     };
     const overlayState = {
       footprint: true,
-      route: true
+      route: true,
+      corridor: true
     };
+    if (authority && overlay) {
+      authority.textContent = `${overlay.hardware_authority}: ${overlay.blocker_count} blockers`;
+    }
 
     function modelMatrix() {
       return rotateX(rotateY(identity(), state.rotationY), state.rotationX);
@@ -370,6 +375,30 @@
       ];
     }
 
+    function visibleCorridor(windows, points) {
+      const visible = points.map((point, index) => ({ point, window: windows[index] }));
+      if (visible.length === 0) return [];
+      const valid = visible.filter(item => item.point);
+      if (valid.length === 0) return [];
+      const box = bounds(valid.map(item => item.point));
+      if (Math.max(box.maxX - box.minX, box.maxY - box.minY) >= 54) {
+        return valid.map(item => ({ ...item, point: item.point }));
+      }
+      const center = centroid(valid.map(item => item.point));
+      const rows = windows.map(window => window.row_offset);
+      const cols = windows.map(window => window.col_offset);
+      const minRow = Math.min(...rows);
+      const maxRow = Math.max(...rows);
+      const minCol = Math.min(...cols);
+      const maxCol = Math.max(...cols);
+      const size = 68;
+      return windows.map(window => {
+        const x = center.x + ((window.col_offset - minCol) / Math.max(1, maxCol - minCol) - 0.5) * size;
+        const y = center.y + ((window.row_offset - minRow) / Math.max(1, maxRow - minRow) - 0.5) * size;
+        return { window, point: { x, y } };
+      });
+    }
+
     function renderOverlay(model, mvp) {
       if (!overlaySvg || !overlay) return;
       const width = Math.max(1, root.clientWidth);
@@ -387,6 +416,25 @@
             class: 'moon-globe-footprint',
             d: `${d} Z`,
             'data-overlay-id': overlay.overlay_id
+          }));
+        }
+      }
+      const windows = overlay.corridor_windows || [];
+      if (overlayState.corridor && windows.length > 0) {
+        const corridor = visibleCorridor(
+          windows,
+          windows.map(window => projectedPoint(window, model, mvp))
+        );
+        for (const item of corridor) {
+          children.push(svgEl('circle', {
+            class: item.window.selected
+              ? 'moon-globe-corridor moon-globe-corridor-selected'
+              : 'moon-globe-corridor',
+            cx: item.point.x.toFixed(2),
+            cy: item.point.y.toFixed(2),
+            r: item.window.selected ? '4.6' : '2.3',
+            'data-window-id': item.window.window_id,
+            'data-rank': String(item.window.rank)
           }));
         }
       }
