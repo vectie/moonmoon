@@ -494,6 +494,101 @@ test "Moonrobo regenerated receipt readiness blocks simulation consumption" {
 }
 
 ///|
+test "Moonrobo regenerated receipt readiness action receipt closeout keeps receipts pending" {
+  let closeout = @moonrobo.first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout()
+  assert_eq(
+    closeout.closeout_id,
+    "moonrobo/first-trusted-square/regenerated-receipt-readiness-v1/action-receipt-closeout",
+  )
+  assert_eq(closeout.route_id, "northeast-stepout")
+  assert_eq(
+    closeout.source_action_receipt_bundle_path,
+    "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
+  )
+  assert_eq(
+    closeout.source_workspace_entry_path,
+    "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
+  )
+  assert_eq(
+    closeout.source_readiness_gate_id,
+    "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+  )
+  assert_true(
+    closeout.source_readiness_state
+    is @moonrobo.RemediationMarginRegeneratedReceiptReadinessState::RegeneratedReceiptsPendingFreshEvidence,
+  )
+  assert_eq(
+    closeout.source_task_id,
+    "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+  )
+  assert_eq(closeout.source_action_receipt_count, 3)
+  assert_eq(closeout.source_receipt_count, 3)
+  assert_eq(closeout.ready_receipt_count, 0)
+  assert_eq(closeout.pending_receipt_count, 3)
+  assert_true(
+    closeout.closeout_state
+    is @moonrobo.RegeneratedReceiptReadinessActionReceiptCloseoutState::RegeneratedReceiptsStillPendingFreshEvidence,
+  )
+  assert_true(!closeout.may_consume_simulation)
+  assert_true(
+    closeout.simulation_state
+    is @moonrobo.MoonroboExecutionState::SimulationBlocked,
+  )
+  assert_true(!closeout.automatic_refresh_loop_allowed)
+  assert_true(
+    closeout.hardware_state is @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(closeout.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(closeout.hardware_denied)
+  assert_eq(closeout.margin_ids.length(), 3)
+  assert_true(closeout.margin_ids.contains("terrain-northeast-stepout"))
+  assert_true(closeout.margin_ids.contains("illumination-northeast-stepout"))
+  assert_true(closeout.margin_ids.contains("energy-window"))
+  assert_true(
+    closeout.refresh_ids.contains("refresh-terrain-northeast-stepout"),
+  )
+  assert_true(
+    closeout.refresh_ids.contains("refresh-illumination-northeast-stepout"),
+  )
+  assert_true(closeout.refresh_ids.contains("refresh-energy-window"))
+  assert_true(closeout.execution_modes.contains("operator-escalation"))
+  assert_true(closeout.execution_modes.contains("bounded-regeneration"))
+  assert_true(closeout.execution_modes.contains("manual-freeze-verification"))
+  assert_true(closeout.validation_checks.all(fn(check) { check.passed }))
+  assert_true(
+    closeout.validation_checks.any(fn(check) {
+      check.validation_id == "fresh-evidence-still-pending"
+    }),
+  )
+  assert_true(closeout.next_action.contains("do not consume simulation"))
+  let markdown = @moonrobo.first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout_markdown()
+  assert_true(
+    markdown.contains(
+      "MoonRobo Regenerated Receipt Readiness Action Receipt Closeout",
+    ),
+  )
+  assert_true(markdown.contains("RegeneratedReceiptsStillPendingFreshEvidence"))
+  assert_true(markdown.contains("RegeneratedReceiptsPendingFreshEvidence"))
+  assert_true(markdown.contains("operator-escalation"))
+  assert_true(markdown.contains("bounded-regeneration"))
+  assert_true(markdown.contains("manual-freeze-verification"))
+  assert_true(markdown.contains("simulation-blocked"))
+  assert_true(markdown.contains("hardware-denied"))
+  let json = @moonrobo.first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"closeout_state\": \"RegeneratedReceiptsStillPendingFreshEvidence\"",
+    ),
+  )
+  assert_true(json.contains("\"pending_receipt_count\": 3"))
+  assert_true(json.contains("\"ready_receipt_count\": 0"))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"hardware_denied\": true"))
+}
+
+///|
 test "Moonrobo remediation margin projection blocks simulation consumption" {
   let projection = @moonrobo.first_trusted_square_remediation_margin_projection()
   assert_eq(

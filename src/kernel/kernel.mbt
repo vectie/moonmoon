@@ -1947,7 +1947,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonrobo-regenerated-receipt-readiness-action-receipt-closeout",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Recompute regenerated receipt readiness from action receipts",
       outcome: "MoonRobo consumes visible fresh-evidence action receipts and records whether regenerated receipts remain pending or can advance without simulation consumption",
@@ -1959,7 +1959,24 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout.json",
         "scripts/check_moonrobo_regenerated_receipt_readiness_action_receipt_closeout.py",
       ],
-      done_when: "MoonRobo records regenerated receipt readiness after fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonRobo records regenerated receipt readiness after fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonbook-regenerated-receipt-readiness-action-receipt-closeout-workspace",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Materialize regenerated readiness action receipt closeout into MoonBook",
+      outcome: "The MoonRobo closeout from regenerated readiness action receipts becomes durable MoonBook workspace evidence before Rabbita or any later simulation-review gate consumes it",
+      depends_on: [
+        "output/moonrobo/first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout.json",
+        "scripts/check_moonrobo_regenerated_receipt_readiness_action_receipt_closeout.py",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
+      ],
+      evidence: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
+        "scripts/check_moonbook_regenerated_receipt_readiness_action_receipt_closeout_workspace.py",
+      ],
+      done_when: "MoonBook indexes and materializes regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

@@ -1,0 +1,42 @@
+# MoonRobo Regenerated Receipt Readiness Action Receipt Closeout
+
+- closeout: moonrobo/first-trusted-square/regenerated-receipt-readiness-v1/action-receipt-closeout
+- route: northeast-stepout
+- source action receipts: output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json
+- source workspace entry: output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json
+- source readiness gate: moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness
+- source readiness state: RegeneratedReceiptsPendingFreshEvidence
+- source task: moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task
+- closeout state: RegeneratedReceiptsStillPendingFreshEvidence
+- source action receipt count: 3
+- source receipt count: 3
+- ready receipt count: 0
+- pending receipt count: 3
+- may consume simulation: false
+- simulation state: simulation-blocked
+- automatic refresh loop allowed: false
+- hardware state: hardware-denied
+- hardware authority: moonmoon-safety-gate-only
+- hardware denied: true
+- margins:
+  - terrain-northeast-stepout: refresh-terrain-northeast-stepout via operator-escalation
+  - illumination-northeast-stepout: refresh-illumination-northeast-stepout via bounded-regeneration
+  - energy-window: refresh-energy-window via manual-freeze-verification
+- source receipts:
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt
+- source action receipts:
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt
+  - moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt
+- validation:
+  - action-receipts-present: pass - closeout consumed 3 regenerated readiness fresh-evidence action receipts from output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json
+  - source-readiness-gate-preserved: pass - all action receipts preserve source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness
+  - source-action-provenance-present: pass - every action receipt carries source task, regenerated receipt, and source action receipt provenance
+  - execution-modes-preserved: pass - terrain/horizon/energy execution modes remain operator-escalation, bounded-regeneration, and manual-freeze-verification
+  - fresh-evidence-still-pending: pass - 3/3 regenerated receipts remain pending after action receipt accounting
+  - no-automatic-refresh-loop: pass - action receipt closeout does not open an automatic refresh loop
+  - simulation-consumption-blocked: pass - action receipts remain no-consume with simulation blocked
+  - hardware-denial-preserved: pass - hardware remains denied under moonmoon-safety-gate-only
+- next action: keep regenerated terrain, local-horizon, and energy receipts pending fresh evidence; do not consume simulation until later evidence checks mark every regenerated receipt ready
