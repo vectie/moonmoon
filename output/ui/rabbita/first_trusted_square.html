@@ -97,36 +97,66 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
 .moon-disc {
   width: min(100%, 340px);
   aspect-ratio: 1;
-  border-radius: 50%;
   position: relative;
   justify-self: center;
-  background:
-    radial-gradient(circle at 36% 30%, rgba(255,255,255,0.74), transparent 0 8%, transparent 9%),
-    radial-gradient(circle at 62% 58%, rgba(69,75,76,0.45), transparent 0 10%, transparent 11%),
-    radial-gradient(circle at 49% 74%, rgba(82,88,88,0.35), transparent 0 6%, transparent 7%),
-    radial-gradient(circle at 33% 58%, rgba(50,56,58,0.35), transparent 0 7%, transparent 8%),
-    radial-gradient(circle at 38% 36%, #d8d6cc 0%, #bfc2bd 38%, #8e9694 64%, #4d5658 100%);
-  box-shadow: inset -32px -18px 42px rgba(12,17,20,0.48), 0 0 34px rgba(224,230,225,0.22);
+  filter: drop-shadow(0 0 26px rgba(220,228,222,0.22));
 }
 .site-marker {
-  position: absolute;
-  left: 58%;
-  top: 39%;
-  width: 72px;
-  height: 54px;
-  border: 2px solid #f0c45d;
-  transform: rotate(-12deg);
-  box-shadow: 0 0 0 1px rgba(22,24,23,0.5), 0 0 18px rgba(240,196,93,0.45);
+  fill: rgba(240,196,93,0.12);
+  stroke: #f0c45d;
+  stroke-width: 2.5;
+  vector-effect: non-scaling-stroke;
 }
 .route-trace {
+  fill: none;
+  stroke: #75d1c5;
+  stroke-width: 4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(117,209,197,0.85));
+}
+.moon-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.moon-grid {
+  fill: none;
+  stroke: rgba(255,255,255,0.24);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.crater {
+  fill: rgba(38,43,44,0.16);
+  stroke: rgba(245,243,232,0.32);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+.mare {
+  fill: rgba(57,65,67,0.34);
+}
+.site-pin {
+  fill: #f0c45d;
+  stroke: #171d1e;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+.map-controls {
   position: absolute;
-  left: 17%;
-  top: 48%;
-  width: 62%;
-  height: 4px;
-  background: #75d1c5;
-  transform: rotate(-15deg);
-  box-shadow: 0 0 12px rgba(117,209,197,0.8);
+  right: 10px;
+  top: 10px;
+  display: grid;
+  gap: 4px;
+}
+.map-controls span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.34);
+  background: rgba(13,18,20,0.64);
+  color: #f5f7f4;
+  font-size: 13px;
 }
 .lunar-summary {
   display: grid;
@@ -3223,8 +3253,51 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
     </div>
     <section class="lunar-viewport" aria-label="Moon overview for first trusted square">
       <div class="moon-disc" aria-hidden="true">
-        <span class="route-trace"></span>
-        <span class="site-marker"></span>
+        <svg class="moon-svg" viewBox="0 0 360 360" role="img" aria-label="Textured lunar map with first trusted square site window">
+          <defs>
+            <radialGradient id="moon-relief" cx="34%" cy="28%" r="68%">
+              <stop offset="0%" stop-color="#ece9dc"/>
+              <stop offset="34%" stop-color="#c7c8c0"/>
+              <stop offset="68%" stop-color="#858f8d"/>
+              <stop offset="100%" stop-color="#394447"/>
+            </radialGradient>
+            <filter id="moon-noise" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" seed="27"/>
+              <feColorMatrix type="saturate" values="0"/>
+              <feComponentTransfer>
+                <feFuncA type="table" tableValues="0 0.18"/>
+              </feComponentTransfer>
+            </filter>
+            <clipPath id="moon-clip">
+              <circle cx="180" cy="180" r="155"/>
+            </clipPath>
+          </defs>
+          <circle cx="180" cy="180" r="156" fill="#111819"/>
+          <g clip-path="url(#moon-clip)">
+            <circle cx="180" cy="180" r="155" fill="url(#moon-relief)"/>
+            <circle cx="180" cy="180" r="155" filter="url(#moon-noise)"/>
+            <ellipse class="mare" cx="119" cy="128" rx="54" ry="31" transform="rotate(-24 119 128)"/>
+            <ellipse class="mare" cx="227" cy="202" rx="61" ry="35" transform="rotate(18 227 202)"/>
+            <ellipse class="mare" cx="161" cy="255" rx="42" ry="23" transform="rotate(-8 161 255)"/>
+            <path class="moon-grid" d="M36 180h288M180 24v312M78 92c54 33 150 33 204 0M78 268c54-33 150-33 204 0M92 78c33 54 33 150 0 204M268 78c-33 54-33 150 0 204"/>
+            <circle class="crater" cx="95" cy="201" r="20"/>
+            <circle class="crater" cx="131" cy="82" r="13"/>
+            <circle class="crater" cx="204" cy="112" r="16"/>
+            <circle class="crater" cx="255" cy="150" r="10"/>
+            <circle class="crater" cx="245" cy="264" r="22"/>
+            <circle class="crater" cx="148" cy="222" r="9"/>
+            <circle class="crater" cx="292" cy="212" r="12"/>
+            <path class="route-trace" d="M102 219C139 199 180 184 216 168C235 160 252 151 270 137"/>
+            <rect class="site-marker" x="218" y="125" width="72" height="50" transform="rotate(-13 254 150)" rx="2"/>
+            <circle class="site-pin" cx="257" cy="148" r="6"/>
+          </g>
+          <circle cx="180" cy="180" r="155" fill="none" stroke="rgba(255,255,255,0.34)" stroke-width="1.5"/>
+        </svg>
+        <div class="map-controls" aria-hidden="true">
+          <span>+</span>
+          <span>-</span>
+          <span>N</span>
+        </div>
       </div>
       <div class="lunar-summary">
         <div>
