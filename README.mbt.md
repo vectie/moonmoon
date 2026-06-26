@@ -84,9 +84,9 @@ payloads, review status, and review transitions.
 
 `scripts/build_rabbita_ui.sh` is the focused product build for the standalone
 Rabbita Moon operator page. It writes `output/ui/rabbita/first_trusted_square.html`,
-syncs every local browser asset from `src/ui/rabbita_moon/assets/`, and runs a
-bundle check so missing or stale assets fail before the page is handed to an
-operator.
+syncs every local browser asset from `src/ui/rabbita_moon/assets/`, and runs
+bundle plus runtime checks so missing, stale, or non-booting assets fail before
+the page is handed to an operator.
 
 MoonClaw outputs currently include bounded modeling proposals, concrete
 ephemeris and corridor acquisition tasks, a deterministic route-scoring receipt, a

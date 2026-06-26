@@ -97,7 +97,9 @@ does not recompute terrain, route, energy, or review facts.
 surface. It generates the HTML, copies the local presentation assets from
 `src/ui/rabbita_moon/assets/`, and runs `scripts/check_rabbita_bundle.py` so the
 standalone output fails fast when an asset reference is missing, out of order,
-or stale.
+or stale. It also runs `scripts/check_rabbita_runtime.py` so a generated bundle
+must boot through the external assets and populate the operator surfaces before
+it is considered publishable.
 
 Rabbita verification scripts should use `scripts/rabbita_ui_harness.py` to run
 the generated HTML data islands and external browser assets through one minimal

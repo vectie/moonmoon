@@ -196,7 +196,9 @@ Current implementation status:
   aligned with generated evidence as new remediation and receipt packets land.
 - `scripts/build_rabbita_ui.sh` now publishes the complete standalone Rabbita
   bundle and verifies that generated HTML asset references are source-synced,
-  so the live operator page no longer depends on manual asset copying.
+  so the live operator page no longer depends on manual asset copying. The same
+  build also smoke-checks runtime boot, evidence queue counts, and export
+  invariants through the shared Rabbita harness.
 - The existing NASA south-pole landscape and SVG LOLA corridor map remain the
   local detail and fallback context after the Moon-scale opening view.
 - Browser-level verification now checks that the WebGL canvas is nonblank,

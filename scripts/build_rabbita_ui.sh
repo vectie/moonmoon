@@ -22,6 +22,7 @@ for RABBITA_ASSET in "${RABBITA_ASSETS[@]}"; do
   cp "$ROOT/src/ui/rabbita_moon/assets/$RABBITA_ASSET" "$RABBITA_ASSET_OUT/$RABBITA_ASSET"
 done
 python3 scripts/check_rabbita_bundle.py
+python3 scripts/check_rabbita_runtime.py
 
 printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
 for RABBITA_ASSET in "${RABBITA_ASSETS[@]}"; do
