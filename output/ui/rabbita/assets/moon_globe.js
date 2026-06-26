@@ -134,8 +134,10 @@
   function initMoonGlobe(root) {
     const canvas = root.querySelector('.moon-globe-canvas');
     const marker = root.querySelector('.moon-globe-marker');
+    const overlaySvg = root.querySelector('.moon-globe-overlay');
     const status = root.querySelector('.moon-globe-status');
     const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
+    const overlay = view.globe_overlay || null;
     const textureUrl = root.getAttribute('data-texture');
     const fallback = root.querySelector('.moon-globe-fallback');
     const gl = canvas.getContext('webgl', { antialias: true, alpha: true });
@@ -230,6 +232,10 @@
       lastY: 0,
       target: null
     };
+    const overlayState = {
+      footprint: true,
+      route: true
+    };
 
     function modelMatrix() {
       return rotateX(rotateY(identity(), state.rotationY), state.rotationX);
@@ -254,23 +260,161 @@
       gl.viewport(0, 0, canvas.width, canvas.height);
     }
 
-    function updateMarker(model, mvp) {
-      if (!marker) return;
-      const modelPoint = transform(model, sitePoint, 1);
-      const clip = transform(mvp, sitePoint, 1);
+    function svgEl(tag, attrs = {}) {
+      const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+      for (const [key, value] of Object.entries(attrs)) {
+        node.setAttribute(key, value);
+      }
+      return node;
+    }
+
+    function projectedPoint(point, model, mvp) {
+      const spherePoint = coordinatePoint(point.latitude_deg, point.longitude_deg);
+      const modelPoint = transform(model, spherePoint, 1);
+      const clip = transform(mvp, spherePoint, 1);
       if (clip[3] <= 0 || modelPoint[2] < -0.05) {
-        marker.hidden = true;
-        return;
+        return null;
       }
       const ndcX = clip[0] / clip[3];
       const ndcY = clip[1] / clip[3];
       if (Math.abs(ndcX) > 1.05 || Math.abs(ndcY) > 1.05) {
+        return null;
+      }
+      return {
+        x: (ndcX * 0.5 + 0.5) * root.clientWidth,
+        y: (-ndcY * 0.5 + 0.5) * root.clientHeight
+      };
+    }
+
+    function updateMarker(model, mvp) {
+      if (!marker) return;
+      const projected = projectedPoint({
+        latitude_deg: site.lat,
+        longitude_deg: site.lon
+      }, model, mvp);
+      if (!projected) {
         marker.hidden = true;
         return;
       }
       marker.hidden = false;
-      marker.style.left = `${(ndcX * 0.5 + 0.5) * 100}%`;
-      marker.style.top = `${(-ndcY * 0.5 + 0.5) * 100}%`;
+      marker.style.left = `${projected.x}px`;
+      marker.style.top = `${projected.y}px`;
+    }
+
+    function projectedPoints(points, model, mvp) {
+      return points.map(point => projectedPoint(point, model, mvp));
+    }
+
+    function bounds(points) {
+      let minX = points[0].x;
+      let maxX = points[0].x;
+      let minY = points[0].y;
+      let maxY = points[0].y;
+      for (const point of points) {
+        minX = Math.min(minX, point.x);
+        maxX = Math.max(maxX, point.x);
+        minY = Math.min(minY, point.y);
+        maxY = Math.max(maxY, point.y);
+      }
+      return { minX, maxX, minY, maxY };
+    }
+
+    function centroid(points) {
+      const total = points.reduce((sum, point) => {
+        sum.x += point.x;
+        sum.y += point.y;
+        return sum;
+      }, { x: 0, y: 0 });
+      return {
+        x: total.x / points.length,
+        y: total.y / points.length
+      };
+    }
+
+    function visibleFootprint(points) {
+      const box = bounds(points);
+      if (Math.max(box.maxX - box.minX, box.maxY - box.minY) >= 24) {
+        return points;
+      }
+      const center = centroid(points);
+      const size = 36;
+      return [
+        { x: center.x - size / 2, y: center.y + size / 2 },
+        { x: center.x - size / 2, y: center.y - size / 2 },
+        { x: center.x + size / 2, y: center.y - size / 2 },
+        { x: center.x + size / 2, y: center.y + size / 2 }
+      ];
+    }
+
+    function visibleRoute(points) {
+      const box = bounds(points);
+      if (Math.max(box.maxX - box.minX, box.maxY - box.minY) >= 34) {
+        return points;
+      }
+      const start = points[0];
+      const end = points[points.length - 1];
+      let dx = end.x - start.x;
+      let dy = end.y - start.y;
+      const length = Math.hypot(dx, dy);
+      if (length < 1) {
+        dx = 30;
+        dy = -18;
+      } else {
+        dx = dx / length * 44;
+        dy = dy / length * 44;
+      }
+      return [
+        start,
+        { x: start.x + dx * 0.54, y: start.y + dy * 0.42 },
+        { x: start.x + dx, y: start.y + dy }
+      ];
+    }
+
+    function renderOverlay(model, mvp) {
+      if (!overlaySvg || !overlay) return;
+      const width = Math.max(1, root.clientWidth);
+      const height = Math.max(1, root.clientHeight);
+      overlaySvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      const children = [];
+      if (overlayState.footprint && overlay.footprint && overlay.footprint.length >= 3) {
+        const footprint = projectedPoints(overlay.footprint, model, mvp);
+        if (footprint.every(Boolean)) {
+          const drawnFootprint = visibleFootprint(footprint);
+          const d = drawnFootprint
+            .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+            .join(' ');
+          children.push(svgEl('path', {
+            class: 'moon-globe-footprint',
+            d: `${d} Z`,
+            'data-overlay-id': overlay.overlay_id
+          }));
+        }
+      }
+      const route = overlay.selected_route_trace;
+      if (overlayState.route && route && route.points && route.points.length >= 2) {
+        const trace = projectedPoints(route.points, model, mvp);
+        if (trace.every(Boolean)) {
+          const drawnTrace = visibleRoute(trace);
+          const d = drawnTrace
+            .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+            .join(' ');
+          children.push(svgEl('path', {
+            class: 'moon-globe-route',
+            d,
+            'data-route-id': route.path_id
+          }));
+          const end = drawnTrace[drawnTrace.length - 1];
+          children.push(svgEl('circle', {
+            class: 'moon-globe-route-end',
+            cx: end.x.toFixed(2),
+            cy: end.y.toFixed(2),
+            r: '4',
+            'data-route-id': route.path_id
+          }));
+        }
+      }
+      overlaySvg.replaceChildren(...children);
+      root.dataset.overlayReady = children.length > 0 ? 'true' : 'hidden';
     }
 
     function render() {
@@ -294,6 +438,7 @@
       gl.uniform1i(uTexture, 0);
       gl.drawElements(gl.TRIANGLES, mesh.indices.length, gl.UNSIGNED_SHORT, 0);
       updateMarker(model, mvp);
+      renderOverlay(model, mvp);
       root.dataset.globeReady = textureReady ? 'true' : 'loading';
     }
 
@@ -379,6 +524,14 @@
     root.querySelector('[data-globe-action="zoom-out"]')?.addEventListener('click', () => {
       state.zoom = Math.min(5.4, state.zoom + 0.34);
       render();
+    });
+    root.querySelectorAll('[data-globe-layer]').forEach(button => {
+      const layer = button.getAttribute('data-globe-layer');
+      button.addEventListener('click', () => {
+        overlayState[layer] = !overlayState[layer];
+        button.setAttribute('aria-pressed', String(overlayState[layer]));
+        render();
+      });
     });
 
     window.addEventListener('resize', render);

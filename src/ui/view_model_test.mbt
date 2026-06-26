@@ -9,6 +9,12 @@ test "first trusted square view model exposes terrain and routes" {
   assert_eq(view.terrain_cells.length(), 16)
   assert_eq(view.routes.length(), 6)
   assert_eq(view.route_overlays.length(), 6)
+  assert_eq(view.globe_overlay.footprint.length(), 4)
+  assert_eq(view.globe_overlay.selected_route_trace.points.length(), 3)
+  assert_eq(
+    view.globe_overlay.selected_route_trace.path_id,
+    "globe-route/northeast-stepout",
+  )
   assert_eq(view.corridor_windows.length(), 81)
   assert_eq(view.corridor_windows[0].window_id, "r-12-c+16")
   assert_eq(view.corridor_windows[0].selected_route_id, "northeast-stepout")
@@ -92,6 +98,9 @@ test "first trusted square view renderers include operator evidence" {
   let json = @ui.first_trusted_square_json().stringify(indent=2)
   assert_true(json.contains("terrain_cells"))
   assert_true(json.contains("route_overlays"))
+  assert_true(json.contains("globe_overlay"))
+  assert_true(json.contains("site-footprint/ne"))
+  assert_true(json.contains("globe-route/northeast-stepout"))
   assert_true(json.contains("corridor_windows"))
   assert_true(json.contains("selected_tile"))
   assert_true(json.contains("energy-window"))

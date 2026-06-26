@@ -85,6 +85,37 @@ pub(all) struct RouteOverlay {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct GlobeOverlayPoint {
+  point_id : String
+  label : String
+  latitude_deg : Double
+  longitude_deg : Double
+  role : String
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct GlobeOverlayPath {
+  path_id : String
+  label : String
+  kind : String
+  status : String
+  points : Array[GlobeOverlayPoint]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct GlobeOverlayView {
+  overlay_id : String
+  source_dataset_id : String
+  source_path : String
+  claim : String
+  footprint : Array[GlobeOverlayPoint]
+  selected_route_trace : GlobeOverlayPath
+  status : String
+  summary : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct CorridorWindowView {
   window_id : String
   rank : Int
@@ -167,6 +198,7 @@ pub(all) struct TrustedSquareViewModel {
   terrain_cells : Array[TerrainCellView]
   routes : Array[RouteView]
   route_overlays : Array[RouteOverlay]
+  globe_overlay : GlobeOverlayView
   corridor_windows : Array[CorridorWindowView]
   selected_tile : TileInspector
   source_panel : SourcePanel

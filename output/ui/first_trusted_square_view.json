@@ -1042,6 +1042,80 @@
       "summary": "first-trusted-square-northeast-stepout-lola: grade 0.5139499999999998, roughness 5.95975 m"
     }
   ],
+  "globe_overlay": {
+    "overlay_id": "globe-overlay/first-trusted-square",
+    "source_dataset_id": "lro-lola-first-trusted-square-dem-v1",
+    "source_path": "data/sources/lro_lola/first_trusted_square_dem.csv",
+    "claim": "projected site bounds and promoted route window for browser globe context",
+    "footprint": [
+      {
+        "point_id": "site-footprint/sw",
+        "label": "southwest bound",
+        "latitude_deg": -89.9,
+        "longitude_deg": 0.1,
+        "role": "footprint",
+        "status": "measured"
+      },
+      {
+        "point_id": "site-footprint/nw",
+        "label": "northwest bound",
+        "latitude_deg": -89.86,
+        "longitude_deg": 0.1,
+        "role": "footprint",
+        "status": "measured"
+      },
+      {
+        "point_id": "site-footprint/ne",
+        "label": "northeast bound",
+        "latitude_deg": -89.86,
+        "longitude_deg": 0.14,
+        "role": "footprint",
+        "status": "measured"
+      },
+      {
+        "point_id": "site-footprint/se",
+        "label": "southeast bound",
+        "latitude_deg": -89.9,
+        "longitude_deg": 0.14,
+        "role": "footprint",
+        "status": "measured"
+      }
+    ],
+    "selected_route_trace": {
+      "path_id": "globe-route/northeast-stepout",
+      "label": "northeast-stepout",
+      "kind": "selected-route",
+      "status": "block",
+      "points": [
+        {
+          "point_id": "route/northeast-stepout/start",
+          "label": "trusted square center",
+          "latitude_deg": -89.88,
+          "longitude_deg": 0.12,
+          "role": "route-start",
+          "status": "measured"
+        },
+        {
+          "point_id": "route/northeast-stepout/mid",
+          "label": "corridor approach",
+          "latitude_deg": -89.8725,
+          "longitude_deg": 0.13,
+          "role": "route-mid",
+          "status": "derived"
+        },
+        {
+          "point_id": "route/northeast-stepout/window",
+          "label": "r-12-c+16",
+          "latitude_deg": -89.865,
+          "longitude_deg": 0.14,
+          "role": "route-window",
+          "status": "block"
+        }
+      ]
+    },
+    "status": "block",
+    "summary": "trusted square bounds and northeast-stepout route window projected from MoonBit view-model data"
+  },
   "corridor_windows": [
     {
       "window_id": "r-12-c+16",

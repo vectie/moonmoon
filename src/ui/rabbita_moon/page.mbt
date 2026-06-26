@@ -174,6 +174,36 @@ fn app_styles() -> String {
     #|  background: #f0c45d;
     #|  transform: translate(-50%, -50%);
     #|}
+    #|.moon-globe-overlay {
+    #|  position: absolute;
+    #|  inset: 0;
+    #|  z-index: 2;
+    #|  width: 100%;
+    #|  height: 100%;
+    #|  pointer-events: none;
+    #|}
+    #|.moon-globe-footprint {
+    #|  fill: rgba(240,196,93,0.13);
+    #|  stroke: #f0c45d;
+    #|  stroke-width: 1.8;
+    #|  vector-effect: non-scaling-stroke;
+    #|  filter: drop-shadow(0 0 5px rgba(240,196,93,0.48));
+    #|}
+    #|.moon-globe-route {
+    #|  fill: none;
+    #|  stroke: #75d1c5;
+    #|  stroke-width: 2.6;
+    #|  stroke-linecap: round;
+    #|  stroke-linejoin: round;
+    #|  vector-effect: non-scaling-stroke;
+    #|  filter: drop-shadow(0 0 5px rgba(117,209,197,0.78));
+    #|}
+    #|.moon-globe-route-end {
+    #|  fill: #75d1c5;
+    #|  stroke: #071112;
+    #|  stroke-width: 1.5;
+    #|  vector-effect: non-scaling-stroke;
+    #|}
     #|.moon-globe-controls {
     #|  position: absolute;
     #|  right: 14px;
@@ -197,6 +227,10 @@ fn app_styles() -> String {
     #|  border-color: #f0c45d;
     #|  outline: 2px solid rgba(240,196,93,0.26);
     #|  outline-offset: 1px;
+    #|}
+    #|.moon-globe-controls button[aria-pressed="false"] {
+    #|  color: rgba(245,247,244,0.48);
+    #|  border-color: rgba(255,255,255,0.18);
     #|}
     #|.moon-globe-status {
     #|  position: absolute;
@@ -1524,12 +1558,15 @@ pub fn render_html(
     $|          <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
     $|        </div>
     $|        <span class="moon-globe-status">loading globe</span>
+    $|        <svg class="moon-globe-overlay" aria-hidden="true"></svg>
     $|        <div class="moon-globe-marker" hidden aria-hidden="true"></div>
     $|        <div class="moon-globe-controls" aria-label="Moon globe controls">
     $|          <button type="button" data-globe-action="zoom-in" title="Zoom in">+</button>
     $|          <button type="button" data-globe-action="zoom-out" title="Zoom out">-</button>
     $|          <button type="button" data-globe-action="home" title="Reset Moon view">H</button>
     $|          <button type="button" data-globe-action="site" title="Fly to trusted square">S</button>
+    $|          <button type="button" data-globe-layer="footprint" aria-pressed="true" title="Toggle trusted square footprint">F</button>
+    $|          <button type="button" data-globe-layer="route" aria-pressed="true" title="Toggle promoted route trace">R</button>
     $|        </div>
     $|        <div class="landscape-caption">
     $|          <div>
