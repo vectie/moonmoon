@@ -184,6 +184,11 @@ Rabbita should implement a small Moonmoon-native live globe around the first
 trusted square: texture layer, geodata overlays, continuous zoom, compass,
 scale bar, coordinate grid, and layer settings.
 
+Private product and UI references are reference-only. Public docs, generated
+assets, and operator copy should describe Moonmoon-native behavior and should
+name only auditable sources: data products, standards, tools, generated
+artifacts, and suite contracts.
+
 Relevant public data/tooling references include:
 
 - [NASA Lunar Reconnaissance Orbiter](https://science.nasa.gov/mission/lro/)

@@ -25,6 +25,9 @@ Current rebuild stance:
   be DEM/source/evidence driven.
 - `../moontown` contributes the high-level lesson that durable truth should
   live in documents, ledgers, review gates, and protocol boundaries.
+- Private product and UI references stay reference-only; public docs,
+  generated assets, and operator copy should name only auditable data sources,
+  tools, generated artifacts, and MoonSuite contracts.
 - The highest-leverage next implementation is to make the live Rabbita Moon
   operator flow concise and evidence-first, because movable lunar context,
   blocker clearance, and robot authority need to work as one product surface

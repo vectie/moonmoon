@@ -143,6 +143,11 @@ robot authority remain in MoonBit and MoonBook outputs. The browser may project
 and animate those facts, but it must not decide whether terrain, power, route,
 or hardware gates are clear.
 
+Private product and UI references are not Moonmoon dependencies and should not
+be named in public docs, generated assets, or operator copy. Public references
+should be auditable sources: lunar data products, source catalogs, standards,
+tooling, generated artifacts, and suite contracts.
+
 ## Core Contracts
 
 The important early types are:
