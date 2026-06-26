@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import json
-import re
 import shutil
 import subprocess
 import tempfile
@@ -12,28 +11,11 @@ from pathlib import Path
 from typing import Any
 
 import import_rabbita_transitions
+from rabbita_ui_harness import extract_json_script, rabbita_app_script
 
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "data/fixtures/rabbita_clearance_transitions_mixed.json"
-
-
-def extract_json_script(html: str, script_id: str) -> Any:
-  pattern = (
-    rf'<script id="{re.escape(script_id)}" type="application/json">\n'
-    r"([\s\S]*?)\n</script>"
-  )
-  match = re.search(pattern, html)
-  if not match:
-    raise AssertionError(f"missing {script_id}")
-  return json.loads(match.group(1))
-
-
-def extract_app_script(html: str) -> str:
-  matches = re.findall(r"<script>\n([\s\S]*?)\n</script>", html)
-  if not matches:
-    raise AssertionError("missing Rabbita app script")
-  return matches[-1]
 
 
 def run_rabbita_script(view: Any, book: Any, script: str) -> dict[str, Any]:
@@ -73,7 +55,7 @@ const document = {
 document.getElementById('moonmoon-view-model').textContent = JSON.stringify(input.view);
 document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.book);
 
-vm.runInNewContext(input.script, { document, navigator: {}, Blob, URL, console });
+vm.runInNewContext(input.script, { document, window: {}, navigator: {}, Blob, URL, console });
 
 const rows = document.getElementById('clearance-review').children.map(row => ({
   decision: row.attributes['data-review-decision'],
@@ -149,7 +131,7 @@ def main() -> int:
   rendered = run_rabbita_script(
     extract_json_script(html, "moonmoon-view-model"),
     extract_json_script(html, "moonmoon-moonbook"),
-    extract_app_script(html),
+    rabbita_app_script(),
   )
   assert_feedback_state(rendered)
   return 0

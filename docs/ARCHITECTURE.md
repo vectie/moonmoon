@@ -99,6 +99,11 @@ surface. It generates the HTML, copies the local presentation assets from
 standalone output fails fast when an asset reference is missing, out of order,
 or stale.
 
+Rabbita verification scripts should use `scripts/rabbita_ui_harness.py` to load
+the generated HTML data islands and the external browser assets in the same
+order as the page. Checks should assert user-facing surfaces and export
+contracts, not old inline renderer names inside the HTML artifact.
+
 The current Rabbita slice upgrades that browser surface from static imagery to
 a live Moon explorer. The globe is treated as a presentation boundary with a
 local real-data texture, geodata overlays, continuous zoom, coordinate grid,

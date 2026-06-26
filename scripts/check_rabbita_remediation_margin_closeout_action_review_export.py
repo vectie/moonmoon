@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
 
+from rabbita_ui_harness import extract_json_script, rabbita_app_script
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML_PATH = ROOT / "output/ui/rabbita/first_trusted_square.html"
@@ -20,24 +20,6 @@ EXPORT_NAME = "first_trusted_square_closeout_action_review.json"
 REVIEWER_ID = "operator/rabbita-closeout-action-review"
 REVIEWER_ROLE = "moonclaw-closeout-action-review"
 IMMUTABLE_URI = f"moonbook://moonmoon/first-trusted-square/{ENTRY_PATH}#{ITEM_ID}"
-
-
-def extract_json_script(html: str, script_id: str) -> Any:
-  pattern = (
-    rf'<script id="{re.escape(script_id)}" type="application/json">\n'
-    r"([\s\S]*?)\n</script>"
-  )
-  match = re.search(pattern, html)
-  if not match:
-    raise AssertionError(f"missing {script_id}")
-  return json.loads(match.group(1))
-
-
-def extract_app_script(html: str) -> str:
-  matches = re.findall(r"<script>\n([\s\S]*?)\n</script>", html)
-  if not matches:
-    raise AssertionError("missing Rabbita app script")
-  return matches[-1]
 
 
 def run_rabbita_script(view: Any, book: Any, script: str) -> dict[str, Any]:
@@ -68,6 +50,7 @@ class Element {
 const elements = new Map();
 const document = {
   createElement(tag) { return new Element(tag); },
+  createElementNS(_namespace, tag) { return new Element(tag); },
   getElementById(id) {
     if (!elements.has(id)) elements.set(id, new Element('div', id));
     return elements.get(id);
@@ -80,6 +63,7 @@ document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.
 const downloads = [];
 const context = {
   document,
+  window: {},
   navigator: {},
   Blob,
   URL: {
@@ -234,18 +218,23 @@ def main() -> int:
   for token in [
     "Closeout Action Review",
     "closeout-action-review-export",
+  ]:
+    if token not in html:
+      raise AssertionError(f"missing {token}")
+  app_script = rabbita_app_script()
+  for token in [
     EXPORT_NAME,
     "function buildCloseoutActionReviewTransition()",
     "function closeoutActionReviewExport()",
     "function renderCloseoutActionReview()",
   ]:
-    if token not in html:
-      raise AssertionError(f"missing {token}")
+    if token not in app_script:
+      raise AssertionError(f"missing app token {token}")
 
   rendered = run_rabbita_script(
     extract_json_script(html, "moonmoon-view-model"),
     extract_json_script(html, "moonmoon-moonbook"),
-    extract_app_script(html),
+    app_script,
   )
   assert_snapshot(rendered["initial"], "RequestEvidence", "NeedsEvidence", "Need evidence")
   assert_snapshot(rendered["deferred"], "Defer", "Deferred", "Defer")

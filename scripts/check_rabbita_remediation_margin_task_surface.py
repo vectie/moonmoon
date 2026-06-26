@@ -4,12 +4,12 @@
 from __future__ import annotations
 
 import json
-import re
 import subprocess
 import tempfile
 from pathlib import Path
 from typing import Any
 
+from rabbita_ui_harness import extract_json_script, rabbita_app_script
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML_PATH = ROOT / "output/ui/rabbita/first_trusted_square.html"
@@ -29,24 +29,6 @@ SUMMARY_TERMS = [
   "moonmoon-safety-gate-only",
   "hardware-denied",
 ]
-
-
-def extract_json_script(html: str, script_id: str) -> Any:
-  pattern = (
-    rf'<script id="{re.escape(script_id)}" type="application/json">\n'
-    r"([\s\S]*?)\n</script>"
-  )
-  match = re.search(pattern, html)
-  if not match:
-    raise AssertionError(f"missing {script_id}")
-  return json.loads(match.group(1))
-
-
-def extract_app_script(html: str) -> str:
-  matches = re.findall(r"<script>\n([\s\S]*?)\n</script>", html)
-  if not matches:
-    raise AssertionError("missing Rabbita app script")
-  return matches[-1]
 
 
 def run_rabbita_script(view: Any, book: Any, script: str) -> dict[str, Any]:
@@ -86,16 +68,21 @@ const document = {
 document.getElementById('moonmoon-view-model').textContent = JSON.stringify(input.view);
 document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.book);
 
-vm.runInNewContext(input.script, { document, navigator: {}, Blob, URL, console });
+vm.runInNewContext(input.script, { document, window: {}, navigator: {}, Blob, URL, console });
 
-const rows = document.getElementById('remediation-margin-task').children.map(row => ({
+const rows = document.getElementById('mission-evidence-queue').children.map(row => ({
   entry_id: row.attributes['data-entry-id'],
+  family: row.attributes['data-evidence-family'],
   className: row.className,
   title: row.children[0].textContent,
   summary: row.children[1].textContent,
   path: row.children[2].textContent
 }));
-console.log(JSON.stringify({ rows }, null, 2));
+const summary = document.getElementById('mission-evidence-summary').children.map(row => ({
+  value: row.children[0].textContent,
+  label: row.children[1].textContent
+}));
+console.log(JSON.stringify({ rows, summary }, null, 2));
 """
   with tempfile.TemporaryDirectory(prefix="moonmoon-rabbita-remediation-task-ui-") as tmp:
     tmp_dir = Path(tmp)
@@ -161,12 +148,16 @@ def assert_workspace_payload() -> None:
 
 
 def assert_surface(rendered: dict[str, Any]) -> None:
-  if len(rendered["rows"]) != 1:
+  if len(rendered["rows"]) != 24:
     raise AssertionError(rendered)
-  row = rendered["rows"][0]
+  row = next((row for row in rendered["rows"] if row["entry_id"] == ENTRY_ID), None)
+  if row is None:
+    raise AssertionError(rendered)
   if row["entry_id"] != ENTRY_ID:
     raise AssertionError(row)
-  if "remediation-margin-task-row" not in row["className"]:
+  if "evidence-row" not in row["className"]:
+    raise AssertionError(row)
+  if row["family"] != "remediation":
     raise AssertionError(row)
   if ENTRY_KIND not in row["title"]:
     raise AssertionError(row)
@@ -181,16 +172,17 @@ def assert_surface(rendered: dict[str, Any]) -> None:
 
 def main() -> int:
   html = HTML_PATH.read_text(encoding="utf-8")
-  if "Remediation Margin Task" not in html:
-    raise AssertionError("missing remediation margin task section")
-  if "function renderRemediationMarginTask()" not in html:
-    raise AssertionError("missing remediation margin task renderer")
+  if "Mission Evidence Queue" not in html:
+    raise AssertionError("missing mission evidence queue section")
+  app_script = rabbita_app_script()
+  if "function renderMissionEvidenceQueue()" not in app_script:
+    raise AssertionError("missing mission evidence queue renderer")
 
   view = extract_json_script(html, "moonmoon-view-model")
   book = extract_json_script(html, "moonmoon-moonbook")
   assert_embedded_book(book)
   assert_workspace_payload()
-  rendered = run_rabbita_script(view, book, extract_app_script(html))
+  rendered = run_rabbita_script(view, book, app_script)
   assert_surface(rendered)
   print("checked Rabbita remediation margin task surface")
   return 0
