@@ -90,6 +90,77 @@ fn app_styles() -> String {
     #|  font-size: 13px;
     #|  white-space: nowrap;
     #|}
+    #|.lunar-viewport {
+    #|  width: min(100%, 760px);
+    #|  min-height: 280px;
+    #|  margin: 0 0 16px;
+    #|  border: 1px solid var(--line-strong);
+    #|  background:
+    #|    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.7), transparent 0 2px, transparent 3px),
+    #|    radial-gradient(circle at 82% 16%, rgba(255,255,255,0.55), transparent 0 1px, transparent 2px),
+    #|    radial-gradient(circle at 72% 68%, rgba(255,255,255,0.55), transparent 0 2px, transparent 3px),
+    #|    linear-gradient(145deg, #101820 0%, #17232a 48%, #243136 100%);
+    #|  color: #f5f7f4;
+    #|  position: relative;
+    #|  overflow: hidden;
+    #|  display: grid;
+    #|  grid-template-columns: minmax(220px, 1fr) minmax(190px, 240px);
+    #|  gap: 18px;
+    #|  align-items: center;
+    #|  padding: 18px;
+    #|}
+    #|.moon-disc {
+    #|  width: min(100%, 340px);
+    #|  aspect-ratio: 1;
+    #|  border-radius: 50%;
+    #|  position: relative;
+    #|  justify-self: center;
+    #|  background:
+    #|    radial-gradient(circle at 36% 30%, rgba(255,255,255,0.74), transparent 0 8%, transparent 9%),
+    #|    radial-gradient(circle at 62% 58%, rgba(69,75,76,0.45), transparent 0 10%, transparent 11%),
+    #|    radial-gradient(circle at 49% 74%, rgba(82,88,88,0.35), transparent 0 6%, transparent 7%),
+    #|    radial-gradient(circle at 33% 58%, rgba(50,56,58,0.35), transparent 0 7%, transparent 8%),
+    #|    radial-gradient(circle at 38% 36%, #d8d6cc 0%, #bfc2bd 38%, #8e9694 64%, #4d5658 100%);
+    #|  box-shadow: inset -32px -18px 42px rgba(12,17,20,0.48), 0 0 34px rgba(224,230,225,0.22);
+    #|}
+    #|.site-marker {
+    #|  position: absolute;
+    #|  left: 58%;
+    #|  top: 39%;
+    #|  width: 72px;
+    #|  height: 54px;
+    #|  border: 2px solid #f0c45d;
+    #|  transform: rotate(-12deg);
+    #|  box-shadow: 0 0 0 1px rgba(22,24,23,0.5), 0 0 18px rgba(240,196,93,0.45);
+    #|}
+    #|.route-trace {
+    #|  position: absolute;
+    #|  left: 17%;
+    #|  top: 48%;
+    #|  width: 62%;
+    #|  height: 4px;
+    #|  background: #75d1c5;
+    #|  transform: rotate(-15deg);
+    #|  box-shadow: 0 0 12px rgba(117,209,197,0.8);
+    #|}
+    #|.lunar-summary {
+    #|  display: grid;
+    #|  gap: 10px;
+    #|  align-content: center;
+    #|}
+    #|.lunar-summary b {
+    #|  font-size: 13px;
+    #|  color: #c8d0d0;
+    #|  font-weight: 600;
+    #|}
+    #|.lunar-summary span {
+    #|  display: block;
+    #|  font-size: 14px;
+    #|  line-height: 1.35;
+    #|}
+    #|.lunar-summary .hardware-denied {
+    #|  color: #ffd7cf;
+    #|}
     #|.toolbar {
     #|  display: flex;
     #|  flex-wrap: wrap;
@@ -374,6 +445,8 @@ fn app_styles() -> String {
     #|  .shell { grid-template-columns: 1fr; }
     #|  .side-pane { max-height: none; }
     #|  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
+    #|  .lunar-viewport { grid-template-columns: 1fr; }
+    #|  .moon-disc { width: min(100%, 300px); }
     #|  .metrics { grid-template-columns: 1fr; }
     #|  .decision-group { grid-template-columns: 1fr; }
     #|}
@@ -1131,6 +1204,26 @@ pub fn render_html(
     $|      </div>
     $|      <span class="status-pill">mission: \{decision}</span>
     $|    </div>
+    $|    <section class="lunar-viewport" aria-label="Moon overview for first trusted square">
+    $|      <div class="moon-disc" aria-hidden="true">
+    $|        <span class="route-trace"></span>
+    $|        <span class="site-marker"></span>
+    $|      </div>
+    $|      <div class="lunar-summary">
+    $|        <div>
+    $|          <b>lunar site</b>
+    $|          <span>\{title}</span>
+    $|        </div>
+    $|        <div>
+    $|          <b>selected window</b>
+    $|          <span>northeast-stepout route corridor</span>
+    $|        </div>
+    $|        <div>
+    $|          <b>robot authority</b>
+    $|          <span class="hardware-denied">hardware denied until lunar evidence gates clear</span>
+    $|        </div>
+    $|      </div>
+    $|    </section>
     $|    <div id="layer-toolbar" class="toolbar" aria-label="Layer toggles"></div>
     $|    <div class="map-wrap">
     $|      <div id="terrain-grid" class="terrain-grid" role="grid" aria-label="Selectable lunar terrain cells"></div>
