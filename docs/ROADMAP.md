@@ -191,6 +191,9 @@ Current implementation status:
   windows, blocker count, and hardware-denied authority state.
 - The globe includes operator instruments: coordinate readout, compass, scale
   bar, and graticule with layer toggles.
+- The mission evidence queue is now discovered from embedded MoonBook entries
+  instead of maintained as a fixed browser-side list, keeping the operator deck
+  aligned with generated evidence as new remediation and receipt packets land.
 - The existing NASA south-pole landscape and SVG LOLA corridor map remain the
   local detail and fallback context after the Moon-scale opening view.
 - Browser-level verification now checks that the WebGL canvas is nonblank,

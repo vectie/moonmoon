@@ -277,33 +277,6 @@ function renderRemediationEvidence() {
   ));
 }
 
-const missionEvidenceQueue = [
-  ['remediation', 'Remediation margin task', 'moonclaw/first-trusted-square/remediation-margin-task'],
-  ['remediation', 'Refresh task', 'moonclaw/first-trusted-square/remediation-margin-refresh-task'],
-  ['remediation', 'Refresh follow-up task', 'moonclaw/first-trusted-square/remediation-margin-refresh-followup-task'],
-  ['receipt', 'Refresh follow-up receipt', 'moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt'],
-  ['receipt', 'Refresh receipt', 'moonclaw/first-trusted-square/remediation-margin-refresh-receipt'],
-  ['receipt', 'Margin receipt', 'moonclaw/first-trusted-square/remediation-margin-receipt'],
-  ['simulation', 'Margin modeling', 'moonrobo/first-trusted-square/remediation-margin-modeling'],
-  ['simulation', 'Refresh modeling', 'moonrobo/first-trusted-square/remediation-margin-refresh-modeling'],
-  ['simulation', 'Refresh follow-up modeling', 'moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling'],
-  ['blocker', 'Refresh follow-up projection', 'moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection'],
-  ['blocker', 'Cycle closeout policy', 'moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy'],
-  ['remediation', 'Closeout action task', 'moonclaw/first-trusted-square/remediation-margin-closeout-action-task'],
-  ['review', 'Reviewed action plan', 'moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan'],
-  ['review', 'Reviewed work items', 'moonclaw/first-trusted-square/remediation-margin-reviewed-work-items'],
-  ['receipt', 'Reviewed work item receipts', 'moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts'],
-  ['remediation', 'Reviewed fresh-evidence task', 'moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task'],
-  ['receipt', 'Fresh-evidence action receipts', 'moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts'],
-  ['receipt', 'Regenerated reviewed work item receipts', 'moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts'],
-  ['blocker', 'Regenerated receipt readiness', 'moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness'],
-  ['remediation', 'Regenerated readiness fresh-evidence task', 'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task'],
-  ['receipt', 'Regenerated readiness action receipts', 'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts'],
-  ['blocker', 'Regenerated action receipt closeout', 'moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout'],
-  ['blocker', 'Refresh projection', 'moonrobo/first-trusted-square/remediation-margin-refresh-projection'],
-  ['blocker', 'Margin projection', 'moonrobo/first-trusted-square/remediation-margin-projection'],
-];
-
 const evidenceFamilyOptions = [
   ['all', 'All'],
   ['blocker', 'Blockers'],
@@ -313,10 +286,45 @@ const evidenceFamilyOptions = [
   ['review', 'Review'],
 ];
 
+function isMissionEvidenceEntry(entry) {
+  return entry.entry_id.includes('/remediation-margin-') ||
+    entry.entry_id.includes('/regenerated-receipt-readiness-');
+}
+
+function missionEvidenceFamily(entry) {
+  const id = entry.entry_id;
+  if (
+    id.includes('projection') ||
+    id.includes('cycle-closeout') ||
+    id.includes('action-receipt-closeout') ||
+    id.endsWith('/remediation-margin-regenerated-receipt-readiness')
+  ) return 'blocker';
+  if (id.includes('modeling')) return 'simulation';
+  if (id.includes('reviewed-action-plan') || id.includes('reviewed-work-items')) return 'review';
+  if (id.includes('fresh-evidence-task') || id.endsWith('-task')) return 'remediation';
+  if (
+    id.includes('receipt') ||
+    id.includes('receipts') ||
+    id.includes('action-receipts')
+  ) return 'receipt';
+  return 'remediation';
+}
+
+function missionEvidenceLabel(entry) {
+  return entry.title
+    .replace(' for First Trusted Square / Shackleton Rim rehearsal tile', '')
+    .replace('MoonClaw ', '')
+    .replace('MoonRobo ', '');
+}
+
 function missionEvidenceRows() {
-  return missionEvidenceQueue
-    .map(([family, label, entryId]) => ({ family, label, entry: entryById(entryId) }))
-    .filter(row => row.entry);
+  return book.entries
+    .filter(isMissionEvidenceEntry)
+    .map(entry => ({
+      family: missionEvidenceFamily(entry),
+      label: missionEvidenceLabel(entry),
+      entry
+    }));
 }
 
 function evidenceFamilyCounts(rows) {

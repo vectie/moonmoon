@@ -116,6 +116,8 @@ first implementation is small and local:
 - a coordinate readout, compass, scale bar, and graticule
 - site footprint, selected route, and 81-window corridor overlays derived from
   embedded MoonBit JSON
+- a mission evidence queue discovered from embedded MoonBook entries, with
+  browser-side grouping limited to presentation filters and labels
 - a WebGL/no-motion fallback that preserves the static NASA south-pole
   landscape and LOLA SVG corridor map
 
