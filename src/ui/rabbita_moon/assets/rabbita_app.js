@@ -276,237 +276,49 @@ function renderRemediationEvidence() {
   ));
 }
 
-function renderMoonBookEntry(targetId, entryId, rowClass) {
-  const entry = entryById(entryId);
-  const target = document.getElementById(targetId);
-  if (!entry) {
-    target.replaceChildren();
-    return;
-  }
-  target.replaceChildren(el('div', {
-    className: `review-row ${rowClass}`,
-    'data-entry-id': entry.entry_id
-  }, [
-    el('b', { text: `${entry.title} - ${entry.kind}` }),
-    el('span', { text: entry.summary }),
-    el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
-  ]));
-}
+const missionEvidenceQueue = [
+  ['remediation', 'Remediation margin task', 'moonclaw/first-trusted-square/remediation-margin-task'],
+  ['remediation', 'Refresh task', 'moonclaw/first-trusted-square/remediation-margin-refresh-task'],
+  ['remediation', 'Refresh follow-up task', 'moonclaw/first-trusted-square/remediation-margin-refresh-followup-task'],
+  ['receipt', 'Refresh follow-up receipt', 'moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt'],
+  ['receipt', 'Refresh receipt', 'moonclaw/first-trusted-square/remediation-margin-refresh-receipt'],
+  ['receipt', 'Margin receipt', 'moonclaw/first-trusted-square/remediation-margin-receipt'],
+  ['simulation', 'Margin modeling', 'moonrobo/first-trusted-square/remediation-margin-modeling'],
+  ['simulation', 'Refresh modeling', 'moonrobo/first-trusted-square/remediation-margin-refresh-modeling'],
+  ['simulation', 'Refresh follow-up modeling', 'moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling'],
+  ['blocker', 'Refresh follow-up projection', 'moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection'],
+  ['blocker', 'Cycle closeout policy', 'moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy'],
+  ['remediation', 'Closeout action task', 'moonclaw/first-trusted-square/remediation-margin-closeout-action-task'],
+  ['review', 'Reviewed action plan', 'moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan'],
+  ['review', 'Reviewed work items', 'moonclaw/first-trusted-square/remediation-margin-reviewed-work-items'],
+  ['receipt', 'Reviewed work item receipts', 'moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts'],
+  ['remediation', 'Reviewed fresh-evidence task', 'moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task'],
+  ['receipt', 'Fresh-evidence action receipts', 'moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts'],
+  ['receipt', 'Regenerated reviewed work item receipts', 'moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts'],
+  ['blocker', 'Regenerated receipt readiness', 'moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness'],
+  ['remediation', 'Regenerated readiness fresh-evidence task', 'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task'],
+  ['receipt', 'Regenerated readiness action receipts', 'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts'],
+  ['blocker', 'Regenerated action receipt closeout', 'moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout'],
+  ['blocker', 'Refresh projection', 'moonrobo/first-trusted-square/remediation-margin-refresh-projection'],
+  ['blocker', 'Margin projection', 'moonrobo/first-trusted-square/remediation-margin-projection'],
+];
 
-function renderSimulationReviewPacket() {
-  renderMoonBookEntry(
-    'simulation-review-packet',
-    'moonrobo/first-trusted-square/simulation-review-packet',
-    'simulation-packet-row'
-  );
-}
-
-function renderSimulationReviewDecision() {
-  renderMoonBookEntry(
-    'simulation-review-decision',
-    'moonrobo/first-trusted-square/simulation-review-decision',
-    'simulation-decision-row'
-  );
-}
-
-function renderSimulationBlockerReduction() {
-  renderMoonBookEntry(
-    'simulation-blocker-reduction',
-    'moonrobo/first-trusted-square/simulation-blocker-reduction',
-    'simulation-blocker-reduction-row'
-  );
-}
-
-function renderRemediationMarginTask() {
-  renderMoonBookEntry(
-    'remediation-margin-task',
-    'moonclaw/first-trusted-square/remediation-margin-task',
-    'remediation-margin-task-row'
-  );
-}
-
-function renderRemediationMarginRefreshTask() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-task',
-    'moonclaw/first-trusted-square/remediation-margin-refresh-task',
-    'remediation-margin-refresh-task-row'
-  );
-}
-
-function renderRemediationMarginRefreshFollowupTask() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-followup-task',
-    'moonclaw/first-trusted-square/remediation-margin-refresh-followup-task',
-    'remediation-margin-refresh-followup-task-row'
-  );
-}
-
-function renderRemediationMarginRefreshFollowupReceipt() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-followup-receipt',
-    'moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt',
-    'remediation-margin-refresh-followup-receipt-row'
-  );
-}
-
-function renderRemediationMarginRefreshReceipt() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-receipt',
-    'moonclaw/first-trusted-square/remediation-margin-refresh-receipt',
-    'remediation-margin-refresh-receipt-row'
-  );
-}
-
-function renderRemediationMarginReceipt() {
-  renderMoonBookEntry(
-    'remediation-margin-receipt',
-    'moonclaw/first-trusted-square/remediation-margin-receipt',
-    'remediation-margin-receipt-row'
-  );
-}
-
-function renderRemediationMarginModeling() {
-  renderMoonBookEntry(
-    'remediation-margin-modeling',
-    'moonrobo/first-trusted-square/remediation-margin-modeling',
-    'remediation-margin-modeling-row'
-  );
-}
-
-function renderRemediationMarginRefreshModeling() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-modeling',
-    'moonrobo/first-trusted-square/remediation-margin-refresh-modeling',
-    'remediation-margin-refresh-modeling-row'
-  );
-}
-
-function renderRemediationMarginRefreshFollowupModeling() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-followup-modeling',
-    'moonrobo/first-trusted-square/remediation-margin-refresh-followup-modeling',
-    'remediation-margin-refresh-followup-modeling-row'
-  );
-}
-
-function renderRemediationMarginRefreshFollowupProjection() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-followup-projection',
-    'moonrobo/first-trusted-square/remediation-margin-refresh-followup-projection',
-    'remediation-margin-refresh-followup-projection-row'
-  );
-}
-
-function renderRemediationMarginCycleCloseout() {
-  renderMoonBookEntry(
-    'remediation-margin-cycle-closeout',
-    'moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy',
-    'remediation-margin-cycle-closeout-row'
-  );
-}
-
-function renderRemediationMarginCloseoutAction() {
-  renderMoonBookEntry(
-    'remediation-margin-closeout-action',
-    'moonclaw/first-trusted-square/remediation-margin-closeout-action-task',
-    'remediation-margin-closeout-action-row'
-  );
-}
-
-function renderRemediationMarginReviewedActionPlan() {
-  renderMoonBookEntry(
-    'remediation-margin-reviewed-action-plan',
-    'moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan',
-    'remediation-margin-reviewed-action-plan-row'
-  );
-}
-
-function renderRemediationMarginReviewedWorkItems() {
-  renderMoonBookEntry(
-    'remediation-margin-reviewed-work-items',
-    'moonclaw/first-trusted-square/remediation-margin-reviewed-work-items',
-    'remediation-margin-reviewed-work-items-row'
-  );
-}
-
-function renderRemediationMarginReviewedWorkItemReceipts() {
-  renderMoonBookEntry(
-    'remediation-margin-reviewed-work-item-receipts',
-    'moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts',
-    'remediation-margin-reviewed-work-item-receipts-row'
-  );
-}
-
-function renderRemediationMarginReviewedFreshEvidenceTask() {
-  renderMoonBookEntry(
-    'remediation-margin-reviewed-fresh-evidence-task',
-    'moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task',
-    'remediation-margin-reviewed-fresh-evidence-task-row'
-  );
-}
-
-function renderRemediationMarginFreshEvidenceActionReceipts() {
-  renderMoonBookEntry(
-    'remediation-margin-fresh-evidence-action-receipts',
-    'moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts',
-    'remediation-margin-fresh-evidence-action-receipts-row'
-  );
-}
-
-function renderRemediationMarginRegeneratedReviewedWorkItemReceipts() {
-  renderMoonBookEntry(
-    'remediation-margin-regenerated-reviewed-work-item-receipts',
-    'moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts',
-    'remediation-margin-regenerated-reviewed-work-item-receipts-row'
-  );
-}
-
-function renderRemediationMarginRegeneratedReceiptReadiness() {
-  renderMoonBookEntry(
-    'remediation-margin-regenerated-receipt-readiness',
-    'moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness',
-    'remediation-margin-regenerated-receipt-readiness-row'
-  );
-}
-
-function renderRegeneratedReceiptReadinessFreshEvidenceTask() {
-  renderMoonBookEntry(
-    'regenerated-receipt-readiness-fresh-evidence-task',
-    'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task',
-    'regenerated-receipt-readiness-fresh-evidence-task-row'
-  );
-}
-
-function renderRegeneratedReceiptReadinessFreshEvidenceActionReceipts() {
-  renderMoonBookEntry(
-    'regenerated-receipt-readiness-fresh-evidence-action-receipts',
-    'moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts',
-    'regenerated-receipt-readiness-fresh-evidence-action-receipts-row'
-  );
-}
-
-function renderRegeneratedReceiptReadinessActionReceiptCloseout() {
-  renderMoonBookEntry(
-    'regenerated-receipt-readiness-action-receipt-closeout',
-    'moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout',
-    'regenerated-receipt-readiness-action-receipt-closeout-row'
-  );
-}
-
-function renderRemediationMarginRefreshProjection() {
-  renderMoonBookEntry(
-    'remediation-margin-refresh-projection',
-    'moonrobo/first-trusted-square/remediation-margin-refresh-projection',
-    'remediation-margin-refresh-projection-row'
-  );
-}
-
-function renderRemediationMarginProjection() {
-  renderMoonBookEntry(
-    'remediation-margin-projection',
-    'moonrobo/first-trusted-square/remediation-margin-projection',
-    'remediation-margin-projection-row'
-  );
+function renderMissionEvidenceQueue() {
+  const target = document.getElementById('mission-evidence-queue');
+  const rows = missionEvidenceQueue
+    .map(([family, label, entryId]) => ({ family, label, entry: entryById(entryId) }))
+    .filter(row => row.entry);
+  target.replaceChildren(...rows.map(row =>
+    el('article', {
+      className: 'evidence-row',
+      'data-evidence-family': row.family,
+      'data-entry-id': row.entry.entry_id
+    }, [
+      el('b', { text: `${row.label} - ${row.entry.kind}` }),
+      el('span', { text: row.entry.summary }),
+      el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${row.entry.path}` })
+    ])
+  ));
 }
 
 function transitionDecisionStatus(decision) {
@@ -765,33 +577,7 @@ function render() {
   renderReview();
   renderGapEvidence();
   renderRemediationEvidence();
-  renderSimulationReviewPacket();
-  renderSimulationReviewDecision();
-  renderSimulationBlockerReduction();
-  renderRemediationMarginTask();
-  renderRemediationMarginRefreshTask();
-  renderRemediationMarginRefreshFollowupTask();
-  renderRemediationMarginRefreshFollowupReceipt();
-  renderRemediationMarginRefreshReceipt();
-  renderRemediationMarginReceipt();
-  renderRemediationMarginModeling();
-  renderRemediationMarginRefreshModeling();
-  renderRemediationMarginRefreshFollowupModeling();
-  renderRemediationMarginRefreshFollowupProjection();
-  renderRemediationMarginCycleCloseout();
-  renderRemediationMarginCloseoutAction();
-  renderRemediationMarginReviewedActionPlan();
-  renderRemediationMarginReviewedWorkItems();
-  renderRemediationMarginReviewedWorkItemReceipts();
-  renderRemediationMarginReviewedFreshEvidenceTask();
-  renderRemediationMarginFreshEvidenceActionReceipts();
-  renderRemediationMarginRegeneratedReviewedWorkItemReceipts();
-  renderRemediationMarginRegeneratedReceiptReadiness();
-  renderRegeneratedReceiptReadinessFreshEvidenceTask();
-  renderRegeneratedReceiptReadinessFreshEvidenceActionReceipts();
-  renderRegeneratedReceiptReadinessActionReceiptCloseout();
-  renderRemediationMarginRefreshProjection();
-  renderRemediationMarginProjection();
+  renderMissionEvidenceQueue();
   renderClearanceReview();
   renderCloseoutActionReview();
 }

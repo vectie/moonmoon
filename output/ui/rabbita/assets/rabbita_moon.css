@@ -592,92 +592,32 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   border-color: color-mix(in srgb, var(--warn) 38%, var(--line));
   box-shadow: inset 3px 0 0 var(--warn);
 }
-.simulation-packet-row {
-  border-color: color-mix(in srgb, var(--teal) 45%, var(--line));
-  box-shadow: inset 3px 0 0 var(--teal);
+.evidence-queue {
+  display: grid;
+  gap: 8px;
 }
-.simulation-decision-row {
-  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
-  box-shadow: inset 3px 0 0 var(--danger);
+.evidence-row {
+  border: 1px solid var(--line);
+  background: #fbfcfd;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
 }
-.remediation-margin-task-row {
-  border-color: color-mix(in srgb, var(--warn) 52%, var(--line));
-  box-shadow: inset 3px 0 0 var(--warn);
-}
-.remediation-margin-refresh-task-row {
-  border-color: color-mix(in srgb, var(--teal) 52%, var(--line));
-  box-shadow: inset 3px 0 0 var(--teal);
-}
-.remediation-margin-refresh-receipt-row {
-  border-color: color-mix(in srgb, var(--ok) 48%, var(--line));
-  box-shadow: inset 3px 0 0 var(--ok);
-}
-.remediation-margin-refresh-followup-receipt-row {
-  border-color: color-mix(in srgb, var(--ok) 58%, var(--line));
-  box-shadow: inset 3px 0 0 var(--ok);
-}
-.remediation-margin-receipt-row {
-  border-color: color-mix(in srgb, var(--ok) 44%, var(--line));
-  box-shadow: inset 3px 0 0 var(--ok);
-}
-.remediation-margin-modeling-row {
+.evidence-row[data-evidence-family="simulation"],
+.evidence-row[data-evidence-family="review"] {
   border-color: color-mix(in srgb, var(--teal) 48%, var(--line));
   box-shadow: inset 3px 0 0 var(--teal);
 }
-.remediation-margin-refresh-modeling-row {
-  border-color: color-mix(in srgb, var(--teal) 60%, var(--line));
-  box-shadow: inset 3px 0 0 var(--teal);
-}
-.remediation-margin-refresh-followup-modeling-row {
-  border-color: color-mix(in srgb, var(--teal) 66%, var(--line));
-  box-shadow: inset 3px 0 0 var(--teal);
-}
-.remediation-margin-refresh-followup-projection-row {
-  border-color: color-mix(in srgb, var(--danger) 52%, var(--line));
-  box-shadow: inset 3px 0 0 var(--danger);
-}
-.remediation-margin-cycle-closeout-row {
-  border-color: color-mix(in srgb, var(--danger) 60%, var(--line));
-  box-shadow: inset 3px 0 0 var(--danger);
-}
-.remediation-margin-closeout-action-row {
-  border-color: color-mix(in srgb, var(--warn) 64%, var(--line));
+.evidence-row[data-evidence-family="remediation"] {
+  border-color: color-mix(in srgb, var(--warn) 56%, var(--line));
   box-shadow: inset 3px 0 0 var(--warn);
 }
-.remediation-margin-reviewed-work-item-receipts-row {
-  border-color: color-mix(in srgb, var(--ok) 64%, var(--line));
+.evidence-row[data-evidence-family="receipt"] {
+  border-color: color-mix(in srgb, var(--ok) 54%, var(--line));
   box-shadow: inset 3px 0 0 var(--ok);
 }
-.remediation-margin-reviewed-fresh-evidence-task-row {
-  border-color: color-mix(in srgb, var(--warn) 58%, var(--line));
-  box-shadow: inset 3px 0 0 var(--warn);
-}
-.remediation-margin-fresh-evidence-action-receipts-row {
-  border-color: color-mix(in srgb, var(--ok) 62%, var(--line));
-  box-shadow: inset 3px 0 0 var(--ok);
-}
-.remediation-margin-regenerated-reviewed-work-item-receipts-row {
-  border-color: color-mix(in srgb, var(--teal) 66%, var(--line));
-  box-shadow: inset 3px 0 0 var(--teal);
-}
-.remediation-margin-regenerated-receipt-readiness-row {
-  border-color: color-mix(in srgb, var(--danger) 58%, var(--line));
-  box-shadow: inset 3px 0 0 var(--danger);
-}
-.regenerated-receipt-readiness-fresh-evidence-task-row {
-  border-color: color-mix(in srgb, var(--warn) 66%, var(--line));
-  box-shadow: inset 3px 0 0 var(--warn);
-}
-.regenerated-receipt-readiness-fresh-evidence-action-receipts-row {
-  border-color: color-mix(in srgb, var(--ok) 66%, var(--line));
-  box-shadow: inset 3px 0 0 var(--ok);
-}
-.regenerated-receipt-readiness-action-receipt-closeout-row {
-  border-color: color-mix(in srgb, var(--danger) 56%, var(--line));
-  box-shadow: inset 3px 0 0 var(--danger);
-}
-.remediation-margin-projection-row {
-  border-color: color-mix(in srgb, var(--danger) 42%, var(--line));
+.evidence-row[data-evidence-family="blocker"] {
+  border-color: color-mix(in srgb, var(--danger) 54%, var(--line));
   box-shadow: inset 3px 0 0 var(--danger);
 }
 .decision-group {
@@ -743,14 +683,14 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   padding: 10px;
   min-height: 66px;
 }
-.metric b, .route-row b, .fact-row b, .review-row b {
+.metric b, .route-row b, .fact-row b, .review-row b, .evidence-row b {
   display: block;
   font-size: 12px;
   color: var(--muted);
   font-weight: 600;
   margin-bottom: 3px;
 }
-.metric span, .route-row span, .fact-row span, .review-row span {
+.metric span, .route-row span, .fact-row span, .review-row span, .evidence-row span {
   font-size: 14px;
   line-height: 1.3;
 }
