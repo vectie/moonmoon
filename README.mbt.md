@@ -71,6 +71,7 @@ moon run cmd/main -- moonrobo handoff
 moon run cmd/main -- moonrobo handoff json
 python3 scripts/generate_moonmoon_fixture.py --check
 python3 scripts/materialize_moonbook_workspace.py --check
+bash scripts/build_rabbita_ui.sh
 bash scripts/build_moonmoon_dossier.sh
 ```
 
@@ -80,6 +81,12 @@ deliverables are written to `output/site/`, `output/terrain/`,
 `output/moonrobo/`. The materialized MoonBook workspace lives at
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
+
+`scripts/build_rabbita_ui.sh` is the focused product build for the standalone
+Rabbita Moon operator page. It writes `output/ui/rabbita/first_trusted_square.html`,
+syncs every local browser asset from `src/ui/rabbita_moon/assets/`, and runs a
+bundle check so missing or stale assets fail before the page is handed to an
+operator.
 
 MoonClaw outputs currently include bounded modeling proposals, concrete
 ephemeris and corridor acquisition tasks, a deterministic route-scoring receipt, a

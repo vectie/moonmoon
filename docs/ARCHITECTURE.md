@@ -93,6 +93,12 @@ renderer-neutral view model and MoonBook review ledger as JSON. The page owns
 only presentation state such as layer selection and selected terrain cell; it
 does not recompute terrain, route, energy, or review facts.
 
+`scripts/build_rabbita_ui.sh` is the publication boundary for that browser
+surface. It generates the HTML, copies the local presentation assets from
+`src/ui/rabbita_moon/assets/`, and runs `scripts/check_rabbita_bundle.py` so the
+standalone output fails fast when an asset reference is missing, out of order,
+or stale.
+
 The current Rabbita slice upgrades that browser surface from static imagery to
 a live Moon explorer. The globe is treated as a presentation boundary with a
 local real-data texture, geodata overlays, continuous zoom, coordinate grid,

@@ -194,6 +194,9 @@ Current implementation status:
 - The mission evidence queue is now discovered from embedded MoonBook entries
   instead of maintained as a fixed browser-side list, keeping the operator deck
   aligned with generated evidence as new remediation and receipt packets land.
+- `scripts/build_rabbita_ui.sh` now publishes the complete standalone Rabbita
+  bundle and verifies that generated HTML asset references are source-synced,
+  so the live operator page no longer depends on manual asset copying.
 - The existing NASA south-pole landscape and SVG LOLA corridor map remain the
   local detail and fallback context after the Moon-scale opening view.
 - Browser-level verification now checks that the WebGL canvas is nonblank,

@@ -10,7 +10,6 @@ MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
 UI_OUT="$ROOT/output/ui"
 RABBITA_OUT="$UI_OUT/rabbita"
-RABBITA_ASSET_OUT="$RABBITA_OUT/assets"
 REVIEW_TRANSITIONS=()
 
 while [[ $# -gt 0 ]]; do
@@ -38,7 +37,6 @@ mkdir -p "$MOONCLAW_OUT"
 mkdir -p "$MOONROBO_OUT"
 mkdir -p "$UI_OUT"
 mkdir -p "$RABBITA_OUT"
-mkdir -p "$RABBITA_ASSET_OUT"
 
 cd "$ROOT"
 
@@ -126,13 +124,7 @@ python3 scripts/generate_selected_route_terrain_remediation.py
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation projection json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
-/Users/kq/.moon/bin/moon run cmd/main -- ui rabbita > "$RABBITA_OUT/first_trusted_square.html"
-cp "$ROOT/src/ui/rabbita_moon/assets/southpole_10deg_print.jpg" "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
-cp "$ROOT/src/ui/rabbita_moon/assets/lunar_global_texture.jpg" "$RABBITA_ASSET_OUT/lunar_global_texture.jpg"
-cp "$ROOT/src/ui/rabbita_moon/assets/lunar_global_texture.source.json" "$RABBITA_ASSET_OUT/lunar_global_texture.source.json"
-cp "$ROOT/src/ui/rabbita_moon/assets/rabbita_moon.css" "$RABBITA_ASSET_OUT/rabbita_moon.css"
-cp "$ROOT/src/ui/rabbita_moon/assets/rabbita_app.js" "$RABBITA_ASSET_OUT/rabbita_app.js"
-cp "$ROOT/src/ui/rabbita_moon/assets/moon_globe.js" "$RABBITA_ASSET_OUT/moon_globe.js"
+scripts/build_rabbita_ui.sh
 if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
   for REVIEW_TRANSITION_PATH in "${REVIEW_TRANSITIONS[@]}"; do
     python3 scripts/import_rabbita_transitions.py --review-transitions "$REVIEW_TRANSITION_PATH"
@@ -225,10 +217,4 @@ fi
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"
 printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/lunar_global_texture.jpg"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/lunar_global_texture.source.json"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/rabbita_moon.css"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/rabbita_app.js"
-printf 'wrote %s\n' "$RABBITA_ASSET_OUT/moon_globe.js"
 printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"
