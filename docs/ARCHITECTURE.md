@@ -110,6 +110,8 @@ The browser globe runtime is JavaScript because it is presentation only. Its
 first implementation is small and local:
 
 - a WebGL globe runtime under `src/ui/rabbita_moon/assets/`
+- a small MoonBook evidence helper under `src/ui/rabbita_moon/assets/` that
+  indexes entries and classifies queue rows without owning mission truth
 - a cached global lunar texture with source metadata and checksum
 - an operable globe canvas with drag rotate, wheel/pinch zoom, reset/home, and
   a fly-to-trusted-square camera transition

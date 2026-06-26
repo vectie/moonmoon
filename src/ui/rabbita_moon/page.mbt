@@ -33,6 +33,14 @@ fn app_script() -> String {
 }
 
 ///|
+fn evidence_script() -> String {
+  (
+    #|<script src="assets/rabbita_evidence.js"></script>
+    #|
+  )
+}
+
+///|
 fn globe_script() -> String {
   (
     #|<script src="assets/moon_globe.js"></script>
@@ -198,6 +206,7 @@ pub fn render_html(
     $|    </section>
     $|  </aside>
     $|</main>
+    $|\{evidence_script()}
     $|\{app_script()}
     $|\{globe_script()}
     $|</body>

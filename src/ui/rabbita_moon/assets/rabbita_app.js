@@ -1,5 +1,6 @@
 const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
 const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent);
+const evidence = window.RabbitaEvidence.create(book);
 let activeLayer = view.active_layer_id;
 let selectedCellId = view.selected_cell_id;
 const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
@@ -240,18 +241,8 @@ function renderReview() {
   ));
 }
 
-function entryById(id) {
-  return book.entries.find(entry => entry.entry_id === id);
-}
-
 function renderGapEvidence() {
-  const ids = [
-    'moonclaw/first-trusted-square/moonrobo-gap-remediation-task',
-    'moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt'
-  ];
-  const entries = ids
-    .map(entryById)
-    .filter(Boolean);
+  const entries = evidence.gapEvidenceEntries();
   document.getElementById('moonclaw-gap-evidence').replaceChildren(...entries.map(entry =>
     el('div', { className: 'review-row', 'data-entry-id': entry.entry_id }, [
       el('b', { text: `${entry.title} - ${entry.kind}` }),
@@ -262,12 +253,7 @@ function renderGapEvidence() {
 }
 
 function renderRemediationEvidence() {
-  const ids = [
-    'terrain-remediation/first-trusted-square/northeast-stepout',
-    'local-horizon/first-trusted-square/northeast-stepout',
-    'energy-remediation/first-trusted-square/northeast-stepout'
-  ];
-  const entries = ids.map(entryById).filter(Boolean);
+  const entries = evidence.selectedRouteRemediationEntries();
   document.getElementById('selected-route-remediation').replaceChildren(...entries.map(entry =>
     el('div', { className: 'review-row remediation-row', 'data-entry-id': entry.entry_id }, [
       el('b', { text: `${entry.title} - ${entry.kind}` }),
@@ -275,64 +261,6 @@ function renderRemediationEvidence() {
       el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
     ])
   ));
-}
-
-const evidenceFamilyOptions = [
-  ['all', 'All'],
-  ['blocker', 'Blockers'],
-  ['remediation', 'Work'],
-  ['receipt', 'Receipts'],
-  ['simulation', 'Simulation'],
-  ['review', 'Review'],
-];
-
-function isMissionEvidenceEntry(entry) {
-  return entry.entry_id.includes('/remediation-margin-') ||
-    entry.entry_id.includes('/regenerated-receipt-readiness-');
-}
-
-function missionEvidenceFamily(entry) {
-  const id = entry.entry_id;
-  if (
-    id.includes('projection') ||
-    id.includes('cycle-closeout') ||
-    id.includes('action-receipt-closeout') ||
-    id.endsWith('/remediation-margin-regenerated-receipt-readiness')
-  ) return 'blocker';
-  if (id.includes('modeling')) return 'simulation';
-  if (id.includes('reviewed-action-plan') || id.includes('reviewed-work-items')) return 'review';
-  if (id.includes('fresh-evidence-task') || id.endsWith('-task')) return 'remediation';
-  if (
-    id.includes('receipt') ||
-    id.includes('receipts') ||
-    id.includes('action-receipts')
-  ) return 'receipt';
-  return 'remediation';
-}
-
-function missionEvidenceLabel(entry) {
-  return entry.title
-    .replace(' for First Trusted Square / Shackleton Rim rehearsal tile', '')
-    .replace('MoonClaw ', '')
-    .replace('MoonRobo ', '');
-}
-
-function missionEvidenceRows() {
-  return book.entries
-    .filter(isMissionEvidenceEntry)
-    .map(entry => ({
-      family: missionEvidenceFamily(entry),
-      label: missionEvidenceLabel(entry),
-      entry
-    }));
-}
-
-function evidenceFamilyCounts(rows) {
-  return rows.reduce((counts, row) => {
-    counts[row.family] = (counts[row.family] || 0) + 1;
-    counts.all += 1;
-    return counts;
-  }, { all: 0, blocker: 0, remediation: 0, receipt: 0, simulation: 0, review: 0 });
 }
 
 function renderMissionEvidenceSummary(rows, counts) {
@@ -357,7 +285,7 @@ function renderMissionEvidenceSummary(rows, counts) {
 }
 
 function renderMissionEvidenceFilters(counts) {
-  document.getElementById('mission-evidence-filters').replaceChildren(...evidenceFamilyOptions.map(([family, label]) => {
+  document.getElementById('mission-evidence-filters').replaceChildren(...evidence.familyOptions.map(([family, label]) => {
     const button = el('button', {
       className: 'evidence-filter',
       type: 'button',
@@ -375,8 +303,8 @@ function renderMissionEvidenceFilters(counts) {
 
 function renderMissionEvidenceQueue() {
   const target = document.getElementById('mission-evidence-queue');
-  const rows = missionEvidenceRows();
-  const counts = evidenceFamilyCounts(rows);
+  const rows = evidence.missionEvidenceRows();
+  const counts = evidence.evidenceFamilyCounts(rows);
   const visibleRows = activeEvidenceFamily === 'all'
     ? rows
     : rows.filter(row => row.family === activeEvidenceFamily);
@@ -508,7 +436,7 @@ function renderClearanceReview() {
 }
 
 function closeoutActionEntry() {
-  return entryById(closeoutActionEntryId);
+  return evidence.entryById(closeoutActionEntryId);
 }
 
 function closeoutActionEvidenceRefs(entry) {

@@ -16,11 +16,13 @@ test "Rabbita Moon page renders standalone operator shell" {
 test "Rabbita Moon page links local presentation assets" {
   let html = @rabbita_moon.first_trusted_square_html()
   assert_true(html.contains("assets/rabbita_moon.css"))
+  assert_true(html.contains("assets/rabbita_evidence.js"))
   assert_true(html.contains("assets/rabbita_app.js"))
   assert_true(html.contains("assets/moon_globe.js"))
   assert_true(html.contains("assets/lunar_global_texture.jpg"))
   assert_true(html.contains("assets/southpole_10deg_print.jpg"))
   assert_true(!html.contains("function renderGrid()"))
+  assert_true(!html.contains("function missionEvidenceRows()"))
   assert_true(!html.contains("function renderLolaDataViewport()"))
   assert_true(!html.contains("<style>"))
 }
