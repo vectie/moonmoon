@@ -3,13 +3,10 @@
 
 from __future__ import annotations
 
-import json
-import subprocess
-import tempfile
 from pathlib import Path
 from typing import Any
 
-from rabbita_ui_harness import extract_json_script, rabbita_app_script
+from rabbita_ui_harness import extract_json_script, rabbita_app_script, run_rabbita_vm
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML_PATH = ROOT / "output/ui/rabbita/first_trusted_square.html"
@@ -22,58 +19,7 @@ REVIEWER_ROLE = "moonclaw-closeout-action-review"
 IMMUTABLE_URI = f"moonbook://moonmoon/first-trusted-square/{ENTRY_PATH}#{ITEM_ID}"
 
 
-def run_rabbita_script(view: Any, book: Any, script: str) -> dict[str, Any]:
-  harness = r"""
-const fs = require('fs');
-const vm = require('vm');
-const input = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-
-class Element {
-  constructor(tagName, id = '') {
-    this.tagName = tagName;
-    this.id = id;
-    this.children = [];
-    this.attributes = {};
-    this.eventListeners = {};
-    this.className = '';
-    this.textContent = '';
-    this.value = '';
-    this.style = { setProperty: (key, value) => { this.style[key] = String(value); } };
-  }
-  setAttribute(key, value) { this.attributes[key] = String(value); }
-  append(child) { this.children.push(child); }
-  replaceChildren(...children) { this.children = children; }
-  addEventListener(type, handler) { this.eventListeners[type] = handler; }
-  click() { if (this.eventListeners.click) this.eventListeners.click(); }
-}
-
-const elements = new Map();
-const document = {
-  createElement(tag) { return new Element(tag); },
-  createElementNS(_namespace, tag) { return new Element(tag); },
-  getElementById(id) {
-    if (!elements.has(id)) elements.set(id, new Element('div', id));
-    return elements.get(id);
-  }
-};
-
-document.getElementById('moonmoon-view-model').textContent = JSON.stringify(input.view);
-document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.book);
-
-const downloads = [];
-const context = {
-  document,
-  window: {},
-  navigator: {},
-  Blob,
-  URL: {
-    createObjectURL(blob) { downloads.push(blob); return 'blob:closeout-action-review'; },
-    revokeObjectURL() {}
-  },
-  console
-};
-vm.runInNewContext(input.script, context);
-
+SNAPSHOT_JS = r"""
 function snapshot() {
   const row = document.getElementById('closeout-action-review').children[0];
   const buttons = row.children[2].children.map(button => ({
@@ -104,27 +50,8 @@ acceptButton.eventListeners.click();
 const accepted = snapshot();
 document.getElementById('download-closeout-action-review-export').eventListeners.click();
 
-console.log(JSON.stringify({ initial, deferred, accepted, download_count: downloads.length }, null, 2));
+return { initial, deferred, accepted, download_count: downloads.length };
 """
-  with tempfile.TemporaryDirectory(
-    prefix="moonmoon-rabbita-closeout-action-review-",
-  ) as tmp:
-    tmp_dir = Path(tmp)
-    harness_path = tmp_dir / "rabbita_closeout_action_review_harness.cjs"
-    input_path = tmp_dir / "input.json"
-    harness_path.write_text(harness, encoding="utf-8")
-    input_path.write_text(
-      json.dumps({"view": view, "book": book, "script": script}),
-      encoding="utf-8",
-    )
-    result = subprocess.run(
-      ["node", str(harness_path), str(input_path)],
-      check=True,
-      cwd=ROOT,
-      capture_output=True,
-      text=True,
-    )
-  return json.loads(result.stdout)
 
 
 def assert_transition(
@@ -231,10 +158,11 @@ def main() -> int:
     if token not in app_script:
       raise AssertionError(f"missing app token {token}")
 
-  rendered = run_rabbita_script(
+  rendered = run_rabbita_vm(
     extract_json_script(html, "moonmoon-view-model"),
     extract_json_script(html, "moonmoon-moonbook"),
-    app_script,
+    SNAPSHOT_JS,
+    prefix="moonmoon-rabbita-closeout-action-review-",
   )
   assert_snapshot(rendered["initial"], "RequestEvidence", "NeedsEvidence", "Need evidence")
   assert_snapshot(rendered["deferred"], "Defer", "Deferred", "Defer")
