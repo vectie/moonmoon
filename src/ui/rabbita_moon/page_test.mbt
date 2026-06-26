@@ -40,6 +40,8 @@ test "Rabbita Moon page exposes globe and review anchors" {
   assert_true(html.contains("lola-data-map"))
   assert_true(html.contains("toolbar"))
   assert_true(html.contains("terrain-grid"))
+  assert_true(html.contains("mission-evidence-summary"))
+  assert_true(html.contains("mission-evidence-filters"))
   assert_true(html.contains("mission-evidence-queue"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))

@@ -9,6 +9,7 @@ const clearanceDecisions = new Map(clearanceItems.map(item => [item.item_id, ini
 const closeoutActionEntryId = 'moonclaw/first-trusted-square/remediation-margin-closeout-action-task';
 const closeoutActionReviewItemId = 'moonclaw-remediation-margin-closeout-action-review';
 let closeoutActionDecision = 'RequestEvidence';
+let activeEvidenceFamily = 'all';
 const decisionOptions = [
   ['Accept', 'Accept'],
   ['Reject', 'Reject'],
@@ -303,12 +304,77 @@ const missionEvidenceQueue = [
   ['blocker', 'Margin projection', 'moonrobo/first-trusted-square/remediation-margin-projection'],
 ];
 
-function renderMissionEvidenceQueue() {
-  const target = document.getElementById('mission-evidence-queue');
-  const rows = missionEvidenceQueue
+const evidenceFamilyOptions = [
+  ['all', 'All'],
+  ['blocker', 'Blockers'],
+  ['remediation', 'Work'],
+  ['receipt', 'Receipts'],
+  ['simulation', 'Simulation'],
+  ['review', 'Review'],
+];
+
+function missionEvidenceRows() {
+  return missionEvidenceQueue
     .map(([family, label, entryId]) => ({ family, label, entry: entryById(entryId) }))
     .filter(row => row.entry);
-  target.replaceChildren(...rows.map(row =>
+}
+
+function evidenceFamilyCounts(rows) {
+  return rows.reduce((counts, row) => {
+    counts[row.family] = (counts[row.family] || 0) + 1;
+    counts.all += 1;
+    return counts;
+  }, { all: 0, blocker: 0, remediation: 0, receipt: 0, simulation: 0, review: 0 });
+}
+
+function renderMissionEvidenceSummary(rows, counts) {
+  document.getElementById('mission-evidence-summary').replaceChildren(
+    el('div', { className: 'evidence-summary-item' }, [
+      el('b', { text: String(counts.all) }),
+      el('span', { text: 'queued evidence' })
+    ]),
+    el('div', { className: 'evidence-summary-item' }, [
+      el('b', { text: String(counts.blocker) }),
+      el('span', { text: 'active blockers' })
+    ]),
+    el('div', { className: 'evidence-summary-item' }, [
+      el('b', { text: String(counts.receipt) }),
+      el('span', { text: 'receipts' })
+    ]),
+    el('div', { className: 'evidence-summary-item' }, [
+      el('b', { text: String(rows.filter(row => row.entry.summary.includes('hardware')).length) }),
+      el('span', { text: 'hardware-gated' })
+    ])
+  );
+}
+
+function renderMissionEvidenceFilters(counts) {
+  document.getElementById('mission-evidence-filters').replaceChildren(...evidenceFamilyOptions.map(([family, label]) => {
+    const button = el('button', {
+      className: 'evidence-filter',
+      type: 'button',
+      'data-evidence-filter': family,
+      'aria-pressed': String(family === activeEvidenceFamily),
+      text: `${label} ${counts[family]}`
+    });
+    button.addEventListener('click', () => {
+      activeEvidenceFamily = family;
+      renderMissionEvidenceQueue();
+    });
+    return button;
+  }));
+}
+
+function renderMissionEvidenceQueue() {
+  const target = document.getElementById('mission-evidence-queue');
+  const rows = missionEvidenceRows();
+  const counts = evidenceFamilyCounts(rows);
+  const visibleRows = activeEvidenceFamily === 'all'
+    ? rows
+    : rows.filter(row => row.family === activeEvidenceFamily);
+  renderMissionEvidenceSummary(rows, counts);
+  renderMissionEvidenceFilters(counts);
+  target.replaceChildren(...visibleRows.map(row =>
     el('article', {
       className: 'evidence-row',
       'data-evidence-family': row.family,

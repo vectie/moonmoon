@@ -172,6 +172,8 @@ pub fn render_html(
     $|    </section>
     $|    <section class="section evidence-queue-section">
     $|      <h2>Mission Evidence Queue</h2>
+    $|      <div id="mission-evidence-summary" class="evidence-summary" aria-label="Mission evidence queue summary"></div>
+    $|      <div id="mission-evidence-filters" class="evidence-filter-bar" role="group" aria-label="Mission evidence queue filters"></div>
     $|      <div id="mission-evidence-queue" class="evidence-queue" aria-label="Mission evidence queue for remediation, refresh, regenerated receipts, and blocker projections"></div>
     $|    </section>
     $|    <section class="section">
