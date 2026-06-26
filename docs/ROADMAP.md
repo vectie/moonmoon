@@ -206,6 +206,10 @@ Current implementation status:
   `scripts/check_rabbita_mission_evidence_queue.py`; the queue verifier checks
   all rendered remediation/review/simulation rows against embedded MoonBook
   entries and materialized workspace payloads.
+- MoonBook per-entry workspace checks and MoonClaw per-packet checks have been
+  collapsed into `scripts/check_moonbook_workspace.py` and
+  `scripts/check_moonclaw_packets.py`, keeping Python at suite-boundary
+  verification instead of one-off artifact assertions.
 - The existing NASA south-pole landscape and SVG LOLA corridor map remain the
   local detail and fallback context after the Moon-scale opening view.
 - Browser-level verification now checks that the WebGL canvas is nonblank,

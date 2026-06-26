@@ -971,7 +971,7 @@ def moonclaw_gap_task(preview: dict[str, Any], transition_file: Path) -> dict[st
       "python3 scripts/check_energy_margin_remediation.py",
       "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
       "python3 scripts/materialize_moonbook_workspace.py --check",
-      "python3 scripts/check_moonclaw_gap_remediation_receipt.py",
+      "python3 scripts/check_moonclaw_packets.py",
       "/Users/kq/.moon/bin/moon test",
     ],
     "acceptance_criteria": [

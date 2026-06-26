@@ -285,6 +285,16 @@ fn rabbita_mission_evidence_check_path() -> String {
 }
 
 ///|
+fn moonbook_workspace_check_path() -> String {
+  "scripts/check_moonbook_workspace.py"
+}
+
+///|
+fn moonclaw_packets_check_path() -> String {
+  "scripts/check_moonclaw_packets.py"
+}
+
+///|
 fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
   let best = dossier.corridor_scan[0]
   let route_promoted = best.selected_route_id != ""
@@ -527,8 +537,9 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "scripts/import_rabbita_transitions.py",
       ],
       evidence: [
-        "output/moonclaw/first_trusted_square_moonrobo_gap_task.json", "output/moonrobo/first_trusted_square_readiness_preview.json",
-        "scripts/check_moonclaw_gap_task.py",
+        "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
+        "output/moonrobo/first_trusted_square_readiness_preview.json",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: a MoonClaw task packet consumes the imported-clearance gap report and names concrete remediation commands, acceptance checks, and robot-safety invariants",
     },
@@ -559,7 +570,8 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_readiness_preview.json", "scripts/import_rabbita_transitions.py",
       ],
       evidence: [
-        "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json", "scripts/check_moonclaw_gap_remediation_receipt.py",
+        "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a receipt for the imported gap task that maps every blocker gap to cleared evidence or a still-blocking next action while preserving MoonRobo hardware denial",
     },
@@ -575,7 +587,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
-        "scripts/check_moonbook_imported_gap_receipt_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: imported transition builds materialize the MoonClaw gap remediation receipt into the MoonBook workspace index, manifest, and per-entry payloads",
     },
@@ -622,7 +634,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/gap-remediation-modeling.json",
-        "scripts/check_moonbook_gap_remediation_modeling_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: imported transition builds materialize the MoonRobo gap remediation modeling pass into the MoonBook workspace index, manifest, and per-entry payloads",
     },
@@ -653,7 +665,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-horizon.json",
-        "scripts/check_moonbook_selected_route_horizon_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: selected-route horizon evidence is indexed, materialized, and validated in the MoonBook workspace",
     },
@@ -685,7 +697,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/northeast-stepout-terrain-remediation.json",
-        "scripts/check_moonbook_selected_route_terrain_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: selected-route terrain remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
     },
@@ -717,7 +729,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/mission/first-trusted-square/energy-remediation.json",
-        "scripts/check_moonbook_energy_remediation_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: selected-route energy remediation evidence is indexed, materialized, and validated in the MoonBook workspace",
     },
@@ -765,7 +777,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-packet.json",
-        "scripts/check_moonbook_simulation_review_packet_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: selected-route simulation review packet is indexed, materialized, and validated in the MoonBook workspace without changing hardware authority",
     },
@@ -808,7 +820,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-review-decision.json",
-        "scripts/check_moonbook_simulation_review_decision_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: selected-route simulation review decision is indexed, materialized, and validated in the MoonBook workspace with hardware authority denied",
     },
@@ -855,7 +867,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/simulation-blocker-reduction.json",
-        "scripts/check_moonbook_simulation_blocker_reduction_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: simulation blocker reduction is indexed, materialized, and validated in MoonBook with closed and active blocker counts preserved",
     },
@@ -885,7 +897,8 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json",
       ],
       evidence: [
-        "output/moonclaw/first_trusted_square_remediation_margin_task.json", "scripts/check_moonclaw_remediation_margin_task.py",
+        "output/moonclaw/first_trusted_square_remediation_margin_task.json",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw has one task packet that preserves all 3 active margin blockers, ranks terrain/horizon/energy work, and keeps hardware authority denied",
     },
@@ -901,7 +914,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
-        "scripts/check_moonbook_remediation_margin_task_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin task with 3 active margin blockers and HardwareDenied authority preserved",
     },
@@ -926,11 +939,13 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       title: "Close remediation-margin task with a MoonClaw receipt loop",
       outcome: "Each active remediation-margin artifact can be carried forward or cleared with explicit evidence before MoonRobo simulation readiness changes",
       depends_on: [
-        "output/moonclaw/first_trusted_square_remediation_margin_task.json", "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
-        "scripts/check_moonclaw_remediation_margin_task.py",
+        "output/moonclaw/first_trusted_square_remediation_margin_task.json",
+        "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-task.json",
+        moonclaw_packets_check_path(),
       ],
       evidence: [
-        "output/moonclaw/first_trusted_square_remediation_margin_receipt.json", "scripts/check_moonclaw_remediation_margin_receipt.py",
+        "output/moonclaw/first_trusted_square_remediation_margin_receipt.json",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a remediation-margin receipt that maps terrain, horizon, and energy artifacts to cleared evidence or still-blocking next actions while preserving HardwareDenied authority",
     },
@@ -1008,7 +1023,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-projection.json",
-        "scripts/check_moonbook_remediation_margin_projection_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin projection with no-consume simulation status, still-blocking margin ids, and HardwareDenied authority",
     },
@@ -1039,7 +1054,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_task.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a refresh task that consumes the no-consume projection, ranks terrain/horizon/energy evidence refreshes, and preserves HardwareDenied authority",
     },
@@ -1056,7 +1071,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
-        "scripts/check_moonbook_remediation_margin_refresh_task_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin refresh task with ranked terrain/horizon/energy refreshes and HardwareDenied authority",
     },
@@ -1083,11 +1098,11 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-task.json",
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_task.py",
+        moonclaw_packets_check_path(),
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_receipt.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_receipt.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a remediation-margin refresh receipt that maps each ranked terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
     },
@@ -1104,7 +1119,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json",
-        "scripts/check_moonbook_remediation_margin_refresh_receipt_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin refresh receipt with terrain/horizon/energy result accounting and HardwareDenied authority",
     },
@@ -1152,7 +1167,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-modeling.json",
-        "scripts/check_moonbook_remediation_margin_refresh_modeling_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin refresh modeling pass with still-blocking terrain/horizon/energy refresh results, no-consume simulation status, and HardwareDenied authority",
     },
@@ -1200,7 +1215,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-refresh-projection.json",
-        "scripts/check_moonbook_remediation_margin_refresh_projection_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin refresh projection with AllRefreshesStillBlocking source state, no-consume simulation status, terrain/horizon/energy refresh blockers, and HardwareDenied authority",
     },
@@ -1231,7 +1246,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_followup_task.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits the next remediation-margin refresh task from the durable refresh projection, preserving no-consume simulation status, terrain/horizon/energy blockers, and HardwareDenied authority",
     },
@@ -1244,7 +1259,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_followup_task.py",
+        moonclaw_packets_check_path(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
       done_when: "done: Rabbita renders the remediation-margin refresh follow-up task with NoConsumeRefreshSimulationBlocked status, AllRefreshesStillBlocking source state, terrain/horizon/energy refresh blockers, follow-up target commands, and HardwareDenied authority",
@@ -1263,7 +1278,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_followup_receipt.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a remediation-margin refresh follow-up receipt that maps each visible follow-up terrain/horizon/energy refresh action to refreshed evidence or a still-blocking carry-forward while preserving HardwareDenied authority",
     },
@@ -1276,7 +1291,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_receipt.json",
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt.json",
-        "scripts/check_moonclaw_remediation_margin_refresh_followup_receipt.py",
+        moonclaw_packets_check_path(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
       done_when: "done: Rabbita renders the remediation-margin refresh follow-up receipt with FollowupRefreshesCarriedForward state, 3 still-blocking follow-up refreshes, terrain/horizon/energy result ids, and HardwareDenied authority",
@@ -1441,7 +1456,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_closeout_action_task.json",
-        "scripts/check_moonclaw_remediation_margin_closeout_action_task.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits one remediation-margin closeout action task that consumes the closeout policy, preserves no-consume simulation and HardwareDenied authority, and names the terrain escalate, horizon retry-with-new-evidence, and energy freeze actions with required evidence",
     },
@@ -1458,7 +1473,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
-        "scripts/check_moonbook_remediation_margin_closeout_action_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the remediation-margin closeout action task with NeedsReview state, terrain escalate, horizon retry-with-new-evidence, energy freeze actions, no-consume simulation status, and HardwareDenied authority",
     },
@@ -1521,7 +1536,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_action_plan.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a reviewed remediation-margin action plan only after an accepted closeout action review, carrying terrain escalation, horizon retry-with-new-evidence, and energy freeze actions with no automatic refresh loop and HardwareDenied authority preserved",
     },
@@ -1533,11 +1548,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "The accepted MoonClaw reviewed action plan becomes durable MoonBook workspace evidence before terrain escalation, horizon retry, or energy freeze work is scheduled",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_action_plan.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_action_plan.py", "scripts/materialize_moonbook_workspace.py",
+        moonclaw_packets_check_path(),
+        "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_action_plan_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the reviewed remediation-margin action plan with accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, and HardwareDenied authority preserved",
     },
@@ -1549,7 +1565,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the accepted MoonClaw reviewed action plan from MoonBook before terrain escalation, horizon retry, or energy freeze work is scheduled",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_action_plan_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1568,7 +1584,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_work_items.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits three reviewed remediation-margin work items that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1580,11 +1596,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "The three accepted MoonClaw reviewed work items become durable MoonBook workspace evidence before execution or downstream simulation review",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_items.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_work_items.py", "scripts/materialize_moonbook_workspace.py",
+        moonclaw_packets_check_path(),
+        "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_work_items_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the three reviewed remediation-margin work items with accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
     },
@@ -1596,7 +1613,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the three accepted reviewed MoonClaw work items from MoonBook before execution or downstream simulation review",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_work_items_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1615,7 +1632,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_work_item_receipts.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits reviewed remediation-margin work item receipts that preserve accepted review provenance, terrain escalation, horizon retry-with-new-evidence, energy freeze accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1627,12 +1644,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "The three accepted MoonClaw reviewed work item receipts become durable MoonBook workspace evidence before fresh evidence execution or downstream simulation review",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_work_item_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_work_item_receipts.py",
+        moonclaw_packets_check_path(),
         "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_work_item_receipts_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the three reviewed remediation-margin work item receipts with pending fresh evidence state, accepted review provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
     },
@@ -1644,7 +1661,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the three accepted reviewed work item receipts from MoonBook before fresh evidence execution or downstream simulation review",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_work_item_receipts_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1663,7 +1680,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_fresh_evidence_task.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_fresh_evidence_task.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits a reviewed remediation-margin fresh-evidence task that consumes pending work item receipts, preserves accepted review provenance, keeps no automatic refresh loop and no simulation consumption, and records HardwareDenied authority",
     },
@@ -1675,12 +1692,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "The reviewed fresh-evidence task becomes durable MoonBook workspace evidence before terrain escalation, horizon regeneration, or energy freeze verification runs",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_reviewed_fresh_evidence_task.json",
-        "scripts/check_moonclaw_remediation_margin_reviewed_fresh_evidence_task.py",
+        moonclaw_packets_check_path(),
         "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_fresh_evidence_task_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the reviewed remediation-margin fresh-evidence task with source receipt provenance, pending terrain/horizon/energy actions, no automatic refresh loop, no simulation consumption, and HardwareDenied authority preserved",
     },
@@ -1692,7 +1709,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the accepted reviewed fresh-evidence task from MoonBook before terrain escalation, horizon regeneration, or energy freeze verification runs",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json",
-        "scripts/check_moonbook_remediation_margin_reviewed_fresh_evidence_task_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1711,7 +1728,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_fresh_evidence_action_receipts.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits fresh-evidence action receipts that preserve source receipt provenance, record terrain/horizon/energy execution modes, keep no automatic refresh loop and no simulation consumption, and preserve HardwareDenied authority",
     },
@@ -1723,12 +1740,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Fresh-evidence action receipts become durable MoonBook workspace evidence before reviewed work item receipt regeneration or downstream simulation review",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_fresh_evidence_action_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_fresh_evidence_action_receipts.py",
+        moonclaw_packets_check_path(),
         "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
-        "scripts/check_moonbook_remediation_margin_fresh_evidence_action_receipts_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes fresh-evidence action receipts with source receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1740,7 +1757,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the materialized fresh-evidence action receipts before reviewed work item receipt regeneration or downstream simulation review",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json",
-        "scripts/check_moonbook_remediation_margin_fresh_evidence_action_receipts_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1759,7 +1776,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits regenerated reviewed work item receipts that consume the fresh-evidence action receipts, preserve source receipt and review provenance, keep no automatic refresh loop and no simulation consumption, and preserve HardwareDenied authority",
     },
@@ -1771,12 +1788,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Regenerated reviewed work item receipts become durable MoonBook workspace evidence before Rabbita surface or downstream MoonRobo simulation review",
       depends_on: [
         "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
-        "scripts/check_moonclaw_remediation_margin_regenerated_reviewed_work_item_receipts.py",
+        moonclaw_packets_check_path(),
         "scripts/materialize_moonbook_workspace.py",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
-        "scripts/check_moonbook_remediation_margin_regenerated_reviewed_work_item_receipts_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes regenerated reviewed work item receipts with source action receipt provenance, source receipt and review provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1788,7 +1805,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the materialized regenerated reviewed work item receipts before downstream MoonRobo simulation review",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
-        "scripts/check_moonbook_remediation_margin_regenerated_reviewed_work_item_receipts_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1824,7 +1841,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
-        "scripts/check_moonbook_remediation_margin_regenerated_receipt_readiness_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes regenerated receipt readiness with pending fresh evidence state, source action receipt provenance, terrain/horizon/energy execution modes, no simulation consumption, and HardwareDenied authority",
     },
@@ -1836,7 +1853,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the durable MoonRobo regenerated receipt readiness gate before any simulation review consumes it",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
-        "scripts/check_moonbook_remediation_margin_regenerated_receipt_readiness_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1854,7 +1871,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
-        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_task.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits an explicit fresh-evidence task for the three pending regenerated receipts, preserving source action receipt provenance, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1866,12 +1883,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "The MoonClaw fresh-evidence task emitted from regenerated receipt readiness becomes durable workspace evidence before Rabbita or downstream action receipts inspect it",
       depends_on: [
         "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
-        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_task.py",
+        moonclaw_packets_check_path(),
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_task_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes the regenerated readiness fresh-evidence task with source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1883,7 +1900,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the durable MoonClaw fresh-evidence task from regenerated receipt readiness before any downstream action receipts run",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_task_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1901,7 +1918,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
-        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_action_receipts.py",
+        moonclaw_packets_check_path(),
       ],
       done_when: "done: MoonClaw emits fresh-evidence action receipts for the regenerated readiness task with source readiness gate provenance, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1913,12 +1930,12 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Regenerated readiness fresh-evidence action receipts become durable MoonBook workspace evidence before Rabbita or readiness recomputation consumes them",
       depends_on: [
         "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
-        "scripts/check_moonclaw_regenerated_receipt_readiness_fresh_evidence_action_receipts.py",
+        moonclaw_packets_check_path(),
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json",
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_action_receipts_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes regenerated readiness fresh-evidence action receipts with source readiness gate provenance, source action receipt provenance, terrain/horizon/energy execution modes, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
@@ -1930,7 +1947,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the durable regenerated readiness fresh-evidence action receipts and their source readiness/action receipt provenance before readiness recomputation proceeds",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_fresh_evidence_action_receipts_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],
@@ -1966,7 +1983,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       ],
       evidence: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_action_receipt_closeout_workspace.py",
+        moonbook_workspace_check_path(),
       ],
       done_when: "done: MoonBook indexes and materializes regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
     },
@@ -1978,7 +1995,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       outcome: "Operators can inspect the durable MoonRobo closeout from regenerated readiness action receipts before any later simulation-review gate consumes it",
       depends_on: [
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
-        "scripts/check_moonbook_regenerated_receipt_readiness_action_receipt_closeout_workspace.py",
+        moonbook_workspace_check_path(),
         rabbita_ui_artifact(),
       ],
       evidence: [rabbita_ui_artifact(), rabbita_mission_evidence_check_path()],

@@ -89,6 +89,11 @@ bundle, runtime, and Mission Evidence Queue checks so missing, stale,
 non-booting, or unmaterialized evidence rows fail before the page is handed to
 an operator.
 
+MoonBook and MoonClaw verification are now suite-level checks instead of
+per-entry Python files. `scripts/check_moonbook_workspace.py` verifies the
+complete materialized workspace, and `scripts/check_moonclaw_packets.py`
+verifies the generated MoonClaw packet suite.
+
 MoonClaw outputs currently include bounded modeling proposals, concrete
 ephemeris and corridor acquisition tasks, a deterministic route-scoring receipt, a
 deterministic corridor-expansion receipt, and a needs-review ephemeris receipt.

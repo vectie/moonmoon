@@ -41,9 +41,7 @@ test "first trusted square remediation margin task preserves active blockers" {
     }),
   )
   assert_true(
-    task.commands.contains(
-      "python3 scripts/check_moonclaw_remediation_margin_task.py",
-    ),
+    task.commands.contains("python3 scripts/check_moonclaw_packets.py"),
   )
 }
 

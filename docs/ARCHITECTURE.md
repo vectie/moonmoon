@@ -104,6 +104,13 @@ it is considered publishable. The Mission Evidence Queue has one verifier,
 queue row against embedded MoonBook entries and materialized workspace payloads
 instead of preserving one stale check script per row.
 
+MoonBook workspace verification follows the same consolidation rule:
+`scripts/check_moonbook_workspace.py` checks the whole materialized workspace
+through the central materializer, including imported-transition output.
+MoonClaw packet verification is similarly centralized in
+`scripts/check_moonclaw_packets.py`, which checks generated packet counts,
+identity, receipt status, and safety invariants across the packet suite.
+
 Rabbita verification scripts should use `scripts/rabbita_ui_harness.py` to run
 the generated HTML data islands and external browser assets through one minimal
 DOM/VM harness in the same order as the page. Checks should assert user-facing

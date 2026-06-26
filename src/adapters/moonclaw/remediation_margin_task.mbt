@@ -144,7 +144,7 @@ pub fn first_trusted_square_remediation_margin_task() -> MoonClawRemediationMarg
     commands: [
       "python3 scripts/generate_selected_route_terrain_remediation.py --check", "python3 scripts/generate_selected_route_horizon.py --check",
       "python3 scripts/check_energy_margin_remediation.py", "bash scripts/build_moonmoon_dossier.sh --review-transitions data/fixtures/rabbita_clearance_transitions_accept.json",
-      "python3 scripts/check_moonrobo_simulation_blocker_reduction.py", "python3 scripts/check_moonclaw_remediation_margin_task.py",
+      "python3 scripts/check_moonrobo_simulation_blocker_reduction.py", "python3 scripts/check_moonclaw_packets.py",
       "/Users/kq/.moon/bin/moon test",
     ],
     acceptance_criteria: [
