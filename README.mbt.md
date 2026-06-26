@@ -169,11 +169,9 @@ workflows, terrain exaggeration, ridge/gully/trench style analysis, queryable
 terrain regions, and exportable visual evidence. The implementation should be
 MoonBit-first and suite-native.
 
-Moonmoon should also use `../marble` as UI architecture inspiration rather than
-as a dependency. Marble's Moon theme shows the right product shape: a globe
-view, texture layer, geodata overlays, continuous zoom, compass, scale bar,
-coordinate grid, and layer settings. Rabbita should implement the small
-Moonmoon-native version of that idea around the first trusted square.
+Rabbita should implement a small Moonmoon-native live globe around the first
+trusted square: texture layer, geodata overlays, continuous zoom, compass,
+scale bar, coordinate grid, and layer settings.
 
 Relevant public data/tooling references include:
 

@@ -94,11 +94,9 @@ only presentation state such as layer selection and selected terrain cell; it
 does not recompute terrain, route, energy, or review facts.
 
 The next Rabbita slice should upgrade that browser surface from static imagery
-to a live Moon explorer. The local reference is KDE Marble, especially
-`../marble/data/maps/moon/clementine/clementine.dgml`: Marble treats a globe as
-a widget/model boundary with texture layers, geodata overlays, continuous zoom,
-coordinate grid, compass, scale bar, and layer settings. Moonmoon should not
-port Marble, but it should adopt the same separation:
+to a live Moon explorer. The globe should be treated as a presentation boundary
+with texture layers, geodata overlays, continuous zoom, coordinate grid,
+compass, scale bar, and layer settings. Moonmoon should keep that separation:
 
 ```text
 MoonBit view model + MoonBook ledger

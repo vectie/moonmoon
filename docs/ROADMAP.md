@@ -187,8 +187,7 @@ Current implementation status:
 
 Live Moonviewer update plan:
 
-- Use the KDE Marble Moon theme as design inspiration, not a dependency.
-  Marble's useful ideas are a globe widget, texture layer, geodata overlays,
+- Use a Moonmoon-native globe model: texture layer, geodata overlays,
   continuous zoom, coordinate grid, compass, scale bar, and layer settings.
 - Add a small browser globe runtime under `src/ui/rabbita_moon` and generated
   `output/ui/rabbita/` assets. Prefer a local Three.js/WebGL bundle for the
