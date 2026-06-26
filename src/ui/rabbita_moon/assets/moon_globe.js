@@ -245,6 +245,7 @@
       target: null
     };
     const overlayState = {
+      grid: true,
       footprint: true,
       route: true,
       corridor: true
@@ -385,6 +386,45 @@
       return points.map(point => projectedPoint(point, model, mvp));
     }
 
+    function gridLine(points, model, mvp, major) {
+      const paths = [];
+      let current = [];
+      for (const point of projectedPoints(points, model, mvp)) {
+        if (!point) {
+          if (current.length >= 2) paths.push(current);
+          current = [];
+        } else {
+          current.push(point);
+        }
+      }
+      if (current.length >= 2) paths.push(current);
+      return paths.map(path => svgEl('path', {
+        class: major ? 'moon-globe-grid moon-globe-grid-major' : 'moon-globe-grid',
+        d: path
+          .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+          .join(' ')
+      }));
+    }
+
+    function renderGraticule(model, mvp) {
+      const lines = [];
+      for (let lat = -60; lat <= 60; lat += 30) {
+        const points = [];
+        for (let lon = -180; lon <= 180; lon += 6) {
+          points.push({ latitude_deg: lat, longitude_deg: lon });
+        }
+        lines.push(...gridLine(points, model, mvp, lat === 0));
+      }
+      for (let lon = -150; lon <= 180; lon += 30) {
+        const points = [];
+        for (let lat = -84; lat <= 84; lat += 4) {
+          points.push({ latitude_deg: lat, longitude_deg: lon });
+        }
+        lines.push(...gridLine(points, model, mvp, lon === 0 || Math.abs(lon) === 180));
+      }
+      return lines;
+    }
+
     function bounds(points) {
       let minX = points[0].x;
       let maxX = points[0].x;
@@ -480,6 +520,9 @@
       const height = Math.max(1, root.clientHeight);
       overlaySvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
       const children = [];
+      if (overlayState.grid) {
+        children.push(...renderGraticule(model, mvp));
+      }
       if (overlayState.footprint && overlay.footprint && overlay.footprint.length >= 3) {
         const footprint = projectedPoints(overlay.footprint, model, mvp);
         if (footprint.every(Boolean)) {
@@ -538,6 +581,7 @@
       }
       overlaySvg.replaceChildren(...children);
       root.dataset.overlayReady = children.length > 0 ? 'true' : 'hidden';
+      root.dataset.gridReady = overlayState.grid ? String(children.some(child => child.classList.contains('moon-globe-grid'))) : 'false';
     }
 
     function render() {

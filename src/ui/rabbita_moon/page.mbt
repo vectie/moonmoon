@@ -189,6 +189,16 @@ fn app_styles() -> String {
     #|  vector-effect: non-scaling-stroke;
     #|  filter: drop-shadow(0 0 5px rgba(240,196,93,0.48));
     #|}
+    #|.moon-globe-grid {
+    #|  fill: none;
+    #|  stroke: rgba(245,247,244,0.18);
+    #|  stroke-width: 0.8;
+    #|  vector-effect: non-scaling-stroke;
+    #|}
+    #|.moon-globe-grid-major {
+    #|  stroke: rgba(240,196,93,0.34);
+    #|  stroke-width: 1.1;
+    #|}
     #|.moon-globe-route {
     #|  fill: none;
     #|  stroke: #75d1c5;
@@ -1656,6 +1666,7 @@ pub fn render_html(
     $|          <button type="button" data-globe-action="zoom-out" title="Zoom out">-</button>
     $|          <button type="button" data-globe-action="home" title="Reset Moon view">H</button>
     $|          <button type="button" data-globe-action="site" title="Fly to trusted square">S</button>
+    $|          <button type="button" data-globe-layer="grid" aria-pressed="true" title="Toggle coordinate grid">G</button>
     $|          <button type="button" data-globe-layer="footprint" aria-pressed="true" title="Toggle trusted square footprint">F</button>
     $|          <button type="button" data-globe-layer="route" aria-pressed="true" title="Toggle promoted route trace">R</button>
     $|          <button type="button" data-globe-layer="corridor" aria-pressed="true" title="Toggle measured corridor windows">C</button>
