@@ -2,6 +2,13 @@
   const DEG = Math.PI / 180;
   const FOV = 42 * DEG;
   const MOON_RADIUS_KM = 1737.4;
+  const DRAG_SENSITIVITY = 0.008;
+  const MIN_ROTATION_X = -1.48;
+  const MAX_ROTATION_X = 1.48;
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
 
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
@@ -669,8 +676,8 @@
       const dy = event.clientY - state.lastY;
       state.lastX = event.clientX;
       state.lastY = event.clientY;
-      state.rotationY += dx * 0.008;
-      state.rotationX = Math.max(-1.48, Math.min(1.48, state.rotationX + dy * 0.008));
+      state.rotationY += dx * DRAG_SENSITIVITY;
+      state.rotationX = clamp(state.rotationX - dy * DRAG_SENSITIVITY, MIN_ROTATION_X, MAX_ROTATION_X);
       render();
       updateInstruments(screenCoordinate(event.clientX, event.clientY));
     });
