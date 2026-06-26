@@ -1980,7 +1980,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "rabbita-regenerated-receipt-readiness-action-receipt-closeout-surface",
-      priority: 70,
+      priority: 20,
       lane: ViewerLane,
       title: "Surface regenerated readiness action receipt closeout in Rabbita",
       outcome: "Operators can inspect the durable MoonRobo closeout from regenerated readiness action receipts before any later simulation-review gate consumes it",
@@ -1992,7 +1992,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       evidence: [
         "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_regenerated_receipt_readiness_action_receipt_closeout_surface.py",
       ],
-      done_when: "Rabbita renders regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: Rabbita renders regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "moonrobo-regenerated-receipt-readiness-closeout-simulation-gate",
+      priority: 70,
+      lane: SuiteLane,
+      title: "Gate simulation review on regenerated readiness closeout",
+      outcome: "MoonRobo consumes the visible regenerated readiness action receipt closeout and records whether simulation review remains blocked or can proceed without changing hardware authority",
+      depends_on: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_regenerated_receipt_readiness_action_receipt_closeout_surface.py",
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
+      ],
+      evidence: [
+        "output/moonrobo/first_trusted_square_regenerated_receipt_readiness_closeout_simulation_gate.json",
+        "scripts/check_moonrobo_regenerated_receipt_readiness_closeout_simulation_gate.py",
+      ],
+      done_when: "MoonRobo records simulation-review gate status from regenerated readiness action receipt closeout with pending/ready receipt accounting, no automatic refresh loop, no simulation consumption while receipts remain pending, and HardwareDenied authority",
     },
   ]
 }
