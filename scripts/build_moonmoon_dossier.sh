@@ -130,6 +130,7 @@ python3 scripts/generate_selected_route_terrain_remediation.py
 cp "$ROOT/src/ui/rabbita_moon/assets/southpole_10deg_print.jpg" "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
 cp "$ROOT/src/ui/rabbita_moon/assets/lunar_global_texture.jpg" "$RABBITA_ASSET_OUT/lunar_global_texture.jpg"
 cp "$ROOT/src/ui/rabbita_moon/assets/lunar_global_texture.source.json" "$RABBITA_ASSET_OUT/lunar_global_texture.source.json"
+cp "$ROOT/src/ui/rabbita_moon/assets/rabbita_moon.css" "$RABBITA_ASSET_OUT/rabbita_moon.css"
 cp "$ROOT/src/ui/rabbita_moon/assets/moon_globe.js" "$RABBITA_ASSET_OUT/moon_globe.js"
 if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
   for REVIEW_TRANSITION_PATH in "${REVIEW_TRANSITIONS[@]}"; do
@@ -226,5 +227,6 @@ printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
 printf 'wrote %s\n' "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
 printf 'wrote %s\n' "$RABBITA_ASSET_OUT/lunar_global_texture.jpg"
 printf 'wrote %s\n' "$RABBITA_ASSET_OUT/lunar_global_texture.source.json"
+printf 'wrote %s\n' "$RABBITA_ASSET_OUT/rabbita_moon.css"
 printf 'wrote %s\n' "$RABBITA_ASSET_OUT/moon_globe.js"
 printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"
