@@ -85,6 +85,21 @@ pub(all) struct RouteOverlay {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct CorridorWindowView {
+  window_id : String
+  rank : Int
+  row_offset : Int
+  col_offset : Int
+  min_elevation_m : Double
+  max_elevation_m : Double
+  elevation_range_m : Double
+  max_neighbor_grade : Double
+  roughness_m : Double
+  decision : String
+  selected_route_id : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct InspectorFact {
   fact_id : String
   label : String
@@ -150,6 +165,7 @@ pub(all) struct TrustedSquareViewModel {
   terrain_cells : Array[TerrainCellView]
   routes : Array[RouteView]
   route_overlays : Array[RouteOverlay]
+  corridor_windows : Array[CorridorWindowView]
   selected_tile : TileInspector
   source_panel : SourcePanel
   scorecard : SiteScorecard

@@ -89,6 +89,7 @@ class Element {
 const elements = new Map();
 const document = {
   createElement(tag) { return new Element(tag); },
+  createElementNS(_namespace, tag) { return new Element(tag); },
   getElementById(id) {
     if (!elements.has(id)) elements.set(id, new Element('div', id));
     return elements.get(id);

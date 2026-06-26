@@ -109,17 +109,20 @@ fn app_styles() -> String {
     #|  align-items: center;
     #|  padding: 18px;
     #|}
-    #|.moon-disc {
-    #|  width: min(100%, 340px);
-    #|  aspect-ratio: 1;
+    #|.lola-map {
+    #|  width: min(100%, 430px);
+    #|  aspect-ratio: 1.12;
     #|  position: relative;
     #|  justify-self: center;
-    #|  filter: drop-shadow(0 0 26px rgba(220,228,222,0.22));
+    #|  border: 1px solid rgba(255,255,255,0.34);
+    #|  background: #12191c;
+    #|  overflow: hidden;
+    #|  filter: drop-shadow(0 0 22px rgba(186,205,199,0.2));
     #|}
     #|.site-marker {
-    #|  fill: rgba(240,196,93,0.12);
+    #|  fill: rgba(240,196,93,0.18);
     #|  stroke: #f0c45d;
-    #|  stroke-width: 2.5;
+    #|  stroke-width: 2;
     #|  vector-effect: non-scaling-stroke;
     #|}
     #|.route-trace {
@@ -127,28 +130,35 @@ fn app_styles() -> String {
     #|  stroke: #75d1c5;
     #|  stroke-width: 4;
     #|  stroke-linecap: round;
+    #|  stroke-linejoin: round;
     #|  vector-effect: non-scaling-stroke;
     #|  filter: drop-shadow(0 0 5px rgba(117,209,197,0.85));
     #|}
-    #|.moon-svg {
+    #|.lola-data-map {
     #|  width: 100%;
     #|  height: 100%;
     #|  display: block;
     #|}
-    #|.moon-grid {
-    #|  fill: none;
-    #|  stroke: rgba(255,255,255,0.24);
-    #|  stroke-width: 1;
+    #|.lola-window {
+    #|  stroke: rgba(255,255,255,0.2);
+    #|  stroke-width: 0.8;
     #|  vector-effect: non-scaling-stroke;
     #|}
-    #|.crater {
-    #|  fill: rgba(38,43,44,0.16);
-    #|  stroke: rgba(245,243,232,0.32);
-    #|  stroke-width: 1.5;
+    #|.lola-window-selected {
+    #|  stroke: #f0c45d;
+    #|  stroke-width: 2.5;
     #|  vector-effect: non-scaling-stroke;
+    #|  filter: drop-shadow(0 0 5px rgba(240,196,93,0.72));
     #|}
-    #|.mare {
-    #|  fill: rgba(57,65,67,0.34);
+    #|.lola-label {
+    #|  fill: rgba(255,255,255,0.72);
+    #|  font-size: 8px;
+    #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    #|}
+    #|.lola-source-label {
+    #|  fill: rgba(245,247,244,0.82);
+    #|  font-size: 10px;
+    #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     #|}
     #|.site-pin {
     #|  fill: #f0c45d;
@@ -476,7 +486,7 @@ fn app_styles() -> String {
     #|  .side-pane { max-height: none; }
     #|  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
     #|  .lunar-viewport { grid-template-columns: 1fr; }
-    #|  .moon-disc { width: min(100%, 300px); }
+    #|  .lola-map { width: min(100%, 360px); }
     #|  .metrics { grid-template-columns: 1fr; }
     #|  .decision-group { grid-template-columns: 1fr; }
     #|}
@@ -535,6 +545,99 @@ fn app_script() -> String {
     #|  }
     #|  for (const child of children) node.append(child);
     #|  return node;
+    #|}
+    #|
+    #|function svgEl(tag, attrs = {}, children = []) {
+    #|  const node = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    #|  for (const [key, value] of Object.entries(attrs)) {
+    #|    if (key === 'text') node.textContent = value;
+    #|    else node.setAttribute(key, value);
+    #|  }
+    #|  for (const child of children) node.append(child);
+    #|  return node;
+    #|}
+    #|
+    #|function lolaWindowFill(window, minElevation, maxElevation) {
+    #|  const mid = (window.min_elevation_m + window.max_elevation_m) / 2;
+    #|  const t = (mid - minElevation) / Math.max(1, maxElevation - minElevation);
+    #|  const shade = Math.round(54 + t * 118);
+    #|  const warm = Math.round(shade * 0.96);
+    #|  return `rgb(${shade}, ${warm}, ${Math.round(shade * 0.86)})`;
+    #|}
+    #|
+    #|function renderLolaDataViewport() {
+    #|  const svg = document.getElementById('lola-data-map');
+    #|  const windows = view.corridor_windows || [];
+    #|  if (!svg || windows.length === 0) return;
+    #|  const rows = windows.map(window => window.row_offset);
+    #|  const cols = windows.map(window => window.col_offset);
+    #|  const minRow = Math.min(...rows);
+    #|  const maxRow = Math.max(...rows);
+    #|  const minCol = Math.min(...cols);
+    #|  const maxCol = Math.max(...cols);
+    #|  const minElevation = Math.min(...windows.map(window => window.min_elevation_m));
+    #|  const maxElevation = Math.max(...windows.map(window => window.max_elevation_m));
+    #|  const pad = 18;
+    #|  const span = 324;
+    #|  const stepX = span / Math.max(1, (maxCol - minCol) / 4 + 1);
+    #|  const stepY = span / Math.max(1, (maxRow - minRow) / 4 + 1);
+    #|  const ordered = [...windows].sort((a, b) => a.rank - b.rank);
+    #|  const selected = ordered.find(window => window.selected_route_id === view.selected_route_id) || ordered[0];
+    #|  const cells = ordered.map(window => {
+    #|    const x = pad + ((window.col_offset - minCol) / 4) * stepX;
+    #|    const y = pad + ((window.row_offset - minRow) / 4) * stepY;
+    #|    const selectedWindow = window.window_id === selected.window_id;
+    #|    return svgEl('rect', {
+    #|      class: selectedWindow ? 'lola-window lola-window-selected' : 'lola-window',
+    #|      x: x.toFixed(2),
+    #|      y: y.toFixed(2),
+    #|      width: (stepX - 2).toFixed(2),
+    #|      height: (stepY - 2).toFixed(2),
+    #|      fill: lolaWindowFill(window, minElevation, maxElevation),
+    #|      'data-window-id': window.window_id,
+    #|      'data-rank': String(window.rank)
+    #|    });
+    #|  });
+    #|  const routeX = pad + ((selected.col_offset - minCol) / 4) * stepX + stepX / 2;
+    #|  const routeY = pad + ((selected.row_offset - minRow) / 4) * stepY + stepY / 2;
+    #|  const route = svgEl('path', {
+    #|    class: 'route-trace',
+    #|    d: `M${pad + stepX * 0.5} ${pad + stepY * 7.7} C${routeX - 66} ${routeY + 38}, ${routeX - 32} ${routeY + 12}, ${routeX} ${routeY}`
+    #|  });
+    #|  const marker = svgEl('rect', {
+    #|    class: 'site-marker',
+    #|    x: (routeX - stepX * 0.52).toFixed(2),
+    #|    y: (routeY - stepY * 0.52).toFixed(2),
+    #|    width: (stepX * 1.04).toFixed(2),
+    #|    height: (stepY * 1.04).toFixed(2),
+    #|    rx: '2'
+    #|  });
+    #|  const pin = svgEl('circle', {
+    #|    class: 'site-pin',
+    #|    cx: routeX.toFixed(2),
+    #|    cy: routeY.toFixed(2),
+    #|    r: '5'
+    #|  });
+    #|  const label = svgEl('text', {
+    #|    class: 'lola-source-label',
+    #|    x: '18',
+    #|    y: '356',
+    #|    text: `LOLA GDR 20m DEM, ${windows.length} measured corridor windows`
+    #|  });
+    #|  svg.replaceChildren(
+    #|    svgEl('rect', { x: '0', y: '0', width: '360', height: '380', fill: '#111819' }),
+    #|    svgEl('g', {}, cells),
+    #|    route,
+    #|    marker,
+    #|    pin,
+    #|    svgEl('text', {
+    #|      class: 'lola-label',
+    #|      x: (routeX + 8).toFixed(2),
+    #|      y: (routeY - 8).toFixed(2),
+    #|      text: `rank ${selected.rank} ${view.selected_route_id}`
+    #|    }),
+    #|    label
+    #|  );
     #|}
     #|
     #|function renderToolbar() {
@@ -1154,6 +1257,7 @@ fn app_script() -> String {
     #|}
     #|
     #|function render() {
+    #|  renderLolaDataViewport();
     #|  renderToolbar();
     #|  renderGrid();
     #|  renderInspector();
@@ -1235,46 +1339,8 @@ pub fn render_html(
     $|      <span class="status-pill">mission: \{decision}</span>
     $|    </div>
     $|    <section class="lunar-viewport" aria-label="Moon overview for first trusted square">
-    $|      <div class="moon-disc" aria-hidden="true">
-    $|        <svg class="moon-svg" viewBox="0 0 360 360" role="img" aria-label="Textured lunar map with first trusted square site window">
-    $|          <defs>
-    $|            <radialGradient id="moon-relief" cx="34%" cy="28%" r="68%">
-    $|              <stop offset="0%" stop-color="#ece9dc"/>
-    $|              <stop offset="34%" stop-color="#c7c8c0"/>
-    $|              <stop offset="68%" stop-color="#858f8d"/>
-    $|              <stop offset="100%" stop-color="#394447"/>
-    $|            </radialGradient>
-    $|            <filter id="moon-noise" x="-20%" y="-20%" width="140%" height="140%">
-    $|              <feTurbulence type="fractalNoise" baseFrequency="0.92" numOctaves="4" seed="27"/>
-    $|              <feColorMatrix type="saturate" values="0"/>
-    $|              <feComponentTransfer>
-    $|                <feFuncA type="table" tableValues="0 0.18"/>
-    $|              </feComponentTransfer>
-    $|            </filter>
-    $|            <clipPath id="moon-clip">
-    $|              <circle cx="180" cy="180" r="155"/>
-    $|            </clipPath>
-    $|          </defs>
-    $|          <circle cx="180" cy="180" r="156" fill="#111819"/>
-    $|          <g clip-path="url(#moon-clip)">
-    $|            <circle cx="180" cy="180" r="155" fill="url(#moon-relief)"/>
-    $|            <circle cx="180" cy="180" r="155" filter="url(#moon-noise)"/>
-    $|            <ellipse class="mare" cx="119" cy="128" rx="54" ry="31" transform="rotate(-24 119 128)"/>
-    $|            <ellipse class="mare" cx="227" cy="202" rx="61" ry="35" transform="rotate(18 227 202)"/>
-    $|            <ellipse class="mare" cx="161" cy="255" rx="42" ry="23" transform="rotate(-8 161 255)"/>
-    $|            <path class="moon-grid" d="M36 180h288M180 24v312M78 92c54 33 150 33 204 0M78 268c54-33 150-33 204 0M92 78c33 54 33 150 0 204M268 78c-33 54-33 150 0 204"/>
-    $|            <circle class="crater" cx="95" cy="201" r="20"/>
-    $|            <circle class="crater" cx="131" cy="82" r="13"/>
-    $|            <circle class="crater" cx="204" cy="112" r="16"/>
-    $|            <circle class="crater" cx="255" cy="150" r="10"/>
-    $|            <circle class="crater" cx="245" cy="264" r="22"/>
-    $|            <circle class="crater" cx="148" cy="222" r="9"/>
-    $|            <circle class="crater" cx="292" cy="212" r="12"/>
-    $|            <path class="route-trace" d="M102 219C139 199 180 184 216 168C235 160 252 151 270 137"/>
-    $|            <rect class="site-marker" x="218" y="125" width="72" height="50" transform="rotate(-13 254 150)" rx="2"/>
-    $|            <circle class="site-pin" cx="257" cy="148" r="6"/>
-    $|          </g>
-    $|          <circle cx="180" cy="180" r="155" fill="none" stroke="rgba(255,255,255,0.34)" stroke-width="1.5"/>
+    $|      <div class="lola-map">
+    $|        <svg id="lola-data-map" class="lola-data-map" viewBox="0 0 360 380" role="img" aria-label="LOLA GDR measured corridor scan map for first trusted square">
     $|        </svg>
     $|        <div class="map-controls" aria-hidden="true">
     $|          <span>+</span>
@@ -1289,7 +1355,7 @@ pub fn render_html(
     $|        </div>
     $|        <div>
     $|          <b>selected window</b>
-    $|          <span>northeast-stepout route corridor</span>
+    $|          <span>rank-1 northeast-stepout from 81 measured LOLA windows</span>
     $|        </div>
     $|        <div>
     $|          <b>robot authority</b>
