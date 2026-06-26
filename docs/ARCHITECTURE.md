@@ -93,9 +93,9 @@ renderer-neutral view model and MoonBook review ledger as JSON. The page owns
 only presentation state such as layer selection and selected terrain cell; it
 does not recompute terrain, route, energy, or review facts.
 
-The next Rabbita slice should upgrade that browser surface from static imagery
-to a live Moon explorer. The globe should be treated as a presentation boundary
-with texture layers, geodata overlays, continuous zoom, coordinate grid,
+The current Rabbita slice upgrades that browser surface from static imagery to
+a live Moon explorer. The globe is treated as a presentation boundary with a
+local real-data texture, geodata overlays, continuous zoom, coordinate grid,
 compass, scale bar, and layer settings. Moonmoon should keep that separation:
 
 ```text
@@ -106,22 +106,24 @@ MoonBit view model + MoonBook ledger
   -> screen controls and review panels
 ```
 
-The browser globe runtime can be JavaScript because it is presentation only.
-Its first implementation should be small and local:
+The browser globe runtime is JavaScript because it is presentation only. Its
+first implementation is small and local:
 
-- a vendored Three.js/WebGL module or equivalent local dependency
+- a WebGL globe runtime under `src/ui/rabbita_moon/assets/`
 - a cached global lunar texture with source metadata and checksum
 - an operable globe canvas with drag rotate, wheel/pinch zoom, reset/home, and
-  a "fly to trusted square" camera transition
-- a site marker and route/corridor overlays derived from embedded MoonBit JSON
-- a WebGL/no-motion fallback that preserves the current static NASA south-pole
+  a fly-to-trusted-square camera transition
+- a coordinate readout, compass, scale bar, and graticule
+- site footprint, selected route, and 81-window corridor overlays derived from
+  embedded MoonBit JSON
+- a WebGL/no-motion fallback that preserves the static NASA south-pole
   landscape and LOLA SVG corridor map
 
 The globe runtime must not become a second mission engine. Coordinate
-conversion, selected route facts, clearance state, power gates, and robot
-authority remain in MoonBit and MoonBook outputs. The browser may project and
-animate those facts, but it must not decide whether terrain, power, route, or
-hardware gates are clear.
+conversion targets, selected route facts, clearance state, power gates, and
+robot authority remain in MoonBit and MoonBook outputs. The browser may project
+and animate those facts, but it must not decide whether terrain, power, route,
+or hardware gates are clear.
 
 ## Core Contracts
 

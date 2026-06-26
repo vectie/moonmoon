@@ -25,9 +25,10 @@ Current rebuild stance:
   be DEM/source/evidence driven.
 - `../moontown` contributes the high-level lesson that durable truth should
   live in documents, ledgers, review gates, and protocol boundaries.
-- The highest-leverage next implementation is route-window promotion and
-  ephemeris-backed power evidence, because these unblock robot-facing modeling
-  more than UI decoration or extra prose.
+- The highest-leverage next implementation is to make the live Rabbita Moon
+  operator flow concise and evidence-first, because movable lunar context,
+  blocker clearance, and robot authority need to work as one product surface
+  instead of scattered generated artifacts.
 
 ## Milestone 1: One Trusted Square
 
@@ -181,35 +182,29 @@ Current implementation status:
 - Imported transition builds now materialize that modeling pass into MoonBook
   beside the gap task and receipt, so the bounded all-still-blocked result is
   durable workspace evidence.
-- Rabbita now starts with real NASA south-pole imagery and then shows the
-  81-window measured LOLA corridor map. That fixed the "gray ball" problem but
-  is still only a static context frame.
+- Rabbita now starts with a live WebGL Moon globe backed by a local real-data
+  texture and source metadata.
+- The globe supports drag rotation, wheel/pinch zoom, reset/home, and
+  fly-to-trusted-square controls.
+- The opening viewport renders MoonBit-owned evidence as overlays: first
+  trusted-square footprint, selected route trace, 81 measured LOLA corridor
+  windows, blocker count, and hardware-denied authority state.
+- The globe includes operator instruments: coordinate readout, compass, scale
+  bar, and graticule with layer toggles.
+- The existing NASA south-pole landscape and SVG LOLA corridor map remain the
+  local detail and fallback context after the Moon-scale opening view.
+- Browser-level verification now checks that the WebGL canvas is nonblank,
+  controls work, overlays render, and text/controls do not overlap on desktop
+  or mobile.
 
-Live Moonviewer update plan:
+Next live-viewer slice:
 
-- Use a Moonmoon-native globe model: texture layer, geodata overlays,
-  continuous zoom, coordinate grid, compass, scale bar, and layer settings.
-- Add a small browser globe runtime under `src/ui/rabbita_moon` and generated
-  `output/ui/rabbita/` assets. Prefer a local Three.js/WebGL bundle for the
-  first slice.
-- Replace the static first viewport with an operable 3D Moon: drag to rotate,
-  wheel/pinch to zoom, reset/home, and fly-to-trusted-square.
-- Cache a real global Moon texture locally with provenance and checksum. The
-  current NASA south-pole landscape remains the no-WebGL/reduced-motion
-  fallback and a regional context layer.
-- Project MoonBit-owned evidence onto the globe: first trusted-square marker,
-  selected route, 81 LOLA corridor windows, clearance blockers, and
-  hardware-denied state.
-- Keep the existing SVG LOLA corridor map as the zoomed-in detail layer after
-  the globe fly-in.
-- Add browser-level verification that the WebGL canvas is nonblank, user
-  controls work, the fallback renders, and text/controls do not overlap on
-  mobile or desktop.
-
-Done for the live update when the first screen feels like a Moon explorer:
-the operator can move the Moon, see where the site sits in lunar context, and
-then zoom into the measured trusted-square evidence without losing source and
-safety state.
+- Reduce the Rabbita page into a smaller operator deck around the globe,
+  trusted-square detail, evidence queue, and blocker clearance.
+- Move presentation assets out of generated MoonBit strings where that improves
+  maintainability without letting browser code own mission decisions.
+- Preserve the MoonBit boundary: terrain derivation, route scoring, power
+  gates, review state, and robot authority remain model outputs.
 
 ## Milestone 3: MoonBook Evidence Loop
 

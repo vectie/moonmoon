@@ -52,6 +52,7 @@ moon run cmd/main -- terrain fixture
 moon run cmd/main -- terrain fixture json
 moon run cmd/main -- ui view
 moon run cmd/main -- ui view json
+moon run cmd/main -- ui rabbita
 moon run cmd/main -- moonbook dossier
 moon run cmd/main -- moonbook dossier json
 moon run cmd/main -- moonclaw proposals
@@ -73,9 +74,10 @@ python3 scripts/materialize_moonbook_workspace.py --check
 bash scripts/build_moonmoon_dossier.sh
 ```
 
-Reproducible site, terrain, MoonBook, MoonClaw, and Moonrobo handoff deliverables are
-written to `output/site/`, `output/terrain/`, `output/moonbook/`, and
-`output/moonclaw/`, and `output/moonrobo/`. The materialized MoonBook workspace lives at
+Reproducible site, terrain, Rabbita, MoonBook, MoonClaw, and Moonrobo handoff
+deliverables are written to `output/site/`, `output/terrain/`,
+`output/ui/rabbita/`, `output/moonbook/`, `output/moonclaw/`, and
+`output/moonrobo/`. The materialized MoonBook workspace lives at
 `output/moonbook/workspaces/first-trusted-square/` and includes per-entry
 payloads, review status, and review transitions.
 
@@ -133,13 +135,14 @@ provenance and uncertainty:
   ridge plan?
 - What evidence should be written back to MoonBook?
 
-Rabbita still needs a live Moon-scale operator view for that evidence. The
-current page starts with real NASA south-pole imagery and a measured LOLA
-corridor map, but the next UI slice should make the opening viewport movable:
-an operable 3D Moon with local texture assets, drag/zoom controls, a
-fly-to-trusted-square transition, site and route overlays, and a no-WebGL
-fallback. The model and decisions stay MoonBit-owned; the browser globe only
-projects and navigates the evidence.
+Rabbita now opens with a live Moon-scale operator view for that evidence. The
+first viewport is an operable 3D Moon with a local real-data texture,
+drag/zoom controls, home and fly-to-site controls, coordinate readout, compass,
+scale bar, graticule, site footprint, selected route, 81 measured LOLA corridor
+windows, and hardware-authority status. The measured south-pole landscape and
+LOLA corridor map remain the local detail layer and fallback context. The
+model and decisions stay MoonBit-owned; the browser globe only projects and
+navigates the evidence.
 
 ## Rebuild Direction
 
@@ -148,12 +151,13 @@ viewer or robot integration grows around it. The kernel is the product spine:
 it names the model layers, evidence gates, MoonSuite boundaries, and highest
 priority build queue from the current executable site dossier.
 
-The current top priority is deliberately large rather than cosmetic: add
-the live Rabbita Moonviewer before piling more panels onto the page. Terrain,
-power, renderer-neutral UI evidence, MoonBook review state, and robot-facing
-simulation/replay/hardware packet semantics now exist; the next product gap is
-movable lunar context that lets an operator start at Moon scale and zoom into
-the trusted-square evidence.
+The current top priority remains deliberately large rather than cosmetic:
+turn the live Rabbita Moonviewer into the primary operator workflow instead of
+piling more panels onto the page. Terrain, power, renderer-neutral UI evidence,
+MoonBook review state, robot-facing simulation/replay/hardware packet
+semantics, and movable lunar context now exist; the next product gap is a
+cleaner operator flow that lets a human move from Moon scale to trusted-square
+evidence and blocker clearance without reading generated artifacts.
 
 ## Documents
 
