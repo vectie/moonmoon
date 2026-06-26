@@ -10,6 +10,7 @@ MOONCLAW_OUT="$ROOT/output/moonclaw"
 MOONROBO_OUT="$ROOT/output/moonrobo"
 UI_OUT="$ROOT/output/ui"
 RABBITA_OUT="$UI_OUT/rabbita"
+RABBITA_ASSET_OUT="$RABBITA_OUT/assets"
 REVIEW_TRANSITIONS=()
 
 while [[ $# -gt 0 ]]; do
@@ -37,6 +38,7 @@ mkdir -p "$MOONCLAW_OUT"
 mkdir -p "$MOONROBO_OUT"
 mkdir -p "$UI_OUT"
 mkdir -p "$RABBITA_OUT"
+mkdir -p "$RABBITA_ASSET_OUT"
 
 cd "$ROOT"
 
@@ -125,6 +127,7 @@ python3 scripts/generate_selected_route_terrain_remediation.py
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui rabbita > "$RABBITA_OUT/first_trusted_square.html"
+cp "$ROOT/src/ui/rabbita_moon/assets/southpole_10deg_print.jpg" "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
 if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
   for REVIEW_TRANSITION_PATH in "${REVIEW_TRANSITIONS[@]}"; do
     python3 scripts/import_rabbita_transitions.py --review-transitions "$REVIEW_TRANSITION_PATH"
@@ -217,4 +220,5 @@ fi
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.md"
 printf 'wrote %s\n' "$UI_OUT/first_trusted_square_view.json"
 printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
+printf 'wrote %s\n' "$RABBITA_ASSET_OUT/southpole_10deg_print.jpg"
 printf 'wrote %s\n' "$MOONBOOK_OUT/workspaces/first-trusted-square"

@@ -92,22 +92,106 @@ fn app_styles() -> String {
     #|}
     #|.lunar-viewport {
     #|  width: min(100%, 760px);
-    #|  min-height: 280px;
     #|  margin: 0 0 16px;
     #|  border: 1px solid var(--line-strong);
-    #|  background:
-    #|    radial-gradient(circle at 18% 22%, rgba(255,255,255,0.7), transparent 0 2px, transparent 3px),
-    #|    radial-gradient(circle at 82% 16%, rgba(255,255,255,0.55), transparent 0 1px, transparent 2px),
-    #|    radial-gradient(circle at 72% 68%, rgba(255,255,255,0.55), transparent 0 2px, transparent 3px),
-    #|    linear-gradient(145deg, #101820 0%, #17232a 48%, #243136 100%);
+    #|  background: #0f1415;
     #|  color: #f5f7f4;
     #|  position: relative;
     #|  overflow: hidden;
     #|  display: grid;
-    #|  grid-template-columns: minmax(220px, 1fr) minmax(190px, 240px);
-    #|  gap: 18px;
+    #|  gap: 0;
+    #|}
+    #|.moon-landscape {
+    #|  min-height: 330px;
+    #|  position: relative;
+    #|  overflow: hidden;
+    #|  background: #0b0f10;
+    #|}
+    #|.moon-landscape img {
+    #|  width: 100%;
+    #|  height: 100%;
+    #|  min-height: 330px;
+    #|  display: block;
+    #|  object-fit: cover;
+    #|  object-position: 50% 53%;
+    #|  filter: contrast(1.08) brightness(0.92);
+    #|}
+    #|.moon-landscape::after {
+    #|  content: "";
+    #|  position: absolute;
+    #|  inset: 0;
+    #|  background:
+    #|    linear-gradient(180deg, rgba(3,5,6,0.12) 0%, rgba(3,5,6,0.04) 42%, rgba(3,5,6,0.68) 100%),
+    #|    radial-gradient(circle at 58% 58%, transparent 0 9%, rgba(4,7,8,0.28) 21%, rgba(4,7,8,0.58) 100%);
+    #|  pointer-events: none;
+    #|}
+    #|.landscape-target {
+    #|  position: absolute;
+    #|  left: 54%;
+    #|  top: 48%;
+    #|  width: clamp(58px, 11vw, 96px);
+    #|  aspect-ratio: 1;
+    #|  border: 1px solid #f0c45d;
+    #|  box-shadow: 0 0 0 1px rgba(15,20,21,0.72), 0 0 22px rgba(240,196,93,0.46);
+    #|  transform: translate(-50%, -50%);
+    #|  z-index: 1;
+    #|}
+    #|.landscape-target::before,
+    #|.landscape-target::after {
+    #|  content: "";
+    #|  position: absolute;
+    #|  background: #f0c45d;
+    #|  left: 50%;
+    #|  top: 50%;
+    #|  transform: translate(-50%, -50%);
+    #|}
+    #|.landscape-target::before { width: 44%; height: 1px; }
+    #|.landscape-target::after { width: 1px; height: 44%; }
+    #|.landscape-label {
+    #|  position: absolute;
+    #|  left: calc(54% + clamp(36px, 6vw, 56px));
+    #|  top: 48%;
+    #|  transform: translateY(-50%);
+    #|  z-index: 1;
+    #|  max-width: 210px;
+    #|  color: #f5f7f4;
+    #|  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+    #|}
+    #|.landscape-label b,
+    #|.landscape-caption b {
+    #|  display: block;
+    #|  font-size: 12px;
+    #|  color: #f0c45d;
+    #|  font-weight: 700;
+    #|}
+    #|.landscape-label span,
+    #|.landscape-caption span {
+    #|  display: block;
+    #|  font-size: 13px;
+    #|  line-height: 1.32;
+    #|}
+    #|.landscape-caption {
+    #|  position: absolute;
+    #|  left: 18px;
+    #|  right: 18px;
+    #|  bottom: 14px;
+    #|  z-index: 1;
+    #|  display: flex;
+    #|  justify-content: space-between;
+    #|  gap: 14px;
+    #|  align-items: end;
+    #|  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+    #|}
+    #|.zoom-stack {
+    #|  display: grid;
+    #|  grid-template-columns: minmax(240px, 1fr) minmax(200px, 248px);
+    #|  gap: 16px;
     #|  align-items: center;
-    #|  padding: 18px;
+    #|  padding: 16px 18px 18px;
+    #|  border-top: 1px solid rgba(255,255,255,0.2);
+    #|  background:
+    #|    radial-gradient(circle at 16% 12%, rgba(255,255,255,0.1), transparent 0 18%, transparent 26%),
+    #|    linear-gradient(140deg, #111819 0%, #172224 56%, #20292a 100%);
     #|}
     #|.lola-map {
     #|  width: min(100%, 430px);
@@ -485,7 +569,10 @@ fn app_styles() -> String {
     #|  .shell { grid-template-columns: 1fr; }
     #|  .side-pane { max-height: none; }
     #|  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
-    #|  .lunar-viewport { grid-template-columns: 1fr; }
+    #|  .moon-landscape, .moon-landscape img { min-height: 260px; }
+    #|  .landscape-label { left: 18px; right: 18px; top: 18px; transform: none; max-width: none; }
+    #|  .landscape-caption { display: grid; justify-content: start; }
+    #|  .zoom-stack { grid-template-columns: 1fr; }
     #|  .lola-map { width: min(100%, 360px); }
     #|  .metrics { grid-template-columns: 1fr; }
     #|  .decision-group { grid-template-columns: 1fr; }
@@ -1338,28 +1425,49 @@ pub fn render_html(
     $|      </div>
     $|      <span class="status-pill">mission: \{decision}</span>
     $|    </div>
-    $|    <section class="lunar-viewport" aria-label="Moon overview for first trusted square">
-    $|      <div class="lola-map">
-    $|        <svg id="lola-data-map" class="lola-data-map" viewBox="0 0 360 380" role="img" aria-label="LOLA GDR measured corridor scan map for first trusted square">
-    $|        </svg>
-    $|        <div class="map-controls" aria-hidden="true">
-    $|          <span>+</span>
-    $|          <span>-</span>
-    $|          <span>N</span>
+    $|    <section class="lunar-viewport" aria-label="Moon landscape to first trusted square zoom">
+    $|      <div class="moon-landscape">
+    $|        <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
+    $|        <div class="landscape-target" aria-hidden="true"></div>
+    $|        <div class="landscape-label">
+    $|          <b>zoom target</b>
+    $|          <span>south-pole rim context before local corridor selection</span>
+    $|        </div>
+    $|        <div class="landscape-caption">
+    $|          <div>
+    $|            <b>moon landscape</b>
+    $|            <span>NASA SVS 10-degree south-pole view</span>
+    $|          </div>
+    $|          <span>LRO LOLA DEM + LROC WAC mosaic source frame</span>
     $|        </div>
     $|      </div>
-    $|      <div class="lunar-summary">
-    $|        <div>
-    $|          <b>lunar site</b>
-    $|          <span>\{title}</span>
+    $|      <div class="zoom-stack">
+    $|        <div class="lola-map">
+    $|          <svg id="lola-data-map" class="lola-data-map" viewBox="0 0 360 380" role="img" aria-label="LOLA GDR measured corridor scan map for first trusted square">
+    $|          </svg>
+    $|          <div class="map-controls" aria-hidden="true">
+    $|            <span>+</span>
+    $|            <span>-</span>
+    $|            <span>N</span>
+    $|          </div>
     $|        </div>
-    $|        <div>
-    $|          <b>selected window</b>
-    $|          <span>rank-1 northeast-stepout from 81 measured LOLA windows</span>
-    $|        </div>
-    $|        <div>
-    $|          <b>robot authority</b>
-    $|          <span class="hardware-denied">hardware denied until lunar evidence gates clear</span>
+    $|        <div class="lunar-summary">
+    $|          <div>
+    $|            <b>lunar site</b>
+    $|            <span>\{title}</span>
+    $|          </div>
+    $|          <div>
+    $|            <b>zoom sequence</b>
+    $|            <span>south-pole landscape to 81-window measured LOLA corridor</span>
+    $|          </div>
+    $|          <div>
+    $|            <b>selected window</b>
+    $|            <span>rank-1 northeast-stepout candidate</span>
+    $|          </div>
+    $|          <div>
+    $|            <b>robot authority</b>
+    $|            <span class="hardware-denied">hardware denied until lunar evidence gates clear</span>
+    $|          </div>
     $|        </div>
     $|      </div>
     $|    </section>
