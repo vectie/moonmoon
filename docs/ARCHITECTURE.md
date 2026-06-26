@@ -99,7 +99,10 @@ surface. It generates the HTML, copies the local presentation assets from
 standalone output fails fast when an asset reference is missing, out of order,
 or stale. It also runs `scripts/check_rabbita_runtime.py` so a generated bundle
 must boot through the external assets and populate the operator surfaces before
-it is considered publishable.
+it is considered publishable. The Mission Evidence Queue has one verifier,
+`scripts/check_rabbita_mission_evidence_queue.py`, which checks every rendered
+queue row against embedded MoonBook entries and materialized workspace payloads
+instead of preserving one stale check script per row.
 
 Rabbita verification scripts should use `scripts/rabbita_ui_harness.py` to run
 the generated HTML data islands and external browser assets through one minimal

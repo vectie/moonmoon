@@ -202,6 +202,10 @@ Current implementation status:
   so the live operator page no longer depends on manual asset copying. The same
   build also smoke-checks runtime boot, evidence queue counts, and export
   invariants through the shared Rabbita harness.
+- Rabbita per-entry surface checks have been collapsed into
+  `scripts/check_rabbita_mission_evidence_queue.py`; the queue verifier checks
+  all rendered remediation/review/simulation rows against embedded MoonBook
+  entries and materialized workspace payloads.
 - The existing NASA south-pole landscape and SVG LOLA corridor map remain the
   local detail and fallback context after the Moon-scale opening view.
 - Browser-level verification now checks that the WebGL canvas is nonblank,

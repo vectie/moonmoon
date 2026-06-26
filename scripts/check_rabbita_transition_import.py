@@ -474,6 +474,12 @@ def materialize_temp_workspace(root: Path) -> None:
       {},
     )
   )
+  moonrobo_regenerated_receipt_readiness_action_receipt_closeout = (
+    materialize_moonbook_workspace.load_optional_json(
+      materialize_moonbook_workspace.MOONROBO_REGENERATED_RECEIPT_READINESS_ACTION_RECEIPT_CLOSEOUT_JSON,
+      {},
+    )
+  )
   moonrobo_simulation_review_packet = (
     materialize_moonbook_workspace.load_optional_json(
       materialize_moonbook_workspace.MOONROBO_SIMULATION_REVIEW_PACKET_JSON,
@@ -535,6 +541,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_remediation_margin_cycle_closeout,
     moonrobo_remediation_margin_refresh_projection,
     moonrobo_remediation_margin_regenerated_receipt_readiness,
+    moonrobo_regenerated_receipt_readiness_action_receipt_closeout,
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,
