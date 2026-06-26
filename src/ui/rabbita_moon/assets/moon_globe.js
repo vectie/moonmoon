@@ -1,5 +1,7 @@
 (function () {
   const DEG = Math.PI / 180;
+  const FOV = 42 * DEG;
+  const MOON_RADIUS_KM = 1737.4;
 
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
@@ -90,6 +92,11 @@
     ];
   }
 
+  function normalize(point) {
+    const length = Math.hypot(point[0], point[1], point[2]) || 1;
+    return [point[0] / length, point[1] / length, point[2] / length];
+  }
+
   function sphereMesh(latBands, lonBands) {
     const vertices = [];
     const indices = [];
@@ -137,6 +144,10 @@
     const overlaySvg = root.querySelector('.moon-globe-overlay');
     const status = root.querySelector('.moon-globe-status');
     const authority = root.querySelector('[data-globe-authority]');
+    const readout = root.querySelector('[data-globe-readout]');
+    const scaleRoot = root.querySelector('[data-globe-scale]');
+    const scaleLabel = root.querySelector('[data-globe-scale-label]');
+    const compass = root.querySelector('[data-globe-compass]');
     const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
     const overlay = view.globe_overlay || null;
     const textureUrl = root.getAttribute('data-texture');
@@ -248,10 +259,14 @@
 
     function mvpMatrix() {
       const aspect = Math.max(0.5, canvas.clientWidth / Math.max(1, canvas.clientHeight));
-      const proj = perspective(42 * DEG, aspect, 0.1, 20);
+      const proj = perspective(FOV, aspect, 0.1, 20);
       const view = translate(identity(), 0, 0, -state.zoom);
       const viewModel = multiply(view, modelMatrix());
       return multiply(proj, viewModel);
+    }
+
+    function inverseModelMatrix() {
+      return rotateY(rotateX(identity(), -state.rotationX), -state.rotationY);
     }
 
     function resizeCanvas() {
@@ -271,6 +286,66 @@
         node.setAttribute(key, value);
       }
       return node;
+    }
+
+    function formatDeg(value, positive, negative) {
+      const suffix = value >= 0 ? positive : negative;
+      return `${Math.abs(value).toFixed(3)}${suffix}`;
+    }
+
+    function formatScale(km) {
+      if (km >= 1000) return `${Math.round(km / 100) * 100} km`;
+      if (km >= 100) return `${Math.round(km / 10) * 10} km`;
+      if (km >= 10) return `${Math.round(km)} km`;
+      return `${km.toFixed(1)} km`;
+    }
+
+    function screenCoordinate(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return null;
+      const ndcX = ((clientX - rect.left) / rect.width) * 2 - 1;
+      const ndcY = 1 - ((clientY - rect.top) / rect.height) * 2;
+      const aspect = Math.max(0.5, rect.width / Math.max(1, rect.height));
+      const tan = Math.tan(FOV / 2);
+      const direction = normalize([ndcX * aspect * tan, ndcY * tan, -1]);
+      const center = [0, 0, -state.zoom];
+      const b = -2 * (direction[0] * center[0] + direction[1] * center[1] + direction[2] * center[2]);
+      const c = center[0] * center[0] + center[1] * center[1] + center[2] * center[2] - 1;
+      const disc = b * b - 4 * c;
+      if (disc < 0) return null;
+      const t = (-b - Math.sqrt(disc)) / 2;
+      if (t <= 0) return null;
+      const hit = [direction[0] * t, direction[1] * t, direction[2] * t + state.zoom];
+      const local = normalize(transform(inverseModelMatrix(), hit, 1));
+      let lon = Math.atan2(local[2], local[0]) / DEG;
+      if (lon > 180) lon -= 360;
+      if (lon < -180) lon += 360;
+      return {
+        lat: Math.asin(local[1]) / DEG,
+        lon
+      };
+    }
+
+    function updateInstruments(coord) {
+      const current = coord || site;
+      if (readout) {
+        readout.textContent = `lat ${formatDeg(current.lat, 'N', 'S')}  lon ${formatDeg(current.lon, 'E', 'W')}`;
+      }
+      if (compass) {
+        compass.style.transform = `rotate(${(-state.rotationY / DEG).toFixed(1)}deg)`;
+      }
+      if (scaleRoot && scaleLabel) {
+        const viewHeightRadii = 2 * state.zoom * Math.tan(FOV / 2);
+        const kmPerPixel = viewHeightRadii * MOON_RADIUS_KM / Math.max(1, canvas.clientHeight);
+        const targetPx = Math.max(58, Math.min(112, canvas.clientWidth * 0.15));
+        const rawKm = targetPx * kmPerPixel;
+        const exponent = Math.pow(10, Math.floor(Math.log10(Math.max(1, rawKm))));
+        const normalized = rawKm / exponent;
+        const nice = (normalized >= 5 ? 5 : normalized >= 2 ? 2 : 1) * exponent;
+        const width = Math.max(46, Math.min(128, nice / kmPerPixel));
+        scaleRoot.style.setProperty('--scale-width', `${width.toFixed(0)}px`);
+        scaleLabel.textContent = formatScale(nice);
+      }
     }
 
     function projectedPoint(point, model, mvp) {
@@ -487,6 +562,7 @@
       gl.drawElements(gl.TRIANGLES, mesh.indices.length, gl.UNSIGNED_SHORT, 0);
       updateMarker(model, mvp);
       renderOverlay(model, mvp);
+      updateInstruments();
       root.dataset.globeReady = textureReady ? 'true' : 'loading';
     }
 
@@ -552,6 +628,7 @@
       state.rotationY += dx * 0.008;
       state.rotationX = Math.max(-1.48, Math.min(1.48, state.rotationX + dy * 0.008));
       render();
+      updateInstruments(screenCoordinate(event.clientX, event.clientY));
     });
     canvas.addEventListener('pointerup', event => {
       state.dragging = false;
@@ -562,6 +639,11 @@
       state.zoom = Math.max(2.05, Math.min(5.4, state.zoom + event.deltaY * 0.0025));
       render();
     }, { passive: false });
+    canvas.addEventListener('pointermove', event => {
+      if (state.dragging) return;
+      updateInstruments(screenCoordinate(event.clientX, event.clientY));
+    });
+    canvas.addEventListener('pointerleave', () => updateInstruments());
 
     root.querySelector('[data-globe-action="home"]')?.addEventListener('click', resetHome);
     root.querySelector('[data-globe-action="site"]')?.addEventListener('click', flyToSite);
