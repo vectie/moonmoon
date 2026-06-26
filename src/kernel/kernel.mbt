@@ -1963,7 +1963,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
     },
     {
       task_id: "moonbook-regenerated-receipt-readiness-action-receipt-closeout-workspace",
-      priority: 70,
+      priority: 20,
       lane: SuiteLane,
       title: "Materialize regenerated readiness action receipt closeout into MoonBook",
       outcome: "The MoonRobo closeout from regenerated readiness action receipts becomes durable MoonBook workspace evidence before Rabbita or any later simulation-review gate consumes it",
@@ -1976,7 +1976,23 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
         "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
         "scripts/check_moonbook_regenerated_receipt_readiness_action_receipt_closeout_workspace.py",
       ],
-      done_when: "MoonBook indexes and materializes regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
+      done_when: "done: MoonBook indexes and materializes regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no simulation consumption, and HardwareDenied authority",
+    },
+    {
+      task_id: "rabbita-regenerated-receipt-readiness-action-receipt-closeout-surface",
+      priority: 70,
+      lane: ViewerLane,
+      title: "Surface regenerated readiness action receipt closeout in Rabbita",
+      outcome: "Operators can inspect the durable MoonRobo closeout from regenerated readiness action receipts before any later simulation-review gate consumes it",
+      depends_on: [
+        "output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
+        "scripts/check_moonbook_regenerated_receipt_readiness_action_receipt_closeout_workspace.py",
+        "output/ui/rabbita/first_trusted_square.html",
+      ],
+      evidence: [
+        "output/ui/rabbita/first_trusted_square.html", "scripts/check_rabbita_regenerated_receipt_readiness_action_receipt_closeout_surface.py",
+      ],
+      done_when: "Rabbita renders regenerated readiness action receipt closeout with source readiness gate provenance, source action receipt provenance, pending/ready receipt accounting, no automatic refresh loop, no simulation consumption, and HardwareDenied authority",
     },
   ]
 }

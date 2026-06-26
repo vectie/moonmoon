@@ -1,0 +1,562 @@
+{
+  "entry": {
+    "entry_id": "moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout",
+    "title": "MoonRobo regenerated receipt readiness action receipt closeout for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonroboRegeneratedReceiptReadinessActionReceiptCloseout",
+    "claim_kind": "Derived",
+    "confidence": 0.83,
+    "path": "moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
+    "summary": "RegeneratedReceiptsStillPendingFreshEvidence with 3 pending regenerated receipts and 0 ready receipts after 3 fresh-evidence action receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); execution modes operator-escalation, bounded-regeneration, manual-freeze-verification; source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness, source readiness state RegeneratedReceiptsPendingFreshEvidence, source action receipt provenance, no automatic refresh loop, no simulation consumption, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+  },
+  "payload": {
+    "closeout": {
+      "closeout_id": "moonrobo/first-trusted-square/regenerated-receipt-readiness-v1/action-receipt-closeout",
+      "site_id": "first-trusted-square",
+      "route_id": "northeast-stepout",
+      "source_action_receipt_bundle_path": "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
+      "source_workspace_entry_path": "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
+      "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+      "source_readiness_state": "RegeneratedReceiptsPendingFreshEvidence",
+      "source_task_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+      "source_action_receipt_count": 3,
+      "source_receipt_count": 3,
+      "ready_receipt_count": 0,
+      "pending_receipt_count": 3,
+      "source_receipt_ids": [
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt"
+      ],
+      "source_action_receipt_ids": [
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+      ],
+      "margin_ids": [
+        "terrain-northeast-stepout",
+        "illumination-northeast-stepout",
+        "energy-window"
+      ],
+      "refresh_ids": [
+        "refresh-terrain-northeast-stepout",
+        "refresh-illumination-northeast-stepout",
+        "refresh-energy-window"
+      ],
+      "execution_modes": [
+        "operator-escalation",
+        "bounded-regeneration",
+        "manual-freeze-verification"
+      ],
+      "closeout_state": "RegeneratedReceiptsStillPendingFreshEvidence",
+      "may_consume_simulation": false,
+      "simulation_state": "SimulationBlocked",
+      "automatic_refresh_loop_allowed": false,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "validation_checks": [
+        {
+          "validation_id": "action-receipts-present",
+          "passed": true,
+          "note": "closeout consumed 3 regenerated readiness fresh-evidence action receipts from output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json"
+        },
+        {
+          "validation_id": "source-readiness-gate-preserved",
+          "passed": true,
+          "note": "all action receipts preserve source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness"
+        },
+        {
+          "validation_id": "source-action-provenance-present",
+          "passed": true,
+          "note": "every action receipt carries source task, regenerated receipt, and source action receipt provenance"
+        },
+        {
+          "validation_id": "execution-modes-preserved",
+          "passed": true,
+          "note": "terrain/horizon/energy execution modes remain operator-escalation, bounded-regeneration, and manual-freeze-verification"
+        },
+        {
+          "validation_id": "fresh-evidence-still-pending",
+          "passed": true,
+          "note": "3/3 regenerated receipts remain pending after action receipt accounting"
+        },
+        {
+          "validation_id": "no-automatic-refresh-loop",
+          "passed": true,
+          "note": "action receipt closeout does not open an automatic refresh loop"
+        },
+        {
+          "validation_id": "simulation-consumption-blocked",
+          "passed": true,
+          "note": "action receipts remain no-consume with simulation blocked"
+        },
+        {
+          "validation_id": "hardware-denial-preserved",
+          "passed": true,
+          "note": "hardware remains denied under moonmoon-safety-gate-only"
+        }
+      ],
+      "next_action": "keep regenerated terrain, local-horizon, and energy receipts pending fresh evidence; do not consume simulation until later evidence checks mark every regenerated receipt ready"
+    },
+    "source_action_receipts": [
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+          "proposal_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
+            "operator/rabbita-regenerated-receipt-readiness#terrain-escalation"
+          ],
+          "validation_notes": [
+            "source-task-accepted: pass - receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+            "source-readiness-gate-preserved: pass - source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached",
+            "source-receipt-provenance-preserved: pass - action regenerated-readiness-fresh-evidence-terrain-northeast-stepout preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+            "action-accounting-complete: pass - action regenerated-readiness-fresh-evidence-terrain-northeast-stepout is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions",
+            "execution-mode-recorded: pass - action regenerated-readiness-fresh-evidence-terrain-northeast-stepout records execution mode operator-escalation",
+            "result-paths-present: pass - action result carries required evidence, target, command, check, evidence path, and execution mode",
+            "no-automatic-refresh-loop: pass - regenerated readiness action receipt does not open an automatic refresh loop",
+            "simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false",
+            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+            "regenerated-receipt-still-pending: pass - action regenerated-readiness-fresh-evidence-terrain-northeast-stepout records evidence work without marking regenerated receipts ready"
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "source_task_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+        "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+        "source_readiness_state": "RegeneratedReceiptsPendingFreshEvidence",
+        "source_receipt_bundle_path": "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+        "source_workspace_entry_path": "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+        "source_receipt_count": 3,
+        "pending_receipt_count": 3,
+        "ready_receipt_count": 0,
+        "source_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt"
+        ],
+        "source_action_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+        ],
+        "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+        "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+        "action_state": "RegeneratedFreshEvidenceActionsRecorded",
+        "action_result": {
+          "rank": 1,
+          "action_id": "regenerated-readiness-fresh-evidence-terrain-northeast-stepout",
+          "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+          "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+          "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+          "margin_id": "terrain-northeast-stepout",
+          "refresh_id": "refresh-terrain-northeast-stepout",
+          "blocker_domain": "terrain",
+          "execution_mode": "operator-escalation",
+          "required_evidence": "operator terrain escalation evidence for the northeast stepout",
+          "target_artifact_path": "operator/rabbita-regenerated-receipt-readiness#terrain-escalation",
+          "evidence_path": "operator/rabbita-regenerated-receipt-readiness#terrain-escalation",
+          "command": "escalate terrain-northeast-stepout to the operator with source action receipt provenance attached",
+          "acceptance_check": "python3 scripts/check_selected_route_terrain_remediation.py",
+          "current_state": "regenerated readiness fresh-evidence action recorded; regenerated receipt remains pending until the named evidence check passes and readiness is recomputed",
+          "next_action": "Keep terrain-northeast-stepout pending until python3 scripts/check_selected_route_terrain_remediation.py passes, then regenerate the receipt readiness gate before MoonRobo simulation review."
+        },
+        "validation_checks": [
+          {
+            "validation_id": "source-task-accepted",
+            "passed": true,
+            "note": "receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task"
+          },
+          {
+            "validation_id": "source-readiness-gate-preserved",
+            "passed": true,
+            "note": "source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached"
+          },
+          {
+            "validation_id": "source-receipt-provenance-preserved",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-terrain-northeast-stepout preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt"
+          },
+          {
+            "validation_id": "action-accounting-complete",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-terrain-northeast-stepout is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions"
+          },
+          {
+            "validation_id": "execution-mode-recorded",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-terrain-northeast-stepout records execution mode operator-escalation"
+          },
+          {
+            "validation_id": "result-paths-present",
+            "passed": true,
+            "note": "action result carries required evidence, target, command, check, evidence path, and execution mode"
+          },
+          {
+            "validation_id": "no-automatic-refresh-loop",
+            "passed": true,
+            "note": "regenerated readiness action receipt does not open an automatic refresh loop"
+          },
+          {
+            "validation_id": "simulation-consumption-blocked",
+            "passed": true,
+            "note": "simulation remains simulation-blocked with may-consume=false"
+          },
+          {
+            "validation_id": "hardware-denial-preserved",
+            "passed": true,
+            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+          },
+          {
+            "validation_id": "regenerated-receipt-still-pending",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-terrain-northeast-stepout records evidence work without marking regenerated receipts ready"
+          }
+        ],
+        "may_consume_simulation": false,
+        "simulation_state": "SimulationBlocked",
+        "automatic_refresh_loop_allowed": false,
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_authority_change": false,
+        "hardware_denied": true,
+        "next_action": "Keep terrain-northeast-stepout pending fresh evidence until python3 scripts/check_selected_route_terrain_remediation.py passes, then recompute regenerated receipt readiness before MoonRobo simulation review resumes."
+      },
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+          "proposal_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
+            "output/mission/first_trusted_square_northeast_stepout_horizon.json"
+          ],
+          "validation_notes": [
+            "source-task-accepted: pass - receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+            "source-readiness-gate-preserved: pass - source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached",
+            "source-receipt-provenance-preserved: pass - action regenerated-readiness-fresh-evidence-illumination-northeast-stepout preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+            "action-accounting-complete: pass - action regenerated-readiness-fresh-evidence-illumination-northeast-stepout is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions",
+            "execution-mode-recorded: pass - action regenerated-readiness-fresh-evidence-illumination-northeast-stepout records execution mode bounded-regeneration",
+            "result-paths-present: pass - action result carries required evidence, target, command, check, evidence path, and execution mode",
+            "no-automatic-refresh-loop: pass - regenerated readiness action receipt does not open an automatic refresh loop",
+            "simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false",
+            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+            "regenerated-receipt-still-pending: pass - action regenerated-readiness-fresh-evidence-illumination-northeast-stepout records evidence work without marking regenerated receipts ready"
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "source_task_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+        "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+        "source_readiness_state": "RegeneratedReceiptsPendingFreshEvidence",
+        "source_receipt_bundle_path": "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+        "source_workspace_entry_path": "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+        "source_receipt_count": 3,
+        "pending_receipt_count": 3,
+        "ready_receipt_count": 0,
+        "source_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt"
+        ],
+        "source_action_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+        ],
+        "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+        "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+        "action_state": "RegeneratedFreshEvidenceActionsRecorded",
+        "action_result": {
+          "rank": 2,
+          "action_id": "regenerated-readiness-fresh-evidence-illumination-northeast-stepout",
+          "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+          "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+          "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+          "margin_id": "illumination-northeast-stepout",
+          "refresh_id": "refresh-illumination-northeast-stepout",
+          "blocker_domain": "local-horizon",
+          "execution_mode": "bounded-regeneration",
+          "required_evidence": "fresh local-horizon model for the northeast stepout",
+          "target_artifact_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+          "command": "regenerate bounded fresh evidence for illumination-northeast-stepout and rerun its acceptance check",
+          "acceptance_check": "python3 scripts/check_selected_route_horizon_model.py",
+          "current_state": "regenerated readiness fresh-evidence action recorded; regenerated receipt remains pending until the named evidence check passes and readiness is recomputed",
+          "next_action": "Keep illumination-northeast-stepout pending until python3 scripts/check_selected_route_horizon_model.py passes, then regenerate the receipt readiness gate before MoonRobo simulation review."
+        },
+        "validation_checks": [
+          {
+            "validation_id": "source-task-accepted",
+            "passed": true,
+            "note": "receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task"
+          },
+          {
+            "validation_id": "source-readiness-gate-preserved",
+            "passed": true,
+            "note": "source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached"
+          },
+          {
+            "validation_id": "source-receipt-provenance-preserved",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-illumination-northeast-stepout preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt"
+          },
+          {
+            "validation_id": "action-accounting-complete",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-illumination-northeast-stepout is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions"
+          },
+          {
+            "validation_id": "execution-mode-recorded",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-illumination-northeast-stepout records execution mode bounded-regeneration"
+          },
+          {
+            "validation_id": "result-paths-present",
+            "passed": true,
+            "note": "action result carries required evidence, target, command, check, evidence path, and execution mode"
+          },
+          {
+            "validation_id": "no-automatic-refresh-loop",
+            "passed": true,
+            "note": "regenerated readiness action receipt does not open an automatic refresh loop"
+          },
+          {
+            "validation_id": "simulation-consumption-blocked",
+            "passed": true,
+            "note": "simulation remains simulation-blocked with may-consume=false"
+          },
+          {
+            "validation_id": "hardware-denial-preserved",
+            "passed": true,
+            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+          },
+          {
+            "validation_id": "regenerated-receipt-still-pending",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-illumination-northeast-stepout records evidence work without marking regenerated receipts ready"
+          }
+        ],
+        "may_consume_simulation": false,
+        "simulation_state": "SimulationBlocked",
+        "automatic_refresh_loop_allowed": false,
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_authority_change": false,
+        "hardware_denied": true,
+        "next_action": "Keep illumination-northeast-stepout pending fresh evidence until python3 scripts/check_selected_route_horizon_model.py passes, then recompute regenerated receipt readiness before MoonRobo simulation review resumes."
+      },
+      {
+        "receipt": {
+          "receipt_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task/action-3-energy-window/receipt",
+          "proposal_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+          "status": "Accepted",
+          "accepted_outputs": [
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.json",
+            "output/moonclaw/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json",
+            "operator/rabbita-regenerated-receipt-readiness#energy-freeze"
+          ],
+          "validation_notes": [
+            "source-task-accepted: pass - receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+            "source-readiness-gate-preserved: pass - source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached",
+            "source-receipt-provenance-preserved: pass - action regenerated-readiness-fresh-evidence-energy-window preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt",
+            "action-accounting-complete: pass - action regenerated-readiness-fresh-evidence-energy-window is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions",
+            "execution-mode-recorded: pass - action regenerated-readiness-fresh-evidence-energy-window records execution mode manual-freeze-verification",
+            "result-paths-present: pass - action result carries required evidence, target, command, check, evidence path, and execution mode",
+            "no-automatic-refresh-loop: pass - regenerated readiness action receipt does not open an automatic refresh loop",
+            "simulation-consumption-blocked: pass - simulation remains simulation-blocked with may-consume=false",
+            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
+            "regenerated-receipt-still-pending: pass - action regenerated-readiness-fresh-evidence-energy-window records evidence work without marking regenerated receipts ready"
+          ]
+        },
+        "site_id": "first-trusted-square",
+        "route_id": "northeast-stepout",
+        "source_task_id": "moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task",
+        "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+        "source_readiness_state": "RegeneratedReceiptsPendingFreshEvidence",
+        "source_receipt_bundle_path": "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+        "source_workspace_entry_path": "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+        "source_receipt_count": 3,
+        "pending_receipt_count": 3,
+        "ready_receipt_count": 0,
+        "source_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt"
+        ],
+        "source_action_receipt_ids": [
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+          "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+        ],
+        "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt",
+        "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt",
+        "action_state": "RegeneratedFreshEvidenceActionsRecorded",
+        "action_result": {
+          "rank": 3,
+          "action_id": "regenerated-readiness-fresh-evidence-energy-window",
+          "source_readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+          "source_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt",
+          "source_action_receipt_id": "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt",
+          "margin_id": "energy-window",
+          "refresh_id": "refresh-energy-window",
+          "blocker_domain": "energy",
+          "execution_mode": "manual-freeze-verification",
+          "required_evidence": "operator freeze verification for the selected energy window",
+          "target_artifact_path": "operator/rabbita-regenerated-receipt-readiness#energy-freeze",
+          "evidence_path": "operator/rabbita-regenerated-receipt-readiness#energy-freeze",
+          "command": "record manual freeze verification for energy-window without opening simulation consumption",
+          "acceptance_check": "python3 scripts/check_energy_margin_remediation.py",
+          "current_state": "regenerated readiness fresh-evidence action recorded; regenerated receipt remains pending until the named evidence check passes and readiness is recomputed",
+          "next_action": "Keep energy-window pending until python3 scripts/check_energy_margin_remediation.py passes, then regenerate the receipt readiness gate before MoonRobo simulation review."
+        },
+        "validation_checks": [
+          {
+            "validation_id": "source-task-accepted",
+            "passed": true,
+            "note": "receipt consumes accepted regenerated readiness fresh-evidence task moonclaw/first-trusted-square/regenerated-receipt-readiness-v1/fresh-evidence-task"
+          },
+          {
+            "validation_id": "source-readiness-gate-preserved",
+            "passed": true,
+            "note": "source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness remains attached"
+          },
+          {
+            "validation_id": "source-receipt-provenance-preserved",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-energy-window preserves regenerated receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt and source action receipt moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+          },
+          {
+            "validation_id": "action-accounting-complete",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-energy-window is one of the regenerated readiness terrain/horizon/energy fresh-evidence actions"
+          },
+          {
+            "validation_id": "execution-mode-recorded",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-energy-window records execution mode manual-freeze-verification"
+          },
+          {
+            "validation_id": "result-paths-present",
+            "passed": true,
+            "note": "action result carries required evidence, target, command, check, evidence path, and execution mode"
+          },
+          {
+            "validation_id": "no-automatic-refresh-loop",
+            "passed": true,
+            "note": "regenerated readiness action receipt does not open an automatic refresh loop"
+          },
+          {
+            "validation_id": "simulation-consumption-blocked",
+            "passed": true,
+            "note": "simulation remains simulation-blocked with may-consume=false"
+          },
+          {
+            "validation_id": "hardware-denial-preserved",
+            "passed": true,
+            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
+          },
+          {
+            "validation_id": "regenerated-receipt-still-pending",
+            "passed": true,
+            "note": "action regenerated-readiness-fresh-evidence-energy-window records evidence work without marking regenerated receipts ready"
+          }
+        ],
+        "may_consume_simulation": false,
+        "simulation_state": "SimulationBlocked",
+        "automatic_refresh_loop_allowed": false,
+        "hardware_state": "HardwareDenied",
+        "hardware_authority": "moonmoon-safety-gate-only",
+        "hardware_authority_change": false,
+        "hardware_denied": true,
+        "next_action": "Keep energy-window pending fresh evidence until python3 scripts/check_energy_margin_remediation.py passes, then recompute regenerated receipt readiness before MoonRobo simulation review resumes."
+      }
+    ],
+    "source_readiness": {
+      "readiness_gate_id": "moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness",
+      "site_id": "first-trusted-square",
+      "route_id": "northeast-stepout",
+      "source_receipt_bundle_path": "output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json",
+      "source_workspace_entry_path": "output/moonbook/workspaces/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json",
+      "source_receipt_count": 3,
+      "ready_receipt_count": 0,
+      "pending_receipt_count": 3,
+      "pending_margin_ids": [
+        "terrain-northeast-stepout",
+        "illumination-northeast-stepout",
+        "energy-window"
+      ],
+      "pending_refresh_ids": [
+        "refresh-terrain-northeast-stepout",
+        "refresh-illumination-northeast-stepout",
+        "refresh-energy-window"
+      ],
+      "source_receipt_ids": [
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-1-terrain-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-2-illumination-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-action-plan/work-item-3-energy-window/receipt"
+      ],
+      "source_action_receipt_ids": [
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-1-terrain-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-2-illumination-northeast-stepout/receipt",
+        "moonclaw/first-trusted-square/remediation-margin-v1/reviewed-fresh-evidence-task/action-3-energy-window/receipt"
+      ],
+      "execution_modes": [
+        "operator-escalation",
+        "bounded-regeneration",
+        "manual-freeze-verification"
+      ],
+      "readiness_state": "RegeneratedReceiptsPendingFreshEvidence",
+      "may_consume_simulation": false,
+      "simulation_state": "SimulationBlocked",
+      "automatic_refresh_loop_allowed": false,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "validation_checks": [
+        {
+          "validation_id": "regenerated-receipts-present",
+          "passed": true,
+          "note": "readiness gate consumed 3 regenerated reviewed work item receipts from output/moonclaw/first_trusted_square_remediation_margin_regenerated_reviewed_work_item_receipts.json"
+        },
+        {
+          "validation_id": "all-receipts-pending-fresh-evidence",
+          "passed": true,
+          "note": "3/3 regenerated receipts remain pending fresh evidence"
+        },
+        {
+          "validation_id": "source-action-provenance-present",
+          "passed": true,
+          "note": "every regenerated receipt carries source action receipt, source receipt, and work item provenance"
+        },
+        {
+          "validation_id": "execution-modes-preserved",
+          "passed": true,
+          "note": "terrain/horizon/energy execution modes remain operator-escalation, bounded-regeneration, and manual-freeze-verification"
+        },
+        {
+          "validation_id": "no-automatic-refresh-loop",
+          "passed": true,
+          "note": "regenerated readiness does not open an automatic refresh loop"
+        },
+        {
+          "validation_id": "simulation-consumption-blocked",
+          "passed": true,
+          "note": "regenerated receipts remain no-consume with simulation blocked"
+        },
+        {
+          "validation_id": "hardware-denial-preserved",
+          "passed": true,
+          "note": "hardware remains denied under moonmoon-safety-gate-only"
+        }
+      ],
+      "next_action": "keep regenerated terrain, local-horizon, and energy receipts pending fresh evidence; do not let MoonRobo consume simulation inputs until a later ready bundle passes its checks"
+    }
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

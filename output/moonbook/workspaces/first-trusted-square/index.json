@@ -42,6 +42,7 @@
     "output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json",
     "output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json",
     "output/moonrobo/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json",
+    "output/moonrobo/first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout.json",
     "output/moonrobo/first_trusted_square_simulation_review_packet.json",
     "output/moonrobo/first_trusted_square_simulation_review_decision.json",
     "output/moonrobo/first_trusted_square_simulation_blocker_reduction.json"
@@ -694,6 +695,15 @@
       "confidence": 0.82,
       "path": "moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json",
       "summary": "3 regenerated readiness fresh-evidence action receipts with RegeneratedFreshEvidenceActionsRecorded for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); actions terrain=operator-escalation, local-horizon=bounded-regeneration, energy=manual-freeze-verification; source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness, source readiness state RegeneratedReceiptsPendingFreshEvidence, source receipt provenance, source action receipt provenance, no automatic refresh loop, no simulation consumption, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout",
+      "title": "MoonRobo regenerated receipt readiness action receipt closeout for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboRegeneratedReceiptReadinessActionReceiptCloseout",
+      "claim_kind": "Derived",
+      "confidence": 0.83,
+      "path": "moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json",
+      "summary": "RegeneratedReceiptsStillPendingFreshEvidence with 3 pending regenerated receipts and 0 ready receipts after 3 fresh-evidence action receipts for terrain/horizon/energy margins (terrain-northeast-stepout, illumination-northeast-stepout, energy-window) over refreshes (refresh-terrain-northeast-stepout, refresh-illumination-northeast-stepout, refresh-energy-window); execution modes operator-escalation, bounded-regeneration, manual-freeze-verification; source readiness gate moonrobo/first-trusted-square/remediation-margin-v1/regenerated-receipt-readiness, source readiness state RegeneratedReceiptsPendingFreshEvidence, source action receipt provenance, no automatic refresh loop, no simulation consumption, simulation simulation-blocked, may consume false, hardware authority moonmoon-safety-gate-only at hardware-denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/ephemeris-receipt",

@@ -73,6 +73,7 @@ pub(all) enum BookEntryKind {
   MoonroboRemediationMarginRefreshFollowupProjection
   MoonroboRemediationMarginCycleCloseoutPolicy
   MoonroboRemediationMarginRegeneratedReceiptReadiness
+  MoonroboRegeneratedReceiptReadinessActionReceiptCloseout
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask

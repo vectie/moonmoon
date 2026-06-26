@@ -36,12 +36,13 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source MoonRobo remediation-margin cycle closeout: `output/moonrobo/first_trusted_square_remediation_margin_cycle_closeout.json`
 - Source MoonRobo remediation-margin refresh projection: `output/moonrobo/first_trusted_square_remediation_margin_refresh_projection.json`
 - Source MoonRobo regenerated receipt readiness: `output/moonrobo/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json`
+- Source MoonRobo regenerated receipt readiness action receipt closeout: `output/moonrobo/first_trusted_square_regenerated_receipt_readiness_action_receipt_closeout.json`
 - Source MoonRobo simulation review packet: `output/moonrobo/first_trusted_square_simulation_review_packet.json`
 - Source MoonRobo simulation review decision: `output/moonrobo/first_trusted_square_simulation_review_decision.json`
 - Source MoonRobo simulation blocker reduction: `output/moonrobo/first_trusted_square_simulation_blocker_reduction.json`
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 80
+- Entries: 81
 - Review queue items: 29
 - Review transitions: 30

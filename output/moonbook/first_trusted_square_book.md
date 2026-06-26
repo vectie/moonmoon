@@ -365,6 +365,11 @@
   - claim: derived
   - confidence: 0.82
   - path: moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json
+- moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout: MoonRobo regenerated receipt readiness action receipt closeout for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-regenerated-receipt-readiness-action-receipt-closeout
+  - claim: derived
+  - confidence: 0.83
+  - path: moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moon-claw-ephemeris-receipt
   - claim: derived
