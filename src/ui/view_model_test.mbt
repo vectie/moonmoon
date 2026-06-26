@@ -4,6 +4,8 @@ test "first trusted square view model exposes terrain and routes" {
   assert_eq(view.view_id, "ui/first-trusted-square/operator-view-v2")
   assert_eq(view.viewport.rows, 4)
   assert_eq(view.viewport.cols, 4)
+  assert_eq(view.site_latitude_deg, -89.88)
+  assert_eq(view.site_longitude_deg, 0.12)
   assert_eq(view.terrain_cells.length(), 16)
   assert_eq(view.routes.length(), 6)
   assert_eq(view.route_overlays.length(), 6)

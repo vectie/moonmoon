@@ -101,8 +101,35 @@ fn app_styles() -> String {
     #|  display: grid;
     #|  gap: 0;
     #|}
+    #|.moon-globe {
+    #|  height: 390px;
+    #|  position: relative;
+    #|  overflow: hidden;
+    #|  background:
+    #|    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.18), transparent 0 1px, transparent 2px),
+    #|    radial-gradient(circle at 76% 12%, rgba(255,255,255,0.14), transparent 0 1px, transparent 2px),
+    #|    radial-gradient(circle at 86% 72%, rgba(255,255,255,0.14), transparent 0 1px, transparent 2px),
+    #|    linear-gradient(145deg, #030607 0%, #0a1011 52%, #111819 100%);
+    #|}
+    #|.moon-globe-canvas {
+    #|  width: 100%;
+    #|  height: 390px;
+    #|  display: block;
+    #|  cursor: grab;
+    #|  touch-action: none;
+    #|}
+    #|.moon-globe-canvas:active { cursor: grabbing; }
+    #|.moon-globe-fallback {
+    #|  position: absolute;
+    #|  inset: 0;
+    #|  transition: opacity 220ms ease-out;
+    #|}
+    #|.moon-globe-ready .moon-globe-fallback {
+    #|  opacity: 0;
+    #|  pointer-events: none;
+    #|}
     #|.moon-landscape {
-    #|  min-height: 330px;
+    #|  min-height: 390px;
     #|  position: relative;
     #|  overflow: hidden;
     #|  background: #0b0f10;
@@ -110,7 +137,7 @@ fn app_styles() -> String {
     #|.moon-landscape img {
     #|  width: 100%;
     #|  height: 100%;
-    #|  min-height: 330px;
+    #|  min-height: 390px;
     #|  display: block;
     #|  object-fit: cover;
     #|  object-position: 50% 53%;
@@ -124,6 +151,61 @@ fn app_styles() -> String {
     #|    linear-gradient(180deg, rgba(3,5,6,0.12) 0%, rgba(3,5,6,0.04) 42%, rgba(3,5,6,0.68) 100%),
     #|    radial-gradient(circle at 58% 58%, transparent 0 9%, rgba(4,7,8,0.28) 21%, rgba(4,7,8,0.58) 100%);
     #|  pointer-events: none;
+    #|}
+    #|.moon-globe-marker {
+    #|  position: absolute;
+    #|  z-index: 3;
+    #|  width: 18px;
+    #|  height: 18px;
+    #|  border: 2px solid #f0c45d;
+    #|  border-radius: 50%;
+    #|  box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 0 18px rgba(240,196,93,0.78);
+    #|  transform: translate(-50%, -50%);
+    #|  pointer-events: none;
+    #|}
+    #|.moon-globe-marker::after {
+    #|  content: "";
+    #|  position: absolute;
+    #|  left: 50%;
+    #|  top: 50%;
+    #|  width: 4px;
+    #|  height: 4px;
+    #|  border-radius: 50%;
+    #|  background: #f0c45d;
+    #|  transform: translate(-50%, -50%);
+    #|}
+    #|.moon-globe-controls {
+    #|  position: absolute;
+    #|  right: 14px;
+    #|  top: 14px;
+    #|  z-index: 4;
+    #|  display: grid;
+    #|  grid-template-columns: repeat(2, 34px);
+    #|  gap: 6px;
+    #|}
+    #|.moon-globe-controls button {
+    #|  width: 34px;
+    #|  height: 34px;
+    #|  border: 1px solid rgba(255,255,255,0.32);
+    #|  background: rgba(7,11,12,0.72);
+    #|  color: #f5f7f4;
+    #|  cursor: pointer;
+    #|  font-size: 13px;
+    #|}
+    #|.moon-globe-controls button:hover,
+    #|.moon-globe-controls button:focus-visible {
+    #|  border-color: #f0c45d;
+    #|  outline: 2px solid rgba(240,196,93,0.26);
+    #|  outline-offset: 1px;
+    #|}
+    #|.moon-globe-status {
+    #|  position: absolute;
+    #|  left: 18px;
+    #|  top: 14px;
+    #|  z-index: 4;
+    #|  color: rgba(245,247,244,0.78);
+    #|  font-size: 12px;
+    #|  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     #|}
     #|.landscape-target {
     #|  position: absolute;
@@ -569,7 +651,9 @@ fn app_styles() -> String {
     #|  .shell { grid-template-columns: 1fr; }
     #|  .side-pane { max-height: none; }
     #|  .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
-    #|  .moon-landscape, .moon-landscape img { min-height: 260px; }
+    #|  .moon-globe { height: 300px; }
+    #|  .moon-globe-canvas { height: 300px; }
+    #|  .moon-landscape, .moon-landscape img { min-height: 300px; }
     #|  .landscape-label { left: 18px; right: 18px; top: 18px; transform: none; max-width: none; }
     #|  .landscape-caption { display: grid; justify-content: start; }
     #|  .zoom-stack { grid-template-columns: 1fr; }
@@ -1395,6 +1479,14 @@ fn app_script() -> String {
 }
 
 ///|
+fn globe_script() -> String {
+  (
+    #|<script src="assets/moon_globe.js"></script>
+    #|
+  )
+}
+
+///|
 pub fn render_html(
   view : @ui.TrustedSquareViewModel,
   book : @moonbook.MoonBookDossier,
@@ -1426,19 +1518,25 @@ pub fn render_html(
     $|      <span class="status-pill">mission: \{decision}</span>
     $|    </div>
     $|    <section class="lunar-viewport" aria-label="Moon landscape to first trusted square zoom">
-    $|      <div class="moon-landscape">
-    $|        <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
-    $|        <div class="landscape-target" aria-hidden="true"></div>
-    $|        <div class="landscape-label">
-    $|          <b>zoom target</b>
-    $|          <span>south-pole rim context before local corridor selection</span>
+    $|      <div id="moon-globe" class="moon-globe" data-moon-globe data-texture="assets/lunar_global_texture.jpg" aria-label="Operable 3D Moon globe for first trusted square">
+    $|        <canvas class="moon-globe-canvas" width="760" height="390" aria-label="Drag to rotate the Moon and use the controls to zoom or fly to the trusted square"></canvas>
+    $|        <div class="moon-globe-fallback moon-landscape">
+    $|          <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
+    $|        </div>
+    $|        <span class="moon-globe-status">loading globe</span>
+    $|        <div class="moon-globe-marker" hidden aria-hidden="true"></div>
+    $|        <div class="moon-globe-controls" aria-label="Moon globe controls">
+    $|          <button type="button" data-globe-action="zoom-in" title="Zoom in">+</button>
+    $|          <button type="button" data-globe-action="zoom-out" title="Zoom out">-</button>
+    $|          <button type="button" data-globe-action="home" title="Reset Moon view">H</button>
+    $|          <button type="button" data-globe-action="site" title="Fly to trusted square">S</button>
     $|        </div>
     $|        <div class="landscape-caption">
     $|          <div>
-    $|            <b>moon landscape</b>
-    $|            <span>NASA SVS 10-degree south-pole view</span>
+    $|            <b>live moon</b>
+    $|            <span>drag, zoom, then fly to the trusted square</span>
     $|          </div>
-    $|          <span>LRO LOLA DEM + LROC WAC mosaic source frame</span>
+    $|          <span>global texture for context; LOLA evidence below</span>
     $|        </div>
     $|      </div>
     $|      <div class="zoom-stack">
@@ -1640,9 +1738,9 @@ pub fn render_html(
     $|  </aside>
     $|</main>
     $|\{app_script()}
+    $|\{globe_script()}
     $|</body>
     $|</html>
-    $|
   html
 }
 

@@ -86,8 +86,35 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   display: grid;
   gap: 0;
 }
+.moon-globe {
+  height: 390px;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255,255,255,0.18), transparent 0 1px, transparent 2px),
+    radial-gradient(circle at 76% 12%, rgba(255,255,255,0.14), transparent 0 1px, transparent 2px),
+    radial-gradient(circle at 86% 72%, rgba(255,255,255,0.14), transparent 0 1px, transparent 2px),
+    linear-gradient(145deg, #030607 0%, #0a1011 52%, #111819 100%);
+}
+.moon-globe-canvas {
+  width: 100%;
+  height: 390px;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+.moon-globe-canvas:active { cursor: grabbing; }
+.moon-globe-fallback {
+  position: absolute;
+  inset: 0;
+  transition: opacity 220ms ease-out;
+}
+.moon-globe-ready .moon-globe-fallback {
+  opacity: 0;
+  pointer-events: none;
+}
 .moon-landscape {
-  min-height: 330px;
+  min-height: 390px;
   position: relative;
   overflow: hidden;
   background: #0b0f10;
@@ -95,7 +122,7 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
 .moon-landscape img {
   width: 100%;
   height: 100%;
-  min-height: 330px;
+  min-height: 390px;
   display: block;
   object-fit: cover;
   object-position: 50% 53%;
@@ -109,6 +136,61 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
     linear-gradient(180deg, rgba(3,5,6,0.12) 0%, rgba(3,5,6,0.04) 42%, rgba(3,5,6,0.68) 100%),
     radial-gradient(circle at 58% 58%, transparent 0 9%, rgba(4,7,8,0.28) 21%, rgba(4,7,8,0.58) 100%);
   pointer-events: none;
+}
+.moon-globe-marker {
+  position: absolute;
+  z-index: 3;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #f0c45d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 0 18px rgba(240,196,93,0.78);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.moon-globe-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f0c45d;
+  transform: translate(-50%, -50%);
+}
+.moon-globe-controls {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(2, 34px);
+  gap: 6px;
+}
+.moon-globe-controls button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,0.32);
+  background: rgba(7,11,12,0.72);
+  color: #f5f7f4;
+  cursor: pointer;
+  font-size: 13px;
+}
+.moon-globe-controls button:hover,
+.moon-globe-controls button:focus-visible {
+  border-color: #f0c45d;
+  outline: 2px solid rgba(240,196,93,0.26);
+  outline-offset: 1px;
+}
+.moon-globe-status {
+  position: absolute;
+  left: 18px;
+  top: 14px;
+  z-index: 4;
+  color: rgba(245,247,244,0.78);
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 .landscape-target {
   position: absolute;
@@ -554,7 +636,9 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   .shell { grid-template-columns: 1fr; }
   .side-pane { max-height: none; }
   .map-pane { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
-  .moon-landscape, .moon-landscape img { min-height: 260px; }
+  .moon-globe { height: 300px; }
+  .moon-globe-canvas { height: 300px; }
+  .moon-landscape, .moon-landscape img { min-height: 300px; }
   .landscape-label { left: 18px; right: 18px; top: 18px; transform: none; max-width: none; }
   .landscape-caption { display: grid; justify-content: start; }
   .zoom-stack { grid-template-columns: 1fr; }
@@ -571,6 +655,8 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   "view_id": "ui/first-trusted-square/operator-view-v2",
   "site_id": "first-trusted-square",
   "title": "First Trusted Square / Shackleton Rim rehearsal tile",
+  "site_latitude_deg": -89.88,
+  "site_longitude_deg": 0.12,
   "viewport": {
     "rows": 4,
     "cols": 4,
@@ -3185,7 +3271,7 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       "claim_kind": "Derived",
       "confidence": 0.62,
       "path": "mission/first-trusted-square/selected-route-clearance.json",
-      "summary": "allow northeast-stepout: 4 clearance items, 0 blockers"
+      "summary": "block northeast-stepout: 4 clearance items, 4 blockers"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
@@ -3465,60 +3551,6 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       "confidence": 0.75,
       "path": "moonclaw/first-trusted-square/corridor-receipts.json",
       "summary": "accepted receipt covers 81 measured windows and keeps best window r-12-c+16 block: MoonClaw corridor expansion accepts the bounded search result but proves every sampled LOLA window remains blocked"
-    },
-    {
-      "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-task",
-      "title": "MoonClaw MoonRobo gap remediation task",
-      "kind": "MoonClawTask",
-      "claim_kind": "Derived",
-      "confidence": 0.82,
-      "path": "moonclaw/first-trusted-square/moonrobo-gap-task.json",
-      "summary": "accepted remediation task for 6 MoonRobo blocker gaps with hardware authority denied"
-    },
-    {
-      "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt",
-      "title": "MoonClaw MoonRobo gap remediation receipt",
-      "kind": "MoonClawGapReceipt",
-      "claim_kind": "Derived",
-      "confidence": 0.82,
-      "path": "moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
-      "summary": "OpenGapsCarriedForward with 6 MoonRobo gaps still blocking"
-    },
-    {
-      "entry_id": "moonrobo/first-trusted-square/gap-remediation-modeling-pass",
-      "title": "MoonRobo gap remediation modeling pass",
-      "kind": "MoonroboGapModeling",
-      "claim_kind": "Derived",
-      "confidence": 0.82,
-      "path": "moonrobo/first-trusted-square/gap-remediation-modeling.json",
-      "summary": "AllGapsStillBlocked with 6 MoonRobo gaps still blocking"
-    },
-    {
-      "entry_id": "moonrobo/first-trusted-square/simulation-review-packet",
-      "title": "MoonRobo selected-route simulation review packet",
-      "kind": "MoonroboSimulationReviewPacket",
-      "claim_kind": "Derived",
-      "confidence": 0.84,
-      "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
-      "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware-denial invariants locked at HardwareDenied"
-    },
-    {
-      "entry_id": "moonrobo/first-trusted-square/simulation-review-decision",
-      "title": "MoonRobo selected-route simulation review decision",
-      "kind": "MoonroboSimulationReviewDecision",
-      "claim_kind": "Derived",
-      "confidence": 0.84,
-      "path": "moonrobo/first-trusted-square/simulation-review-decision.json",
-      "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 1 active non-margin blockers, 2 closed non-margin blockers, hardware authority denied at HardwareDenied"
-    },
-    {
-      "entry_id": "moonrobo/first-trusted-square/simulation-blocker-reduction",
-      "title": "MoonRobo simulation blocker reduction",
-      "kind": "MoonroboSimulationBlockerReduction",
-      "claim_kind": "Derived",
-      "confidence": 0.84,
-      "path": "moonrobo/first-trusted-square/simulation-blocker-reduction.json",
-      "summary": "2 closed non-margin blockers, 1 active non-margin blockers, 3 remediation margins still blocking, hardware authority denied at HardwareDenied"
     }
   ],
   "review_queue": [
@@ -3687,32 +3719,32 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       "severity": "high",
       "reason": "Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
       "owner": "mission-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-terrain-grade-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-terrain-grade-northeast-stepout-request-evidence"
     },
     {
       "item_id": "clear-illumination-confidence-northeast-stepout",
       "severity": "high",
       "reason": "Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
       "owner": "power-thermal-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-illumination-confidence-northeast-stepout-request-evidence"
     },
     {
       "item_id": "clear-energy-margin",
       "severity": "high",
       "reason": "Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
       "owner": "power-thermal-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-energy-margin-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-energy-margin-request-evidence"
     },
     {
       "item_id": "clear-moonbook-review-northeast-stepout",
       "severity": "high",
       "reason": "MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
       "owner": "mission-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-moonbook-review-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-moonbook-review-northeast-stepout-request-evidence"
     },
     {
       "item_id": "moonrobo-handoff",
@@ -4177,88 +4209,88 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       "rationale": "kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation"
     },
     {
-      "transition_id": "rabbita-clear-terrain-grade-northeast-stepout-accept",
+      "transition_id": "review-clear-terrain-grade-northeast-stepout-request-evidence",
       "item_id": "clear-terrain-grade-northeast-stepout",
-      "previous_status": "NeedsEvidence",
-      "decision": "Accept",
-      "resulting_status": "Accepted",
-      "reviewer_id": "operator/rabbita-clearance-review",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
       "reviewer_role": "mission-review",
-      "timestamp_policy": "operator-browser-export",
+      "timestamp_policy": "deterministic-evidence-window-start",
       "recorded_at_utc": "2026-06-25T00:00:00Z",
       "append_only": true,
       "source_evidence_refs": [
         {
-          "ref_id": "rabbita-clear-terrain-grade-northeast-stepout-accept-source",
+          "ref_id": "clear-terrain-grade-northeast-stepout",
           "entry_id": "mission/first-trusted-square/selected-route-clearance",
           "path": "mission/first-trusted-square/selected-route-clearance.json",
-          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json"
         }
       ],
-      "rationale": "Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile"
     },
     {
-      "transition_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept",
+      "transition_id": "review-clear-illumination-confidence-northeast-stepout-request-evidence",
       "item_id": "clear-illumination-confidence-northeast-stepout",
-      "previous_status": "NeedsEvidence",
-      "decision": "Accept",
-      "resulting_status": "Accepted",
-      "reviewer_id": "operator/rabbita-clearance-review",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
       "reviewer_role": "power-thermal-review",
-      "timestamp_policy": "operator-browser-export",
+      "timestamp_policy": "deterministic-evidence-window-start",
       "recorded_at_utc": "2026-06-25T00:00:00Z",
       "append_only": true,
       "source_evidence_refs": [
         {
-          "ref_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept-source",
+          "ref_id": "clear-illumination-confidence-northeast-stepout",
           "entry_id": "mission/first-trusted-square/selected-route-clearance",
           "path": "mission/first-trusted-square/selected-route-clearance.json",
-          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout"
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json"
         }
       ],
-      "rationale": "Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable"
     },
     {
-      "transition_id": "rabbita-clear-energy-margin-accept",
+      "transition_id": "review-clear-energy-margin-request-evidence",
       "item_id": "clear-energy-margin",
-      "previous_status": "NeedsEvidence",
-      "decision": "Accept",
-      "resulting_status": "Accepted",
-      "reviewer_id": "operator/rabbita-clearance-review",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
       "reviewer_role": "power-thermal-review",
-      "timestamp_policy": "operator-browser-export",
+      "timestamp_policy": "deterministic-evidence-window-start",
       "recorded_at_utc": "2026-06-25T00:00:00Z",
       "append_only": true,
       "source_evidence_refs": [
         {
-          "ref_id": "rabbita-clear-energy-margin-accept-source",
+          "ref_id": "clear-energy-margin",
           "entry_id": "mission/first-trusted-square/selected-route-clearance",
           "path": "mission/first-trusted-square/selected-route-clearance.json",
-          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json"
         }
       ],
-      "rationale": "Rabbita accept decision for clear-energy-margin: imported fixture"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation"
     },
     {
-      "transition_id": "rabbita-clear-moonbook-review-northeast-stepout-accept",
+      "transition_id": "review-clear-moonbook-review-northeast-stepout-request-evidence",
       "item_id": "clear-moonbook-review-northeast-stepout",
-      "previous_status": "NeedsEvidence",
-      "decision": "Accept",
-      "resulting_status": "Accepted",
-      "reviewer_id": "operator/rabbita-clearance-review",
+      "previous_status": "Open",
+      "decision": "RequestEvidence",
+      "resulting_status": "NeedsEvidence",
+      "reviewer_id": "operator/moonbook-policy-v1",
       "reviewer_role": "mission-review",
-      "timestamp_policy": "operator-browser-export",
+      "timestamp_policy": "deterministic-evidence-window-start",
       "recorded_at_utc": "2026-06-25T00:00:00Z",
       "append_only": true,
       "source_evidence_refs": [
         {
-          "ref_id": "rabbita-clear-moonbook-review-northeast-stepout-accept-source",
+          "ref_id": "clear-moonbook-review-northeast-stepout",
           "entry_id": "mission/first-trusted-square/selected-route-clearance",
           "path": "mission/first-trusted-square/selected-route-clearance.json",
-          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout"
+          "immutable_uri": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json"
         }
       ],
-      "rationale": "Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture"
+      "rationale": "kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation"
     },
     {
       "transition_id": "review-moonrobo-handoff-request-evidence",
@@ -4364,31 +4396,6 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
         }
       ],
       "rationale": "left open for moonclaw follow-up"
-    },
-    {
-      "transition_id": "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
-      "item_id": "moonclaw-remediation-margin-closeout-action-review",
-      "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
-      "previous_status": "NeedsReview",
-      "decision": "Accept",
-      "resulting_status": "Accepted",
-      "reviewer_id": "operator/rabbita-closeout-action-review",
-      "reviewer_role": "moonclaw-closeout-action-review",
-      "timestamp_policy": "operator-browser-export",
-      "recorded_at_utc": "2026-06-25T00:00:00Z",
-      "append_only": true,
-      "hardware_authority_change": false,
-      "hardware_state": "HardwareDenied",
-      "hardware_authority": "moonmoon-safety-gate-only",
-      "source_evidence_refs": [
-        {
-          "ref_id": "moonclaw-remediation-margin-closeout-action-review",
-          "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
-          "path": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
-          "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review"
-        }
-      ],
-      "rationale": "Rabbita accept decision for moonclaw-remediation-margin-closeout-action-review: terrain escalation, horizon retry-with-new-evidence, and energy freeze actions are operator-reviewed; hardware remains denied"
     }
   ]
 }
@@ -4404,19 +4411,25 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
       <span class="status-pill">mission: block</span>
     </div>
     <section class="lunar-viewport" aria-label="Moon landscape to first trusted square zoom">
-      <div class="moon-landscape">
-        <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
-        <div class="landscape-target" aria-hidden="true"></div>
-        <div class="landscape-label">
-          <b>zoom target</b>
-          <span>south-pole rim context before local corridor selection</span>
+      <div id="moon-globe" class="moon-globe" data-moon-globe data-texture="assets/lunar_global_texture.jpg" aria-label="Operable 3D Moon globe for first trusted square">
+        <canvas class="moon-globe-canvas" width="760" height="390" aria-label="Drag to rotate the Moon and use the controls to zoom or fly to the trusted square"></canvas>
+        <div class="moon-globe-fallback moon-landscape">
+          <img src="assets/southpole_10deg_print.jpg" alt="NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data">
+        </div>
+        <span class="moon-globe-status">loading globe</span>
+        <div class="moon-globe-marker" hidden aria-hidden="true"></div>
+        <div class="moon-globe-controls" aria-label="Moon globe controls">
+          <button type="button" data-globe-action="zoom-in" title="Zoom in">+</button>
+          <button type="button" data-globe-action="zoom-out" title="Zoom out">-</button>
+          <button type="button" data-globe-action="home" title="Reset Moon view">H</button>
+          <button type="button" data-globe-action="site" title="Fly to trusted square">S</button>
         </div>
         <div class="landscape-caption">
           <div>
-            <b>moon landscape</b>
-            <span>NASA SVS 10-degree south-pole view</span>
+            <b>live moon</b>
+            <span>drag, zoom, then fly to the trusted square</span>
           </div>
-          <span>LRO LOLA DEM + LROC WAC mosaic source frame</span>
+          <span>global texture for context; LOLA evidence below</span>
         </div>
       </div>
       <div class="zoom-stack">
@@ -5422,6 +5435,8 @@ document.getElementById('copy-closeout-action-review-export').addEventListener('
 document.getElementById('download-closeout-action-review-export').addEventListener('click', downloadCloseoutActionReviewExport);
 render();
 </script>
+
+<script src="assets/moon_globe.js"></script>
 
 </body>
 </html>

@@ -6,15 +6,21 @@ test "Rabbita Moon page renders browser inspection controls" {
   assert_true(html.contains("moonmoon-view-model"))
   assert_true(html.contains("moonmoon-moonbook"))
   assert_true(html.contains("Moon landscape to first trusted square zoom"))
-  assert_true(html.contains("moon-landscape"))
+  assert_true(html.contains("data-moon-globe"))
+  assert_true(html.contains("moon-globe-canvas"))
+  assert_true(html.contains("assets/lunar_global_texture.jpg"))
+  assert_true(html.contains("assets/moon_globe.js"))
+  assert_true(html.contains("data-globe-action=\"site\""))
+  assert_true(html.contains("data-globe-action=\"home\""))
+  assert_true(html.contains("global texture for context; LOLA evidence below"))
+  assert_true(html.contains("site_latitude_deg"))
+  assert_true(html.contains("site_longitude_deg"))
   assert_true(html.contains("assets/southpole_10deg_print.jpg"))
   assert_true(
     html.contains(
       "NASA SVS lunar south pole landscape rendered from LRO LOLA and LROC WAC data",
     ),
   )
-  assert_true(html.contains("NASA SVS 10-degree south-pole view"))
-  assert_true(html.contains("LRO LOLA DEM + LROC WAC mosaic source frame"))
   assert_true(html.contains("zoom-stack"))
   assert_true(
     html.contains("south-pole landscape to 81-window measured LOLA corridor"),

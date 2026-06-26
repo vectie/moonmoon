@@ -157,6 +157,8 @@ pub(all) struct TrustedSquareViewModel {
   view_id : String
   site_id : String
   title : String
+  site_latitude_deg : Double
+  site_longitude_deg : Double
   viewport : ViewportGeometry
   layers : Array[LayerToggle]
   active_layer_id : String

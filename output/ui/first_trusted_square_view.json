@@ -2,6 +2,8 @@
   "view_id": "ui/first-trusted-square/operator-view-v2",
   "site_id": "first-trusted-square",
   "title": "First Trusted Square / Shackleton Rim rehearsal tile",
+  "site_latitude_deg": -89.88,
+  "site_longitude_deg": 0.12,
   "viewport": {
     "rows": 4,
     "cols": 4,

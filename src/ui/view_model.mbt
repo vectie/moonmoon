@@ -14,6 +14,8 @@ pub fn from_site_dossier_with_selection(
     view_id: "ui/first-trusted-square/operator-view-v2",
     site_id: dossier.site.site_id,
     title: dossier.site.name,
+    site_latitude_deg: dossier.site.center.latitude_deg,
+    site_longitude_deg: dossier.site.center.longitude_deg,
     viewport: viewport_geometry(grid),
     layers: view_layers(metrics, dossier.energy),
     active_layer_id: "hazard",
