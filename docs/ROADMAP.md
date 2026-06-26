@@ -126,7 +126,9 @@ the conservative rover profile and asks for alternate route modeling.
 Goal: make the trusted square inspectable.
 
 - Add renderer-agnostic terrain view models.
-- Build `src/ui/rabbita-moon` as a real operator surface.
+- Build `src/ui/rabbita_moon` as a real operator surface.
+- Open with a live, movable Moon-scale view before the local trusted-square
+  detail view.
 - Render elevation, slope, roughness, and hazard layers.
 - Add tile selection and an inspector with source and uncertainty details.
 - Keep UI logic separate from terrain derivation.
@@ -179,6 +181,36 @@ Current implementation status:
 - Imported transition builds now materialize that modeling pass into MoonBook
   beside the gap task and receipt, so the bounded all-still-blocked result is
   durable workspace evidence.
+- Rabbita now starts with real NASA south-pole imagery and then shows the
+  81-window measured LOLA corridor map. That fixed the "gray ball" problem but
+  is still only a static context frame.
+
+Live Moonviewer update plan:
+
+- Use the KDE Marble Moon theme as design inspiration, not a dependency.
+  Marble's useful ideas are a globe widget, texture layer, geodata overlays,
+  continuous zoom, coordinate grid, compass, scale bar, and layer settings.
+- Add a small browser globe runtime under `src/ui/rabbita_moon` and generated
+  `output/ui/rabbita/` assets. Prefer a local Three.js/WebGL bundle for the
+  first slice.
+- Replace the static first viewport with an operable 3D Moon: drag to rotate,
+  wheel/pinch to zoom, reset/home, and fly-to-trusted-square.
+- Cache a real global Moon texture locally with provenance and checksum. The
+  current NASA south-pole landscape remains the no-WebGL/reduced-motion
+  fallback and a regional context layer.
+- Project MoonBit-owned evidence onto the globe: first trusted-square marker,
+  selected route, 81 LOLA corridor windows, clearance blockers, and
+  hardware-denied state.
+- Keep the existing SVG LOLA corridor map as the zoomed-in detail layer after
+  the globe fly-in.
+- Add browser-level verification that the WebGL canvas is nonblank, user
+  controls work, the fallback renders, and text/controls do not overlap on
+  mobile or desktop.
+
+Done for the live update when the first screen feels like a Moon explorer:
+the operator can move the Moon, see where the site sits in lunar context, and
+then zoom into the measured trusted-square evidence without losing source and
+safety state.
 
 ## Milestone 3: MoonBook Evidence Loop
 
@@ -280,6 +312,8 @@ Current implementation status:
 
 Remaining work:
 
+- Implement the live 3D Rabbita Moonviewer plan above before adding more review
+  panels. The product currently lacks the movable Moon context operators expect.
 - Review the promoted northeast-stepout fixture and continue corridor search
   around it only if operators need wider local context.
 - Execute the ephemeris acquisition plan and replace the relief-shadow proxy
@@ -387,8 +421,10 @@ Done when Moonmoon becomes the suite's shared lunar operations sandbox.
 - Replace the checked synthetic CSV with a tiny authoritative LOLA-derived
   extraction while preserving the same verify/generate/dossier pipeline.
 - Add ephemeris-backed illumination and energy windows to the mission score.
-- Add Rabbita view models for terrain layers, inspector rows, and route
-  overlays.
+- Add the Rabbita live 3D Moonviewer: local Moon texture, WebGL canvas,
+  drag/zoom controls, fly-to-site, site marker, and fallback static context.
+- Add Rabbita view models for terrain layers, inspector rows, route overlays,
+  and globe projection overlays.
 - Add persisted MoonBook review history and editable review status transitions.
 - Keep running `moon check`, `moon test`, `moon info`, and `moon fmt` for each
   proof slice.

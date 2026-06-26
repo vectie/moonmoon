@@ -93,6 +93,38 @@ renderer-neutral view model and MoonBook review ledger as JSON. The page owns
 only presentation state such as layer selection and selected terrain cell; it
 does not recompute terrain, route, energy, or review facts.
 
+The next Rabbita slice should upgrade that browser surface from static imagery
+to a live Moon explorer. The local reference is KDE Marble, especially
+`../marble/data/maps/moon/clementine/clementine.dgml`: Marble treats a globe as
+a widget/model boundary with texture layers, geodata overlays, continuous zoom,
+coordinate grid, compass, scale bar, and layer settings. Moonmoon should not
+port Marble, but it should adopt the same separation:
+
+```text
+MoonBit view model + MoonBook ledger
+  -> generated Rabbita app state
+  -> browser globe runtime
+  -> projection layers on the Moon
+  -> screen controls and review panels
+```
+
+The browser globe runtime can be JavaScript because it is presentation only.
+Its first implementation should be small and local:
+
+- a vendored Three.js/WebGL module or equivalent local dependency
+- a cached global lunar texture with source metadata and checksum
+- an operable globe canvas with drag rotate, wheel/pinch zoom, reset/home, and
+  a "fly to trusted square" camera transition
+- a site marker and route/corridor overlays derived from embedded MoonBit JSON
+- a WebGL/no-motion fallback that preserves the current static NASA south-pole
+  landscape and LOLA SVG corridor map
+
+The globe runtime must not become a second mission engine. Coordinate
+conversion, selected route facts, clearance state, power gates, and robot
+authority remain in MoonBit and MoonBook outputs. The browser may project and
+animate those facts, but it must not decide whether terrain, power, route, or
+hardware gates are clear.
+
 ## Core Contracts
 
 The important early types are:

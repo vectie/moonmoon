@@ -26,7 +26,7 @@ Moonrobo ever touches real regolith.
 ```text
 NASA / LROC / LOLA / PDS / mission data
   -> Moonmoon data + terrain + uncertainty model
-  -> Rabbita/Lepusa lunar operator viewer
+  -> Rabbita/Lepusa live lunar operator viewer
   -> MoonBook lunar evidence library
   -> MoonClaw modeling jobs
   -> Moontown long-running mission planning
@@ -133,6 +133,14 @@ provenance and uncertainty:
   ridge plan?
 - What evidence should be written back to MoonBook?
 
+Rabbita still needs a live Moon-scale operator view for that evidence. The
+current page starts with real NASA south-pole imagery and a measured LOLA
+corridor map, but the next UI slice should make the opening viewport movable:
+an operable 3D Moon with local texture assets, drag/zoom controls, a
+fly-to-trusted-square transition, site and route overlays, and a no-WebGL
+fallback. The model and decisions stay MoonBit-owned; the browser globe only
+projects and navigates the evidence.
+
 ## Rebuild Direction
 
 MoonMoon is now treated as a standalone product with a small kernel before any
@@ -141,10 +149,11 @@ it names the model layers, evidence gates, MoonSuite boundaries, and highest
 priority build queue from the current executable site dossier.
 
 The current top priority is deliberately large rather than cosmetic: add
-append-only MoonBook review transitions with reviewer identity and immutable
-evidence references. Terrain, power, renderer-neutral UI evidence, and
-robot-facing simulation/replay/hardware packet semantics now exist; the next
-product gap is durable human review movement.
+the live Rabbita Moonviewer before piling more panels onto the page. Terrain,
+power, renderer-neutral UI evidence, MoonBook review state, and robot-facing
+simulation/replay/hardware packet semantics now exist; the next product gap is
+movable lunar context that lets an operator start at Moon scale and zoom into
+the trusted-square evidence.
 
 ## Documents
 
@@ -159,6 +168,12 @@ work rather than porting it directly. The transferable ideas are DEM-centered
 workflows, terrain exaggeration, ridge/gully/trench style analysis, queryable
 terrain regions, and exportable visual evidence. The implementation should be
 MoonBit-first and suite-native.
+
+Moonmoon should also use `../marble` as UI architecture inspiration rather than
+as a dependency. Marble's Moon theme shows the right product shape: a globe
+view, texture layer, geodata overlays, continuous zoom, compass, scale bar,
+coordinate grid, and layer settings. Rabbita should implement the small
+Moonmoon-native version of that idea around the first trusted square.
 
 Relevant public data/tooling references include:
 

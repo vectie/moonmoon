@@ -29,7 +29,10 @@ construction recommendation should be able to explain where it came from.
 ## What Moonmoon Is Not
 
 Moonmoon is not a generic globe viewer. It is not just a pretty 3D Moon. It is
-also not the robot gateway, scheduler, evidence book, or agent runtime.
+also not the robot gateway, scheduler, evidence book, or agent runtime. The
+operator surface still needs a live, movable lunar globe because humans must
+understand site context before trusting a local tile. The globe is a navigation
+and evidence frame, not the source of mission truth.
 
 Moonmoon owns the model of the lunar world:
 
@@ -43,6 +46,11 @@ Moonmoon owns the model of the lunar world:
 - renderer-facing projections for Rabbita and Lepusa
 
 Other suite members consume these contracts.
+
+The Rabbita surface should therefore open at Moon scale, let the operator move
+and zoom the Moon, and then fly into the first trusted square. The local
+trusted-square terrain, LOLA corridor windows, review blockers, and Moonrobo
+safety gates remain MoonBit/MoonBook-owned evidence layers over that globe.
 
 ## Suite Fit
 
@@ -85,6 +93,7 @@ The product should therefore prefer:
 - typed contracts over screenshots
 - provenance over vibes
 - small verified tiles over huge untrusted maps
+- live geospatial context over static hero images
 - uncertainty labels over false confidence
 - reproducible derivations over manual magic
 - MoonBit core logic over UI-owned business rules
