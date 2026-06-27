@@ -7,11 +7,12 @@ evidence.
 
 ## Current Implementation Status
 
-- `moonphys` has generic vector, environment, heightfield, contact, kinematic,
-  and trace primitives.
+- `moonphys` has generic vector, transform, environment, heightfield, contact,
+  kinematic, and trace primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
+- Every walk frame includes 24 Noetix joint phases for animation/replay.
 - The trace is exported as Markdown and JSON under `output/moonrobo`.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 
@@ -213,6 +214,9 @@ Tests:
 
 ## Phase 4: URDF-Aware Noetix Pose
 
+Status: first animation-ready joint phase slice implemented; full URDF-derived
+link poses remain future work.
+
 Use Moonrobo's URDF work as the robot-specific layer.
 
 Input from sibling Moonrobo:
@@ -373,11 +377,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Add transform/rotation primitives for robot pose composition.
-2. Add simple Noetix joint phase output for visual walking animation.
-3. Materialize the Noetix walk trace into the MoonBook workspace.
-4. Surface the trace in Rabbita without adding hardware controls.
-5. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
+1. Materialize the Noetix walk trace into the MoonBook workspace.
+2. Surface the trace in Rabbita without adding hardware controls.
+3. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
+4. Replace synthetic joint phases with URDF-derived link poses.
+5. Add basic support-polygon and center-of-mass evidence.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

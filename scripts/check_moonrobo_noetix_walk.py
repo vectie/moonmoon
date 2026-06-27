@@ -52,6 +52,13 @@ def main() -> None:
         fail("right foot should support frame 10")
     if not any(frame.get("status") == "walking-needs-review" for frame in frames):
         fail("trace should preserve terrain review status")
+    if len(frames[0].get("joint_phases", [])) != 24:
+        fail("frame should carry 24 Noetix joint phases")
+    if not any(
+        phase.get("joint_name") == "leg_r3_joint"
+        for phase in frames[5].get("joint_phases", [])
+    ):
+        fail("joint phases should include Noetix leg joints")
 
 
 if __name__ == "__main__":

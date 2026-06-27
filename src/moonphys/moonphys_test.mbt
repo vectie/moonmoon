@@ -39,3 +39,11 @@ test "kinematic integration applies acceleration" {
   assert_true(stepped.position == vec3(0.5, 0.0, 0.5))
   assert_true(stepped.velocity == vec3(1.0, 0.0, -1.0))
 }
+
+///|
+test "transform translates local point" {
+  let transform = transform3(identity_basis3(), vec3(1.0, 2.0, 3.0))
+  assert_true(
+    transform.transform_point(vec3(4.0, 5.0, 6.0)) == vec3(5.0, 7.0, 9.0),
+  )
+}

@@ -257,6 +257,14 @@ pub(all) struct NoetixFootContactProbe {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixJointPhase {
+  joint_name : String
+  role : String
+  side : String
+  position_rad : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixMoonWalkConfig {
   config_id : String
   gravity_mps2 : Double
@@ -278,6 +286,7 @@ pub(all) struct NoetixMoonWalkFrame {
   support_phase : String
   left_foot : NoetixFootContactProbe
   right_foot : NoetixFootContactProbe
+  joint_phases : Array[NoetixJointPhase]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

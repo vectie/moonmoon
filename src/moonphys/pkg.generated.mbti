@@ -11,6 +11,8 @@ pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
 
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
 
+pub fn identity_basis3() -> Basis3
+
 pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
 
 pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
@@ -21,11 +23,28 @@ pub fn lunar_gravity_acceleration() -> Vec3
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
+pub fn transform3(Basis3, Vec3) -> Transform3
+
 pub fn vec3(Double, Double, Double) -> Vec3
+
+pub fn yaw_basis3(Double) -> Basis3
 
 // Errors
 
 // Types and methods
+pub(all) struct Basis3 {
+  xx : Double
+  xy : Double
+  xz : Double
+  yx : Double
+  yy : Double
+  yz : Double
+  zx : Double
+  zy : Double
+  zz : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn Basis3::mul_vec3(Self, Vec3) -> Vec3
+
 pub(all) struct ContactProbe {
   probe_id : String
   position : Vec3
@@ -84,6 +103,12 @@ pub(all) struct PhysicsTrace {
   frames : Array[PhysicsFrame]
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Transform3 {
+  basis : Basis3
+  translation : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn Transform3::transform_point(Self, Vec3) -> Vec3
 
 pub(all) struct Vec3 {
   x : Double

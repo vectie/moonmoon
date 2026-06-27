@@ -36,6 +36,15 @@ pub(all) struct NoetixFootContactProbe {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixJointPhase {
+  joint_name : String
+  role : String
+  side : String
+  position_rad : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixMoonWalkFrame {
   frame_index : Int
   time_s : Double
@@ -43,6 +52,7 @@ pub(all) struct NoetixMoonWalkFrame {
   support_phase : String
   left_foot : NoetixFootContactProbe
   right_foot : NoetixFootContactProbe
+  joint_phases : Array[NoetixJointPhase]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -190,6 +200,81 @@ fn frame_status(
 }
 
 ///|
+fn joint_phase(
+  joint_name : String,
+  role : String,
+  side : String,
+  position_rad : Double,
+) -> NoetixJointPhase {
+  { joint_name, role, side, position_rad, status: "kinematic-phase" }
+}
+
+///|
+fn leg_phases(
+  side : String,
+  prefix : String,
+  swinging : Bool,
+  progress : Double,
+) -> Array[NoetixJointPhase] {
+  let lift = if swinging {
+    @math.sin(progress * 3.141592653589793)
+  } else {
+    0.0
+  }
+  let direction = if side == "left" { 1.0 } else { 0.0 - 1.0 }
+  [
+    joint_phase("\{prefix}1_joint", "hip-pitch", side, 0.22 * lift),
+    joint_phase("\{prefix}2_joint", "hip-roll", side, direction * 0.06 * lift),
+    joint_phase("\{prefix}3_joint", "knee-upper", side, 0.42 * lift),
+    joint_phase("\{prefix}4_joint", "knee-lower", side, 0.0 - 0.32 * lift),
+    joint_phase("\{prefix}5_joint", "ankle-roll", side, direction * 0.04 * lift),
+    joint_phase("\{prefix}6_joint", "ankle-pitch", side, 0.0 - 0.16 * lift),
+  ]
+}
+
+///|
+fn arm_phases(
+  left_support : Bool,
+  progress : Double,
+) -> Array[NoetixJointPhase] {
+  let wave = @math.sin(progress * 3.141592653589793)
+  let left = if left_support { 0.0 - wave } else { wave }
+  let right = 0.0 - left
+  [
+    joint_phase("arm_l1_joint", "shoulder-pitch", "left", 0.18 * left),
+    joint_phase("arm_l2_joint", "shoulder-roll", "left", 0.05 * left),
+    joint_phase("arm_l3_joint", "elbow-yaw", "left", 0.04 * left),
+    joint_phase("arm_l4_joint", "elbow-pitch", "left", 0.10 * left),
+    joint_phase("arm_l5_joint", "wrist-roll", "left", 0.03 * left),
+    joint_phase("arm_r1_joint", "shoulder-pitch", "right", 0.18 * right),
+    joint_phase("arm_r2_joint", "shoulder-roll", "right", 0.05 * right),
+    joint_phase("arm_r3_joint", "elbow-yaw", "right", 0.04 * right),
+    joint_phase("arm_r4_joint", "elbow-pitch", "right", 0.10 * right),
+    joint_phase("arm_r5_joint", "wrist-roll", "right", 0.03 * right),
+  ]
+}
+
+///|
+fn noetix_joint_phases(
+  left_support : Bool,
+  progress : Double,
+) -> Array[NoetixJointPhase] {
+  let phases : Array[NoetixJointPhase] = []
+  phases.push(joint_phase("waist_1_joint", "waist-yaw", "center", 0.0))
+  phases.push(joint_phase("waist_2_joint", "waist-pitch", "center", 0.0))
+  for phase in leg_phases("left", "leg_l", !left_support, progress) {
+    phases.push(phase)
+  }
+  for phase in leg_phases("right", "leg_r", left_support, progress) {
+    phases.push(phase)
+  }
+  for phase in arm_phases(left_support, progress) {
+    phases.push(phase)
+  }
+  phases
+}
+
+///|
 pub fn noetix_moon_walk_frame(
   field : @moonphys.Heightfield,
   config : NoetixMoonWalkConfig,
@@ -264,6 +349,7 @@ pub fn noetix_moon_walk_frame(
     },
     left_foot: left,
     right_foot: right,
+    joint_phases: noetix_joint_phases(left_support, progress),
     status: frame_status(left, right),
   }
 }
@@ -321,6 +407,7 @@ pub fn render_noetix_moon_walk_markdown(trace : NoetixMoonWalkTrace) -> String {
     text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} body_x=\{frame.body_position.x} status=\{frame.status}\n"
     text += "  - left: x=\{frame.left_foot.position.x} z=\{frame.left_foot.position.z} contact=\{frame.left_foot.in_contact} clearance=\{frame.left_foot.clearance_m} status=\{frame.left_foot.status}\n"
     text += "  - right: x=\{frame.right_foot.position.x} z=\{frame.right_foot.position.z} contact=\{frame.right_foot.in_contact} clearance=\{frame.right_foot.clearance_m} status=\{frame.right_foot.status}\n"
+    text += "  - joints: \{frame.joint_phases.length()} kinematic phases\n"
   }
   text
 }
