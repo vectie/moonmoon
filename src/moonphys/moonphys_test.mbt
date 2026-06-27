@@ -909,6 +909,53 @@ test "hinge axis correction estimates velocity impulse" {
 }
 
 ///|
+test "hinge joint assessment composes anchor and axis evidence" {
+  let constraint = rigid_body_hinge_joint_constraint(
+    "hip",
+    "pelvis",
+    "thigh",
+    anchor_a_m=vec3(1.0, 0.0, 0.0),
+    anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+    local_axis_a=vec3(0.0, 1.0, 0.0),
+    local_axis_b=vec3(0.0, 1.0, 0.0),
+  )
+  let pelvis = rigid_body_motion_state(
+    "pelvis",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let thigh = rigid_body_motion_state(
+    "thigh",
+    2.0,
+    0.1,
+    vec3(3.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let assessment = rigid_body_hinge_joint_assessment(
+    constraint,
+    pelvis,
+    rigid_body_inertia("pelvis", vec3(2.0, 2.0, 2.0)),
+    thigh,
+    rigid_body_inertia("thigh", vec3(2.0, 2.0, 2.0)),
+  )
+  assert_eq(assessment.status, "hinge-joint-correction-estimated")
+  assert_eq(assessment.position.status, "world-constraint-resolved")
+  assert_eq(assessment.axis.status, "hinge-correction-estimated")
+  assert_true(nearly_equal(assessment.position_error_m, 1.0))
+  assert_true(
+    nearly_equal(assessment.angular_error_rad, 3.141592653589793 / 2.0),
+  )
+  assert_true(nearly_equal(assessment.position.world_anchor_a.x, 1.0))
+  assert_true(nearly_equal(assessment.position.world_anchor_b.x, 2.0))
+}
+
+///|
 test "primitive diagonal inertia uses solid shape formulas" {
   let sphere = sphere_diagonal_inertia("sphere", 10.0, 2.0)
   assert_true(nearly_equal(sphere.diagonal_kg_m2.x, 16.0))

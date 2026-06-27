@@ -248,6 +248,18 @@ fn rigid_body_world_distance_constraint_resolution(
 }
 
 ///|
+pub fn rigid_body_world_distance_constraint_assessment(
+  constraint : RigidBodyWorldDistanceConstraint,
+  state_a : RigidBodyState,
+  state_b : RigidBodyState,
+) -> RigidBodyWorldConstraintResolution {
+  rigid_body_world_distance_constraint_resolution(constraint, [
+    rigid_body_world_body(state_a),
+    rigid_body_world_body(state_b),
+  ])
+}
+
+///|
 fn rigid_body_world_constraint_frame_status(
   resolved_constraint_count : Int,
   review_count : Int,

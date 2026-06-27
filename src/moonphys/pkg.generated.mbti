@@ -127,6 +127,10 @@ pub fn rigid_body_hinge_axis_constraint(String, String, String, local_axis_a? : 
 
 pub fn rigid_body_hinge_axis_correction(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularState, RigidBodyInertia) -> RigidBodyHingeAxisCorrection
 
+pub fn rigid_body_hinge_joint_assessment(RigidBodyHingeJointConstraint, RigidBodyMotionState, RigidBodyInertia, RigidBodyMotionState, RigidBodyInertia) -> RigidBodyHingeJointAssessment
+
+pub fn rigid_body_hinge_joint_constraint(String, String, String, anchor_a_m? : Vec3, anchor_b_m? : Vec3, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeJointConstraint
+
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 
 pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
@@ -140,6 +144,8 @@ pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, 
 pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
 
 pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : Vec3, anchor_b_m? : Vec3, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
+
+pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceConstraint, RigidBodyState, RigidBodyState) -> RigidBodyWorldConstraintResolution
 
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
@@ -647,6 +653,23 @@ pub(all) struct RigidBodyHingeAxisCorrection {
   velocity_delta_b_rad_s : Vec3
   angular_impulse_nms : Double
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHingeJointAssessment {
+  joint_id : String
+  position : RigidBodyWorldConstraintResolution
+  axis : RigidBodyHingeAxisCorrection
+  position_error_m : Double
+  angular_error_rad : Double
+  linear_impulse_ns : Double
+  angular_impulse_nms : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHingeJointConstraint {
+  joint_id : String
+  position : RigidBodyWorldDistanceConstraint
+  axis : RigidBodyHingeAxisConstraint
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyInertia {

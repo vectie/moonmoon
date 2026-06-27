@@ -41,6 +41,25 @@ pub(all) struct RigidBodyHingeAxisCorrection {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyHingeJointConstraint {
+  joint_id : String
+  position : RigidBodyWorldDistanceConstraint
+  axis : RigidBodyHingeAxisConstraint
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyHingeJointAssessment {
+  joint_id : String
+  position : RigidBodyWorldConstraintResolution
+  axis : RigidBodyHingeAxisCorrection
+  position_error_m : Double
+  angular_error_rad : Double
+  linear_impulse_ns : Double
+  angular_impulse_nms : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn rigid_body_hinge_axis_constraint(
   constraint_id : String,
   body_a_id : String,
@@ -56,6 +75,39 @@ pub fn rigid_body_hinge_axis_constraint(
     local_axis_a: normalized_axis(local_axis_a),
     local_axis_b: normalized_axis(local_axis_b),
     stiffness: clamp_unit(stiffness),
+  }
+}
+
+///|
+pub fn rigid_body_hinge_joint_constraint(
+  joint_id : String,
+  body_a_id : String,
+  body_b_id : String,
+  anchor_a_m? : Vec3 = vec3(0.0, 0.0, 0.0),
+  anchor_b_m? : Vec3 = vec3(0.0, 0.0, 0.0),
+  local_axis_a? : Vec3 = vec3(0.0, 0.0, 1.0),
+  local_axis_b? : Vec3 = vec3(0.0, 0.0, 1.0),
+  stiffness? : Double = 1.0,
+) -> RigidBodyHingeJointConstraint {
+  {
+    joint_id,
+    position: rigid_body_world_distance_constraint(
+      "\{joint_id}/position",
+      body_a_id,
+      body_b_id,
+      0.0,
+      anchor_a_m~,
+      anchor_b_m~,
+      stiffness~,
+    ),
+    axis: rigid_body_hinge_axis_constraint(
+      "\{joint_id}/axis",
+      body_a_id,
+      body_b_id,
+      local_axis_a~,
+      local_axis_b~,
+      stiffness~,
+    ),
   }
 }
 
@@ -247,5 +299,52 @@ pub fn rigid_body_hinge_axis_correction(
     velocity_delta_b_rad_s: velocity_delta_b,
     angular_impulse_nms: angular_impulse,
     status: hinge_axis_correction_status(assessment, inverse_inertia_sum),
+  }
+}
+
+///|
+fn hinge_joint_status(
+  position : RigidBodyWorldConstraintResolution,
+  axis : RigidBodyHingeAxisCorrection,
+) -> String {
+  if position.status.contains("review") || axis.status.contains("review") {
+    "hinge-joint-review"
+  } else if position.status == "world-constraint-resolved" ||
+    axis.status == "hinge-correction-estimated" {
+    "hinge-joint-correction-estimated"
+  } else {
+    "hinge-joint-satisfied"
+  }
+}
+
+///|
+pub fn rigid_body_hinge_joint_assessment(
+  constraint : RigidBodyHingeJointConstraint,
+  state_a : RigidBodyMotionState,
+  inertia_a : RigidBodyInertia,
+  state_b : RigidBodyMotionState,
+  inertia_b : RigidBodyInertia,
+) -> RigidBodyHingeJointAssessment {
+  let position = rigid_body_world_distance_constraint_assessment(
+    constraint.position,
+    state_a.linear,
+    state_b.linear,
+  )
+  let axis = rigid_body_hinge_axis_correction(
+    constraint.axis,
+    state_a.angular,
+    inertia_a,
+    state_b.angular,
+    inertia_b,
+  )
+  {
+    joint_id: constraint.joint_id,
+    position,
+    axis,
+    position_error_m: hinge_abs(position.error_m),
+    angular_error_rad: axis.assessment.angular_error_rad,
+    linear_impulse_ns: position.impulse_ns,
+    angular_impulse_nms: axis.angular_impulse_nms,
+    status: hinge_joint_status(position, axis),
   }
 }
