@@ -161,6 +161,8 @@ def main() -> None:
         fail("joint control artifact must expose world capture-review frames")
     if "worst capture support margin" not in joint_control_state:
         fail("joint control artifact must expose worst capture support margin")
+    if "world-replay-review" not in joint_control_state:
+        fail("joint control artifact must expose Moonphys world replay review")
     if artifacts["noetix-inertial-collision-review"].get("ready"):
         fail("inertial collision artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-inertial-collision-review"].get("blocking_reason", ""):

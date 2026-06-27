@@ -146,6 +146,10 @@ def main() -> None:
         "envelope_status", ""
     ):
         fail("hinge motor world trace should expose envelope status")
+    if "world-replay-review" not in hinge_motor_world_trace.get(
+        "world_review_status", ""
+    ):
+        fail("hinge motor world trace should expose Moonphys world review status")
     if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
         "status", ""
     ):

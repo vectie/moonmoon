@@ -255,7 +255,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; world review world-replay-review-blocked; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -588,7 +588,7 @@
             "path": "output/moonrobo/first_trusted_square_noetix_control.json",
             "producer": "moon run cmd/main -- moonrobo noetix control json",
             "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; world review world-replay-review-blocked; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
             "ready": false,
             "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
             "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -29441,6 +29441,7 @@
         "max_world_linear_momentum_kg_mps": 23.795797235028104,
         "max_frame_kinetic_energy_delta_j": 2.050170526416192,
         "envelope_status": "world-trace-envelope-review",
+        "world_review_status": "world-replay-review-blocked",
         "status": "world-heightfield-hinge-motor-trace-review"
       },
       "max_abs_position_error_rad": 0.24289082981102283,

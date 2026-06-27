@@ -125,6 +125,8 @@ pub fn rigid_body_heightfield_world_dynamic_support_trace(RigidBodyHeightfieldWo
 
 pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldDynamicSupportTrace
 
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldReplayReview
+
 pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
 
 pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldSupportTrace
@@ -132,6 +134,8 @@ pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfie
 pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
 
 pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldTraceEnvelope
+
+pub fn rigid_body_heightfield_world_replay_review(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldReplayReview
 
 pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
 
@@ -184,6 +188,8 @@ pub fn rigid_body_world_integrate_hinge_motor_trace(String, RigidBodyHeightfield
 pub fn rigid_body_world_integrate_hinge_motors(RigidBodyHeightfieldWorld, JointMotorFrame) -> RigidBodyWorldHingeMotorFrame
 
 pub fn rigid_body_world_linear_momentum(RigidBodyHeightfieldWorld) -> Vec3
+
+pub fn rigid_body_world_replay_review(RigidBodyWorldTraceEnvelope, RigidBodyWorldSupportTrace, RigidBodyWorldDynamicSupportTrace) -> RigidBodyWorldReplayReview
 
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
@@ -1033,6 +1039,41 @@ pub(all) struct RigidBodyWorldPairResolution {
   velocity_delta_b : Vec3
   normal_impulse_ns : Double
   friction_impulse_ns : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldReplayReview {
+  trace_id : String
+  frame_count : Int
+  body_count : Int
+  contact_count : Int
+  review_count : Int
+  envelope_status : String
+  support_status : String
+  dynamic_support_status : String
+  body_sample_count : Int
+  resolved_hinge_constraint_count : Int
+  min_position : Vec3
+  max_position : Vec3
+  max_speed_mps : Double
+  max_kinetic_energy_j : Double
+  max_body_linear_momentum_kg_mps : Double
+  max_world_linear_momentum_kg_mps : Double
+  max_frame_kinetic_energy_delta_j : Double
+  total_mass_kg : Double
+  initial_center_of_mass : Vec3
+  final_center_of_mass : Vec3
+  min_center_of_mass : Vec3
+  max_center_of_mass : Vec3
+  max_center_of_mass_speed_mps : Double
+  support_contact_count : Int
+  stable_support_frame_count : Int
+  support_review_frame_count : Int
+  min_support_margin_m : Double
+  max_center_of_pressure_error_m : Double
+  capture_stable_frame_count : Int
+  capture_review_frame_count : Int
+  worst_capture_margin_m : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

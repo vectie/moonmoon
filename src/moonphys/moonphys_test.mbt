@@ -1203,6 +1203,19 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   assert_true(
     dynamic_support_trace.status.contains("world-dynamic-support-trace"),
   )
+  let review = rigid_body_heightfield_world_hinge_motor_replay_review(trace)
+  assert_eq(review.trace_id, trace.trace_id)
+  assert_eq(review.frame_count, trace.frame_count)
+  assert_eq(review.body_count, 2)
+  assert_eq(review.body_sample_count, envelope.body_sample_count)
+  assert_eq(review.support_contact_count, support_trace.contact_count)
+  assert_eq(
+    review.capture_review_frame_count,
+    dynamic_support_trace.review_frame_count,
+  )
+  assert_true(review.max_position.x >= envelope.max_position.x)
+  assert_true(review.max_world_linear_momentum_kg_mps >= 0.0)
+  assert_true(review.status.contains("world-replay-review"))
 }
 
 ///|
@@ -1271,6 +1284,11 @@ test "rigid body heightfield world trace is deterministic" {
   assert_true(
     dynamic_support_trace.status.contains("world-dynamic-support-trace"),
   )
+  let review = rigid_body_heightfield_world_replay_review(trace)
+  assert_eq(review.frame_count, 4)
+  assert_eq(review.body_count, 1)
+  assert_eq(review.support_contact_count, support_trace.contact_count)
+  assert_true(review.status.contains("world-replay-review"))
 }
 
 ///|

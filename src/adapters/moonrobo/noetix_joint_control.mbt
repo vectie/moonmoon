@@ -73,6 +73,7 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
   envelope_status : String
+  world_review_status : String
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -297,13 +298,7 @@ fn noetix_hinge_motor_world_trace_evidence(
     motor_frames,
     note="Noetix gait phases replayed through Moonphys motor-driven heightfield world replay",
   )
-  let envelope = @moonphys.rigid_body_heightfield_world_hinge_motor_trace_envelope(
-    world_trace,
-  )
-  let support_trace = @moonphys.rigid_body_heightfield_world_hinge_motor_support_trace(
-    world_trace,
-  )
-  let dynamic_support_trace = @moonphys.rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(
+  let review = @moonphys.rigid_body_heightfield_world_hinge_motor_replay_review(
     world_trace,
   )
   {
@@ -312,33 +307,34 @@ fn noetix_hinge_motor_world_trace_evidence(
     motor_frame_count: world_trace.motor_frame_count,
     driven_joint_count: world_trace.driven_joint_count,
     contact_count: world_trace.contact_count,
-    support_contact_count: support_trace.contact_count,
-    stable_support_frame_count: support_trace.stable_frame_count,
-    support_review_frame_count: support_trace.review_frame_count,
-    capture_stable_support_frame_count: dynamic_support_trace.capture_stable_frame_count,
-    capture_support_review_frame_count: dynamic_support_trace.review_frame_count,
+    support_contact_count: review.support_contact_count,
+    stable_support_frame_count: review.stable_support_frame_count,
+    support_review_frame_count: review.support_review_frame_count,
+    capture_stable_support_frame_count: review.capture_stable_frame_count,
+    capture_support_review_frame_count: review.capture_review_frame_count,
     resolved_hinge_constraint_count: world_trace.resolved_hinge_constraint_count,
     review_count: world_trace.review_count,
     final_body_count: world_trace.final_world.bodies.length(),
     final_projected_body_count: world_trace.final_world.motion_bodies.length(),
-    body_sample_count: envelope.body_sample_count,
-    min_position: envelope.min_position,
-    max_position: envelope.max_position,
-    max_speed_mps: envelope.max_speed_mps,
-    max_kinetic_energy_j: envelope.max_kinetic_energy_j,
-    total_mass_kg: envelope.total_mass_kg,
-    initial_center_of_mass: envelope.initial_center_of_mass,
-    final_center_of_mass: envelope.final_center_of_mass,
-    min_center_of_mass: envelope.min_center_of_mass,
-    max_center_of_mass: envelope.max_center_of_mass,
-    max_center_of_mass_speed_mps: envelope.max_center_of_mass_speed_mps,
-    min_support_margin_m: support_trace.min_planar_margin_m,
-    worst_capture_support_margin_m: dynamic_support_trace.worst_capture_margin_m,
-    max_center_of_pressure_error_m: support_trace.max_center_of_pressure_error_m,
-    max_body_linear_momentum_kg_mps: envelope.max_body_linear_momentum_kg_mps,
-    max_world_linear_momentum_kg_mps: envelope.max_world_linear_momentum_kg_mps,
-    max_frame_kinetic_energy_delta_j: envelope.max_frame_kinetic_energy_delta_j,
-    envelope_status: envelope.status,
+    body_sample_count: review.body_sample_count,
+    min_position: review.min_position,
+    max_position: review.max_position,
+    max_speed_mps: review.max_speed_mps,
+    max_kinetic_energy_j: review.max_kinetic_energy_j,
+    total_mass_kg: review.total_mass_kg,
+    initial_center_of_mass: review.initial_center_of_mass,
+    final_center_of_mass: review.final_center_of_mass,
+    min_center_of_mass: review.min_center_of_mass,
+    max_center_of_mass: review.max_center_of_mass,
+    max_center_of_mass_speed_mps: review.max_center_of_mass_speed_mps,
+    min_support_margin_m: review.min_support_margin_m,
+    worst_capture_support_margin_m: review.worst_capture_margin_m,
+    max_center_of_pressure_error_m: review.max_center_of_pressure_error_m,
+    max_body_linear_momentum_kg_mps: review.max_body_linear_momentum_kg_mps,
+    max_world_linear_momentum_kg_mps: review.max_world_linear_momentum_kg_mps,
+    max_frame_kinetic_energy_delta_j: review.max_frame_kinetic_energy_delta_j,
+    envelope_status: review.envelope_status,
+    world_review_status: review.status,
     status: world_trace.status,
   }
 }
@@ -561,6 +557,7 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace max world momentum: \{report.hinge_motor_world_trace.max_world_linear_momentum_kg_mps} kg*m/s\n"
   text += "- hinge motor world trace max frame energy delta: \{report.hinge_motor_world_trace.max_frame_kinetic_energy_delta_j} J\n"
   text += "- hinge motor world trace envelope: \{report.hinge_motor_world_trace.envelope_status}\n"
+  text += "- hinge motor world trace review: \{report.hinge_motor_world_trace.world_review_status}\n"
   text += "- hinge motor world trace status: \{report.hinge_motor_world_trace.status}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"

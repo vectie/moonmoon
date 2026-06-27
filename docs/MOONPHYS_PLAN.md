@@ -79,6 +79,8 @@ evidence.
   Generic world dynamic-support traces feed replay COM velocity and contact
   footprints into Moonphys capture-point assessment for motion-aware support
   review.
+  Generic world replay reviews compose envelope, static support, and dynamic
+  support traces into one deterministic status surface for downstream gates.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
@@ -95,7 +97,8 @@ evidence.
   body sample count, position bounds, aggregate center-of-mass bounds, max
   speed, max kinetic energy, max body/world linear momentum, and max per-frame
   kinetic-energy delta, plus a generic world-support trace summary for
-  contact-derived support margins and capture-point margins.
+  contact-derived support margins and capture-point margins. A generic
+  Moonphys world replay review status now consolidates those evidence streams.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -564,6 +567,9 @@ now summarize heightfield contact support polygons, COM support margins, and
 center-of-pressure error from the same replay frames. Generic world
 dynamic-support traces also evaluate capture-point margins from replay COM
 velocity and contact footprints.
+Generic world replay reviews compose envelope, support, and dynamic-support
+trace summaries so Moonrobo and MoonClaw consume one compact review status
+without owning physics aggregation logic.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
@@ -627,6 +633,8 @@ Next `moonphys` capabilities:
   margins and center-of-pressure error (implemented)
 - generic world dynamic-support trace summaries for capture-point margins over
   heightfield world replay contacts (implemented)
+- generic world replay review summaries that compose envelope, support, and
+  dynamic-support trace status (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

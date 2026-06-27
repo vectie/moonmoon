@@ -1590,7 +1590,8 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       artifact.current_state.contains("worst capture support margin") &&
       artifact.current_state.contains("resolved world hinges") &&
       artifact.current_state.contains("body samples") &&
-      artifact.current_state.contains("world-trace-envelope")
+      artifact.current_state.contains("world-trace-envelope") &&
+      artifact.current_state.contains("world-replay-review")
     }),
   )
   assert_true(
