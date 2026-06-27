@@ -10,7 +10,8 @@ evidence.
 - `moonphys` has generic vector, transform, environment, bilinear heightfield,
   terrain-normal point and patch contact, kinematic, convex support-polygon
   margin, quasistatic support-load distribution, terrain-normal traction
-  projection, contact-patch pressure review, and trace primitives.
+  projection, contact-patch pressure review, joint-frame motor replay, and trace
+  primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
@@ -466,8 +467,8 @@ rigid-body heightfield replay, diagonal-inertia
 angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
-assessment, generic joint servo/limit integration, and joint mechanical
-power/work accounting implemented;
+  assessment, generic joint servo/limit integration, joint-frame motor replay,
+  and joint mechanical power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -475,8 +476,8 @@ URDF/profile paths, visual geometry, concrete joint-limit records, and the
 absence of authoritative collision/inertial tags. Moonrobo's Noetix URDF joint
 limits are carried from the source audit into the robot-specific profile as
 Moonphys joint limits. Noetix joint-control review evidence replays the gait
-phases through Moonphys joint
-servo, torque, velocity, position limits, and mechanical power/work accounting.
+phases through Moonphys joint-frame motor integration, servo, torque, velocity,
+position limits, and mechanical power/work accounting.
 Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys diagonal inertia, collision bounds, terrain collision probes,
 per-foot patch-load contact wrenches, narrow-phase self-collision manifolds,
@@ -500,6 +501,7 @@ Next `moonphys` capabilities:
   (implemented)
 - generic joint servo, torque limit, velocity limit, and position limit
   integration (implemented)
+- generic joint-frame motor replay over multiple joints (implemented)
 - conservative sphere/capsule/box collision shape bounds (implemented)
 - diagonal inertia and angular velocity integration (implemented)
 - convex support polygon / center of mass margin helper (implemented)

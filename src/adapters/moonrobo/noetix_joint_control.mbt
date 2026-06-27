@@ -107,19 +107,58 @@ fn frame_dt_s(trace : NoetixMoonWalkTrace, frame_index : Int) -> Double {
 }
 
 ///|
-fn within_limit(value : Double, min_value : Double, max_value : Double) -> Bool {
-  value >= min_value && value <= max_value
+fn noetix_joint_motor_frame(
+  trace : NoetixMoonWalkTrace,
+  frame_index : Int,
+  profile : NoetixPhysicsProfile,
+) -> @moonphys.JointMotorFrame {
+  let frame = trace.frames[frame_index]
+  let previous = previous_frame(trace, frame_index)
+  let dt = frame_dt_s(trace, frame_index)
+  let states : Array[@moonphys.JointMotorState] = []
+  let commands : Array[@moonphys.JointMotorCommand] = []
+  let configs : Array[@moonphys.JointServoConfig] = []
+  let limits : Array[@moonphys.JointLimit] = []
+  let inertias : Array[Double] = []
+  for phase in frame.joint_phases {
+    let actuator = actuator_profile_for(profile, phase.joint_name)
+    let previous_position = phase_position(previous, phase.joint_name)
+    let target_velocity = if dt > 0.0 {
+      (phase.position_rad - previous_position) / dt
+    } else {
+      0.0
+    }
+    states.push(
+      @moonphys.joint_motor_state(phase.joint_name, previous_position, 0.0),
+    )
+    commands.push(
+      @moonphys.joint_motor_command(
+        phase.joint_name,
+        phase.position_rad,
+        target_velocity,
+        0.0,
+      ),
+    )
+    configs.push(actuator.servo)
+    limits.push(actuator.limit)
+    inertias.push(actuator.inertia_kg_m2)
+  }
+  @moonphys.integrate_joint_motor_frame(
+    "noetix-e1/joint-control/frame-\{frame.frame_index}",
+    states,
+    commands,
+    configs,
+    limits,
+    inertias,
+    dt,
+  )
 }
 
 ///|
-fn joint_step_status(
-  motor_step : @moonphys.JointMotorStep,
-  position_within_limits : Bool,
-  velocity_within_limits : Bool,
-) -> String {
-  if !position_within_limits || !velocity_within_limits {
+fn noetix_joint_step_status(step : @moonphys.JointMotorFrameStep) -> String {
+  if !step.position_within_limits || !step.velocity_within_limits {
     "joint-limit-review"
-  } else if motor_step.servo.saturated {
+  } else if step.motor_step.servo.saturated {
     "joint-torque-review"
   } else {
     "joint-command-review"
@@ -128,52 +167,19 @@ fn joint_step_status(
 
 ///|
 fn noetix_joint_control_step(
-  trace : NoetixMoonWalkTrace,
-  frame_index : Int,
-  phase : NoetixJointPhase,
   profile : NoetixPhysicsProfile,
+  step : @moonphys.JointMotorFrameStep,
 ) -> NoetixJointControlStep {
-  let previous = previous_frame(trace, frame_index)
-  let dt = frame_dt_s(trace, frame_index)
-  let actuator = actuator_profile_for(profile, phase.joint_name)
-  let previous_position = phase_position(previous, phase.joint_name)
-  let target_velocity = if dt > 0.0 {
-    (phase.position_rad - previous_position) / dt
-  } else {
-    0.0
-  }
-  let motor_step = @moonphys.integrate_joint_motor(
-    @moonphys.joint_motor_state(phase.joint_name, previous_position, 0.0),
-    @moonphys.joint_motor_command(
-      phase.joint_name,
-      phase.position_rad,
-      target_velocity,
-      0.0,
-    ),
-    actuator.servo,
-    actuator.limit,
-    actuator.inertia_kg_m2,
-    dt,
-  )
-  let position_within_limits = within_limit(
-    phase.position_rad,
-    actuator.limit.min_position_rad,
-    actuator.limit.max_position_rad,
-  )
-  let velocity_within_limits = abs_double(target_velocity) <=
-    actuator.limit.max_velocity_rad_s
-  let status = joint_step_status(
-    motor_step, position_within_limits, velocity_within_limits,
-  )
+  let actuator = actuator_profile_for(profile, step.command.joint_id)
   {
-    joint_name: phase.joint_name,
+    joint_name: step.command.joint_id,
     joint_index: actuator.joint_index,
-    target_position_rad: phase.position_rad,
-    target_velocity_rad_s: target_velocity,
-    motor_step,
-    position_within_limits,
-    velocity_within_limits,
-    status,
+    target_position_rad: step.command.target_position_rad,
+    target_velocity_rad_s: step.command.target_velocity_rad_s,
+    motor_step: step.motor_step,
+    position_within_limits: step.position_within_limits,
+    velocity_within_limits: step.velocity_within_limits,
+    status: noetix_joint_step_status(step),
   }
 }
 
@@ -198,53 +204,27 @@ pub fn noetix_joint_control_frame(
   profile : NoetixPhysicsProfile,
 ) -> NoetixJointControlFrame {
   let frame = trace.frames[frame_index]
+  let motor_frame = noetix_joint_motor_frame(trace, frame_index, profile)
   let steps : Array[NoetixJointControlStep] = []
-  let mut saturated_count = 0
-  let mut limit_review_count = 0
-  let mut max_position_error = 0.0
-  let mut max_velocity = 0.0
-  let mut max_power = 0.0
-  let mut net_work = 0.0
-  let mut total_abs_work = 0.0
-  for phase in frame.joint_phases {
-    let step = noetix_joint_control_step(trace, frame_index, phase, profile)
-    if step.motor_step.servo.saturated {
-      saturated_count += 1
-    }
-    if !step.position_within_limits || !step.velocity_within_limits {
-      limit_review_count += 1
-    }
-    let position_error = abs_double(
-      step.motor_step.after.position_rad - step.target_position_rad,
-    )
-    if position_error > max_position_error {
-      max_position_error = position_error
-    }
-    let velocity = abs_double(step.target_velocity_rad_s)
-    if velocity > max_velocity {
-      max_velocity = velocity
-    }
-    let power = abs_double(step.motor_step.average_mechanical_power_w)
-    if power > max_power {
-      max_power = power
-    }
-    net_work += step.motor_step.work_j
-    total_abs_work += step.motor_step.absolute_work_j
-    steps.push(step)
+  for step in motor_frame.steps {
+    steps.push(noetix_joint_control_step(profile, step))
   }
   {
     frame_index: frame.frame_index,
     time_s: frame.time_s,
-    joint_count: steps.length(),
-    saturated_joint_count: saturated_count,
-    limit_review_count,
-    max_abs_position_error_rad: max_position_error,
-    max_abs_velocity_rad_s: max_velocity,
-    max_abs_mechanical_power_w: max_power,
-    net_work_j: net_work,
-    total_absolute_work_j: total_abs_work,
+    joint_count: motor_frame.joint_count,
+    saturated_joint_count: motor_frame.saturated_joint_count,
+    limit_review_count: motor_frame.limit_review_count,
+    max_abs_position_error_rad: motor_frame.max_abs_position_error_rad,
+    max_abs_velocity_rad_s: motor_frame.max_abs_velocity_rad_s,
+    max_abs_mechanical_power_w: motor_frame.max_abs_mechanical_power_w,
+    net_work_j: motor_frame.net_work_j,
+    total_absolute_work_j: motor_frame.total_absolute_work_j,
     steps,
-    status: joint_control_frame_status(saturated_count, limit_review_count),
+    status: joint_control_frame_status(
+      motor_frame.saturated_joint_count,
+      motor_frame.limit_review_count,
+    ),
   }
 }
 
@@ -308,7 +288,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys servo, torque, velocity, and position limits. It remains review evidence only because servo gains and joint inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. It remains review evidence only because servo gains and joint inertias are assumptions.",
   }
 }
 

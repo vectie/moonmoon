@@ -656,6 +656,34 @@ test "joint motor integration respects velocity and position limits" {
 }
 
 ///|
+test "joint motor frame integrates and aggregates multiple joints" {
+  let frame = integrate_joint_motor_frame(
+    "frame-0",
+    [joint_motor_state("hip", 0.0, 0.0), joint_motor_state("knee", 0.0, 0.0)],
+    [
+      joint_motor_command("hip", 1.0, 0.0, 0.0),
+      joint_motor_command("knee", 0.0, 5.0, 0.0),
+    ],
+    [joint_servo_config("hip", 2.0, 0.0), joint_servo_config("knee", 0.0, 1.0)],
+    [
+      joint_limit("hip", -2.0, 2.0, 4.0, 10.0),
+      joint_limit("knee", -2.0, 2.0, 3.0, 10.0),
+    ],
+    [1.0, 1.0],
+    0.5,
+  )
+  assert_eq(frame.status, "joint-frame-limit-review")
+  assert_eq(frame.joint_count, 2)
+  assert_eq(frame.saturated_joint_count, 0)
+  assert_eq(frame.limit_review_count, 1)
+  assert_true(frame.steps[0].position_within_limits)
+  assert_true(!frame.steps[1].velocity_within_limits)
+  assert_true(nearly_equal(frame.max_abs_velocity_rad_s, 5.0))
+  assert_true(nearly_equal(frame.max_abs_commanded_torque_nm, 5.0))
+  assert_true(nearly_equal(frame.total_absolute_work_j, 7.25))
+}
+
+///|
 test "transform translates local point" {
   let transform = transform3(identity_basis3(), vec3(1.0, 2.0, 3.0))
   assert_true(

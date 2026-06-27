@@ -44,6 +44,8 @@ def main() -> None:
         fail("terrain-normal gait should have exactly one limit-review frame")
     if "servo gains" not in report.get("note", ""):
         fail("report note must mention assumed servo gains")
+    if "joint-frame motor integration" not in report.get("note", ""):
+        fail("report note must mention Moonphys joint-frame replay")
     if report.get("max_abs_velocity_rad_s", -1) < 0:
         fail("max velocity must be present")
     if report.get("max_abs_mechanical_power_w", 0) <= 0:

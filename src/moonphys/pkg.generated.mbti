@@ -59,6 +59,8 @@ pub fn integrate_angular_rigid_body(RigidBodyAngularState, RigidBodyInertia, Rig
 
 pub fn integrate_joint_motor(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit, Double, Double) -> JointMotorStep
 
+pub fn integrate_joint_motor_frame(String, Array[JointMotorState], Array[JointMotorCommand], Array[JointServoConfig], Array[JointLimit], Array[Double], Double) -> JointMotorFrame
+
 pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
 
 pub fn integrate_rigid_body(RigidBodyState, Double, Vec3) -> RigidBodyState
@@ -368,6 +370,30 @@ pub(all) struct JointMotorCommand {
   target_position_rad : Double
   target_velocity_rad_s : Double
   feedforward_torque_nm : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointMotorFrame {
+  frame_id : String
+  dt_s : Double
+  joint_count : Int
+  saturated_joint_count : Int
+  limit_review_count : Int
+  max_abs_position_error_rad : Double
+  max_abs_velocity_rad_s : Double
+  max_abs_commanded_torque_nm : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
+  steps : Array[JointMotorFrameStep]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointMotorFrameStep {
+  command : JointMotorCommand
+  motor_step : JointMotorStep
+  position_within_limits : Bool
+  velocity_within_limits : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct JointMotorState {

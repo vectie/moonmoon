@@ -14,7 +14,7 @@
 - absolute joint work: 95.11007647969384 J
 - status: joint-control-limit-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys servo, torque, velocity, and position limits. It remains review evidence only because servo gains and joint inertias are assumptions.
+- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. It remains review evidence only because servo gains and joint inertias are assumptions.
 
 ## Frame Joint Control
 

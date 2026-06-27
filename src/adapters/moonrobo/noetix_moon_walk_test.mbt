@@ -297,6 +297,7 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.joint_count_per_frame, 24)
   assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(report.status.contains("joint-control"))
+  assert_true(report.note.contains("joint-frame motor integration"))
   assert_true(report.note.contains("servo gains"))
   assert_true(report.max_abs_velocity_rad_s >= 0.0)
   assert_true(report.max_abs_mechanical_power_w > 0.0)

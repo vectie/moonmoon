@@ -54,6 +54,32 @@ pub(all) struct JointMotorStep {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct JointMotorFrameStep {
+  command : JointMotorCommand
+  motor_step : JointMotorStep
+  position_within_limits : Bool
+  velocity_within_limits : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct JointMotorFrame {
+  frame_id : String
+  dt_s : Double
+  joint_count : Int
+  saturated_joint_count : Int
+  limit_review_count : Int
+  max_abs_position_error_rad : Double
+  max_abs_velocity_rad_s : Double
+  max_abs_commanded_torque_nm : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
+  steps : Array[JointMotorFrameStep]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn joint_limit(
   joint_id : String,
   min_position_rad : Double,
@@ -137,6 +163,65 @@ fn symmetric_clamp(value : Double, magnitude : Double) -> Double {
 }
 
 ///|
+fn min_int(a : Int, b : Int) -> Int {
+  if a < b {
+    a
+  } else {
+    b
+  }
+}
+
+///|
+fn joint_command_within_limits(
+  command : JointMotorCommand,
+  limit : JointLimit,
+) -> Bool {
+  command.target_position_rad >= limit.min_position_rad &&
+  command.target_position_rad <= limit.max_position_rad
+}
+
+///|
+fn joint_command_velocity_within_limits(
+  command : JointMotorCommand,
+  limit : JointLimit,
+) -> Bool {
+  abs_double(command.target_velocity_rad_s) <= limit.max_velocity_rad_s
+}
+
+///|
+fn joint_motor_frame_step_status(
+  motor_step : JointMotorStep,
+  position_within_limits : Bool,
+  velocity_within_limits : Bool,
+) -> String {
+  if !position_within_limits || !velocity_within_limits {
+    "joint-limit-review"
+  } else if motor_step.servo.saturated {
+    "joint-torque-review"
+  } else {
+    "joint-commanded"
+  }
+}
+
+///|
+fn joint_motor_frame_status(
+  expected_count : Int,
+  actual_count : Int,
+  limit_review_count : Int,
+  saturated_joint_count : Int,
+) -> String {
+  if actual_count != expected_count {
+    "joint-frame-input-review"
+  } else if limit_review_count > 0 {
+    "joint-frame-limit-review"
+  } else if saturated_joint_count > 0 {
+    "joint-frame-torque-review"
+  } else {
+    "joint-frame-commanded"
+  }
+}
+
+///|
 pub fn joint_servo_output(
   state : JointMotorState,
   command : JointMotorCommand,
@@ -161,6 +246,101 @@ pub fn joint_servo_output(
     } else {
       "torque-commanded"
     },
+  }
+}
+
+///|
+pub fn integrate_joint_motor_frame(
+  frame_id : String,
+  states : Array[JointMotorState],
+  commands : Array[JointMotorCommand],
+  configs : Array[JointServoConfig],
+  limits : Array[JointLimit],
+  inertias_kg_m2 : Array[Double],
+  dt_s : Double,
+) -> JointMotorFrame {
+  let count = min_int(
+    min_int(states.length(), commands.length()),
+    min_int(min_int(configs.length(), limits.length()), inertias_kg_m2.length()),
+  )
+  let expected_count = states.length()
+  let steps : Array[JointMotorFrameStep] = []
+  let mut saturated_count = 0
+  let mut limit_review_count = 0
+  let mut max_position_error = 0.0
+  let mut max_velocity = 0.0
+  let mut max_torque = 0.0
+  let mut max_power = 0.0
+  let mut net_work = 0.0
+  let mut total_abs_work = 0.0
+  for index in 0..<count {
+    let command = commands[index]
+    let limit = limits[index]
+    let motor_step = integrate_joint_motor(
+      states[index],
+      command,
+      configs[index],
+      limit,
+      inertias_kg_m2[index],
+      dt_s,
+    )
+    let position_within_limits = joint_command_within_limits(command, limit)
+    let velocity_within_limits = joint_command_velocity_within_limits(
+      command, limit,
+    )
+    let status = joint_motor_frame_step_status(
+      motor_step, position_within_limits, velocity_within_limits,
+    )
+    if motor_step.servo.saturated {
+      saturated_count += 1
+    }
+    if !position_within_limits || !velocity_within_limits {
+      limit_review_count += 1
+    }
+    let position_error = abs_double(
+      motor_step.after.position_rad - command.target_position_rad,
+    )
+    if position_error > max_position_error {
+      max_position_error = position_error
+    }
+    let velocity = abs_double(command.target_velocity_rad_s)
+    if velocity > max_velocity {
+      max_velocity = velocity
+    }
+    let torque = abs_double(motor_step.servo.commanded_torque_nm)
+    if torque > max_torque {
+      max_torque = torque
+    }
+    let power = abs_double(motor_step.average_mechanical_power_w)
+    if power > max_power {
+      max_power = power
+    }
+    net_work += motor_step.work_j
+    total_abs_work += motor_step.absolute_work_j
+    steps.push({
+      command,
+      motor_step,
+      position_within_limits,
+      velocity_within_limits,
+      status,
+    })
+  }
+  {
+    frame_id,
+    dt_s,
+    joint_count: steps.length(),
+    saturated_joint_count: saturated_count,
+    limit_review_count,
+    max_abs_position_error_rad: max_position_error,
+    max_abs_velocity_rad_s: max_velocity,
+    max_abs_commanded_torque_nm: max_torque,
+    max_abs_mechanical_power_w: max_power,
+    net_work_j: net_work,
+    total_absolute_work_j: total_abs_work,
+    steps,
+    status: joint_motor_frame_status(
+      expected_count, count, limit_review_count, saturated_count,
+    ),
   }
 }
 
