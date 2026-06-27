@@ -218,7 +218,7 @@ fn noetix_joint_control_artifact(
     "output/moonrobo/first_trusted_square_noetix_control.json",
     "moon run cmd/main -- moonrobo noetix control json",
     "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-    "\{report.frame_count} frames; \{report.joint_count_per_frame} joints per frame; saturated frames \{report.saturated_frame_count}; limit-review frames \{report.limit_review_frame_count}; heightfield motor contacts \{report.hinge_motor_world_trace.contact_count}; resolved world hinges \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}; max power \{report.max_abs_mechanical_power_w} W; absolute work \{report.total_absolute_work_j} J; status \{report.status}",
+    "\{report.frame_count} frames; \{report.joint_count_per_frame} joints per frame; saturated frames \{report.saturated_frame_count}; limit-review frames \{report.limit_review_frame_count}; heightfield motor contacts \{report.hinge_motor_world_trace.contact_count}; resolved world hinges \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}; body samples \{report.hinge_motor_world_trace.body_sample_count}; max world speed \{report.hinge_motor_world_trace.max_speed_mps} m/s; max world energy \{report.hinge_motor_world_trace.max_kinetic_energy_j} J; envelope \{report.hinge_motor_world_trace.envelope_status}; max power \{report.max_abs_mechanical_power_w} W; absolute work \{report.total_absolute_work_j} J; status \{report.status}",
     false,
     "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
     "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",

@@ -1572,7 +1572,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       !artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_control") &&
       artifact.current_state.contains("heightfield motor contacts") &&
-      artifact.current_state.contains("resolved world hinges")
+      artifact.current_state.contains("resolved world hinges") &&
+      artifact.current_state.contains("body samples") &&
+      artifact.current_state.contains("world-trace-envelope")
     }),
   )
   assert_true(

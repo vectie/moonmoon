@@ -121,9 +121,13 @@ pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, 
 
 pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
 
+pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldTraceEnvelope
+
 pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
 
 pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
+
+pub fn rigid_body_heightfield_world_trace_envelope(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldTraceEnvelope
 
 pub fn rigid_body_hinge_axis_assessment(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyAngularState) -> RigidBodyHingeAxisAssessment
 
@@ -768,6 +772,16 @@ pub(all) struct RigidBodyWorldBody {
   external_force_n : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyWorldBodyEnvelope {
+  body_id : String
+  sample_count : Int
+  min_position : Vec3
+  max_position : Vec3
+  max_speed_mps : Double
+  max_kinetic_energy_j : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyWorldBodyFrame {
   body_id : String
   before : RigidBodyState
@@ -942,6 +956,23 @@ pub(all) struct RigidBodyWorldPairResolution {
   velocity_delta_b : Vec3
   normal_impulse_ns : Double
   friction_impulse_ns : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldTraceEnvelope {
+  trace_id : String
+  frame_count : Int
+  body_count : Int
+  body_sample_count : Int
+  contact_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  min_position : Vec3
+  max_position : Vec3
+  max_speed_mps : Double
+  max_kinetic_energy_j : Double
+  max_frame_kinetic_energy_delta_j : Double
+  body_envelopes : Array[RigidBodyWorldBodyEnvelope]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

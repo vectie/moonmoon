@@ -50,6 +50,13 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   review_count : Int
   final_body_count : Int
   final_projected_body_count : Int
+  body_sample_count : Int
+  min_position : @moonphys.Vec3
+  max_position : @moonphys.Vec3
+  max_speed_mps : Double
+  max_kinetic_energy_j : Double
+  max_frame_kinetic_energy_delta_j : Double
+  envelope_status : String
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -274,6 +281,9 @@ fn noetix_hinge_motor_world_trace_evidence(
     motor_frames,
     note="Noetix gait phases replayed through Moonphys motor-driven heightfield world replay",
   )
+  let envelope = @moonphys.rigid_body_heightfield_world_hinge_motor_trace_envelope(
+    world_trace,
+  )
   {
     trace_id: world_trace.trace_id,
     frame_count: world_trace.frame_count,
@@ -284,6 +294,13 @@ fn noetix_hinge_motor_world_trace_evidence(
     review_count: world_trace.review_count,
     final_body_count: world_trace.final_world.bodies.length(),
     final_projected_body_count: world_trace.final_world.motion_bodies.length(),
+    body_sample_count: envelope.body_sample_count,
+    min_position: envelope.min_position,
+    max_position: envelope.max_position,
+    max_speed_mps: envelope.max_speed_mps,
+    max_kinetic_energy_j: envelope.max_kinetic_energy_j,
+    max_frame_kinetic_energy_delta_j: envelope.max_frame_kinetic_energy_delta_j,
+    envelope_status: envelope.status,
     status: world_trace.status,
   }
 }
@@ -488,6 +505,11 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace frames: \{report.hinge_motor_world_trace.frame_count}\n"
   text += "- hinge motor world trace contacts: \{report.hinge_motor_world_trace.contact_count}\n"
   text += "- hinge motor world trace resolved hinges: \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}\n"
+  text += "- hinge motor world trace body samples: \{report.hinge_motor_world_trace.body_sample_count}\n"
+  text += "- hinge motor world trace max speed: \{report.hinge_motor_world_trace.max_speed_mps} m/s\n"
+  text += "- hinge motor world trace max kinetic energy: \{report.hinge_motor_world_trace.max_kinetic_energy_j} J\n"
+  text += "- hinge motor world trace max frame energy delta: \{report.hinge_motor_world_trace.max_frame_kinetic_energy_delta_j} J\n"
+  text += "- hinge motor world trace envelope: \{report.hinge_motor_world_trace.envelope_status}\n"
   text += "- hinge motor world trace status: \{report.hinge_motor_world_trace.status}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"

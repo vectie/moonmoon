@@ -94,6 +94,24 @@ def main() -> None:
         fail("hinge motor world trace should preserve all world bodies")
     if hinge_motor_world_trace.get("final_projected_body_count") != 25:
         fail("hinge motor world trace should preserve all projected Noetix bodies")
+    if hinge_motor_world_trace.get("body_sample_count") != 25 * (len(frames) + 1):
+        fail("hinge motor world trace envelope should sample each body per world")
+    bounds_min = hinge_motor_world_trace.get("min_position", {})
+    bounds_max = hinge_motor_world_trace.get("max_position", {})
+    if bounds_max.get("x", 0) <= bounds_min.get("x", 0):
+        fail("hinge motor world trace envelope should expose x motion bounds")
+    if bounds_max.get("z", 0) < bounds_min.get("z", 0):
+        fail("hinge motor world trace envelope should expose valid z bounds")
+    if hinge_motor_world_trace.get("max_speed_mps", -1) < 0:
+        fail("hinge motor world trace envelope should expose max speed")
+    if hinge_motor_world_trace.get("max_kinetic_energy_j", -1) < 0:
+        fail("hinge motor world trace envelope should expose max kinetic energy")
+    if hinge_motor_world_trace.get("max_frame_kinetic_energy_delta_j", -1) < 0:
+        fail("hinge motor world trace envelope should expose max energy delta")
+    if "world-trace-envelope" not in hinge_motor_world_trace.get(
+        "envelope_status", ""
+    ):
+        fail("hinge motor world trace should expose envelope status")
     if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
         "status", ""
     ):

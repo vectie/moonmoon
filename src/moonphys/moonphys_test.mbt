@@ -1094,6 +1094,21 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   assert_true(trace.frames[0].world_step.contact_count == 2)
   assert_true(trace.frames[0].motor_drive.driven_joint_count == 1)
   assert_true(trace.final_world == trace.frames[1].after)
+  let envelope = rigid_body_heightfield_world_hinge_motor_trace_envelope(trace)
+  assert_eq(envelope.status, "world-trace-envelope-bounded")
+  assert_eq(envelope.frame_count, 2)
+  assert_eq(envelope.body_count, 2)
+  assert_eq(envelope.body_sample_count, 6)
+  assert_eq(envelope.contact_count, trace.contact_count)
+  assert_eq(
+    envelope.resolved_hinge_constraint_count,
+    trace.resolved_hinge_constraint_count,
+  )
+  assert_true(envelope.max_speed_mps >= 0.0)
+  assert_true(envelope.max_kinetic_energy_j >= 0.0)
+  assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
+  assert_true(envelope.min_position.z >= 0.0)
+  assert_true(envelope.max_position.x >= 2.0)
 }
 
 ///|
@@ -1129,6 +1144,15 @@ test "rigid body heightfield world trace is deterministic" {
   assert_true(
     trace.final_world.bodies[0].state == trace.frames[3].after.bodies[0].state,
   )
+  let envelope = rigid_body_heightfield_world_trace_envelope(trace)
+  assert_eq(envelope.status, "world-trace-envelope-bounded")
+  assert_eq(envelope.frame_count, 4)
+  assert_eq(envelope.body_count, 1)
+  assert_eq(envelope.body_sample_count, 5)
+  assert_true(envelope.contact_count >= trace.frames[0].contact_count)
+  assert_true(envelope.max_speed_mps >= 0.0)
+  assert_true(envelope.max_kinetic_energy_j >= 0.0)
+  assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
 }
 
 ///|

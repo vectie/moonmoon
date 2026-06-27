@@ -81,6 +81,9 @@ evidence.
   compact per-frame/report summaries for body count, joint count, position/axis
   error, impulse review, Moonphys world hinge constraint replay status, and
   motor-driven heightfield world replay contact/hinge-resolution summaries.
+  The same report also carries a generic Moonphys world-trace envelope for
+  body sample count, position bounds, max speed, max kinetic energy, and max
+  per-frame kinetic-energy delta.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -532,7 +535,10 @@ motor traces over a finite replay window. Moonphys also exposes an integrated
 motor-driven heightfield world trace that applies hinge motor frames before each
 fixed heightfield step, so motor drive, terrain contacts, world contacts,
 constraints, energy deltas, and review counts live in one deterministic replay
-artifact. Full coupled articulated dynamics remain future work.
+artifact. Moonphys also summarizes deterministic world traces with generic
+body-envelope bounds: sample counts, position bounds, max speed, max kinetic
+energy, max per-frame kinetic-energy delta, contacts, hinge resolutions, and
+review counts. Full coupled articulated dynamics remain future work.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
@@ -589,6 +595,9 @@ Next `moonphys` capabilities:
   (implemented)
 - generic motor-driven heightfield world trace replay that composes hinge motor
   drive with fixed-step world contact/constraint resolution (implemented)
+- generic world-trace envelope summaries for body bounds, max speed, max
+  kinetic energy, frame energy delta, contacts, hinge resolutions, and review
+  counts (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

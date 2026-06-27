@@ -493,6 +493,13 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   review_count : Int
   final_body_count : Int
   final_projected_body_count : Int
+  body_sample_count : Int
+  min_position : @moonphys.Vec3
+  max_position : @moonphys.Vec3
+  max_speed_mps : Double
+  max_kinetic_energy_j : Double
+  max_frame_kinetic_energy_delta_j : Double
+  envelope_status : String
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
