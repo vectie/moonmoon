@@ -61,6 +61,7 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_assessment : @moonphys.SupportAssessment
   support_load_assessment : @moonphys.SupportLoadAssessment
   contact_patches : Array[@moonphys.HeightfieldContactPatch]
+  contact_patch_loads : Array[@moonphys.ContactPatchLoadAssessment]
   contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]
   traction_status : String
@@ -347,6 +348,25 @@ fn contact_patch_status(
 }
 
 ///|
+fn contact_patch_loads_for_frame(
+  patches : Array[@moonphys.HeightfieldContactPatch],
+  support_load : @moonphys.SupportLoadAssessment,
+  left_geometry : NoetixFootGeometry,
+  right_geometry : NoetixFootGeometry,
+) -> Array[@moonphys.ContactPatchLoadAssessment] {
+  [
+    @moonphys.contact_patch_load_assessment(
+      patches[0],
+      support_load_normal_force(support_load, left_geometry.foot_id),
+    ),
+    @moonphys.contact_patch_load_assessment(
+      patches[1],
+      support_load_normal_force(support_load, right_geometry.foot_id),
+    ),
+  ]
+}
+
+///|
 fn support_count_for_frame(frame : NoetixMoonWalkFrame) -> Int {
   let mut count = 0
   if frame.left_foot.in_contact {
@@ -535,6 +555,9 @@ pub fn noetix_walk_stability_frame(
     contact_patch(field, frame.right_foot, right_geometry),
   ]
   let contact_patch_status = contact_patch_status(patches)
+  let contact_patch_loads = contact_patch_loads_for_frame(
+    patches, support_load, left_geometry, right_geometry,
+  )
   let traction = traction_assessments_for_frame(
     frame, config, profile, left_geometry, right_geometry, support_load, patches,
   )
@@ -548,6 +571,7 @@ pub fn noetix_walk_stability_frame(
     support_assessment: assessment,
     support_load_assessment: support_load,
     contact_patches: patches,
+    contact_patch_loads,
     contact_patch_status,
     traction_assessments: traction,
     traction_status,
@@ -613,7 +637,7 @@ pub fn noetix_walk_stability_report(
     } else {
       "static-support-review"
     },
-    note: "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction.",
+    note: "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling and patch-load pressure review over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction.",
   }
 }
 

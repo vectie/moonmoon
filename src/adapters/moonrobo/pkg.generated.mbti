@@ -785,6 +785,7 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_assessment : @moonphys.SupportAssessment
   support_load_assessment : @moonphys.SupportLoadAssessment
   contact_patches : Array[@moonphys.HeightfieldContactPatch]
+  contact_patch_loads : Array[@moonphys.ContactPatchLoadAssessment]
   contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]
   traction_status : String

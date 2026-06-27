@@ -70,6 +70,45 @@ test "heightfield contact patch samples rectangular sole" {
 }
 
 ///|
+test "contact patch load distributes normal force over samples" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let load = contact_patch_load_assessment(patch, 100.0)
+  assert_eq(load.sample_count, 5)
+  assert_eq(load.contact_count, 5)
+  assert_eq(load.loaded_sample_count, 5)
+  assert_true(nearly_equal(load.center_of_pressure.x, 0.0))
+  assert_true(nearly_equal(load.center_of_pressure.y, 0.0))
+  assert_true(nearly_equal(load.samples[0].normal_force_n, 20.0))
+  assert_true(nearly_equal(load.contact_area_m2, 0.08))
+  assert_true(nearly_equal(load.max_pressure_pa, 1250.0))
+  assert_eq(load.status, "patch-load-distributed")
+}
+
+///|
+test "contact patch load flags partial contact pressure" {
+  let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "sole",
+    vec3(0.5, -0.5, 0.5),
+    0.25,
+    0.1,
+  )
+  let load = contact_patch_load_assessment(patch, 100.0)
+  assert_true(load.contact_count > 0)
+  assert_true(load.loaded_sample_count < load.sample_count)
+  assert_true(load.max_pressure_pa > load.average_pressure_pa)
+  assert_eq(load.status, "patch-load-partial-contact-review")
+}
+
+///|
 test "heightfield contact patch exposes partial sole penetration" {
   let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
   let patch = heightfield_contact_patch(

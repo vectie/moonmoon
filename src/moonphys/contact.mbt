@@ -27,6 +27,34 @@ pub(all) struct HeightfieldContactPatch {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct ContactPatchLoadSample {
+  probe_id : String
+  position : Vec3
+  clearance_m : Double
+  in_contact : Bool
+  load_fraction : Double
+  normal_force_n : Double
+  pressure_pa : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct ContactPatchLoadAssessment {
+  patch_id : String
+  sample_count : Int
+  contact_count : Int
+  loaded_sample_count : Int
+  total_normal_force_n : Double
+  contact_area_m2 : Double
+  sample_area_m2 : Double
+  center_of_pressure : Vec3
+  max_pressure_pa : Double
+  average_pressure_pa : Double
+  samples : Array[ContactPatchLoadSample]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn heightfield_contact_probe(
   field : Heightfield,
   probe_id : String,
@@ -103,6 +131,146 @@ fn contact_patch_status(
     "patch-partial-contact-review"
   } else {
     "patch-contact"
+  }
+}
+
+///|
+fn nonnegative_contact_load(value : Double) -> Double {
+  if value < 0.0 {
+    0.0
+  } else {
+    value
+  }
+}
+
+///|
+fn contact_patch_area(patch : HeightfieldContactPatch) -> Double {
+  nonnegative_contact_load(patch.half_length_m) *
+  nonnegative_contact_load(patch.half_width_m) *
+  4.0
+}
+
+///|
+fn contact_sample_weight(probe : ContactProbe) -> Double {
+  if probe.in_contact {
+    nonnegative_contact_load(0.0 - probe.clearance_m)
+  } else {
+    0.0
+  }
+}
+
+///|
+fn contact_patch_load_status(
+  contact_count : Int,
+  loaded_sample_count : Int,
+  total_normal_force_n : Double,
+) -> String {
+  if contact_count <= 0 {
+    "patch-load-no-contact"
+  } else if total_normal_force_n <= 0.0 {
+    "patch-load-no-force"
+  } else if loaded_sample_count < contact_count {
+    "patch-load-partial-contact-review"
+  } else {
+    "patch-load-distributed"
+  }
+}
+
+///|
+pub fn contact_patch_load_assessment(
+  patch : HeightfieldContactPatch,
+  total_normal_force_n : Double,
+) -> ContactPatchLoadAssessment {
+  let total_force = nonnegative_contact_load(total_normal_force_n)
+  let area = contact_patch_area(patch)
+  let sample_area = if patch.sample_count > 0 {
+    area / patch.sample_count.to_double()
+  } else {
+    0.0
+  }
+  let mut weight_sum = 0.0
+  for probe in patch.samples {
+    weight_sum += contact_sample_weight(probe)
+  }
+  let equal_contact_weight = weight_sum <= 0.0 && patch.contact_count > 0
+  let denominator = if equal_contact_weight {
+    patch.contact_count.to_double()
+  } else {
+    weight_sum
+  }
+  let samples : Array[ContactPatchLoadSample] = []
+  let mut loaded_count = 0
+  let mut max_pressure = 0.0
+  let mut center = vec3(0.0, 0.0, 0.0)
+  for probe in patch.samples {
+    let raw_weight = if equal_contact_weight {
+      if probe.in_contact {
+        1.0
+      } else {
+        0.0
+      }
+    } else {
+      contact_sample_weight(probe)
+    }
+    let fraction = if denominator > 0.0 {
+      raw_weight / denominator
+    } else {
+      0.0
+    }
+    let normal_force = total_force * fraction
+    let pressure = if sample_area > 0.0 {
+      normal_force / sample_area
+    } else {
+      0.0
+    }
+    if normal_force > 0.0 {
+      loaded_count += 1
+    }
+    max_pressure = max_double(max_pressure, pressure)
+    center = center.add(probe.position.scale(fraction))
+    samples.push({
+      probe_id: probe.probe_id,
+      position: probe.position,
+      clearance_m: probe.clearance_m,
+      in_contact: probe.in_contact,
+      load_fraction: fraction,
+      normal_force_n: normal_force,
+      pressure_pa: pressure,
+      status: if normal_force > 0.0 {
+        "sample-loaded"
+      } else if probe.in_contact {
+        "sample-contact-unloaded"
+      } else {
+        "sample-clear"
+      },
+    })
+  }
+  let contact_area = sample_area * patch.contact_count.to_double()
+  {
+    patch_id: patch.patch_id,
+    sample_count: patch.sample_count,
+    contact_count: patch.contact_count,
+    loaded_sample_count: loaded_count,
+    total_normal_force_n: total_force,
+    contact_area_m2: contact_area,
+    sample_area_m2: sample_area,
+    center_of_pressure: if denominator > 0.0 {
+      center
+    } else {
+      patch.center
+    },
+    max_pressure_pa: max_pressure,
+    average_pressure_pa: if contact_area > 0.0 {
+      total_force / contact_area
+    } else {
+      0.0
+    },
+    samples,
+    status: contact_patch_load_status(
+      patch.contact_count,
+      loaded_count,
+      total_force,
+    ),
   }
 }
 

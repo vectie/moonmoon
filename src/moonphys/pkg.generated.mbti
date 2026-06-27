@@ -39,6 +39,8 @@ pub fn collision_sphere(String, Double) -> CollisionShape
 
 pub fn collision_world_bounds(CollisionShape, Transform3) -> CollisionBounds
 
+pub fn contact_patch_load_assessment(HeightfieldContactPatch, Double) -> ContactPatchLoadAssessment
+
 pub fn contact_torque(Vec3, Vec3, Vec3) -> Vec3
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
@@ -244,6 +246,32 @@ pub(all) enum CollisionShapeKind {
   SphereShape
   CapsuleShape
   BoxShape
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ContactPatchLoadAssessment {
+  patch_id : String
+  sample_count : Int
+  contact_count : Int
+  loaded_sample_count : Int
+  total_normal_force_n : Double
+  contact_area_m2 : Double
+  sample_area_m2 : Double
+  center_of_pressure : Vec3
+  max_pressure_pa : Double
+  average_pressure_pa : Double
+  samples : Array[ContactPatchLoadSample]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ContactPatchLoadSample {
+  probe_id : String
+  position : Vec3
+  clearance_m : Double
+  in_contact : Bool
+  load_fraction : Double
+  normal_force_n : Double
+  pressure_pa : Double
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct ContactProbe {

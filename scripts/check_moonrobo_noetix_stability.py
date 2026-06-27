@@ -114,6 +114,13 @@ def main() -> None:
         fail("expected per-foot contact patches")
     if not all(patch.get("sample_count") == 5 for patch in patches):
         fail("contact patches should sample center and four sole corners")
+    patch_loads = first.get("contact_patch_loads", [])
+    if len(patch_loads) != 2:
+        fail("expected per-foot contact patch load assessments")
+    if not any(load.get("loaded_sample_count", 0) > 0 for load in patch_loads):
+        fail("expected at least one loaded contact patch sample")
+    if not any(load.get("max_pressure_pa", 0) > 0 for load in patch_loads):
+        fail("expected contact patch pressure evidence")
     if not all("average_surface_normal" in patch for patch in patches):
         fail("contact patches must carry averaged terrain normals")
     if not any(
@@ -149,6 +156,8 @@ def main() -> None:
         fail("report note must distinguish static evidence from dynamics")
     if "Contact patches use Moonphys heightfield patch sampling" not in report.get("note", ""):
         fail("report note must mention Moonphys contact-patch evidence")
+    if "patch-load pressure review" not in report.get("note", ""):
+        fail("report note must mention Moonphys patch-load pressure review")
     if "terrain-normal force projection" not in report.get("note", ""):
         fail("report note must mention Moonphys terrain-normal traction projection")
     if "friction-cone" not in report.get("note", ""):
