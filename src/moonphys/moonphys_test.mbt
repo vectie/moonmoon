@@ -346,6 +346,34 @@ test "angular acceleration uses diagonal inertia" {
 }
 
 ///|
+test "primitive diagonal inertia uses solid shape formulas" {
+  let sphere = sphere_diagonal_inertia("sphere", 10.0, 2.0)
+  assert_true(nearly_equal(sphere.diagonal_kg_m2.x, 16.0))
+  assert_true(nearly_equal(sphere.diagonal_kg_m2.y, 16.0))
+  assert_true(nearly_equal(sphere.diagonal_kg_m2.z, 16.0))
+  let box = box_diagonal_inertia("box", 12.0, vec3(1.0, 2.0, 3.0))
+  assert_true(nearly_equal(box.diagonal_kg_m2.x, 52.0))
+  assert_true(nearly_equal(box.diagonal_kg_m2.y, 40.0))
+  assert_true(nearly_equal(box.diagonal_kg_m2.z, 20.0))
+  let capsule = capsule_diagonal_inertia("capsule", 10.0, 1.0, 1.0)
+  assert_true(nearly_equal(capsule.diagonal_kg_m2.x, 12.1))
+  assert_true(nearly_equal(capsule.diagonal_kg_m2.y, 12.1))
+  assert_true(nearly_equal(capsule.diagonal_kg_m2.z, 4.6))
+}
+
+///|
+test "collision shape diagonal inertia dispatches by primitive kind" {
+  let inertia = collision_shape_diagonal_inertia(
+    "body",
+    12.0,
+    collision_box("body-box", vec3(1.0, 2.0, 3.0)),
+  )
+  assert_true(nearly_equal(inertia.diagonal_kg_m2.x, 52.0))
+  assert_true(nearly_equal(inertia.diagonal_kg_m2.y, 40.0))
+  assert_true(nearly_equal(inertia.diagonal_kg_m2.z, 20.0))
+}
+
+///|
 test "angular rigid body integration applies torque semi implicitly" {
   let inertia = rigid_body_inertia("body", vec3(2.0, 2.0, 2.0))
   let state = rigid_body_angular_state(

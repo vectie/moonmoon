@@ -195,7 +195,7 @@
           "artifact_id": "noetix-inertial-collision-review",
           "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
           "producer": "moon run cmd/main -- moonrobo noetix collision json",
-          "required_state": "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
+          "required_state": "Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
           "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
           "ready": false,
           "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
@@ -459,7 +459,7 @@
             "artifact_id": "noetix-inertial-collision-review",
             "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
             "producer": "moon run cmd/main -- moonrobo noetix collision json",
-            "required_state": "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
+            "required_state": "Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
             "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
             "ready": false,
             "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
@@ -62357,9 +62357,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -63542,9 +63542,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -64727,9 +64727,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -65912,9 +65912,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -67097,9 +67097,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -68282,9 +68282,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -69467,9 +69467,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -70652,9 +70652,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -71837,9 +71837,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -73022,9 +73022,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -74207,9 +74207,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -75392,9 +75392,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -76577,9 +76577,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -77762,9 +77762,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -78947,9 +78947,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -80132,9 +80132,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -81317,9 +81317,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -82502,9 +82502,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -83687,9 +83687,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -84872,9 +84872,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -86057,9 +86057,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -87242,9 +87242,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -88427,9 +88427,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -89612,9 +89612,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -90797,9 +90797,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -91982,9 +91982,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -93167,9 +93167,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -94352,9 +94352,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -95537,9 +95537,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -96722,9 +96722,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -97907,9 +97907,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -99092,9 +99092,9 @@
           "inertia": {
             "body_id": "noetix-e1-lab-01/assumed-diagonal-inertia",
             "diagonal_kg_m2": {
-              "x": 1.2311999999999999,
-              "y": 1.5200000000000002,
-              "z": 0.7448000000000001
+              "x": 0.7549333333333336,
+              "y": 0.6586666666666667,
+              "z": 0.9170666666666668
             }
           },
           "support_contact_torque_nm": {
@@ -100268,7 +100268,7 @@
       ],
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "inertial-collision-self-review",
-      "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+      "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
     },
     "source_link_poses": {
       "trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",

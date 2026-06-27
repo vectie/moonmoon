@@ -65,10 +65,10 @@ fn vec_length(value : @moonphys.Vec3) -> Double {
 fn noetix_assumed_body_inertia(
   profile : NoetixPhysicsProfile,
 ) -> @moonphys.RigidBodyInertia {
-  let mass = profile.mass_model.mass_kg
-  @moonphys.rigid_body_inertia(
+  @moonphys.box_diagonal_inertia(
     "\{profile.robot_id}/assumed-diagonal-inertia",
-    @moonphys.vec3(mass * 0.18 * 0.18, mass * 0.20 * 0.20, mass * 0.14 * 0.14),
+    profile.mass_model.mass_kg,
+    @moonphys.vec3(0.18, 0.20, 0.14),
   )
 }
 
@@ -439,7 +439,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 

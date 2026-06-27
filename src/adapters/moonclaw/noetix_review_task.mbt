@@ -229,7 +229,7 @@ fn noetix_inertial_collision_artifact(
     "noetix-inertial-collision-review",
     "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
     "moon run cmd/main -- moonrobo noetix collision json",
-    "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
+    "Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
     "\{report.frame_count} frames; \{report.shapes_per_frame} shapes per frame; self-contact review frames \{report.self_contact_frame_count}; terrain-review frames \{report.terrain_review_frame_count}; status \{report.status}",
     false,
     "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",

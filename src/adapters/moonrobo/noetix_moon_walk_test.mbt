@@ -355,7 +355,7 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
       wrench.normal_force_n > 0.0
     }),
   )
-  assert_true(report.note.contains("Moonphys diagonal inertia"))
+  assert_true(report.note.contains("Moonphys primitive-shape diagonal inertia"))
   assert_true(report.note.contains("patch-load contact wrench torque"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))

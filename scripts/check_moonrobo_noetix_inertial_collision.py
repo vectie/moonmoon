@@ -49,7 +49,10 @@ def main(argv: list[str]) -> int:
     f"unexpected status {report['status']}",
   )
   require("not authoritative" in report["note"], "missing authority note")
-  require("Moonphys diagonal inertia" in report["note"], "missing inertia note")
+  require(
+    "Moonphys primitive-shape diagonal inertia" in report["note"],
+    "missing inertia note",
+  )
   require("patch-load contact wrench torque" in report["note"], "missing patch-wrench torque note")
   require(report["max_support_contact_torque_nm"] > 0, "missing support torque")
   require(report["max_self_penetration_m"] >= 0, "bad self penetration")

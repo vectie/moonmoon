@@ -185,7 +185,7 @@
         "artifact_id": "noetix-inertial-collision-review",
         "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
         "producer": "moon run cmd/main -- moonrobo noetix collision json",
-        "required_state": "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
+        "required_state": "Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
         "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
         "ready": false,
         "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",

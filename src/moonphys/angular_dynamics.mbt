@@ -26,6 +26,106 @@ pub fn rigid_body_inertia(
 }
 
 ///|
+fn nonnegative_mass(value : Double) -> Double {
+  if value < 0.0 {
+    0.0
+  } else {
+    value
+  }
+}
+
+///|
+pub fn sphere_diagonal_inertia(
+  body_id : String,
+  mass_kg : Double,
+  radius_m : Double,
+) -> RigidBodyInertia {
+  let mass = nonnegative_mass(mass_kg)
+  let radius = nonnegative_mass(radius_m)
+  let value = 0.4 * mass * radius * radius
+  rigid_body_inertia(body_id, vec3(value, value, value))
+}
+
+///|
+pub fn box_diagonal_inertia(
+  body_id : String,
+  mass_kg : Double,
+  half_extents_m : Vec3,
+) -> RigidBodyInertia {
+  let mass = nonnegative_mass(mass_kg)
+  let x2 = nonnegative_mass(half_extents_m.x) *
+    nonnegative_mass(half_extents_m.x)
+  let y2 = nonnegative_mass(half_extents_m.y) *
+    nonnegative_mass(half_extents_m.y)
+  let z2 = nonnegative_mass(half_extents_m.z) *
+    nonnegative_mass(half_extents_m.z)
+  rigid_body_inertia(
+    body_id,
+    vec3(mass * (y2 + z2) / 3.0, mass * (x2 + z2) / 3.0, mass * (x2 + y2) / 3.0),
+  )
+}
+
+///|
+pub fn capsule_diagonal_inertia(
+  body_id : String,
+  mass_kg : Double,
+  radius_m : Double,
+  half_height_m : Double,
+) -> RigidBodyInertia {
+  let mass = nonnegative_mass(mass_kg)
+  let radius = nonnegative_mass(radius_m)
+  let half_height = nonnegative_mass(half_height_m)
+  if radius <= 0.0 {
+    let transverse = mass * half_height * half_height / 3.0
+    rigid_body_inertia(body_id, vec3(transverse, transverse, 0.0))
+  } else if half_height <= 0.0 {
+    sphere_diagonal_inertia(body_id, mass, radius)
+  } else {
+    let cylinder_factor = 2.0 * half_height * radius * radius
+    let sphere_factor = 4.0 * radius * radius * radius / 3.0
+    let total_factor = cylinder_factor + sphere_factor
+    let cylinder_mass = mass * cylinder_factor / total_factor
+    let sphere_mass = mass - cylinder_mass
+    let cylinder_length = 2.0 * half_height
+    let cylinder_transverse = cylinder_mass *
+      (3.0 * radius * radius + cylinder_length * cylinder_length) /
+      12.0
+    let cylinder_axial = 0.5 * cylinder_mass * radius * radius
+    let cap_transverse = 0.4 * sphere_mass * radius * radius +
+      sphere_mass * half_height * half_height +
+      0.75 * sphere_mass * half_height * radius
+    let cap_axial = 0.4 * sphere_mass * radius * radius
+    rigid_body_inertia(
+      body_id,
+      vec3(
+        cylinder_transverse + cap_transverse,
+        cylinder_transverse + cap_transverse,
+        cylinder_axial + cap_axial,
+      ),
+    )
+  }
+}
+
+///|
+pub fn collision_shape_diagonal_inertia(
+  body_id : String,
+  mass_kg : Double,
+  shape : CollisionShape,
+) -> RigidBodyInertia {
+  match shape.kind {
+    SphereShape => sphere_diagonal_inertia(body_id, mass_kg, shape.radius_m)
+    CapsuleShape =>
+      capsule_diagonal_inertia(
+        body_id,
+        mass_kg,
+        shape.radius_m,
+        shape.half_height_m,
+      )
+    BoxShape => box_diagonal_inertia(body_id, mass_kg, shape.half_extents_m)
+  }
+}
+
+///|
 pub fn rigid_body_angular_state(
   body_id : String,
   orientation : Basis3,

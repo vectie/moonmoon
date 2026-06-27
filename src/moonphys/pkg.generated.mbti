@@ -19,6 +19,10 @@ pub fn articulated_pose_tree(Transform3, Array[ArticulatedLinkSpec], Array[Artic
 
 pub fn axis_angle_basis3(Vec3, Double) -> Basis3
 
+pub fn box_diagonal_inertia(String, Double, Vec3) -> RigidBodyInertia
+
+pub fn capsule_diagonal_inertia(String, Double, Double, Double) -> RigidBodyInertia
+
 pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
 
 pub fn collision_bounding_radius(CollisionShape) -> Double
@@ -32,6 +36,8 @@ pub fn collision_contact_manifold(String, Array[CollisionContact]) -> CollisionC
 pub fn collision_pair_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
 
 pub fn collision_pair_probe(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionPairProbe
+
+pub fn collision_shape_diagonal_inertia(String, Double, CollisionShape) -> RigidBodyInertia
 
 pub fn collision_shape_kind_label(CollisionShapeKind) -> String
 
@@ -102,6 +108,8 @@ pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
+
+pub fn sphere_diagonal_inertia(String, Double, Double) -> RigidBodyInertia
 
 pub fn sphere_sphere_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
 
