@@ -28999,8 +28999,8 @@
       "max_abs_mechanical_power_w": 44.24777191616341,
       "max_hinge_position_error_m": 0,
       "max_hinge_angular_error_rad": 0,
-      "hinge_linear_impulse_ns": 20.630013573935333,
-      "hinge_angular_impulse_nms": 0.30570233464968877,
+      "hinge_linear_impulse_ns": 32.25631400931138,
+      "hinge_angular_impulse_nms": 0.3060844222568561,
       "net_work_j": 95.11007647969384,
       "total_absolute_work_j": 95.11007647969384,
       "frames": [
@@ -29020,12 +29020,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 0,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
             "linear_impulse_ns": 0,
             "angular_impulse_nms": 0,
-            "status": "hinge-joint-frame-satisfied"
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-satisfied",
+            "status": "noetix-hinge-world-satisfied"
           },
           "steps": [
             {
@@ -30055,12 +30059,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.7602069953712876,
-            "angular_impulse_nms": 0.00835302435207507,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.165892221971197,
+            "angular_impulse_nms": 0.009136164979891436,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -31090,12 +31098,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.87436340858102,
-            "angular_impulse_nms": 0.013005852737099175,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.3333236085551199,
+            "angular_impulse_nms": 0.012281341154562574,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -32125,12 +32137,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 1.5528290210838904,
-            "angular_impulse_nms": 0.03455993108601818,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 2.4607815136322224,
+            "angular_impulse_nms": 0.031205158555991208,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -33160,12 +33176,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8078103368258568,
-            "angular_impulse_nms": 0.019374788010402474,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.2711487981110572,
+            "angular_impulse_nms": 0.01735431166503087,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -34195,12 +34215,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 16,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.4330163828971262,
-            "angular_impulse_nms": 0.012845134854859788,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.6754289238716924,
+            "angular_impulse_nms": 0.011125468444604589,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -35230,12 +35254,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.4224865210923219,
-            "angular_impulse_nms": 0.007406440852952268,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.6022242566173952,
+            "angular_impulse_nms": 0.006626413419188624,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -36265,12 +36293,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.6849688433566278,
-            "angular_impulse_nms": 0.008742603936699227,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.0875270835560311,
+            "angular_impulse_nms": 0.009060101325985507,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -37300,12 +37332,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.7686872912922866,
-            "angular_impulse_nms": 0.008848997216077686,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.1994332523394244,
+            "angular_impulse_nms": 0.009457352199926992,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -38335,12 +38371,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8400373683042848,
-            "angular_impulse_nms": 0.009490119645577947,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.3043558578335566,
+            "angular_impulse_nms": 0.010159172622988743,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -39370,12 +39410,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 12,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.5933802672688355,
-            "angular_impulse_nms": 0.01713960949091853,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.9236962466733872,
+            "angular_impulse_nms": 0.016752453272874925,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -40405,12 +40449,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.9629067340700277,
-            "angular_impulse_nms": 0.016861749380277326,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.4943287224494486,
+            "angular_impulse_nms": 0.01589446793729846,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -41440,12 +41488,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.6963350134716394,
-            "angular_impulse_nms": 0.007507272996909584,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.0764017120921667,
+            "angular_impulse_nms": 0.008011952717840826,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -42475,12 +42527,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.5628665486731417,
-            "angular_impulse_nms": 0.006242964335042725,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.879015832512176,
+            "angular_impulse_nms": 0.0066075935581233185,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -43510,12 +43566,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.40509985223333755,
-            "angular_impulse_nms": 0.004384281678798174,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.6493834371315123,
+            "angular_impulse_nms": 0.004687009535405881,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -44545,12 +44605,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 13,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.25382984841108147,
-            "angular_impulse_nms": 0.002878981214951341,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.43529541290213936,
+            "angular_impulse_nms": 0.0030994638432936443,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -45580,12 +45644,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.4854948839305714,
-            "angular_impulse_nms": 0.00628778620358825,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.7872725958943839,
+            "angular_impulse_nms": 0.006733870771593633,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -46615,12 +46683,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.6738746417580052,
-            "angular_impulse_nms": 0.00853452801415944,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.0692183971951277,
+            "angular_impulse_nms": 0.009162381491385827,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -47650,12 +47722,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.7516047033617179,
-            "angular_impulse_nms": 0.008045316711292194,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.1710016107313965,
+            "angular_impulse_nms": 0.008795225528523132,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -48685,12 +48761,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8239660785852683,
-            "angular_impulse_nms": 0.008744567024132273,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.277674249717458,
+            "angular_impulse_nms": 0.009569305878606264,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -49720,12 +49800,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 12,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.48590442954882657,
-            "angular_impulse_nms": 0.013488262605286155,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.7415318309689221,
+            "angular_impulse_nms": 0.012529820733146936,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -50755,12 +50839,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8051897664243904,
-            "angular_impulse_nms": 0.00839599521205319,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.246542241356066,
+            "angular_impulse_nms": 0.009172845367474088,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -51790,12 +51878,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.7373444008484087,
-            "angular_impulse_nms": 0.007744353623232186,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.14738550061838,
+            "angular_impulse_nms": 0.00843966767505722,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -52825,12 +52917,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.5692382892378697,
-            "angular_impulse_nms": 0.006366035391901822,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.8899505306212235,
+            "angular_impulse_nms": 0.006877434423406717,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -53860,12 +53956,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.4098931295366337,
-            "angular_impulse_nms": 0.004512828165281294,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.6576333340690055,
+            "angular_impulse_nms": 0.004892266500268828,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -54895,12 +54995,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 12,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.2538854990659743,
-            "angular_impulse_nms": 0.0030819266866992418,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.43550181165787866,
+            "angular_impulse_nms": 0.003226123673045966,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -55930,12 +56034,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.4805184960589415,
-            "angular_impulse_nms": 0.005918857794212179,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.7789142683077442,
+            "angular_impulse_nms": 0.006135382237109844,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -56965,12 +57073,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.6665892870493919,
-            "angular_impulse_nms": 0.008473942817751299,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.0568992029802349,
+            "angular_impulse_nms": 0.008816810462218614,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -58000,12 +58112,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.7513371049411401,
-            "angular_impulse_nms": 0.008229907105448941,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.170559644158595,
+            "angular_impulse_nms": 0.008863470297531532,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -59035,12 +59151,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8235097089201893,
-            "angular_impulse_nms": 0.00871549491843296,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.2768865080504392,
+            "angular_impulse_nms": 0.009409566378347188,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -60070,12 +60190,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 12,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.48766952766676286,
-            "angular_impulse_nms": 0.01320151834719016,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 0.7447874070415732,
+            "angular_impulse_nms": 0.012894693915608688,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -61105,12 +61229,16 @@
             "body_count": 25,
             "joint_count": 24,
             "assessed_joint_count": 24,
+            "projected_body_count": 25,
+            "resolved_hinge_constraint_count": 22,
             "review_count": 0,
             "max_position_error_m": 0,
             "max_angular_error_rad": 0,
-            "linear_impulse_ns": 0.8051691940684794,
-            "angular_impulse_nms": 0.008319262240367655,
-            "status": "hinge-joint-frame-satisfied"
+            "linear_impulse_ns": 1.2463179956944306,
+            "angular_impulse_nms": 0.009107131690524028,
+            "assessment_status": "hinge-joint-frame-satisfied",
+            "world_status": "world-hinge-constraint-resolved",
+            "status": "noetix-hinge-world-projected"
           },
           "steps": [
             {
@@ -62127,7 +62255,7 @@
       ],
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "joint-control-limit-review",
-      "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
+      "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment and world hinge constraint replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
     },
     "source_inertial_collision": {
       "report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",

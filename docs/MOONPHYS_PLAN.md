@@ -79,7 +79,7 @@ evidence.
 - Moonrobo Noetix joint-control evidence now projects each URDF-reference link
   frame through Moonphys generic hinge-joint frame assessment and exports
   compact per-frame/report summaries for body count, joint count, position/axis
-  error, and impulse review.
+  error, impulse review, and Moonphys world hinge constraint replay status.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -511,7 +511,8 @@ limits are carried from the source audit into the robot-specific profile as
 Moonphys joint limits. Noetix joint-control review evidence replays the gait
 phases through Moonphys joint-frame motor integration, servo, torque, velocity,
 position limits, mechanical power/work accounting, and compact Moonphys
-hinge-joint frame assessment summaries for the URDF-reference body graph.
+hinge-joint frame assessment plus world hinge constraint replay summaries for
+the URDF-reference body graph.
 Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys composite primitive-shape mass properties, collision bounds, terrain
 collision probes, per-foot patch-load contact wrenches, narrow-phase

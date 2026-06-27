@@ -306,6 +306,7 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.status.contains("joint-control"))
   assert_true(report.note.contains("joint-frame motor integration"))
   assert_true(report.note.contains("hinge-joint frame assessment"))
+  assert_true(report.note.contains("world hinge constraint replay"))
   assert_true(report.note.contains("servo gains"))
   assert_eq(report.hinge_joint_frame_count, 12)
   assert_eq(report.hinge_joint_count_per_frame, 24)
@@ -321,8 +322,28 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.frames[0].hinge_joint_frame.body_count, 25)
   assert_eq(report.frames[0].hinge_joint_frame.joint_count, 24)
   assert_eq(report.frames[0].hinge_joint_frame.assessed_joint_count, 24)
+  assert_eq(report.frames[0].hinge_joint_frame.projected_body_count, 25)
   assert_true(
-    report.frames[0].hinge_joint_frame.status.contains("hinge-joint-frame"),
+    report.frames[0].hinge_joint_frame.resolved_hinge_constraint_count >= 0,
+  )
+  assert_true(
+    report.frames[0].hinge_joint_frame.world_status.contains(
+      "world-hinge-constraint",
+    ),
+  )
+  assert_true(
+    report.frames[0].hinge_joint_frame.assessment_status.contains(
+      "hinge-joint-frame",
+    ),
+  )
+  assert_true(
+    report.frames[0].hinge_joint_frame.status.contains("noetix-hinge-world"),
+  )
+  assert_true(
+    report.frames.any(fn(frame) {
+      frame.hinge_joint_frame.resolved_hinge_constraint_count > 0 &&
+      frame.hinge_joint_frame.world_status == "world-hinge-constraint-resolved"
+    }),
   )
   assert_true(
     report.frames.any(fn(frame) {

@@ -48,6 +48,8 @@ def main() -> None:
         fail("report note must mention Moonphys joint-frame replay")
     if "hinge-joint frame assessment" not in report.get("note", ""):
         fail("report note must mention Moonphys hinge-frame assessment")
+    if "world hinge constraint replay" not in report.get("note", ""):
+        fail("report note must mention Moonphys world hinge replay")
     if report.get("hinge_joint_frame_count") != len(frames):
         fail("hinge joint frame count must match report frames")
     if report.get("hinge_joint_count_per_frame") != 24:
@@ -82,8 +84,23 @@ def main() -> None:
         fail("first hinge frame should carry all URDF joints")
     if hinge_frame.get("assessed_joint_count") != 24:
         fail("first hinge frame should assess all URDF joints")
-    if "hinge-joint-frame" not in hinge_frame.get("status", ""):
-        fail("first hinge frame must expose Moonphys hinge-frame status")
+    if hinge_frame.get("projected_body_count") != 25:
+        fail("first hinge frame should project all reference bodies")
+    if hinge_frame.get("resolved_hinge_constraint_count", -1) < 0:
+        fail("first hinge frame must report resolved hinge count")
+    if "world-hinge-constraint" not in hinge_frame.get("world_status", ""):
+        fail("first hinge frame must expose Moonphys world hinge status")
+    if "hinge-joint-frame" not in hinge_frame.get("assessment_status", ""):
+        fail("first hinge frame must expose Moonphys hinge-frame assessment")
+    if "noetix-hinge-world" not in hinge_frame.get("status", ""):
+        fail("first hinge frame must expose Noetix hinge world status")
+    if not any(
+        frame.get("hinge_joint_frame", {}).get("resolved_hinge_constraint_count", 0) > 0
+        and frame.get("hinge_joint_frame", {}).get("world_status")
+        == "world-hinge-constraint-resolved"
+        for frame in frames
+    ):
+        fail("expected at least one Moonphys world hinge-resolved frame")
     if not all(step.get("motor_step", {}).get("limit") for step in steps):
         fail("every step must carry a Moonphys joint limit")
     if not all(

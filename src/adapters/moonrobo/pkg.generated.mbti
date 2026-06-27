@@ -454,11 +454,15 @@ pub(all) struct NoetixHingeJointFrameEvidence {
   body_count : Int
   joint_count : Int
   assessed_joint_count : Int
+  projected_body_count : Int
+  resolved_hinge_constraint_count : Int
   review_count : Int
   max_position_error_m : Double
   max_angular_error_rad : Double
   linear_impulse_ns : Double
   angular_impulse_nms : Double
+  assessment_status : String
+  world_status : String
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
