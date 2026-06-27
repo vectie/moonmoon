@@ -492,6 +492,9 @@ test "joint motor integration applies torque semi implicitly" {
   assert_eq(step.status, "torque-commanded")
   assert_true(nearly_equal(step.after.velocity_rad_s, 0.5))
   assert_true(nearly_equal(step.after.position_rad, 0.25))
+  assert_true(nearly_equal(step.work_j, 0.5))
+  assert_true(nearly_equal(step.absolute_work_j, 0.5))
+  assert_true(nearly_equal(step.average_mechanical_power_w, 1.0))
 }
 
 ///|
@@ -507,6 +510,8 @@ test "joint motor integration respects velocity and position limits" {
   assert_eq(step.status, "position-limit")
   assert_true(nearly_equal(step.after.position_rad, 1.0))
   assert_true(nearly_equal(step.after.velocity_rad_s, 0.0))
+  assert_true(nearly_equal(step.work_j, 10.0))
+  assert_true(nearly_equal(step.average_mechanical_power_w, 10.0))
 }
 
 ///|

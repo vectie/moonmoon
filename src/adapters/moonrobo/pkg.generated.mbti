@@ -439,6 +439,9 @@ pub(all) struct NoetixJointControlFrame {
   limit_review_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
   steps : Array[NoetixJointControlStep]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -453,6 +456,9 @@ pub(all) struct NoetixJointControlReport {
   limit_review_frame_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
   frames : Array[NoetixJointControlFrame]
   hardware_authority : String
   status : String

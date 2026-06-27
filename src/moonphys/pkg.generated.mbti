@@ -278,6 +278,9 @@ pub(all) struct JointMotorStep {
   limit : JointLimit
   dt_s : Double
   inertia_kg_m2 : Double
+  average_mechanical_power_w : Double
+  work_j : Double
+  absolute_work_j : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -227,12 +227,15 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.status.contains("joint-control"))
   assert_true(report.note.contains("servo gains"))
   assert_true(report.max_abs_velocity_rad_s >= 0.0)
+  assert_true(report.max_abs_mechanical_power_w > 0.0)
+  assert_true(report.total_absolute_work_j > 0.0)
   assert_true(report.frames[0].steps.length() == 24)
   assert_true(
     report.frames.any(fn(frame) {
       frame.steps.any(fn(step) {
         step.joint_name == "leg_r3_joint" &&
-        step.motor_step.limit.max_torque_nm == 100.0
+        step.motor_step.limit.max_torque_nm == 100.0 &&
+        step.motor_step.absolute_work_j >= 0.0
       })
     }),
   )

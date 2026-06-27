@@ -47,6 +47,9 @@ pub(all) struct JointMotorStep {
   limit : JointLimit
   dt_s : Double
   inertia_kg_m2 : Double
+  average_mechanical_power_w : Double
+  work_j : Double
+  absolute_work_j : Double
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -196,6 +199,9 @@ pub fn integrate_joint_motor(
       velocity
     },
   }
+  let displacement = after.position_rad - state.position_rad
+  let work = servo.commanded_torque_nm * displacement
+  let average_power = if dt_s > 0.0 { work / dt_s } else { 0.0 }
   {
     before: state,
     after,
@@ -203,6 +209,9 @@ pub fn integrate_joint_motor(
     limit,
     dt_s,
     inertia_kg_m2,
+    average_mechanical_power_w: average_power,
+    work_j: work,
+    absolute_work_j: abs_double(work),
     status: if hit_limit {
       "position-limit"
     } else {

@@ -52,7 +52,7 @@
       - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; status joint-control-assumption-review
+      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; max power 19.39254212656542 W; absolute work 101.13118838556709 J; status joint-control-assumption-review
       - ready: false
       - blocking: joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json

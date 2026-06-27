@@ -1054,7 +1054,7 @@ fn moonrobo_noetix_joint_control_entry(
     claim_kind: @core.ClaimKind::Simulated,
     confidence: 0.55,
     path: "moonrobo/\{dossier.site.site_id}/noetix-joint-control.json",
-    summary: "\{report.profile.robot_id} joint-control report has \{report.frame_count} frames, \{report.joint_count_per_frame} joints per frame, status \{report.status}, hardware authority \{report.hardware_authority}",
+    summary: "\{report.profile.robot_id} joint-control report has \{report.frame_count} frames, \{report.joint_count_per_frame} joints per frame, max power \{report.max_abs_mechanical_power_w} W, absolute work \{report.total_absolute_work_j} J, status \{report.status}, hardware authority \{report.hardware_authority}",
   }
 }
 

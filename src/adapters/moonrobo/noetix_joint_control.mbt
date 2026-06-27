@@ -19,6 +19,9 @@ pub(all) struct NoetixJointControlFrame {
   limit_review_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
   steps : Array[NoetixJointControlStep]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -34,6 +37,9 @@ pub(all) struct NoetixJointControlReport {
   limit_review_frame_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
+  max_abs_mechanical_power_w : Double
+  net_work_j : Double
+  total_absolute_work_j : Double
   frames : Array[NoetixJointControlFrame]
   hardware_authority : String
   status : String
@@ -197,6 +203,9 @@ pub fn noetix_joint_control_frame(
   let mut limit_review_count = 0
   let mut max_position_error = 0.0
   let mut max_velocity = 0.0
+  let mut max_power = 0.0
+  let mut net_work = 0.0
+  let mut total_abs_work = 0.0
   for phase in frame.joint_phases {
     let step = noetix_joint_control_step(trace, frame_index, phase, profile)
     if step.motor_step.servo.saturated {
@@ -215,6 +224,12 @@ pub fn noetix_joint_control_frame(
     if velocity > max_velocity {
       max_velocity = velocity
     }
+    let power = abs_double(step.motor_step.average_mechanical_power_w)
+    if power > max_power {
+      max_power = power
+    }
+    net_work += step.motor_step.work_j
+    total_abs_work += step.motor_step.absolute_work_j
     steps.push(step)
   }
   {
@@ -225,6 +240,9 @@ pub fn noetix_joint_control_frame(
     limit_review_count,
     max_abs_position_error_rad: max_position_error,
     max_abs_velocity_rad_s: max_velocity,
+    max_abs_mechanical_power_w: max_power,
+    net_work_j: net_work,
+    total_absolute_work_j: total_abs_work,
     steps,
     status: joint_control_frame_status(saturated_count, limit_review_count),
   }
@@ -240,6 +258,9 @@ pub fn noetix_joint_control_report(
   let mut limit_review_frame_count = 0
   let mut max_position_error = 0.0
   let mut max_velocity = 0.0
+  let mut max_power = 0.0
+  let mut net_work = 0.0
+  let mut total_abs_work = 0.0
   let mut joint_count_per_frame = 0
   for index, _frame in trace.frames {
     let control_frame = noetix_joint_control_frame(trace, index, profile)
@@ -255,6 +276,11 @@ pub fn noetix_joint_control_report(
     if control_frame.max_abs_velocity_rad_s > max_velocity {
       max_velocity = control_frame.max_abs_velocity_rad_s
     }
+    if control_frame.max_abs_mechanical_power_w > max_power {
+      max_power = control_frame.max_abs_mechanical_power_w
+    }
+    net_work += control_frame.net_work_j
+    total_abs_work += control_frame.total_absolute_work_j
     if index == 0 {
       joint_count_per_frame = control_frame.joint_count
     }
@@ -270,6 +296,9 @@ pub fn noetix_joint_control_report(
     limit_review_frame_count,
     max_abs_position_error_rad: max_position_error,
     max_abs_velocity_rad_s: max_velocity,
+    max_abs_mechanical_power_w: max_power,
+    net_work_j: net_work,
+    total_absolute_work_j: total_abs_work,
     frames,
     hardware_authority: profile.hardware_authority,
     status: if limit_review_frame_count > 0 {
@@ -307,12 +336,15 @@ pub fn render_noetix_joint_control_markdown(
   text += "- limit-review frames: \{report.limit_review_frame_count}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"
+  text += "- max mechanical power: \{report.max_abs_mechanical_power_w} W\n"
+  text += "- net joint work: \{report.net_work_j} J\n"
+  text += "- absolute joint work: \{report.total_absolute_work_j} J\n"
   text += "- status: \{report.status}\n"
   text += "- hardware authority: \{report.hardware_authority}\n"
   text += "- note: \{report.note}\n\n"
   text += "## Frame Joint Control\n\n"
   for frame in report.frames {
-    text += "- frame \{frame.frame_index} t=\{frame.time_s}s joints=\{frame.joint_count} saturated=\{frame.saturated_joint_count} limit_review=\{frame.limit_review_count} status=\{frame.status}\n"
+    text += "- frame \{frame.frame_index} t=\{frame.time_s}s joints=\{frame.joint_count} saturated=\{frame.saturated_joint_count} limit_review=\{frame.limit_review_count} max_power=\{frame.max_abs_mechanical_power_w}W abs_work=\{frame.total_absolute_work_j}J status=\{frame.status}\n"
   }
   text[:text.length() - 1].to_owned()
 }

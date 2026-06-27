@@ -40,6 +40,12 @@ def main() -> None:
         fail("report note must mention assumed servo gains")
     if report.get("max_abs_velocity_rad_s", -1) < 0:
         fail("max velocity must be present")
+    if report.get("max_abs_mechanical_power_w", 0) <= 0:
+        fail("max mechanical power must be present")
+    if report.get("total_absolute_work_j", 0) <= 0:
+        fail("absolute joint work must be present")
+    if "net_work_j" not in report:
+        fail("net joint work must be present")
 
     first = frames[0]
     steps = first.get("steps", [])
@@ -47,6 +53,20 @@ def main() -> None:
         fail("first frame should carry all joint control steps")
     if not all(step.get("motor_step", {}).get("limit") for step in steps):
         fail("every step must carry a Moonphys joint limit")
+    if not all(
+        "average_mechanical_power_w" in step.get("motor_step", {})
+        and "work_j" in step.get("motor_step", {})
+        and "absolute_work_j" in step.get("motor_step", {})
+        for frame in frames
+        for step in frame.get("steps", [])
+    ):
+        fail("every step must carry Moonphys power/work accounting")
+    if not any(
+        frame.get("max_abs_mechanical_power_w", 0) > 0
+        and frame.get("total_absolute_work_j", 0) > 0
+        for frame in frames
+    ):
+        fail("frame power/work aggregates must be present")
     if not any(
         step.get("joint_name") == "leg_l4_joint"
         and step.get("joint_index") == 8

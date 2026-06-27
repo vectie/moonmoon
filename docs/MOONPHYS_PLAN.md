@@ -401,7 +401,8 @@ resolution, deterministic rigid-body heightfield replay, diagonal-inertia
 angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
-assessment, and generic joint servo/limit integration implemented;
+assessment, generic joint servo/limit integration, and joint mechanical
+power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -409,12 +410,13 @@ URDF/profile paths, visual geometry, joint limits, and the absence of
 authoritative collision/inertial tags. Moonrobo's Noetix URDF joint limits are
 carried into the robot-specific profile as Moonphys joint limits. Noetix
 joint-control review evidence replays the gait phases through Moonphys joint
-servo, torque, velocity, and position limits. Noetix inertial/collision review
-evidence maps the assumed profile onto Moonphys diagonal inertia, collision
-bounds, terrain collision probes, contact torque, narrow-phase self-collision
-manifolds, generic manifold resolution, impulse accounting, and traction
-margin review. Mass, inertia, and authoritative collision tags are still absent
-from the referenced model, so the evidence remains review-only.
+servo, torque, velocity, position limits, and mechanical power/work accounting.
+Noetix inertial/collision review evidence maps the assumed profile onto
+Moonphys diagonal inertia, collision bounds, terrain collision probes, contact
+torque, narrow-phase self-collision manifolds, generic manifold resolution,
+impulse accounting, and traction margin review. Mass, inertia, and
+authoritative collision tags are still absent from the referenced model, so the
+evidence remains review-only.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -427,6 +429,7 @@ Next `moonphys` capabilities:
 - robot-specific inertia/collision profiles from Moonrobo data
 - Noetix URDF joint limits mapped into Moonphys joint limits (implemented)
 - Noetix joint-control review report over Moonphys servo limits (implemented)
+- joint mechanical power/work accounting in motor integration (implemented)
 - exact sphere/sphere contacts and generic contact manifold summaries
   (implemented)
 - generic joint servo, torque limit, velocity limit, and position limit
