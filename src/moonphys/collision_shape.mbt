@@ -107,6 +107,23 @@ pub fn collision_bounding_radius(shape : CollisionShape) -> Double {
 }
 
 ///|
+pub fn collision_shape_volume(shape : CollisionShape) -> Double {
+  let pi = 3.141592653589793
+  match shape.kind {
+    SphereShape =>
+      4.0 * pi * shape.radius_m * shape.radius_m * shape.radius_m / 3.0
+    CapsuleShape =>
+      pi * shape.radius_m * shape.radius_m * 2.0 * shape.half_height_m +
+      4.0 * pi * shape.radius_m * shape.radius_m * shape.radius_m / 3.0
+    BoxShape =>
+      8.0 *
+      shape.half_extents_m.x *
+      shape.half_extents_m.y *
+      shape.half_extents_m.z
+  }
+}
+
+///|
 pub fn collision_world_bounds(
   shape : CollisionShape,
   transform : Transform3,

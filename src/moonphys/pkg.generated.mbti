@@ -41,9 +41,15 @@ pub fn collision_shape_diagonal_inertia(String, Double, CollisionShape) -> Rigid
 
 pub fn collision_shape_kind_label(CollisionShapeKind) -> String
 
+pub fn collision_shape_mass_element(String, Double, CollisionShape, Vec3) -> MassPropertyElement
+
+pub fn collision_shape_volume(CollisionShape) -> Double
+
 pub fn collision_sphere(String, Double) -> CollisionShape
 
 pub fn collision_world_bounds(CollisionShape, Transform3) -> CollisionBounds
+
+pub fn composite_mass_properties(String, Array[MassPropertyElement]) -> CompositeMassProperties
 
 pub fn contact_patch_load_assessment(HeightfieldContactPatch, Double) -> ContactPatchLoadAssessment
 
@@ -90,6 +96,8 @@ pub fn lunar_environment() -> PhysicsEnvironment
 pub fn lunar_gravity_acceleration() -> Vec3
 
 pub fn lunar_regolith_contact_model() -> MaterialContactModel
+
+pub fn mass_property_element(String, Double, Vec3, RigidBodyInertia) -> MassPropertyElement
 
 pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
@@ -258,6 +266,15 @@ pub(all) enum CollisionShapeKind {
   SphereShape
   CapsuleShape
   BoxShape
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CompositeMassProperties {
+  body_id : String
+  element_count : Int
+  total_mass_kg : Double
+  center_of_mass : Vec3
+  inertia_about_center : RigidBodyInertia
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct ContactPatchLoadAssessment {
@@ -447,6 +464,13 @@ pub(all) struct KinematicBodyState {
 pub(all) struct KinematicStep {
   dt_s : Double
   acceleration : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MassPropertyElement {
+  element_id : String
+  mass_kg : Double
+  center_of_mass : Vec3
+  inertia_about_center : RigidBodyInertia
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MaterialContactModel {

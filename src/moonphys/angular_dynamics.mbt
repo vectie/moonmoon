@@ -5,6 +5,24 @@ pub(all) struct RigidBodyInertia {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MassPropertyElement {
+  element_id : String
+  mass_kg : Double
+  center_of_mass : Vec3
+  inertia_about_center : RigidBodyInertia
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct CompositeMassProperties {
+  body_id : String
+  element_count : Int
+  total_mass_kg : Double
+  center_of_mass : Vec3
+  inertia_about_center : RigidBodyInertia
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RigidBodyAngularState {
   body_id : String
   orientation : Basis3
@@ -23,6 +41,21 @@ pub fn rigid_body_inertia(
   diagonal_kg_m2 : Vec3,
 ) -> RigidBodyInertia {
   { body_id, diagonal_kg_m2 }
+}
+
+///|
+pub fn mass_property_element(
+  element_id : String,
+  mass_kg : Double,
+  center_of_mass : Vec3,
+  inertia_about_center : RigidBodyInertia,
+) -> MassPropertyElement {
+  {
+    element_id,
+    mass_kg: nonnegative_mass(mass_kg),
+    center_of_mass,
+    inertia_about_center,
+  }
 }
 
 ///|
@@ -122,6 +155,84 @@ pub fn collision_shape_diagonal_inertia(
         shape.half_height_m,
       )
     BoxShape => box_diagonal_inertia(body_id, mass_kg, shape.half_extents_m)
+  }
+}
+
+///|
+pub fn collision_shape_mass_element(
+  element_id : String,
+  mass_kg : Double,
+  shape : CollisionShape,
+  center_of_mass : Vec3,
+) -> MassPropertyElement {
+  mass_property_element(
+    element_id,
+    mass_kg,
+    center_of_mass,
+    collision_shape_diagonal_inertia(element_id, mass_kg, shape),
+  )
+}
+
+///|
+fn mass_weighted_center(elements : Array[MassPropertyElement]) -> Vec3 {
+  let mut weighted = vec3(0.0, 0.0, 0.0)
+  let mut total_mass = 0.0
+  for element in elements {
+    let mass = nonnegative_mass(element.mass_kg)
+    weighted = weighted.add(element.center_of_mass.scale(mass))
+    total_mass += mass
+  }
+  if total_mass > 0.0 {
+    weighted.scale(1.0 / total_mass)
+  } else {
+    vec3(0.0, 0.0, 0.0)
+  }
+}
+
+///|
+fn parallel_axis_diagonal(mass_kg : Double, offset : Vec3) -> Vec3 {
+  let mass = nonnegative_mass(mass_kg)
+  vec3(
+    mass * (offset.y * offset.y + offset.z * offset.z),
+    mass * (offset.x * offset.x + offset.z * offset.z),
+    mass * (offset.x * offset.x + offset.y * offset.y),
+  )
+}
+
+///|
+fn composite_mass_status(element_count : Int, total_mass_kg : Double) -> String {
+  if element_count <= 0 {
+    "composite-mass-empty"
+  } else if total_mass_kg <= 0.0 {
+    "composite-mass-zero"
+  } else {
+    "composite-mass-resolved"
+  }
+}
+
+///|
+pub fn composite_mass_properties(
+  body_id : String,
+  elements : Array[MassPropertyElement],
+) -> CompositeMassProperties {
+  let center = mass_weighted_center(elements)
+  let mut total_mass = 0.0
+  let mut inertia = vec3(0.0, 0.0, 0.0)
+  for element in elements {
+    let mass = nonnegative_mass(element.mass_kg)
+    total_mass += mass
+    let offset = element.center_of_mass.sub(center)
+    inertia = inertia
+      .add(element.inertia_about_center.diagonal_kg_m2)
+      .add(parallel_axis_diagonal(mass, offset))
+  }
+  {
+    body_id,
+    element_count: elements.length(),
+    total_mass_kg: total_mass,
+    center_of_mass: center,
+    inertia_about_center: rigid_body_inertia(body_id, inertia),
+    status: composite_mass_status(elements.length(), total_mass),
   }
 }
 

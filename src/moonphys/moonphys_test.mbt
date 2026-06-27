@@ -374,6 +374,71 @@ test "collision shape diagonal inertia dispatches by primitive kind" {
 }
 
 ///|
+test "collision shape volume dispatches by primitive kind" {
+  assert_true(
+    nearly_equal(
+      collision_shape_volume(collision_sphere("sphere", 1.0)),
+      4.0 * 3.141592653589793 / 3.0,
+    ),
+  )
+  assert_true(
+    nearly_equal(
+      collision_shape_volume(collision_box("box", vec3(1.0, 2.0, 3.0))),
+      48.0,
+    ),
+  )
+  assert_true(
+    collision_shape_volume(collision_capsule("capsule", 1.0, 1.0)) >
+    collision_shape_volume(collision_sphere("sphere", 1.0)),
+  )
+}
+
+///|
+test "composite mass properties apply parallel axis theorem" {
+  let composite = composite_mass_properties("body", [
+    mass_property_element(
+      "left",
+      1.0,
+      vec3(0.0, 0.0, 0.0),
+      rigid_body_inertia("left", vec3(0.0, 0.0, 0.0)),
+    ),
+    mass_property_element(
+      "right",
+      3.0,
+      vec3(2.0, 0.0, 0.0),
+      rigid_body_inertia("right", vec3(0.0, 0.0, 0.0)),
+    ),
+  ])
+  assert_eq(composite.element_count, 2)
+  assert_true(nearly_equal(composite.total_mass_kg, 4.0))
+  assert_true(nearly_equal(composite.center_of_mass.x, 1.5))
+  assert_true(nearly_equal(composite.center_of_mass.y, 0.0))
+  assert_true(
+    nearly_equal(composite.inertia_about_center.diagonal_kg_m2.x, 0.0),
+  )
+  assert_true(
+    nearly_equal(composite.inertia_about_center.diagonal_kg_m2.y, 3.0),
+  )
+  assert_true(
+    nearly_equal(composite.inertia_about_center.diagonal_kg_m2.z, 3.0),
+  )
+  assert_eq(composite.status, "composite-mass-resolved")
+}
+
+///|
+test "collision shape mass element contributes primitive inertia" {
+  let element = collision_shape_mass_element(
+    "box",
+    12.0,
+    collision_box("box-shape", vec3(1.0, 2.0, 3.0)),
+    vec3(0.0, 0.0, 0.0),
+  )
+  assert_true(nearly_equal(element.inertia_about_center.diagonal_kg_m2.x, 52.0))
+  assert_true(nearly_equal(element.inertia_about_center.diagonal_kg_m2.y, 40.0))
+  assert_true(nearly_equal(element.inertia_about_center.diagonal_kg_m2.z, 20.0))
+}
+
+///|
 test "angular rigid body integration applies torque semi implicitly" {
   let inertia = rigid_body_inertia("body", vec3(2.0, 2.0, 2.0))
   let state = rigid_body_angular_state(

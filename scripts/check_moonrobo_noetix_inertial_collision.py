@@ -24,6 +24,10 @@ def require(condition: bool, message: str) -> None:
     raise AssertionError(message)
 
 
+def close(actual: float, expected: float) -> bool:
+  return abs(actual - expected) <= 1e-9
+
+
 def load(path: Path) -> dict[str, Any]:
   with path.open("r", encoding="utf-8") as handle:
     return json.load(handle)
@@ -50,7 +54,7 @@ def main(argv: list[str]) -> int:
   )
   require("not authoritative" in report["note"], "missing authority note")
   require(
-    "Moonphys primitive-shape diagonal inertia" in report["note"],
+    "Moonphys composite primitive-shape mass properties" in report["note"],
     "missing inertia note",
   )
   require("patch-load contact wrench torque" in report["note"], "missing patch-wrench torque note")
@@ -74,8 +78,28 @@ def main(argv: list[str]) -> int:
   require(len(frames) == report["frame_count"], "frame count mismatch")
   first = frames[0]
   require(first["shape_count"] == report["shapes_per_frame"], "shape count mismatch")
-  require(first["inertia"]["body_id"].endswith("assumed-diagonal-inertia"), "inertia id")
+  require(first["inertia"]["body_id"].endswith("assumed-composite-mass"), "inertia id")
   require(first["inertia"]["diagonal_kg_m2"]["x"] > 0, "inertia x")
+  mass_properties = first.get("mass_properties", {})
+  require(
+    mass_properties.get("status") == "composite-mass-resolved",
+    "missing composite mass properties",
+  )
+  require(
+    mass_properties.get("element_count") == first["shape_count"],
+    "mass property element count mismatch",
+  )
+  require(
+    close(
+      float(mass_properties.get("total_mass_kg", 0.0)),
+      float(report["profile"]["mass_model"]["mass_kg"]),
+    ),
+    "mass property total mass mismatch",
+  )
+  require(
+    mass_properties.get("inertia_about_center") == first["inertia"],
+    "frame inertia must come from composite mass properties",
+  )
   support_wrenches = first.get("support_contact_wrenches", [])
   require(len(support_wrenches) == 2, "missing per-foot support wrenches")
   require(

@@ -453,6 +453,7 @@ pub(all) struct NoetixInertialCollisionFrame {
   support_phase : String
   center_of_mass : @moonphys.Vec3
   inertia : @moonphys.RigidBodyInertia
+  mass_properties : @moonphys.CompositeMassProperties
   support_contact_torque_nm : @moonphys.Vec3
   support_contact_wrenches : Array[@moonphys.ContactPatchWrenchAssessment]
   shape_count : Int

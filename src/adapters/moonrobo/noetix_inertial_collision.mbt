@@ -23,6 +23,7 @@ pub(all) struct NoetixInertialCollisionFrame {
   support_phase : String
   center_of_mass : @moonphys.Vec3
   inertia : @moonphys.RigidBodyInertia
+  mass_properties : @moonphys.CompositeMassProperties
   support_contact_torque_nm : @moonphys.Vec3
   support_contact_wrenches : Array[@moonphys.ContactPatchWrenchAssessment]
   shape_count : Int
@@ -62,25 +63,57 @@ fn vec_length(value : @moonphys.Vec3) -> Double {
 }
 
 ///|
-fn noetix_assumed_body_inertia(
-  profile : NoetixPhysicsProfile,
-) -> @moonphys.RigidBodyInertia {
-  @moonphys.box_diagonal_inertia(
-    "\{profile.robot_id}/assumed-diagonal-inertia",
-    profile.mass_model.mass_kg,
-    @moonphys.vec3(0.18, 0.20, 0.14),
-  )
+fn collision_shape_volume_sum(
+  shapes : Array[NoetixCollisionShapeEvidence],
+) -> Double {
+  let mut total = 0.0
+  for shape in shapes {
+    total += @moonphys.collision_shape_volume(shape.shape)
+  }
+  total
 }
 
 ///|
-fn frame_center_of_mass(
-  frame : NoetixMoonWalkFrame,
+fn noetix_assumed_shape_mass(
+  total_mass_kg : Double,
+  shape : NoetixCollisionShapeEvidence,
+  shape_count : Int,
+  volume_sum : Double,
+) -> Double {
+  if volume_sum > 0.0 {
+    total_mass_kg * @moonphys.collision_shape_volume(shape.shape) / volume_sum
+  } else if shape_count > 0 {
+    total_mass_kg / shape_count.to_double()
+  } else {
+    0.0
+  }
+}
+
+///|
+fn noetix_assumed_mass_properties(
   profile : NoetixPhysicsProfile,
-) -> @moonphys.Vec3 {
-  @moonphys.vec3(
-    frame.body_position.x + profile.mass_model.com_x_offset_m,
-    frame.body_position.y + profile.mass_model.com_y_offset_m,
-    frame.body_position.z,
+  shapes : Array[NoetixCollisionShapeEvidence],
+) -> @moonphys.CompositeMassProperties {
+  let volume_sum = collision_shape_volume_sum(shapes)
+  let elements : Array[@moonphys.MassPropertyElement] = []
+  for shape in shapes {
+    elements.push(
+      @moonphys.collision_shape_mass_element(
+        shape.shape.shape_id,
+        noetix_assumed_shape_mass(
+          profile.mass_model.mass_kg,
+          shape,
+          shapes.length(),
+          volume_sum,
+        ),
+        shape.shape,
+        shape.transform.translation,
+      ),
+    )
+  }
+  @moonphys.composite_mass_properties(
+    "\{profile.robot_id}/assumed-composite-mass",
+    elements,
   )
 }
 
@@ -311,12 +344,13 @@ pub fn noetix_inertial_collision_frame(
     0.0,
   ),
 ) -> NoetixInertialCollisionFrame {
-  let center_of_mass = frame_center_of_mass(walk_frame, profile)
-  let inertia = noetix_assumed_body_inertia(profile)
   let shapes : Array[NoetixCollisionShapeEvidence] = []
   for collision in profile.collision_shapes {
     shapes.push(collision_shape_evidence(pose_frame, collision))
   }
+  let mass_properties = noetix_assumed_mass_properties(profile, shapes)
+  let center_of_mass = mass_properties.center_of_mass
+  let inertia = mass_properties.inertia_about_center
   let terrain_collisions : Array[NoetixTerrainCollisionEvidence] = []
   terrain_collisions.push(
     terrain_collision_evidence(field, walk_frame, profile, "left_foot"),
@@ -347,6 +381,7 @@ pub fn noetix_inertial_collision_frame(
     support_phase: walk_frame.support_phase,
     center_of_mass,
     inertia,
+    mass_properties,
     support_contact_torque_nm: support_contact_torque(support_wrenches),
     support_contact_wrenches: support_wrenches,
     shape_count: shapes.length(),
@@ -439,7 +474,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys primitive-shape diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 

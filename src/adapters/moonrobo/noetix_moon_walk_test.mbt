@@ -1,4 +1,11 @@
 ///|
+fn nearly_equal_double(a : Double, b : Double) -> Bool {
+  let delta = a - b
+  let absolute = if delta < 0.0 { 0.0 - delta } else { delta }
+  absolute < 0.0000001
+}
+
+///|
 test "noetix endless moon walk advances in one direction" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=24)
   assert_eq(trace.frame_count, 24)
@@ -355,7 +362,18 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
       wrench.normal_force_n > 0.0
     }),
   )
-  assert_true(report.note.contains("Moonphys primitive-shape diagonal inertia"))
+  assert_true(
+    report.note.contains("Moonphys composite primitive-shape mass properties"),
+  )
+  assert_true(
+    report.frames[0].mass_properties.status == "composite-mass-resolved" &&
+    report.frames[0].mass_properties.element_count ==
+    report.frames[0].shape_count &&
+    nearly_equal_double(
+      report.frames[0].mass_properties.total_mass_kg,
+      report.profile.mass_model.mass_kg,
+    ),
+  )
   assert_true(report.note.contains("patch-load contact wrench torque"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))
