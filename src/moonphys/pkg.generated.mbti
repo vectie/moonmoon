@@ -133,7 +133,7 @@ pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, 
 
 pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
 
-pub fn rigid_body_world_distance_constraint(String, String, String, Double, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
+pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : Vec3, anchor_b_m? : Vec3, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
 
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
@@ -659,6 +659,10 @@ pub(all) struct RigidBodyWorldConstraintResolution {
   constraint_id : String
   body_a_id : String
   body_b_id : String
+  anchor_a_m : Vec3
+  anchor_b_m : Vec3
+  world_anchor_a : Vec3
+  world_anchor_b : Vec3
   rest_length_m : Double
   current_length_m : Double
   error_m : Double
@@ -700,6 +704,8 @@ pub(all) struct RigidBodyWorldDistanceConstraint {
   constraint_id : String
   body_a_id : String
   body_b_id : String
+  anchor_a_m : Vec3
+  anchor_b_m : Vec3
   rest_length_m : Double
   stiffness : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

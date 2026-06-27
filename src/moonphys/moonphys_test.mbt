@@ -593,6 +593,62 @@ test "rigid body world constraints restore distance" {
 }
 
 ///|
+test "rigid body world constraints resolve anchored points" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "upper-link",
+          1.0,
+          0.1,
+          vec3(0.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "lower-link",
+          1.0,
+          0.1,
+          vec3(3.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+    constraints=[
+      rigid_body_world_distance_constraint(
+        "knee-pin",
+        "upper-link",
+        "lower-link",
+        0.0,
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+      ),
+    ],
+  )
+  let resolution = rigid_body_world_resolve_constraints(world)
+  let resolved = resolution.resolutions[0]
+  assert_eq(resolution.status, "world-constraint-resolved")
+  assert_eq(resolved.status, "world-constraint-resolved")
+  assert_true(nearly_equal(resolved.current_length_m, 1.0))
+  assert_true(nearly_equal(resolved.world_anchor_a.x, 1.0))
+  assert_true(nearly_equal(resolved.world_anchor_b.x, 2.0))
+  assert_true(nearly_equal(resolution.after.bodies[0].state.position.x, 0.5))
+  assert_true(nearly_equal(resolution.after.bodies[1].state.position.x, 2.5))
+  assert_true(
+    nearly_equal(
+      resolution.after.bodies[0].state.position.add(resolved.anchor_a_m).x,
+      resolution.after.bodies[1].state.position.add(resolved.anchor_b_m).x,
+    ),
+  )
+}
+
+///|
 test "rigid body heightfield world step applies constraints" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

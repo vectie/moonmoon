@@ -3,6 +3,8 @@ pub(all) struct RigidBodyWorldDistanceConstraint {
   constraint_id : String
   body_a_id : String
   body_b_id : String
+  anchor_a_m : Vec3
+  anchor_b_m : Vec3
   rest_length_m : Double
   stiffness : Double
 } derive(Debug, Eq, ToJson, FromJson)
@@ -12,6 +14,10 @@ pub(all) struct RigidBodyWorldConstraintResolution {
   constraint_id : String
   body_a_id : String
   body_b_id : String
+  anchor_a_m : Vec3
+  anchor_b_m : Vec3
+  world_anchor_a : Vec3
+  world_anchor_b : Vec3
   rest_length_m : Double
   current_length_m : Double
   error_m : Double
@@ -46,12 +52,16 @@ pub fn rigid_body_world_distance_constraint(
   body_a_id : String,
   body_b_id : String,
   rest_length_m : Double,
+  anchor_a_m? : Vec3 = vec3(0.0, 0.0, 0.0),
+  anchor_b_m? : Vec3 = vec3(0.0, 0.0, 0.0),
   stiffness? : Double = 1.0,
 ) -> RigidBodyWorldDistanceConstraint {
   {
     constraint_id,
     body_a_id,
     body_b_id,
+    anchor_a_m,
+    anchor_b_m,
     rest_length_m,
     stiffness: clamp_unit(stiffness),
   }
@@ -92,6 +102,8 @@ fn rigid_body_world_unresolved_constraint(
   constraint : RigidBodyWorldDistanceConstraint,
   body_a : RigidBodyWorldBody,
   body_b : RigidBodyWorldBody,
+  world_anchor_a : Vec3,
+  world_anchor_b : Vec3,
   current_length : Double,
   error : Double,
   status : String,
@@ -100,6 +112,10 @@ fn rigid_body_world_unresolved_constraint(
     constraint_id: constraint.constraint_id,
     body_a_id: constraint.body_a_id,
     body_b_id: constraint.body_b_id,
+    anchor_a_m: constraint.anchor_a_m,
+    anchor_b_m: constraint.anchor_b_m,
+    world_anchor_a,
+    world_anchor_b,
     rest_length_m: constraint.rest_length_m,
     current_length_m: current_length,
     error_m: error,
@@ -138,7 +154,9 @@ fn rigid_body_world_distance_constraint_resolution(
   }
   let body_a = if index_a >= 0 { bodies[index_a] } else { fallback }
   let body_b = if index_b >= 0 { bodies[index_b] } else { fallback }
-  let delta = body_b.state.position.sub(body_a.state.position)
+  let world_anchor_a = body_a.state.position.add(constraint.anchor_a_m)
+  let world_anchor_b = body_b.state.position.add(constraint.anchor_b_m)
+  let delta = world_anchor_b.sub(world_anchor_a)
   let current_length = delta.length()
   let error = current_length - constraint.rest_length_m
   let normal = if current_length > 0.0 {
@@ -154,6 +172,8 @@ fn rigid_body_world_distance_constraint_resolution(
       constraint,
       body_a,
       body_b,
+      world_anchor_a,
+      world_anchor_b,
       current_length,
       error,
       rigid_body_world_constraint_status(
@@ -206,6 +226,10 @@ fn rigid_body_world_distance_constraint_resolution(
       constraint_id: constraint.constraint_id,
       body_a_id: constraint.body_a_id,
       body_b_id: constraint.body_b_id,
+      anchor_a_m: constraint.anchor_a_m,
+      anchor_b_m: constraint.anchor_b_m,
+      world_anchor_a,
+      world_anchor_b,
       rest_length_m: constraint.rest_length_m,
       current_length_m: current_length,
       error_m: error,
