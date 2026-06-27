@@ -21,6 +21,9 @@
 - hinge motor world trace body samples: 825
 - hinge motor world trace max speed: 1.2074667066611866 m/s
 - hinge motor world trace max kinetic energy: 1.1080616442483613 J
+- hinge motor world trace total mass: 38.00000000000001 kg
+- hinge motor world trace center of mass x: 0.69030135511729 m
+- hinge motor world trace max center-of-mass speed: 0.6262051903954763 m/s
 - hinge motor world trace max body momentum: 1.8353493941250039 kg*m/s
 - hinge motor world trace max world momentum: 23.795797235028104 kg*m/s
 - hinge motor world trace max frame energy delta: 2.050170526416192 J

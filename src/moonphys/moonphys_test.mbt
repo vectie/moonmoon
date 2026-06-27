@@ -1218,9 +1218,49 @@ test "rigid body heightfield world trace is deterministic" {
   assert_true(envelope.contact_count >= trace.frames[0].contact_count)
   assert_true(envelope.max_speed_mps >= 0.0)
   assert_true(envelope.max_kinetic_energy_j >= 0.0)
+  assert_true(nearly_equal(envelope.total_mass_kg, 4.0))
+  assert_true(envelope.initial_center_of_mass == vec3(0.0, 0.0, 0.25))
+  assert_true(envelope.max_center_of_mass_speed_mps >= 0.0)
   assert_true(envelope.max_body_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_world_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
+}
+
+///|
+test "rigid body world center of mass is mass weighted" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "light",
+          2.0,
+          0.2,
+          vec3(0.0, 0.0, 1.0),
+          vec3(1.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "heavy",
+          4.0,
+          0.2,
+          vec3(3.0, 0.0, 1.0),
+          vec3(0.0, 3.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  assert_true(nearly_equal(rigid_body_world_total_mass(world), 6.0))
+  assert_true(rigid_body_world_center_of_mass(world) == vec3(2.0, 0.0, 1.0))
+  let center_velocity = rigid_body_world_center_of_mass_velocity(world)
+  assert_true(nearly_equal(center_velocity.x, 1.0 / 3.0))
+  assert_true(nearly_equal(center_velocity.y, 2.0))
+  assert_true(nearly_equal(center_velocity.z, 0.0))
 }
 
 ///|

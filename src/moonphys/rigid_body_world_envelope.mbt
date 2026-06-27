@@ -23,6 +23,12 @@ pub(all) struct RigidBodyWorldTraceEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  total_mass_kg : Double
+  initial_center_of_mass : Vec3
+  final_center_of_mass : Vec3
+  min_center_of_mass : Vec3
+  max_center_of_mass : Vec3
+  max_center_of_mass_speed_mps : Double
   max_body_linear_momentum_kg_mps : Double
   max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
@@ -209,11 +215,54 @@ fn trace_envelope_bounds(
     max_position,
     max_speed_mps: max_speed,
     max_kinetic_energy_j: max_energy,
+    total_mass_kg: 0.0,
+    initial_center_of_mass: vec3(0.0, 0.0, 0.0),
+    final_center_of_mass: vec3(0.0, 0.0, 0.0),
+    min_center_of_mass: vec3(0.0, 0.0, 0.0),
+    max_center_of_mass: vec3(0.0, 0.0, 0.0),
+    max_center_of_mass_speed_mps: 0.0,
     max_body_linear_momentum_kg_mps: max_body_momentum,
     max_world_linear_momentum_kg_mps: 0.0,
     max_frame_kinetic_energy_delta_j: 0.0,
     body_envelopes,
     status: trace_envelope_status(sample_count, 0),
+  }
+}
+
+///|
+pub fn rigid_body_world_total_mass(world : RigidBodyHeightfieldWorld) -> Double {
+  let mut total = 0.0
+  for body in world.bodies {
+    total += body.state.mass_kg
+  }
+  total
+}
+
+///|
+pub fn rigid_body_world_center_of_mass(
+  world : RigidBodyHeightfieldWorld,
+) -> Vec3 {
+  let total = rigid_body_world_total_mass(world)
+  if total <= 0.0 {
+    vec3(0.0, 0.0, 0.0)
+  } else {
+    let mut weighted = vec3(0.0, 0.0, 0.0)
+    for body in world.bodies {
+      weighted = weighted.add(body.state.position.scale(body.state.mass_kg))
+    }
+    weighted.scale(1.0 / total)
+  }
+}
+
+///|
+pub fn rigid_body_world_center_of_mass_velocity(
+  world : RigidBodyHeightfieldWorld,
+) -> Vec3 {
+  let total = rigid_body_world_total_mass(world)
+  if total <= 0.0 {
+    vec3(0.0, 0.0, 0.0)
+  } else {
+    rigid_body_world_linear_momentum(world).scale(1.0 / total)
   }
 }
 
@@ -234,6 +283,14 @@ pub fn rigid_body_heightfield_world_trace_envelope(
 ) -> RigidBodyWorldTraceEnvelope {
   let body_envelopes : Array[RigidBodyWorldBodyEnvelope] = []
   trace_envelope_add_world(body_envelopes, trace.initial_world)
+  let total_mass = rigid_body_world_total_mass(trace.initial_world)
+  let initial_center = rigid_body_world_center_of_mass(trace.initial_world)
+  let mut final_center = initial_center
+  let mut min_center = initial_center
+  let mut max_center = initial_center
+  let mut max_center_speed = rigid_body_world_center_of_mass_velocity(
+    trace.initial_world,
+  ).length()
   let mut max_world_momentum = rigid_body_world_linear_momentum(
     trace.initial_world,
   ).length()
@@ -243,6 +300,14 @@ pub fn rigid_body_heightfield_world_trace_envelope(
   let mut review_count = 0
   for frame in trace.frames {
     trace_envelope_add_world(body_envelopes, frame.after)
+    let center = rigid_body_world_center_of_mass(frame.after)
+    final_center = center
+    min_center = envelope_min_vec3(min_center, center)
+    max_center = envelope_max_vec3(max_center, center)
+    max_center_speed = envelope_max_double(
+      max_center_speed,
+      rigid_body_world_center_of_mass_velocity(frame.after).length(),
+    )
     max_world_momentum = envelope_max_double(
       max_world_momentum,
       rigid_body_world_linear_momentum(frame.after).length(),
@@ -268,6 +333,12 @@ pub fn rigid_body_heightfield_world_trace_envelope(
     max_position: bounds.max_position,
     max_speed_mps: bounds.max_speed_mps,
     max_kinetic_energy_j: bounds.max_kinetic_energy_j,
+    total_mass_kg: total_mass,
+    initial_center_of_mass: initial_center,
+    final_center_of_mass: final_center,
+    min_center_of_mass: min_center,
+    max_center_of_mass: max_center,
+    max_center_of_mass_speed_mps: max_center_speed,
     max_body_linear_momentum_kg_mps: bounds.max_body_linear_momentum_kg_mps,
     max_world_linear_momentum_kg_mps: max_world_momentum,
     max_frame_kinetic_energy_delta_j: max_energy_delta,
@@ -282,12 +353,28 @@ pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(
 ) -> RigidBodyWorldTraceEnvelope {
   let body_envelopes : Array[RigidBodyWorldBodyEnvelope] = []
   trace_envelope_add_world(body_envelopes, trace.initial_world)
+  let total_mass = rigid_body_world_total_mass(trace.initial_world)
+  let initial_center = rigid_body_world_center_of_mass(trace.initial_world)
+  let mut final_center = initial_center
+  let mut min_center = initial_center
+  let mut max_center = initial_center
+  let mut max_center_speed = rigid_body_world_center_of_mass_velocity(
+    trace.initial_world,
+  ).length()
   let mut max_world_momentum = rigid_body_world_linear_momentum(
     trace.initial_world,
   ).length()
   let mut max_energy_delta = 0.0
   for frame in trace.frames {
     trace_envelope_add_world(body_envelopes, frame.after)
+    let center = rigid_body_world_center_of_mass(frame.after)
+    final_center = center
+    min_center = envelope_min_vec3(min_center, center)
+    max_center = envelope_max_vec3(max_center, center)
+    max_center_speed = envelope_max_double(
+      max_center_speed,
+      rigid_body_world_center_of_mass_velocity(frame.after).length(),
+    )
     max_world_momentum = envelope_max_double(
       max_world_momentum,
       rigid_body_world_linear_momentum(frame.after).length(),
@@ -310,6 +397,12 @@ pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(
     max_position: bounds.max_position,
     max_speed_mps: bounds.max_speed_mps,
     max_kinetic_energy_j: bounds.max_kinetic_energy_j,
+    total_mass_kg: total_mass,
+    initial_center_of_mass: initial_center,
+    final_center_of_mass: final_center,
+    min_center_of_mass: min_center,
+    max_center_of_mass: max_center,
+    max_center_of_mass_speed_mps: max_center_speed,
     max_body_linear_momentum_kg_mps: bounds.max_body_linear_momentum_kg_mps,
     max_world_linear_momentum_kg_mps: max_world_momentum,
     max_frame_kinetic_energy_delta_j: max_energy_delta,

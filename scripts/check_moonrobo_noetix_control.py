@@ -106,6 +106,18 @@ def main() -> None:
         fail("hinge motor world trace envelope should expose max speed")
     if hinge_motor_world_trace.get("max_kinetic_energy_j", -1) < 0:
         fail("hinge motor world trace envelope should expose max kinetic energy")
+    if hinge_motor_world_trace.get("total_mass_kg", 0) <= 0:
+        fail("hinge motor world trace envelope should expose total mass")
+    initial_com = hinge_motor_world_trace.get("initial_center_of_mass", {})
+    final_com = hinge_motor_world_trace.get("final_center_of_mass", {})
+    min_com = hinge_motor_world_trace.get("min_center_of_mass", {})
+    max_com = hinge_motor_world_trace.get("max_center_of_mass", {})
+    if final_com.get("x", 0) < initial_com.get("x", 0):
+        fail("hinge motor world trace center of mass should not move backward")
+    if max_com.get("z", 0) < min_com.get("z", 0):
+        fail("hinge motor world trace center-of-mass bounds should be valid")
+    if hinge_motor_world_trace.get("max_center_of_mass_speed_mps", -1) < 0:
+        fail("hinge motor world trace envelope should expose COM speed")
     if hinge_motor_world_trace.get("max_body_linear_momentum_kg_mps", -1) < 0:
         fail("hinge motor world trace envelope should expose max body momentum")
     if hinge_motor_world_trace.get("max_world_linear_momentum_kg_mps", -1) < 0:

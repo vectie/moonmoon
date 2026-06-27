@@ -159,6 +159,10 @@ pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
 pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, external_force_n? : Vec3) -> RigidBodyWorldBody
 
+pub fn rigid_body_world_center_of_mass(RigidBodyHeightfieldWorld) -> Vec3
+
+pub fn rigid_body_world_center_of_mass_velocity(RigidBodyHeightfieldWorld) -> Vec3
+
 pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
 
 pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : Vec3, anchor_b_m? : Vec3, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
@@ -176,6 +180,8 @@ pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidB
 pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
 
 pub fn rigid_body_world_resolve_hinge_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldHingeConstraintFrame
+
+pub fn rigid_body_world_total_mass(RigidBodyHeightfieldWorld) -> Double
 
 pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
@@ -1007,6 +1013,12 @@ pub(all) struct RigidBodyWorldTraceEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  total_mass_kg : Double
+  initial_center_of_mass : Vec3
+  final_center_of_mass : Vec3
+  min_center_of_mass : Vec3
+  max_center_of_mass : Vec3
+  max_center_of_mass_speed_mps : Double
   max_body_linear_momentum_kg_mps : Double
   max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double

@@ -71,9 +71,9 @@ evidence.
   correction, and impulse accounting.
   Moonphys also exposes generic hinge-axis alignment and
   inverse-inertia weighted correction estimates over angular body states.
-  Generic world-trace envelopes include per-body and whole-world linear
-  momentum bounds alongside position, speed, contact, hinge, and energy
-  summaries.
+  Generic world-trace envelopes include aggregate mass/center-of-mass,
+  per-body and whole-world linear momentum bounds alongside position, speed,
+  contact, hinge, and energy summaries.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
@@ -87,8 +87,9 @@ evidence.
   error, impulse review, Moonphys world hinge constraint replay status, and
   motor-driven heightfield world replay contact/hinge-resolution summaries.
   The same report also carries a generic Moonphys world-trace envelope for
-  body sample count, position bounds, max speed, max kinetic energy, max
-  body/world linear momentum, and max per-frame kinetic-energy delta.
+  body sample count, position bounds, aggregate center-of-mass bounds, max
+  speed, max kinetic energy, max body/world linear momentum, and max per-frame
+  kinetic-energy delta.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -549,9 +550,10 @@ motor-driven heightfield world trace that applies hinge motor frames before each
 fixed heightfield step, so motor drive, terrain contacts, world contacts,
 constraints, energy deltas, and review counts live in one deterministic replay
 artifact. Moonphys also summarizes deterministic world traces with generic
-body-envelope bounds: sample counts, position bounds, max speed, max kinetic
-energy, max per-frame kinetic-energy delta, contacts, hinge resolutions, and
-review counts. Full coupled articulated dynamics remain future work.
+body-envelope bounds: sample counts, position bounds, aggregate
+mass/center-of-mass bounds, max speed, max kinetic energy, max per-frame
+kinetic-energy delta, contacts, hinge resolutions, and review counts. Full
+coupled articulated dynamics remain future work.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
@@ -609,8 +611,8 @@ Next `moonphys` capabilities:
 - generic motor-driven heightfield world trace replay that composes hinge motor
   drive with fixed-step world contact/constraint resolution (implemented)
 - generic world-trace envelope summaries for body bounds, max speed, max
-  kinetic energy, linear momentum, frame energy delta, contacts, hinge
-  resolutions, and review counts (implemented)
+  kinetic energy, aggregate center of mass, linear momentum, frame energy
+  delta, contacts, hinge resolutions, and review counts (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)
