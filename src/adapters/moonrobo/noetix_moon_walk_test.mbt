@@ -277,7 +277,26 @@ test "noetix link pose trace binds feet to walk contact probes" {
       link.link_name == "left_foot" &&
       link.world_position == walk.frames[0].left_foot.position &&
       link.source_status == "urdf-fk-contact-bound" &&
+      !link.visual_geometry.has_visual_geometry &&
+      link.visual_geometry.source_status == "urdf-visual-geometry-missing" &&
       link.contact_error_m >= 0.0
+    }),
+  )
+  assert_true(
+    first.links.any(fn(link) {
+      link.link_name == "base_link" &&
+      link.visual_geometry.has_visual_geometry &&
+      link.visual_geometry.kind == SourceMeshGeometry &&
+      link.visual_geometry.mesh_path.contains("base.obj") &&
+      link.visual_geometry.size_m == @moonphys.vec3(0.24, 0.20, 0.04)
+    }),
+  )
+  assert_true(
+    first.links.any(fn(link) {
+      link.link_name == "chest_link" &&
+      link.visual_geometry.has_visual_geometry &&
+      link.visual_geometry.kind == SourceBoxGeometry &&
+      link.visual_geometry.world_origin_xyz_m.z > link.world_position.z
     }),
   )
   assert_true(

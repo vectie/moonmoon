@@ -485,6 +485,7 @@ pub(all) struct NoetixLinkPose {
   fk_world_position : @moonphys.Vec3
   world_position : @moonphys.Vec3
   contact_error_m : Double
+  visual_geometry : NoetixLinkVisualGeometryEvidence
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -507,6 +508,19 @@ pub(all) struct NoetixLinkPoseTrace {
   frames : Array[NoetixLinkPoseFrame]
   status : String
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixLinkVisualGeometryEvidence {
+  link_name : String
+  has_visual_geometry : Bool
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  local_origin_xyz_m : @moonphys.Vec3
+  world_origin_xyz_m : @moonphys.Vec3
+  source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixMassModel {

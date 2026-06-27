@@ -25,7 +25,9 @@ evidence.
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
   use compact URDF forward kinematics, and feet are bound to Moonphys contact
-  probes with FK contact error.
+  probes with FK contact error. Each link-pose entry now also carries source
+  visual-geometry evidence from the Noetix source-model audit, or an explicit
+  missing-visual-geometry status when the URDF link has no visual block.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
   contact torque, and conservative self-collision manifolds.
@@ -247,7 +249,8 @@ Tests:
 
 Status: compact URDF-reference forward kinematics implemented in
 `src/adapters/moonrobo/noetix_link_pose.mbt`; mesh geometry, collision
-geometry, inertial metadata, and full dynamics remain future work.
+geometry, inertial metadata, and full dynamics remain future work; source
+visual geometry is now carried in each link-pose entry for viewer/render use.
 
 Use Moonrobo's URDF work as the robot-specific layer.
 
@@ -284,9 +287,11 @@ The first pose slice includes:
 - world positions per frame
 - FK world positions and contact error for terrain-bound feet
 - explicit review-only status and no hardware authority
+- source visual geometry per link when present, and explicit missing-visual
+  status when absent
 
 This gives downstream viewers enough structure to draw the robot walking with a
-real FK tree without claiming full dynamics.
+real FK tree and approximate source shapes without claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 

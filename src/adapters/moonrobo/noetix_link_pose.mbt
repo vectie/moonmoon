@@ -11,6 +11,20 @@ pub(all) struct NoetixReferenceLink {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixLinkVisualGeometryEvidence {
+  link_name : String
+  has_visual_geometry : Bool
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  local_origin_xyz_m : @moonphys.Vec3
+  world_origin_xyz_m : @moonphys.Vec3
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixLinkPose {
   link_name : String
   parent_link : String
@@ -23,6 +37,7 @@ pub(all) struct NoetixLinkPose {
   fk_world_position : @moonphys.Vec3
   world_position : @moonphys.Vec3
   contact_error_m : Double
+  visual_geometry : NoetixLinkVisualGeometryEvidence
   source_status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -247,9 +262,57 @@ fn position_error_m(a : @moonphys.Vec3, b : @moonphys.Vec3) -> Double {
 }
 
 ///|
+fn source_visual_geometry_for_link(
+  link_name : String,
+) -> NoetixSourceVisualGeometry? {
+  for geometry in noetix_source_visual_geometries() {
+    if geometry.link_name == link_name {
+      return Some(geometry)
+    }
+  }
+  None
+}
+
+///|
+fn link_visual_geometry_evidence(
+  link : NoetixReferenceLink,
+  transform : @moonphys.Transform3,
+) -> NoetixLinkVisualGeometryEvidence {
+  match source_visual_geometry_for_link(link.link_name) {
+    Some(geometry) =>
+      {
+        link_name: link.link_name,
+        has_visual_geometry: true,
+        kind: geometry.kind,
+        size_m: geometry.size_m,
+        radius_m: geometry.radius_m,
+        length_m: geometry.length_m,
+        mesh_path: geometry.mesh_path,
+        local_origin_xyz_m: geometry.origin_xyz_m,
+        world_origin_xyz_m: transform.transform_point(geometry.origin_xyz_m),
+        source_status: geometry.source_status,
+      }
+    None =>
+      {
+        link_name: link.link_name,
+        has_visual_geometry: false,
+        kind: SourceBoxGeometry,
+        size_m: @moonphys.vec3(0.0, 0.0, 0.0),
+        radius_m: 0.0,
+        length_m: 0.0,
+        mesh_path: "",
+        local_origin_xyz_m: @moonphys.vec3(0.0, 0.0, 0.0),
+        world_origin_xyz_m: transform.translation,
+        source_status: "urdf-visual-geometry-missing",
+      }
+  }
+}
+
+///|
 fn link_pose(
   link : NoetixReferenceLink,
   joint_position : Double,
+  transform : @moonphys.Transform3,
   fk_world_position : @moonphys.Vec3,
   world_position : @moonphys.Vec3,
   contact_error_m : Double,
@@ -266,6 +329,7 @@ fn link_pose(
     fk_world_position,
     world_position,
     contact_error_m,
+    visual_geometry: link_visual_geometry_evidence(link, transform),
     source_status: if link.role == "foot" {
       "urdf-fk-contact-bound"
     } else {
@@ -309,7 +373,7 @@ pub fn noetix_link_pose_frame(
     }
     links.push(
       link_pose(
-        link, joint_position, fk_position, world_position, contact_error,
+        link, joint_position, transform, fk_position, world_position, contact_error,
       ),
     )
   }
@@ -340,7 +404,7 @@ pub fn noetix_link_pose_trace(
     links_per_frame: noetix_reference_links().length(),
     frames,
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, and joint axes come from the Noetix URDF; feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 

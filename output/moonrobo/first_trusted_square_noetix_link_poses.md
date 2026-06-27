@@ -7,7 +7,7 @@
 - frames: 32
 - links per frame: 25
 - status: review-only
-- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, and joint axes come from the Noetix URDF; feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
+- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
 
 ## Frame Prefix
 

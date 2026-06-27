@@ -47,6 +47,8 @@ def main() -> None:
         fail("first frame is missing required links")
     if first["left_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("left foot must be bound to contact evidence")
+    if first["left_foot"].get("visual_geometry", {}).get("source_status") != "urdf-visual-geometry-missing":
+        fail("left foot should record missing visual geometry")
     if first["right_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("right foot must be bound to contact evidence")
     if first["left_foot"].get("joint_name") != "leg_l6_joint":
@@ -63,6 +65,16 @@ def main() -> None:
         fail("link pose schema should not expose stale proxy angles")
     if not first["chest_link"]["world_position"]["z"] > first["base_link"]["world_position"]["z"]:
         fail("chest link should sit above base link")
+    if not first["base_link"].get("visual_geometry", {}).get("has_visual_geometry"):
+        fail("base link should carry visual geometry")
+    if first["base_link"]["visual_geometry"].get("kind") != "SourceMeshGeometry":
+        fail("base link visual geometry should come from mesh")
+    if not first["base_link"]["visual_geometry"].get("mesh_path", "").endswith("base.obj"):
+        fail("base link mesh path should be preserved")
+    if first["chest_link"]["visual_geometry"].get("kind") != "SourceBoxGeometry":
+        fail("chest link visual geometry should come from URDF box")
+    if first["chest_link"]["visual_geometry"]["world_origin_xyz_m"]["z"] <= first["chest_link"]["world_position"]["z"]:
+        fail("chest visual origin should be transformed above link joint origin")
     if fifth["right_leg_3"]["fk_world_position"]["x"] == first["right_leg_3"]["fk_world_position"]["x"]:
         fail("right leg FK should move during swing")
     if fifth["right_arm_1"]["world_position"]["x"] == first["right_arm_1"]["world_position"]["x"]:
