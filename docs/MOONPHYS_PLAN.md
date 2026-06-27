@@ -28,9 +28,9 @@ evidence.
 - The Noetix gait keeps support feet planted while in contact; swing feet move
   between plant anchors, eliminating the earlier sliding-contact artifact.
 - MoonBook materializes the trace as a durable workspace entry.
-- Moonrobo exports a Noetix physics-assumption profile and static COM/support
-  report backed by generic Moonphys convex support-polygon and support-load
-  assessment.
+- Moonrobo exports a Noetix physics-assumption profile with a generic
+  Moonphys physical-model readiness inventory, plus a static COM/support report
+  backed by generic Moonphys convex support-polygon and support-load assessment.
 - Moonrobo exports a Noetix source-model audit that records the sibling
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, zero authoritative collision or
@@ -513,7 +513,8 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   motion states, generic hinge-joint frame assessment over multi-body joint
   sets, and joint mechanical power/work accounting implemented;
 generic source-model metadata inventory/readiness with missing collision-shape
-and inertial-link blocker accounting implemented;
+and inertial-link blocker accounting implemented; generic physical-model
+readiness for authoritative, assumed, and missing dynamics inputs implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -622,6 +623,8 @@ Next `moonphys` capabilities:
 - deterministic rigid-body heightfield replay (implemented)
 - generic source-model metadata inventory/readiness for collision and inertial
   blockers (implemented)
+- generic physical-model readiness for authoritative, assumed, and missing
+  mass/inertia/collision/contact/friction/actuator inputs (implemented)
 
 Robot-specific missing metadata:
 

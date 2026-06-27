@@ -42,6 +42,24 @@ def main(argv: list[str]) -> int:
   require(report["report_id"] == EXPECTED_REPORT, report["report_id"])
   require(report["trace_id"] == EXPECTED_TRACE, report["trace_id"])
   require(report["profile"]["robot_id"] == "noetix-e1-lab-01", "robot id")
+  readiness = report["profile"].get("physical_model_readiness", {})
+  require(
+    readiness.get("readiness_id")
+    == "moonrobo/noetix-e1/physical-model-readiness-v0",
+    "physical readiness id",
+  )
+  require(readiness.get("required_item_count") == 11, "physical required count")
+  require(readiness.get("authoritative_item_count") == 2, "physical authoritative count")
+  require(readiness.get("assumed_item_count") == 7, "physical assumed count")
+  require(readiness.get("missing_item_count") == 2, "physical missing count")
+  require(readiness.get("blocker_count") == 9, "physical blocker count")
+  require(not readiness.get("ready"), "physical readiness must remain blocked")
+  require(
+    readiness.get("status") == "physical-model-assumption-review",
+    "physical readiness status",
+  )
+  require("collision-shapes" in readiness.get("assumed_items", []), "assumed collision shapes")
+  require("joint-stiffness" in readiness.get("missing_items", []), "missing joint stiffness")
   require(
     report["hardware_authority"] == "moonmoon-safety-gate-only",
     "hardware authority",

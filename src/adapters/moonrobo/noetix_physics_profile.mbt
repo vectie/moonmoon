@@ -46,6 +46,7 @@ pub(all) struct NoetixPhysicsProfile {
   foot_geometry : Array[NoetixFootGeometry]
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
+  physical_model_readiness : @moonphys.PhysicalModelReadiness
   material_model : String
   hardware_authority : String
   status : String
@@ -220,6 +221,23 @@ fn noetix_collision_shape_profiles(
 }
 
 ///|
+fn noetix_physical_model_readiness() -> @moonphys.PhysicalModelReadiness {
+  @moonphys.physical_model_readiness(
+    "moonrobo/noetix-e1/physical-model-readiness-v0",
+    [
+      "mass", "center-of-mass", "link-inertia", "collision-shapes", "foot-sole-geometry",
+      "joint-effort-limits", "joint-velocity-limits", "joint-servo-gains", "joint-damping",
+      "joint-stiffness", "friction",
+    ],
+    ["joint-effort-limits", "joint-velocity-limits"],
+    [
+      "mass", "center-of-mass", "link-inertia", "collision-shapes", "foot-sole-geometry",
+      "joint-servo-gains", "friction",
+    ],
+  )
+}
+
+///|
 pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
   let robot = noetix_moon_walk_robot_profile()
   let left_foot : NoetixFootGeometry = {
@@ -256,6 +274,7 @@ pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
     foot_geometry: [left_foot, right_foot],
     actuator_profiles: noetix_joint_actuator_profiles(),
     collision_shapes: noetix_collision_shape_profiles(left_foot, right_foot),
+    physical_model_readiness: noetix_physical_model_readiness(),
     material_model: "dry-regolith-review-assumption",
     hardware_authority: "moonmoon-safety-gate-only",
     status: "review-only",

@@ -600,6 +600,46 @@
           "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
         }
       ],
+      "physical_model_readiness": {
+        "readiness_id": "moonrobo/noetix-e1/physical-model-readiness-v0",
+        "required_item_count": 11,
+        "authoritative_item_count": 2,
+        "assumed_item_count": 7,
+        "missing_item_count": 2,
+        "blocker_count": 9,
+        "ready": false,
+        "required_items": [
+          "mass",
+          "center-of-mass",
+          "link-inertia",
+          "collision-shapes",
+          "foot-sole-geometry",
+          "joint-effort-limits",
+          "joint-velocity-limits",
+          "joint-servo-gains",
+          "joint-damping",
+          "joint-stiffness",
+          "friction"
+        ],
+        "authoritative_items": [
+          "joint-effort-limits",
+          "joint-velocity-limits"
+        ],
+        "assumed_items": [
+          "mass",
+          "center-of-mass",
+          "link-inertia",
+          "collision-shapes",
+          "foot-sole-geometry",
+          "joint-servo-gains",
+          "friction"
+        ],
+        "missing_items": [
+          "joint-damping",
+          "joint-stiffness"
+        ],
+        "status": "physical-model-assumption-review"
+      },
       "material_model": "dry-regolith-review-assumption",
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "review-only",

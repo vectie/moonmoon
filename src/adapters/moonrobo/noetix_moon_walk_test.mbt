@@ -134,6 +134,29 @@ test "noetix physics profile keeps assumed dynamics explicit" {
   assert_eq(profile.actuator_profiles.length(), 24)
   assert_true(profile.collision_shapes.length() >= 6)
   assert_true(profile.mass_model.mass_kg > 0.0)
+  assert_eq(
+    profile.physical_model_readiness.readiness_id,
+    "moonrobo/noetix-e1/physical-model-readiness-v0",
+  )
+  assert_eq(profile.physical_model_readiness.required_item_count, 11)
+  assert_eq(profile.physical_model_readiness.authoritative_item_count, 2)
+  assert_eq(profile.physical_model_readiness.assumed_item_count, 7)
+  assert_eq(profile.physical_model_readiness.missing_item_count, 2)
+  assert_eq(profile.physical_model_readiness.blocker_count, 9)
+  assert_true(!profile.physical_model_readiness.ready)
+  assert_eq(
+    profile.physical_model_readiness.status,
+    "physical-model-assumption-review",
+  )
+  assert_true(
+    profile.physical_model_readiness.authoritative_items.contains(
+      "joint-effort-limits",
+    ),
+  )
+  assert_true(profile.physical_model_readiness.assumed_items.contains("mass"))
+  assert_true(
+    profile.physical_model_readiness.missing_items.contains("joint-damping"),
+  )
   assert_true(
     profile.mass_model.source_status.contains("simulation-assumption"),
   )

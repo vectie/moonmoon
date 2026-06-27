@@ -742,6 +742,7 @@ pub(all) struct NoetixPhysicsProfile {
   foot_geometry : Array[NoetixFootGeometry]
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
+  physical_model_readiness : @moonphys.PhysicalModelReadiness
   material_model : String
   hardware_authority : String
   status : String

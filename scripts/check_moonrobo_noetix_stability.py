@@ -35,6 +35,27 @@ def main() -> None:
         fail("unexpected robot id")
     if profile.get("hardware_authority") != "moonmoon-safety-gate-only":
         fail("hardware authority must remain denied")
+    readiness = profile.get("physical_model_readiness", {})
+    if readiness.get("readiness_id") != "moonrobo/noetix-e1/physical-model-readiness-v0":
+        fail("physical model readiness id must be stable")
+    if readiness.get("required_item_count") != 11:
+        fail("physical model readiness must enumerate required items")
+    if readiness.get("authoritative_item_count") != 2:
+        fail("physical model readiness should only trust URDF actuator limits")
+    if readiness.get("assumed_item_count") != 7:
+        fail("physical model readiness must count assumed items")
+    if readiness.get("missing_item_count") != 2:
+        fail("physical model readiness must count missing damping/stiffness")
+    if readiness.get("blocker_count") != 9:
+        fail("physical model readiness blocker count must be explicit")
+    if readiness.get("ready"):
+        fail("physical model readiness must remain blocked")
+    if readiness.get("status") != "physical-model-assumption-review":
+        fail("physical model readiness must expose assumption-review status")
+    if "mass" not in readiness.get("assumed_items", []):
+        fail("physical model readiness must name assumed mass")
+    if "joint-damping" not in readiness.get("missing_items", []):
+        fail("physical model readiness must name missing damping")
     if "simulation-assumption" not in mass_model.get("source_status", ""):
         fail("mass model must be marked as an assumption")
     if mass_model.get("mass_kg", 0) <= 0:

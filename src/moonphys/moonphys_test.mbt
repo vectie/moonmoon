@@ -166,6 +166,38 @@ test "model metadata inventory is ready when required metadata is present" {
 }
 
 ///|
+test "physical model readiness blocks assumed and missing items" {
+  let readiness = physical_model_readiness(
+    "robot-physical-model",
+    ["mass", "collision-shapes", "joint-damping"],
+    ["collision-shapes"],
+    ["mass"],
+  )
+  assert_eq(readiness.required_item_count, 3)
+  assert_eq(readiness.authoritative_item_count, 1)
+  assert_eq(readiness.assumed_item_count, 1)
+  assert_eq(readiness.missing_item_count, 1)
+  assert_eq(readiness.blocker_count, 2)
+  assert_true(!readiness.ready)
+  assert_eq(readiness.status, "physical-model-assumption-review")
+  assert_true(readiness.assumed_items.contains("mass"))
+  assert_true(readiness.missing_items.contains("joint-damping"))
+}
+
+///|
+test "physical model readiness passes authoritative items" {
+  let readiness = physical_model_readiness(
+    "robot-physical-model",
+    ["mass", "collision-shapes"],
+    ["mass", "collision-shapes"],
+    [],
+  )
+  assert_eq(readiness.blocker_count, 0)
+  assert_true(readiness.ready)
+  assert_eq(readiness.status, "physical-model-ready")
+}
+
+///|
 test "heightfield contact patch exposes partial sole penetration" {
   let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
   let patch = heightfield_contact_patch(
