@@ -125,6 +125,7 @@ test "noetix source model audit records moonrobo urdf metadata gaps" {
   assert_eq(report.link_count, 25)
   assert_eq(report.joint_count, 24)
   assert_eq(report.joint_limit_count, 24)
+  assert_eq(report.joint_limits.length(), 24)
   assert_eq(report.visual_geometry_count, 6)
   assert_eq(report.mesh_asset_count, 1)
   assert_eq(report.collision_tag_count, 0)
@@ -133,6 +134,15 @@ test "noetix source model audit records moonrobo urdf metadata gaps" {
   assert_true(report.high_level_walk_requires_approval)
   assert_true(
     report.note.contains("no authoritative collision or inertial tags"),
+  )
+  assert_true(
+    report.joint_limits.any(fn(limit) {
+      limit.joint_name == "leg_l4_joint" &&
+      limit.joint_index == 8 &&
+      limit.effort_nm == 100.0 &&
+      limit.velocity_rad_s == 3.0 &&
+      limit.source_status == "urdf-limit-tag"
+    }),
   )
   assert_true(
     report.visual_geometries.any(fn(geometry) {

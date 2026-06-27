@@ -406,9 +406,10 @@ power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
-URDF/profile paths, visual geometry, joint limits, and the absence of
-authoritative collision/inertial tags. Moonrobo's Noetix URDF joint limits are
-carried into the robot-specific profile as Moonphys joint limits. Noetix
+URDF/profile paths, visual geometry, concrete joint-limit records, and the
+absence of authoritative collision/inertial tags. Moonrobo's Noetix URDF joint
+limits are carried from the source audit into the robot-specific profile as
+Moonphys joint limits. Noetix
 joint-control review evidence replays the gait phases through Moonphys joint
 servo, torque, velocity, position limits, and mechanical power/work accounting.
 Noetix inertial/collision review evidence maps the assumed profile onto

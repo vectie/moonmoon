@@ -65,7 +65,7 @@ fn noetix_source_model_artifact(
     "output/moonrobo/first_trusted_square_noetix_source_model.json",
     "moon run cmd/main -- moonrobo noetix model json",
     "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
-    "\{report.link_count} links; \{report.joint_count} joints; \{report.visual_geometry_count} visual geometries; collision tags \{report.collision_tag_count}; inertial tags \{report.inertial_tag_count}",
+    "\{report.link_count} links; \{report.joint_count} joints; \{report.joint_limit_count} URDF joint limits; \{report.visual_geometry_count} visual geometries; collision tags \{report.collision_tag_count}; inertial tags \{report.inertial_tag_count}",
     ready,
     if ready {
       "none"

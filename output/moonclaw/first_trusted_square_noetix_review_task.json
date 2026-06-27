@@ -80,7 +80,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
         "producer": "moon run cmd/main -- moonrobo noetix model json",
         "required_state": "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
-        "current_state": "25 links; 24 joints; 6 visual geometries; collision tags 0; inertial tags 0",
+        "current_state": "25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0",
         "ready": true,
         "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json"

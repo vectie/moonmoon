@@ -996,7 +996,7 @@ fn moonrobo_noetix_source_model_entry(dossier : @site.SiteDossier) -> BookEntry 
     claim_kind: @core.ClaimKind::Simulated,
     confidence: 0.6,
     path: "moonrobo/\{dossier.site.site_id}/noetix-source-model.json",
-    summary: "\{report.robot_id} source audit has \{report.link_count} links, \{report.joint_count} joints, \{report.visual_geometry_count} visual geometries, \{report.collision_tag_count} collision tags, and \{report.inertial_tag_count} inertial tags; hardware authority \{report.hardware_authority}",
+    summary: "\{report.robot_id} source audit has \{report.link_count} links, \{report.joint_count} joints, \{report.joint_limit_count} URDF joint limits, \{report.visual_geometry_count} visual geometries, \{report.collision_tag_count} collision tags, and \{report.inertial_tag_count} inertial tags; hardware authority \{report.hardware_authority}",
   }
 }
 

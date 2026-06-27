@@ -83,58 +83,60 @@ pub(all) struct NoetixWalkStabilityReport {
 
 ///|
 fn actuator_profile(
-  joint_name : String,
-  joint_index : Int,
-  lower_rad : Double,
-  upper_rad : Double,
-  effort_nm : Double,
-  velocity_rad_s : Double,
+  source_limit : NoetixSourceJointLimit,
   inertia_kg_m2 : Double,
 ) -> NoetixJointActuatorProfile {
   {
-    joint_name,
-    joint_index,
+    joint_name: source_limit.joint_name,
+    joint_index: source_limit.joint_index,
     limit: @moonphys.joint_limit(
-      joint_name, lower_rad, upper_rad, velocity_rad_s, effort_nm,
+      source_limit.joint_name,
+      source_limit.lower_rad,
+      source_limit.upper_rad,
+      source_limit.velocity_rad_s,
+      source_limit.effort_nm,
     ),
     servo: @moonphys.joint_servo_config(
-      joint_name,
-      effort_nm * 0.25,
-      effort_nm * 0.02,
+      source_limit.joint_name,
+      source_limit.effort_nm * 0.25,
+      source_limit.effort_nm * 0.02,
     ),
     inertia_kg_m2,
-    source_status: "urdf-limit-tag; servo gains and inertia are simulation assumptions",
+    source_status: "\{source_limit.source_status}; servo gains and inertia are simulation assumptions",
+  }
+}
+
+///|
+fn assumed_joint_inertia_kg_m2(joint_name : String) -> Double {
+  match joint_name {
+    "leg_l3_joint" | "leg_l4_joint" | "leg_r3_joint" | "leg_r4_joint" => 0.10
+    "leg_l1_joint"
+    | "leg_l2_joint"
+    | "leg_l5_joint"
+    | "leg_r1_joint"
+    | "leg_r2_joint"
+    | "leg_r5_joint" => 0.08
+    "leg_l6_joint" | "leg_r6_joint" => 0.06
+    "arm_l1_joint" | "arm_l2_joint" | "arm_r1_joint" | "arm_r2_joint" => 0.04
+    "arm_l3_joint" | "arm_l4_joint" | "arm_r3_joint" | "arm_r4_joint" => 0.03
+    "arm_l5_joint" | "arm_r5_joint" => 0.02
+    "waist_1_joint" | "waist_2_joint" => 0.12
+    _ => 0.05
   }
 }
 
 ///|
 pub fn noetix_joint_actuator_profiles() -> Array[NoetixJointActuatorProfile] {
-  [
-    actuator_profile("arm_l1_joint", 0, -1.8, 1.8, 45.0, 3.0, 0.04),
-    actuator_profile("arm_l2_joint", 1, -1.6, 1.6, 45.0, 3.0, 0.04),
-    actuator_profile("arm_l3_joint", 2, -1.8, 1.8, 35.0, 3.0, 0.03),
-    actuator_profile("arm_l4_joint", 3, -1.6, 1.6, 30.0, 3.0, 0.03),
-    actuator_profile("arm_l5_joint", 4, -1.2, 1.2, 20.0, 3.0, 0.02),
-    actuator_profile("leg_l1_joint", 5, -1.2, 1.2, 90.0, 3.0, 0.08),
-    actuator_profile("leg_l2_joint", 6, -0.9, 0.9, 90.0, 3.0, 0.08),
-    actuator_profile("leg_l3_joint", 7, -1.6, 1.6, 100.0, 3.0, 0.10),
-    actuator_profile("leg_l4_joint", 8, -1.8, 1.8, 100.0, 3.0, 0.10),
-    actuator_profile("leg_l5_joint", 9, -0.8, 0.8, 80.0, 3.0, 0.08),
-    actuator_profile("leg_l6_joint", 10, -0.8, 0.8, 80.0, 3.0, 0.06),
-    actuator_profile("arm_r1_joint", 11, -1.8, 1.8, 45.0, 3.0, 0.04),
-    actuator_profile("arm_r2_joint", 12, -1.6, 1.6, 45.0, 3.0, 0.04),
-    actuator_profile("arm_r3_joint", 13, -1.8, 1.8, 35.0, 3.0, 0.03),
-    actuator_profile("arm_r4_joint", 14, -1.6, 1.6, 30.0, 3.0, 0.03),
-    actuator_profile("arm_r5_joint", 15, -1.2, 1.2, 20.0, 3.0, 0.02),
-    actuator_profile("leg_r1_joint", 16, -1.2, 1.2, 90.0, 3.0, 0.08),
-    actuator_profile("leg_r2_joint", 17, -0.9, 0.9, 90.0, 3.0, 0.08),
-    actuator_profile("leg_r3_joint", 18, -1.6, 1.6, 100.0, 3.0, 0.10),
-    actuator_profile("leg_r4_joint", 19, -1.8, 1.8, 100.0, 3.0, 0.10),
-    actuator_profile("leg_r5_joint", 20, -0.8, 0.8, 80.0, 3.0, 0.08),
-    actuator_profile("leg_r6_joint", 21, -0.8, 0.8, 80.0, 3.0, 0.06),
-    actuator_profile("waist_1_joint", 22, -0.8, 0.8, 80.0, 2.0, 0.12),
-    actuator_profile("waist_2_joint", 23, -0.5, 0.5, 80.0, 2.0, 0.12),
-  ]
+  let profiles : Array[NoetixJointActuatorProfile] = []
+  for source_limit in noetix_source_joint_limits() {
+    profiles.push(
+      actuator_profile(
+        source_limit,
+        assumed_joint_inertia_kg_m2(source_limit.joint_name),
+      ),
+    )
+  }
+  profiles
 }
 
 ///|

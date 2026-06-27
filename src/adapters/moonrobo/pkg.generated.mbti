@@ -159,6 +159,8 @@ pub fn noetix_moon_walk_trace(@moonphys.Heightfield, Int, config? : NoetixMoonWa
 
 pub fn noetix_reference_links() -> Array[NoetixReferenceLink]
 
+pub fn noetix_source_joint_limits() -> Array[NoetixSourceJointLimit]
+
 pub fn noetix_source_model_report() -> NoetixSourceModelReport
 
 pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
@@ -627,6 +629,16 @@ pub(all) enum NoetixSourceGeometryKind {
   SourceCylinderGeometry
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixSourceJointLimit {
+  joint_name : String
+  joint_index : Int
+  lower_rad : Double
+  upper_rad : Double
+  effort_nm : Double
+  velocity_rad_s : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixSourceModelReport {
   report_id : String
   robot_id : String
@@ -642,6 +654,7 @@ pub(all) struct NoetixSourceModelReport {
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool
   visual_geometries : Array[NoetixSourceVisualGeometry]
+  joint_limits : Array[NoetixSourceJointLimit]
   hardware_authority : String
   status : String
   note : String

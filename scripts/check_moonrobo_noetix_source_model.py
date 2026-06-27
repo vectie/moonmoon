@@ -35,6 +35,7 @@ def main(argv: list[str]) -> int:
   require(report["link_count"] == 25, "link count")
   require(report["joint_count"] == 24, "joint count")
   require(report["joint_limit_count"] == 24, "joint limits")
+  require(len(report["joint_limits"]) == 24, "joint limit array")
   require(report["visual_geometry_count"] == 6, "visual geometry count")
   require(report["mesh_asset_count"] == 1, "mesh asset count")
   require(report["collision_tag_count"] == 0, "collision tags should be absent")
@@ -61,6 +62,19 @@ def main(argv: list[str]) -> int:
   require(visuals["base_link"]["size_m"] == {"x": 0.24, "y": 0.2, "z": 0.04}, "base mesh bounds")
   require(visuals["chest_link"]["kind"] == "SourceBoxGeometry", "chest box")
   require(visuals["left_leg_1"]["kind"] == "SourceCylinderGeometry", "leg cylinder")
+
+  limits = {item["joint_name"]: item for item in report["joint_limits"]}
+  require(len(limits) == 24, f"unexpected joint limits: {sorted(limits)}")
+  require(limits["leg_l4_joint"]["joint_index"] == 8, "leg_l4 index")
+  require(limits["leg_l4_joint"]["effort_nm"] == 100, "leg_l4 effort")
+  require(limits["leg_l4_joint"]["velocity_rad_s"] == 3, "leg_l4 velocity")
+  require(limits["waist_2_joint"]["lower_rad"] == -0.5, "waist_2 lower")
+  require(limits["waist_2_joint"]["upper_rad"] == 0.5, "waist_2 upper")
+  require(limits["waist_2_joint"]["velocity_rad_s"] == 2, "waist_2 velocity")
+  require(
+    all(item["source_status"] == "urdf-limit-tag" for item in limits.values()),
+    "joint limit source status",
+  )
   return 0
 
 

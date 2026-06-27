@@ -122,6 +122,224 @@
       "source_status": "urdf-visual-cylinder"
     }
   ],
+  "joint_limits": [
+    {
+      "joint_name": "arm_l1_joint",
+      "joint_index": 0,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 45,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_l2_joint",
+      "joint_index": 1,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 45,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_l3_joint",
+      "joint_index": 2,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 35,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_l4_joint",
+      "joint_index": 3,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 30,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_l5_joint",
+      "joint_index": 4,
+      "lower_rad": -1.2,
+      "upper_rad": 1.2,
+      "effort_nm": 20,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l1_joint",
+      "joint_index": 5,
+      "lower_rad": -1.2,
+      "upper_rad": 1.2,
+      "effort_nm": 90,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l2_joint",
+      "joint_index": 6,
+      "lower_rad": -0.9,
+      "upper_rad": 0.9,
+      "effort_nm": 90,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l3_joint",
+      "joint_index": 7,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 100,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l4_joint",
+      "joint_index": 8,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 100,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l5_joint",
+      "joint_index": 9,
+      "lower_rad": -0.8,
+      "upper_rad": 0.8,
+      "effort_nm": 80,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_l6_joint",
+      "joint_index": 10,
+      "lower_rad": -0.8,
+      "upper_rad": 0.8,
+      "effort_nm": 80,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_r1_joint",
+      "joint_index": 11,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 45,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_r2_joint",
+      "joint_index": 12,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 45,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_r3_joint",
+      "joint_index": 13,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 35,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_r4_joint",
+      "joint_index": 14,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 30,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "arm_r5_joint",
+      "joint_index": 15,
+      "lower_rad": -1.2,
+      "upper_rad": 1.2,
+      "effort_nm": 20,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r1_joint",
+      "joint_index": 16,
+      "lower_rad": -1.2,
+      "upper_rad": 1.2,
+      "effort_nm": 90,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r2_joint",
+      "joint_index": 17,
+      "lower_rad": -0.9,
+      "upper_rad": 0.9,
+      "effort_nm": 90,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r3_joint",
+      "joint_index": 18,
+      "lower_rad": -1.6,
+      "upper_rad": 1.6,
+      "effort_nm": 100,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r4_joint",
+      "joint_index": 19,
+      "lower_rad": -1.8,
+      "upper_rad": 1.8,
+      "effort_nm": 100,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r5_joint",
+      "joint_index": 20,
+      "lower_rad": -0.8,
+      "upper_rad": 0.8,
+      "effort_nm": 80,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "leg_r6_joint",
+      "joint_index": 21,
+      "lower_rad": -0.8,
+      "upper_rad": 0.8,
+      "effort_nm": 80,
+      "velocity_rad_s": 3,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "waist_1_joint",
+      "joint_index": 22,
+      "lower_rad": -0.8,
+      "upper_rad": 0.8,
+      "effort_nm": 80,
+      "velocity_rad_s": 2,
+      "source_status": "urdf-limit-tag"
+    },
+    {
+      "joint_name": "waist_2_joint",
+      "joint_index": 23,
+      "lower_rad": -0.5,
+      "upper_rad": 0.5,
+      "effort_nm": 80,
+      "velocity_rad_s": 2,
+      "source_status": "urdf-limit-tag"
+    }
+  ],
   "hardware_authority": "moonmoon-safety-gate-only",
   "status": "source-model-audit-review",
   "note": "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags."

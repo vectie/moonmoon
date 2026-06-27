@@ -27,7 +27,7 @@
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html - Rabbita playback for inspecting the walk and link-pose skeleton.
   - artifacts:
     - noetix-source-model-audit: output/moonrobo/first_trusted_square_noetix_source_model.json
-      - current: 25 links; 24 joints; 6 visual geometries; collision tags 0; inertial tags 0
+      - current: 25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
