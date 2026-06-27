@@ -24,6 +24,7 @@ EXPECTED_COUNTS = {
   "first_trusted_square_ephemeris_tasks.json": 1,
   "first_trusted_square_moonrobo_gap_receipt.json": 1,
   "first_trusted_square_moonrobo_gap_task.json": 1,
+  "first_trusted_square_noetix_review_task.json": 1,
   "first_trusted_square_proposals.json": 3,
   "first_trusted_square_receipts.json": 1,
   "first_trusted_square_regenerated_receipt_readiness_fresh_evidence_action_receipts.json": 3,

@@ -19,10 +19,15 @@ evidence.
   report backed by generic Moonphys support assessment.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: feet are bound to
   Moonphys contact probes, and body/limb links are review-grade gait proxies.
+- MoonClaw exports a Noetix simulation review task that ties the walk trace,
+  URDF-reference link poses, static support report, and Rabbita playback into a
+  hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
   invariants.
 - `scripts/check_moonrobo_noetix_link_poses.py` verifies link-pose trace
+  invariants.
+- `scripts/check_moonclaw_noetix_review_task.py` verifies review-task
   invariants.
 
 ## Boundary
@@ -266,8 +271,8 @@ claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 
-Status: first trace scrubber implemented in Rabbita; richer robot rendering
-remains future work.
+Status: first trace scrubber and link-pose playback implemented in Rabbita;
+full mesh/URDF rendering remains future work.
 
 Add a viewer surface after the data contract is stable.
 
@@ -299,7 +304,8 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
-Status: first export and verifier implemented.
+Status: first walk, physics-profile, static-support, link-pose, and MoonClaw
+review-task exports and verifiers implemented.
 
 Add generated outputs to the dossier build.
 
@@ -330,8 +336,8 @@ Check invariants:
 
 ## Phase 7: MoonBook / MoonClaw Integration
 
-Status: MoonBook entry and workspace payload implemented for the Noetix walk
-trace; MoonClaw tasking remains future work.
+Status: MoonBook entries and workspace payloads implemented for the Noetix walk
+trace, physics assumptions, link poses, and MoonClaw review task.
 
 After the trace is stable, make it durable evidence.
 
@@ -345,13 +351,14 @@ MoonBook entry:
 MoonClaw task:
 
 - consume trace
-- inspect terrain/contact statuses
+- inspect terrain/contact/static-support/link-pose statuses
 - recommend next modeling task:
   - improve terrain sampling
   - add Noetix foot geometry
   - add mass/inertia metadata
   - compare against external physics engine
   - produce better gait controller
+- preserve `HardwareDenied` and route the packet through review evidence only
 
 Moonrobo simulation packet:
 
@@ -401,12 +408,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Add richer Rabbita playback using Noetix link-pose evidence.
-2. Add MoonClaw follow-up tasking for trace/contact/static-support review.
-3. Replace assumed mass/sole/friction profile with Moonrobo inertial and
+1. Replace assumed mass/sole/friction profile with Moonrobo inertial and
    collision metadata when available.
-4. Add dynamic stability evidence beyond static COM projection.
-5. Replace review-grade gait proxies with full URDF forward kinematics.
+2. Add dynamic stability evidence beyond static COM projection.
+3. Replace review-grade gait proxies with full URDF forward kinematics.
+4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

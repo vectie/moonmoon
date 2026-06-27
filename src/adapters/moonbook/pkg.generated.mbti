@@ -80,6 +80,7 @@ pub(all) enum BookEntryKind {
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
+  MoonClawNoetixReviewTask
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask

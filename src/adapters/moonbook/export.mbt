@@ -34,6 +34,7 @@ pub(all) enum BookEntryKind {
   MoonroboSimulationReviewPacket
   MoonClawProposal
   MoonClawTask
+  MoonClawNoetixReviewTask
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
@@ -170,6 +171,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboSimulationReviewPacket => "moonrobo-simulation-review-packet"
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
+    MoonClawNoetixReviewTask => "moonclaw-noetix-review-task"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
     MoonClawRemediationMarginRefreshFollowupTask =>
@@ -1001,6 +1003,20 @@ fn moonrobo_noetix_link_poses_entry(dossier : @site.SiteDossier) -> BookEntry {
     confidence: 0.56,
     path: "moonrobo/\{dossier.site.site_id}/noetix-link-poses.json",
     summary: "\{trace.robot_id} review-only link pose trace has \{trace.frame_count} frames and \{trace.links_per_frame} URDF-reference links per frame; feet are contact-bound and non-foot links are gait proxies, not hardware authority",
+  }
+}
+
+///|
+fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let task = @moonclaw.first_trusted_square_noetix_review_task()
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/noetix-review-task",
+    title: "MoonClaw Noetix simulation review task for \{dossier.site.name}",
+    kind: MoonClawNoetixReviewTask,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.58,
+    path: "moonclaw/\{dossier.site.site_id}/noetix-review-task.json",
+    summary: "\{task.robot_id} review task links walk, link poses, static support, and Rabbita playback; \{task.static_support_review_frame_count}/\{task.frame_count} frames require static-support review, hardware authority \{task.hardware_authority}",
   }
 }
 
@@ -1907,6 +1923,7 @@ fn book_entries(
   entries.push(moonrobo_noetix_walk_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))
   entries.push(moonrobo_noetix_link_poses_entry(dossier))
+  entries.push(moonclaw_noetix_review_task_entry(dossier))
   entries
 }
 

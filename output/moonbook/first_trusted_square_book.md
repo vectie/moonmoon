@@ -395,6 +395,11 @@
   - claim: simulated
   - confidence: 0.56
   - path: moonrobo/first-trusted-square/noetix-link-poses.json
+- moonclaw/first-trusted-square/noetix-review-task: MoonClaw Noetix simulation review task for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-noetix-review-task
+  - claim: derived
+  - confidence: 0.58
+  - path: moonclaw/first-trusted-square/noetix-review-task.json
 
 ## Review Queue
 

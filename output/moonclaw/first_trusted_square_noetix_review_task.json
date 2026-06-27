@@ -1,0 +1,115 @@
+[
+  {
+    "task_id": "moonclaw/first-trusted-square/noetix-review-task",
+    "site_id": "first-trusted-square",
+    "robot_id": "noetix-e1-lab-01",
+    "priority": "High",
+    "state": "Accepted",
+    "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any dynamic-stability or hardware-authority claim.",
+    "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+    "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
+    "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
+    "frame_count": 32,
+    "static_support_review_frame_count": 32,
+    "link_pose_count_per_frame": 25,
+    "hardware_state": "HardwareDenied",
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "hardware_denied": true,
+    "inputs": [
+      {
+        "input_id": "noetix-walk-trace",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
+        "claim_kind": "Simulated",
+        "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain."
+      },
+      {
+        "input_id": "noetix-link-poses",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
+        "claim_kind": "Simulated",
+        "summary": "URDF-reference link-pose trace bound to the walk frames and contact probes."
+      },
+      {
+        "input_id": "noetix-static-support",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "claim_kind": "Simulated",
+        "summary": "Static COM/support report that explicitly remains review-only for dynamic walking."
+      },
+      {
+        "input_id": "noetix-rabbita-playback",
+        "evidence_path": "output/ui/rabbita/first_trusted_square.html",
+        "claim_kind": "Derived",
+        "summary": "Rabbita playback for inspecting the walk and link-pose skeleton."
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "noetix-endless-walk-trace",
+        "path": "output/moonrobo/first_trusted_square_noetix_walk.json",
+        "producer": "moon run cmd/main -- moonrobo noetix walk json",
+        "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and joint phases",
+        "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints",
+        "ready": true,
+        "blocking_reason": "none",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json"
+      },
+      {
+        "artifact_id": "noetix-urdf-reference-link-poses",
+        "path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
+        "producer": "moon run cmd/main -- moonrobo noetix poses json",
+        "required_state": "URDF-reference link poses are present for each Noetix walk frame",
+        "current_state": "32 frames; 25 links per frame; status review-only",
+        "ready": true,
+        "blocking_reason": "none",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json"
+      },
+      {
+        "artifact_id": "noetix-static-support-review",
+        "path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "producer": "moon run cmd/main -- moonrobo noetix stability json",
+        "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
+        "current_state": "32/32 frames require support review; worst planar margin -0.035 m; status static-support-review",
+        "ready": false,
+        "blocking_reason": "static COM support is review-only until dynamic stability and controller evidence exist",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
+      },
+      {
+        "artifact_id": "noetix-rabbita-playback",
+        "path": "output/ui/rabbita/first_trusted_square.html",
+        "producer": "scripts/build_rabbita_ui.sh",
+        "required_state": "Rabbita renders Noetix walk, link-pose skeleton, frame controls, and simulation-only authority",
+        "current_state": "Noetix panel consumes walk and link-pose JSON with skeleton playback",
+        "ready": true,
+        "blocking_reason": "none",
+        "validation_gate": "python3 scripts/check_rabbita_noetix_walk.py"
+      }
+    ],
+    "commands": [
+      "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+      "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
+      "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_rabbita_noetix_walk.py",
+      "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
+      "/Users/kq/.moon/bin/moon test"
+    ],
+    "acceptance_criteria": [
+      {
+        "criterion_id": "all-noetix-evidence-linked",
+        "description": "Task links walk, link poses, static support, and Rabbita playback evidence with concrete validation commands."
+      },
+      {
+        "criterion_id": "review-only-static-support-preserved",
+        "description": "Static support review frames remain explicit blockers for dynamic walking evidence."
+      },
+      {
+        "criterion_id": "hardware-denial-preserved",
+        "description": "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only."
+      },
+      {
+        "criterion_id": "next-physics-step-clear",
+        "description": "Task names dynamic stability/controller evidence as the next requirement before stronger simulation claims."
+      }
+    ],
+    "safety_gate": "Do not convert the Noetix walk trace, link poses, or static support report into hardware authority. Dynamic stability and controller evidence must be added before any claim beyond simulation review.",
+    "next_action": "Use this task to review contact, link-pose, and static-support evidence; then add dynamic stability/controller evidence or keep hardware denied."
+  }
+]

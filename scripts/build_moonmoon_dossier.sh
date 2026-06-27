@@ -109,6 +109,9 @@ python3 scripts/check_moonrobo_noetix_stability.py "$MOONROBO_OUT/first_trusted_
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix poses > "$MOONROBO_OUT/first_trusted_square_noetix_link_poses.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix poses json > "$MOONROBO_OUT/first_trusted_square_noetix_link_poses.json"
 python3 scripts/check_moonrobo_noetix_link_poses.py "$MOONROBO_OUT/first_trusted_square_noetix_link_poses.json"
+/Users/kq/.moon/bin/moon run cmd/main -- moonclaw noetix review task > "$MOONCLAW_OUT/first_trusted_square_noetix_review_task.md"
+/Users/kq/.moon/bin/moon run cmd/main -- moonclaw noetix review task json > "$MOONCLAW_OUT/first_trusted_square_noetix_review_task.json"
+python3 scripts/check_moonclaw_noetix_review_task.py "$MOONCLAW_OUT/first_trusted_square_noetix_review_task.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation regenerated receipt readiness > "$MOONROBO_OUT/first_trusted_square_remediation_margin_regenerated_receipt_readiness.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation regenerated receipt readiness json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonclaw regenerated receipt readiness fresh evidence task > "$MOONCLAW_OUT/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.md"
@@ -133,6 +136,7 @@ python3 scripts/check_moonrobo_noetix_link_poses.py "$MOONROBO_OUT/first_trusted
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo remediation projection json > "$MOONROBO_OUT/first_trusted_square_remediation_margin_projection.json"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view > "$UI_OUT/first_trusted_square_view.md"
 /Users/kq/.moon/bin/moon run cmd/main -- ui view json > "$UI_OUT/first_trusted_square_view.json"
+python3 scripts/materialize_moonbook_workspace.py
 scripts/build_rabbita_ui.sh
 if [[ ${#REVIEW_TRANSITIONS[@]} -gt 0 ]]; then
   for REVIEW_TRANSITION_PATH in "${REVIEW_TRANSITIONS[@]}"; do
@@ -199,6 +203,8 @@ printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_noetix_stability.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_noetix_stability.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_noetix_link_poses.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_noetix_link_poses.json"
+printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_noetix_review_task.md"
+printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_noetix_review_task.json"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_regenerated_receipt_readiness.md"
 printf 'wrote %s\n' "$MOONROBO_OUT/first_trusted_square_remediation_margin_regenerated_receipt_readiness.json"
 printf 'wrote %s\n' "$MOONCLAW_OUT/first_trusted_square_regenerated_receipt_readiness_fresh_evidence_task.md"
