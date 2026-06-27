@@ -1518,13 +1518,20 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
   assert_eq(task.inputs.length(), 9)
-  assert_eq(task.artifacts.length(), 9)
+  assert_eq(task.artifacts.length(), 10)
   assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 4)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-source-model-audit" &&
       artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_source_model")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-moonrobo-source-sync" &&
+      artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_source_sync")
     }),
   )
   assert_true(
@@ -1562,6 +1569,11 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       artifact.validation_gate.contains(
         "check_moonrobo_noetix_inertial_collision",
       )
+    }),
+  )
+  assert_true(
+    task.commands.any(fn(command) {
+      command.contains("check_moonrobo_noetix_source_sync")
     }),
   )
   assert_true(

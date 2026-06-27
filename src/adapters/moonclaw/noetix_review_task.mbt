@@ -102,6 +102,31 @@ fn noetix_source_model_artifact(
 }
 
 ///|
+fn noetix_source_sync_artifact(
+  report : @moonrobo.NoetixSourceModelReport,
+  plan : @moonrobo.NoetixWalkCommandPlan,
+) -> MoonClawTaskArtifact {
+  let ready = report.joint_limit_count == 24 &&
+    report.collision_tag_count == 0 &&
+    report.inertial_tag_count == 0 &&
+    plan.high_control_limits.source_profile_path == report.source_profile_path
+  task_artifact(
+    "noetix-moonrobo-source-sync",
+    "output/moonrobo/first_trusted_square_noetix_source_model.json",
+    "moon run cmd/main -- moonrobo noetix model json && moon run cmd/main -- moonrobo noetix command json",
+    "Cross-checks Moonmoon Noetix evidence against sibling Moonrobo robot.json and URDF source files",
+    "\{report.joint_count} URDF joints, \{report.joint_limit_count} limits, \{report.visual_geometry_count} visuals, \{report.collision_tag_count} collision tags, \{report.inertial_tag_count} inertial tags, command limit \{plan.high_control_limits.max_x_abs_mps} m/s",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "Moonmoon Noetix evidence must match sibling Moonrobo robot.json and robot.urdf before review"
+    },
+    "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+  )
+}
+
+///|
 fn noetix_link_pose_artifact(
   trace : @moonrobo.NoetixLinkPoseTrace,
 ) -> MoonClawTaskArtifact {
@@ -304,6 +329,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     ],
     artifacts: [
       noetix_source_model_artifact(source_model),
+      noetix_source_sync_artifact(source_model, command),
       noetix_walk_artifact(walk),
       noetix_walk_command_artifact(command),
       noetix_link_pose_artifact(poses),
@@ -315,6 +341,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     ],
     commands: [
       "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
+      "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
       "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
@@ -331,6 +358,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
       ),
       criterion(
         "source-model-gaps-preserved", "Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.",
+      ),
+      criterion(
+        "moonrobo-source-sync-preserved", "Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.",
       ),
       criterion(
         "review-only-static-support-preserved", "Static support review frames remain explicit blockers for dynamic walking evidence.",

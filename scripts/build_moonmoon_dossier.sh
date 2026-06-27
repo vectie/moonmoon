@@ -109,6 +109,7 @@ python3 scripts/check_moonrobo_noetix_walk.py "$MOONROBO_OUT/first_trusted_squar
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix command > "$MOONROBO_OUT/first_trusted_square_noetix_walk_command.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix command json > "$MOONROBO_OUT/first_trusted_square_noetix_walk_command.json"
 python3 scripts/check_moonrobo_noetix_walk_command.py "$MOONROBO_OUT/first_trusted_square_noetix_walk_command.json"
+python3 scripts/check_moonrobo_noetix_source_sync.py "$MOONROBO_OUT/first_trusted_square_noetix_source_model.json" "$MOONROBO_OUT/first_trusted_square_noetix_walk_command.json"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix stability > "$MOONROBO_OUT/first_trusted_square_noetix_stability.md"
 /Users/kq/.moon/bin/moon run cmd/main -- moonrobo noetix stability json > "$MOONROBO_OUT/first_trusted_square_noetix_stability.json"
 python3 scripts/check_moonrobo_noetix_stability.py "$MOONROBO_OUT/first_trusted_square_noetix_stability.json"

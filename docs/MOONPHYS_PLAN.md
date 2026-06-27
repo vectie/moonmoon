@@ -25,6 +25,9 @@ evidence.
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, and zero authoritative collision or
   inertial tags.
+- A source-sync verifier parses sibling Moonrobo `robot.json` and
+  `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
+  collision tags, and high-control limits cannot silently drift from the source.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
@@ -45,6 +48,8 @@ evidence.
   dry-run command-plan invariants.
 - `scripts/check_moonrobo_noetix_source_model.py` verifies source-model audit
   invariants.
+- `scripts/check_moonrobo_noetix_source_sync.py` verifies Moonmoon Noetix
+  evidence against sibling Moonrobo source files.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
   invariants.
 - `scripts/check_moonrobo_noetix_dynamics.py` verifies capture-point dynamic
@@ -336,7 +341,9 @@ Do not connect this to hardware controls.
 Status: first source-model audit, walk, high-control dry-run command plan,
 physics-profile, static-support, dynamic-stability, joint-control,
 inertial/collision, link-pose, and MoonClaw review-task exports and verifiers
-implemented.
+implemented. The dossier build also enforces sibling Moonrobo source sync for
+robot.json, URDF joint limits, visual links, missing inertial/collision tags,
+and high-control limits.
 
 Add generated outputs to the dossier build.
 
@@ -356,6 +363,7 @@ Add verifier:
 ```text
 scripts/check_moonrobo_noetix_walk.py
 scripts/check_moonrobo_noetix_walk_command.py
+scripts/check_moonrobo_noetix_source_sync.py
 ```
 
 Check invariants:
@@ -375,6 +383,9 @@ Status: MoonBook entries and workspace payloads implemented for the Noetix
 source-model audit, walk trace, high-control dry-run command plan, physics
 assumptions, dynamic-stability report, joint-control report,
 inertial/collision report, link poses, and MoonClaw review task.
+The MoonClaw Noetix task now includes a source-sync artifact that verifies
+Moonmoon evidence against the sibling Moonrobo robot book and URDF before any
+stronger physics claim.
 
 After the trace is stable, make it durable evidence.
 
