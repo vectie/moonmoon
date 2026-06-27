@@ -17,131 +17,131 @@
 ## Trace Prefix
 
 - frame 0 t=0s phase=left-support body_x=0 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.15 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.15 z=336.87190184 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 1 t=0.1s phase=left-support body_x=0.012 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.12333333333333332 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.12333333333333332 z=336.90801102399996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 2 t=0.2s phase=left-support body_x=0.024 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.09666666666666666 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.09666666666666666 z=336.94412020799996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 3 t=0.30000000000000004s phase=left-support body_x=0.036 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.07 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.07 z=336.9872005351703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 4 t=0.4s phase=left-support body_x=0.048 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.043333333333333335 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.043333333333333335 z=337.0286549248856 contact=false clearance=0.04431634888555891 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 5 t=0.5s phase=left-support body_x=0.06 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.016666666666666663 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.016666666666666663 z=337.0647641088856 contact=false clearance=0.04431634888555891 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 6 t=0.6000000000000001s phase=left-support body_x=0.072 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.009999999999999981 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.009999999999999981 z=337.0768490211703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 7 t=0.7000000000000001s phase=left-support body_x=0.084 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.03666666666666668 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.03666666666666668 z=337.0561762193333 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 8 t=0.8s phase=left-support body_x=0.096 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.06333333333333332 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.06333333333333332 z=337.0424745606666 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 9 t=0.9s phase=left-support body_x=0.10800000000000001 status=walking-needs-review
-  - left: x=-0.03 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.09 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=-0.03 z=336.97107363000003 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.09 z=337.028772902 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 10 t=1s phase=right-support body_x=0.12 status=walking-needs-review
-  - left: x=-0.03 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=-0.03 z=337.00307363 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 11 t=1.1s phase=right-support body_x=0.13199999999999998 status=walking-needs-review
-  - left: x=-0.003333333333333334 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=-0.003333333333333334 z=337.0391824033333 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 12 t=1.2000000000000002s phase=right-support body_x=0.144 status=walking-needs-review
-  - left: x=0.02333333333333333 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.02333333333333333 z=337.0317150006666 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 13 t=1.3s phase=right-support body_x=0.15600000000000003 status=walking-needs-review
-  - left: x=0.04999999999999999 z=337.07097114317025 contact=false clearance=0.03897114317027217 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.04999999999999999 z=337.02499357317026 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 14 t=1.4000000000000001s phase=right-support body_x=0.168 status=walking-needs-review
-  - left: x=0.07666666666666666 z=337.07631634888554 contact=false clearance=0.04431634888555891 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.07666666666666666 z=337.0166462082189 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 15 t=1.5s phase=right-support body_x=0.18 status=walking-needs-review
-  - left: x=0.10333333333333333 z=337.07631634888554 contact=false clearance=0.04431634888555891 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.10333333333333333 z=337.0029536375522 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 16 t=1.6s phase=right-support body_x=0.192 status=walking-needs-review
-  - left: x=0.12999999999999998 z=337.07097114317025 contact=false clearance=0.03897114317027217 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.12999999999999998 z=336.9839158611702 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 17 t=1.7000000000000002s phase=right-support body_x=0.20400000000000001 status=walking-needs-review
-  - left: x=0.15666666666666668 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.15666666666666668 z=336.9632521473333 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 18 t=1.8s phase=right-support body_x=0.21600000000000003 status=walking-needs-review
-  - left: x=0.18333333333333332 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.18333333333333332 z=336.9495595766666 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 19 t=1.9000000000000001s phase=right-support body_x=0.22799999999999998 status=walking-needs-review
-  - left: x=0.21 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.09 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.21 z=336.93586700599997 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.09 z=336.99677290200003 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 20 t=2s phase=left-support body_x=0.24 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.09 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.09 z=337.028772902 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 21 t=2.1s phase=left-support body_x=0.252 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.11666666666666665 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.11666666666666665 z=337.0150712433333 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 22 t=2.2s phase=left-support body_x=0.26399999999999996 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.1433333333333333 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.1433333333333333 z=337.00136958466663 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 23 t=2.3000000000000003s phase=left-support body_x=0.27599999999999997 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.16999999999999998 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.16999999999999998 z=336.99463906917026 contact=false clearance=0.03897114317027217 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 24 t=2.4000000000000004s phase=left-support body_x=0.288 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.19666666666666666 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.19666666666666666 z=336.9862826162189 contact=false clearance=0.04431634888555891 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 25 t=2.5s phase=left-support body_x=0.30000000000000004 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.22333333333333333 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.22333333333333333 z=336.9725809575522 contact=false clearance=0.04431634888555891 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 26 t=2.6s phase=left-support body_x=0.31200000000000006 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.24999999999999997 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.24999999999999997 z=336.9535340931703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 27 t=2.7s phase=left-support body_x=0.324 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.2766666666666666 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.2766666666666666 z=336.93286129133327 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 28 t=2.8000000000000003s phase=left-support body_x=0.336 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.3033333333333333 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.3033333333333333 z=336.91915963266666 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 29 t=2.9000000000000004s phase=left-support body_x=0.34800000000000003 status=walking-needs-review
-  - left: x=0.21 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.32999999999999996 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - left: x=0.21 z=336.903867006 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.32999999999999996 z=336.90545797399994 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 30 t=3s phase=right-support body_x=0.36 status=walking-needs-review
-  - left: x=0.21 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.32999999999999996 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.21 z=336.93586700599997 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.32999999999999996 z=336.87345797399996 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 - frame 31 t=3.1s phase=right-support body_x=0.372 status=walking-needs-review
-  - left: x=0.23666666666666666 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
-  - right: x=0.32999999999999996 z=339.786 contact=true clearance=0 status=terrain-grade-review
+  - left: x=0.23666666666666666 z=336.92217443533326 contact=false clearance=0.031999999999982265 status=terrain-grade-review
+  - right: x=0.32999999999999996 z=336.87345797399996 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 phases with URDF leg IK
 

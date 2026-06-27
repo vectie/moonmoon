@@ -270,6 +270,7 @@ pub(all) struct HeightfieldCollision {
   body_id : String
   sample : HeightfieldSample
   contact_point : Vec3
+  surface_normal : Vec3
   clearance_m : Double
   penetration_depth_m : Double
   normal_velocity_mps : Double
@@ -286,6 +287,8 @@ pub(all) struct HeightfieldSample {
   y_m : Double
   elevation_m : Double
   local_grade_x : Double
+  local_grade_y : Double
+  surface_normal : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct JointLimit {
@@ -470,6 +473,7 @@ pub(all) struct Vec3 {
 pub fn Vec3::add(Self, Self) -> Self
 pub fn Vec3::cross(Self, Self) -> Self
 pub fn Vec3::dot(Self, Self) -> Double
+pub fn Vec3::length(Self) -> Double
 pub fn Vec3::length_squared(Self) -> Double
 pub fn Vec3::scale(Self, Double) -> Self
 pub fn Vec3::sub(Self, Self) -> Self

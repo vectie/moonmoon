@@ -36,12 +36,12 @@ def main() -> None:
         fail("expected 24 controlled joints per frame")
     if "review" not in report.get("status", ""):
         fail("control report must remain review evidence")
-    if report.get("status") != "joint-control-assumption-review":
-        fail("control report should remain assumption-review without limit hits")
+    if report.get("status") != "joint-control-limit-review":
+        fail("control report should expose terrain-normal joint limit review")
     if report.get("saturated_frame_count") != 0:
         fail("planted-foot gait should not saturate joint control")
-    if report.get("limit_review_frame_count") != 0:
-        fail("planted-foot gait should remain within joint limits")
+    if report.get("limit_review_frame_count") != 1:
+        fail("terrain-normal gait should have exactly one limit-review frame")
     if "servo gains" not in report.get("note", ""):
         fail("report note must mention assumed servo gains")
     if report.get("max_abs_velocity_rad_s", -1) < 0:
@@ -90,6 +90,16 @@ def main() -> None:
         fail("waist_2_joint URDF velocity limit not present in control report")
     if any(frame.get("limit_review_count", -1) < 0 for frame in frames):
         fail("limit review counts must be nonnegative")
+    review_steps = [
+        step
+        for frame in frames
+        if frame.get("limit_review_count") > 0
+        for step in frame.get("steps", [])
+        if not step.get("velocity_within_limits", True)
+    ]
+    review_joints = {step.get("joint_name") for step in review_steps}
+    if review_joints != {"leg_r1_joint", "leg_r3_joint"}:
+        fail(f"unexpected terrain-normal velocity review joints: {review_joints}")
 
 
 if __name__ == "__main__":

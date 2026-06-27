@@ -23,8 +23,23 @@ test "heightfield sample wraps along x" {
   let field = heightfield("test-field", 1, 2, 10.0, [1.0, 4.0])
   let sample = sample_heightfield(field, 21.0, 0.0)
   assert_eq(sample.col, 0)
-  inspect(sample.elevation_m, content="1")
+  assert_true(nearly_equal(sample.elevation_m, 1.3))
   inspect(sample.local_grade_x, content="0.3")
+}
+
+///|
+test "heightfield sample bilinearly interpolates elevation and normal" {
+  let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 2.0, 3.0])
+  let sample = sample_heightfield(field, 0.5, -0.5)
+  assert_eq(sample.row, 0)
+  assert_eq(sample.col, 0)
+  assert_true(nearly_equal(sample.elevation_m, 1.5))
+  assert_true(nearly_equal(sample.local_grade_x, 1.0))
+  assert_true(nearly_equal(sample.local_grade_y, 2.0))
+  assert_true(sample.surface_normal.x < 0.0)
+  assert_true(sample.surface_normal.y < 0.0)
+  assert_true(sample.surface_normal.z > 0.0)
+  assert_true(nearly_equal(sample.surface_normal.length(), 1.0))
 }
 
 ///|
@@ -99,6 +114,30 @@ test "heightfield contact response clamps and damps velocity" {
   assert_true(nearly_equal(resolved.after.velocity.x, 1.5))
   assert_true(nearly_equal(resolved.after.velocity.y, 0.0))
   assert_true(nearly_equal(resolved.after.velocity.z, 0.3))
+}
+
+///|
+test "heightfield contact response follows slope normal" {
+  let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.1,
+    vec3(0.5, -0.5, 0.55),
+    vec3(0.0, 0.0, -1.0),
+  )
+  let resolved = resolve_heightfield_contact(
+    field,
+    state,
+    material_contact_model("test-regolith", 1.0, 0.0),
+  )
+  assert_eq(resolved.status, "contact-resolved")
+  assert_true(resolved.collision.surface_normal.x < 0.0)
+  assert_true(resolved.collision.surface_normal.z > 0.0)
+  assert_true(resolved.collision.normal_velocity_mps > -1.0)
+  assert_true(resolved.after.position.x < state.position.x)
+  assert_true(resolved.after.position.z > state.position.z)
+  assert_true(nearly_equal(resolved.after.velocity.length(), 0.0))
 }
 
 ///|

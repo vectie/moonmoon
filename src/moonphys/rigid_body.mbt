@@ -19,6 +19,7 @@ pub(all) struct HeightfieldCollision {
   body_id : String
   sample : HeightfieldSample
   contact_point : Vec3
+  surface_normal : Vec3
   clearance_m : Double
   penetration_depth_m : Double
   normal_velocity_mps : Double
@@ -96,19 +97,21 @@ pub fn heightfield_collision(
   state : RigidBodyState,
 ) -> HeightfieldCollision {
   let sample = sample_heightfield(field, state.position.x, state.position.y)
-  let contact_z = sample.elevation_m + state.collision_radius_m
-  let clearance = state.position.z - contact_z
+  let normal = sample.surface_normal
+  let surface_distance = (state.position.z - sample.elevation_m) * normal.z
+  let clearance = surface_distance - state.collision_radius_m
   let penetration = if clearance < 0.0 { 0.0 - clearance } else { 0.0 }
-  let tangent_speed = (state.velocity.x * state.velocity.x +
-  state.velocity.y * state.velocity.y).sqrt()
+  let normal_velocity = state.velocity.dot(normal)
+  let tangent_velocity = state.velocity.sub(normal.scale(normal_velocity))
   {
     body_id: state.body_id,
     sample,
-    contact_point: vec3(state.position.x, state.position.y, contact_z),
+    contact_point: vec3(state.position.x, state.position.y, sample.elevation_m),
+    surface_normal: normal,
     clearance_m: clearance,
     penetration_depth_m: penetration,
-    normal_velocity_mps: state.velocity.z,
-    tangent_speed_mps: tangent_speed,
+    normal_velocity_mps: normal_velocity,
+    tangent_speed_mps: tangent_velocity.length(),
     in_contact: clearance <= 0.0,
     status: if clearance <= 0.0 {
       "heightfield-contact"
@@ -132,13 +135,13 @@ fn friction_scale(material : MaterialContactModel) -> Double {
 
 ///|
 fn resolved_normal_velocity(
-  velocity_z : Double,
+  normal_velocity : Double,
   material : MaterialContactModel,
 ) -> Double {
-  if velocity_z < 0.0 {
-    (0.0 - velocity_z) * material.restitution_coefficient
+  if normal_velocity < 0.0 {
+    (0.0 - normal_velocity) * material.restitution_coefficient
   } else {
-    velocity_z
+    normal_velocity
   }
 }
 
@@ -151,20 +154,18 @@ pub fn resolve_heightfield_contact(
   let collision = heightfield_collision(field, state)
   if collision.in_contact {
     let scale = friction_scale(material)
+    let normal = collision.surface_normal
+    let normal_velocity = state.velocity.dot(normal)
+    let tangent_velocity = state.velocity.sub(normal.scale(normal_velocity))
+    let resolved_velocity = tangent_velocity
+      .scale(scale)
+      .add(normal.scale(resolved_normal_velocity(normal_velocity, material)))
     let after = {
       body_id: state.body_id,
       mass_kg: state.mass_kg,
       collision_radius_m: state.collision_radius_m,
-      position: vec3(
-        state.position.x,
-        state.position.y,
-        collision.contact_point.z,
-      ),
-      velocity: vec3(
-        state.velocity.x * scale,
-        state.velocity.y * scale,
-        resolved_normal_velocity(state.velocity.z, material),
-      ),
+      position: state.position.add(normal.scale(collision.penetration_depth_m)),
+      velocity: resolved_velocity,
     }
     { before: state, after, collision, material, status: "contact-resolved" }
   } else {

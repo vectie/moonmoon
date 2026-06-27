@@ -176,7 +176,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_control.json",
         "producer": "moon run cmd/main -- moonrobo noetix control json",
         "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-        "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; max power 14.89777245658858 W; absolute work 31.759430501284008 J; status joint-control-assumption-review",
+        "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
         "ready": false,
         "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"

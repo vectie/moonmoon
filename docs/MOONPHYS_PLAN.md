@@ -7,8 +7,8 @@ evidence.
 
 ## Current Implementation Status
 
-- `moonphys` has generic vector, transform, environment, heightfield, contact,
-  kinematic, support-margin, and trace primitives.
+- `moonphys` has generic vector, transform, environment, bilinear heightfield,
+  terrain-normal contact, kinematic, support-margin, and trace primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
@@ -48,6 +48,9 @@ evidence.
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
   contact torque, narrow-phase self-collision manifolds, and generic
   multi-contact manifold resolution with impulse accounting.
+- Moonphys heightfield collision now samples interpolated terrain elevation and
+  surface normals, so Noetix joint-control evidence exposes one right-leg
+  velocity-limit review frame instead of hiding slope-induced motion.
 - MoonClaw exports a Noetix simulation review task that ties endless-gait
   evidence, the walk trace, high-control dry-run command plan, URDF-reference
   link poses, static support report, dynamic-stability report, joint-control
@@ -134,7 +137,9 @@ Remaining cleanup:
 
 ## Phase 1: Make Moonphys A Real Physics Core
 
-Status: first core slice implemented.
+Status: first core slice implemented; heightfield contact now uses bilinear
+terrain sampling, y-grade evidence, surface normals, and normal-aware
+sphere-heightfield response.
 
 Add foundational physics files:
 
@@ -183,6 +188,8 @@ Initial tests:
 - fixed-step kinematic integration
 - heightfield sample behavior
 - contact probe above/on/below surface
+- bilinear terrain elevation and normal behavior
+- slope-normal rigid-body contact response
 - deterministic trace prefix equality
 
 ## Phase 2: Generic Heightfield Bridge
@@ -442,8 +449,9 @@ Moonrobo simulation packet:
 ## Phase 8: Toward Real Physics
 
 Status: generic support-margin, capture-point, rigid-body gravity integration,
-material contact, heightfield collision, single-body heightfield contact
-resolution, deterministic rigid-body heightfield replay, diagonal-inertia
+material contact, bilinear heightfield collision, terrain-normal single-body
+heightfield contact resolution, deterministic rigid-body heightfield replay,
+diagonal-inertia
 angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
@@ -487,7 +495,8 @@ Next `moonphys` capabilities:
 - capture point / linear inverted-pendulum review helper (implemented)
 - semi-implicit rigid-body gravity integration (implemented)
 - material/friction model (implemented)
-- heightfield collision and simple contact response (implemented)
+- bilinear heightfield collision and terrain-normal contact response
+  (implemented)
 - deterministic rigid-body heightfield replay (implemented)
 
 Robot-specific missing metadata:

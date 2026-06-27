@@ -302,8 +302,13 @@ test "noetix joint control report preserves urdf limits" {
       step.motor_step.limit.max_velocity_rad_s == 2.0
     }),
   )
-  assert_eq(report.limit_review_frame_count, 0)
-  assert_eq(report.status, "joint-control-assumption-review")
+  assert_eq(report.limit_review_frame_count, 1)
+  assert_eq(report.status, "joint-control-limit-review")
+  assert_true(
+    report.frames[3].steps.any(fn(step) {
+      step.joint_name == "leg_r3_joint" && !step.velocity_within_limits
+    }),
+  )
 }
 
 ///|

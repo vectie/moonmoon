@@ -43,3 +43,8 @@ pub fn Vec3::cross(self : Vec3, other : Vec3) -> Vec3 {
 pub fn Vec3::length_squared(self : Vec3) -> Double {
   self.dot(self)
 }
+
+///|
+pub fn Vec3::length(self : Vec3) -> Double {
+  self.length_squared().sqrt()
+}

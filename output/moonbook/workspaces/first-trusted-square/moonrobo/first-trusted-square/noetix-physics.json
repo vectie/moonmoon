@@ -681,14 +681,14 @@
         "com_projection": {
           "x": 0.012,
           "y": 0,
-          "z": 337.752
+          "z": 337.7458326
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.012,
             "y": 0,
-            "z": 337.752
+            "z": 337.7458326
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -743,14 +743,14 @@
         "com_projection": {
           "x": 0.024,
           "y": 0,
-          "z": 337.752
+          "z": 337.7396652
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.024,
             "y": 0,
-            "z": 337.752
+            "z": 337.7396652
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -805,14 +805,14 @@
         "com_projection": {
           "x": 0.036,
           "y": 0,
-          "z": 337.752
+          "z": 337.7334978
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.036,
             "y": 0,
-            "z": 337.752
+            "z": 337.7334978
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -867,14 +867,14 @@
         "com_projection": {
           "x": 0.048,
           "y": 0,
-          "z": 337.752
+          "z": 337.7273304
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.048,
             "y": 0,
-            "z": 337.752
+            "z": 337.7273304
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -929,14 +929,14 @@
         "com_projection": {
           "x": 0.06,
           "y": 0,
-          "z": 337.752
+          "z": 337.721163
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.06,
             "y": 0,
-            "z": 337.752
+            "z": 337.721163
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -991,14 +991,14 @@
         "com_projection": {
           "x": 0.072,
           "y": 0,
-          "z": 337.752
+          "z": 337.7149956
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.072,
             "y": 0,
-            "z": 337.752
+            "z": 337.7149956
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -1053,14 +1053,14 @@
         "com_projection": {
           "x": 0.084,
           "y": 0,
-          "z": 337.752
+          "z": 337.7088282
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.084,
             "y": 0,
-            "z": 337.752
+            "z": 337.7088282
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -1115,14 +1115,14 @@
         "com_projection": {
           "x": 0.096,
           "y": 0,
-          "z": 337.752
+          "z": 337.7026608
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.096,
             "y": 0,
-            "z": 337.752
+            "z": 337.7026608
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -1177,14 +1177,14 @@
         "com_projection": {
           "x": 0.10800000000000001,
           "y": 0,
-          "z": 337.752
+          "z": 337.6964934
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.10800000000000001,
             "y": 0,
-            "z": 337.752
+            "z": 337.6964934
           },
           "min_x_m": -0.14,
           "max_x_m": 0.08,
@@ -1239,14 +1239,14 @@
         "com_projection": {
           "x": 0.12,
           "y": 0,
-          "z": 337.752
+          "z": 337.690326
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.12,
             "y": 0,
-            "z": 337.752
+            "z": 337.690326
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1301,14 +1301,14 @@
         "com_projection": {
           "x": 0.13199999999999998,
           "y": 0,
-          "z": 337.752
+          "z": 337.6841586
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.13199999999999998,
             "y": 0,
-            "z": 337.752
+            "z": 337.6841586
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1363,14 +1363,14 @@
         "com_projection": {
           "x": 0.144,
           "y": 0,
-          "z": 337.752
+          "z": 337.6779912
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.144,
             "y": 0,
-            "z": 337.752
+            "z": 337.6779912
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1425,14 +1425,14 @@
         "com_projection": {
           "x": 0.15600000000000003,
           "y": 0,
-          "z": 337.752
+          "z": 337.6718238
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.15600000000000003,
             "y": 0,
-            "z": 337.752
+            "z": 337.6718238
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1487,14 +1487,14 @@
         "com_projection": {
           "x": 0.168,
           "y": 0,
-          "z": 337.752
+          "z": 337.6656564
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.168,
             "y": 0,
-            "z": 337.752
+            "z": 337.6656564
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1549,14 +1549,14 @@
         "com_projection": {
           "x": 0.18,
           "y": 0,
-          "z": 337.752
+          "z": 337.659489
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.18,
             "y": 0,
-            "z": 337.752
+            "z": 337.659489
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1611,14 +1611,14 @@
         "com_projection": {
           "x": 0.192,
           "y": 0,
-          "z": 337.752
+          "z": 337.6533216
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.192,
             "y": 0,
-            "z": 337.752
+            "z": 337.6533216
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1673,14 +1673,14 @@
         "com_projection": {
           "x": 0.20400000000000001,
           "y": 0,
-          "z": 337.752
+          "z": 337.6471542
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.20400000000000001,
             "y": 0,
-            "z": 337.752
+            "z": 337.6471542
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1735,14 +1735,14 @@
         "com_projection": {
           "x": 0.21600000000000003,
           "y": 0,
-          "z": 337.752
+          "z": 337.6409868
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.21600000000000003,
             "y": 0,
-            "z": 337.752
+            "z": 337.6409868
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1797,14 +1797,14 @@
         "com_projection": {
           "x": 0.22799999999999998,
           "y": 0,
-          "z": 337.752
+          "z": 337.6348194
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.22799999999999998,
             "y": 0,
-            "z": 337.752
+            "z": 337.6348194
           },
           "min_x_m": -0.020000000000000004,
           "max_x_m": 0.2,
@@ -1859,14 +1859,14 @@
         "com_projection": {
           "x": 0.24,
           "y": 0,
-          "z": 337.752
+          "z": 337.628652
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.24,
             "y": 0,
-            "z": 337.752
+            "z": 337.628652
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -1921,14 +1921,14 @@
         "com_projection": {
           "x": 0.252,
           "y": 0,
-          "z": 337.752
+          "z": 337.6224846
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.252,
             "y": 0,
-            "z": 337.752
+            "z": 337.6224846
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -1983,14 +1983,14 @@
         "com_projection": {
           "x": 0.26399999999999996,
           "y": 0,
-          "z": 337.752
+          "z": 337.6163172
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.26399999999999996,
             "y": 0,
-            "z": 337.752
+            "z": 337.6163172
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2045,14 +2045,14 @@
         "com_projection": {
           "x": 0.27599999999999997,
           "y": 0,
-          "z": 337.752
+          "z": 337.6101498
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.27599999999999997,
             "y": 0,
-            "z": 337.752
+            "z": 337.6101498
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2107,14 +2107,14 @@
         "com_projection": {
           "x": 0.288,
           "y": 0,
-          "z": 337.752
+          "z": 337.6039824
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.288,
             "y": 0,
-            "z": 337.752
+            "z": 337.6039824
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2169,14 +2169,14 @@
         "com_projection": {
           "x": 0.30000000000000004,
           "y": 0,
-          "z": 337.752
+          "z": 337.597815
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.30000000000000004,
             "y": 0,
-            "z": 337.752
+            "z": 337.597815
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2231,14 +2231,14 @@
         "com_projection": {
           "x": 0.31200000000000006,
           "y": 0,
-          "z": 337.752
+          "z": 337.5916476
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.31200000000000006,
             "y": 0,
-            "z": 337.752
+            "z": 337.5916476
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2293,14 +2293,14 @@
         "com_projection": {
           "x": 0.324,
           "y": 0,
-          "z": 337.752
+          "z": 337.5854802
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.324,
             "y": 0,
-            "z": 337.752
+            "z": 337.5854802
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2355,14 +2355,14 @@
         "com_projection": {
           "x": 0.336,
           "y": 0,
-          "z": 337.752
+          "z": 337.5793128
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.336,
             "y": 0,
-            "z": 337.752
+            "z": 337.5793128
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2417,14 +2417,14 @@
         "com_projection": {
           "x": 0.34800000000000003,
           "y": 0,
-          "z": 337.752
+          "z": 337.5731454
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.34800000000000003,
             "y": 0,
-            "z": 337.752
+            "z": 337.5731454
           },
           "min_x_m": 0.09999999999999999,
           "max_x_m": 0.32,
@@ -2479,14 +2479,14 @@
         "com_projection": {
           "x": 0.36,
           "y": 0,
-          "z": 337.752
+          "z": 337.566978
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.36,
             "y": 0,
-            "z": 337.752
+            "z": 337.566978
           },
           "min_x_m": 0.21999999999999997,
           "max_x_m": 0.43999999999999995,
@@ -2541,14 +2541,14 @@
         "com_projection": {
           "x": 0.372,
           "y": 0,
-          "z": 337.752
+          "z": 337.5608106
         },
         "support_assessment": {
           "support_count": 1,
           "com_projection": {
             "x": 0.372,
             "y": 0,
-            "z": 337.752
+            "z": 337.5608106
           },
           "min_x_m": 0.21999999999999997,
           "max_x_m": 0.43999999999999995,
