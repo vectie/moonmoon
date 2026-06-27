@@ -32,6 +32,7 @@
     "output/mission/first_trusted_square_energy_remediation.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
     "output/moonrobo/first_trusted_square_noetix_walk.json",
+    "output/moonrobo/first_trusted_square_noetix_stability.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
     "output/moonrobo/first_trusted_square_gap_remediation_modeling.json",
@@ -732,6 +733,15 @@
       "confidence": 0.62,
       "path": "moonrobo/first-trusted-square/noetix-walk.json",
       "summary": "noetix-e1-lab-01 kinematic endless walk over first-trusted-square-northeast-stepout-lola with 32 frames, 24 joint phases per frame, and hardware authority denied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/noetix-physics",
+      "title": "Moonrobo Noetix physics assumptions and static support report for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboNoetixPhysics",
+      "claim_kind": "Simulated",
+      "confidence": 0.54,
+      "path": "moonrobo/first-trusted-square/noetix-physics.json",
+      "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin -0.035 m, hardware authority moonmoon-safety-gate-only"
     }
   ],
   "review_queue_path": "review_queue.json",

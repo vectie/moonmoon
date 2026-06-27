@@ -385,6 +385,11 @@
   - claim: simulated
   - confidence: 0.62
   - path: moonrobo/first-trusted-square/noetix-walk.json
+- moonrobo/first-trusted-square/noetix-physics: Moonrobo Noetix physics assumptions and static support report for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-physics
+  - claim: simulated
+  - confidence: 0.54
+  - path: moonrobo/first-trusted-square/noetix-physics.json
 
 ## Review Queue
 

@@ -23,6 +23,10 @@ pub fn lunar_gravity_acceleration() -> Vec3
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
+pub fn support_assessment(Vec3, Array[SupportFootprint]) -> SupportAssessment
+
+pub fn support_footprint(String, Vec3, Double, Double, active? : Bool) -> SupportFootprint
+
 pub fn transform3(Basis3, Vec3) -> Transform3
 
 pub fn vec3(Double, Double, Double) -> Vec3
@@ -102,6 +106,28 @@ pub(all) struct PhysicsTrace {
   environment : PhysicsEnvironment
   frames : Array[PhysicsFrame]
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SupportAssessment {
+  support_count : Int
+  com_projection : Vec3
+  min_x_m : Double
+  max_x_m : Double
+  min_y_m : Double
+  max_y_m : Double
+  margin_x_m : Double
+  margin_y_m : Double
+  planar_margin_m : Double
+  stable : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SupportFootprint {
+  footprint_id : String
+  center : Vec3
+  half_length_m : Double
+  half_width_m : Double
+  active : Bool
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct Transform3 {

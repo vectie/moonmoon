@@ -47,3 +47,34 @@ test "transform translates local point" {
     transform.transform_point(vec3(4.0, 5.0, 6.0)) == vec3(5.0, 7.0, 9.0),
   )
 }
+
+///|
+test "support assessment reports static margin" {
+  let assessment = support_assessment(vec3(0.0, 0.0, 1.0), [
+    support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+  ])
+  assert_true(assessment.stable)
+  assert_eq(assessment.support_count, 1)
+  inspect(assessment.planar_margin_m, content="0.1")
+  assert_eq(assessment.status, "inside-support")
+}
+
+///|
+test "support assessment flags projection outside support" {
+  let assessment = support_assessment(vec3(0.0, 0.0, 1.0), [
+    support_footprint("left", vec3(0.0, 0.2, 0.0), 0.2, 0.05),
+  ])
+  assert_true(!assessment.stable)
+  assert_true(assessment.planar_margin_m < 0.0)
+  assert_eq(assessment.status, "outside-support")
+}
+
+///|
+test "support assessment handles no active support" {
+  let assessment = support_assessment(vec3(0.0, 0.0, 1.0), [
+    support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1, active=false),
+  ])
+  assert_true(!assessment.stable)
+  assert_eq(assessment.support_count, 0)
+  assert_eq(assessment.status, "no-support")
+}

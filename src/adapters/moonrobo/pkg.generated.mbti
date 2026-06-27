@@ -13,6 +13,8 @@ import {
 // Values
 pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig
 
+pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile
+
 pub fn execution_state_label(MoonroboExecutionState) -> String
 
 pub fn first_trusted_square_handoffs() -> Array[MoonroboTaskHandoff]
@@ -22,6 +24,12 @@ pub fn first_trusted_square_json() -> Json
 pub fn first_trusted_square_markdown() -> String
 
 pub fn first_trusted_square_noetix_heightfield() -> @moonphys.Heightfield
+
+pub fn first_trusted_square_noetix_stability_json() -> Json
+
+pub fn first_trusted_square_noetix_stability_markdown() -> String
+
+pub fn first_trusted_square_noetix_stability_report() -> NoetixWalkStabilityReport
 
 pub fn first_trusted_square_noetix_walk_json() -> Json
 
@@ -101,6 +109,10 @@ pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile
 
 pub fn noetix_moon_walk_trace(@moonphys.Heightfield, Int, config? : NoetixMoonWalkConfig) -> NoetixMoonWalkTrace
 
+pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile) -> NoetixWalkStabilityFrame
+
+pub fn noetix_walk_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixWalkStabilityReport
+
 pub fn precondition_status_label(RobotPrecondition) -> String
 
 pub fn regenerated_receipt_readiness_action_receipt_closeout(String, String, String, String, Array[RegeneratedReceiptReadinessActionReceiptInput]) -> RegeneratedReceiptReadinessActionReceiptCloseout
@@ -160,6 +172,8 @@ pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
 pub fn render_noetix_moon_walk_markdown(NoetixMoonWalkTrace) -> String
+
+pub fn render_noetix_stability_markdown(NoetixWalkStabilityReport) -> String
 
 pub fn render_regenerated_receipt_readiness_action_receipt_closeout_json(RegeneratedReceiptReadinessActionReceiptCloseout) -> Json
 
@@ -257,12 +271,31 @@ pub(all) struct NoetixFootContactProbe {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixFootGeometry {
+  foot_id : String
+  link_name : String
+  half_length_m : Double
+  half_width_m : Double
+  sole_radius_m : Double
+  friction_coefficient : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixJointPhase {
   joint_name : String
   role : String
   side : String
   position_rad : Double
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixMassModel {
+  model_id : String
+  mass_kg : Double
+  nominal_com_height_m : Double
+  com_x_offset_m : Double
+  com_y_offset_m : Double
+  source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixMoonWalkConfig {
@@ -309,6 +342,42 @@ pub(all) struct NoetixMoonWalkTrace {
   frame_count : Int
   endless_axis : String
   frames : Array[NoetixMoonWalkFrame]
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixPhysicsProfile {
+  profile_id : String
+  robot_id : String
+  source_model_path : String
+  source_profile_path : String
+  mass_model : NoetixMassModel
+  foot_geometry : Array[NoetixFootGeometry]
+  material_model : String
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkStabilityFrame {
+  frame_index : Int
+  time_s : Double
+  support_phase : String
+  com_projection : @moonphys.Vec3
+  support_assessment : @moonphys.SupportAssessment
+  terrain_contact_status : String
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkStabilityReport {
+  report_id : String
+  trace_id : String
+  profile : NoetixPhysicsProfile
+  frame_count : Int
+  stable_frame_count : Int
+  review_frame_count : Int
+  worst_planar_margin_m : Double
+  frames : Array[NoetixWalkStabilityFrame]
+  status : String
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

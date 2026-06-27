@@ -19,6 +19,7 @@ pub(all) enum BookEntryKind {
   SelectedRouteClearance
   MoonroboHandoff
   MoonroboNoetixWalk
+  MoonroboNoetixPhysics
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection
@@ -145,6 +146,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
+    MoonroboNoetixPhysics => "moonrobo-noetix-physics"
     MoonroboGapModeling => "moonrobo-gap-modeling"
     MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
     MoonroboRemediationMarginProjection =>
@@ -969,6 +971,20 @@ fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
     confidence: 0.62,
     path: "moonrobo/\{dossier.site.site_id}/noetix-walk.json",
     summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame, and hardware authority denied",
+  }
+}
+
+///|
+fn moonrobo_noetix_physics_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let report = @moonrobo.first_trusted_square_noetix_stability_report()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-physics",
+    title: "Moonrobo Noetix physics assumptions and static support report for \{dossier.site.name}",
+    kind: MoonroboNoetixPhysics,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.54,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-physics.json",
+    summary: "\{report.profile.robot_id} \{report.profile.status} profile uses explicit mass/sole/friction assumptions; \{report.review_frame_count}/\{report.frame_count} frames need static-support review, worst margin \{report.worst_planar_margin_m} m, hardware authority \{report.profile.hardware_authority}",
   }
 }
 
@@ -1873,6 +1889,7 @@ fn book_entries(
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
+  entries.push(moonrobo_noetix_physics_entry(dossier))
   entries
 }
 

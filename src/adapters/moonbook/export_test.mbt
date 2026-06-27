@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 76)
+  assert_eq(dossier.entries.length(), 77)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -213,6 +213,9 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(
     dossier.entries[75].kind == @moonbook.BookEntryKind::MoonroboNoetixWalk,
+  )
+  assert_true(
+    dossier.entries[76].kind == @moonbook.BookEntryKind::MoonroboNoetixPhysics,
   )
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
@@ -1215,6 +1218,14 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(dossier.entries[75].summary.contains("noetix-e1-lab-01"))
   assert_true(dossier.entries[75].summary.contains("32 frames"))
   assert_true(dossier.entries[75].summary.contains("24 joint phases"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[76].kind),
+    "moonrobo-noetix-physics",
+  )
+  assert_true(dossier.entries[76].path.contains("noetix-physics"))
+  assert_true(dossier.entries[76].summary.contains("mass/sole/friction"))
+  assert_true(dossier.entries[76].summary.contains("static-support review"))
+  assert_true(dossier.entries[76].summary.contains("moonmoon-safety-gate-only"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,

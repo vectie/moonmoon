@@ -250,6 +250,9 @@ def rebase_materializer(root: Path) -> None:
   materialize_moonbook_workspace.MOONROBO_NOETIX_WALK_JSON = (
     root / "output/moonrobo/first_trusted_square_noetix_walk.json"
   )
+  materialize_moonbook_workspace.MOONROBO_NOETIX_STABILITY_JSON = (
+    root / "output/moonrobo/first_trusted_square_noetix_stability.json"
+  )
   materialize_moonbook_workspace.MOONROBO_GAP_MODELING_JSON = (
     root / "output/moonrobo/first_trusted_square_gap_remediation_modeling.json"
   )
@@ -504,6 +507,9 @@ def materialize_temp_workspace(root: Path) -> None:
   moonrobo_noetix_walk = load_json(
     materialize_moonbook_workspace.MOONROBO_NOETIX_WALK_JSON,
   )
+  moonrobo_noetix_stability = load_json(
+    materialize_moonbook_workspace.MOONROBO_NOETIX_STABILITY_JSON,
+  )
   mission_horizon = load_json(materialize_moonbook_workspace.MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(
     materialize_moonbook_workspace.MISSION_TERRAIN_REMEDIATION_JSON,
@@ -552,6 +558,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,
     moonrobo_noetix_walk,
+    moonrobo_noetix_stability,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

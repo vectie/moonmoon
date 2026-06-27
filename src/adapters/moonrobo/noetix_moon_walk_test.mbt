@@ -34,3 +34,30 @@ test "noetix endless moon walk carries animation joint phases" {
     }),
   )
 }
+
+///|
+test "noetix physics profile keeps assumed dynamics explicit" {
+  let profile = default_noetix_physics_profile()
+  assert_eq(profile.robot_id, "noetix-e1-lab-01")
+  assert_eq(profile.foot_geometry.length(), 2)
+  assert_true(profile.mass_model.mass_kg > 0.0)
+  assert_true(
+    profile.mass_model.source_status.contains("simulation-assumption"),
+  )
+  assert_true(profile.note.contains("simulation assumptions"))
+  assert_eq(profile.hardware_authority, "moonmoon-safety-gate-only")
+}
+
+///|
+test "noetix static support report flags kinematic walk for review" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let report = noetix_walk_stability_report(trace)
+  assert_eq(report.frame_count, 12)
+  assert_eq(report.profile.robot_id, trace.robot.robot_id)
+  assert_true(report.review_frame_count > 0)
+  assert_true(report.worst_planar_margin_m < 0.0)
+  assert_eq(report.status, "static-support-review")
+  assert_true(
+    report.frames.any(fn(frame) { frame.status == "static-margin-review" }),
+  )
+}

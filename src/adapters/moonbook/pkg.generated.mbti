@@ -65,6 +65,7 @@ pub(all) enum BookEntryKind {
   SelectedRouteClearance
   MoonroboHandoff
   MoonroboNoetixWalk
+  MoonroboNoetixPhysics
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection

@@ -8,14 +8,18 @@ evidence.
 ## Current Implementation Status
 
 - `moonphys` has generic vector, transform, environment, heightfield, contact,
-  kinematic, and trace primitives.
+  kinematic, support-margin, and trace primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
 - Every walk frame includes 24 Noetix joint phases for animation/replay.
 - The trace is exported as Markdown and JSON under `output/moonrobo`.
 - MoonBook materializes the trace as a durable workspace entry.
+- Moonrobo exports a Noetix physics-assumption profile and static COM/support
+  report backed by generic Moonphys support assessment.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
+- `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
+  invariants.
 
 ## Boundary
 
@@ -347,6 +351,9 @@ Moonrobo simulation packet:
 
 ## Phase 8: Toward Real Physics
 
+Status: first generic support-margin helper and Noetix static support report
+implemented; full rigid-body dynamics remain future work.
+
 Only after the kinematic trace is useful, expand `moonphys`.
 
 Next `moonphys` capabilities:
@@ -384,10 +391,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
-2. Replace synthetic joint phases with URDF-derived link poses.
-3. Add basic support-polygon and center-of-mass evidence.
-4. Add MoonClaw follow-up tasking for trace/contact review.
+1. Replace synthetic joint phases with URDF-derived link poses.
+2. Add MoonClaw follow-up tasking for trace/contact/static-support review.
+3. Replace assumed mass/sole/friction profile with Moonrobo inertial and
+   collision metadata when available.
+4. Add dynamic stability evidence beyond static COM projection.
 5. Add richer Rabbita playback once link-pose evidence exists.
 
 This gives the project a clean physics library plus a credible first Noetix
