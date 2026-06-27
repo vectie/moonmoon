@@ -31,6 +31,12 @@ pub fn first_trusted_square_noetix_dynamic_stability_report() -> NoetixDynamicSt
 
 pub fn first_trusted_square_noetix_heightfield() -> @moonphys.Heightfield
 
+pub fn first_trusted_square_noetix_joint_control_json() -> Json
+
+pub fn first_trusted_square_noetix_joint_control_markdown() -> String
+
+pub fn first_trusted_square_noetix_joint_control_report() -> NoetixJointControlReport
+
 pub fn first_trusted_square_noetix_link_pose_json() -> Json
 
 pub fn first_trusted_square_noetix_link_pose_markdown() -> String
@@ -121,6 +127,10 @@ pub fn noetix_dynamic_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhy
 
 pub fn noetix_joint_actuator_profiles() -> Array[NoetixJointActuatorProfile]
 
+pub fn noetix_joint_control_frame(NoetixMoonWalkTrace, Int, NoetixPhysicsProfile) -> NoetixJointControlFrame
+
+pub fn noetix_joint_control_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixJointControlReport
+
 pub fn noetix_link_pose_frame(NoetixMoonWalkFrame) -> NoetixLinkPoseFrame
 
 pub fn noetix_link_pose_trace(NoetixMoonWalkTrace) -> NoetixLinkPoseTrace
@@ -196,6 +206,8 @@ pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
 pub fn render_noetix_dynamic_stability_markdown(NoetixDynamicStabilityReport) -> String
+
+pub fn render_noetix_joint_control_markdown(NoetixJointControlReport) -> String
 
 pub fn render_noetix_link_pose_markdown(NoetixLinkPoseTrace) -> String
 
@@ -348,6 +360,45 @@ pub(all) struct NoetixJointActuatorProfile {
   servo : @moonphys.JointServoConfig
   inertia_kg_m2 : Double
   source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixJointControlFrame {
+  frame_index : Int
+  time_s : Double
+  joint_count : Int
+  saturated_joint_count : Int
+  limit_review_count : Int
+  max_abs_position_error_rad : Double
+  max_abs_velocity_rad_s : Double
+  steps : Array[NoetixJointControlStep]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixJointControlReport {
+  report_id : String
+  trace_id : String
+  profile : NoetixPhysicsProfile
+  frame_count : Int
+  joint_count_per_frame : Int
+  saturated_frame_count : Int
+  limit_review_frame_count : Int
+  max_abs_position_error_rad : Double
+  max_abs_velocity_rad_s : Double
+  frames : Array[NoetixJointControlFrame]
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixJointControlStep {
+  joint_name : String
+  joint_index : Int
+  target_position_rad : Double
+  target_velocity_rad_s : Double
+  motor_step : @moonphys.JointMotorStep
+  position_within_limits : Bool
+  velocity_within_limits : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixJointPhase {

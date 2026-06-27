@@ -395,6 +395,11 @@
   - claim: simulated
   - confidence: 0.55
   - path: moonrobo/first-trusted-square/noetix-dynamics.json
+- moonrobo/first-trusted-square/noetix-joint-control: Moonrobo Noetix joint-control evidence for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-joint-control
+  - claim: simulated
+  - confidence: 0.55
+  - path: moonrobo/first-trusted-square/noetix-joint-control.json
 - moonrobo/first-trusted-square/noetix-link-poses: Moonrobo Noetix URDF-reference link poses for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moonrobo-noetix-link-poses
   - claim: simulated

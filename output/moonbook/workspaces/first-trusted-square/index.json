@@ -35,6 +35,7 @@
     "output/moonrobo/first_trusted_square_noetix_walk.json",
     "output/moonrobo/first_trusted_square_noetix_stability.json",
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+    "output/moonrobo/first_trusted_square_noetix_control.json",
     "output/moonrobo/first_trusted_square_noetix_link_poses.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_task.json",
     "output/moonclaw/first_trusted_square_moonrobo_gap_receipt.json",
@@ -756,6 +757,15 @@
       "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.035 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
     },
     {
+      "entry_id": "moonrobo/first-trusted-square/noetix-joint-control",
+      "title": "Moonrobo Noetix joint-control evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboNoetixJointControl",
+      "claim_kind": "Simulated",
+      "confidence": 0.55,
+      "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
+      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
+    },
+    {
       "entry_id": "moonrobo/first-trusted-square/noetix-link-poses",
       "title": "Moonrobo Noetix URDF-reference link poses for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonroboNoetixLinkPoses",
@@ -771,7 +781,7 @@
       "claim_kind": "Derived",
       "confidence": 0.58,
       "path": "moonclaw/first-trusted-square/noetix-review-task.json",
-      "summary": "noetix-e1-lab-01 review task links walk, link poses, static support, dynamic stability, and Rabbita playback; 32/32 frames require dynamic-stability review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 review task links walk, link poses, static support, dynamic stability, joint control, and Rabbita playback; 32/32 frames require joint-control review, hardware authority moonmoon-safety-gate-only"
     }
   ],
   "review_queue_path": "review_queue.json",

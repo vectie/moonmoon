@@ -387,6 +387,9 @@ dynamic-stability review reports implemented; full multi-contact simulation
 remains future work. Moonrobo's Noetix URDF joint limits are now carried into
 the robot-specific profile as Moonphys joint limits; mass, inertia, and
 authoritative collision tags are still absent from the referenced model.
+Noetix joint-control review evidence now replays the gait phases through
+Moonphys joint servo, torque, velocity, and position limits while preserving
+review-only authority.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -396,6 +399,7 @@ Next `moonphys` capabilities:
 - narrow-phase capsule/box contact generation for shape pairs
 - robot-specific inertia/collision profiles from Moonrobo data
 - Noetix URDF joint limits mapped into Moonphys joint limits (implemented)
+- Noetix joint-control review report over Moonphys servo limits (implemented)
 - exact sphere/sphere contacts and generic contact manifold summaries
   (implemented)
 - generic joint servo, torque limit, velocity limit, and position limit
@@ -435,8 +439,8 @@ or as a data artifact beside the Noetix model.
 
 1. Replace assumed mass/sole/friction profile with Moonrobo inertial and
    authoritative collision metadata when available.
-2. Replace capture-point-only review with controller, inertia, and
-   collision evidence.
+2. Replace capture-point/joint-control review with inertia and collision
+   evidence.
 3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
    it.
 4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.

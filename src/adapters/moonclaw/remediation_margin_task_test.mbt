@@ -1510,11 +1510,12 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_eq(task.link_pose_count_per_frame, 25)
   assert_true(task.static_support_review_frame_count > 0)
   assert_true(task.dynamic_stability_review_frame_count > 0)
+  assert_true(task.joint_control_review_frame_count > 0)
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
-  assert_eq(task.inputs.length(), 5)
-  assert_eq(task.artifacts.length(), 5)
-  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 2)
+  assert_eq(task.inputs.length(), 6)
+  assert_eq(task.artifacts.length(), 6)
+  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 3)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-static-support-review" &&
@@ -1530,6 +1531,13 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     }),
   )
   assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-joint-control-review" &&
+      !artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_control")
+    }),
+  )
+  assert_true(
     task.commands.any(fn(command) {
       command.contains("check_moonrobo_noetix_link_poses")
     }),
@@ -1541,7 +1549,7 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   let markdown = @moonclaw.first_trusted_square_noetix_review_tasks_markdown()
   assert_true(markdown.contains("MoonClaw Noetix Review Tasks"))
   assert_true(markdown.contains("noetix-review-task"))
-  assert_true(markdown.contains("Dynamic stability"))
+  assert_true(markdown.contains("joint-control review frames"))
   let json = @moonclaw.first_trusted_square_noetix_review_tasks_json().stringify(
     indent=2,
   )

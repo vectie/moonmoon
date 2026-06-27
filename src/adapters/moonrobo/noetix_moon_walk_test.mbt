@@ -128,6 +128,41 @@ test "noetix dynamic stability report uses capture point evidence" {
 }
 
 ///|
+test "noetix joint control report replays gait phases through moonphys" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let report = noetix_joint_control_report(trace)
+  assert_eq(report.frame_count, 12)
+  assert_eq(report.joint_count_per_frame, 24)
+  assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(report.status.contains("joint-control"))
+  assert_true(report.note.contains("servo gains"))
+  assert_true(report.max_abs_velocity_rad_s >= 0.0)
+  assert_true(report.frames[0].steps.length() == 24)
+  assert_true(
+    report.frames.any(fn(frame) {
+      frame.steps.any(fn(step) {
+        step.joint_name == "leg_r3_joint" &&
+        step.motor_step.limit.max_torque_nm == 100.0
+      })
+    }),
+  )
+}
+
+///|
+test "noetix joint control report preserves urdf limits" {
+  let report = first_trusted_square_noetix_joint_control_report()
+  assert_true(
+    report.frames[0].steps.any(fn(step) {
+      step.joint_name == "waist_2_joint" &&
+      step.motor_step.limit.min_position_rad == -0.5 &&
+      step.motor_step.limit.max_position_rad == 0.5 &&
+      step.motor_step.limit.max_velocity_rad_s == 2.0
+    }),
+  )
+  assert_true(report.frames.all(fn(frame) { frame.limit_review_count == 0 }))
+}
+
+///|
 test "noetix reference links mirror the compact urdf tree" {
   let links = noetix_reference_links()
   assert_eq(links.length(), 25)

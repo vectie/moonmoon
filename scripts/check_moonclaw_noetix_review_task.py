@@ -29,14 +29,16 @@ def main() -> None:
         fail("static support review blocker should be explicit")
     if task.get("dynamic_stability_review_frame_count", 0) <= 0:
         fail("dynamic stability review blocker should be explicit")
+    if task.get("joint_control_review_frame_count", 0) <= 0:
+        fail("joint control review blocker should be explicit")
     if task.get("hardware_state") != "HardwareDenied":
         fail("hardware state must remain denied")
     if task.get("hardware_authority") != "moonmoon-safety-gate-only":
         fail("unexpected hardware authority")
     if not task.get("hardware_denied"):
         fail("hardware_denied must be true")
-    if "Dynamic stability" not in task.get("safety_gate", ""):
-        fail("safety gate must name dynamic stability")
+    if "joint-control" not in task.get("safety_gate", ""):
+        fail("safety gate must name joint-control evidence")
 
     inputs = {item.get("input_id") for item in task.get("inputs", [])}
     expected_inputs = {
@@ -44,6 +46,7 @@ def main() -> None:
         "noetix-link-poses",
         "noetix-static-support",
         "noetix-dynamic-stability",
+        "noetix-joint-control",
         "noetix-rabbita-playback",
     }
     if inputs != expected_inputs:
@@ -55,6 +58,7 @@ def main() -> None:
         "noetix-urdf-reference-link-poses",
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
+        "noetix-joint-control-review",
         "noetix-rabbita-playback",
     }
     if set(artifacts) != expected_artifacts:
@@ -67,6 +71,10 @@ def main() -> None:
         fail("dynamic stability artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-dynamic-stability-review"].get("blocking_reason", ""):
         fail("dynamic stability blocker must explain review-only state")
+    if artifacts["noetix-joint-control-review"].get("ready"):
+        fail("joint control artifact must remain review-blocked")
+    if "review-only" not in artifacts["noetix-joint-control-review"].get("blocking_reason", ""):
+        fail("joint control blocker must explain review-only state")
 
     commands = "\n".join(task.get("commands", []))
     for expected in [
@@ -74,6 +82,7 @@ def main() -> None:
         "check_moonrobo_noetix_link_poses.py",
         "check_moonrobo_noetix_stability.py",
         "check_moonrobo_noetix_dynamics.py",
+        "check_moonrobo_noetix_control.py",
         "check_rabbita_noetix_walk.py",
     ]:
         if expected not in commands:
