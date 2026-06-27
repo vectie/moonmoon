@@ -12,6 +12,17 @@
   - missing inertial links: 25
   - source metadata blockers: 50
   - source metadata inventory: model-metadata-blocked
+  - physical model blockers: 9
+  - physical model blocker ids:
+    - assumed:mass
+    - assumed:center-of-mass
+    - assumed:link-inertia
+    - assumed:collision-shapes
+    - assumed:foot-sole-geometry
+    - assumed:joint-servo-gains
+    - assumed:friction
+    - missing:joint-damping
+    - missing:joint-stiffness
   - link poses per frame: 25
   - walk command segments: 3
   - static-support review frames: 32

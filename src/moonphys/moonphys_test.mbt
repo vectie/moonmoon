@@ -178,10 +178,13 @@ test "physical model readiness blocks assumed and missing items" {
   assert_eq(readiness.assumed_item_count, 1)
   assert_eq(readiness.missing_item_count, 1)
   assert_eq(readiness.blocker_count, 2)
+  assert_eq(readiness.blocker_ids.length(), readiness.blocker_count)
   assert_true(!readiness.ready)
   assert_eq(readiness.status, "physical-model-assumption-review")
   assert_true(readiness.assumed_items.contains("mass"))
   assert_true(readiness.missing_items.contains("joint-damping"))
+  assert_true(readiness.blocker_ids.contains("assumed:mass"))
+  assert_true(readiness.blocker_ids.contains("missing:joint-damping"))
 }
 
 ///|
@@ -193,6 +196,7 @@ test "physical model readiness passes authoritative items" {
     [],
   )
   assert_eq(readiness.blocker_count, 0)
+  assert_eq(readiness.blocker_ids.length(), 0)
   assert_true(readiness.ready)
   assert_eq(readiness.status, "physical-model-ready")
 }

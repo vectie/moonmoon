@@ -48,6 +48,11 @@ def main() -> None:
         fail("physical model readiness must count missing damping/stiffness")
     if readiness.get("blocker_count") != 9:
         fail("physical model readiness blocker count must be explicit")
+    blocker_ids = readiness.get("blocker_ids")
+    if not isinstance(blocker_ids, list):
+        fail("physical model readiness blocker ids must be listed")
+    if len(blocker_ids) != readiness.get("blocker_count"):
+        fail("physical model readiness blocker count must match listed ids")
     if readiness.get("ready"):
         fail("physical model readiness must remain blocked")
     if readiness.get("status") != "physical-model-assumption-review":
@@ -56,6 +61,10 @@ def main() -> None:
         fail("physical model readiness must name assumed mass")
     if "joint-damping" not in readiness.get("missing_items", []):
         fail("physical model readiness must name missing damping")
+    if "assumed:mass" not in blocker_ids:
+        fail("physical model readiness must name assumed mass blocker")
+    if "missing:joint-damping" not in blocker_ids:
+        fail("physical model readiness must name missing damping blocker")
     if "simulation-assumption" not in mass_model.get("source_status", ""):
         fail("mass model must be marked as an assumption")
     if mass_model.get("mass_kg", 0) <= 0:

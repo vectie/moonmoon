@@ -1523,6 +1523,18 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     task.source_model_metadata_inventory.status,
     "model-metadata-blocked",
   )
+  assert_eq(task.physical_model_blocker_count, 9)
+  assert_eq(
+    task.physical_model_blocker_count,
+    task.physical_model_blocker_ids.length(),
+  )
+  assert_true(!task.physical_model_readiness.ready)
+  assert_eq(
+    task.physical_model_readiness.status,
+    "physical-model-assumption-review",
+  )
+  assert_true(task.physical_model_blocker_ids.contains("assumed:mass"))
+  assert_true(task.physical_model_blocker_ids.contains("missing:joint-damping"))
   assert_eq(task.link_pose_count_per_frame, 25)
   assert_true(task.static_support_review_frame_count > 0)
   assert_true(task.dynamic_stability_review_frame_count > 0)
@@ -1646,6 +1658,9 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(
     markdown.contains("source metadata inventory: model-metadata-blocked"),
   )
+  assert_true(markdown.contains("physical model blockers"))
+  assert_true(markdown.contains("assumed:mass"))
+  assert_true(markdown.contains("missing:joint-damping"))
   assert_true(markdown.contains("endless gait cycle frames"))
   assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
@@ -1692,6 +1707,20 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(!decision.source_metadata_ready)
   assert_eq(decision.source_metadata_inventory.blocker_count, 50)
   assert_eq(decision.source_metadata_inventory.status, "model-metadata-blocked")
+  assert_true(!decision.physical_model_ready)
+  assert_eq(decision.physical_model_blocker_count, 9)
+  assert_eq(
+    decision.physical_model_blocker_count,
+    decision.physical_model_blocker_ids.length(),
+  )
+  assert_eq(
+    decision.physical_model_readiness.status,
+    "physical-model-assumption-review",
+  )
+  assert_true(decision.physical_model_blocker_ids.contains("assumed:mass"))
+  assert_true(
+    decision.physical_model_blocker_ids.contains("missing:joint-damping"),
+  )
   assert_true(decision.joint_control_world_support_review_frame_count > 0)
   assert_true(decision.joint_control_world_capture_review_frame_count > 0)
   assert_true(decision.joint_control_worst_capture_support_margin_m < 0.0)
@@ -1739,6 +1768,10 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(markdown.contains("noetix-simulation-blocked"))
   assert_true(markdown.contains("source metadata ready: false"))
   assert_true(markdown.contains("model-metadata-blocked"))
+  assert_true(markdown.contains("physical model ready: false"))
+  assert_true(markdown.contains("physical model blockers"))
+  assert_true(markdown.contains("assumed:mass"))
+  assert_true(markdown.contains("missing:joint-damping"))
   assert_true(markdown.contains("joint-control world-capture review frames"))
   assert_true(markdown.contains("joint-control worst capture support margin"))
   assert_true(markdown.contains("joint-control world replay blockers"))

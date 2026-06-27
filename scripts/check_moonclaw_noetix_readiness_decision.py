@@ -53,6 +53,30 @@ def main() -> None:
         fail("source metadata inventory must remain blocked")
     if inventory.get("status") != "model-metadata-blocked":
         fail("source metadata inventory must expose blocked status")
+    if decision.get("physical_model_ready"):
+        fail("physical model readiness must remain blocked")
+    physical = decision.get("physical_model_readiness", {})
+    if physical.get("readiness_id") != "moonrobo/noetix-e1/physical-model-readiness-v0":
+        fail("physical readiness must identify the Noetix model")
+    if physical.get("blocker_count") != 9:
+        fail("physical readiness blocker count should remain explicit")
+    if physical.get("ready"):
+        fail("physical readiness must remain blocked")
+    if physical.get("status") != "physical-model-assumption-review":
+        fail("physical readiness must expose assumption-review status")
+    if decision.get("physical_model_blocker_count") != physical.get("blocker_count"):
+        fail("decision physical blocker count must match readiness")
+    physical_blockers = decision.get("physical_model_blocker_ids")
+    if not isinstance(physical_blockers, list):
+        fail("decision physical blocker ids must be listed")
+    if physical.get("blocker_ids") != physical_blockers:
+        fail("decision physical blocker ids must match readiness")
+    if len(physical_blockers) != decision.get("physical_model_blocker_count"):
+        fail("decision physical blocker count must match listed ids")
+    if "assumed:mass" not in physical_blockers:
+        fail("physical blockers must name assumed mass")
+    if "missing:joint-damping" not in physical_blockers:
+        fail("physical blockers must name missing joint damping")
     for field in [
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
@@ -116,7 +140,13 @@ def main() -> None:
         fail("reason must name source metadata blockers")
     if "model-metadata-blocked" not in reason:
         fail("reason must name source metadata inventory status")
+    if "9 physical model blockers" not in reason:
+        fail("reason must name physical model blockers")
+    if "physical-model-assumption-review" not in reason:
+        fail("reason must name physical readiness status")
     next_action = decision.get("next_action", "")
+    if "physical model metadata" not in next_action:
+        fail("next action must name physical model metadata")
     if "keep hardware denied" not in next_action:
         fail("next action must preserve hardware denial")
 

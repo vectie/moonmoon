@@ -23,6 +23,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
   source_model_metadata_inventory : @moonphys.ModelMetadataInventory
+  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_blocker_count : Int
+  physical_model_blocker_ids : Array[String]
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -281,6 +284,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
   let control = @moonrobo.first_trusted_square_noetix_joint_control_report()
   let collision = @moonrobo.first_trusted_square_noetix_inertial_collision_report()
   let poses = @moonrobo.first_trusted_square_noetix_link_pose_trace()
+  let physical_readiness = support.profile.physical_model_readiness
   {
     task_id: "moonclaw/first-trusted-square/noetix-review-task",
     site_id: "first-trusted-square",
@@ -305,6 +309,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_model_missing_inertial_link_count: source_model.missing_inertial_link_count,
     source_model_metadata_blocker_count: source_model.source_metadata_blocker_count,
     source_model_metadata_inventory: source_model.source_metadata_inventory,
+    physical_model_readiness: physical_readiness,
+    physical_model_blocker_count: physical_readiness.blocker_count,
+    physical_model_blocker_ids: physical_readiness.blocker_ids,
     static_support_review_frame_count: support.review_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
@@ -470,6 +477,11 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - missing inertial links: \{task.source_model_missing_inertial_link_count}\n"
     text += "  - source metadata blockers: \{task.source_model_metadata_blocker_count}\n"
     text += "  - source metadata inventory: \{task.source_model_metadata_inventory.status}\n"
+    text += "  - physical model blockers: \{task.physical_model_blocker_count}\n"
+    text += "  - physical model blocker ids:\n"
+    for blocker in task.physical_model_blocker_ids {
+      text += "    - \{blocker}\n"
+    }
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
     text += "  - walk command segments: \{task.walk_command_segment_count}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"

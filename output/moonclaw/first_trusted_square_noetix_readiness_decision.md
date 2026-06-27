@@ -5,12 +5,24 @@
 - robot: noetix-e1-lab-01
 - status: noetix-simulation-blocked
 - may consume MoonRobo simulation: false
-- reason: Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked and 50 source metadata blockers remain with status model-metadata-blocked; hardware authority remains moonmoon-safety-gate-only
+- reason: Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only
 - ready artifacts: 7
 - blocked artifacts: 4
 - source metadata blockers: 50
 - source metadata ready: false
 - source metadata inventory: model-metadata-blocked
+- physical model ready: false
+- physical model blockers: 9
+- physical model blocker ids:
+  - assumed:mass
+  - assumed:center-of-mass
+  - assumed:link-inertia
+  - assumed:collision-shapes
+  - assumed:foot-sole-geometry
+  - assumed:joint-servo-gains
+  - assumed:friction
+  - missing:joint-damping
+  - missing:joint-stiffness
 - static-support review frames: 32
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
@@ -26,7 +38,7 @@
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only
 - hardware denied: true
-- next action: keep Noetix evidence in MoonClaw review; replace assumed source metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied
+- next action: keep Noetix evidence in MoonClaw review; replace assumed source and physical model metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied
 
 ## Blocked Artifacts
 
@@ -50,4 +62,4 @@
 - hardware_state must remain HardwareDenied
 - hardware_authority must remain moonmoon-safety-gate-only
 - Noetix review decision must never issue hardware authority
-- MoonRobo simulation consumption requires all review artifacts ready and source metadata inventory ready
+- MoonRobo simulation consumption requires all review artifacts ready, source metadata inventory ready, and physical model readiness clear

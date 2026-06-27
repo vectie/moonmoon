@@ -17,6 +17,10 @@ pub(all) struct NoetixSimulationReadinessDecision {
   metadata_blocker_count : Int
   source_metadata_ready : Bool
   source_metadata_inventory : @moonphys.ModelMetadataInventory
+  physical_model_ready : Bool
+  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_blocker_count : Int
+  physical_model_blocker_ids : Array[String]
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -71,7 +75,7 @@ fn noetix_blocked_artifacts(task : MoonClawNoetixReviewTask) -> Array[String] {
 fn noetix_hardware_denial_invariants() -> Array[String] {
   [
     "hardware_state must remain HardwareDenied", "hardware_authority must remain moonmoon-safety-gate-only",
-    "Noetix review decision must never issue hardware authority", "MoonRobo simulation consumption requires all review artifacts ready and source metadata inventory ready",
+    "Noetix review decision must never issue hardware authority", "MoonRobo simulation consumption requires all review artifacts ready, source metadata inventory ready, and physical model readiness clear",
   ]
 }
 
@@ -81,12 +85,14 @@ fn noetix_readiness_reason(
   blocked_count : Int,
   metadata_blocker_count : Int,
   metadata_status : String,
+  physical_blocker_count : Int,
+  physical_status : String,
   hardware_authority : String,
 ) -> String {
   if may_consume {
-    "Noetix simulation evidence may be consumed by MoonRobo review because all artifacts are ready, source metadata status is \{metadata_status}, and hardware authority remains \{hardware_authority}"
+    "Noetix simulation evidence may be consumed by MoonRobo review because all artifacts are ready, source metadata status is \{metadata_status}, physical model status is \{physical_status}, and hardware authority remains \{hardware_authority}"
   } else {
-    "Noetix simulation remains blocked for MoonRobo consumption: \{blocked_count} review artifacts are blocked and \{metadata_blocker_count} source metadata blockers remain with status \{metadata_status}; hardware authority remains \{hardware_authority}"
+    "Noetix simulation remains blocked for MoonRobo consumption: \{blocked_count} review artifacts are blocked, \{metadata_blocker_count} source metadata blockers remain with status \{metadata_status}, and \{physical_blocker_count} physical model blockers remain with status \{physical_status}; hardware authority remains \{hardware_authority}"
   }
 }
 
@@ -95,7 +101,7 @@ fn noetix_readiness_next_action(may_consume : Bool) -> String {
   if may_consume {
     "route Noetix evidence to MoonRobo simulation-only consumption while keeping hardware denied"
   } else {
-    "keep Noetix evidence in MoonClaw review; replace assumed source metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied"
+    "keep Noetix evidence in MoonClaw review; replace assumed source and physical model metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied"
   }
 }
 
@@ -107,8 +113,10 @@ pub fn noetix_simulation_readiness_decision(
   let blocked_artifacts = noetix_blocked_artifacts(task)
   let metadata_inventory = task.source_model_metadata_inventory
   let metadata_blockers = metadata_inventory.blocker_count
+  let physical_readiness = task.physical_model_readiness
   let may_consume = blocked_artifacts.length() == 0 &&
     metadata_inventory.ready &&
+    physical_readiness.ready &&
     task.hardware_denied &&
     task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied
   {
@@ -126,6 +134,8 @@ pub fn noetix_simulation_readiness_decision(
       blocked_artifacts.length(),
       metadata_blockers,
       metadata_inventory.status,
+      physical_readiness.blocker_count,
+      physical_readiness.status,
       task.hardware_authority,
     ),
     ready_artifact_count: ready_artifacts.length(),
@@ -133,6 +143,10 @@ pub fn noetix_simulation_readiness_decision(
     metadata_blocker_count: metadata_blockers,
     source_metadata_ready: metadata_inventory.ready,
     source_metadata_inventory: metadata_inventory,
+    physical_model_ready: physical_readiness.ready,
+    physical_model_readiness: physical_readiness,
+    physical_model_blocker_count: physical_readiness.blocker_count,
+    physical_model_blocker_ids: physical_readiness.blocker_ids,
     static_support_review_frame_count: task.static_support_review_frame_count,
     dynamic_stability_review_frame_count: task.dynamic_stability_review_frame_count,
     joint_control_review_frame_count: task.joint_control_review_frame_count,
@@ -180,6 +194,12 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- source metadata blockers: \{decision.metadata_blocker_count}\n"
   text += "- source metadata ready: \{decision.source_metadata_ready}\n"
   text += "- source metadata inventory: \{decision.source_metadata_inventory.status}\n"
+  text += "- physical model ready: \{decision.physical_model_ready}\n"
+  text += "- physical model blockers: \{decision.physical_model_blocker_count}\n"
+  text += "- physical model blocker ids:\n"
+  for blocker in decision.physical_model_blocker_ids {
+    text += "  - \{blocker}\n"
+  }
   text += "- static-support review frames: \{decision.static_support_review_frame_count}\n"
   text += "- dynamic-stability review frames: \{decision.dynamic_stability_review_frame_count}\n"
   text += "- joint-control review frames: \{decision.joint_control_review_frame_count}\n"

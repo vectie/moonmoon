@@ -598,6 +598,17 @@
       "assumed_item_count": 7,
       "missing_item_count": 2,
       "blocker_count": 9,
+      "blocker_ids": [
+        "assumed:mass",
+        "assumed:center-of-mass",
+        "assumed:link-inertia",
+        "assumed:collision-shapes",
+        "assumed:foot-sole-geometry",
+        "assumed:joint-servo-gains",
+        "assumed:friction",
+        "missing:joint-damping",
+        "missing:joint-stiffness"
+      ],
       "ready": false,
       "required_items": [
         "mass",

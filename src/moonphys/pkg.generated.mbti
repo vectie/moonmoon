@@ -586,6 +586,7 @@ pub(all) struct PhysicalModelReadiness {
   assumed_item_count : Int
   missing_item_count : Int
   blocker_count : Int
+  blocker_ids : Array[String]
   ready : Bool
   required_items : Array[String]
   authoritative_items : Array[String]

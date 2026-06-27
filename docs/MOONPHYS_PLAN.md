@@ -31,6 +31,9 @@ evidence.
 - Moonrobo exports a Noetix physics-assumption profile with a generic
   Moonphys physical-model readiness inventory, plus a static COM/support report
   backed by generic Moonphys convex support-polygon and support-load assessment.
+  The physical-model readiness inventory now exposes stable blocker IDs for
+  assumed and missing inputs so downstream review gates can target exact
+  metadata gaps.
 - Moonrobo exports a Noetix source-model audit that records the sibling
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, zero authoritative collision or
@@ -110,11 +113,12 @@ evidence.
   link poses, static support report, dynamic-stability report, joint-control
   report, inertial/collision report, and Rabbita playback into a
   hardware-denied review packet. The review task carries the generic Moonphys
-  metadata inventory and world-replay blocker IDs through to MoonClaw.
+  metadata inventory, physical-model blocker IDs, and world-replay blocker IDs
+  through to MoonClaw.
 - MoonClaw exports a Noetix simulation readiness decision that blocks MoonRobo
   simulation consumption until all review artifacts are ready, the generic
-  Moonphys metadata inventory is ready, named world-replay blockers are
-  resolved, and hardware remains denied.
+  Moonphys metadata inventory and physical-model readiness are ready, named
+  world-replay blockers are resolved, and hardware remains denied.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.
@@ -654,7 +658,8 @@ Next `moonphys` capabilities:
 - generic source-model metadata inventory/readiness for collision and inertial
   blockers (implemented)
 - generic physical-model readiness for authoritative, assumed, and missing
-  mass/inertia/collision/contact/friction/actuator inputs (implemented)
+  mass/inertia/collision/contact/friction/actuator inputs with stable blocker
+  IDs (implemented)
 
 Robot-specific missing metadata:
 

@@ -54,6 +54,28 @@ def main() -> None:
         fail("source metadata inventory must list missing collision links")
     if len(inventory.get("missing_inertial_links", [])) != 25:
         fail("source metadata inventory must list missing inertial links")
+    physical = task.get("physical_model_readiness", {})
+    if physical.get("readiness_id") != "moonrobo/noetix-e1/physical-model-readiness-v0":
+        fail("physical readiness must identify the Noetix model")
+    if physical.get("blocker_count") != 9:
+        fail("physical readiness blocker count should remain explicit")
+    if physical.get("ready"):
+        fail("physical readiness must remain blocked")
+    if physical.get("status") != "physical-model-assumption-review":
+        fail("physical readiness must expose assumption-review status")
+    if task.get("physical_model_blocker_count") != physical.get("blocker_count"):
+        fail("task physical blocker count must match readiness")
+    physical_blockers = task.get("physical_model_blocker_ids")
+    if not isinstance(physical_blockers, list):
+        fail("task physical blocker ids must be listed")
+    if physical.get("blocker_ids") != physical_blockers:
+        fail("task physical blocker ids must match readiness")
+    if len(physical_blockers) != task.get("physical_model_blocker_count"):
+        fail("task physical blocker count must match listed ids")
+    if "assumed:mass" not in physical_blockers:
+        fail("physical blockers must name assumed mass")
+    if "missing:joint-damping" not in physical_blockers:
+        fail("physical blockers must name missing joint damping")
     if task.get("link_pose_count_per_frame") != 25:
         fail("expected compact Noetix URDF-reference link count")
     if task.get("static_support_review_frame_count", 0) <= 0:

@@ -143,6 +143,10 @@ test "noetix physics profile keeps assumed dynamics explicit" {
   assert_eq(profile.physical_model_readiness.assumed_item_count, 7)
   assert_eq(profile.physical_model_readiness.missing_item_count, 2)
   assert_eq(profile.physical_model_readiness.blocker_count, 9)
+  assert_eq(
+    profile.physical_model_readiness.blocker_ids.length(),
+    profile.physical_model_readiness.blocker_count,
+  )
   assert_true(!profile.physical_model_readiness.ready)
   assert_eq(
     profile.physical_model_readiness.status,
@@ -156,6 +160,14 @@ test "noetix physics profile keeps assumed dynamics explicit" {
   assert_true(profile.physical_model_readiness.assumed_items.contains("mass"))
   assert_true(
     profile.physical_model_readiness.missing_items.contains("joint-damping"),
+  )
+  assert_true(
+    profile.physical_model_readiness.blocker_ids.contains("assumed:mass"),
+  )
+  assert_true(
+    profile.physical_model_readiness.blocker_ids.contains(
+      "missing:joint-damping",
+    ),
   )
   assert_true(
     profile.mass_model.source_status.contains("simulation-assumption"),

@@ -53,6 +53,9 @@ def main(argv: list[str]) -> int:
   require(readiness.get("assumed_item_count") == 7, "physical assumed count")
   require(readiness.get("missing_item_count") == 2, "physical missing count")
   require(readiness.get("blocker_count") == 9, "physical blocker count")
+  blocker_ids = readiness.get("blocker_ids")
+  require(isinstance(blocker_ids, list), "physical blocker ids")
+  require(len(blocker_ids) == readiness.get("blocker_count"), "physical blocker id count")
   require(not readiness.get("ready"), "physical readiness must remain blocked")
   require(
     readiness.get("status") == "physical-model-assumption-review",
@@ -60,6 +63,8 @@ def main(argv: list[str]) -> int:
   )
   require("collision-shapes" in readiness.get("assumed_items", []), "assumed collision shapes")
   require("joint-stiffness" in readiness.get("missing_items", []), "missing joint stiffness")
+  require("assumed:mass" in blocker_ids, "assumed mass blocker")
+  require("missing:joint-damping" in blocker_ids, "missing damping blocker")
   require(
     report["hardware_authority"] == "moonmoon-safety-gate-only",
     "hardware authority",

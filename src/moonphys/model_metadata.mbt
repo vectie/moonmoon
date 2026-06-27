@@ -19,6 +19,7 @@ pub(all) struct PhysicalModelReadiness {
   assumed_item_count : Int
   missing_item_count : Int
   blocker_count : Int
+  blocker_ids : Array[String]
   ready : Bool
   required_items : Array[String]
   authoritative_items : Array[String]
@@ -89,6 +90,21 @@ fn missing_physical_model_items(
 }
 
 ///|
+fn physical_model_blocker_ids(
+  assumed_items : Array[String],
+  missing_items : Array[String],
+) -> Array[String] {
+  let blockers : Array[String] = []
+  for item in assumed_items {
+    blockers.push("assumed:\{item}")
+  }
+  for item in missing_items {
+    blockers.push("missing:\{item}")
+  }
+  blockers
+}
+
+///|
 pub fn physical_model_readiness(
   readiness_id : String,
   required_items : Array[String],
@@ -98,7 +114,8 @@ pub fn physical_model_readiness(
   let missing_items = missing_physical_model_items(
     required_items, authoritative_items, assumed_items,
   )
-  let blocker_count = assumed_items.length() + missing_items.length()
+  let blocker_ids = physical_model_blocker_ids(assumed_items, missing_items)
+  let blocker_count = blocker_ids.length()
   {
     readiness_id,
     required_item_count: required_items.length(),
@@ -106,6 +123,7 @@ pub fn physical_model_readiness(
     assumed_item_count: assumed_items.length(),
     missing_item_count: missing_items.length(),
     blocker_count,
+    blocker_ids,
     ready: blocker_count == 0,
     required_items,
     authoritative_items,
