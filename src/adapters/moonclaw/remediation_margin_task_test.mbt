@@ -1629,3 +1629,61 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   )
   assert_true(json.contains("\"hardware_denied\": true"))
 }
+
+///|
+test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption" {
+  let decision = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision()
+  assert_eq(
+    decision.decision_id,
+    "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
+  )
+  assert_eq(
+    decision.source_task_id,
+    "moonclaw/first-trusted-square/noetix-review-task",
+  )
+  assert_eq(decision.robot_id, "noetix-e1-lab-01")
+  assert_true(!decision.may_consume_moonrobo_simulation)
+  assert_true(
+    decision.decision ==
+    @moonclaw.NoetixSimulationReadinessDecisionStatus::NoetixSimulationBlocked,
+  )
+  assert_eq(decision.ready_artifact_count, 7)
+  assert_eq(decision.blocked_artifact_count, 4)
+  assert_eq(decision.metadata_blocker_count, 50)
+  assert_true(
+    decision.blocked_artifacts.contains("noetix-static-support-review"),
+  )
+  assert_true(
+    decision.blocked_artifacts.contains("noetix-dynamic-stability-review"),
+  )
+  assert_true(
+    decision.blocked_artifacts.contains("noetix-joint-control-review"),
+  )
+  assert_true(
+    decision.blocked_artifacts.contains("noetix-inertial-collision-review"),
+  )
+  assert_true(
+    decision.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
+  )
+  assert_eq(decision.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(decision.hardware_denied)
+  assert_true(decision.reason.contains("Noetix simulation remains blocked"))
+  assert_true(decision.reason.contains("50 source metadata blockers"))
+  assert_true(decision.next_action.contains("keep hardware denied"))
+  assert_true(
+    decision.hardware_denial_invariants.contains(
+      "Noetix review decision must never issue hardware authority",
+    ),
+  )
+  let markdown = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_markdown()
+  assert_true(
+    markdown.contains("MoonClaw Noetix Simulation Readiness Decision"),
+  )
+  assert_true(markdown.contains("may consume MoonRobo simulation: false"))
+  assert_true(markdown.contains("noetix-simulation-blocked"))
+  assert_true(markdown.contains("noetix-joint-control-review"))
+  let json = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("NoetixSimulationBlocked"))
+}

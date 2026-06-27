@@ -73,6 +73,12 @@ pub fn first_trusted_square_noetix_review_tasks_json() -> Json
 
 pub fn first_trusted_square_noetix_review_tasks_markdown() -> String
 
+pub fn first_trusted_square_noetix_simulation_readiness_decision() -> NoetixSimulationReadinessDecision
+
+pub fn first_trusted_square_noetix_simulation_readiness_decision_json() -> Json
+
+pub fn first_trusted_square_noetix_simulation_readiness_decision_markdown() -> String
+
 pub fn first_trusted_square_primary_proposal() -> MoonClawProposal
 
 pub fn first_trusted_square_proposals() -> Array[MoonClawProposal]
@@ -195,6 +201,10 @@ pub fn job_kind_label(MoonClawJobKind) -> String
 
 pub fn noetix_review_task_blocked_artifact_count(MoonClawNoetixReviewTask) -> Int
 
+pub fn noetix_simulation_readiness_decision(MoonClawNoetixReviewTask) -> NoetixSimulationReadinessDecision
+
+pub fn noetix_simulation_readiness_decision_status_label(NoetixSimulationReadinessDecisionStatus) -> String
+
 pub fn priority_label(MoonClawJobPriority) -> String
 
 pub fn receipt_status_label(MoonClawReceiptStatus) -> String
@@ -266,6 +276,8 @@ pub fn render_markdown(Array[MoonClawProposal]) -> String
 pub fn render_noetix_review_tasks_json(Array[MoonClawNoetixReviewTask]) -> Json
 
 pub fn render_noetix_review_tasks_markdown(Array[MoonClawNoetixReviewTask]) -> String
+
+pub fn render_noetix_simulation_readiness_decision_markdown(NoetixSimulationReadinessDecision) -> String
 
 pub fn render_receipts_json(Array[MoonClawRouteScoringReceipt]) -> Json
 
@@ -1186,6 +1198,34 @@ pub(all) struct MoonClawTaskArtifact {
   ready : Bool
   blocking_reason : String
   validation_gate : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixSimulationReadinessDecision {
+  decision_id : String
+  source_task_id : String
+  robot_id : String
+  may_consume_moonrobo_simulation : Bool
+  decision : NoetixSimulationReadinessDecisionStatus
+  reason : String
+  ready_artifact_count : Int
+  blocked_artifact_count : Int
+  metadata_blocker_count : Int
+  static_support_review_frame_count : Int
+  dynamic_stability_review_frame_count : Int
+  joint_control_review_frame_count : Int
+  inertial_collision_review_frame_count : Int
+  ready_artifacts : Array[String]
+  blocked_artifacts : Array[String]
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  hardware_denial_invariants : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum NoetixSimulationReadinessDecisionStatus {
+  NoetixSimulationConsumable
+  NoetixSimulationBlocked
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

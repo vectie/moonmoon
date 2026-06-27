@@ -30,6 +30,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonclaw corridor tasks json
     #|  moon run cmd/main -- moonclaw noetix review task
     #|  moon run cmd/main -- moonclaw noetix review task json
+    #|  moon run cmd/main -- moonclaw noetix review decision
+    #|  moon run cmd/main -- moonclaw noetix review decision json
     #|  moon run cmd/main -- moonclaw remediation margins
     #|  moon run cmd/main -- moonclaw remediation margins json
     #|  moon run cmd/main -- moonclaw remediation refresh
@@ -141,6 +143,21 @@ fn main {
       )
     } else {
       println(@moonclaw.first_trusted_square_corridor_tasks_markdown())
+    }
+  } else if args.contains("moonclaw") &&
+    args.contains("noetix") &&
+    args.contains("review") &&
+    args.contains("decision") {
+    if output_json {
+      println(
+        @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_markdown(),
+      )
     }
   } else if args.contains("moonclaw") &&
     args.contains("noetix") &&

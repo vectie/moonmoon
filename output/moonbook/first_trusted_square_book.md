@@ -430,6 +430,11 @@
   - claim: derived
   - confidence: 0.58
   - path: moonclaw/first-trusted-square/noetix-review-task.json
+- moonclaw/first-trusted-square/noetix-readiness-decision: MoonClaw Noetix simulation readiness decision for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-noetix-readiness-decision
+  - claim: derived
+  - confidence: 0.57
+  - path: moonclaw/first-trusted-square/noetix-readiness-decision.json
 
 ## Review Queue
 

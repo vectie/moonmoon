@@ -87,6 +87,7 @@ pub(all) enum BookEntryKind {
   MoonClawProposal
   MoonClawTask
   MoonClawNoetixReviewTask
+  MoonClawNoetixReadinessDecision
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask

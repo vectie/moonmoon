@@ -1,0 +1,322 @@
+{
+  "entry": {
+    "entry_id": "moonclaw/first-trusted-square/noetix-readiness-decision",
+    "title": "MoonClaw Noetix simulation readiness decision for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonClawNoetixReadinessDecision",
+    "claim_kind": "Derived",
+    "confidence": 0.57,
+    "path": "moonclaw/first-trusted-square/noetix-readiness-decision.json",
+    "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 4, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
+  },
+  "payload": {
+    "primary_decision": {
+      "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
+      "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
+      "robot_id": "noetix-e1-lab-01",
+      "may_consume_moonrobo_simulation": false,
+      "decision": "NoetixSimulationBlocked",
+      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked and 50 source metadata blockers remain; hardware authority remains moonmoon-safety-gate-only",
+      "ready_artifact_count": 7,
+      "blocked_artifact_count": 4,
+      "metadata_blocker_count": 50,
+      "static_support_review_frame_count": 32,
+      "dynamic_stability_review_frame_count": 32,
+      "joint_control_review_frame_count": 32,
+      "inertial_collision_review_frame_count": 32,
+      "ready_artifacts": [
+        "noetix-source-model-audit",
+        "noetix-moonrobo-source-sync",
+        "noetix-endless-gait-window",
+        "noetix-endless-walk-trace",
+        "noetix-high-control-walk-command-plan",
+        "noetix-urdf-reference-link-poses",
+        "noetix-rabbita-playback"
+      ],
+      "blocked_artifacts": [
+        "noetix-static-support-review",
+        "noetix-dynamic-stability-review",
+        "noetix-joint-control-review",
+        "noetix-inertial-collision-review"
+      ],
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "hardware_denial_invariants": [
+        "hardware_state must remain HardwareDenied",
+        "hardware_authority must remain moonmoon-safety-gate-only",
+        "Noetix review decision must never issue hardware authority",
+        "MoonRobo simulation consumption requires all review artifacts ready and zero source metadata blockers"
+      ],
+      "next_action": "keep Noetix evidence in MoonClaw review; replace assumed source metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied"
+    },
+    "source_task": {
+      "task_id": "moonclaw/first-trusted-square/noetix-review-task",
+      "site_id": "first-trusted-square",
+      "robot_id": "noetix-e1-lab-01",
+      "priority": "High",
+      "state": "Accepted",
+      "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
+      "source_model_report_id": "moonrobo/noetix-e1/source-model/audit-v0",
+      "source_endless_gait_evidence_id": "moonrobo/noetix-e1/endless-gait/first-trusted-square-northeast-stepout-lola",
+      "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+      "source_walk_command_plan_id": "moonrobo/noetix-e1/high-control-walk-plan/first-trusted-square-northeast-stepout-lola",
+      "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
+      "source_dynamic_stability_report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
+      "source_joint_control_report_id": "moonrobo/noetix-e1/joint-control/first-trusted-square-northeast-stepout-lola",
+      "source_inertial_collision_report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
+      "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
+      "frame_count": 32,
+      "endless_gait_cycle_frames": 20,
+      "source_model_collision_tag_count": 0,
+      "source_model_inertial_tag_count": 0,
+      "source_model_missing_collision_link_count": 25,
+      "source_model_missing_inertial_link_count": 25,
+      "source_model_metadata_blocker_count": 50,
+      "static_support_review_frame_count": 32,
+      "dynamic_stability_review_frame_count": 32,
+      "joint_control_review_frame_count": 32,
+      "inertial_collision_review_frame_count": 32,
+      "link_pose_count_per_frame": 25,
+      "walk_command_segment_count": 3,
+      "hardware_state": "HardwareDenied",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "hardware_denied": true,
+      "inputs": [
+        {
+          "input_id": "noetix-source-model",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags."
+        },
+        {
+          "input_id": "noetix-endless-gait",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait."
+        },
+        {
+          "input_id": "noetix-walk-trace",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
+          "claim_kind": "Simulated",
+          "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases."
+        },
+        {
+          "input_id": "noetix-walk-command-plan",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonrobo high-control dry-run command plan for the Noetix walk trace."
+        },
+        {
+          "input_id": "noetix-link-poses",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
+          "claim_kind": "Simulated",
+          "summary": "URDF-reference link-pose trace bound to the walk frames and contact probes."
+        },
+        {
+          "input_id": "noetix-static-support",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+          "claim_kind": "Simulated",
+          "summary": "Static COM/support report that explicitly remains review-only for dynamic walking."
+        },
+        {
+          "input_id": "noetix-dynamic-stability",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+          "claim_kind": "Simulated",
+          "summary": "Capture-point dynamic stability report that remains review-only without controller and inertia evidence."
+        },
+        {
+          "input_id": "noetix-joint-control",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_control.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonphys joint-control replay over Noetix gait phases and URDF joint limits."
+        },
+        {
+          "input_id": "noetix-inertial-collision",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonphys inertial/collision review report over Noetix mass assumptions, shape bounds, terrain collisions, and self-contact manifolds."
+        },
+        {
+          "input_id": "noetix-rabbita-playback",
+          "evidence_path": "output/ui/rabbita/first_trusted_square.html",
+          "claim_kind": "Derived",
+          "summary": "Rabbita playback for inspecting the walk and link-pose skeleton."
+        }
+      ],
+      "artifacts": [
+        {
+          "artifact_id": "noetix-source-model-audit",
+          "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
+          "producer": "moon run cmd/main -- moonrobo noetix model json",
+          "required_state": "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
+          "current_state": "25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0; metadata blockers 50",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json"
+        },
+        {
+          "artifact_id": "noetix-moonrobo-source-sync",
+          "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
+          "producer": "moon run cmd/main -- moonrobo noetix model json && moon run cmd/main -- moonrobo noetix command json",
+          "required_state": "Cross-checks Moonmoon Noetix evidence against sibling Moonrobo robot.json and URDF source files",
+          "current_state": "24 URDF joints, 24 limits, 6 visuals, 0 collision tags, 0 inertial tags, 50 metadata blockers, command limit 0.25 m/s",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json"
+        },
+        {
+          "artifact_id": "noetix-endless-gait-window",
+          "path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+          "producer": "moon run cmd/main -- moonrobo noetix endless json",
+          "required_state": "Moonrobo evidence that the finite Noetix trace prefix is a window over an endless one-direction gait",
+          "current_state": "cycle 20 frames; frame 0 repeats at 20; forward offset 0.24 m; status endless-gait-window-verified",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json"
+        },
+        {
+          "artifact_id": "noetix-endless-walk-trace",
+          "path": "output/moonrobo/first_trusted_square_noetix_walk.json",
+          "producer": "moon run cmd/main -- moonrobo noetix walk json",
+          "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and URDF leg IK joint phases",
+          "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded leg IK",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json"
+        },
+        {
+          "artifact_id": "noetix-high-control-walk-command-plan",
+          "path": "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+          "producer": "moon run cmd/main -- moonrobo noetix command json",
+          "required_state": "Moonrobo high-control walk command plan segments the Noetix trace into dry-run approval windows",
+          "current_state": "3 dry-run segments; max x 0.12 m/s; duration limit 1500 ms; executable false; status walk-command-dry-run-review",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json"
+        },
+        {
+          "artifact_id": "noetix-urdf-reference-link-poses",
+          "path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
+          "producer": "moon run cmd/main -- moonrobo noetix poses json",
+          "required_state": "URDF-reference link poses are present for each Noetix walk frame",
+          "current_state": "32 frames; 25 links per frame; status review-only",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json"
+        },
+        {
+          "artifact_id": "noetix-static-support-review",
+          "path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+          "producer": "moon run cmd/main -- moonrobo noetix stability json",
+          "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
+          "current_state": "32/32 frames require support review; worst planar margin -0.035 m; status static-support-review",
+          "ready": false,
+          "blocking_reason": "static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
+        },
+        {
+          "artifact_id": "noetix-dynamic-stability-review",
+          "path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+          "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
+          "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
+          "current_state": "32/32 frames require capture-point review; worst capture margin -0.10787682825643309 m; status dynamic-stability-review",
+          "ready": false,
+          "blocking_reason": "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
+        },
+        {
+          "artifact_id": "noetix-joint-control-review",
+          "path": "output/moonrobo/first_trusted_square_noetix_control.json",
+          "producer": "moon run cmd/main -- moonrobo noetix control json",
+          "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+          "ready": false,
+          "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
+        },
+        {
+          "artifact_id": "noetix-inertial-collision-review",
+          "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+          "producer": "moon run cmd/main -- moonrobo noetix collision json",
+          "required_state": "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and conservative self-collision manifolds are present for review",
+          "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
+          "ready": false,
+          "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json"
+        },
+        {
+          "artifact_id": "noetix-rabbita-playback",
+          "path": "output/ui/rabbita/first_trusted_square.html",
+          "producer": "scripts/build_rabbita_ui.sh",
+          "required_state": "Rabbita renders Noetix walk, link-pose skeleton, frame controls, and simulation-only authority",
+          "current_state": "Noetix panel consumes walk and link-pose JSON with skeleton playback",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_rabbita_noetix_walk.py"
+        }
+      ],
+      "commands": [
+        "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
+        "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+        "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+        "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
+        "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+        "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
+        "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+        "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        "python3 scripts/check_rabbita_noetix_walk.py",
+        "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
+        "/Users/kq/.moon/bin/moon test"
+      ],
+      "acceptance_criteria": [
+        {
+          "criterion_id": "all-noetix-evidence-linked",
+          "description": "Task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback evidence with concrete validation commands."
+        },
+        {
+          "criterion_id": "source-model-gaps-preserved",
+          "description": "Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review."
+        },
+        {
+          "criterion_id": "moonrobo-source-sync-preserved",
+          "description": "Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts."
+        },
+        {
+          "criterion_id": "endless-gait-window-preserved",
+          "description": "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait."
+        },
+        {
+          "criterion_id": "review-only-static-support-preserved",
+          "description": "Static support review frames remain explicit blockers for dynamic walking evidence."
+        },
+        {
+          "criterion_id": "review-only-joint-control-preserved",
+          "description": "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated."
+        },
+        {
+          "criterion_id": "dry-run-walk-command-preserved",
+          "description": "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority."
+        },
+        {
+          "criterion_id": "review-only-inertial-collision-preserved",
+          "description": "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available."
+        },
+        {
+          "criterion_id": "hardware-denial-preserved",
+          "description": "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only."
+        },
+        {
+          "criterion_id": "next-physics-step-clear",
+          "description": "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims."
+        }
+      ],
+      "safety_gate": "Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+      "next_action": "Use this task to review source-model, endless-gait, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
+    }
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

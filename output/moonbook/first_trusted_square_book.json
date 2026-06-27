@@ -767,6 +767,15 @@
       "confidence": 0.58,
       "path": "moonclaw/first-trusted-square/noetix-review-task.json",
       "summary": "noetix-e1-lab-01 review task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback; source collision tags 0, source inertial tags 0, hardware authority moonmoon-safety-gate-only"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/noetix-readiness-decision",
+      "title": "MoonClaw Noetix simulation readiness decision for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawNoetixReadinessDecision",
+      "claim_kind": "Derived",
+      "confidence": 0.57,
+      "path": "moonclaw/first-trusted-square/noetix-readiness-decision.json",
+      "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 4, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
     }
   ],
   "review_queue": [

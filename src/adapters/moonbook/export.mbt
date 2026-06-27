@@ -41,6 +41,7 @@ pub(all) enum BookEntryKind {
   MoonClawProposal
   MoonClawTask
   MoonClawNoetixReviewTask
+  MoonClawNoetixReadinessDecision
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
@@ -184,6 +185,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawProposal => "moonclaw-proposal"
     MoonClawTask => "moonclaw-task"
     MoonClawNoetixReviewTask => "moonclaw-noetix-review-task"
+    MoonClawNoetixReadinessDecision => "moonclaw-noetix-readiness-decision"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
     MoonClawRemediationMarginRefreshFollowupTask =>
@@ -1121,6 +1123,22 @@ fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonclaw_noetix_readiness_decision_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let decision = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision()
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/noetix-readiness-decision",
+    title: "MoonClaw Noetix simulation readiness decision for \{dossier.site.name}",
+    kind: MoonClawNoetixReadinessDecision,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.57,
+    path: "moonclaw/\{dossier.site.site_id}/noetix-readiness-decision.json",
+    summary: "\{decision.robot_id} readiness decision is \{@moonclaw.noetix_simulation_readiness_decision_status_label(decision.decision)}; may consume MoonRobo simulation \{decision.may_consume_moonrobo_simulation}, blocked artifacts \{decision.blocked_artifact_count}, source metadata blockers \{decision.metadata_blocker_count}, hardware authority \{decision.hardware_authority}",
+  }
+}
+
+///|
 fn selected_route_clearance_entry(
   dossier : @site.SiteDossier,
   clearance_transitions : Array[@mission.MissionClearanceTransition],
@@ -2030,6 +2048,7 @@ fn book_entries(
   entries.push(moonrobo_noetix_inertial_collision_entry(dossier))
   entries.push(moonrobo_noetix_link_poses_entry(dossier))
   entries.push(moonclaw_noetix_review_task_entry(dossier))
+  entries.push(moonclaw_noetix_readiness_decision_entry(dossier))
   entries
 }
 
