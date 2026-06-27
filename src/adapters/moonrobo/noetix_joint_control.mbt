@@ -28,6 +28,18 @@ pub(all) struct NoetixJointControlFrame {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixHingeMotorTraceEvidence {
+  trace_id : String
+  frame_count : Int
+  driven_joint_count : Int
+  review_count : Int
+  max_angle_delta_rad : Double
+  max_velocity_delta_rad_s : Double
+  final_projected_body_count : Int
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixJointControlReport {
   report_id : String
   trace_id : String
@@ -41,6 +53,7 @@ pub(all) struct NoetixJointControlReport {
   hinge_joint_count_per_frame : Int
   hinge_motor_driven_frame_count : Int
   hinge_motor_driven_joint_count : Int
+  hinge_motor_trace : NoetixHingeMotorTraceEvidence
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
   max_abs_mechanical_power_w : Double
@@ -196,6 +209,34 @@ fn noetix_joint_control_step(
 }
 
 ///|
+fn noetix_hinge_motor_trace_evidence(
+  trace : NoetixMoonWalkTrace,
+  profile : NoetixPhysicsProfile,
+) -> NoetixHingeMotorTraceEvidence {
+  let motor_frames : Array[@moonphys.JointMotorFrame] = []
+  for index, _frame in trace.frames {
+    motor_frames.push(noetix_joint_motor_frame(trace, index, profile))
+  }
+  let initial = noetix_hinge_projection_frame(trace, 0, profile)
+  let motor_trace = @moonphys.rigid_body_world_integrate_hinge_motor_trace(
+    "noetix-e1/world-hinge-motor-trace/\{trace.terrain_tile_id}",
+    initial.world,
+    motor_frames,
+    note="Noetix gait phases replayed as a sequential Moonphys world hinge motor trace",
+  )
+  {
+    trace_id: motor_trace.trace_id,
+    frame_count: motor_trace.frame_count,
+    driven_joint_count: motor_trace.driven_joint_count,
+    review_count: motor_trace.review_count,
+    max_angle_delta_rad: motor_trace.max_abs_angle_delta_rad,
+    max_velocity_delta_rad_s: motor_trace.max_abs_velocity_delta_rad_s,
+    final_projected_body_count: motor_trace.final_world.motion_bodies.length(),
+    status: motor_trace.status,
+  }
+}
+
+///|
 fn joint_control_frame_status(
   saturated_count : Int,
   limit_review_count : Int,
@@ -268,6 +309,7 @@ pub fn noetix_joint_control_report(
   let mut total_abs_work = 0.0
   let mut joint_count_per_frame = 0
   let mut hinge_joint_count_per_frame = 0
+  let hinge_motor_trace = noetix_hinge_motor_trace_evidence(trace, profile)
   for index, _frame in trace.frames {
     let control_frame = noetix_joint_control_frame(trace, index, profile)
     if control_frame.saturated_joint_count > 0 {
@@ -332,6 +374,7 @@ pub fn noetix_joint_control_report(
     hinge_joint_count_per_frame,
     hinge_motor_driven_frame_count,
     hinge_motor_driven_joint_count,
+    hinge_motor_trace,
     max_abs_position_error_rad: max_position_error,
     max_abs_velocity_rad_s: max_velocity,
     max_abs_mechanical_power_w: max_power,
@@ -352,7 +395,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, and world hinge motor replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, and a sequential world hinge motor trace for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
   }
 }
 
@@ -383,6 +426,9 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge-review frames: \{report.hinge_review_frame_count}\n"
   text += "- hinge motor-driven frames: \{report.hinge_motor_driven_frame_count}\n"
   text += "- hinge motor-driven joints: \{report.hinge_motor_driven_joint_count}\n"
+  text += "- hinge motor trace frames: \{report.hinge_motor_trace.frame_count}\n"
+  text += "- hinge motor trace driven joints: \{report.hinge_motor_trace.driven_joint_count}\n"
+  text += "- hinge motor trace status: \{report.hinge_motor_trace.status}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"
   text += "- max mechanical power: \{report.max_abs_mechanical_power_w} W\n"

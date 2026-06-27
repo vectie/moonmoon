@@ -52,6 +52,8 @@ def main() -> None:
         fail("report note must mention Moonphys world hinge replay")
     if "world hinge motor replay" not in report.get("note", ""):
         fail("report note must mention Moonphys world hinge motor replay")
+    if "sequential world hinge motor trace" not in report.get("note", ""):
+        fail("report note must mention Moonphys sequential hinge motor trace")
     if report.get("hinge_joint_frame_count") != len(frames):
         fail("hinge joint frame count must match report frames")
     if report.get("hinge_joint_count_per_frame") != 24:
@@ -60,6 +62,17 @@ def main() -> None:
         fail("all frames should drive matching Moonphys world hinge motors")
     if report.get("hinge_motor_driven_joint_count", 0) <= 0:
         fail("hinge motor driven joint count must be present")
+    hinge_motor_trace = report.get("hinge_motor_trace", {})
+    if hinge_motor_trace.get("frame_count") != len(frames):
+        fail("hinge motor trace must replay every report frame")
+    if hinge_motor_trace.get("driven_joint_count") != report.get(
+        "hinge_motor_driven_joint_count"
+    ):
+        fail("hinge motor trace driven count must match frame summary")
+    if hinge_motor_trace.get("final_projected_body_count") != 25:
+        fail("hinge motor trace should preserve all projected Noetix bodies")
+    if "world-hinge-motor-trace" not in hinge_motor_trace.get("status", ""):
+        fail("hinge motor trace must expose Moonphys trace status")
     if report.get("hinge_review_frame_count", -1) < 0:
         fail("hinge review frame count must be present")
     if report.get("max_hinge_position_error_m", -1) < 0:

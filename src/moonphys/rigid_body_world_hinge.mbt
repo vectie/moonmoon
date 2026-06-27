@@ -60,6 +60,21 @@ pub(all) struct RigidBodyWorldHingeMotorFrame {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyWorldHingeMotorTrace {
+  trace_id : String
+  frame_count : Int
+  driven_joint_count : Int
+  review_count : Int
+  max_abs_angle_delta_rad : Double
+  max_abs_velocity_delta_rad_s : Double
+  initial_world : RigidBodyHeightfieldWorld
+  frames : Array[RigidBodyWorldHingeMotorFrame]
+  final_world : RigidBodyHeightfieldWorld
+  status : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn angular_correction_basis(correction_rad : Vec3) -> Basis3 {
   let angle = correction_rad.length()
   if angle > 0.0 {
@@ -424,6 +439,23 @@ fn rigid_body_world_hinge_motor_frame_status(
 }
 
 ///|
+fn rigid_body_world_hinge_motor_trace_status(
+  frame_count : Int,
+  driven_count : Int,
+  review_count : Int,
+) -> String {
+  if frame_count == 0 {
+    "world-hinge-motor-trace-empty"
+  } else if review_count > 0 {
+    "world-hinge-motor-trace-review"
+  } else if driven_count > 0 {
+    "world-hinge-motor-trace-driven"
+  } else {
+    "world-hinge-motor-trace-idle"
+  }
+}
+
+///|
 pub fn rigid_body_world_integrate_hinge_motors(
   world : RigidBodyHeightfieldWorld,
   motor_frame : JointMotorFrame,
@@ -491,6 +523,54 @@ pub fn rigid_body_world_integrate_hinge_motors(
     status: rigid_body_world_hinge_motor_frame_status(
       driven_count, review_count, hinge_resolution,
     ),
+  }
+}
+
+///|
+pub fn rigid_body_world_integrate_hinge_motor_trace(
+  trace_id : String,
+  initial_world : RigidBodyHeightfieldWorld,
+  motor_frames : Array[JointMotorFrame],
+  note? : String = "",
+) -> RigidBodyWorldHingeMotorTrace {
+  let frames : Array[RigidBodyWorldHingeMotorFrame] = []
+  let mut world = initial_world
+  let mut driven_count = 0
+  let mut review_count = 0
+  let mut max_angle_delta = 0.0
+  let mut max_velocity_delta = 0.0
+  for motor_frame in motor_frames {
+    let frame = rigid_body_world_integrate_hinge_motors(world, motor_frame)
+    frames.push(frame)
+    driven_count += frame.driven_joint_count
+    review_count += frame.review_count
+    if frame.hinge_constraint_resolution.status.contains("review") {
+      review_count += 1
+    }
+    if frame.max_abs_angle_delta_rad > max_angle_delta {
+      max_angle_delta = frame.max_abs_angle_delta_rad
+    }
+    if frame.max_abs_velocity_delta_rad_s > max_velocity_delta {
+      max_velocity_delta = frame.max_abs_velocity_delta_rad_s
+    }
+    world = frame.after
+  }
+  {
+    trace_id,
+    frame_count: frames.length(),
+    driven_joint_count: driven_count,
+    review_count,
+    max_abs_angle_delta_rad: max_angle_delta,
+    max_abs_velocity_delta_rad_s: max_velocity_delta,
+    initial_world,
+    frames,
+    final_world: world,
+    status: rigid_body_world_hinge_motor_trace_status(
+      frames.length(),
+      driven_count,
+      review_count,
+    ),
+    note,
   }
 }
 

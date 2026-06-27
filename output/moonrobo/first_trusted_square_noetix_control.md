@@ -12,6 +12,9 @@
 - hinge-review frames: 1
 - hinge motor-driven frames: 32
 - hinge motor-driven joints: 766
+- hinge motor trace frames: 32
+- hinge motor trace driven joints: 766
+- hinge motor trace status: world-hinge-motor-trace-review
 - max position error: 0.24289082981102283 rad
 - max target velocity: 3.2776127345306216 rad/s
 - max mechanical power: 44.24777191616341 W
@@ -25,7 +28,7 @@
 - absolute joint work: 95.11007647969384 J
 - status: joint-control-limit-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, and world hinge motor replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.
+- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, and a sequential world hinge motor trace for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.
 
 ## Frame Joint Control
 

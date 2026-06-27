@@ -472,6 +472,17 @@ pub(all) struct NoetixHingeJointFrameEvidence {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixHingeMotorTraceEvidence {
+  trace_id : String
+  frame_count : Int
+  driven_joint_count : Int
+  review_count : Int
+  max_angle_delta_rad : Double
+  max_velocity_delta_rad_s : Double
+  final_projected_body_count : Int
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixInertialCollisionFrame {
   frame_index : Int
   time_s : Double
@@ -553,6 +564,7 @@ pub(all) struct NoetixJointControlReport {
   hinge_joint_count_per_frame : Int
   hinge_motor_driven_frame_count : Int
   hinge_motor_driven_joint_count : Int
+  hinge_motor_trace : NoetixHingeMotorTraceEvidence
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
   max_abs_mechanical_power_w : Double

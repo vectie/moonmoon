@@ -212,12 +212,17 @@ fn noetix_hinge_projection_world(
 }
 
 ///|
-pub fn noetix_hinge_joint_frame_evidence(
+priv struct NoetixHingeProjectionFrame {
+  assessment : @moonphys.RigidBodyHingeJointFrameAssessment
+  world : @moonphys.RigidBodyHeightfieldWorld
+}
+
+///|
+fn noetix_hinge_projection_frame(
   trace : NoetixMoonWalkTrace,
   frame_index : Int,
   profile : NoetixPhysicsProfile,
-  motor_frame : @moonphys.JointMotorFrame,
-) -> NoetixHingeJointFrameEvidence {
+) -> NoetixHingeProjectionFrame {
   let frame = trace.frames[frame_index]
   let previous = previous_frame(trace, frame_index)
   let dt_s = frame_dt_s(trace, frame_index)
@@ -283,12 +288,28 @@ pub fn noetix_hinge_joint_frame_evidence(
     bodies,
     joints,
   )
+  let world = noetix_hinge_projection_world(frame, bodies, joints)
+  { assessment, world }
+}
+
+///|
+pub fn noetix_hinge_joint_frame_evidence(
+  trace : NoetixMoonWalkTrace,
+  frame_index : Int,
+  profile : NoetixPhysicsProfile,
+  motor_frame : @moonphys.JointMotorFrame,
+) -> NoetixHingeJointFrameEvidence {
+  let projection = noetix_hinge_projection_frame(trace, frame_index, profile)
   let world_resolution = @moonphys.rigid_body_world_resolve_hinge_constraints(
-    noetix_hinge_projection_world(frame, bodies, joints),
+    projection.world,
   )
   let motor_resolution = @moonphys.rigid_body_world_integrate_hinge_motors(
-    noetix_hinge_projection_world(frame, bodies, joints),
+    projection.world,
     motor_frame,
   )
-  summarize_hinge_joint_frame(assessment, world_resolution, motor_resolution)
+  summarize_hinge_joint_frame(
+    projection.assessment,
+    world_resolution,
+    motor_resolution,
+  )
 }
