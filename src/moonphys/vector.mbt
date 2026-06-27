@@ -31,6 +31,15 @@ pub fn Vec3::dot(self : Vec3, other : Vec3) -> Double {
 }
 
 ///|
+pub fn Vec3::cross(self : Vec3, other : Vec3) -> Vec3 {
+  vec3(
+    self.y * other.z - self.z * other.y,
+    self.z * other.x - self.x * other.z,
+    self.x * other.y - self.y * other.x,
+  )
+}
+
+///|
 pub fn Vec3::length_squared(self : Vec3) -> Double {
   self.dot(self)
 }

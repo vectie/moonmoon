@@ -7,9 +7,15 @@ import {
 }
 
 // Values
+pub fn angular_acceleration(RigidBodyInertia, Vec3) -> Vec3
+
+pub fn angular_momentum(RigidBodyInertia, RigidBodyAngularState) -> Vec3
+
 pub fn axis_angle_basis3(Vec3, Double) -> Basis3
 
 pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
+
+pub fn contact_torque(Vec3, Vec3, Vec3) -> Vec3
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
 
@@ -18,6 +24,8 @@ pub fn heightfield_collision(Heightfield, RigidBodyState) -> HeightfieldCollisio
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
 
 pub fn identity_basis3() -> Basis3
+
+pub fn integrate_angular_rigid_body(RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularStep) -> RigidBodyAngularState
 
 pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
 
@@ -37,9 +45,13 @@ pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
 
+pub fn rigid_body_angular_state(String, Basis3, Vec3) -> RigidBodyAngularState
+
 pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Vec3) -> RigidBodyHeightfieldFrame
 
 pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
+
+pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
@@ -169,6 +181,17 @@ pub(all) struct PhysicsTrace {
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyAngularState {
+  body_id : String
+  orientation : Basis3
+  angular_velocity_rad_s : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyAngularStep {
+  dt_s : Double
+  torque_nm : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyHeightfieldFrame {
   frame_index : Int
   time_s : Double
@@ -190,6 +213,11 @@ pub(all) struct RigidBodyHeightfieldTrace {
   final_state : RigidBodyState
   status : String
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyInertia {
+  body_id : String
+  diagonal_kg_m2 : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyState {
@@ -235,6 +263,7 @@ pub(all) struct Vec3 {
   z : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 pub fn Vec3::add(Self, Self) -> Self
+pub fn Vec3::cross(Self, Self) -> Self
 pub fn Vec3::dot(Self, Self) -> Double
 pub fn Vec3::length_squared(Self) -> Double
 pub fn Vec3::scale(Self, Double) -> Self

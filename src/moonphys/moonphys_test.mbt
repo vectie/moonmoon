@@ -5,6 +5,9 @@ test "vec3 math is deterministic" {
   assert_true(a.add(b) == vec3(5.0, 7.0, 9.0))
   assert_true(b.sub(a) == vec3(3.0, 3.0, 3.0))
   assert_true(a.scale(2.0) == vec3(2.0, 4.0, 6.0))
+  assert_true(
+    vec3(1.0, 0.0, 0.0).cross(vec3(0.0, 1.0, 0.0)) == vec3(0.0, 0.0, 1.0),
+  )
   inspect(a.dot(b), content="32")
 }
 
@@ -192,6 +195,50 @@ test "rigid body heightfield trace keeps stable prefixes" {
   assert_true(prefix.frames[0] == longer.frames[0])
   assert_true(prefix.frames[1] == longer.frames[1])
   assert_true(prefix.final_state == longer.frames[1].after)
+}
+
+///|
+test "angular acceleration uses diagonal inertia" {
+  let inertia = rigid_body_inertia("body", vec3(2.0, 4.0, 8.0))
+  let acceleration = angular_acceleration(inertia, vec3(4.0, 4.0, 4.0))
+  assert_true(acceleration == vec3(2.0, 1.0, 0.5))
+}
+
+///|
+test "angular rigid body integration applies torque semi implicitly" {
+  let inertia = rigid_body_inertia("body", vec3(2.0, 2.0, 2.0))
+  let state = rigid_body_angular_state(
+    "body",
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let stepped = integrate_angular_rigid_body(state, inertia, {
+    dt_s: 0.5,
+    torque_nm: vec3(0.0, 0.0, 4.0),
+  })
+  let rotated = stepped.orientation.mul_vec3(vec3(1.0, 0.0, 0.0))
+  assert_true(stepped.angular_velocity_rad_s == vec3(0.0, 0.0, 1.0))
+  assert_true(nearly_equal(rotated.x, @math.cos(0.5)))
+  assert_true(nearly_equal(rotated.y, @math.sin(0.5)))
+}
+
+///|
+test "angular momentum and contact torque are deterministic" {
+  let inertia = rigid_body_inertia("body", vec3(2.0, 4.0, 8.0))
+  let state = rigid_body_angular_state(
+    "body",
+    identity_basis3(),
+    vec3(1.0, 2.0, 3.0),
+  )
+  assert_true(angular_momentum(inertia, state) == vec3(2.0, 8.0, 24.0))
+  assert_true(
+    contact_torque(
+      vec3(0.0, 0.0, 0.0),
+      vec3(0.0, 1.0, 0.0),
+      vec3(1.0, 0.0, 0.0),
+    ) ==
+    vec3(0.0, 0.0, -1.0),
+  )
 }
 
 ///|
