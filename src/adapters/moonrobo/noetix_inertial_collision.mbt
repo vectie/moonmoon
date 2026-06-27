@@ -24,6 +24,7 @@ pub(all) struct NoetixInertialCollisionFrame {
   center_of_mass : @moonphys.Vec3
   inertia : @moonphys.RigidBodyInertia
   support_contact_torque_nm : @moonphys.Vec3
+  support_contact_wrenches : Array[@moonphys.ContactPatchWrenchAssessment]
   shape_count : Int
   terrain_contact_count : Int
   terrain_review_count : Int
@@ -171,12 +172,12 @@ fn terrain_collision_evidence(
 }
 
 ///|
-fn support_contact_torque(
+fn support_contact_wrenches(
   field : @moonphys.Heightfield,
   frame : NoetixMoonWalkFrame,
   profile : NoetixPhysicsProfile,
   center_of_mass : @moonphys.Vec3,
-) -> @moonphys.Vec3 {
+) -> Array[@moonphys.ContactPatchWrenchAssessment] {
   let left_geometry = foot_geometry(profile, "left-foot")
   let right_geometry = foot_geometry(profile, "right-foot")
   let load = @moonphys.support_load_assessment(
@@ -205,9 +206,17 @@ fn support_contact_torque(
     center_of_mass,
     right_patch.average_surface_normal,
   )
+  [left_wrench, right_wrench]
+}
+
+///|
+fn support_contact_torque(
+  wrenches : Array[@moonphys.ContactPatchWrenchAssessment],
+) -> @moonphys.Vec3 {
   let mut torque = @moonphys.vec3(0.0, 0.0, 0.0)
-  torque = torque.add(left_wrench.total_torque_nm)
-  torque = torque.add(right_wrench.total_torque_nm)
+  for wrench in wrenches {
+    torque = torque.add(wrench.total_torque_nm)
+  }
   torque
 }
 
@@ -329,15 +338,17 @@ pub fn noetix_inertial_collision_frame(
   let resolution = self_contact_resolution(
     profile, center_of_mass, body_velocity, manifold,
   )
+  let support_wrenches = support_contact_wrenches(
+    field, walk_frame, profile, center_of_mass,
+  )
   {
     frame_index: walk_frame.frame_index,
     time_s: walk_frame.time_s,
     support_phase: walk_frame.support_phase,
     center_of_mass,
     inertia,
-    support_contact_torque_nm: support_contact_torque(
-      field, walk_frame, profile, center_of_mass,
-    ),
+    support_contact_torque_nm: support_contact_torque(support_wrenches),
+    support_contact_wrenches: support_wrenches,
     shape_count: shapes.length(),
     terrain_contact_count,
     terrain_review_count,

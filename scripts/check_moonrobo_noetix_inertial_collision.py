@@ -73,6 +73,26 @@ def main(argv: list[str]) -> int:
   require(first["shape_count"] == report["shapes_per_frame"], "shape count mismatch")
   require(first["inertia"]["body_id"].endswith("assumed-diagonal-inertia"), "inertia id")
   require(first["inertia"]["diagonal_kg_m2"]["x"] > 0, "inertia x")
+  support_wrenches = first.get("support_contact_wrenches", [])
+  require(len(support_wrenches) == 2, "missing per-foot support wrenches")
+  require(
+    any(
+      wrench["status"] == "patch-wrench-resolved"
+      and wrench["loaded_sample_count"] > 0
+      and wrench["normal_force_n"] > 0
+      for wrench in support_wrenches
+    ),
+    "missing loaded support wrench",
+  )
+  require(
+    all(
+      "center_of_pressure" in wrench
+      and "total_force_n" in wrench
+      and "total_torque_nm" in wrench
+      for wrench in support_wrenches
+    ),
+    "incomplete support wrench evidence",
+  )
   require(len(first["terrain_collisions"]) == 2, "terrain foot probes")
   require(
     all(

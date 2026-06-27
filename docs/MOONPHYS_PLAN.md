@@ -49,8 +49,8 @@ evidence.
   missing-visual-geometry status when the URDF link has no visual block.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
-  patch-load contact wrench torque, narrow-phase self-collision manifolds, and
-  generic multi-contact manifold resolution with impulse accounting.
+  per-foot patch-load contact wrenches, narrow-phase self-collision manifolds,
+  and generic multi-contact manifold resolution with impulse accounting.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -474,15 +474,15 @@ remains future work. Moonrobo's Noetix source-model audit now records
 URDF/profile paths, visual geometry, concrete joint-limit records, and the
 absence of authoritative collision/inertial tags. Moonrobo's Noetix URDF joint
 limits are carried from the source audit into the robot-specific profile as
-Moonphys joint limits. Noetix
-joint-control review evidence replays the gait phases through Moonphys joint
+Moonphys joint limits. Noetix joint-control review evidence replays the gait
+phases through Moonphys joint
 servo, torque, velocity, position limits, and mechanical power/work accounting.
 Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys diagonal inertia, collision bounds, terrain collision probes,
-patch-load contact wrench torque, narrow-phase self-collision manifolds, generic
-manifold resolution, impulse accounting, and traction margin review. Mass, inertia, and
-authoritative collision tags are still absent from the referenced model, so the
-evidence remains review-only.
+per-foot patch-load contact wrenches, narrow-phase self-collision manifolds,
+generic manifold resolution, impulse accounting, and traction margin review.
+Mass, inertia, and authoritative collision tags are still absent from the
+referenced model, so the evidence remains review-only.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 

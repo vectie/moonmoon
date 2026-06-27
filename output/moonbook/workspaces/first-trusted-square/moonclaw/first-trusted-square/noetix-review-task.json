@@ -62367,6 +62367,70 @@
             "y": 14.034183763939375,
             "z": 1.948509447844823
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0,
+                "y": 0,
+                "z": 337.752
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.880574728477932,
+                "y": 14.034183763939375,
+                "z": 1.948509447844823
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0,
+                "y": 0,
+                "z": 337.752
+              },
+              "surface_normal": {
+                "x": -0.8017288008935337,
+                "y": 0.08170180681507268,
+                "z": 0.5920774819066922
+              },
+              "center_of_pressure": {
+                "x": -0.039999999999999994,
+                "y": -0.0823856274383835,
+                "z": 336.87190184
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -63488,6 +63552,70 @@
             "y": 14.551996026146993,
             "z": 1.7803227942894666
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.012,
+                "y": 0,
+                "z": 337.7458326
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.79413519788342,
+                "y": 14.551996026146993,
+                "z": 1.7803227942894666
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.012,
+                "y": 0,
+                "z": 337.7458326
+              },
+              "surface_normal": {
+                "x": -0.8017308120507886,
+                "y": 0.08167130260411046,
+                "z": 0.5920789671482438
+              },
+              "center_of_pressure": {
+                "x": -0.013333333333333322,
+                "y": -0.0823847293652352,
+                "z": 336.90801102399996
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -64609,6 +64737,70 @@
             "y": 15.069808288353268,
             "z": 1.6121361407341097
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.024,
+                "y": 0,
+                "z": 337.7396652
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.707695667288112,
+                "y": 15.069808288353268,
+                "z": 1.6121361407341097
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.024,
+                "y": 0,
+                "z": 337.7396652
+              },
+              "surface_normal": {
+                "x": -0.38640831043964624,
+                "y": 0.12597626171595863,
+                "z": 0.9136840805810564
+              },
+              "center_of_pressure": {
+                "x": 0.013333333333333336,
+                "y": -0.08302992145816572,
+                "z": 336.94412020799996
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -65730,6 +65922,70 @@
             "y": 15.587620550560885,
             "z": 1.4439494871787533
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.036,
+                "y": 0,
+                "z": 337.7334978
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.6212561366936,
+                "y": 15.587620550560885,
+                "z": 1.4439494871787533
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.036,
+                "y": 0,
+                "z": 337.7334978
+              },
+              "surface_normal": {
+                "x": -0.3864111495328308,
+                "y": 0.12597330947811713,
+                "z": 0.9136832869303492
+              },
+              "center_of_pressure": {
+                "x": 0.039999999999999994,
+                "y": -0.08791147111167585,
+                "z": 336.98720053517036
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -66851,6 +67107,70 @@
             "y": 16.10543281276851,
             "z": 1.2757628336233968
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.048,
+                "y": 0,
+                "z": 337.7273304
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.534816606099088,
+                "y": 16.10543281276851,
+                "z": 1.2757628336233968
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.048,
+                "y": 0,
+                "z": 337.7273304
+              },
+              "surface_normal": {
+                "x": -0.3864139888719855,
+                "y": 0.12597035690224223,
+                "z": 0.9136824932031712
+              },
+              "center_of_pressure": {
+                "x": -0.043333333333333335,
+                "y": -0.08,
+                "z": 337.0286549248856
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -67972,6 +68292,70 @@
             "y": 16.623245074974783,
             "z": 1.1075761800680402
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.06,
+                "y": 0,
+                "z": 337.721163
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.44837707550378,
+                "y": 16.623245074974783,
+                "z": 1.1075761800680402
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.06,
+                "y": 0,
+                "z": 337.721163
+              },
+              "surface_normal": {
+                "x": -0.38641682845708636,
+                "y": 0.1259674039882923,
+                "z": 0.9136816993995324
+              },
+              "center_of_pressure": {
+                "x": -0.016666666666666663,
+                "y": -0.08,
+                "z": 337.0647641088856
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -69093,6 +69477,70 @@
             "y": 17.141057337182403,
             "z": 0.9393895265126836
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.072,
+                "y": 0,
+                "z": 337.7149956
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.361937544909269,
+                "y": 17.141057337182403,
+                "z": 0.9393895265126836
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.072,
+                "y": 0,
+                "z": 337.7149956
+              },
+              "surface_normal": {
+                "x": -0.06258411111640369,
+                "y": 0.13629993231259296,
+                "z": 0.9886888072024242
+              },
+              "center_of_pressure": {
+                "x": 0.009999999999999981,
+                "y": -0.08,
+                "z": 337.0768490211703
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -70214,6 +70662,70 @@
             "y": 17.65886959939002,
             "z": 0.7712028729573269
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.084,
+                "y": 0,
+                "z": 337.7088282
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.275498014314756,
+                "y": 17.65886959939002,
+                "z": 0.7712028729573269
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.084,
+                "y": 0,
+                "z": 337.7088282
+              },
+              "surface_normal": {
+                "x": -0.06258690163251884,
+                "y": 0.1363151575418112,
+                "z": 0.9886865314994397
+              },
+              "center_of_pressure": {
+                "x": 0.03666666666666668,
+                "y": -0.08,
+                "z": 337.0561762193333
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -71335,6 +71847,70 @@
             "y": 18.1766818615963,
             "z": 0.6030162194019704
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.096,
+                "y": 0,
+                "z": 337.7026608
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.189058483719448,
+                "y": 18.1766818615963,
+                "z": 0.6030162194019704
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.096,
+                "y": 0,
+                "z": 337.7026608
+              },
+              "surface_normal": {
+                "x": -0.06258969239266941,
+                "y": 0.13633038236365633,
+                "z": 0.9886842555896045
+              },
+              "center_of_pressure": {
+                "x": 0.06333333333333332,
+                "y": -0.08,
+                "z": 337.0424745606666
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -72456,6 +73032,70 @@
             "y": 18.694494123803917,
             "z": 0.43482956584661364
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.10800000000000001,
+                "y": 0,
+                "z": 337.6964934
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": 0.08,
+                "y": 0.035,
+                "z": 336.97107363000003
+              },
+              "total_force_n": {
+                "x": -23.636145451688925,
+                "y": 14.015554462946382,
+                "z": 55.29881880549339
+              },
+              "total_torque_nm": {
+                "x": 12.102618953124937,
+                "y": 18.694494123803917,
+                "z": 0.43482956584661364
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 1,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.10800000000000001,
+                "y": 0,
+                "z": 337.6964934
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": 0.09,
+                "y": -0.08,
+                "z": 337.028772902
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -73577,6 +74217,70 @@
             "y": 11.22779797767663,
             "z": -1.5441769864943358
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.12,
+                "y": 0,
+                "z": 337.690326
+              },
+              "surface_normal": {
+                "x": -0.38277158626216884,
+                "y": 0.22697254191006286,
+                "z": 0.8955274300484759
+              },
+              "center_of_pressure": {
+                "x": -0.03,
+                "y": 0.08,
+                "z": 337.00307363
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.12,
+                "y": 0,
+                "z": 337.690326
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": 0.06647712566175334,
+                "y": 11.22779797767663,
+                "z": -1.5441769864943358
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -74698,6 +75402,70 @@
             "y": 11.936573793996155,
             "z": -1.6452090811168936
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.13199999999999998,
+                "y": 0,
+                "z": 337.6841586
+              },
+              "surface_normal": {
+                "x": -0.3827628731734015,
+                "y": 0.22693097969477066,
+                "z": 0.8955416871228352
+              },
+              "center_of_pressure": {
+                "x": -0.003333333333333334,
+                "y": 0.08,
+                "z": 337.0391824033333
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.13199999999999998,
+                "y": 0,
+                "z": 337.6841586
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": 0.014551680630169539,
+                "y": 11.936573793996155,
+                "z": -1.6452090811168936
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -75819,6 +76587,70 @@
             "y": 12.645349610315904,
             "z": -1.746241175739452
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.144,
+                "y": 0,
+                "z": 337.6779912
+              },
+              "surface_normal": {
+                "x": -0.0650398700783873,
+                "y": 0.24506525606254267,
+                "z": 0.9673225085622618
+              },
+              "center_of_pressure": {
+                "x": 0.02333333333333333,
+                "y": 0.08,
+                "z": 337.0317150006666
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.144,
+                "y": 0,
+                "z": 337.6779912
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.03737376440093598,
+                "y": 12.645349610315904,
+                "z": -1.746241175739452
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -76940,6 +77772,70 @@
             "y": 13.354125426635655,
             "z": -1.847273270362011
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.15600000000000003,
+                "y": 0,
+                "z": 337.6718238
+              },
+              "surface_normal": {
+                "x": -0.06502764521063163,
+                "y": 0.2449816338705876,
+                "z": 0.967344511756002
+              },
+              "center_of_pressure": {
+                "x": 0.04999999999999999,
+                "y": 0.08,
+                "z": 337.02499357317026
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.15600000000000003,
+                "y": 0,
+                "z": 337.6718238
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.08929920943204106,
+                "y": 13.354125426635655,
+                "z": -1.847273270362011
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -78061,6 +78957,70 @@
             "y": 14.06290124295518,
             "z": -1.9483053649845687
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.168,
+                "y": 0,
+                "z": 337.6656564
+              },
+              "surface_normal": {
+                "x": -0.0650154257868961,
+                "y": 0.24489800291880492,
+                "z": 0.9673665089179642
+              },
+              "center_of_pressure": {
+                "x": 0.07666666666666666,
+                "y": 0.08,
+                "z": 337.0166462082189
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.168,
+                "y": 0,
+                "z": 337.6656564
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.14122465446362487,
+                "y": 14.06290124295518,
+                "z": -1.9483053649845687
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -79182,6 +80142,70 @@
             "y": 14.77167705927493,
             "z": -2.049337459607127
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.18,
+                "y": 0,
+                "z": 337.659489
+              },
+              "surface_normal": {
+                "x": -0.0650032118087396,
+                "y": 0.24481436321025785,
+                "z": 0.9673885000456147
+              },
+              "center_of_pressure": {
+                "x": -0.006666666666666668,
+                "y": 0.035,
+                "z": 337.0029536375522
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.18,
+                "y": 0,
+                "z": 337.659489
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.1931500994947304,
+                "y": 14.77167705927493,
+                "z": -2.049337459607127
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -80303,6 +81327,70 @@
             "y": 15.480452875594676,
             "z": -2.1503695542296857
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.192,
+                "y": 0,
+                "z": 337.6533216
+              },
+              "surface_normal": {
+                "x": 0.445626144609196,
+                "y": 0.21959025645839048,
+                "z": 0.8678694939386236
+              },
+              "center_of_pressure": {
+                "x": 0.019999999999999976,
+                "y": 0.050663514819841715,
+                "z": 336.9839158611702
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.192,
+                "y": 0,
+                "z": 337.6533216
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.24507554452583546,
+                "y": 15.480452875594676,
+                "z": -2.1503695542296857
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -81424,6 +82512,70 @@
             "y": 16.18922869191421,
             "z": -2.2514016488522435
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.20400000000000001,
+                "y": 0,
+                "z": 337.6471542
+              },
+              "surface_normal": {
+                "x": 0.4456396894006664,
+                "y": 0.21945847260840487,
+                "z": 0.8678958728046031
+              },
+              "center_of_pressure": {
+                "x": 0.046666666666666676,
+                "y": 0.05903019706961755,
+                "z": 336.9632521473333
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.20400000000000001,
+                "y": 0,
+                "z": 337.6471542
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.29700098955741927,
+                "y": 16.18922869191421,
+                "z": -2.2514016488522435
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -82545,6 +83697,70 @@
             "y": 16.898004508233953,
             "z": -2.352433743474802
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.21600000000000003,
+                "y": 0,
+                "z": 337.6409868
+              },
+              "surface_normal": {
+                "x": 0.44565322688328957,
+                "y": 0.21932667674478676,
+                "z": 0.8679222374363956
+              },
+              "center_of_pressure": {
+                "x": 0.07333333333333332,
+                "y": 0.05904339276142696,
+                "z": 336.9495595766666
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.21600000000000003,
+                "y": 0,
+                "z": 337.6409868
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.3489264345885248,
+                "y": 16.898004508233953,
+                "z": -2.352433743474802
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -83666,6 +84882,70 @@
             "y": 17.6067803245537,
             "z": -2.45346583809736
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.22799999999999998,
+                "y": 0,
+                "z": 337.6348194
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.059056588453264273,
+                "z": 336.93586700599997
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.22799999999999998,
+                "y": 0,
+                "z": 337.6348194
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": -0.020000000000000004,
+                "y": -0.09455655840634282,
+                "z": 336.996772902
+              },
+              "total_force_n": {
+                "x": -3.8650858497543106,
+                "y": 8.41934121854652,
+                "z": 61.05111223245416
+              },
+              "total_torque_nm": {
+                "x": -0.40085187961962987,
+                "y": 17.6067803245537,
+                "z": -2.45346583809736
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -84787,6 +86067,70 @@
             "y": -12.442611139710785,
             "z": -3.8467118191230103
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.24,
+                "y": 0,
+                "z": 337.628652
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.61130152155112,
+                "y": -12.442611139710785,
+                "z": -3.8467118191230103
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.24,
+                "y": 0,
+                "z": 337.628652
+              },
+              "surface_normal": {
+                "x": -0.06259248339683095,
+                "y": 0.13634560677808133,
+                "z": 0.9886819794729418
+              },
+              "center_of_pressure": {
+                "x": 0.09,
+                "y": -0.08,
+                "z": 337.028772902
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -85908,6 +87252,70 @@
             "y": -11.629734867656222,
             "z": -4.00913521695812
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.252,
+                "y": 0,
+                "z": 337.6224846
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.527824016234021,
+                "y": -11.629734867656222,
+                "z": -4.00913521695812
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.252,
+                "y": 0,
+                "z": 337.6224846
+              },
+              "surface_normal": {
+                "x": 0.45361536502309613,
+                "y": 0.1217448561662663,
+                "z": 0.8828427326608168
+              },
+              "center_of_pressure": {
+                "x": 0.006666666666666654,
+                "y": -0.09137329679360122,
+                "z": 337.0150712433333
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -87029,6 +88437,70 @@
             "y": -10.816858595601662,
             "z": -4.171558614793228
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.26399999999999996,
+                "y": 0,
+                "z": 337.6163172
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.44434651091692,
+                "y": -10.816858595601662,
+                "z": -4.171558614793228
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.26399999999999996,
+                "y": 0,
+                "z": 337.6163172
+              },
+              "surface_normal": {
+                "x": 0.45361312517388824,
+                "y": 0.12178480672633397,
+                "z": 0.8828383733847369
+              },
+              "center_of_pressure": {
+                "x": 0.03333333333333331,
+                "y": -0.09137709032934069,
+                "z": 337.00136958466663
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -88150,6 +89622,70 @@
             "y": -10.003982323545536,
             "z": -4.333982012628338
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.27599999999999997,
+                "y": 0,
+                "z": 337.6101498
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.360869005599053,
+                "y": -10.003982323545536,
+                "z": -4.333982012628338
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.27599999999999997,
+                "y": 0,
+                "z": 337.6101498
+              },
+              "surface_normal": {
+                "x": 0.4536108846119307,
+                "y": 0.12182475669450875,
+                "z": 0.8828340127214774
+              },
+              "center_of_pressure": {
+                "x": 0.059999999999999984,
+                "y": -0.09590201857513571,
+                "z": 336.99463906917026
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -89271,6 +90807,70 @@
             "y": -9.191106051490973,
             "z": -4.496405410463447
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.288,
+                "y": 0,
+                "z": 337.6039824
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.277391500281952,
+                "y": -9.191106051490973,
+                "z": -4.496405410463447
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.288,
+                "y": 0,
+                "z": 337.6039824
+              },
+              "surface_normal": {
+                "x": 0.45360864333725565,
+                "y": 0.12186470607060809,
+                "z": 0.8828296506711014
+              },
+              "center_of_pressure": {
+                "x": 0.08666666666666667,
+                "y": -0.10287510909266726,
+                "z": 336.9862826162189
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -90392,6 +91992,70 @@
             "y": -8.378229779436408,
             "z": -4.6588288082985585
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.30000000000000004,
+                "y": 0,
+                "z": 337.597815
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.193913994964852,
+                "y": -8.378229779436408,
+                "z": -4.6588288082985585
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.30000000000000004,
+                "y": 0,
+                "z": 337.597815
+              },
+              "surface_normal": {
+                "x": 0.4536064013498956,
+                "y": 0.12190465485444958,
+                "z": 0.8828252872336717
+              },
+              "center_of_pressure": {
+                "x": 0.11333333333333333,
+                "y": -0.10288273140300049,
+                "z": 336.9725809575522
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -91513,6 +93177,70 @@
             "y": -7.565353507380281,
             "z": -4.821252206133668
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.31200000000000006,
+                "y": 0,
+                "z": 337.5916476
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.110436489646982,
+                "y": -7.565353507380281,
+                "z": -4.821252206133668
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.31200000000000006,
+                "y": 0,
+                "z": 337.5916476
+              },
+              "surface_normal": {
+                "x": 0.4536041586498829,
+                "y": 0.12194460304585084,
+                "z": 0.8828209224092517
+              },
+              "center_of_pressure": {
+                "x": 0.13999999999999996,
+                "y": -0.09591792020718207,
+                "z": 336.95353409317033
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -92634,6 +94362,70 @@
             "y": -6.752477235325721,
             "z": -4.983675603968776
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.324,
+                "y": 0,
+                "z": 337.5854802
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 13.026958984329884,
+                "y": -6.752477235325721,
+                "z": -4.983675603968776
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.324,
+                "y": 0,
+                "z": 337.5854802
+              },
+              "surface_normal": {
+                "x": 0.4536019152372498,
+                "y": 0.12198455064462929,
+                "z": 0.8828165561979039
+              },
+              "center_of_pressure": {
+                "x": 0.16666666666666663,
+                "y": -0.09139605800802433,
+                "z": 336.93286129133327
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -93755,6 +95547,70 @@
             "y": -5.93960096327116,
             "z": -5.146099001803886
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.336,
+                "y": 0,
+                "z": 337.5793128
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 12.943481479012785,
+                "y": -5.93960096327116,
+                "z": -5.146099001803886
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.336,
+                "y": 0,
+                "z": 337.5793128
+              },
+              "surface_normal": {
+                "x": 0.45359967111202887,
+                "y": 0.12202449765060266,
+                "z": 0.8828121885996916
+              },
+              "center_of_pressure": {
+                "x": 0.1933333333333333,
+                "y": -0.09139985154369848,
+                "z": 336.91915963266666
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -94876,6 +96732,70 @@
             "y": -5.126724691215033,
             "z": -5.308522399638995
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.34800000000000003,
+                "y": 0,
+                "z": 337.5731454
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.07092215450736725,
+                "z": 336.9038670059999
+              },
+              "total_force_n": {
+                "x": 27.51992224814115,
+                "y": 13.535283152925782,
+                "z": 53.5958252984912
+              },
+              "total_torque_nm": {
+                "x": 12.860003973694916,
+                "y": -5.126724691215033,
+                "z": -5.308522399638995
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.34800000000000003,
+                "y": 0,
+                "z": 337.5731454
+              },
+              "surface_normal": {
+                "x": 0.4535974262742523,
+                "y": 0.12206444406358859,
+                "z": 0.8828078196146779
+              },
+              "center_of_pressure": {
+                "x": 0.21999999999999997,
+                "y": -0.09140364507941155,
+                "z": 336.90545797399994
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -95997,6 +97917,70 @@
             "y": -11.793373404238192,
             "z": 1.324092167250177
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.36,
+                "y": 0,
+                "z": 337.566978
+              },
+              "surface_normal": {
+                "x": 0.4456667570549175,
+                "y": 0.21919486887329206,
+                "z": 0.8679485878298171
+              },
+              "center_of_pressure": {
+                "x": 0.09999999999999999,
+                "y": 0.059056588453264273,
+                "z": 336.93586700599997
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.36,
+                "y": 0,
+                "z": 337.566978
+              },
+              "surface_normal": {
+                "x": 0.4535974262742523,
+                "y": 0.12206444406358859,
+                "z": 0.8828078196146779
+              },
+              "center_of_pressure": {
+                "x": 0.21999999999999997,
+                "y": -0.08494715373277176,
+                "z": 336.87345797399996
+              },
+              "total_force_n": {
+                "x": 28.009641072435077,
+                "y": 7.537479420926594,
+                "z": 54.51338286120635
+              },
+              "total_torque_nm": {
+                "x": 0.5966362095714686,
+                "y": -11.793373404238192,
+                "z": 1.324092167250177
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
@@ -97118,6 +99102,70 @@
             "y": -10.966466149554105,
             "z": 1.233642414199058
           },
+          "support_contact_wrenches": [
+            {
+              "patch_id": "left-foot",
+              "reference_point": {
+                "x": 0.372,
+                "y": 0,
+                "z": 337.5608106
+              },
+              "surface_normal": {
+                "x": 0.44568027991340214,
+                "y": 0.2190630489996795,
+                "z": 0.867974923980685
+              },
+              "center_of_pressure": {
+                "x": 0.12666666666666665,
+                "y": 0.05906978414512225,
+                "z": 336.92217443533326
+              },
+              "total_force_n": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "total_torque_nm": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+              },
+              "normal_force_n": 0,
+              "loaded_sample_count": 0,
+              "status": "patch-wrench-no-load"
+            },
+            {
+              "patch_id": "right-foot",
+              "reference_point": {
+                "x": 0.372,
+                "y": 0,
+                "z": 337.5608106
+              },
+              "surface_normal": {
+                "x": 0.4535974262742523,
+                "y": 0.12206444406358859,
+                "z": 0.8828078196146779
+              },
+              "center_of_pressure": {
+                "x": 0.21999999999999997,
+                "y": -0.08494715373277176,
+                "z": 336.87345797399996
+              },
+              "total_force_n": {
+                "x": 28.009641072435077,
+                "y": 7.537479420926594,
+                "z": 54.51338286120635
+              },
+              "total_torque_nm": {
+                "x": 0.5501495589909882,
+                "y": -10.966466149554105,
+                "z": 1.233642414199058
+              },
+              "normal_force_n": 61.75,
+              "loaded_sample_count": 2,
+              "status": "patch-wrench-resolved"
+            }
+          ],
           "shape_count": 8,
           "terrain_contact_count": 1,
           "terrain_review_count": 0,
