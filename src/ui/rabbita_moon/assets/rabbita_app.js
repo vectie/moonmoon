@@ -1,6 +1,7 @@
 const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
 const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent);
 const noetixTrace = JSON.parse(document.getElementById('moonmoon-noetix-walk').textContent);
+const noetixLinkPoseTrace = JSON.parse(document.getElementById('moonmoon-noetix-link-poses').textContent);
 const evidence = window.RabbitaEvidence.create(book);
 let activeLayer = view.active_layer_id;
 let selectedCellId = view.selected_cell_id;
@@ -269,12 +270,28 @@ function noetixFrames() {
   return noetixTrace.frames || [];
 }
 
-function noetixPointBounds(frames) {
+function noetixPoseFrames() {
+  return noetixLinkPoseTrace.frames || [];
+}
+
+function noetixPoseFrame(frameIndex) {
+  const poses = noetixPoseFrames();
+  return poses.find(frame => frame.frame_index === frameIndex) || poses[frameIndex] || { links: [] };
+}
+
+function noetixLinkMap(poseFrame) {
+  return new Map((poseFrame.links || []).map(link => [link.link_name, link]));
+}
+
+function noetixPointBounds(frames, poseFrames) {
   const points = frames.flatMap(frame => [
     frame.body_position,
     frame.left_foot.position,
     frame.right_foot.position,
   ]);
+  for (const poseFrame of poseFrames) {
+    for (const link of poseFrame.links || []) points.push(link.world_position);
+  }
   const xs = points.map(point => point.x);
   const zs = points.map(point => point.z);
   return {
@@ -285,8 +302,8 @@ function noetixPointBounds(frames) {
   };
 }
 
-function noetixProjector(frames) {
-  const bounds = noetixPointBounds(frames);
+function noetixProjector(frames, poseFrames) {
+  const bounds = noetixPointBounds(frames, poseFrames);
   const xSpan = Math.max(0.001, bounds.maxX - bounds.minX);
   const zSpan = Math.max(0.001, bounds.maxZ - bounds.minZ);
   return point => ({
@@ -308,11 +325,54 @@ function noetixStatusClass(status) {
   return 'blocked';
 }
 
-function renderNoetixWalkViewer(frames, frame, project) {
+function noetixLinkRoleClass(role) {
+  if (role === 'arm' || role === 'hand') return 'arm';
+  if (role === 'leg' || role === 'foot') return 'leg';
+  return 'body';
+}
+
+function noetixLinkSegments(poseFrame, project) {
+  const links = noetixLinkMap(poseFrame);
+  return (poseFrame.links || [])
+    .filter(link => link.parent_link && links.has(link.parent_link))
+    .map(link => {
+      const parent = links.get(link.parent_link);
+      const a = project(parent.world_position);
+      const b = project(link.world_position);
+      const role = noetixLinkRoleClass(link.role);
+      return svgEl('line', {
+        class: `noetix-link-segment noetix-link-${role}`,
+        x1: a.x.toFixed(2),
+        y1: a.y.toFixed(2),
+        x2: b.x.toFixed(2),
+        y2: b.y.toFixed(2),
+        'data-link-name': link.link_name,
+        'data-parent-link': link.parent_link
+      });
+    });
+}
+
+function noetixLinkJoints(poseFrame, project) {
+  return (poseFrame.links || []).map(link => {
+    const point = project(link.world_position);
+    const role = noetixLinkRoleClass(link.role);
+    return svgEl('circle', {
+      class: `noetix-link-joint noetix-link-${role}`,
+      cx: point.x.toFixed(2),
+      cy: point.y.toFixed(2),
+      r: link.role === 'foot' ? '4.6' : '3.2',
+      'data-link-name': link.link_name
+    });
+  });
+}
+
+function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   const body = project(frame.body_position);
   const left = project(frame.left_foot.position);
   const right = project(frame.right_foot.position);
   const supportFoot = frame.support_phase === 'left-support' ? left : right;
+  const linkSegments = noetixLinkSegments(poseFrame, project);
+  const linkJoints = noetixLinkJoints(poseFrame, project);
   const svg = svgEl('svg', {
     class: 'noetix-stage',
     viewBox: '0 0 420 170',
@@ -333,20 +393,8 @@ function renderNoetixWalkViewer(frames, frame, project) {
       class: 'noetix-foot-path noetix-right-path',
       points: noetixPath(frames, item => item.right_foot.position, project)
     }),
-    svgEl('line', {
-      class: 'noetix-leg',
-      x1: body.x.toFixed(2),
-      y1: body.y.toFixed(2),
-      x2: left.x.toFixed(2),
-      y2: left.y.toFixed(2)
-    }),
-    svgEl('line', {
-      class: 'noetix-leg',
-      x1: body.x.toFixed(2),
-      y1: body.y.toFixed(2),
-      x2: right.x.toFixed(2),
-      y2: right.y.toFixed(2)
-    }),
+    svgEl('g', { class: 'noetix-link-segments' }, linkSegments),
+    svgEl('g', { class: 'noetix-link-joints' }, linkJoints),
     svgEl('circle', {
       class: `noetix-foot noetix-foot-left noetix-status-${noetixStatusClass(frame.left_foot.status)}`,
       cx: left.x.toFixed(2),
@@ -417,8 +465,9 @@ function renderNoetixWalkControls(frames) {
   controls.replaceChildren(previous, scrubber, next);
 }
 
-function renderNoetixWalkFacts(frame) {
+function renderNoetixWalkFacts(frame, poseFrame) {
   const jointCount = frame.joint_phases.length;
+  const linkCount = (poseFrame.links || []).length;
   const facts = [
     ['phase', frame.support_phase],
     ['time', `${frame.time_s.toFixed(2)} s`],
@@ -426,6 +475,8 @@ function renderNoetixWalkFacts(frame) {
     ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
     ['joints', `${jointCount} kinematic phases`],
+    ['links', `${linkCount} URDF-reference poses`],
+    ['pose status', poseFrame.status || noetixLinkPoseTrace.status],
   ];
   document.getElementById('noetix-walk-facts').replaceChildren(...facts.map(([label, value]) =>
     el('div', { className: 'noetix-fact' }, [
@@ -440,13 +491,15 @@ function renderNoetixWalk() {
   if (!frames.length) return;
   activeNoetixFrame = Math.max(0, Math.min(frames.length - 1, activeNoetixFrame));
   const frame = frames[activeNoetixFrame];
-  const project = noetixProjector(frames);
+  const poseFrames = noetixPoseFrames();
+  const poseFrame = noetixPoseFrame(frame.frame_index);
+  const project = noetixProjector(frames, poseFrames);
   document.getElementById('noetix-walk-summary').textContent =
-    `${noetixTrace.robot.label}, ${noetixTrace.frame_count} frames, ${noetixTrace.config.gravity_mps2} m/s²`;
+    `${noetixTrace.robot.label}, ${noetixTrace.frame_count} frames, ${noetixLinkPoseTrace.links_per_frame} links, ${noetixTrace.config.gravity_mps2} m/s²`;
   document.getElementById('noetix-walk-authority').textContent = 'simulation evidence only';
-  renderNoetixWalkViewer(frames, frame, project);
+  renderNoetixWalkViewer(frames, frame, poseFrame, project);
   renderNoetixWalkControls(frames);
-  renderNoetixWalkFacts(frame);
+  renderNoetixWalkFacts(frame, poseFrame);
 }
 
 function renderMissionEvidenceSummary(rows, counts) {

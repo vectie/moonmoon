@@ -604,10 +604,31 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
 .noetix-left-path { stroke: rgba(240,196,93,0.78); }
 .noetix-right-path { stroke: rgba(183,207,219,0.78); }
 .noetix-leg,
+.noetix-link-segment,
 .noetix-support-line {
   stroke: rgba(245,247,244,0.72);
   stroke-width: 2.2;
   stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.noetix-link-segment {
+  stroke-linejoin: round;
+}
+.noetix-link-body {
+  stroke: #75d1c5;
+  fill: #75d1c5;
+}
+.noetix-link-arm {
+  stroke: #b7cfdb;
+  fill: #b7cfdb;
+}
+.noetix-link-leg {
+  stroke: #f0c45d;
+  fill: #f0c45d;
+}
+.noetix-link-joint {
+  stroke: #071112;
+  stroke-width: 1.25;
   vector-effect: non-scaling-stroke;
 }
 .noetix-support-line {

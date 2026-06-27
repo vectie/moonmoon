@@ -3,10 +3,12 @@ fn app_data_script(
   view : @ui.TrustedSquareViewModel,
   book : @moonbook.MoonBookDossier,
   noetix_walk : @moonrobo.NoetixMoonWalkTrace,
+  noetix_link_poses : @moonrobo.NoetixLinkPoseTrace,
 ) -> String {
   let view_json = @ui.render_json(view).stringify(indent=2)
   let book_json = @moonbook.render_json(book).stringify(indent=2)
   let noetix_walk_json = noetix_walk.to_json().stringify(indent=2)
+  let noetix_link_poses_json = noetix_link_poses.to_json().stringify(indent=2)
   let html =
     $|<script id="moonmoon-view-model" type="application/json">
     $|\{view_json}
@@ -16,6 +18,9 @@ fn app_data_script(
     $|</script>
     $|<script id="moonmoon-noetix-walk" type="application/json">
     $|\{noetix_walk_json}
+    $|</script>
+    $|<script id="moonmoon-noetix-link-poses" type="application/json">
+    $|\{noetix_link_poses_json}
     $|</script>
     $|
   html
@@ -74,7 +79,7 @@ pub fn render_html(
     $|\{app_styles()}
     $|</head>
     $|<body>
-    $|\{app_data_script(view, book, @moonrobo.first_trusted_square_noetix_walk_trace())}
+    $|\{app_data_script(view, book, @moonrobo.first_trusted_square_noetix_walk_trace(), @moonrobo.first_trusted_square_noetix_link_pose_trace())}
     $|<main class="shell">
     $|  <section class="map-pane" aria-label="Lunar terrain inspection">
     $|    <div class="topline">

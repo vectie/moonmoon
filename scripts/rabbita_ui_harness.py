@@ -15,6 +15,9 @@ RABBITA_OUTPUT = ROOT / "output/ui/rabbita"
 RABBITA_ASSETS = RABBITA_OUTPUT / "assets"
 HTML_PATH = RABBITA_OUTPUT / "first_trusted_square.html"
 NOETIX_TRACE_PATH = ROOT / "output/moonrobo/first_trusted_square_noetix_walk.json"
+NOETIX_LINK_POSES_PATH = (
+  ROOT / "output/moonrobo/first_trusted_square_noetix_link_poses.json"
+)
 
 MISSION_EVIDENCE_SNAPSHOT_JS = r"""
 const rows = document.getElementById('mission-evidence-queue').children.map(row => ({
@@ -42,6 +45,12 @@ const controls = document.getElementById('noetix-walk-controls');
 const facts = document.getElementById('noetix-walk-facts');
 const summary = document.getElementById('noetix-walk-summary').textContent;
 const authority = document.getElementById('noetix-walk-authority').textContent;
+const svgNodes = [];
+function visit(node) {
+  svgNodes.push(node);
+  for (const child of node.children || []) visit(child);
+}
+visit(viewer);
 const factRows = facts.children.map(row => ({
   label: row.children[0].textContent,
   value: row.children[1].textContent
@@ -51,6 +60,9 @@ return {
   authority,
   viewer_children: viewer.children.length,
   stage_class: viewer.children[0].attributes.class,
+  link_segment_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-segment')).length,
+  link_joint_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-joint')).length,
+  left_foot_joint_count: svgNodes.filter(node => node.attributes['data-link-name'] === 'left_foot').length,
   control_count: controls.children.length,
   scrubber_max: controls.children[1].attributes.max,
   scrubber_value: controls.children[1].value,
@@ -93,6 +105,10 @@ def rabbita_app_script() -> str:
 
 def read_noetix_trace() -> Any:
   return json.loads(NOETIX_TRACE_PATH.read_text(encoding="utf-8"))
+
+
+def read_noetix_link_poses() -> Any:
+  return json.loads(NOETIX_LINK_POSES_PATH.read_text(encoding="utf-8"))
 
 
 def is_mission_evidence_entry(entry: dict[str, Any]) -> bool:
@@ -141,6 +157,7 @@ def render_noetix_walk_panel(
   view: Any,
   book: Any,
   noetix_trace: Any,
+  noetix_link_poses: Any,
   *,
   prefix: str = "moonmoon-rabbita-noetix-walk-",
 ) -> dict[str, Any]:
@@ -150,14 +167,26 @@ def render_noetix_walk_panel(
     NOETIX_WALK_SNAPSHOT_JS,
     prefix=prefix,
     noetix_trace=noetix_trace,
+    noetix_link_poses=noetix_link_poses,
   )
 
 
-def assert_noetix_walk_panel(rendered: dict[str, Any], noetix_trace: dict[str, Any]) -> None:
+def assert_noetix_walk_panel(
+  rendered: dict[str, Any],
+  noetix_trace: dict[str, Any],
+  noetix_link_poses: dict[str, Any],
+) -> None:
   frames = noetix_trace["frames"]
+  pose_frames = noetix_link_poses["frames"]
   if rendered["viewer_children"] != 1:
     raise AssertionError(rendered)
   if rendered["stage_class"] != "noetix-stage":
+    raise AssertionError(rendered)
+  if rendered["link_segment_count"] < noetix_link_poses["links_per_frame"] - 1:
+    raise AssertionError(rendered)
+  if rendered["link_joint_count"] < noetix_link_poses["links_per_frame"]:
+    raise AssertionError(rendered)
+  if rendered["left_foot_joint_count"] < 1:
     raise AssertionError(rendered)
   if rendered["control_count"] != 3:
     raise AssertionError(rendered)
@@ -169,6 +198,8 @@ def assert_noetix_walk_panel(rendered: dict[str, Any], noetix_trace: dict[str, A
     raise AssertionError(rendered)
   if "1.625" not in rendered["summary"]:
     raise AssertionError(rendered)
+  if f"{noetix_link_poses['links_per_frame']} links" not in rendered["summary"]:
+    raise AssertionError(rendered)
   if rendered["authority"] != "simulation evidence only":
     raise AssertionError(rendered)
   facts = {row["label"]: row["value"] for row in rendered["facts"]}
@@ -177,6 +208,8 @@ def assert_noetix_walk_panel(rendered: dict[str, Any], noetix_trace: dict[str, A
     "time": "0.00 s",
     "body x": "0.000 m",
     "joints": "24 kinematic phases",
+    "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
+    "pose status": "review-only-link-pose",
   }
   for key, value in expected.items():
     if facts.get(key) != value:
@@ -239,6 +272,7 @@ def run_rabbita_vm(
   *,
   prefix: str = "moonmoon-rabbita-ui-",
   noetix_trace: Any | None = None,
+  noetix_link_poses: Any | None = None,
 ) -> dict[str, Any]:
   """Execute Rabbita assets in a minimal DOM and return a JSON snapshot."""
   harness = r"""
@@ -278,6 +312,7 @@ const document = {
 document.getElementById('moonmoon-view-model').textContent = JSON.stringify(input.view);
 document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.book);
 document.getElementById('moonmoon-noetix-walk').textContent = JSON.stringify(input.noetix_trace);
+document.getElementById('moonmoon-noetix-link-poses').textContent = JSON.stringify(input.noetix_link_poses);
 
 const downloads = [];
 const context = {
@@ -311,6 +346,9 @@ console.log(JSON.stringify(snapshot, null, 2));
           "view": view,
           "book": book,
           "noetix_trace": noetix_trace if noetix_trace is not None else read_noetix_trace(),
+          "noetix_link_poses": noetix_link_poses
+          if noetix_link_poses is not None
+          else read_noetix_link_poses(),
           "script": rabbita_app_script(),
           "snapshot_js": snapshot_js,
         },
