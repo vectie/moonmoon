@@ -1,0 +1,1858 @@
+{
+  "entry": {
+    "entry_id": "moonrobo/first-trusted-square/noetix-dynamics",
+    "title": "Moonrobo Noetix dynamic stability evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonroboNoetixDynamics",
+    "claim_kind": "Simulated",
+    "confidence": 0.55,
+    "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
+    "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.035 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+  },
+  "payload": {
+    "report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
+    "trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+    "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
+    "profile": {
+      "profile_id": "moonrobo/noetix-e1/physics-profile-v0",
+      "robot_id": "noetix-e1-lab-01",
+      "source_model_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+      "source_profile_path": "../moonrobo/examples/noetix-e1/robot.json",
+      "mass_model": {
+        "model_id": "noetix-e1-assumed-lumped-mass-v0",
+        "mass_kg": 38,
+        "nominal_com_height_m": 0.72,
+        "com_x_offset_m": 0,
+        "com_y_offset_m": 0,
+        "source_status": "simulation-assumption; no inertial tags in referenced URDF/profile"
+      },
+      "foot_geometry": [
+        {
+          "foot_id": "left-foot",
+          "link_name": "left_foot",
+          "half_length_m": 0.11,
+          "half_width_m": 0.045,
+          "sole_radius_m": 0.012,
+          "friction_coefficient": 0.62,
+          "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
+        },
+        {
+          "foot_id": "right-foot",
+          "link_name": "right_foot",
+          "half_length_m": 0.11,
+          "half_width_m": 0.045,
+          "sole_radius_m": 0.012,
+          "friction_coefficient": 0.62,
+          "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
+        }
+      ],
+      "material_model": "dry-regolith-review-assumption",
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "status": "review-only",
+      "note": "Mass, center of mass, foot sole geometry, and friction are explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
+    },
+    "frame_count": 32,
+    "capture_stable_frame_count": 0,
+    "review_frame_count": 32,
+    "worst_capture_margin_m": -0.035,
+    "frames": [
+      {
+        "frame_index": 0,
+        "time_s": 0,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.079876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.079876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.15,
+            "max_x_m": 0.07,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 1,
+        "time_s": 0.1,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.012,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.012,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.091876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.091876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.138,
+            "max_x_m": 0.082,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 2,
+        "time_s": 0.2,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.024,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.024,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.10387682825643299,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.10387682825643299,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.126,
+            "max_x_m": 0.094,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 3,
+        "time_s": 0.30000000000000004,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.036,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999993,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.036,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999993,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.11587682825643295,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.11587682825643295,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.114,
+            "max_x_m": 0.106,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256432948,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 4,
+        "time_s": 0.4,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.048,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000006,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.048,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000006,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.12787682825643304,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.12787682825643304,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.10200000000000001,
+            "max_x_m": 0.118,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256433046,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 5,
+        "time_s": 0.5,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.06,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.06,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.139876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.139876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.09,
+            "max_x_m": 0.13,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 6,
+        "time_s": 0.6000000000000001,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.072,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999986,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.072,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999986,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.1518768282564329,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.1518768282564329,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.07800000000000001,
+            "max_x_m": 0.142,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256432907,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 7,
+        "time_s": 0.7000000000000001,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.084,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000013,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.084,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000013,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.16387682825643307,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.16387682825643307,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.066,
+            "max_x_m": 0.154,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256433073,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 8,
+        "time_s": 0.8,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.096,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.096,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.175876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.175876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.054,
+            "max_x_m": 0.166,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 9,
+        "time_s": 0.9,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.10800000000000001,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000013,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.10800000000000001,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000013,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.1878768282564331,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.1878768282564331,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.041999999999999996,
+            "max_x_m": 0.178,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256433101,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 10,
+        "time_s": 1,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.12,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999986,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.12,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999986,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.19987682825643288,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.19987682825643288,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.030000000000000013,
+            "max_x_m": 0.19,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256432879,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 11,
+        "time_s": 1.1,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.13199999999999998,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999972,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.13199999999999998,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999972,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.21187682825643278,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.21187682825643278,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.01800000000000003,
+            "max_x_m": 0.20199999999999996,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256432824,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 12,
+        "time_s": 1.2000000000000002,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.144,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.144,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.22387682825643299,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.22387682825643299,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": -0.006000000000000019,
+            "max_x_m": 0.21399999999999997,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256433018,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 13,
+        "time_s": 1.3,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.15600000000000003,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000055,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.15600000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000055,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.23587682825643339,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.23587682825643339,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.006000000000000019,
+            "max_x_m": 0.22600000000000003,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256433351,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 14,
+        "time_s": 1.4000000000000001,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.168,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999972,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.168,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999972,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.2478768282564328,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.2478768282564328,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.018000000000000002,
+            "max_x_m": 0.238,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256432824,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 15,
+        "time_s": 1.5,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.18,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.18,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.259876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.259876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.029999999999999985,
+            "max_x_m": 0.25,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 16,
+        "time_s": 1.6,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.192,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.192,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.271876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.271876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.041999999999999996,
+            "max_x_m": 0.262,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 17,
+        "time_s": 1.7000000000000002,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.20400000000000001,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.20400000000000001,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.283876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.283876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.054000000000000006,
+            "max_x_m": 0.274,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 18,
+        "time_s": 1.8,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.21600000000000003,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000027,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.21600000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000027,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.2958768282564332,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.2958768282564332,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.06600000000000002,
+            "max_x_m": 0.28600000000000003,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256433157,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 19,
+        "time_s": 1.9000000000000001,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.22799999999999998,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999944,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.22799999999999998,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999944,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.3078768282564326,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.3078768282564326,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.07799999999999997,
+            "max_x_m": 0.298,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.009876828256432602,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 20,
+        "time_s": 2,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.24,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000027,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.24,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000027,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.31987682825643315,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.31987682825643315,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.08999999999999998,
+            "max_x_m": 0.31,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256433157,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 21,
+        "time_s": 2.1,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.252,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.252,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.331876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.331876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.102,
+            "max_x_m": 0.322,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 22,
+        "time_s": 2.2,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.26399999999999996,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999944,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.26399999999999996,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999944,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.34387682825643257,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.34387682825643257,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.11399999999999995,
+            "max_x_m": 0.33399999999999996,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256432602,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 23,
+        "time_s": 2.3000000000000003,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.27599999999999997,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.27599999999999997,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.35587682825643296,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.35587682825643296,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.12599999999999995,
+            "max_x_m": 0.346,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 24,
+        "time_s": 2.4000000000000004,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.288,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.288,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.367876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.367876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.13799999999999996,
+            "max_x_m": 0.358,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 25,
+        "time_s": 2.5,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.30000000000000004,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12000000000000109,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.30000000000000004,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12000000000000109,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.37987682825643376,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.37987682825643376,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.15000000000000008,
+            "max_x_m": 0.37000000000000005,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256433712,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 26,
+        "time_s": 2.6,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.31200000000000006,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.31200000000000006,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.39187682825643305,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.39187682825643305,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.1620000000000001,
+            "max_x_m": 0.38200000000000006,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 27,
+        "time_s": 2.7,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.324,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999944,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.324,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999944,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.4038768282564326,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.4038768282564326,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.17400000000000004,
+            "max_x_m": 0.394,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.009876828256432602,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 28,
+        "time_s": 2.8000000000000003,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.336,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.336,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.415876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.415876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.18600000000000005,
+            "max_x_m": 0.406,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 29,
+        "time_s": 2.9000000000000004,
+        "support_phase": "left-support",
+        "com_position": {
+          "x": 0.34800000000000003,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.34800000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.42787682825643303,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.42787682825643303,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.19800000000000006,
+            "max_x_m": 0.41800000000000004,
+            "min_y_m": 0.035,
+            "max_y_m": 0.125,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 30,
+        "time_s": 3,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.36,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.11999999999999998,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.36,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.11999999999999998,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.439876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.439876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.21000000000000002,
+            "max_x_m": 0.43,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      },
+      {
+        "frame_index": 31,
+        "time_s": 3.1,
+        "support_phase": "right-support",
+        "com_position": {
+          "x": 0.372,
+          "y": 0,
+          "z": 337.752
+        },
+        "com_velocity": {
+          "x": 0.12,
+          "y": 0,
+          "z": 0
+        },
+        "capture_point_assessment": {
+          "com_position": {
+            "x": 0.372,
+            "y": 0,
+            "z": 337.752
+          },
+          "com_velocity": {
+            "x": 0.12,
+            "y": 0,
+            "z": 0
+          },
+          "capture_point": {
+            "x": 0.451876828256433,
+            "y": 0,
+            "z": 337.752
+          },
+          "nominal_com_height_m": 0.72,
+          "omega_rad_s": 1.5023130314433288,
+          "support_assessment": {
+            "support_count": 1,
+            "com_projection": {
+              "x": 0.451876828256433,
+              "y": 0,
+              "z": 337.752
+            },
+            "min_x_m": 0.22200000000000003,
+            "max_x_m": 0.442,
+            "min_y_m": -0.125,
+            "max_y_m": -0.035,
+            "margin_x_m": -0.00987682825643299,
+            "margin_y_m": -0.035,
+            "planar_margin_m": -0.035,
+            "stable": false,
+            "status": "outside-support"
+          },
+          "capture_margin_m": -0.035,
+          "stable": false,
+          "status": "capture-point-outside-support"
+        },
+        "terrain_contact_status": "terrain-contact-review",
+        "status": "capture-point-review"
+      }
+    ],
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "status": "dynamic-stability-review",
+    "note": "Capture-point evidence evaluates COM velocity against the support footprint under lunar gravity. It is still review evidence only: no controller, actuator, inertia, collision, or hardware authority is implied."
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

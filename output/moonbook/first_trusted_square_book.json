@@ -697,6 +697,15 @@
       "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin -0.035 m, hardware authority moonmoon-safety-gate-only"
     },
     {
+      "entry_id": "moonrobo/first-trusted-square/noetix-dynamics",
+      "title": "Moonrobo Noetix dynamic stability evidence for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonroboNoetixDynamics",
+      "claim_kind": "Simulated",
+      "confidence": 0.55,
+      "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
+      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.035 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+    },
+    {
       "entry_id": "moonrobo/first-trusted-square/noetix-link-poses",
       "title": "Moonrobo Noetix URDF-reference link poses for First Trusted Square / Shackleton Rim rehearsal tile",
       "kind": "MoonroboNoetixLinkPoses",
@@ -712,7 +721,7 @@
       "claim_kind": "Derived",
       "confidence": 0.58,
       "path": "moonclaw/first-trusted-square/noetix-review-task.json",
-      "summary": "noetix-e1-lab-01 review task links walk, link poses, static support, and Rabbita playback; 32/32 frames require static-support review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 review task links walk, link poses, static support, dynamic stability, and Rabbita playback; 32/32 frames require dynamic-stability review, hardware authority moonmoon-safety-gate-only"
     }
   ],
   "review_queue": [

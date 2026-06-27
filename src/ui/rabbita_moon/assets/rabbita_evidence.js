@@ -22,6 +22,7 @@
   function isMissionEvidenceEntry(entry) {
     return entry.entry_id.includes('/remediation-margin-') ||
       entry.entry_id.includes('/regenerated-receipt-readiness-') ||
+      entry.entry_id.endsWith('/noetix-dynamics') ||
       entry.entry_id.endsWith('/noetix-review-task');
   }
 
@@ -33,6 +34,7 @@
       id.includes('action-receipt-closeout') ||
       id.endsWith('/remediation-margin-regenerated-receipt-readiness')
     ) return 'blocker';
+    if (id.endsWith('/noetix-dynamics')) return 'simulation';
     if (id.includes('modeling')) return 'simulation';
     if (
       id.includes('reviewed-action-plan') ||

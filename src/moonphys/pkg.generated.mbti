@@ -7,6 +7,8 @@ import {
 }
 
 // Values
+pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
+
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
 
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
@@ -48,6 +50,18 @@ pub(all) struct Basis3 {
   zz : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 pub fn Basis3::mul_vec3(Self, Vec3) -> Vec3
+
+pub(all) struct CapturePointAssessment {
+  com_position : Vec3
+  com_velocity : Vec3
+  capture_point : Vec3
+  nominal_com_height_m : Double
+  omega_rad_s : Double
+  support_assessment : SupportAssessment
+  capture_margin_m : Double
+  stable : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct ContactProbe {
   probe_id : String

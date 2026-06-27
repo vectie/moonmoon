@@ -20,6 +20,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonroboNoetixWalk
   MoonroboNoetixPhysics
+  MoonroboNoetixDynamics
   MoonroboNoetixLinkPoses
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
@@ -149,6 +150,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
+    MoonroboNoetixDynamics => "moonrobo-noetix-dynamics"
     MoonroboNoetixLinkPoses => "moonrobo-noetix-link-poses"
     MoonroboGapModeling => "moonrobo-gap-modeling"
     MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
@@ -1007,6 +1009,20 @@ fn moonrobo_noetix_link_poses_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonrobo_noetix_dynamics_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let report = @moonrobo.first_trusted_square_noetix_dynamic_stability_report()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-dynamics",
+    title: "Moonrobo Noetix dynamic stability evidence for \{dossier.site.name}",
+    kind: MoonroboNoetixDynamics,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.55,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-dynamics.json",
+    summary: "\{report.profile.robot_id} capture-point report has \{report.review_frame_count}/\{report.frame_count} review frames, worst capture margin \{report.worst_capture_margin_m} m, status \{report.status}, hardware authority \{report.hardware_authority}",
+  }
+}
+
+///|
 fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
   let task = @moonclaw.first_trusted_square_noetix_review_task()
   {
@@ -1016,7 +1032,7 @@ fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.58,
     path: "moonclaw/\{dossier.site.site_id}/noetix-review-task.json",
-    summary: "\{task.robot_id} review task links walk, link poses, static support, and Rabbita playback; \{task.static_support_review_frame_count}/\{task.frame_count} frames require static-support review, hardware authority \{task.hardware_authority}",
+    summary: "\{task.robot_id} review task links walk, link poses, static support, dynamic stability, and Rabbita playback; \{task.dynamic_stability_review_frame_count}/\{task.frame_count} frames require dynamic-stability review, hardware authority \{task.hardware_authority}",
   }
 }
 
@@ -1922,6 +1938,7 @@ fn book_entries(
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))
+  entries.push(moonrobo_noetix_dynamics_entry(dossier))
   entries.push(moonrobo_noetix_link_poses_entry(dossier))
   entries.push(moonclaw_noetix_review_task_entry(dossier))
   entries

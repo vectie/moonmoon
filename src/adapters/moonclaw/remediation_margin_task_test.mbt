@@ -1509,16 +1509,24 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_eq(task.frame_count, 32)
   assert_eq(task.link_pose_count_per_frame, 25)
   assert_true(task.static_support_review_frame_count > 0)
+  assert_true(task.dynamic_stability_review_frame_count > 0)
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
-  assert_eq(task.inputs.length(), 4)
-  assert_eq(task.artifacts.length(), 4)
-  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 1)
+  assert_eq(task.inputs.length(), 5)
+  assert_eq(task.artifacts.length(), 5)
+  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 2)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-static-support-review" &&
       !artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_stability")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-dynamic-stability-review" &&
+      !artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_dynamics")
     }),
   )
   assert_true(

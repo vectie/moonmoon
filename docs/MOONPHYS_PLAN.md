@@ -17,14 +17,18 @@ evidence.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
   report backed by generic Moonphys support assessment.
+- Moonphys exports a generic capture-point assessment for dynamic-stability
+  review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: feet are bound to
   Moonphys contact probes, and body/limb links are review-grade gait proxies.
 - MoonClaw exports a Noetix simulation review task that ties the walk trace,
-  URDF-reference link poses, static support report, and Rabbita playback into a
-  hardware-denied review packet.
+  URDF-reference link poses, static support report, dynamic-stability report,
+  and Rabbita playback into a hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
   invariants.
+- `scripts/check_moonrobo_noetix_dynamics.py` verifies capture-point dynamic
+  stability invariants.
 - `scripts/check_moonrobo_noetix_link_poses.py` verifies link-pose trace
   invariants.
 - `scripts/check_moonclaw_noetix_review_task.py` verifies review-task
@@ -304,8 +308,8 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
-Status: first walk, physics-profile, static-support, link-pose, and MoonClaw
-review-task exports and verifiers implemented.
+Status: first walk, physics-profile, static-support, dynamic-stability,
+link-pose, and MoonClaw review-task exports and verifiers implemented.
 
 Add generated outputs to the dossier build.
 
@@ -337,7 +341,8 @@ Check invariants:
 ## Phase 7: MoonBook / MoonClaw Integration
 
 Status: MoonBook entries and workspace payloads implemented for the Noetix walk
-trace, physics assumptions, link poses, and MoonClaw review task.
+trace, physics assumptions, dynamic-stability report, link poses, and MoonClaw
+review task.
 
 After the trace is stable, make it durable evidence.
 
@@ -352,6 +357,7 @@ MoonClaw task:
 
 - consume trace
 - inspect terrain/contact/static-support/link-pose statuses
+- inspect capture-point dynamic-stability statuses
 - recommend next modeling task:
   - improve terrain sampling
   - add Noetix foot geometry
@@ -368,8 +374,9 @@ Moonrobo simulation packet:
 
 ## Phase 8: Toward Real Physics
 
-Status: first generic support-margin helper and Noetix static support report
-implemented; full rigid-body dynamics remain future work.
+Status: generic support-margin and capture-point helpers implemented; Noetix
+static support and dynamic-stability review reports implemented; full rigid-body
+dynamics remain future work.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -382,6 +389,7 @@ Next `moonphys` capabilities:
 - material/friction model
 - heightfield collision
 - support polygon / center of mass helper
+- capture point / linear inverted-pendulum review helper
 - deterministic trace replay
 
 Robot-specific missing metadata:
@@ -410,7 +418,8 @@ or as a data artifact beside the Noetix model.
 
 1. Replace assumed mass/sole/friction profile with Moonrobo inertial and
    collision metadata when available.
-2. Add dynamic stability evidence beyond static COM projection.
+2. Replace capture-point-only review with controller, actuator, inertia, and
+   collision evidence.
 3. Replace review-grade gait proxies with full URDF forward kinematics.
 4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
 

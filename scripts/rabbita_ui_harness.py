@@ -116,6 +116,7 @@ def is_mission_evidence_entry(entry: dict[str, Any]) -> bool:
   return (
     "/remediation-margin-" in entry_id
     or "/regenerated-receipt-readiness-" in entry_id
+    or entry_id.endswith("/noetix-dynamics")
     or entry_id.endswith("/noetix-review-task")
   )
 
@@ -129,6 +130,8 @@ def mission_evidence_family(entry: dict[str, Any]) -> str:
     or entry_id.endswith("/remediation-margin-regenerated-receipt-readiness")
   ):
     return "blocker"
+  if entry_id.endswith("/noetix-dynamics"):
+    return "simulation"
   if "modeling" in entry_id:
     return "simulation"
   if (
@@ -231,8 +234,8 @@ def assert_noetix_walk_panel(
 def assert_mission_evidence_queue(rendered: dict[str, Any], book: dict[str, Any]) -> None:
   expected = expected_mission_evidence_entries(book)
   rows = rendered["rows"]
-  if len(expected) != 25:
-    raise AssertionError(f"expected 25 mission evidence entries, got {len(expected)}")
+  if len(expected) != 26:
+    raise AssertionError(f"expected 26 mission evidence entries, got {len(expected)}")
   if len(rows) != len(expected):
     raise AssertionError(f"rendered {len(rows)} mission evidence rows for {len(expected)} entries")
 
@@ -257,17 +260,17 @@ def assert_mission_evidence_queue(rendered: dict[str, Any], book: dict[str, Any]
     "receipt": 7,
     "remediation": 6,
     "review": 3,
-    "simulation": 3,
+    "simulation": 4,
   }:
     raise AssertionError(expected_counts)
 
   filters = {item["label"]: item["pressed"] for item in rendered["filters"]}
   if filters != {
-    "All 25": "true",
+    "All 26": "true",
     "Blockers 6": "false",
     "Work 6": "false",
     "Receipts 7": "false",
-    "Simulation 3": "false",
+    "Simulation 4": "false",
     "Review 3": "false",
   }:
     raise AssertionError(filters)

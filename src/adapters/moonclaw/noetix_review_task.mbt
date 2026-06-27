@@ -8,9 +8,11 @@ pub(all) struct MoonClawNoetixReviewTask {
   objective : String
   source_walk_trace_id : String
   source_static_support_report_id : String
+  source_dynamic_stability_report_id : String
   source_link_pose_trace_id : String
   frame_count : Int
   static_support_review_frame_count : Int
+  dynamic_stability_review_frame_count : Int
   link_pose_count_per_frame : Int
   hardware_state : @moonrobo.MoonroboExecutionState
   hardware_authority : String
@@ -82,6 +84,22 @@ fn noetix_static_support_artifact(
 }
 
 ///|
+fn noetix_dynamic_stability_artifact(
+  report : @moonrobo.NoetixDynamicStabilityReport,
+) -> MoonClawTaskArtifact {
+  task_artifact(
+    "noetix-dynamic-stability-review",
+    "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+    "moon run cmd/main -- moonrobo noetix dynamics json",
+    "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
+    "\{report.review_frame_count}/\{report.frame_count} frames require capture-point review; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
+    report.review_frame_count == 0 && report.status == "dynamic-stability-ok",
+    "capture-point evidence is review-only until controller, actuator, inertia, and collision evidence exist",
+    "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
+  )
+}
+
+///|
 fn noetix_rabbita_artifact() -> MoonClawTaskArtifact {
   task_artifact(
     "noetix-rabbita-playback", "output/ui/rabbita/first_trusted_square.html", "scripts/build_rabbita_ui.sh",
@@ -108,6 +126,7 @@ pub fn noetix_review_task_blocked_artifact_count(
 pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
   let walk = @moonrobo.first_trusted_square_noetix_walk_trace()
   let support = @moonrobo.first_trusted_square_noetix_stability_report()
+  let dynamic = @moonrobo.first_trusted_square_noetix_dynamic_stability_report()
   let poses = @moonrobo.first_trusted_square_noetix_link_pose_trace()
   {
     task_id: "moonclaw/first-trusted-square/noetix-review-task",
@@ -115,12 +134,14 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     robot_id: walk.robot.robot_id,
     priority: High,
     state: Accepted,
-    objective: "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any dynamic-stability or hardware-authority claim.",
+    objective: "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
     source_walk_trace_id: walk.trace_id,
     source_static_support_report_id: support.report_id,
+    source_dynamic_stability_report_id: dynamic.report_id,
     source_link_pose_trace_id: poses.trace_id,
     frame_count: walk.frame_count,
     static_support_review_frame_count: support.review_frame_count,
+    dynamic_stability_review_frame_count: dynamic.review_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
     hardware_state: @moonrobo.MoonroboExecutionState::HardwareDenied,
     hardware_authority: "moonmoon-safety-gate-only",
@@ -145,6 +166,12 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "Static COM/support report that explicitly remains review-only for dynamic walking.",
       ),
       input(
+        "noetix-dynamic-stability",
+        "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+        @core.ClaimKind::Simulated,
+        "Capture-point dynamic stability report that remains review-only without controller and inertia evidence.",
+      ),
+      input(
         "noetix-rabbita-playback",
         "output/ui/rabbita/first_trusted_square.html",
         @core.ClaimKind::Derived,
@@ -155,21 +182,26 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
       noetix_walk_artifact(walk),
       noetix_link_pose_artifact(poses),
       noetix_static_support_artifact(support),
+      noetix_dynamic_stability_artifact(dynamic),
       noetix_rabbita_artifact(),
     ],
     commands: [
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
       "python3 scripts/check_rabbita_noetix_walk.py", "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
       "/Users/kq/.moon/bin/moon test",
     ],
     acceptance_criteria: [
       criterion(
-        "all-noetix-evidence-linked", "Task links walk, link poses, static support, and Rabbita playback evidence with concrete validation commands.",
+        "all-noetix-evidence-linked", "Task links walk, link poses, static support, dynamic stability, and Rabbita playback evidence with concrete validation commands.",
       ),
       criterion(
         "review-only-static-support-preserved", "Static support review frames remain explicit blockers for dynamic walking evidence.",
+      ),
+      criterion(
+        "review-only-dynamic-stability-preserved", "Capture-point review frames remain explicit blockers until controller and inertia evidence exist.",
       ),
       criterion(
         "hardware-denial-preserved", "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.",
@@ -203,6 +235,7 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - frames: \{task.frame_count}\n"
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"
+    text += "  - dynamic-stability review frames: \{task.dynamic_stability_review_frame_count}\n"
     text += "  - hardware state: \{@moonrobo.execution_state_label(task.hardware_state)}\n"
     text += "  - hardware authority: \{task.hardware_authority}\n"
     text += "  - safety gate: \{task.safety_gate}\n"

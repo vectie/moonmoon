@@ -78,3 +78,32 @@ test "support assessment handles no active support" {
   assert_eq(assessment.support_count, 0)
   assert_eq(assessment.status, "no-support")
 }
+
+///|
+test "capture point assessment keeps slow COM inside support" {
+  let assessment = capture_point_assessment(
+    lunar_environment(),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.02, 0.0, 0.0),
+    [support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1)],
+    nominal_com_height_m=0.7,
+  )
+  assert_true(assessment.stable)
+  assert_eq(assessment.status, "capture-point-inside-support")
+  assert_true(assessment.omega_rad_s > 0.0)
+  assert_true(assessment.capture_point.x > assessment.com_position.x)
+}
+
+///|
+test "capture point assessment flags fast COM outside support" {
+  let assessment = capture_point_assessment(
+    lunar_environment(),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.6, 0.0, 0.0),
+    [support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1)],
+    nominal_com_height_m=0.7,
+  )
+  assert_true(!assessment.stable)
+  assert_eq(assessment.status, "capture-point-outside-support")
+  assert_true(assessment.capture_margin_m < 0.0)
+}

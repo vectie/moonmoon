@@ -90,6 +90,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonrobo noetix walk json
     #|  moon run cmd/main -- moonrobo noetix stability
     #|  moon run cmd/main -- moonrobo noetix stability json
+    #|  moon run cmd/main -- moonrobo noetix dynamics
+    #|  moon run cmd/main -- moonrobo noetix dynamics json
     #|  moon run cmd/main -- moonrobo noetix poses
     #|  moon run cmd/main -- moonrobo noetix poses json
     #|
@@ -590,6 +592,20 @@ fn main {
       )
     } else {
       println(@moonrobo.first_trusted_square_noetix_link_pose_markdown())
+    }
+  } else if args.contains("moonrobo") &&
+    args.contains("noetix") &&
+    args.contains("dynamics") {
+    if output_json {
+      println(
+        @moonrobo.first_trusted_square_noetix_dynamic_stability_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonrobo.first_trusted_square_noetix_dynamic_stability_markdown(),
+      )
     }
   } else if args.contains("moonrobo") &&
     args.contains("noetix") &&

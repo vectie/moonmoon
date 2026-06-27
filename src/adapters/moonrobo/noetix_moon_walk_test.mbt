@@ -63,6 +63,26 @@ test "noetix static support report flags kinematic walk for review" {
 }
 
 ///|
+test "noetix dynamic stability report uses capture point evidence" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let report = noetix_dynamic_stability_report(trace)
+  assert_eq(report.frame_count, 12)
+  assert_eq(report.profile.robot_id, trace.robot.robot_id)
+  assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(report.review_frame_count > 0)
+  assert_true(report.worst_capture_margin_m < 0.0)
+  assert_eq(report.status, "dynamic-stability-review")
+  assert_true(report.note.contains("no controller"))
+  assert_true(
+    report.frames.any(fn(frame) { frame.status == "capture-point-review" }),
+  )
+  assert_true(
+    report.frames[0].capture_point_assessment.capture_point.x >
+    report.frames[0].com_position.x,
+  )
+}
+
+///|
 test "noetix reference links mirror the compact urdf tree" {
   let links = noetix_reference_links()
   assert_eq(links.length(), 25)

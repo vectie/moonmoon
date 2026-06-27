@@ -7,6 +7,7 @@
   - frames: 32
   - link poses per frame: 25
   - static-support review frames: 32
+  - dynamic-stability review frames: 32
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
   - safety gate: Do not convert the Noetix walk trace, link poses, or static support report into hardware authority. Dynamic stability and controller evidence must be added before any claim beyond simulation review.
@@ -15,6 +16,7 @@
     - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
     - noetix-static-support: output/moonrobo/first_trusted_square_noetix_stability.json - Static COM/support report that explicitly remains review-only for dynamic walking.
+    - noetix-dynamic-stability: output/moonrobo/first_trusted_square_noetix_dynamics.json - Capture-point dynamic stability report that remains review-only without controller and inertia evidence.
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html - Rabbita playback for inspecting the walk and link-pose skeleton.
   - artifacts:
     - noetix-endless-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json
@@ -32,6 +34,11 @@
       - ready: false
       - blocking: static COM support is review-only until dynamic stability and controller evidence exist
       - gate: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
+    - noetix-dynamic-stability-review: output/moonrobo/first_trusted_square_noetix_dynamics.json
+      - current: 32/32 frames require capture-point review; worst capture margin -0.035 m; status dynamic-stability-review
+      - ready: false
+      - blocking: capture-point evidence is review-only until controller, actuator, inertia, and collision evidence exist
+      - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html
       - current: Noetix panel consumes walk and link-pose JSON with skeleton playback
       - ready: true
@@ -41,11 +48,13 @@
     - python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
     - python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
     - python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
+    - python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - python3 scripts/check_rabbita_noetix_walk.py
     - python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json
     - /Users/kq/.moon/bin/moon test
   - acceptance:
-    - all-noetix-evidence-linked: Task links walk, link poses, static support, and Rabbita playback evidence with concrete validation commands.
+    - all-noetix-evidence-linked: Task links walk, link poses, static support, dynamic stability, and Rabbita playback evidence with concrete validation commands.
     - review-only-static-support-preserved: Static support review frames remain explicit blockers for dynamic walking evidence.
+    - review-only-dynamic-stability-preserved: Capture-point review frames remain explicit blockers until controller and inertia evidence exist.
     - hardware-denial-preserved: MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.
     - next-physics-step-clear: Task names dynamic stability/controller evidence as the next requirement before stronger simulation claims.

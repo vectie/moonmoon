@@ -5,12 +5,14 @@
     "robot_id": "noetix-e1-lab-01",
     "priority": "High",
     "state": "Accepted",
-    "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any dynamic-stability or hardware-authority claim.",
+    "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
     "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
     "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
+    "source_dynamic_stability_report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
     "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
     "frame_count": 32,
     "static_support_review_frame_count": 32,
+    "dynamic_stability_review_frame_count": 32,
     "link_pose_count_per_frame": 25,
     "hardware_state": "HardwareDenied",
     "hardware_authority": "moonmoon-safety-gate-only",
@@ -33,6 +35,12 @@
         "evidence_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
         "claim_kind": "Simulated",
         "summary": "Static COM/support report that explicitly remains review-only for dynamic walking."
+      },
+      {
+        "input_id": "noetix-dynamic-stability",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+        "claim_kind": "Simulated",
+        "summary": "Capture-point dynamic stability report that remains review-only without controller and inertia evidence."
       },
       {
         "input_id": "noetix-rabbita-playback",
@@ -73,6 +81,16 @@
         "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
       },
       {
+        "artifact_id": "noetix-dynamic-stability-review",
+        "path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
+        "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
+        "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
+        "current_state": "32/32 frames require capture-point review; worst capture margin -0.035 m; status dynamic-stability-review",
+        "ready": false,
+        "blocking_reason": "capture-point evidence is review-only until controller, actuator, inertia, and collision evidence exist",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
+      },
+      {
         "artifact_id": "noetix-rabbita-playback",
         "path": "output/ui/rabbita/first_trusted_square.html",
         "producer": "scripts/build_rabbita_ui.sh",
@@ -87,6 +105,7 @@
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
       "python3 scripts/check_rabbita_noetix_walk.py",
       "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
       "/Users/kq/.moon/bin/moon test"
@@ -94,11 +113,15 @@
     "acceptance_criteria": [
       {
         "criterion_id": "all-noetix-evidence-linked",
-        "description": "Task links walk, link poses, static support, and Rabbita playback evidence with concrete validation commands."
+        "description": "Task links walk, link poses, static support, dynamic stability, and Rabbita playback evidence with concrete validation commands."
       },
       {
         "criterion_id": "review-only-static-support-preserved",
         "description": "Static support review frames remain explicit blockers for dynamic walking evidence."
+      },
+      {
+        "criterion_id": "review-only-dynamic-stability-preserved",
+        "description": "Capture-point review frames remain explicit blockers until controller and inertia evidence exist."
       },
       {
         "criterion_id": "hardware-denial-preserved",

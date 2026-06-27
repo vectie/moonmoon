@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 79)
+  assert_eq(dossier.entries.length(), 80)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -218,10 +218,13 @@ test "first trusted square exports a MoonBook evidence dossier" {
     dossier.entries[76].kind == @moonbook.BookEntryKind::MoonroboNoetixPhysics,
   )
   assert_true(
-    dossier.entries[77].kind == @moonbook.BookEntryKind::MoonroboNoetixLinkPoses,
+    dossier.entries[77].kind == @moonbook.BookEntryKind::MoonroboNoetixDynamics,
   )
   assert_true(
-    dossier.entries[78].kind ==
+    dossier.entries[78].kind == @moonbook.BookEntryKind::MoonroboNoetixLinkPoses,
+  )
+  assert_true(
+    dossier.entries[79].kind ==
     @moonbook.BookEntryKind::MoonClawNoetixReviewTask,
   )
   assert_eq(
