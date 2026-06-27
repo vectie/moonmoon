@@ -92,6 +92,31 @@ test "contact patch load distributes normal force over samples" {
 }
 
 ///|
+test "contact patch wrench integrates sample loads" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let load = contact_patch_load_assessment(patch, 100.0)
+  let wrench = contact_patch_wrench_assessment(
+    load,
+    vec3(0.1, 0.0, 0.0),
+    vec3(0.0, 0.0, 2.0),
+  )
+  assert_true(nearly_equal(wrench.total_force_n.x, 0.0))
+  assert_true(nearly_equal(wrench.total_force_n.y, 0.0))
+  assert_true(nearly_equal(wrench.total_force_n.z, 100.0))
+  assert_true(nearly_equal(wrench.total_torque_nm.x, 0.0))
+  assert_true(nearly_equal(wrench.total_torque_nm.y, 10.0))
+  assert_true(nearly_equal(wrench.total_torque_nm.z, 0.0))
+  assert_eq(wrench.status, "patch-wrench-resolved")
+}
+
+///|
 test "contact patch load flags partial contact pressure" {
   let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
   let patch = heightfield_contact_patch(

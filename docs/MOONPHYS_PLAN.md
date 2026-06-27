@@ -49,8 +49,8 @@ evidence.
   missing-visual-geometry status when the URDF link has no visual block.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
-  contact torque, narrow-phase self-collision manifolds, and generic
-  multi-contact manifold resolution with impulse accounting.
+  patch-load contact wrench torque, narrow-phase self-collision manifolds, and
+  generic multi-contact manifold resolution with impulse accounting.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -478,9 +478,9 @@ Moonphys joint limits. Noetix
 joint-control review evidence replays the gait phases through Moonphys joint
 servo, torque, velocity, position limits, and mechanical power/work accounting.
 Noetix inertial/collision review evidence maps the assumed profile onto
-Moonphys diagonal inertia, collision bounds, terrain collision probes, contact
-torque, narrow-phase self-collision manifolds, generic manifold resolution,
-impulse accounting, and traction margin review. Mass, inertia, and
+Moonphys diagonal inertia, collision bounds, terrain collision probes,
+patch-load contact wrench torque, narrow-phase self-collision manifolds, generic
+manifold resolution, impulse accounting, and traction margin review. Mass, inertia, and
 authoritative collision tags are still absent from the referenced model, so the
 evidence remains review-only.
 
@@ -506,6 +506,7 @@ Next `moonphys` capabilities:
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)
 - contact-patch pressure / center-of-pressure review (implemented)
+- contact-patch wrench / support torque review (implemented)
 - capture point / linear inverted-pendulum review helper (implemented)
 - semi-implicit rigid-body gravity integration (implemented)
 - material/friction model (implemented)

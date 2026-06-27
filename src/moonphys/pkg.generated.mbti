@@ -41,6 +41,8 @@ pub fn collision_world_bounds(CollisionShape, Transform3) -> CollisionBounds
 
 pub fn contact_patch_load_assessment(HeightfieldContactPatch, Double) -> ContactPatchLoadAssessment
 
+pub fn contact_patch_wrench_assessment(ContactPatchLoadAssessment, Vec3, Vec3) -> ContactPatchWrenchAssessment
+
 pub fn contact_torque(Vec3, Vec3, Vec3) -> Vec3
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
@@ -271,6 +273,18 @@ pub(all) struct ContactPatchLoadSample {
   load_fraction : Double
   normal_force_n : Double
   pressure_pa : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ContactPatchWrenchAssessment {
+  patch_id : String
+  reference_point : Vec3
+  surface_normal : Vec3
+  center_of_pressure : Vec3
+  total_force_n : Vec3
+  total_torque_nm : Vec3
+  normal_force_n : Double
+  loaded_sample_count : Int
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

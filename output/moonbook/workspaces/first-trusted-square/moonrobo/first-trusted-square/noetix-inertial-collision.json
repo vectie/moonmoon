@@ -613,7 +613,7 @@
     "max_self_contact_correction_m": 0.045,
     "max_self_contact_normal_impulse_ns": 0,
     "max_self_contact_friction_impulse_ns": 1.8848000000000003,
-    "max_support_contact_torque_nm": 9.849850874505668,
+    "max_support_contact_torque_nm": 22.27434786521959,
     "frames": [
       {
         "frame_index": 0,
@@ -633,9 +633,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 1.8525,
-          "z": 0
+          "x": 12.880574728477932,
+          "y": 14.034183763939375,
+          "z": 1.948509447844823
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -1754,9 +1754,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 2.5934999999999997,
-          "z": 0
+          "x": 12.79413519788342,
+          "y": 14.551996026146993,
+          "z": 1.7803227942894666
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -2875,9 +2875,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 3.3345,
-          "z": 0
+          "x": 12.707695667288112,
+          "y": 15.069808288353268,
+          "z": 1.6121361407341097
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -3996,9 +3996,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 4.0755,
-          "z": 0
+          "x": 12.6212561366936,
+          "y": 15.587620550560885,
+          "z": 1.4439494871787533
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -5117,9 +5117,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 4.8165,
-          "z": 0
+          "x": 12.534816606099088,
+          "y": 16.10543281276851,
+          "z": 1.2757628336233968
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -6238,9 +6238,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 5.5575,
-          "z": 0
+          "x": 12.44837707550378,
+          "y": 16.623245074974783,
+          "z": 1.1075761800680402
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -7359,9 +7359,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 6.2985,
-          "z": 0
+          "x": 12.361937544909269,
+          "y": 17.141057337182403,
+          "z": 0.9393895265126836
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -8480,9 +8480,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 7.0395,
-          "z": 0
+          "x": 12.275498014314756,
+          "y": 17.65886959939002,
+          "z": 0.7712028729573269
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -9601,9 +9601,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 7.7805,
-          "z": 0
+          "x": 12.189058483719448,
+          "y": 18.1766818615963,
+          "z": 0.6030162194019704
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -10722,9 +10722,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 8.521500000000001,
-          "z": 0
+          "x": 12.102618953124937,
+          "y": 18.694494123803917,
+          "z": 0.43482956584661364
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -11843,9 +11843,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 1.8525,
-          "z": 0
+          "x": 0.06647712566175334,
+          "y": 11.22779797767663,
+          "z": -1.5441769864943358
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -12964,9 +12964,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 2.593499999999999,
-          "z": 0
+          "x": 0.014551680630169539,
+          "y": 11.936573793996155,
+          "z": -1.6452090811168936
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -14085,9 +14085,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 3.3344999999999994,
-          "z": 0
+          "x": -0.03737376440093598,
+          "y": 12.645349610315904,
+          "z": -1.746241175739452
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -15206,9 +15206,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 4.075500000000002,
-          "z": 0
+          "x": -0.08929920943204106,
+          "y": 13.354125426635655,
+          "z": -1.847273270362011
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -16327,9 +16327,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 4.8165000000000004,
-          "z": 0
+          "x": -0.14122465446362487,
+          "y": 14.06290124295518,
+          "z": -1.9483053649845687
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -17448,9 +17448,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 5.5575,
-          "z": 0
+          "x": -0.1931500994947304,
+          "y": 14.77167705927493,
+          "z": -2.049337459607127
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -18569,9 +18569,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 6.298500000000001,
-          "z": 0
+          "x": -0.24507554452583546,
+          "y": 15.480452875594676,
+          "z": -2.1503695542296857
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -19690,9 +19690,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 7.039500000000001,
-          "z": 0
+          "x": -0.29700098955741927,
+          "y": 16.18922869191421,
+          "z": -2.2514016488522435
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -20811,9 +20811,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 7.780500000000002,
-          "z": 0
+          "x": -0.3489264345885248,
+          "y": 16.898004508233953,
+          "z": -2.352433743474802
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -21932,9 +21932,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 8.5215,
-          "z": 0
+          "x": -0.40085187961962987,
+          "y": 17.6067803245537,
+          "z": -2.45346583809736
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -23053,9 +23053,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 1.8525,
-          "z": 0
+          "x": 13.61130152155112,
+          "y": -12.442611139710785,
+          "z": -3.8467118191230103
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -24174,9 +24174,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 2.5935000000000006,
-          "z": 0
+          "x": 13.527824016234021,
+          "y": -11.629734867656222,
+          "z": -4.00913521695812
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -25295,9 +25295,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 3.334499999999998,
-          "z": 0
+          "x": 13.44434651091692,
+          "y": -10.816858595601662,
+          "z": -4.171558614793228
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -26416,9 +26416,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 4.075499999999998,
-          "z": 0
+          "x": 13.360869005599053,
+          "y": -10.003982323545536,
+          "z": -4.333982012628338
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -27537,9 +27537,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 4.8165,
-          "z": 0
+          "x": 13.277391500281952,
+          "y": -9.191106051490973,
+          "z": -4.496405410463447
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -28658,9 +28658,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 5.557500000000004,
-          "z": 0
+          "x": 13.193913994964852,
+          "y": -8.378229779436408,
+          "z": -4.6588288082985585
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -29779,9 +29779,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 6.298500000000004,
-          "z": 0
+          "x": 13.110436489646982,
+          "y": -7.565353507380281,
+          "z": -4.821252206133668
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -30900,9 +30900,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 7.039500000000001,
-          "z": 0
+          "x": 13.026958984329884,
+          "y": -6.752477235325721,
+          "z": -4.983675603968776
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -32021,9 +32021,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 7.780500000000002,
-          "z": 0
+          "x": 12.943481479012785,
+          "y": -5.93960096327116,
+          "z": -5.146099001803886
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -33142,9 +33142,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": 4.94,
-          "y": 8.521500000000003,
-          "z": 0
+          "x": 12.860003973694916,
+          "y": -5.126724691215033,
+          "z": -5.308522399638995
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -34263,9 +34263,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 1.8525000000000016,
-          "z": 0
+          "x": 0.5966362095714686,
+          "y": -11.793373404238192,
+          "z": 1.324092167250177
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -35384,9 +35384,9 @@
           }
         },
         "support_contact_torque_nm": {
-          "x": -4.94,
-          "y": 2.5935000000000024,
-          "z": 0
+          "x": 0.5501495589909882,
+          "y": -10.966466149554105,
+          "z": 1.233642414199058
         },
         "shape_count": 8,
         "terrain_contact_count": 1,
@@ -36490,7 +36490,7 @@
     ],
     "hardware_authority": "moonmoon-safety-gate-only",
     "status": "inertial-collision-self-review",
-    "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+    "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

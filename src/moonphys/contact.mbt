@@ -55,6 +55,19 @@ pub(all) struct ContactPatchLoadAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct ContactPatchWrenchAssessment {
+  patch_id : String
+  reference_point : Vec3
+  surface_normal : Vec3
+  center_of_pressure : Vec3
+  total_force_n : Vec3
+  total_torque_nm : Vec3
+  normal_force_n : Double
+  loaded_sample_count : Int
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn heightfield_contact_probe(
   field : Heightfield,
   probe_id : String,
@@ -270,6 +283,62 @@ pub fn contact_patch_load_assessment(
       patch.contact_count,
       loaded_count,
       total_force,
+    ),
+  }
+}
+
+///|
+fn normalized_patch_normal(surface_normal : Vec3) -> Vec3 {
+  let length = surface_normal.length()
+  if length > 0.0 {
+    surface_normal.scale(1.0 / length)
+  } else {
+    vec3(0.0, 0.0, 1.0)
+  }
+}
+
+///|
+fn contact_patch_wrench_status(
+  normal_force_n : Double,
+  loaded_sample_count : Int,
+) -> String {
+  if loaded_sample_count <= 0 {
+    "patch-wrench-no-load"
+  } else if normal_force_n <= 0.0 {
+    "patch-wrench-no-force"
+  } else {
+    "patch-wrench-resolved"
+  }
+}
+
+///|
+pub fn contact_patch_wrench_assessment(
+  load : ContactPatchLoadAssessment,
+  reference_point : Vec3,
+  surface_normal : Vec3,
+) -> ContactPatchWrenchAssessment {
+  let normal = normalized_patch_normal(surface_normal)
+  let mut force = vec3(0.0, 0.0, 0.0)
+  let mut torque = vec3(0.0, 0.0, 0.0)
+  for sample in load.samples {
+    let sample_force = normal.scale(sample.normal_force_n)
+    force = force.add(sample_force)
+    torque = torque.add(
+      contact_torque(reference_point, sample.position, sample_force),
+    )
+  }
+  {
+    patch_id: load.patch_id,
+    reference_point,
+    surface_normal: normal,
+    center_of_pressure: load.center_of_pressure,
+    total_force_n: force,
+    total_torque_nm: torque,
+    normal_force_n: load.total_normal_force_n,
+    loaded_sample_count: load.loaded_sample_count,
+    status: contact_patch_wrench_status(
+      load.total_normal_force_n,
+      load.loaded_sample_count,
     ),
   }
 }

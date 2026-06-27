@@ -172,6 +172,7 @@ fn terrain_collision_evidence(
 
 ///|
 fn support_contact_torque(
+  field : @moonphys.Heightfield,
   frame : NoetixMoonWalkFrame,
   profile : NoetixPhysicsProfile,
   center_of_mass : @moonphys.Vec3,
@@ -186,10 +187,27 @@ fn support_contact_torque(
     ],
     profile.mass_model.mass_kg * @moonphys.lunar_environment().gravity_mps2,
   )
+  let left_patch = contact_patch(field, frame.left_foot, left_geometry)
+  let right_patch = contact_patch(field, frame.right_foot, right_geometry)
+  let left_wrench = @moonphys.contact_patch_wrench_assessment(
+    @moonphys.contact_patch_load_assessment(
+      left_patch,
+      support_load_normal_force(load, left_geometry.foot_id),
+    ),
+    center_of_mass,
+    left_patch.average_surface_normal,
+  )
+  let right_wrench = @moonphys.contact_patch_wrench_assessment(
+    @moonphys.contact_patch_load_assessment(
+      right_patch,
+      support_load_normal_force(load, right_geometry.foot_id),
+    ),
+    center_of_mass,
+    right_patch.average_surface_normal,
+  )
   let mut torque = @moonphys.vec3(0.0, 0.0, 0.0)
-  for contact_load in load.loads {
-    torque = torque.add(contact_load.contact_torque_nm)
-  }
+  torque = torque.add(left_wrench.total_torque_nm)
+  torque = torque.add(right_wrench.total_torque_nm)
   torque
 }
 
@@ -318,7 +336,7 @@ pub fn noetix_inertial_collision_frame(
     center_of_mass,
     inertia,
     support_contact_torque_nm: support_contact_torque(
-      walk_frame, profile, center_of_mass,
+      field, walk_frame, profile, center_of_mass,
     ),
     shape_count: shapes.length(),
     terrain_contact_count,
@@ -410,7 +428,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 

@@ -12,10 +12,10 @@
 - max self-contact correction: 0.045 m
 - max self-contact normal impulse: 0 Ns
 - max self-contact friction impulse: 1.8848000000000003 Ns
-- max support contact torque: 9.849850874505668 Nm
+- max support contact torque: 22.27434786521959 Nm
 - status: inertial-collision-self-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.
+- note: Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.
 
 ## Frame Collision Summary
 

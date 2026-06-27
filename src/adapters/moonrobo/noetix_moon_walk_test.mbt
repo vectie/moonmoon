@@ -347,6 +347,7 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_true(report.max_self_contact_normal_impulse_ns >= 0.0)
   assert_true(report.max_self_contact_friction_impulse_ns > 0.0)
   assert_true(report.note.contains("Moonphys diagonal inertia"))
+  assert_true(report.note.contains("patch-load contact wrench torque"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))
   assert_true(
