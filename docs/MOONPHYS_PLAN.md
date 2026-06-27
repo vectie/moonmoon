@@ -79,7 +79,8 @@ evidence.
 - Moonrobo Noetix joint-control evidence now projects each URDF-reference link
   frame through Moonphys generic hinge-joint frame assessment and exports
   compact per-frame/report summaries for body count, joint count, position/axis
-  error, impulse review, and Moonphys world hinge constraint replay status.
+  error, impulse review, Moonphys world hinge constraint replay status, and
+  motor-driven heightfield world replay contact/hinge-resolution summaries.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -527,8 +528,11 @@ with shared terrain contact, scheduled body-pair contacts, pairwise contact
 response, anchored-point distance constraints, and generic hinge constraints
 over motion bodies; generic hinge motor replay can now drive matching world
 hinge constraints from scalar joint motor frames, including sequential hinge
-motor traces over a finite replay window. Full coupled articulated dynamics
-remain future work.
+motor traces over a finite replay window. Moonphys also exposes an integrated
+motor-driven heightfield world trace that applies hinge motor frames before each
+fixed heightfield step, so motor drive, terrain contacts, world contacts,
+constraints, energy deltas, and review counts live in one deterministic replay
+artifact. Full coupled articulated dynamics remain future work.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
@@ -583,6 +587,8 @@ Next `moonphys` capabilities:
 - generic hinge motor replay over world hinge constraints (implemented)
 - generic sequential hinge motor trace replay over world hinge constraints
   (implemented)
+- generic motor-driven heightfield world trace replay that composes hinge motor
+  drive with fixed-step world contact/constraint resolution (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

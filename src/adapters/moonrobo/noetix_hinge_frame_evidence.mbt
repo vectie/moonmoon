@@ -197,12 +197,11 @@ fn noetix_hinge_projection_world(
   frame : NoetixMoonWalkFrame,
   bodies : Array[@moonphys.RigidBodyJointFrameBody],
   joints : Array[@moonphys.RigidBodyHingeJointConstraint],
+  field : @moonphys.Heightfield,
 ) -> @moonphys.RigidBodyHeightfieldWorld {
   @moonphys.rigid_body_heightfield_world(
     "noetix-e1/hinge-projection-world/\{frame.frame_index}",
-    @moonphys.heightfield("noetix-e1/hinge-projection-flat-field", 1, 1, 1.0, [
-      0.0,
-    ]),
+    field,
     @moonphys.lunar_regolith_contact_model(),
     @moonphys.lunar_environment(),
     noetix_hinge_world_bodies(bodies),
@@ -288,7 +287,12 @@ fn noetix_hinge_projection_frame(
     bodies,
     joints,
   )
-  let world = noetix_hinge_projection_world(frame, bodies, joints)
+  let world = noetix_hinge_projection_world(
+    frame,
+    bodies,
+    joints,
+    first_trusted_square_noetix_heightfield(),
+  )
   { assessment, world }
 }
 

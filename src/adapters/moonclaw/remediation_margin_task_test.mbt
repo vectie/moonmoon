@@ -1570,7 +1570,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-joint-control-review" &&
       !artifact.ready &&
-      artifact.validation_gate.contains("check_moonrobo_noetix_control")
+      artifact.validation_gate.contains("check_moonrobo_noetix_control") &&
+      artifact.current_state.contains("heightfield motor contacts") &&
+      artifact.current_state.contains("resolved world hinges")
     }),
   )
   assert_true(

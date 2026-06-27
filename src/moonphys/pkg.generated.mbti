@@ -117,6 +117,10 @@ pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, P
 
 pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
 
+pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
+
+pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
+
 pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
 
 pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
@@ -590,6 +594,38 @@ pub(all) struct RigidBodyHeightfieldWorld {
   constraints : Array[RigidBodyWorldDistanceConstraint]
   motion_bodies : Array[RigidBodyJointFrameBody]
   hinge_constraints : Array[RigidBodyHingeJointConstraint]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldWorldHingeMotorStep {
+  frame_index : Int
+  time_s : Double
+  dt_s : Double
+  before : RigidBodyHeightfieldWorld
+  motor_frame : JointMotorFrame
+  motor_drive : RigidBodyWorldHingeMotorFrame
+  world_step : RigidBodyHeightfieldWorldStep
+  after : RigidBodyHeightfieldWorld
+  driven_joint_count : Int
+  contact_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldWorldHingeMotorTrace {
+  trace_id : String
+  heightfield_id : String
+  frame_count : Int
+  motor_frame_count : Int
+  driven_joint_count : Int
+  contact_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  initial_world : RigidBodyHeightfieldWorld
+  frames : Array[RigidBodyHeightfieldWorldHingeMotorStep]
+  final_world : RigidBodyHeightfieldWorld
+  status : String
+  note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyHeightfieldWorldStep {

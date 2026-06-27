@@ -75,6 +75,40 @@ pub(all) struct RigidBodyWorldHingeMotorTrace {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyHeightfieldWorldHingeMotorStep {
+  frame_index : Int
+  time_s : Double
+  dt_s : Double
+  before : RigidBodyHeightfieldWorld
+  motor_frame : JointMotorFrame
+  motor_drive : RigidBodyWorldHingeMotorFrame
+  world_step : RigidBodyHeightfieldWorldStep
+  after : RigidBodyHeightfieldWorld
+  driven_joint_count : Int
+  contact_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyHeightfieldWorldHingeMotorTrace {
+  trace_id : String
+  heightfield_id : String
+  frame_count : Int
+  motor_frame_count : Int
+  driven_joint_count : Int
+  contact_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  initial_world : RigidBodyHeightfieldWorld
+  frames : Array[RigidBodyHeightfieldWorldHingeMotorStep]
+  final_world : RigidBodyHeightfieldWorld
+  status : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn angular_correction_basis(correction_rad : Vec3) -> Basis3 {
   let angle = correction_rad.length()
   if angle > 0.0 {
@@ -456,6 +490,45 @@ fn rigid_body_world_hinge_motor_trace_status(
 }
 
 ///|
+fn rigid_body_heightfield_world_hinge_motor_step_status(
+  motor_drive : RigidBodyWorldHingeMotorFrame,
+  world_step : RigidBodyHeightfieldWorldStep,
+  review_count : Int,
+) -> String {
+  if review_count > 0 {
+    "world-heightfield-hinge-motor-review"
+  } else if motor_drive.driven_joint_count > 0 && world_step.contact_count > 0 {
+    "world-heightfield-hinge-motor-contact"
+  } else if motor_drive.driven_joint_count > 0 {
+    "world-heightfield-hinge-motor-driven"
+  } else if world_step.contact_count > 0 {
+    "world-heightfield-hinge-motor-passive-contact"
+  } else {
+    "world-heightfield-hinge-motor-idle"
+  }
+}
+
+///|
+fn rigid_body_heightfield_world_hinge_motor_trace_status(
+  frame_count : Int,
+  motor_frame_count : Int,
+  driven_count : Int,
+  review_count : Int,
+) -> String {
+  if frame_count == 0 {
+    "world-heightfield-hinge-motor-trace-empty"
+  } else if frame_count != motor_frame_count {
+    "world-heightfield-hinge-motor-trace-truncated"
+  } else if review_count > 0 {
+    "world-heightfield-hinge-motor-trace-review"
+  } else if driven_count > 0 {
+    "world-heightfield-hinge-motor-trace-driven"
+  } else {
+    "world-heightfield-hinge-motor-trace-idle"
+  }
+}
+
+///|
 pub fn rigid_body_world_integrate_hinge_motors(
   world : RigidBodyHeightfieldWorld,
   motor_frame : JointMotorFrame,
@@ -523,6 +596,98 @@ pub fn rigid_body_world_integrate_hinge_motors(
     status: rigid_body_world_hinge_motor_frame_status(
       driven_count, review_count, hinge_resolution,
     ),
+  }
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_step(
+  world : RigidBodyHeightfieldWorld,
+  field : Heightfield,
+  motor_frame : JointMotorFrame,
+  frame_index? : Int = 0,
+  time_s? : Double = 0.0,
+) -> RigidBodyHeightfieldWorldHingeMotorStep {
+  let motor_drive = rigid_body_world_integrate_hinge_motors(world, motor_frame)
+  let world_step = rigid_body_heightfield_world_step(
+    motor_drive.after,
+    field,
+    motor_frame.dt_s,
+    frame_index~,
+    time_s~,
+  )
+  let review_count = motor_drive.review_count +
+    motor_drive.hinge_constraint_resolution.review_count +
+    world_step.review_count
+  {
+    frame_index,
+    time_s,
+    dt_s: motor_frame.dt_s,
+    before: world,
+    motor_frame,
+    motor_drive,
+    world_step,
+    after: world_step.after,
+    driven_joint_count: motor_drive.driven_joint_count,
+    contact_count: world_step.contact_count,
+    resolved_hinge_constraint_count: motor_drive.hinge_constraint_resolution.resolved_hinge_constraint_count +
+    world_step.hinge_constraint_resolution.resolved_hinge_constraint_count,
+    review_count,
+    status: rigid_body_heightfield_world_hinge_motor_step_status(
+      motor_drive, world_step, review_count,
+    ),
+  }
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_trace(
+  trace_id : String,
+  initial_world : RigidBodyHeightfieldWorld,
+  field : Heightfield,
+  motor_frames : Array[JointMotorFrame],
+  note? : String = "",
+) -> RigidBodyHeightfieldWorldHingeMotorTrace {
+  let frames : Array[RigidBodyHeightfieldWorldHingeMotorStep] = []
+  let mut world = initial_world
+  let mut time_s = 0.0
+  let mut driven_count = 0
+  let mut contact_count = 0
+  let mut resolved_hinge_count = 0
+  let mut review_count = 0
+  for index, motor_frame in motor_frames {
+    let frame = rigid_body_heightfield_world_hinge_motor_step(
+      world,
+      field,
+      motor_frame,
+      frame_index=index,
+      time_s~,
+    )
+    frames.push(frame)
+    driven_count += frame.driven_joint_count
+    contact_count += frame.contact_count
+    resolved_hinge_count += frame.resolved_hinge_constraint_count
+    review_count += frame.review_count
+    world = frame.after
+    time_s += motor_frame.dt_s
+  }
+  {
+    trace_id,
+    heightfield_id: field.field_id,
+    frame_count: frames.length(),
+    motor_frame_count: motor_frames.length(),
+    driven_joint_count: driven_count,
+    contact_count,
+    resolved_hinge_constraint_count: resolved_hinge_count,
+    review_count,
+    initial_world,
+    frames,
+    final_world: world,
+    status: rigid_body_heightfield_world_hinge_motor_trace_status(
+      frames.length(),
+      motor_frames.length(),
+      driven_count,
+      review_count,
+    ),
+    note,
   }
 }
 

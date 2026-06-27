@@ -1006,6 +1006,97 @@ test "rigid body world hinge motor trace replays sequential frames" {
 }
 
 ///|
+test "rigid body heightfield world hinge motor trace couples drive and contact" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let root_state = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 0.08),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper_state = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(2.0, 0.0, 0.08),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(root_state.linear),
+      rigid_body_world_body(upper_state.linear),
+    ],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        root_state,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper_state,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    hinge_constraints=[
+      rigid_body_hinge_joint_constraint(
+        "shoulder",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  let frame0 = integrate_joint_motor_frame(
+    "hinge-motor-frame/0",
+    [joint_motor_state("shoulder", 0.0, 0.0)],
+    [joint_motor_command("shoulder", 1.0, 0.0, 0.0)],
+    [joint_servo_config("shoulder", 2.0, 0.0)],
+    [joint_limit("shoulder", -2.0, 2.0, 4.0, 10.0)],
+    [2.0],
+    0.5,
+  )
+  let frame1 = integrate_joint_motor_frame(
+    "hinge-motor-frame/1",
+    [joint_motor_state("shoulder", 0.25, 0.0)],
+    [joint_motor_command("shoulder", 1.0, 0.0, 0.0)],
+    [joint_servo_config("shoulder", 2.0, 0.0)],
+    [joint_limit("shoulder", -2.0, 2.0, 4.0, 10.0)],
+    [2.0],
+    0.5,
+  )
+  let trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "hinge-motor-heightfield-trace",
+    world,
+    field,
+    [frame0, frame1],
+    note="motor-driven world replay",
+  )
+  assert_eq(trace.status, "world-heightfield-hinge-motor-trace-driven")
+  assert_eq(trace.frame_count, 2)
+  assert_eq(trace.motor_frame_count, 2)
+  assert_eq(trace.driven_joint_count, 2)
+  assert_eq(trace.contact_count, 4)
+  assert_true(trace.resolved_hinge_constraint_count >= 2)
+  assert_eq(trace.review_count, 0)
+  assert_eq(trace.frames[0].status, "world-heightfield-hinge-motor-contact")
+  assert_true(trace.frames[0].contact_count == 2)
+  assert_true(trace.frames[0].world_step.contact_count == 2)
+  assert_true(trace.frames[0].motor_drive.driven_joint_count == 1)
+  assert_true(trace.final_world == trace.frames[1].after)
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

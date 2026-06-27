@@ -54,6 +54,8 @@ def main() -> None:
         fail("report note must mention Moonphys world hinge motor replay")
     if "sequential world hinge motor trace" not in report.get("note", ""):
         fail("report note must mention Moonphys sequential hinge motor trace")
+    if "motor-driven heightfield world replay" not in report.get("note", ""):
+        fail("report note must mention Moonphys motor-driven heightfield replay")
     if report.get("hinge_joint_frame_count") != len(frames):
         fail("hinge joint frame count must match report frames")
     if report.get("hinge_joint_count_per_frame") != 24:
@@ -73,6 +75,29 @@ def main() -> None:
         fail("hinge motor trace should preserve all projected Noetix bodies")
     if "world-hinge-motor-trace" not in hinge_motor_trace.get("status", ""):
         fail("hinge motor trace must expose Moonphys trace status")
+    hinge_motor_world_trace = report.get("hinge_motor_world_trace", {})
+    if hinge_motor_world_trace.get("frame_count") != len(frames):
+        fail("hinge motor world trace must replay every report frame")
+    if hinge_motor_world_trace.get("motor_frame_count") != len(frames):
+        fail("hinge motor world trace must consume every motor frame")
+    if hinge_motor_world_trace.get("driven_joint_count") != report.get(
+        "hinge_motor_driven_joint_count"
+    ):
+        fail("hinge motor world trace driven count must match frame summary")
+    if hinge_motor_world_trace.get("contact_count", 0) <= 0:
+        fail("hinge motor world trace must include heightfield contacts")
+    if hinge_motor_world_trace.get("resolved_hinge_constraint_count", 0) <= (
+        report.get("hinge_motor_driven_joint_count", 0)
+    ):
+        fail("hinge motor world trace should resolve hinge constraints across steps")
+    if hinge_motor_world_trace.get("final_body_count") != 25:
+        fail("hinge motor world trace should preserve all world bodies")
+    if hinge_motor_world_trace.get("final_projected_body_count") != 25:
+        fail("hinge motor world trace should preserve all projected Noetix bodies")
+    if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
+        "status", ""
+    ):
+        fail("hinge motor world trace must expose Moonphys heightfield trace status")
     if report.get("hinge_review_frame_count", -1) < 0:
         fail("hinge review frame count must be present")
     if report.get("max_hinge_position_error_m", -1) < 0:

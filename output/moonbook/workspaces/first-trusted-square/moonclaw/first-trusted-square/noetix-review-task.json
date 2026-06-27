@@ -189,7 +189,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; resolved world hinges 1512; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -456,7 +456,7 @@
             "path": "output/moonrobo/first_trusted_square_noetix_control.json",
             "producer": "moon run cmd/main -- moonrobo noetix control json",
             "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; resolved world hinges 1512; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
             "ready": false,
             "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
             "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -29068,6 +29068,18 @@
         "max_velocity_delta_rad_s": 3,
         "final_projected_body_count": 25,
         "status": "world-hinge-motor-trace-review"
+      },
+      "hinge_motor_world_trace": {
+        "trace_id": "noetix-e1/world-heightfield-hinge-motor-trace/first-trusted-square-northeast-stepout-lola",
+        "frame_count": 32,
+        "motor_frame_count": 32,
+        "driven_joint_count": 766,
+        "contact_count": 233,
+        "resolved_hinge_constraint_count": 1512,
+        "review_count": 2,
+        "final_body_count": 25,
+        "final_projected_body_count": 25,
+        "status": "world-heightfield-hinge-motor-trace-review"
       },
       "max_abs_position_error_rad": 0.24289082981102283,
       "max_abs_velocity_rad_s": 3.2776127345306216,
@@ -62524,7 +62536,7 @@
       ],
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "joint-control-limit-review",
-      "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, and a sequential world hinge motor trace for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
+      "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
     },
     "source_inertial_collision": {
       "report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
