@@ -74,6 +74,8 @@ evidence.
   Generic world-trace envelopes include aggregate mass/center-of-mass,
   per-body and whole-world linear momentum bounds alongside position, speed,
   contact, hinge, and energy summaries.
+  Generic world-support traces derive contact footprints from heightfield world
+  replay frames and report COM support margin plus center-of-pressure error.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
@@ -89,7 +91,8 @@ evidence.
   The same report also carries a generic Moonphys world-trace envelope for
   body sample count, position bounds, aggregate center-of-mass bounds, max
   speed, max kinetic energy, max body/world linear momentum, and max per-frame
-  kinetic-energy delta.
+  kinetic-energy delta, plus a generic world-support trace summary for
+  contact-derived support margins.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -553,7 +556,9 @@ artifact. Moonphys also summarizes deterministic world traces with generic
 body-envelope bounds: sample counts, position bounds, aggregate
 mass/center-of-mass bounds, max speed, max kinetic energy, max per-frame
 kinetic-energy delta, contacts, hinge resolutions, and review counts. Full
-coupled articulated dynamics remain future work.
+coupled articulated dynamics remain future work. Generic world-support traces
+now summarize heightfield contact support polygons, COM support margins, and
+center-of-pressure error from the same replay frames.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
@@ -613,6 +618,8 @@ Next `moonphys` capabilities:
 - generic world-trace envelope summaries for body bounds, max speed, max
   kinetic energy, aggregate center of mass, linear momentum, frame energy
   delta, contacts, hinge resolutions, and review counts (implemented)
+- generic world-support trace summaries for heightfield contact support
+  margins and center-of-pressure error (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

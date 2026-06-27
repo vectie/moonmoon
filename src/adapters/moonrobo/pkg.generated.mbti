@@ -489,6 +489,9 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   motor_frame_count : Int
   driven_joint_count : Int
   contact_count : Int
+  support_contact_count : Int
+  stable_support_frame_count : Int
+  support_review_frame_count : Int
   resolved_hinge_constraint_count : Int
   review_count : Int
   final_body_count : Int
@@ -504,6 +507,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   min_center_of_mass : @moonphys.Vec3
   max_center_of_mass : @moonphys.Vec3
   max_center_of_mass_speed_mps : Double
+  min_support_margin_m : Double
+  max_center_of_pressure_error_m : Double
   max_body_linear_momentum_kg_mps : Double
   max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double

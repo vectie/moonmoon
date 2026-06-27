@@ -86,6 +86,12 @@ def main() -> None:
         fail("hinge motor world trace driven count must match frame summary")
     if hinge_motor_world_trace.get("contact_count", 0) <= 0:
         fail("hinge motor world trace must include heightfield contacts")
+    if hinge_motor_world_trace.get("support_contact_count", 0) <= 0:
+        fail("hinge motor world trace must include support contacts")
+    if hinge_motor_world_trace.get("stable_support_frame_count", -1) < 0:
+        fail("hinge motor world trace must expose stable support frames")
+    if hinge_motor_world_trace.get("support_review_frame_count", -1) < 0:
+        fail("hinge motor world trace must expose support review frames")
     if hinge_motor_world_trace.get("resolved_hinge_constraint_count", 0) <= (
         report.get("hinge_motor_driven_joint_count", 0)
     ):
@@ -118,6 +124,10 @@ def main() -> None:
         fail("hinge motor world trace center-of-mass bounds should be valid")
     if hinge_motor_world_trace.get("max_center_of_mass_speed_mps", -1) < 0:
         fail("hinge motor world trace envelope should expose COM speed")
+    if "min_support_margin_m" not in hinge_motor_world_trace:
+        fail("hinge motor world trace should expose support margin")
+    if hinge_motor_world_trace.get("max_center_of_pressure_error_m", -1) < 0:
+        fail("hinge motor world trace should expose center-of-pressure error")
     if hinge_motor_world_trace.get("max_body_linear_momentum_kg_mps", -1) < 0:
         fail("hinge motor world trace envelope should expose max body momentum")
     if hinge_motor_world_trace.get("max_world_linear_momentum_kg_mps", -1) < 0:

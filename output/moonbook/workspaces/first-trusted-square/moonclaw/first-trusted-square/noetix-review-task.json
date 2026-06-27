@@ -29384,6 +29384,9 @@
         "motor_frame_count": 32,
         "driven_joint_count": 766,
         "contact_count": 233,
+        "support_contact_count": 233,
+        "stable_support_frame_count": 22,
+        "support_review_frame_count": 11,
         "resolved_hinge_constraint_count": 1512,
         "review_count": 2,
         "final_body_count": 25,
@@ -29423,6 +29426,8 @@
           "z": 337.7123394301811
         },
         "max_center_of_mass_speed_mps": 0.6262051903954763,
+        "min_support_margin_m": -0.13966170306727652,
+        "max_center_of_pressure_error_m": 0.2213821536134138,
         "max_body_linear_momentum_kg_mps": 1.8353493941250039,
         "max_world_linear_momentum_kg_mps": 23.795797235028104,
         "max_frame_kinetic_energy_delta_j": 2.050170526416192,

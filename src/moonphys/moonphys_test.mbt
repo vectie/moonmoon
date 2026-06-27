@@ -1175,6 +1175,18 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
   assert_true(envelope.min_position.z >= 0.0)
   assert_true(envelope.max_position.x >= 2.0)
+  let support_trace = rigid_body_heightfield_world_hinge_motor_support_trace(
+    trace,
+  )
+  assert_eq(support_trace.trace_id, trace.trace_id)
+  assert_eq(support_trace.frame_count, trace.frame_count)
+  assert_eq(support_trace.body_count, 2)
+  assert_eq(support_trace.contact_count, trace.contact_count)
+  assert_true(support_trace.support_frame_count == 2)
+  assert_true(support_trace.stable_frame_count >= 0)
+  assert_true(support_trace.min_planar_margin_m <= 1.0)
+  assert_true(support_trace.max_center_of_pressure_error_m >= 0.0)
+  assert_true(support_trace.status.contains("world-support-trace"))
 }
 
 ///|
@@ -1224,6 +1236,12 @@ test "rigid body heightfield world trace is deterministic" {
   assert_true(envelope.max_body_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_world_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
+  let support_trace = rigid_body_heightfield_world_support_trace(trace)
+  assert_eq(support_trace.frame_count, 4)
+  assert_eq(support_trace.body_count, 1)
+  assert_true(support_trace.contact_count >= 1)
+  assert_true(support_trace.min_planar_margin_m >= 0.0)
+  assert_true(support_trace.status.contains("world-support-trace"))
 }
 
 ///|

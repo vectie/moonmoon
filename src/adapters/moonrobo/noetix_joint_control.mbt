@@ -46,6 +46,9 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   motor_frame_count : Int
   driven_joint_count : Int
   contact_count : Int
+  support_contact_count : Int
+  stable_support_frame_count : Int
+  support_review_frame_count : Int
   resolved_hinge_constraint_count : Int
   review_count : Int
   final_body_count : Int
@@ -61,6 +64,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   min_center_of_mass : @moonphys.Vec3
   max_center_of_mass : @moonphys.Vec3
   max_center_of_mass_speed_mps : Double
+  min_support_margin_m : Double
+  max_center_of_pressure_error_m : Double
   max_body_linear_momentum_kg_mps : Double
   max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
@@ -292,12 +297,18 @@ fn noetix_hinge_motor_world_trace_evidence(
   let envelope = @moonphys.rigid_body_heightfield_world_hinge_motor_trace_envelope(
     world_trace,
   )
+  let support_trace = @moonphys.rigid_body_heightfield_world_hinge_motor_support_trace(
+    world_trace,
+  )
   {
     trace_id: world_trace.trace_id,
     frame_count: world_trace.frame_count,
     motor_frame_count: world_trace.motor_frame_count,
     driven_joint_count: world_trace.driven_joint_count,
     contact_count: world_trace.contact_count,
+    support_contact_count: support_trace.contact_count,
+    stable_support_frame_count: support_trace.stable_frame_count,
+    support_review_frame_count: support_trace.review_frame_count,
     resolved_hinge_constraint_count: world_trace.resolved_hinge_constraint_count,
     review_count: world_trace.review_count,
     final_body_count: world_trace.final_world.bodies.length(),
@@ -313,6 +324,8 @@ fn noetix_hinge_motor_world_trace_evidence(
     min_center_of_mass: envelope.min_center_of_mass,
     max_center_of_mass: envelope.max_center_of_mass,
     max_center_of_mass_speed_mps: envelope.max_center_of_mass_speed_mps,
+    min_support_margin_m: support_trace.min_planar_margin_m,
+    max_center_of_pressure_error_m: support_trace.max_center_of_pressure_error_m,
     max_body_linear_momentum_kg_mps: envelope.max_body_linear_momentum_kg_mps,
     max_world_linear_momentum_kg_mps: envelope.max_world_linear_momentum_kg_mps,
     max_frame_kinetic_energy_delta_j: envelope.max_frame_kinetic_energy_delta_j,
@@ -520,6 +533,9 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor trace status: \{report.hinge_motor_trace.status}\n"
   text += "- hinge motor world trace frames: \{report.hinge_motor_world_trace.frame_count}\n"
   text += "- hinge motor world trace contacts: \{report.hinge_motor_world_trace.contact_count}\n"
+  text += "- hinge motor world trace support contacts: \{report.hinge_motor_world_trace.support_contact_count}\n"
+  text += "- hinge motor world trace stable support frames: \{report.hinge_motor_world_trace.stable_support_frame_count}\n"
+  text += "- hinge motor world trace support-review frames: \{report.hinge_motor_world_trace.support_review_frame_count}\n"
   text += "- hinge motor world trace resolved hinges: \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}\n"
   text += "- hinge motor world trace body samples: \{report.hinge_motor_world_trace.body_sample_count}\n"
   text += "- hinge motor world trace max speed: \{report.hinge_motor_world_trace.max_speed_mps} m/s\n"
@@ -527,6 +543,8 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace total mass: \{report.hinge_motor_world_trace.total_mass_kg} kg\n"
   text += "- hinge motor world trace center of mass x: \{report.hinge_motor_world_trace.final_center_of_mass.x} m\n"
   text += "- hinge motor world trace max center-of-mass speed: \{report.hinge_motor_world_trace.max_center_of_mass_speed_mps} m/s\n"
+  text += "- hinge motor world trace min support margin: \{report.hinge_motor_world_trace.min_support_margin_m} m\n"
+  text += "- hinge motor world trace max center-of-pressure error: \{report.hinge_motor_world_trace.max_center_of_pressure_error_m} m\n"
   text += "- hinge motor world trace max body momentum: \{report.hinge_motor_world_trace.max_body_linear_momentum_kg_mps} kg*m/s\n"
   text += "- hinge motor world trace max world momentum: \{report.hinge_motor_world_trace.max_world_linear_momentum_kg_mps} kg*m/s\n"
   text += "- hinge motor world trace max frame energy delta: \{report.hinge_motor_world_trace.max_frame_kinetic_energy_delta_j} J\n"

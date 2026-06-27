@@ -123,11 +123,15 @@ pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel
 
 pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
 
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldSupportTrace
+
 pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
 
 pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldTraceEnvelope
 
 pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
+
+pub fn rigid_body_heightfield_world_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldSupportTrace
 
 pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
 
@@ -180,6 +184,8 @@ pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidB
 pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
 
 pub fn rigid_body_world_resolve_hinge_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldHingeConstraintFrame
+
+pub fn rigid_body_world_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldSupportFrame
 
 pub fn rigid_body_world_total_mass(RigidBodyHeightfieldWorld) -> Double
 
@@ -998,6 +1004,33 @@ pub(all) struct RigidBodyWorldPairResolution {
   velocity_delta_b : Vec3
   normal_impulse_ns : Double
   friction_impulse_ns : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldSupportFrame {
+  frame_index : Int
+  time_s : Double
+  body_count : Int
+  contact_count : Int
+  total_mass_kg : Double
+  center_of_mass : Vec3
+  footprints : Array[SupportFootprint]
+  support : SupportAssessment
+  load : SupportLoadAssessment
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldSupportTrace {
+  trace_id : String
+  frame_count : Int
+  body_count : Int
+  support_frame_count : Int
+  contact_count : Int
+  stable_frame_count : Int
+  review_frame_count : Int
+  min_planar_margin_m : Double
+  max_center_of_pressure_error_m : Double
+  frames : Array[RigidBodyWorldSupportFrame]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
