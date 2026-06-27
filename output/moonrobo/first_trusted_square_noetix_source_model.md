@@ -9,12 +9,15 @@
 - visual geometries: 6
 - collision tags: 0
 - inertial tags: 0
+- missing collision links: 25
+- missing inertial links: 25
+- source metadata blockers: 50
 - joint limits: 24
 - low-level joint control enabled: false
 - high-level walk requires approval: true
-- status: source-model-audit-review
+- status: source-model-metadata-blocked
 - hardware authority: moonmoon-safety-gate-only
-- note: Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags.
+- note: Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags for any link. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags.
 
 ## Visual Geometry
 
@@ -24,6 +27,11 @@
 - left_arm_1: urdf-visual-cylinder
 - right_arm_1: urdf-visual-cylinder
 - left_leg_1: urdf-visual-cylinder
+
+## Metadata Blockers
+
+- missing collision links: base_link, torso_link, chest_link, left_arm_1, left_arm_2, left_arm_3, left_arm_4, left_hand, right_arm_1, right_arm_2, right_arm_3, right_arm_4, right_hand, left_leg_1, left_leg_2, left_leg_3, left_leg_4, left_leg_5, left_foot, right_leg_1, right_leg_2, right_leg_3, right_leg_4, right_leg_5, right_foot
+- missing inertial links: base_link, torso_link, chest_link, left_arm_1, left_arm_2, left_arm_3, left_arm_4, left_hand, right_arm_1, right_arm_2, right_arm_3, right_arm_4, right_hand, left_leg_1, left_leg_2, left_leg_3, left_leg_4, left_leg_5, left_foot, right_leg_1, right_leg_2, right_leg_3, right_leg_4, right_leg_5, right_foot
 
 ## Joint Limits
 

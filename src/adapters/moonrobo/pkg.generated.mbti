@@ -789,11 +789,16 @@ pub(all) struct NoetixSourceModelReport {
   mesh_asset_count : Int
   collision_tag_count : Int
   inertial_tag_count : Int
+  missing_collision_link_count : Int
+  missing_inertial_link_count : Int
+  source_metadata_blocker_count : Int
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool
   visual_geometries : Array[NoetixSourceVisualGeometry]
   joint_limits : Array[NoetixSourceJointLimit]
+  missing_collision_links : Array[String]
+  missing_inertial_links : Array[String]
   hardware_authority : String
   status : String
   note : String

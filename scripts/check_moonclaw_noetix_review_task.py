@@ -29,6 +29,12 @@ def main() -> None:
         fail("source model should have no authoritative collision tags yet")
     if task.get("source_model_inertial_tag_count") != 0:
         fail("source model should have no authoritative inertial tags yet")
+    if task.get("source_model_missing_collision_link_count") != 25:
+        fail("source model should report missing collision metadata for every link")
+    if task.get("source_model_missing_inertial_link_count") != 25:
+        fail("source model should report missing inertial metadata for every link")
+    if task.get("source_model_metadata_blocker_count") != 50:
+        fail("source metadata blocker count should be explicit")
     if task.get("link_pose_count_per_frame") != 25:
         fail("expected compact Noetix URDF-reference link count")
     if task.get("static_support_review_frame_count", 0) <= 0:

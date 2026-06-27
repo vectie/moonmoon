@@ -478,6 +478,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   endless_gait_cycle_frames : Int
   source_model_collision_tag_count : Int
   source_model_inertial_tag_count : Int
+  source_model_missing_collision_link_count : Int
+  source_model_missing_inertial_link_count : Int
+  source_model_metadata_blocker_count : Int
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int

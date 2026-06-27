@@ -19,6 +19,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   endless_gait_cycle_frames : Int
   source_model_collision_tag_count : Int
   source_model_inertial_tag_count : Int
+  source_model_missing_collision_link_count : Int
+  source_model_missing_inertial_link_count : Int
+  source_model_metadata_blocker_count : Int
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -116,7 +119,7 @@ fn noetix_source_model_artifact(
     "output/moonrobo/first_trusted_square_noetix_source_model.json",
     "moon run cmd/main -- moonrobo noetix model json",
     "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
-    "\{report.link_count} links; \{report.joint_count} joints; \{report.joint_limit_count} URDF joint limits; \{report.visual_geometry_count} visual geometries; collision tags \{report.collision_tag_count}; inertial tags \{report.inertial_tag_count}",
+    "\{report.link_count} links; \{report.joint_count} joints; \{report.joint_limit_count} URDF joint limits; \{report.visual_geometry_count} visual geometries; collision tags \{report.collision_tag_count}; inertial tags \{report.inertial_tag_count}; metadata blockers \{report.source_metadata_blocker_count}",
     ready,
     if ready {
       "none"
@@ -135,13 +138,14 @@ fn noetix_source_sync_artifact(
   let ready = report.joint_limit_count == 24 &&
     report.collision_tag_count == 0 &&
     report.inertial_tag_count == 0 &&
+    report.source_metadata_blocker_count > 0 &&
     plan.high_control_limits.source_profile_path == report.source_profile_path
   task_artifact(
     "noetix-moonrobo-source-sync",
     "output/moonrobo/first_trusted_square_noetix_source_model.json",
     "moon run cmd/main -- moonrobo noetix model json && moon run cmd/main -- moonrobo noetix command json",
     "Cross-checks Moonmoon Noetix evidence against sibling Moonrobo robot.json and URDF source files",
-    "\{report.joint_count} URDF joints, \{report.joint_limit_count} limits, \{report.visual_geometry_count} visuals, \{report.collision_tag_count} collision tags, \{report.inertial_tag_count} inertial tags, command limit \{plan.high_control_limits.max_x_abs_mps} m/s",
+    "\{report.joint_count} URDF joints, \{report.joint_limit_count} limits, \{report.visual_geometry_count} visuals, \{report.collision_tag_count} collision tags, \{report.inertial_tag_count} inertial tags, \{report.source_metadata_blocker_count} metadata blockers, command limit \{plan.high_control_limits.max_x_abs_mps} m/s",
     ready,
     if ready {
       "none"
@@ -291,6 +295,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     endless_gait_cycle_frames: endless.cycle_frames,
     source_model_collision_tag_count: source_model.collision_tag_count,
     source_model_inertial_tag_count: source_model.inertial_tag_count,
+    source_model_missing_collision_link_count: source_model.missing_collision_link_count,
+    source_model_missing_inertial_link_count: source_model.missing_inertial_link_count,
+    source_model_metadata_blocker_count: source_model.source_metadata_blocker_count,
     static_support_review_frame_count: support.review_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
@@ -447,6 +454,9 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - endless gait cycle frames: \{task.endless_gait_cycle_frames}\n"
     text += "  - source collision tags: \{task.source_model_collision_tag_count}\n"
     text += "  - source inertial tags: \{task.source_model_inertial_tag_count}\n"
+    text += "  - missing collision links: \{task.source_model_missing_collision_link_count}\n"
+    text += "  - missing inertial links: \{task.source_model_missing_inertial_link_count}\n"
+    text += "  - source metadata blockers: \{task.source_model_metadata_blocker_count}\n"
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
     text += "  - walk command segments: \{task.walk_command_segment_count}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"

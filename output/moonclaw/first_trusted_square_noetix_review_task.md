@@ -8,6 +8,9 @@
   - endless gait cycle frames: 20
   - source collision tags: 0
   - source inertial tags: 0
+  - missing collision links: 25
+  - missing inertial links: 25
+  - source metadata blockers: 50
   - link poses per frame: 25
   - walk command segments: 3
   - static-support review frames: 32
@@ -31,12 +34,12 @@
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html - Rabbita playback for inspecting the walk and link-pose skeleton.
   - artifacts:
     - noetix-source-model-audit: output/moonrobo/first_trusted_square_noetix_source_model.json
-      - current: 25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0
+      - current: 25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0; metadata blockers 50
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - noetix-moonrobo-source-sync: output/moonrobo/first_trusted_square_noetix_source_model.json
-      - current: 24 URDF joints, 24 limits, 6 visuals, 0 collision tags, 0 inertial tags, command limit 0.25 m/s
+      - current: 24 URDF joints, 24 limits, 6 visuals, 0 collision tags, 0 inertial tags, 50 metadata blockers, command limit 0.25 m/s
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json

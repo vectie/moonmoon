@@ -33,8 +33,8 @@ evidence.
   assessment.
 - Moonrobo exports a Noetix source-model audit that records the sibling
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
-  geometries, one placeholder mesh asset, and zero authoritative collision or
-  inertial tags.
+  geometries, one placeholder mesh asset, zero authoritative collision or
+  inertial tags, and explicit per-link collision/inertial metadata blockers.
 - A source-sync verifier parses sibling Moonrobo `robot.json` and
   `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
   collision tags, and high-control limits cannot silently drift from the source.
@@ -404,7 +404,7 @@ joint-control, inertial/collision, link-pose, and MoonClaw review-task exports
 and verifiers implemented. The dossier build also enforces sibling Moonrobo
 source sync for robot.json, URDF joint limits, visual links, missing
 inertial/collision tags, URDF visual geometry details, placeholder mesh
-bounds, and high-control limits.
+bounds, per-link metadata blockers, and high-control limits.
 
 Add generated outputs to the dossier build.
 
@@ -519,8 +519,9 @@ collision probes, per-foot patch-load contact wrenches, narrow-phase
 self-collision manifolds, support-wrench motion preview with impulse and
 kinetic-energy accounting, generic manifold resolution, Moonphys world
 body-pair contact response, impulse accounting, and traction margin review.
-Mass, inertia, and authoritative collision tags are still absent from the
-referenced model, so the evidence remains review-only.
+Mass, inertia, and authoritative collision tags are still absent from every
+referenced link, so the evidence remains review-only and the source-model audit
+exports the exact missing-link blocker sets.
 Moonphys multi-body heightfield world replay currently composes rigid bodies
 with shared terrain contact, scheduled body-pair contacts, pairwise contact
 response, anchored-point distance constraints, and generic hinge constraints

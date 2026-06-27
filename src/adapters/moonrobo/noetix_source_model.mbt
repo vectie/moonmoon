@@ -40,11 +40,16 @@ pub(all) struct NoetixSourceModelReport {
   mesh_asset_count : Int
   collision_tag_count : Int
   inertial_tag_count : Int
+  missing_collision_link_count : Int
+  missing_inertial_link_count : Int
+  source_metadata_blocker_count : Int
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool
   visual_geometries : Array[NoetixSourceVisualGeometry]
   joint_limits : Array[NoetixSourceJointLimit]
+  missing_collision_links : Array[String]
+  missing_inertial_links : Array[String]
   hardware_authority : String
   status : String
   note : String
@@ -201,6 +206,12 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
   let robot = noetix_moon_walk_robot_profile()
   let visuals = noetix_source_visual_geometries()
   let joint_limits = noetix_source_joint_limits()
+  let missing_collision_links : Array[String] = []
+  let missing_inertial_links : Array[String] = []
+  for link in noetix_reference_links() {
+    missing_collision_links.push(link.link_name)
+    missing_inertial_links.push(link.link_name)
+  }
   {
     report_id: "moonrobo/noetix-e1/source-model/audit-v0",
     robot_id: robot.robot_id,
@@ -212,14 +223,20 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     mesh_asset_count: 1,
     collision_tag_count: 0,
     inertial_tag_count: 0,
+    missing_collision_link_count: missing_collision_links.length(),
+    missing_inertial_link_count: missing_inertial_links.length(),
+    source_metadata_blocker_count: missing_collision_links.length() +
+    missing_inertial_links.length(),
     joint_limit_count: joint_limits.length(),
     low_level_joint_control_enabled: false,
     high_level_walk_requires_approval: true,
     visual_geometries: visuals,
     joint_limits,
+    missing_collision_links,
+    missing_inertial_links,
     hardware_authority: "moonmoon-safety-gate-only",
-    status: "source-model-audit-review",
-    note: "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags.",
+    status: "source-model-metadata-blocked",
+    note: "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags for any link. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags.",
   }
 }
 
@@ -247,6 +264,9 @@ pub fn render_noetix_source_model_markdown(
   text += "- visual geometries: \{report.visual_geometry_count}\n"
   text += "- collision tags: \{report.collision_tag_count}\n"
   text += "- inertial tags: \{report.inertial_tag_count}\n"
+  text += "- missing collision links: \{report.missing_collision_link_count}\n"
+  text += "- missing inertial links: \{report.missing_inertial_link_count}\n"
+  text += "- source metadata blockers: \{report.source_metadata_blocker_count}\n"
   text += "- joint limits: \{report.joint_limit_count}\n"
   text += "- low-level joint control enabled: \{report.low_level_joint_control_enabled}\n"
   text += "- high-level walk requires approval: \{report.high_level_walk_requires_approval}\n"
@@ -257,6 +277,9 @@ pub fn render_noetix_source_model_markdown(
   for geometry in report.visual_geometries {
     text += "- \{geometry.link_name}: \{geometry.source_status}\n"
   }
+  text += "\n## Metadata Blockers\n\n"
+  text += "- missing collision links: \{report.missing_collision_links.join(", ")}\n"
+  text += "- missing inertial links: \{report.missing_inertial_links.join(", ")}\n"
   text += "\n## Joint Limits\n\n"
   for limit in report.joint_limits {
     text += "- \{limit.joint_name}[\{limit.joint_index}]: lower=\{limit.lower_rad} upper=\{limit.upper_rad} effort=\{limit.effort_nm} velocity=\{limit.velocity_rad_s} source=\{limit.source_status}\n"

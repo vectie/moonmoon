@@ -183,6 +183,7 @@ def urdf_facts(path: Path) -> dict[str, Any]:
   return {
     "robot_name": robot.attrib.get("name", ""),
     "link_count": len(links),
+    "link_names": {link.attrib.get("name", "") for link in links},
     "joint_count": len(joints),
     "visual_count": len(robot.findall(".//visual")),
     "visual_links": visual_links,
@@ -259,6 +260,16 @@ def check_urdf(report: dict[str, Any], facts: dict[str, Any]) -> None:
     fail("URDF inertial count does not match source-model report")
   if facts["collision_count"] != 0 or facts["inertial_count"] != 0:
     fail("Moonrobo now exposes authoritative collision/inertial tags; promote evidence deliberately")
+  if report.get("missing_collision_link_count") != facts["link_count"]:
+    fail("missing collision link count must cover every URDF link")
+  if report.get("missing_inertial_link_count") != facts["link_count"]:
+    fail("missing inertial link count must cover every URDF link")
+  if report.get("source_metadata_blocker_count") != facts["link_count"] * 2:
+    fail("source metadata blocker count must include collision and inertial blockers")
+  if set(report.get("missing_collision_links", [])) != facts["link_names"]:
+    fail("missing collision link set drifted from URDF links")
+  if set(report.get("missing_inertial_links", [])) != facts["link_names"]:
+    fail("missing inertial link set drifted from URDF links")
   visual_names = {
     item.get("link_name")
     for item in report.get("visual_geometries", [])

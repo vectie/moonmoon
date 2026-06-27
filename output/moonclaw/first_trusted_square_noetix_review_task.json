@@ -19,6 +19,9 @@
     "endless_gait_cycle_frames": 20,
     "source_model_collision_tag_count": 0,
     "source_model_inertial_tag_count": 0,
+    "source_model_missing_collision_link_count": 25,
+    "source_model_missing_inertial_link_count": 25,
+    "source_model_metadata_blocker_count": 50,
     "static_support_review_frame_count": 32,
     "dynamic_stability_review_frame_count": 32,
     "joint_control_review_frame_count": 32,
@@ -96,7 +99,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
         "producer": "moon run cmd/main -- moonrobo noetix model json",
         "required_state": "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
-        "current_state": "25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0",
+        "current_state": "25 links; 24 joints; 24 URDF joint limits; 6 visual geometries; collision tags 0; inertial tags 0; metadata blockers 50",
         "ready": true,
         "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json"
@@ -106,7 +109,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
         "producer": "moon run cmd/main -- moonrobo noetix model json && moon run cmd/main -- moonrobo noetix command json",
         "required_state": "Cross-checks Moonmoon Noetix evidence against sibling Moonrobo robot.json and URDF source files",
-        "current_state": "24 URDF joints, 24 limits, 6 visuals, 0 collision tags, 0 inertial tags, command limit 0.25 m/s",
+        "current_state": "24 URDF joints, 24 limits, 6 visuals, 0 collision tags, 0 inertial tags, 50 metadata blockers, command limit 0.25 m/s",
         "ready": true,
         "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json"
