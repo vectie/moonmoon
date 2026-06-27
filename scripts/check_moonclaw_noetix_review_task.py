@@ -35,6 +35,25 @@ def main() -> None:
         fail("source model should report missing inertial metadata for every link")
     if task.get("source_model_metadata_blocker_count") != 50:
         fail("source metadata blocker count should be explicit")
+    inventory = task.get("source_model_metadata_inventory", {})
+    if inventory.get("model_id") != "noetix-e1-source-model":
+        fail("source metadata inventory must identify the model")
+    if inventory.get("link_count") != 25:
+        fail("source metadata inventory must preserve link count")
+    if inventory.get("collision_shape_link_count") != 0:
+        fail("source metadata inventory should not report collision links yet")
+    if inventory.get("inertial_link_count") != 0:
+        fail("source metadata inventory should not report inertial links yet")
+    if inventory.get("blocker_count") != 50:
+        fail("source metadata inventory blocker count should match audit")
+    if inventory.get("ready"):
+        fail("source metadata inventory must remain blocked")
+    if inventory.get("status") != "model-metadata-blocked":
+        fail("source metadata inventory must expose blocked status")
+    if len(inventory.get("missing_collision_shape_links", [])) != 25:
+        fail("source metadata inventory must list missing collision links")
+    if len(inventory.get("missing_inertial_links", [])) != 25:
+        fail("source metadata inventory must list missing inertial links")
     if task.get("link_pose_count_per_frame") != 25:
         fail("expected compact Noetix URDF-reference link count")
     if task.get("static_support_review_frame_count", 0) <= 0:

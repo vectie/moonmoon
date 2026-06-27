@@ -40,6 +40,19 @@ def main() -> None:
         fail("unexpected blocked artifact count")
     if decision.get("metadata_blocker_count") != 50:
         fail("unexpected metadata blocker count")
+    if decision.get("source_metadata_ready"):
+        fail("source metadata must not be ready yet")
+    inventory = decision.get("source_metadata_inventory", {})
+    if inventory.get("model_id") != "noetix-e1-source-model":
+        fail("source metadata inventory must identify the model")
+    if inventory.get("link_count") != 25:
+        fail("source metadata inventory must preserve link count")
+    if inventory.get("blocker_count") != 50:
+        fail("source metadata inventory blocker count should match decision")
+    if inventory.get("ready"):
+        fail("source metadata inventory must remain blocked")
+    if inventory.get("status") != "model-metadata-blocked":
+        fail("source metadata inventory must expose blocked status")
     for field in [
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
@@ -88,6 +101,8 @@ def main() -> None:
         fail("reason must explain blocked decision")
     if "50 source metadata blockers" not in reason:
         fail("reason must name source metadata blockers")
+    if "model-metadata-blocked" not in reason:
+        fail("reason must name source metadata inventory status")
     next_action = decision.get("next_action", "")
     if "keep hardware denied" not in next_action:
         fail("next action must preserve hardware denial")

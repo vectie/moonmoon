@@ -1513,6 +1513,16 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_eq(task.source_model_missing_collision_link_count, 25)
   assert_eq(task.source_model_missing_inertial_link_count, 25)
   assert_eq(task.source_model_metadata_blocker_count, 50)
+  assert_eq(
+    task.source_model_metadata_inventory.model_id,
+    "noetix-e1-source-model",
+  )
+  assert_eq(task.source_model_metadata_inventory.blocker_count, 50)
+  assert_true(!task.source_model_metadata_inventory.ready)
+  assert_eq(
+    task.source_model_metadata_inventory.status,
+    "model-metadata-blocked",
+  )
   assert_eq(task.link_pose_count_per_frame, 25)
   assert_true(task.static_support_review_frame_count > 0)
   assert_true(task.dynamic_stability_review_frame_count > 0)
@@ -1615,6 +1625,9 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(markdown.contains("noetix-review-task"))
   assert_true(markdown.contains("source collision tags: 0"))
   assert_true(markdown.contains("source metadata blockers: 50"))
+  assert_true(
+    markdown.contains("source metadata inventory: model-metadata-blocked"),
+  )
   assert_true(markdown.contains("endless gait cycle frames"))
   assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
@@ -1628,6 +1641,8 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
     ),
   )
   assert_true(json.contains("\"hardware_denied\": true"))
+  assert_true(json.contains("\"source_model_metadata_inventory\""))
+  assert_true(json.contains("\"status\": \"model-metadata-blocked\""))
 }
 
 ///|
@@ -1650,6 +1665,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_eq(decision.ready_artifact_count, 7)
   assert_eq(decision.blocked_artifact_count, 4)
   assert_eq(decision.metadata_blocker_count, 50)
+  assert_true(!decision.source_metadata_ready)
+  assert_eq(decision.source_metadata_inventory.blocker_count, 50)
+  assert_eq(decision.source_metadata_inventory.status, "model-metadata-blocked")
   assert_true(
     decision.blocked_artifacts.contains("noetix-static-support-review"),
   )
@@ -1669,6 +1687,7 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(decision.hardware_denied)
   assert_true(decision.reason.contains("Noetix simulation remains blocked"))
   assert_true(decision.reason.contains("50 source metadata blockers"))
+  assert_true(decision.reason.contains("model-metadata-blocked"))
   assert_true(decision.next_action.contains("keep hardware denied"))
   assert_true(
     decision.hardware_denial_invariants.contains(
@@ -1681,6 +1700,8 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   )
   assert_true(markdown.contains("may consume MoonRobo simulation: false"))
   assert_true(markdown.contains("noetix-simulation-blocked"))
+  assert_true(markdown.contains("source metadata ready: false"))
+  assert_true(markdown.contains("model-metadata-blocked"))
   assert_true(markdown.contains("noetix-joint-control-review"))
   let json = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_json().stringify(
     indent=2,

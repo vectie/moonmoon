@@ -11,6 +11,7 @@
   - missing collision links: 25
   - missing inertial links: 25
   - source metadata blockers: 50
+  - source metadata inventory: model-metadata-blocked
   - link poses per frame: 25
   - walk command segments: 3
   - static-support review frames: 32

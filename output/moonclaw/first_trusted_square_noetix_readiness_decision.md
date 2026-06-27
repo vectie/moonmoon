@@ -5,10 +5,12 @@
 - robot: noetix-e1-lab-01
 - status: noetix-simulation-blocked
 - may consume MoonRobo simulation: false
-- reason: Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked and 50 source metadata blockers remain; hardware authority remains moonmoon-safety-gate-only
+- reason: Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked and 50 source metadata blockers remain with status model-metadata-blocked; hardware authority remains moonmoon-safety-gate-only
 - ready artifacts: 7
 - blocked artifacts: 4
 - source metadata blockers: 50
+- source metadata ready: false
+- source metadata inventory: model-metadata-blocked
 - static-support review frames: 32
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
@@ -40,4 +42,4 @@
 - hardware_state must remain HardwareDenied
 - hardware_authority must remain moonmoon-safety-gate-only
 - Noetix review decision must never issue hardware authority
-- MoonRobo simulation consumption requires all review artifacts ready and zero source metadata blockers
+- MoonRobo simulation consumption requires all review artifacts ready and source metadata inventory ready

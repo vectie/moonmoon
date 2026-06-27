@@ -94,7 +94,11 @@ evidence.
   evidence, the walk trace, high-control dry-run command plan, URDF-reference
   link poses, static support report, dynamic-stability report, joint-control
   report, inertial/collision report, and Rabbita playback into a
-  hardware-denied review packet.
+  hardware-denied review packet. The review task carries the generic Moonphys
+  metadata inventory through to MoonClaw.
+- MoonClaw exports a Noetix simulation readiness decision that blocks MoonRobo
+  simulation consumption until all review artifacts are ready, the generic
+  Moonphys metadata inventory is ready, and hardware remains denied.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.

@@ -7,6 +7,7 @@ import {
   "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/core",
   "vectie/moonmoon/src/mission",
+  "vectie/moonmoon/src/moonphys",
   "vectie/moonmoon/src/site",
 }
 
@@ -493,6 +494,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_collision_link_count : Int
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
+  source_model_metadata_inventory : @moonphys.ModelMetadataInventory
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -1210,6 +1212,8 @@ pub(all) struct NoetixSimulationReadinessDecision {
   ready_artifact_count : Int
   blocked_artifact_count : Int
   metadata_blocker_count : Int
+  source_metadata_ready : Bool
+  source_metadata_inventory : @moonphys.ModelMetadataInventory
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int

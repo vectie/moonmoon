@@ -22,6 +22,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_collision_link_count : Int
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
+  source_model_metadata_inventory : @moonphys.ModelMetadataInventory
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -298,6 +299,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_model_missing_collision_link_count: source_model.missing_collision_link_count,
     source_model_missing_inertial_link_count: source_model.missing_inertial_link_count,
     source_model_metadata_blocker_count: source_model.source_metadata_blocker_count,
+    source_model_metadata_inventory: source_model.source_metadata_inventory,
     static_support_review_frame_count: support.review_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
@@ -457,6 +459,7 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - missing collision links: \{task.source_model_missing_collision_link_count}\n"
     text += "  - missing inertial links: \{task.source_model_missing_inertial_link_count}\n"
     text += "  - source metadata blockers: \{task.source_model_metadata_blocker_count}\n"
+    text += "  - source metadata inventory: \{task.source_model_metadata_inventory.status}\n"
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
     text += "  - walk command segments: \{task.walk_command_segment_count}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"

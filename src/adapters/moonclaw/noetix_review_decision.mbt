@@ -15,6 +15,8 @@ pub(all) struct NoetixSimulationReadinessDecision {
   ready_artifact_count : Int
   blocked_artifact_count : Int
   metadata_blocker_count : Int
+  source_metadata_ready : Bool
+  source_metadata_inventory : @moonphys.ModelMetadataInventory
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
@@ -64,7 +66,7 @@ fn noetix_blocked_artifacts(task : MoonClawNoetixReviewTask) -> Array[String] {
 fn noetix_hardware_denial_invariants() -> Array[String] {
   [
     "hardware_state must remain HardwareDenied", "hardware_authority must remain moonmoon-safety-gate-only",
-    "Noetix review decision must never issue hardware authority", "MoonRobo simulation consumption requires all review artifacts ready and zero source metadata blockers",
+    "Noetix review decision must never issue hardware authority", "MoonRobo simulation consumption requires all review artifacts ready and source metadata inventory ready",
   ]
 }
 
@@ -73,12 +75,13 @@ fn noetix_readiness_reason(
   may_consume : Bool,
   blocked_count : Int,
   metadata_blocker_count : Int,
+  metadata_status : String,
   hardware_authority : String,
 ) -> String {
   if may_consume {
-    "Noetix simulation evidence may be consumed by MoonRobo review because all artifacts are ready, source metadata blockers are zero, and hardware authority remains \{hardware_authority}"
+    "Noetix simulation evidence may be consumed by MoonRobo review because all artifacts are ready, source metadata status is \{metadata_status}, and hardware authority remains \{hardware_authority}"
   } else {
-    "Noetix simulation remains blocked for MoonRobo consumption: \{blocked_count} review artifacts are blocked and \{metadata_blocker_count} source metadata blockers remain; hardware authority remains \{hardware_authority}"
+    "Noetix simulation remains blocked for MoonRobo consumption: \{blocked_count} review artifacts are blocked and \{metadata_blocker_count} source metadata blockers remain with status \{metadata_status}; hardware authority remains \{hardware_authority}"
   }
 }
 
@@ -97,9 +100,10 @@ pub fn noetix_simulation_readiness_decision(
 ) -> NoetixSimulationReadinessDecision {
   let ready_artifacts = noetix_ready_artifacts(task)
   let blocked_artifacts = noetix_blocked_artifacts(task)
-  let metadata_blockers = task.source_model_metadata_blocker_count
+  let metadata_inventory = task.source_model_metadata_inventory
+  let metadata_blockers = metadata_inventory.blocker_count
   let may_consume = blocked_artifacts.length() == 0 &&
-    metadata_blockers == 0 &&
+    metadata_inventory.ready &&
     task.hardware_denied &&
     task.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied
   {
@@ -116,11 +120,14 @@ pub fn noetix_simulation_readiness_decision(
       may_consume,
       blocked_artifacts.length(),
       metadata_blockers,
+      metadata_inventory.status,
       task.hardware_authority,
     ),
     ready_artifact_count: ready_artifacts.length(),
     blocked_artifact_count: blocked_artifacts.length(),
     metadata_blocker_count: metadata_blockers,
+    source_metadata_ready: metadata_inventory.ready,
+    source_metadata_inventory: metadata_inventory,
     static_support_review_frame_count: task.static_support_review_frame_count,
     dynamic_stability_review_frame_count: task.dynamic_stability_review_frame_count,
     joint_control_review_frame_count: task.joint_control_review_frame_count,
@@ -161,6 +168,8 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- ready artifacts: \{decision.ready_artifact_count}\n"
   text += "- blocked artifacts: \{decision.blocked_artifact_count}\n"
   text += "- source metadata blockers: \{decision.metadata_blocker_count}\n"
+  text += "- source metadata ready: \{decision.source_metadata_ready}\n"
+  text += "- source metadata inventory: \{decision.source_metadata_inventory.status}\n"
   text += "- static-support review frames: \{decision.static_support_review_frame_count}\n"
   text += "- dynamic-stability review frames: \{decision.dynamic_stability_review_frame_count}\n"
   text += "- joint-control review frames: \{decision.joint_control_review_frame_count}\n"
