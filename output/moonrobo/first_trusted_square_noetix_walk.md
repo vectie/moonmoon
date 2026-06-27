@@ -1,0 +1,111 @@
+# Noetix Endless Moon Walk
+
+- trace: moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola
+- robot: noetix-e1-lab-01 (Noetix E1 Lab 01)
+- source model: ../moonrobo/examples/noetix-e1/model/robot.urdf
+- terrain: first-trusted-square-northeast-stepout-lola
+- gravity: 1.625 m/s^2
+- speed: 0.12 m/s
+- frames: 32
+- endless axis: +x
+- note: Kinematic endless-walk trace for MoonSuite collaboration: Moonmoon terrain plus Moonrobo Noetix model references. This is simulation evidence only, not hardware authority.
+
+## Trace Prefix
+
+- frame 0 t=0s phase=left-support body_x=0 status=walking-needs-review
+  - left: x=-0.04 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.08 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 1 t=0.1s phase=left-support body_x=0.012 status=walking-needs-review
+  - left: x=-0.028 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.050222222222222224 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 2 t=0.2s phase=left-support body_x=0.024 status=walking-needs-review
+  - left: x=-0.016 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=-0.020444444444444446 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+- frame 3 t=0.30000000000000004s phase=left-support body_x=0.036 status=walking-needs-review
+  - left: x=-0.0040000000000000036 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.009333333333333325 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+- frame 4 t=0.4s phase=left-support body_x=0.048 status=walking-needs-review
+  - left: x=0.008 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.03911111111111111 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+- frame 5 t=0.5s phase=left-support body_x=0.06 status=walking-needs-review
+  - left: x=0.019999999999999997 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.06888888888888889 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+- frame 6 t=0.6000000000000001s phase=left-support body_x=0.072 status=walking-needs-review
+  - left: x=0.031999999999999994 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.09866666666666665 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+- frame 7 t=0.7000000000000001s phase=left-support body_x=0.084 status=walking-needs-review
+  - left: x=0.044000000000000004 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.12844444444444444 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+- frame 8 t=0.8s phase=left-support body_x=0.096 status=walking-needs-review
+  - left: x=0.056 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.1582222222222222 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 9 t=0.9s phase=left-support body_x=0.10800000000000001 status=walking-needs-review
+  - left: x=0.068 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.188 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 10 t=1s phase=right-support body_x=0.12 status=walking-needs-review
+  - left: x=0.039999999999999994 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.07999999999999999 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 11 t=1.1s phase=right-support body_x=0.13199999999999998 status=walking-needs-review
+  - left: x=0.06977777777777774 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.09199999999999997 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 12 t=1.2000000000000002s phase=right-support body_x=0.144 status=walking-needs-review
+  - left: x=0.09955555555555554 z=337.06092544243586 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=0.10399999999999998 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 13 t=1.3s phase=right-support body_x=0.15600000000000003 status=walking-needs-review
+  - left: x=0.12933333333333336 z=337.07097114317025 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - right: x=0.11600000000000002 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 14 t=1.4000000000000001s phase=right-support body_x=0.168 status=walking-needs-review
+  - left: x=0.15911111111111112 z=337.07631634888554 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - right: x=0.128 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 15 t=1.5s phase=right-support body_x=0.18 status=walking-needs-review
+  - left: x=0.18888888888888888 z=337.07631634888554 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+  - right: x=0.13999999999999999 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 16 t=1.6s phase=right-support body_x=0.192 status=walking-needs-review
+  - left: x=0.21866666666666668 z=337.07097114317025 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+  - right: x=0.152 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 17 t=1.7000000000000002s phase=right-support body_x=0.20400000000000001 status=walking-needs-review
+  - left: x=0.24844444444444447 z=337.06092544243586 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=0.164 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 18 t=1.8s phase=right-support body_x=0.21600000000000003 status=walking-needs-review
+  - left: x=0.27822222222222226 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.17600000000000002 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 19 t=1.9000000000000001s phase=right-support body_x=0.22799999999999998 status=walking-needs-review
+  - left: x=0.308 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.18799999999999997 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 20 t=2s phase=left-support body_x=0.24 status=walking-needs-review
+  - left: x=0.19999999999999998 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.15999999999999998 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 21 t=2.1s phase=left-support body_x=0.252 status=walking-needs-review
+  - left: x=0.212 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.18977777777777777 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 22 t=2.2s phase=left-support body_x=0.26399999999999996 status=walking-needs-review
+  - left: x=0.22399999999999995 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.2195555555555555 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+- frame 23 t=2.3000000000000003s phase=left-support body_x=0.27599999999999997 status=walking-needs-review
+  - left: x=0.23599999999999996 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.2493333333333333 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+- frame 24 t=2.4000000000000004s phase=left-support body_x=0.288 status=walking-needs-review
+  - left: x=0.24799999999999997 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.2791111111111111 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+- frame 25 t=2.5s phase=left-support body_x=0.30000000000000004 status=walking-needs-review
+  - left: x=0.26000000000000006 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.30888888888888894 z=339.83031634888556 contact=false clearance=0.04431634888555891 status=terrain-grade-review
+- frame 26 t=2.6s phase=left-support body_x=0.31200000000000006 status=walking-needs-review
+  - left: x=0.2720000000000001 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.3386666666666667 z=339.8249711431703 contact=false clearance=0.03897114317027217 status=terrain-grade-review
+- frame 27 t=2.7s phase=left-support body_x=0.324 status=walking-needs-review
+  - left: x=0.28400000000000003 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.36844444444444446 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+- frame 28 t=2.8000000000000003s phase=left-support body_x=0.336 status=walking-needs-review
+  - left: x=0.29600000000000004 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.39822222222222226 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 29 t=2.9000000000000004s phase=left-support body_x=0.34800000000000003 status=walking-needs-review
+  - left: x=0.30800000000000005 z=337.032 contact=true clearance=0 status=terrain-grade-review
+  - right: x=0.42800000000000005 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+- frame 30 t=3s phase=right-support body_x=0.36 status=walking-needs-review
+  - left: x=0.27999999999999997 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.32 z=339.786 contact=true clearance=0 status=terrain-grade-review
+- frame 31 t=3.1s phase=right-support body_x=0.372 status=walking-needs-review
+  - left: x=0.30977777777777776 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.332 z=339.786 contact=true clearance=0 status=terrain-grade-review
+

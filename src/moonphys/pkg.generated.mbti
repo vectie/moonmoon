@@ -7,16 +7,82 @@ import {
 }
 
 // Values
+pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
+
+pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
+
+pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
+
+pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
+
 pub fn lunar_environment() -> PhysicsEnvironment
+
+pub fn lunar_gravity_acceleration() -> Vec3
+
+pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
 pub fn vec3(Double, Double, Double) -> Vec3
 
 // Errors
 
 // Types and methods
+pub(all) struct ContactProbe {
+  probe_id : String
+  position : Vec3
+  surface_elevation_m : Double
+  clearance_m : Double
+  in_contact : Bool
+  local_grade : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Heightfield {
+  field_id : String
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  elevations_m : Array[Double]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct HeightfieldSample {
+  field_id : String
+  row : Int
+  col : Int
+  x_m : Double
+  y_m : Double
+  elevation_m : Double
+  local_grade_x : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct KinematicBodyState {
+  body_id : String
+  position : Vec3
+  velocity : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct KinematicStep {
+  dt_s : Double
+  acceleration : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct PhysicsEnvironment {
   environment_id : String
   gravity_mps2 : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PhysicsFrame {
+  frame_index : Int
+  time_s : Double
+  body : KinematicBodyState
+  contacts : Array[ContactProbe]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PhysicsTrace {
+  trace_id : String
+  environment : PhysicsEnvironment
+  frames : Array[PhysicsFrame]
+  note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct Vec3 {
@@ -24,6 +90,11 @@ pub(all) struct Vec3 {
   y : Double
   z : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn Vec3::add(Self, Self) -> Self
+pub fn Vec3::dot(Self, Self) -> Double
+pub fn Vec3::length_squared(Self) -> Double
+pub fn Vec3::scale(Self, Double) -> Self
+pub fn Vec3::sub(Self, Self) -> Self
 
 // Type aliases
 

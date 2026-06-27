@@ -5,6 +5,16 @@ MoonSuite collaboration layers so the Noetix robot can walk endlessly in one
 direction over Moonmoon terrain, with Moonrobo owning robot-specific simulation
 evidence.
 
+## Current Implementation Status
+
+- `moonphys` has generic vector, environment, heightfield, contact, kinematic,
+  and trace primitives.
+- Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
+- The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
+  instead of owning terrain math.
+- The trace is exported as Markdown and JSON under `output/moonrobo`.
+- `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
+
 ## Boundary
 
 `moonphys` should stay robot-agnostic.
@@ -42,7 +52,7 @@ first implementation dependencies.
 
 ## Phase 0: Current Slice Cleanup
 
-Status: mostly done.
+Status: done.
 
 Deliverables:
 
@@ -56,7 +66,7 @@ Deliverables:
   - `moon run cmd/main -- moonrobo noetix walk`
   - `moon run cmd/main -- moonrobo noetix walk json`
 
-Next cleanup:
+Remaining cleanup:
 
 - Keep the root facade export only if it remains useful.
 - Consider whether `trusted_square_noetix_walk_*` belongs in root
@@ -65,6 +75,8 @@ Next cleanup:
   not a core Moonphys command.
 
 ## Phase 1: Make Moonphys A Real Physics Core
+
+Status: first core slice implemented.
 
 Add foundational physics files:
 
@@ -117,6 +129,8 @@ Initial tests:
 
 ## Phase 2: Generic Heightfield Bridge
 
+Status: first bridge implemented in `src/adapters/moonrobo/terrain_bridge.mbt`.
+
 `moonphys` should define generic heightfield types, while Moonmoon adapts its
 terrain grids into those types.
 
@@ -157,6 +171,9 @@ Rules:
 - The bridge preserves `tile_id`, `cell_size_m`, rows, cols, and elevations.
 
 ## Phase 3: Endless Kinematic Walker
+
+Status: first Noetix endless walk trace implemented in
+`src/adapters/moonrobo/noetix_moon_walk.mbt`.
 
 Keep this in `src/adapters/moonrobo`, not `moonphys`.
 
@@ -260,6 +277,8 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
+Status: first export and verifier implemented.
+
 Add generated outputs to the dossier build.
 
 Candidate files:
@@ -354,13 +373,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Keep the current `moonrobo noetix walk` CLI route as the feature proof.
-2. Add generic `moonphys` heightfield/contact primitives.
-3. Move terrain sampling math out of `noetix_moon_walk.mbt` into:
-   - `moonphys` generic heightfield sampling
-   - a Moonmoon terrain-to-heightfield adapter
-4. Export walk JSON/Markdown into `output/moonrobo`.
-5. Add a verifier script for walk trace invariants.
+1. Add transform/rotation primitives for robot pose composition.
+2. Add simple Noetix joint phase output for visual walking animation.
+3. Materialize the Noetix walk trace into the MoonBook workspace.
+4. Surface the trace in Rabbita without adding hardware controls.
+5. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

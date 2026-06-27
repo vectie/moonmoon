@@ -21,6 +21,8 @@ pub fn first_trusted_square_json() -> Json
 
 pub fn first_trusted_square_markdown() -> String
 
+pub fn first_trusted_square_noetix_heightfield() -> @moonphys.Heightfield
+
 pub fn first_trusted_square_noetix_walk_json() -> Json
 
 pub fn first_trusted_square_noetix_walk_markdown() -> String
@@ -93,11 +95,11 @@ pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
 
 pub fn handoff_status_label(MoonroboTaskHandoff) -> String
 
-pub fn noetix_moon_walk_frame(@terrain.TerrainGrid, NoetixMoonWalkConfig, Int) -> NoetixMoonWalkFrame
+pub fn noetix_moon_walk_frame(@moonphys.Heightfield, NoetixMoonWalkConfig, Int) -> NoetixMoonWalkFrame
 
 pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile
 
-pub fn noetix_moon_walk_trace(@terrain.TerrainGrid, Int, config? : NoetixMoonWalkConfig) -> NoetixMoonWalkTrace
+pub fn noetix_moon_walk_trace(@moonphys.Heightfield, Int, config? : NoetixMoonWalkConfig) -> NoetixMoonWalkTrace
 
 pub fn precondition_status_label(RobotPrecondition) -> String
 
@@ -205,6 +207,8 @@ pub fn simulation_review_packet(MoonroboTaskHandoff, String) -> SimulationReview
 
 pub fn simulation_review_packet_json(SimulationReviewPacket) -> Json
 
+pub fn terrain_grid_heightfield(@terrain.TerrainGrid) -> @moonphys.Heightfield
+
 // Errors
 
 // Types and methods
@@ -264,6 +268,7 @@ pub(all) struct NoetixMoonWalkConfig {
   lateral_foot_offset_m : Double
   min_swing_clearance_m : Double
   caution_grade : Double
+  body_height_m : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixMoonWalkFrame {

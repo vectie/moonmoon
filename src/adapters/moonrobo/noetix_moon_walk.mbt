@@ -21,6 +21,7 @@ pub(all) struct NoetixMoonWalkConfig {
   lateral_foot_offset_m : Double
   min_swing_clearance_m : Double
   caution_grade : Double
+  body_height_m : Double
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -84,15 +85,7 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     lateral_foot_offset_m: 0.08,
     min_swing_clearance_m: 0.02,
     caution_grade: 0.18,
-  }
-}
-
-///|
-fn abs_double(value : Double) -> Double {
-  if value < 0.0 {
-    0.0 - value
-  } else {
-    value
+    body_height_m: 0.72,
   }
 }
 
@@ -107,58 +100,6 @@ fn wrapped_index(index : Int, length : Int) -> Int {
     } else {
       wrapped
     }
-  }
-}
-
-///|
-fn center_row(grid : @terrain.TerrainGrid) -> Int {
-  if grid.rows <= 0 {
-    0
-  } else {
-    grid.rows / 2
-  }
-}
-
-///|
-fn terrain_cell(
-  grid : @terrain.TerrainGrid,
-  row : Int,
-  col : Int,
-) -> @core.TerrainCell {
-  grid.cells[row * grid.cols + col]
-}
-
-///|
-fn terrain_col_at_x(grid : @terrain.TerrainGrid, x : Double) -> Int {
-  if grid.cols <= 0 || grid.cell_size_m <= 0.0 {
-    0
-  } else {
-    wrapped_index((x / grid.cell_size_m).to_int(), grid.cols)
-  }
-}
-
-///|
-fn terrain_elevation_at_x(grid : @terrain.TerrainGrid, x : Double) -> Double {
-  if grid.rows <= 0 || grid.cols <= 0 || grid.cells.is_empty() {
-    0.0
-  } else {
-    let row = center_row(grid)
-    let col = terrain_col_at_x(grid, x)
-    terrain_cell(grid, row, col).elevation_m
-  }
-}
-
-///|
-fn terrain_grade_at_x(grid : @terrain.TerrainGrid, x : Double) -> Double {
-  if grid.cols <= 1 || grid.cell_size_m <= 0.0 || grid.cells.is_empty() {
-    0.0
-  } else {
-    let row = center_row(grid)
-    let col = terrain_col_at_x(grid, x)
-    let next_col = wrapped_index(col + 1, grid.cols)
-    let here = terrain_cell(grid, row, col).elevation_m
-    let next = terrain_cell(grid, row, next_col).elevation_m
-    abs_double(next - here) / grid.cell_size_m
   }
 }
 
@@ -204,20 +145,35 @@ fn foot_probe(
   y : Double,
   lift_m : Double,
   in_contact : Bool,
-  grid : @terrain.TerrainGrid,
+  field : @moonphys.Heightfield,
   config : NoetixMoonWalkConfig,
 ) -> NoetixFootContactProbe {
-  let terrain_elevation_m = terrain_elevation_at_x(grid, x)
-  let local_grade = terrain_grade_at_x(grid, x)
-  let clearance_m = if in_contact { 0.0 } else { lift_m }
+  let terrain = @moonphys.sample_heightfield(field, x, y)
+  let clearance = if in_contact {
+    0.0
+  } else if lift_m < config.min_swing_clearance_m {
+    config.min_swing_clearance_m
+  } else {
+    lift_m
+  }
+  let contact = @moonphys.heightfield_contact_probe(
+    field,
+    foot_id,
+    @moonphys.vec3(x, y, terrain.elevation_m + clearance),
+  )
   {
     foot_id,
-    position: @moonphys.vec3(x, y, terrain_elevation_m + clearance_m),
-    terrain_elevation_m,
-    clearance_m,
-    in_contact,
-    local_grade,
-    status: foot_status(in_contact, clearance_m, local_grade, config),
+    position: contact.position,
+    terrain_elevation_m: contact.surface_elevation_m,
+    clearance_m: contact.clearance_m,
+    in_contact: contact.in_contact,
+    local_grade: contact.local_grade,
+    status: foot_status(
+      in_contact,
+      contact.clearance_m,
+      contact.local_grade,
+      config,
+    ),
   }
 }
 
@@ -235,7 +191,7 @@ fn frame_status(
 
 ///|
 pub fn noetix_moon_walk_frame(
-  grid : @terrain.TerrainGrid,
+  field : @moonphys.Heightfield,
   config : NoetixMoonWalkConfig,
   frame_index : Int,
 ) -> NoetixMoonWalkFrame {
@@ -251,7 +207,8 @@ pub fn noetix_moon_walk_frame(
   let progress = phase_progress(local_phase, half_cycle)
   let body_x = frame_index.to_double() * config.speed_mps * config.dt_s
   let body_y = 0.0
-  let body_z = terrain_elevation_at_x(grid, body_x) + 0.72
+  let body_sample = @moonphys.sample_heightfield(field, body_x, body_y)
+  let body_z = body_sample.elevation_m + config.body_height_m
   let swing_offset = (progress - 0.5) * config.step_length_m
   let support_offset = 0.0 - config.step_length_m * 0.25
   let left = if left_support {
@@ -261,7 +218,7 @@ pub fn noetix_moon_walk_frame(
       body_y + config.lateral_foot_offset_m,
       0.0,
       true,
-      grid,
+      field,
       config,
     )
   } else {
@@ -271,7 +228,7 @@ pub fn noetix_moon_walk_frame(
       body_y + config.lateral_foot_offset_m,
       swing_lift(config, progress),
       false,
-      grid,
+      field,
       config,
     )
   }
@@ -282,7 +239,7 @@ pub fn noetix_moon_walk_frame(
       body_y - config.lateral_foot_offset_m,
       swing_lift(config, progress),
       false,
-      grid,
+      field,
       config,
     )
   } else {
@@ -292,7 +249,7 @@ pub fn noetix_moon_walk_frame(
       body_y - config.lateral_foot_offset_m,
       0.0,
       true,
-      grid,
+      field,
       config,
     )
   }
@@ -313,21 +270,21 @@ pub fn noetix_moon_walk_frame(
 
 ///|
 pub fn noetix_moon_walk_trace(
-  grid : @terrain.TerrainGrid,
+  field : @moonphys.Heightfield,
   frame_count : Int,
   config? : NoetixMoonWalkConfig = default_noetix_moon_walk_config(),
 ) -> NoetixMoonWalkTrace {
   let frames : Array[NoetixMoonWalkFrame] = []
   let count = if frame_count < 0 { 0 } else { frame_count }
   for index in 0..<count {
-    frames.push(noetix_moon_walk_frame(grid, config, index))
+    frames.push(noetix_moon_walk_frame(field, config, index))
   }
   {
-    trace_id: "moonrobo/noetix-e1/endless-forward-moon-walk/\{grid.tile_id}",
+    trace_id: "moonrobo/noetix-e1/endless-forward-moon-walk/\{field.field_id}",
     robot: noetix_moon_walk_robot_profile(),
     config,
-    terrain_tile_id: grid.tile_id,
-    terrain_cell_size_m: grid.cell_size_m,
+    terrain_tile_id: field.field_id,
+    terrain_cell_size_m: field.cell_size_m,
     frame_count: frames.length(),
     endless_axis: "+x",
     frames,
@@ -339,10 +296,7 @@ pub fn noetix_moon_walk_trace(
 pub fn first_trusted_square_noetix_walk_trace(
   frame_count? : Int = 32,
 ) -> NoetixMoonWalkTrace {
-  noetix_moon_walk_trace(
-    @terrain.first_trusted_square_northeast_stepout_grid(),
-    frame_count,
-  )
+  noetix_moon_walk_trace(first_trusted_square_noetix_heightfield(), frame_count)
 }
 
 ///|
