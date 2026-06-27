@@ -381,17 +381,20 @@ Status: generic support-margin, capture-point, rigid-body gravity integration,
 material contact, heightfield collision, single-body heightfield contact
 resolution, deterministic rigid-body heightfield replay, and diagonal-inertia
 angular dynamics helpers, and conservative sphere/capsule/box collision shape
-bounds plus generic joint servo/limit integration implemented; Noetix static
-support and dynamic-stability review reports implemented; multi-contact
-simulation remains future work.
+bounds plus exact sphere contacts, contact manifold summaries, and generic joint
+servo/limit integration implemented; Noetix static support and
+dynamic-stability review reports implemented; full multi-contact simulation
+remains future work.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
 Next `moonphys` capabilities:
 
 - multi-contact manifold resolution
-- narrow-phase contact generation for shape pairs
+- narrow-phase capsule/box contact generation for shape pairs
 - robot-specific actuator/inertia/collision profiles from Moonrobo data
+- exact sphere/sphere contacts and generic contact manifold summaries
+  (implemented)
 - generic joint servo, torque limit, velocity limit, and position limit
   integration (implemented)
 - conservative sphere/capsule/box collision shape bounds (implemented)

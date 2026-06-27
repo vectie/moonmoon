@@ -21,6 +21,10 @@ pub fn collision_box(String, Vec3) -> CollisionShape
 
 pub fn collision_capsule(String, Double, Double) -> CollisionShape
 
+pub fn collision_contact_manifold(String, Array[CollisionContact]) -> CollisionContactManifold
+
+pub fn collision_pair_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
+
 pub fn collision_pair_probe(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionPairProbe
 
 pub fn collision_shape_kind_label(CollisionShapeKind) -> String
@@ -83,6 +87,8 @@ pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
+pub fn sphere_sphere_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
+
 pub fn support_assessment(Vec3, Array[SupportFootprint]) -> SupportAssessment
 
 pub fn support_footprint(String, Vec3, Double, Double, active? : Bool) -> SupportFootprint
@@ -129,6 +135,26 @@ pub(all) struct CollisionBounds {
   bounding_radius_m : Double
   min : Vec3
   max : Vec3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionContact {
+  shape_a_id : String
+  shape_b_id : String
+  point : Vec3
+  normal : Vec3
+  separation_m : Double
+  penetration_depth_m : Double
+  in_contact : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionContactManifold {
+  manifold_id : String
+  contacts : Array[CollisionContact]
+  contact_count : Int
+  max_penetration_m : Double
+  average_normal : Vec3
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

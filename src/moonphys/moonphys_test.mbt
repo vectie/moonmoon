@@ -297,6 +297,63 @@ test "collision pair probe reports broadphase overlap and clear" {
 }
 
 ///|
+test "sphere sphere contact reports exact penetration" {
+  let contact = sphere_sphere_contact(
+    collision_sphere("a", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("b", 0.75),
+    transform3(identity_basis3(), vec3(1.0, 0.0, 0.0)),
+  )
+  assert_true(contact.in_contact)
+  assert_true(nearly_equal(contact.separation_m, -0.25))
+  assert_true(nearly_equal(contact.penetration_depth_m, 0.25))
+  assert_true(contact.normal == vec3(1.0, 0.0, 0.0))
+  assert_true(nearly_equal(contact.point.x, 0.375))
+  assert_eq(contact.status, "sphere-sphere-contact")
+}
+
+///|
+test "collision pair contact uses conservative bounds for non spheres" {
+  let contact = collision_pair_contact(
+    collision_box("box", vec3(1.0, 1.0, 1.0)),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_capsule("capsule", 0.2, 0.5),
+    transform3(identity_basis3(), vec3(2.0, 0.0, 0.0)),
+  )
+  assert_true(contact.in_contact)
+  assert_eq(contact.status, "conservative-contact")
+  assert_true(contact.penetration_depth_m > 0.0)
+}
+
+///|
+test "collision contact manifold summarizes active contacts" {
+  let first = sphere_sphere_contact(
+    collision_sphere("a", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("b", 0.5),
+    transform3(identity_basis3(), vec3(0.75, 0.0, 0.0)),
+  )
+  let second = sphere_sphere_contact(
+    collision_sphere("a", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("c", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.75, 0.0)),
+  )
+  let clear = sphere_sphere_contact(
+    collision_sphere("a", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("d", 0.5),
+    transform3(identity_basis3(), vec3(2.0, 0.0, 0.0)),
+  )
+  let manifold = collision_contact_manifold("m", [first, second, clear])
+  assert_eq(manifold.contact_count, 2)
+  assert_eq(manifold.status, "multi-contact")
+  assert_true(nearly_equal(manifold.max_penetration_m, 0.25))
+  assert_true(manifold.average_normal.x > 0.7)
+  assert_true(manifold.average_normal.y > 0.7)
+}
+
+///|
 test "joint servo output applies pd torque and saturation" {
   let state = joint_motor_state("hip", 0.0, 0.0)
   let command = joint_motor_command("hip", 1.0, 0.0, 0.0)
