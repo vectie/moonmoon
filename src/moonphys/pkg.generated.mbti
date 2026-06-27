@@ -151,6 +151,8 @@ pub fn rigid_body_world_distance_constraint(String, String, String, Double, anch
 
 pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceConstraint, RigidBodyState, RigidBodyState) -> RigidBodyWorldConstraintResolution
 
+pub fn rigid_body_world_integrate_hinge_motors(RigidBodyHeightfieldWorld, JointMotorFrame) -> RigidBodyWorldHingeMotorFrame
+
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
 pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
@@ -835,6 +837,34 @@ pub(all) struct RigidBodyWorldHingeJointResolution {
   correction_b_rad : Vec3
   velocity_delta_a_rad_s : Vec3
   velocity_delta_b_rad_s : Vec3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldHingeMotorFrame {
+  world_id : String
+  motor_frame : JointMotorFrame
+  driven_joint_count : Int
+  review_count : Int
+  max_abs_angle_delta_rad : Double
+  max_abs_velocity_delta_rad_s : Double
+  steps : Array[RigidBodyWorldHingeMotorStep]
+  before : RigidBodyHeightfieldWorld
+  driven : RigidBodyHeightfieldWorld
+  hinge_constraint_resolution : RigidBodyWorldHingeConstraintFrame
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldHingeMotorStep {
+  joint_id : String
+  motor_step : JointMotorFrameStep
+  axis : Vec3
+  angle_delta_rad : Double
+  velocity_delta_rad_s : Double
+  before_a : RigidBodyMotionState
+  before_b : RigidBodyMotionState
+  after_a : RigidBodyMotionState
+  after_b : RigidBodyMotionState
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

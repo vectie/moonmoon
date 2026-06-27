@@ -30,6 +30,36 @@ pub(all) struct RigidBodyWorldHingeConstraintFrame {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyWorldHingeMotorStep {
+  joint_id : String
+  motor_step : JointMotorFrameStep
+  axis : Vec3
+  angle_delta_rad : Double
+  velocity_delta_rad_s : Double
+  before_a : RigidBodyMotionState
+  before_b : RigidBodyMotionState
+  after_a : RigidBodyMotionState
+  after_b : RigidBodyMotionState
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyWorldHingeMotorFrame {
+  world_id : String
+  motor_frame : JointMotorFrame
+  driven_joint_count : Int
+  review_count : Int
+  max_abs_angle_delta_rad : Double
+  max_abs_velocity_delta_rad_s : Double
+  steps : Array[RigidBodyWorldHingeMotorStep]
+  before : RigidBodyHeightfieldWorld
+  driven : RigidBodyHeightfieldWorld
+  hinge_constraint_resolution : RigidBodyWorldHingeConstraintFrame
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn angular_correction_basis(correction_rad : Vec3) -> Basis3 {
   let angle = correction_rad.length()
   if angle > 0.0 {
@@ -233,6 +263,234 @@ fn rigid_body_world_hinge_constraint_frame_status(
     "world-hinge-constraint-resolved"
   } else {
     "world-hinge-constraint-satisfied"
+  }
+}
+
+///|
+fn rigid_body_world_hinge_joint(
+  joints : Array[RigidBodyHingeJointConstraint],
+  joint_id : String,
+) -> RigidBodyHingeJointConstraint? {
+  for joint in joints {
+    if joint.joint_id == joint_id {
+      return Some(joint)
+    }
+  }
+  None
+}
+
+///|
+fn rigid_body_world_hinge_motor_status(
+  matched : Bool,
+  motor_status : String,
+  body_a_index : Int,
+  body_b_index : Int,
+) -> String {
+  if !matched {
+    "world-hinge-motor-missing-joint-review"
+  } else if body_a_index < 0 || body_b_index < 0 {
+    "world-hinge-motor-missing-body-review"
+  } else if motor_status.contains("review") {
+    "world-hinge-motor-command-review"
+  } else {
+    "world-hinge-motor-driven"
+  }
+}
+
+///|
+fn motion_state_with_motor_delta(
+  state : RigidBodyMotionState,
+  axis : Vec3,
+  angle_delta_rad : Double,
+  velocity_delta_rad_s : Double,
+) -> RigidBodyMotionState {
+  corrected_motion_state(
+    state,
+    state.linear,
+    axis.scale(angle_delta_rad),
+    axis.scale(velocity_delta_rad_s),
+  )
+}
+
+///|
+fn rigid_body_world_hinge_motor_step(
+  joint : RigidBodyHingeJointConstraint?,
+  motor_frame_step : JointMotorFrameStep,
+  motion_bodies : Array[RigidBodyJointFrameBody],
+) -> RigidBodyWorldHingeMotorStep {
+  match joint {
+    None => {
+      let fallback = rigid_body_world_motion_body_for_state(
+        motor_frame_step.command.joint_id,
+      )
+      {
+        joint_id: motor_frame_step.command.joint_id,
+        motor_step: motor_frame_step,
+        axis: vec3(0.0, 0.0, 0.0),
+        angle_delta_rad: 0.0,
+        velocity_delta_rad_s: 0.0,
+        before_a: fallback.state,
+        before_b: fallback.state,
+        after_a: fallback.state,
+        after_b: fallback.state,
+        status: rigid_body_world_hinge_motor_status(
+          false,
+          motor_frame_step.status,
+          -1,
+          -1,
+        ),
+      }
+    }
+    Some(hinge) => {
+      let index_a = rigid_body_world_motion_body_find_index(
+        motion_bodies,
+        hinge.position.body_a_id,
+      )
+      let index_b = rigid_body_world_motion_body_find_index(
+        motion_bodies,
+        hinge.position.body_b_id,
+      )
+      let body_a = rigid_body_world_motion_body(
+        motion_bodies,
+        hinge.position.body_a_id,
+      )
+      let body_b = rigid_body_world_motion_body(
+        motion_bodies,
+        hinge.position.body_b_id,
+      )
+      let status = rigid_body_world_hinge_motor_status(
+        true,
+        motor_frame_step.status,
+        index_a,
+        index_b,
+      )
+      let axis = normalized_axis(
+        body_a.state.angular.orientation.mul_vec3(hinge.axis.local_axis_a),
+      )
+      let angle_delta = motor_frame_step.motor_step.after.position_rad -
+        motor_frame_step.motor_step.before.position_rad
+      let velocity_delta = motor_frame_step.motor_step.after.velocity_rad_s -
+        motor_frame_step.motor_step.before.velocity_rad_s
+      let driven_b = if status == "world-hinge-motor-driven" ||
+        status == "world-hinge-motor-command-review" {
+        motion_state_with_motor_delta(
+          body_b.state,
+          axis,
+          angle_delta,
+          velocity_delta,
+        )
+      } else {
+        body_b.state
+      }
+      {
+        joint_id: hinge.joint_id,
+        motor_step: motor_frame_step,
+        axis,
+        angle_delta_rad: if status == "world-hinge-motor-driven" ||
+          status == "world-hinge-motor-command-review" {
+          angle_delta
+        } else {
+          0.0
+        },
+        velocity_delta_rad_s: if status == "world-hinge-motor-driven" ||
+          status == "world-hinge-motor-command-review" {
+          velocity_delta
+        } else {
+          0.0
+        },
+        before_a: body_a.state,
+        before_b: body_b.state,
+        after_a: body_a.state,
+        after_b: driven_b,
+        status,
+      }
+    }
+  }
+}
+
+///|
+fn rigid_body_world_hinge_motor_frame_status(
+  driven_count : Int,
+  review_count : Int,
+  hinge_resolution : RigidBodyWorldHingeConstraintFrame,
+) -> String {
+  if review_count > 0 || hinge_resolution.status.contains("review") {
+    "world-hinge-motor-review"
+  } else if driven_count > 0 {
+    "world-hinge-motor-driven"
+  } else {
+    "world-hinge-motor-idle"
+  }
+}
+
+///|
+pub fn rigid_body_world_integrate_hinge_motors(
+  world : RigidBodyHeightfieldWorld,
+  motor_frame : JointMotorFrame,
+) -> RigidBodyWorldHingeMotorFrame {
+  let motion_bodies = rigid_body_world_sync_motion_bodies(world)
+  let steps : Array[RigidBodyWorldHingeMotorStep] = []
+  let mut driven_count = 0
+  let mut review_count = 0
+  let mut max_angle_delta = 0.0
+  let mut max_velocity_delta = 0.0
+  for motor_step in motor_frame.steps {
+    let step = rigid_body_world_hinge_motor_step(
+      rigid_body_world_hinge_joint(
+        world.hinge_constraints,
+        motor_step.command.joint_id,
+      ),
+      motor_step,
+      motion_bodies,
+    )
+    if step.status == "world-hinge-motor-driven" {
+      driven_count += 1
+    } else if step.status.contains("review") {
+      review_count += 1
+    }
+    let angle_delta = hinge_abs(step.angle_delta_rad)
+    if angle_delta > max_angle_delta {
+      max_angle_delta = angle_delta
+    }
+    let velocity_delta = hinge_abs(step.velocity_delta_rad_s)
+    if velocity_delta > max_velocity_delta {
+      max_velocity_delta = velocity_delta
+    }
+    if step.status == "world-hinge-motor-driven" ||
+      step.status == "world-hinge-motor-command-review" {
+      rigid_body_world_replace_motion_body(motion_bodies, step.after_b)
+    }
+    steps.push(step)
+  }
+  let driven_world = {
+    world_id: world.world_id,
+    environment: world.environment,
+    material: world.material,
+    heightfield_id: world.heightfield_id,
+    bodies: world.bodies,
+    constraints: world.constraints,
+    motion_bodies,
+    hinge_constraints: world.hinge_constraints,
+  }
+  let hinge_resolution = rigid_body_world_resolve_hinge_constraints(
+    driven_world,
+  )
+  let after = hinge_resolution.after
+  {
+    world_id: world.world_id,
+    motor_frame,
+    driven_joint_count: driven_count,
+    review_count,
+    max_abs_angle_delta_rad: max_angle_delta,
+    max_abs_velocity_delta_rad_s: max_velocity_delta,
+    steps,
+    before: world,
+    driven: driven_world,
+    hinge_constraint_resolution: hinge_resolution,
+    after,
+    status: rigid_body_world_hinge_motor_frame_status(
+      driven_count, review_count, hinge_resolution,
+    ),
   }
 }
 

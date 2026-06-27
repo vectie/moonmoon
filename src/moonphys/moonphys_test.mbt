@@ -834,6 +834,89 @@ test "rigid body heightfield world step applies hinge constraints" {
 }
 
 ///|
+test "rigid body world hinge motors drive matching joints" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let root_state = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper_state = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(2.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(root_state.linear),
+      rigid_body_world_body(upper_state.linear),
+    ],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        root_state,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper_state,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    hinge_constraints=[
+      rigid_body_hinge_joint_constraint(
+        "shoulder",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  let motor_frame = integrate_joint_motor_frame(
+    "hinge-motor-frame",
+    [joint_motor_state("shoulder", 0.0, 0.0)],
+    [joint_motor_command("shoulder", 1.0, 0.0, 0.0)],
+    [joint_servo_config("shoulder", 2.0, 0.0)],
+    [joint_limit("shoulder", -2.0, 2.0, 4.0, 10.0)],
+    [2.0],
+    0.5,
+  )
+  let driven = rigid_body_world_integrate_hinge_motors(world, motor_frame)
+  assert_eq(driven.status, "world-hinge-motor-driven")
+  assert_eq(driven.driven_joint_count, 1)
+  assert_eq(driven.review_count, 0)
+  assert_true(nearly_equal(driven.max_abs_angle_delta_rad, 0.25))
+  assert_eq(driven.steps[0].status, "world-hinge-motor-driven")
+  assert_eq(
+    driven.hinge_constraint_resolution.status,
+    "world-hinge-constraint-resolved",
+  )
+  assert_eq(
+    driven.hinge_constraint_resolution.resolved_hinge_constraint_count,
+    1,
+  )
+  assert_true(driven.hinge_constraint_resolution.angular_impulse_nms > 0.0)
+  let upper_x = driven.after.motion_bodies[1].state.angular.orientation.mul_vec3(
+    vec3(1.0, 0.0, 0.0),
+  )
+  assert_true(nearly_equal(upper_x.x, @math.cos(0.25)))
+  assert_true(nearly_equal(upper_x.z, 0.0 - @math.sin(0.25)))
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

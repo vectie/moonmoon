@@ -524,11 +524,14 @@ referenced model, so the evidence remains review-only.
 Moonphys multi-body heightfield world replay currently composes rigid bodies
 with shared terrain contact, scheduled body-pair contacts, pairwise contact
 response, anchored-point distance constraints, and generic hinge constraints
-over motion bodies; actuated articulated dynamics remain future work.
+over motion bodies; generic hinge motor replay can now drive matching world
+hinge constraints from scalar joint motor frames. Full coupled articulated
+dynamics remain future work.
 Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
-project hinge position/orientation corrections inside world replay.
+project hinge position/orientation corrections inside world replay after motor
+drive.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -572,6 +575,7 @@ Next `moonphys` capabilities:
   (implemented)
 - generic hinge constraints inside heightfield world replay over motion bodies
   (implemented)
+- generic hinge motor replay over world hinge constraints (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)
