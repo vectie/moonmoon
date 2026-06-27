@@ -113,11 +113,23 @@ pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactMod
 
 pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
 
+pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody]) -> RigidBodyHeightfieldWorld
+
+pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
+
+pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
+
+pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
+
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
+
+pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
 
 pub fn rigid_body_motion_state(String, Double, Double, Vec3, Vec3, Basis3, Vec3) -> RigidBodyMotionState
 
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
+
+pub fn rigid_body_world_body(RigidBodyState, external_force_n? : Vec3) -> RigidBodyWorldBody
 
 pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
@@ -539,6 +551,42 @@ pub(all) struct RigidBodyHeightfieldTrace {
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyHeightfieldWorld {
+  world_id : String
+  environment : PhysicsEnvironment
+  material : MaterialContactModel
+  heightfield_id : String
+  bodies : Array[RigidBodyWorldBody]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldWorldStep {
+  frame_index : Int
+  time_s : Double
+  dt_s : Double
+  before : RigidBodyHeightfieldWorld
+  body_frames : Array[RigidBodyWorldBodyFrame]
+  after : RigidBodyHeightfieldWorld
+  body_count : Int
+  contact_count : Int
+  review_count : Int
+  kinetic_energy_before_j : Double
+  kinetic_energy_after_j : Double
+  kinetic_energy_delta_j : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldWorldTrace {
+  trace_id : String
+  heightfield_id : String
+  dt_s : Double
+  frame_count : Int
+  initial_world : RigidBodyHeightfieldWorld
+  frames : Array[RigidBodyHeightfieldWorldStep]
+  final_world : RigidBodyHeightfieldWorld
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyInertia {
   body_id : String
   diagonal_kg_m2 : Vec3
@@ -556,6 +604,25 @@ pub(all) struct RigidBodyState {
   collision_radius_m : Double
   position : Vec3
   velocity : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldBody {
+  state : RigidBodyState
+  external_force_n : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldBodyFrame {
+  body_id : String
+  before : RigidBodyState
+  external_force_n : Vec3
+  acceleration_mps2 : Vec3
+  integrated : RigidBodyState
+  resolution : ContactResolution
+  after : RigidBodyState
+  kinetic_energy_before_j : Double
+  kinetic_energy_after_j : Double
+  kinetic_energy_delta_j : Double
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyWrench {

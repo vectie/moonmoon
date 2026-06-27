@@ -73,7 +73,7 @@ fn rigid_body_wrench_step_status(state : RigidBodyMotionState) -> String {
 
 ///|
 fn linear_kinetic_energy(state : RigidBodyState) -> Double {
-  0.5 * state.mass_kg * state.velocity.length_squared()
+  rigid_body_linear_kinetic_energy(state)
 }
 
 ///|

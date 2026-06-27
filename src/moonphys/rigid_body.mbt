@@ -79,6 +79,11 @@ pub fn integrate_rigid_body(
 }
 
 ///|
+pub fn rigid_body_linear_kinetic_energy(state : RigidBodyState) -> Double {
+  0.5 * state.mass_kg * state.velocity.length_squared()
+}
+
+///|
 pub fn integrate_rigid_body_gravity(
   state : RigidBodyState,
   environment : PhysicsEnvironment,

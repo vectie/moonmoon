@@ -54,6 +54,11 @@ evidence.
   self-collision manifolds, support-wrench motion preview with impulse and
   kinetic-energy accounting, and generic multi-contact manifold resolution
   with impulse accounting.
+- Moonphys exports generic fixed-step multi-body heightfield world replay:
+  multiple independent rigid bodies share one heightfield/material/environment,
+  carry per-body external forces, resolve terrain contact, and report world
+  contact counts plus kinetic-energy deltas. Coupled inter-body constraints
+  remain future work.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -471,8 +476,9 @@ bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
   assessment, generic joint servo/limit integration, joint-frame motor replay,
   primitive-shape diagonal inertia, composite mass properties, rigid-body
-  wrench integration with impulse and kinetic-energy accounting, and joint
-  mechanical power/work accounting implemented;
+  wrench integration with impulse and kinetic-energy accounting, fixed-step
+  multi-body heightfield world replay, and joint mechanical power/work
+  accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -490,6 +496,10 @@ kinetic-energy accounting, generic manifold resolution, impulse accounting,
 and traction margin review.
 Mass, inertia, and authoritative collision tags are still absent from the
 referenced model, so the evidence remains review-only.
+Moonphys multi-body heightfield world replay currently composes independent
+rigid bodies with shared terrain contact; coupled constraints, actuated
+articulated dynamics, and broad-phase world collision scheduling remain future
+work.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -514,6 +524,8 @@ Next `moonphys` capabilities:
 - composite mass properties with parallel-axis inertia (implemented)
 - rigid-body force/torque wrench integration with impulse and kinetic-energy
   accounting (implemented)
+- fixed-step multi-body heightfield world replay with per-body forces,
+  terrain-contact counts, and kinetic-energy accounting (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

@@ -339,6 +339,113 @@ test "rigid body heightfield trace keeps stable prefixes" {
 }
 
 ///|
+test "rigid body heightfield world trace steps multiple bodies" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "falling",
+          4.0,
+          0.2,
+          vec3(0.0, 0.0, 0.25),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "driven",
+          2.0,
+          0.1,
+          vec3(1.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+        external_force_n=vec3(4.0, 0.0, 0.0),
+      ),
+    ],
+  )
+  let step = rigid_body_heightfield_world_step(world, field, 0.2)
+  assert_eq(step.status, "world-step-contact")
+  assert_eq(step.body_count, 2)
+  assert_eq(step.contact_count, 1)
+  assert_eq(step.review_count, 0)
+  assert_true(step.body_frames[0].status == "world-body-contact-resolved")
+  assert_true(step.body_frames[1].status == "world-body-clear")
+  assert_true(step.body_frames[1].acceleration_mps2.x == 2.0)
+  assert_true(step.body_frames[1].after.position.x > 1.0)
+  assert_true(step.kinetic_energy_after_j > step.kinetic_energy_before_j)
+  assert_true(step.after.bodies[0].state == step.body_frames[0].after)
+}
+
+///|
+test "rigid body heightfield world trace is deterministic" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "body",
+          4.0,
+          0.2,
+          vec3(0.0, 0.0, 0.25),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  let trace = rigid_body_heightfield_world_trace(
+    "world-trace", world, field, 0.2, 4, "test world trace",
+  )
+  let replay = rigid_body_heightfield_world_trace(
+    "world-trace", world, field, 0.2, 4, "test world trace",
+  )
+  assert_true(trace == replay)
+  assert_eq(trace.status, "world-deterministic-replay")
+  assert_eq(trace.frame_count, 4)
+  assert_true(trace.frames[0].contact_count == 1)
+  assert_true(
+    trace.final_world.bodies[0].state == trace.frames[3].after.bodies[0].state,
+  )
+}
+
+///|
+test "rigid body heightfield world step flags review states" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let other_field = heightfield("other", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "massless",
+          0.0,
+          0.2,
+          vec3(0.0, 0.0, 0.25),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  let reviewed = rigid_body_heightfield_world_step(world, field, 0.2)
+  assert_eq(reviewed.status, "world-step-review")
+  assert_eq(reviewed.review_count, 1)
+  assert_eq(reviewed.body_frames[0].status, "world-body-zero-mass-review")
+  let mismatched = rigid_body_heightfield_world_step(world, other_field, 0.2)
+  assert_eq(mismatched.status, "world-heightfield-mismatch-review")
+}
+
+///|
 test "angular acceleration uses diagonal inertia" {
   let inertia = rigid_body_inertia("body", vec3(2.0, 4.0, 8.0))
   let acceleration = angular_acceleration(inertia, vec3(4.0, 4.0, 4.0))
