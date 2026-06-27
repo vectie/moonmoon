@@ -833,6 +833,82 @@ test "hinge axis assessment reports angular misalignment" {
 }
 
 ///|
+test "hinge axis correction splits angular error by inverse inertia" {
+  let constraint = rigid_body_hinge_axis_constraint(
+    "hip-hinge",
+    "pelvis",
+    "thigh",
+    local_axis_a=vec3(0.0, 1.0, 0.0),
+    local_axis_b=vec3(0.0, 1.0, 0.0),
+  )
+  let pelvis = rigid_body_angular_state(
+    "pelvis",
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let thigh = rigid_body_angular_state(
+    "thigh",
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let correction = rigid_body_hinge_axis_correction(
+    constraint,
+    pelvis,
+    rigid_body_inertia("pelvis", vec3(1.0, 1.0, 1.0)),
+    thigh,
+    rigid_body_inertia("thigh", vec3(3.0, 3.0, 3.0)),
+  )
+  assert_eq(correction.status, "hinge-correction-estimated")
+  assert_true(nearly_equal(correction.inverse_inertia_a, 1.0))
+  assert_true(nearly_equal(correction.inverse_inertia_b, 1.0 / 3.0))
+  assert_true(
+    nearly_equal(
+      correction.correction_a_rad.length(),
+      3.141592653589793 * 0.375,
+    ),
+  )
+  assert_true(
+    nearly_equal(
+      correction.correction_b_rad.length(),
+      3.141592653589793 * 0.125,
+    ),
+  )
+  assert_true(nearly_equal(correction.angular_impulse_nms, 0.0))
+}
+
+///|
+test "hinge axis correction estimates velocity impulse" {
+  let constraint = rigid_body_hinge_axis_constraint(
+    "knee-hinge",
+    "upper",
+    "lower",
+    local_axis_a=vec3(0.0, 1.0, 0.0),
+    local_axis_b=vec3(0.0, 1.0, 0.0),
+  )
+  let upper = rigid_body_angular_state(
+    "upper",
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let lower = rigid_body_angular_state(
+    "lower",
+    identity_basis3(),
+    vec3(0.0, 4.0, 0.0),
+  )
+  let correction = rigid_body_hinge_axis_correction(
+    constraint,
+    upper,
+    rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+    lower,
+    rigid_body_inertia("lower", vec3(2.0, 2.0, 2.0)),
+  )
+  assert_eq(correction.status, "hinge-correction-estimated")
+  assert_true(nearly_equal(correction.angular_impulse_nms, 4.0))
+  assert_true(nearly_equal(correction.velocity_delta_a_rad_s.y, 2.0))
+  assert_true(nearly_equal(correction.velocity_delta_b_rad_s.y, -2.0))
+}
+
+///|
 test "primitive diagonal inertia uses solid shape formulas" {
   let sphere = sphere_diagonal_inertia("sphere", 10.0, 2.0)
   assert_true(nearly_equal(sphere.diagonal_kg_m2.x, 16.0))

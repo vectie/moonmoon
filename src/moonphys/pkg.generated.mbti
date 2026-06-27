@@ -125,6 +125,8 @@ pub fn rigid_body_hinge_axis_assessment(RigidBodyHingeAxisConstraint, RigidBodyA
 
 pub fn rigid_body_hinge_axis_constraint(String, String, String, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeAxisConstraint
 
+pub fn rigid_body_hinge_axis_correction(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularState, RigidBodyInertia) -> RigidBodyHingeAxisCorrection
+
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 
 pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
@@ -631,6 +633,20 @@ pub(all) struct RigidBodyHingeAxisConstraint {
   local_axis_a : Vec3
   local_axis_b : Vec3
   stiffness : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHingeAxisCorrection {
+  assessment : RigidBodyHingeAxisAssessment
+  inertia_a : RigidBodyInertia
+  inertia_b : RigidBodyInertia
+  inverse_inertia_a : Double
+  inverse_inertia_b : Double
+  correction_a_rad : Vec3
+  correction_b_rad : Vec3
+  velocity_delta_a_rad_s : Vec3
+  velocity_delta_b_rad_s : Vec3
+  angular_impulse_nms : Double
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyInertia {

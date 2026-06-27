@@ -64,9 +64,10 @@ evidence.
   response with split penetration correction plus normal/friction impulse
   accounting. World replay also supports generic distance constraints between
   anchored points on named bodies with inverse-mass weighted correction and
-  constraint-axis impulse accounting, plus generic hinge-axis alignment
-  assessment over angular body states. Full rotational constraint solving and
-  actuated articulated coupled dynamics remain future work.
+  constraint-axis impulse accounting, plus generic hinge-axis alignment and
+  inverse-inertia weighted correction estimates over angular body states. Full
+  rotational constraint solving inside world replay and actuated articulated
+  coupled dynamics remain future work.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -488,8 +489,9 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   multi-body heightfield world replay, world broad-phase/narrow-phase body
   contact scheduling, world body-pair contact response, generic world distance
   constraints between anchored body points with inverse-mass weighted
-  correction and impulse accounting, generic hinge-axis alignment assessment,
-  and joint mechanical power/work accounting implemented;
+  correction and impulse accounting, generic hinge-axis alignment assessment
+  and correction estimates, and joint mechanical power/work accounting
+  implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -511,8 +513,9 @@ Moonphys multi-body heightfield world replay currently composes rigid bodies
 with shared terrain contact, scheduled body-pair contacts, pairwise contact
 response, and anchored-point distance constraints; rotational joints and
 actuated articulated dynamics remain future work. Moonphys can now assess
-hinge-axis alignment from angular body states, but it does not yet solve angular
-constraints inside world replay.
+hinge-axis alignment and estimate inverse-inertia weighted corrections from
+angular body states, but it does not yet solve angular constraints inside world
+replay.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -547,6 +550,8 @@ Next `moonphys` capabilities:
   inverse-mass weighted correction and constraint-axis impulse accounting
   (implemented)
 - generic hinge-axis alignment assessment over angular body states
+  (implemented)
+- inverse-inertia weighted hinge-axis correction and angular impulse estimates
   (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)

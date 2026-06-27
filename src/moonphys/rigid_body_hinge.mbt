@@ -26,6 +26,21 @@ pub(all) struct RigidBodyHingeAxisAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyHingeAxisCorrection {
+  assessment : RigidBodyHingeAxisAssessment
+  inertia_a : RigidBodyInertia
+  inertia_b : RigidBodyInertia
+  inverse_inertia_a : Double
+  inverse_inertia_b : Double
+  correction_a_rad : Vec3
+  correction_b_rad : Vec3
+  velocity_delta_a_rad_s : Vec3
+  velocity_delta_b_rad_s : Vec3
+  angular_impulse_nms : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn rigid_body_hinge_axis_constraint(
   constraint_id : String,
   body_a_id : String,
@@ -129,5 +144,108 @@ pub fn rigid_body_hinge_axis_assessment(
     status: hinge_axis_status(
       body_matches, angular_error, relative_axis_velocity,
     ),
+  }
+}
+
+///|
+fn hinge_axis_inertia(inertia : RigidBodyInertia, axis : Vec3) -> Double {
+  let a = normalized_axis(axis)
+  a.x * a.x * inertia.diagonal_kg_m2.x +
+  a.y * a.y * inertia.diagonal_kg_m2.y +
+  a.z * a.z * inertia.diagonal_kg_m2.z
+}
+
+///|
+fn hinge_inverse_inertia(inertia : RigidBodyInertia, axis : Vec3) -> Double {
+  let value = hinge_axis_inertia(inertia, axis)
+  if value > 0.0 {
+    1.0 / value
+  } else {
+    0.0
+  }
+}
+
+///|
+fn hinge_axis_correction_status(
+  assessment : RigidBodyHingeAxisAssessment,
+  inverse_inertia_sum : Double,
+) -> String {
+  if assessment.status == "hinge-axis-body-mismatch-review" {
+    "hinge-correction-body-mismatch-review"
+  } else if inverse_inertia_sum <= 0.0 {
+    "hinge-correction-static-review"
+  } else if assessment.angular_error_rad > 0.000001 ||
+    hinge_abs(assessment.relative_axis_velocity_rad_s) > 0.000001 {
+    "hinge-correction-estimated"
+  } else {
+    "hinge-correction-satisfied"
+  }
+}
+
+///|
+pub fn rigid_body_hinge_axis_correction(
+  constraint : RigidBodyHingeAxisConstraint,
+  state_a : RigidBodyAngularState,
+  inertia_a : RigidBodyInertia,
+  state_b : RigidBodyAngularState,
+  inertia_b : RigidBodyInertia,
+) -> RigidBodyHingeAxisCorrection {
+  let assessment = rigid_body_hinge_axis_assessment(
+    constraint, state_a, state_b,
+  )
+  let axis = if assessment.correction_axis.length_squared() > 0.0 {
+    assessment.correction_axis
+  } else {
+    normalized_axis(assessment.world_axis_a)
+  }
+  let inverse_inertia_a = hinge_inverse_inertia(inertia_a, axis)
+  let inverse_inertia_b = hinge_inverse_inertia(inertia_b, axis)
+  let inverse_inertia_sum = inverse_inertia_a + inverse_inertia_b
+  let correction_mag_a = if inverse_inertia_sum > 0.0 {
+    assessment.correction_angle_rad * inverse_inertia_a / inverse_inertia_sum
+  } else {
+    0.0
+  }
+  let correction_mag_b = if inverse_inertia_sum > 0.0 {
+    assessment.correction_angle_rad * inverse_inertia_b / inverse_inertia_sum
+  } else {
+    0.0
+  }
+  let angular_impulse = if inverse_inertia_sum > 0.0 {
+    hinge_abs(assessment.relative_axis_velocity_rad_s) / inverse_inertia_sum
+  } else {
+    0.0
+  }
+  let velocity_delta_a = if inverse_inertia_sum > 0.0 {
+    assessment.world_axis_a.scale(
+      assessment.relative_axis_velocity_rad_s *
+      inverse_inertia_a /
+      inverse_inertia_sum,
+    )
+  } else {
+    vec3(0.0, 0.0, 0.0)
+  }
+  let velocity_delta_b = if inverse_inertia_sum > 0.0 {
+    assessment.world_axis_a.scale(
+      0.0 -
+      assessment.relative_axis_velocity_rad_s *
+      inverse_inertia_b /
+      inverse_inertia_sum,
+    )
+  } else {
+    vec3(0.0, 0.0, 0.0)
+  }
+  {
+    assessment,
+    inertia_a,
+    inertia_b,
+    inverse_inertia_a,
+    inverse_inertia_b,
+    correction_a_rad: axis.scale(correction_mag_a),
+    correction_b_rad: axis.scale(0.0 - correction_mag_b),
+    velocity_delta_a_rad_s: velocity_delta_a,
+    velocity_delta_b_rad_s: velocity_delta_b,
+    angular_impulse_nms: angular_impulse,
+    status: hinge_axis_correction_status(assessment, inverse_inertia_sum),
   }
 }
