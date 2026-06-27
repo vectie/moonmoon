@@ -246,6 +246,7 @@ test "noetix static support report flags kinematic walk for review" {
   )
   assert_true(report.note.contains("friction-cone"))
   assert_true(report.note.contains("contact-patch"))
+  assert_true(report.note.contains("terrain-normal force projection"))
   assert_eq(report.frames[0].support_load_assessment.load_count, 1)
   assert_true(
     report.frames[0].support_load_assessment.total_normal_force_n > 0.0,

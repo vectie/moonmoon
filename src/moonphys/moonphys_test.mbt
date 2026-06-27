@@ -818,6 +818,36 @@ test "traction assessment reports friction margin and slip" {
 }
 
 ///|
+test "surface traction assessment projects force onto flat normal" {
+  let material = material_contact_model("test", 0.5, 0.0)
+  let assessment = surface_traction_assessment(
+    "foot",
+    material,
+    vec3(3.0, 0.0, 10.0),
+    vec3(0.0, 0.0, 1.0),
+  )
+  assert_true(nearly_equal(assessment.normal_force_n, 10.0))
+  assert_true(nearly_equal(assessment.tangential_force_n, 3.0))
+  assert_eq(assessment.status, "traction-ok")
+}
+
+///|
+test "surface traction assessment exposes slope tangential demand" {
+  let material = material_contact_model("test", 0.5, 0.0)
+  let normal = vec3(0.0, 1.0, 1.0)
+  let assessment = surface_traction_assessment(
+    "foot",
+    material,
+    vec3(0.0, 0.0, 10.0),
+    normal,
+  )
+  let expected = 50.0.sqrt()
+  assert_true(nearly_equal(assessment.normal_force_n, expected))
+  assert_true(nearly_equal(assessment.tangential_force_n, expected))
+  assert_eq(assessment.status, "friction-limit-exceeded")
+}
+
+///|
 test "capture point assessment keeps slow COM inside support" {
   let assessment = capture_point_assessment(
     lunar_environment(),

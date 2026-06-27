@@ -11,10 +11,10 @@
 - review frames: 32
 - traction-review frames: 0
 - worst planar margin: -0.035 m
-- worst traction margin: 35.544781030647364 N
+- worst traction margin: 35.26888932191745 N
 - status: static-support-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys friction-cone review over assumed foot friction.
+- note: Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction.
 
 ## Frame Margins
 

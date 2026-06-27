@@ -610,7 +610,7 @@
     "review_frame_count": 32,
     "traction_review_frame_count": 0,
     "worst_planar_margin_m": -0.035,
-    "worst_traction_margin_n": 35.544781030647364,
+    "worst_traction_margin_n": 35.26888932191745,
     "frames": [
       {
         "frame_index": 0,
@@ -935,11 +935,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -1286,11 +1286,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -1637,11 +1637,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -1988,11 +1988,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -2339,11 +2339,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -2690,11 +2690,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -3041,11 +3041,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -3392,11 +3392,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -3743,11 +3743,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -4094,11 +4094,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.222279047025566,
+            "tangential_force_n": 2.688923687238398,
+            "friction_limit_n": 37.95781300915585,
+            "utilization": 0.0708397948688403,
+            "margin_n": 35.26888932191745,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -4460,11 +4460,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -4811,11 +4811,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -5162,11 +5162,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -5513,11 +5513,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -5864,11 +5864,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -6215,11 +6215,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -6566,11 +6566,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -6917,11 +6917,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -7268,11 +7268,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -7619,11 +7619,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 61.40004381555254,
+            "tangential_force_n": 2.7177804673974264,
+            "friction_limit_n": 38.068027165642576,
+            "utilization": 0.07139273216265582,
+            "margin_n": 35.35024669824515,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -7955,11 +7955,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -8306,11 +8306,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -8657,11 +8657,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -9008,11 +9008,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -9359,11 +9359,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -9710,11 +9710,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -10061,11 +10061,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -10412,11 +10412,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -10763,11 +10763,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -11114,11 +11114,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 63.099296406772616,
+            "tangential_force_n": 2.3849945925872666,
+            "friction_limit_n": 39.121563772199025,
+            "utilization": 0.06096368249681564,
+            "margin_n": 36.736569179611756,
             "slipping": false,
             "status": "traction-ok"
           },
@@ -11480,11 +11480,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 62.59866417692865,
+            "tangential_force_n": 2.605488268021572,
+            "friction_limit_n": 38.81117178969576,
+            "utilization": 0.06713242986168536,
+            "margin_n": 36.20568352167419,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -11831,11 +11831,11 @@
               "friction_coefficient": 0.62,
               "restitution_coefficient": 0.04
             },
-            "normal_force_n": 61.75,
-            "tangential_force_n": 2.7402189693526315,
-            "friction_limit_n": 38.285,
-            "utilization": 0.0715742188677715,
-            "margin_n": 35.544781030647364,
+            "normal_force_n": 62.59866417692865,
+            "tangential_force_n": 2.605488268021572,
+            "friction_limit_n": 38.81117178969576,
+            "utilization": 0.06713242986168536,
+            "margin_n": 36.20568352167419,
             "slipping": false,
             "status": "traction-ok"
           }
@@ -11846,7 +11846,7 @@
       }
     ],
     "status": "static-support-review",
-    "note": "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys friction-cone review over assumed foot friction."
+    "note": "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction."
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

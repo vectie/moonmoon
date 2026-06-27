@@ -137,6 +137,29 @@ pub fn traction_assessment(
 }
 
 ///|
+fn normalized_contact_normal(surface_normal : Vec3) -> Vec3 {
+  let length = surface_normal.length()
+  if length > 0.0 {
+    surface_normal.scale(1.0 / length)
+  } else {
+    vec3(0.0, 0.0, 1.0)
+  }
+}
+
+///|
+pub fn surface_traction_assessment(
+  contact_id : String,
+  material : MaterialContactModel,
+  applied_force_n : Vec3,
+  surface_normal : Vec3,
+) -> TractionAssessment {
+  let normal = normalized_contact_normal(surface_normal)
+  let normal_force = nonnegative_double(applied_force_n.dot(normal))
+  let tangent_force = applied_force_n.sub(normal.scale(normal_force)).length()
+  traction_assessment(contact_id, material, normal_force, tangent_force)
+}
+
+///|
 fn min_double(a : Double, b : Double) -> Double {
   if a < b {
     a

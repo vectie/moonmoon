@@ -9,7 +9,8 @@ evidence.
 
 - `moonphys` has generic vector, transform, environment, bilinear heightfield,
   terrain-normal point and patch contact, kinematic, convex support-polygon
-  margin, quasistatic support-load distribution, and trace primitives.
+  margin, quasistatic support-load distribution, terrain-normal traction
+  projection, and trace primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
@@ -456,10 +457,11 @@ Moonrobo simulation packet:
 ## Phase 8: Toward Real Physics
 
 Status: generic convex support-polygon margin, quasistatic support-load
-distribution, capture-point, rigid-body gravity integration, material contact,
-bilinear heightfield collision, terrain-normal single-body heightfield contact
-resolution, rectangular heightfield contact-patch sampling, deterministic
-rigid-body heightfield replay, diagonal-inertia
+distribution, terrain-normal traction projection, capture-point, rigid-body
+gravity integration, material contact, bilinear heightfield collision,
+terrain-normal single-body heightfield contact resolution, rectangular
+heightfield contact-patch sampling, deterministic rigid-body heightfield replay,
+diagonal-inertia
 angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
@@ -501,6 +503,7 @@ Next `moonphys` capabilities:
 - diagonal inertia and angular velocity integration (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
+- terrain-normal traction force projection (implemented)
 - capture point / linear inverted-pendulum review helper (implemented)
 - semi-implicit rigid-body gravity integration (implemented)
 - material/friction model (implemented)

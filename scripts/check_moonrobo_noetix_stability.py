@@ -149,6 +149,8 @@ def main() -> None:
         fail("report note must distinguish static evidence from dynamics")
     if "Contact patches use Moonphys heightfield patch sampling" not in report.get("note", ""):
         fail("report note must mention Moonphys contact-patch evidence")
+    if "terrain-normal force projection" not in report.get("note", ""):
+        fail("report note must mention Moonphys terrain-normal traction projection")
     if "friction-cone" not in report.get("note", ""):
         fail("report note must mention friction-cone review")
 

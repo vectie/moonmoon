@@ -369,23 +369,45 @@ fn noetix_lateral_speed(config : NoetixMoonWalkConfig) -> Double {
 }
 
 ///|
-fn noetix_review_total_tangential_force(
+fn noetix_review_total_tangential_force_vector(
+  frame : NoetixMoonWalkFrame,
   config : NoetixMoonWalkConfig,
   profile : NoetixPhysicsProfile,
   support_count : Int,
-) -> Double {
+) -> @moonphys.Vec3 {
   if support_count <= 0 {
-    0.0
+    @moonphys.vec3(0.0, 0.0, 0.0)
   } else {
-    let horizontal_speed = (config.speed_mps * config.speed_mps +
-    noetix_lateral_speed(config) * noetix_lateral_speed(config)).sqrt()
     let cycle_s = config.dt_s * config.cycle_frames.to_double()
     if cycle_s > 0.0 {
-      profile.mass_model.mass_kg * horizontal_speed / cycle_s
+      let lateral_direction = if frame.support_phase == "left-support" {
+        1.0
+      } else {
+        0.0 - 1.0
+      }
+      noetix_heading_forward(config)
+      .scale(config.speed_mps)
+      .add(
+        noetix_heading_lateral(config).scale(
+          lateral_direction * noetix_lateral_speed(config),
+        ),
+      )
+      .scale(profile.mass_model.mass_kg / cycle_s)
     } else {
-      0.0
+      @moonphys.vec3(0.0, 0.0, 0.0)
     }
   }
+}
+
+///|
+fn noetix_contact_material(
+  geometry : NoetixFootGeometry,
+) -> @moonphys.MaterialContactModel {
+  @moonphys.material_contact_model(
+    "\{geometry.foot_id}/review-friction",
+    geometry.friction_coefficient,
+    @moonphys.lunar_regolith_contact_model().restitution_coefficient,
+  )
 }
 
 ///|
@@ -393,21 +415,19 @@ fn foot_traction_assessment(
   foot : NoetixFootContactProbe,
   geometry : NoetixFootGeometry,
   normal_force_n : Double,
-  tangential_force_n : Double,
+  tangential_force_n : @moonphys.Vec3,
+  surface_normal : @moonphys.Vec3,
 ) -> @moonphys.TractionAssessment {
-  @moonphys.traction_assessment(
+  let applied_force = if foot.in_contact {
+    surface_normal.scale(normal_force_n).add(tangential_force_n)
+  } else {
+    @moonphys.vec3(0.0, 0.0, 0.0)
+  }
+  @moonphys.surface_traction_assessment(
     geometry.foot_id,
-    @moonphys.material_contact_model(
-      "\{geometry.foot_id}/review-friction",
-      geometry.friction_coefficient,
-      @moonphys.lunar_regolith_contact_model().restitution_coefficient,
-    ),
-    normal_force_n,
-    if foot.in_contact {
-      tangential_force_n
-    } else {
-      0.0
-    },
+    noetix_contact_material(geometry),
+    applied_force,
+    surface_normal,
   )
 }
 
@@ -419,10 +439,11 @@ fn traction_assessments_for_frame(
   left_geometry : NoetixFootGeometry,
   right_geometry : NoetixFootGeometry,
   support_load : @moonphys.SupportLoadAssessment,
+  patches : Array[@moonphys.HeightfieldContactPatch],
 ) -> Array[@moonphys.TractionAssessment] {
   let support_count = support_count_for_frame(frame)
-  let tangential_force = noetix_review_total_tangential_force(
-    config, profile, support_count,
+  let tangential_force = noetix_review_total_tangential_force_vector(
+    frame, config, profile, support_count,
   )
   let left_fraction = support_load_fraction(support_load, left_geometry.foot_id)
   let right_fraction = support_load_fraction(
@@ -434,13 +455,15 @@ fn traction_assessments_for_frame(
       frame.left_foot,
       left_geometry,
       support_load_normal_force(support_load, left_geometry.foot_id),
-      tangential_force * left_fraction,
+      tangential_force.scale(left_fraction),
+      patches[0].average_surface_normal,
     ),
     foot_traction_assessment(
       frame.right_foot,
       right_geometry,
       support_load_normal_force(support_load, right_geometry.foot_id),
-      tangential_force * right_fraction,
+      tangential_force.scale(right_fraction),
+      patches[1].average_surface_normal,
     ),
   ]
 }
@@ -513,7 +536,7 @@ pub fn noetix_walk_stability_frame(
   ]
   let contact_patch_status = contact_patch_status(patches)
   let traction = traction_assessments_for_frame(
-    frame, config, profile, left_geometry, right_geometry, support_load,
+    frame, config, profile, left_geometry, right_geometry, support_load, patches,
   )
   let traction_status = traction_status(traction)
   let terrain_status = contact_terrain_status(frame)
@@ -590,7 +613,7 @@ pub fn noetix_walk_stability_report(
     } else {
       "static-support-review"
     },
-    note: "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys friction-cone review over assumed foot friction.",
+    note: "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction.",
   }
 }
 
