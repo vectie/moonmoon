@@ -20,6 +20,8 @@
 - hinge motor world trace support contacts: 233
 - hinge motor world trace stable support frames: 22
 - hinge motor world trace support-review frames: 11
+- hinge motor world trace capture-stable support frames: 0
+- hinge motor world trace capture-review support frames: 32
 - hinge motor world trace resolved hinges: 1512
 - hinge motor world trace body samples: 825
 - hinge motor world trace max speed: 1.2074667066611866 m/s
@@ -28,6 +30,7 @@
 - hinge motor world trace center of mass x: 0.69030135511729 m
 - hinge motor world trace max center-of-mass speed: 0.6262051903954763 m/s
 - hinge motor world trace min support margin: -0.13966170306727652 m
+- hinge motor world trace worst capture support margin: -1.9471892830999706 m
 - hinge motor world trace max center-of-pressure error: 0.2213821536134138 m
 - hinge motor world trace max body momentum: 1.8353493941250039 kg*m/s
 - hinge motor world trace max world momentum: 23.795797235028104 kg*m/s

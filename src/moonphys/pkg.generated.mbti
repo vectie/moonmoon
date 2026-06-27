@@ -121,6 +121,10 @@ pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, P
 
 pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
 
+pub fn rigid_body_heightfield_world_dynamic_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldDynamicSupportTrace
+
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldDynamicSupportTrace
+
 pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
 
 pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldSupportTrace
@@ -172,6 +176,8 @@ pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBody
 pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : Vec3, anchor_b_m? : Vec3, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
 
 pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceConstraint, RigidBodyState, RigidBodyState) -> RigidBodyWorldConstraintResolution
+
+pub fn rigid_body_world_dynamic_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldDynamicSupportFrame
 
 pub fn rigid_body_world_integrate_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Array[JointMotorFrame], note? : String) -> RigidBodyWorldHingeMotorTrace
 
@@ -909,6 +915,29 @@ pub(all) struct RigidBodyWorldDistanceConstraint {
   anchor_b_m : Vec3
   rest_length_m : Double
   stiffness : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldDynamicSupportFrame {
+  frame_index : Int
+  time_s : Double
+  body_count : Int
+  contact_count : Int
+  center_of_mass : Vec3
+  center_of_mass_velocity : Vec3
+  capture_point_assessment : CapturePointAssessment
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldDynamicSupportTrace {
+  trace_id : String
+  frame_count : Int
+  body_count : Int
+  contact_count : Int
+  capture_stable_frame_count : Int
+  review_frame_count : Int
+  worst_capture_margin_m : Double
+  frames : Array[RigidBodyWorldDynamicSupportFrame]
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyWorldHingeConstraintFrame {

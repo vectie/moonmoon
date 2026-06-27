@@ -365,6 +365,11 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.hinge_motor_world_trace.support_contact_count > 0)
   assert_true(report.hinge_motor_world_trace.stable_support_frame_count >= 0)
   assert_true(report.hinge_motor_world_trace.support_review_frame_count >= 0)
+  assert_eq(
+    report.hinge_motor_world_trace.capture_stable_support_frame_count +
+    report.hinge_motor_world_trace.capture_support_review_frame_count,
+    report.hinge_motor_world_trace.frame_count,
+  )
   assert_true(
     report.hinge_motor_world_trace.resolved_hinge_constraint_count >
     report.hinge_motor_driven_joint_count,
@@ -392,6 +397,9 @@ test "noetix joint control report replays gait phases through moonphys" {
     report.hinge_motor_world_trace.max_center_of_mass_speed_mps >= 0.0,
   )
   assert_true(report.hinge_motor_world_trace.min_support_margin_m <= 1.0)
+  assert_true(
+    report.hinge_motor_world_trace.worst_capture_support_margin_m <= 1.0,
+  )
   assert_true(
     report.hinge_motor_world_trace.max_center_of_pressure_error_m >= 0.0,
   )
