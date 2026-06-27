@@ -119,6 +119,82 @@ test "heightfield contact response leaves clear body unchanged" {
 }
 
 ///|
+test "rigid body heightfield trace is deterministic" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 0.25),
+    vec3(0.0, 0.0, -1.0),
+  )
+  let trace = rigid_body_heightfield_trace(
+    "trace",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    state,
+    0.2,
+    4,
+    vec3(0.0, 0.0, 0.0),
+    "test trace",
+  )
+  let replay = rigid_body_heightfield_trace(
+    "trace",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    state,
+    0.2,
+    4,
+    vec3(0.0, 0.0, 0.0),
+    "test trace",
+  )
+  assert_true(trace == replay)
+  assert_eq(trace.frame_count, 4)
+  assert_eq(trace.status, "deterministic-replay")
+  assert_eq(trace.frames[0].status, "contact-resolved")
+  assert_true(nearly_equal(trace.final_state.position.z, 0.2))
+}
+
+///|
+test "rigid body heightfield trace keeps stable prefixes" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 0.25),
+    vec3(0.0, 0.0, -1.0),
+  )
+  let prefix = rigid_body_heightfield_trace(
+    "trace",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    state,
+    0.2,
+    2,
+    vec3(0.0, 0.0, 0.0),
+    "test trace",
+  )
+  let longer = rigid_body_heightfield_trace(
+    "trace",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    state,
+    0.2,
+    4,
+    vec3(0.0, 0.0, 0.0),
+    "test trace",
+  )
+  assert_true(prefix.frames[0] == longer.frames[0])
+  assert_true(prefix.frames[1] == longer.frames[1])
+  assert_true(prefix.final_state == longer.frames[1].after)
+}
+
+///|
 test "transform translates local point" {
   let transform = transform3(identity_basis3(), vec3(1.0, 2.0, 3.0))
   assert_true(

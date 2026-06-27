@@ -37,6 +37,10 @@ pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
 
+pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Vec3) -> RigidBodyHeightfieldFrame
+
+pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
+
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
@@ -162,6 +166,29 @@ pub(all) struct PhysicsTrace {
   trace_id : String
   environment : PhysicsEnvironment
   frames : Array[PhysicsFrame]
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldFrame {
+  frame_index : Int
+  time_s : Double
+  before : RigidBodyState
+  integrated : RigidBodyState
+  resolution : ContactResolution
+  after : RigidBodyState
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHeightfieldTrace {
+  trace_id : String
+  environment : PhysicsEnvironment
+  material : MaterialContactModel
+  heightfield_id : String
+  dt_s : Double
+  frame_count : Int
+  frames : Array[RigidBodyHeightfieldFrame]
+  final_state : RigidBodyState
+  status : String
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
