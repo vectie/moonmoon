@@ -7,6 +7,8 @@ import {
 }
 
 // Values
+pub fn axis_angle_basis3(Vec3, Double) -> Basis3
+
 pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
@@ -49,6 +51,7 @@ pub(all) struct Basis3 {
   zy : Double
   zz : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn Basis3::mul_basis3(Self, Self) -> Self
 pub fn Basis3::mul_vec3(Self, Vec3) -> Vec3
 
 pub(all) struct CapturePointAssessment {
@@ -148,6 +151,7 @@ pub(all) struct Transform3 {
   basis : Basis3
   translation : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn Transform3::compose(Self, Self) -> Self
 pub fn Transform3::transform_point(Self, Vec3) -> Vec3
 
 pub(all) struct Vec3 {

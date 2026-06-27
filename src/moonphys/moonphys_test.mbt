@@ -49,6 +49,27 @@ test "transform translates local point" {
 }
 
 ///|
+test "axis angle basis rotates around z" {
+  let basis = axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0)
+  let rotated = basis.mul_vec3(vec3(1.0, 0.0, 0.0))
+  assert_true(rotated.x < 0.000001)
+  assert_true(rotated.y > 0.999999)
+}
+
+///|
+test "transform composition applies parent translation and local rotation" {
+  let parent = transform3(identity_basis3(), vec3(1.0, 0.0, 0.0))
+  let child = transform3(
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 2.0, 0.0),
+  )
+  let composed = parent.compose(child)
+  let point = composed.transform_point(vec3(1.0, 0.0, 0.0))
+  assert_true(point.x < 1.000001 && point.x > 0.999999)
+  assert_true(point.y > 2.999999)
+}
+
+///|
 test "support assessment reports static margin" {
   let assessment = support_assessment(vec3(0.0, 0.0, 1.0), [
     support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),

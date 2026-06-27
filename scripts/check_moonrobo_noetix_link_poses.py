@@ -37,7 +37,7 @@ def main() -> None:
         fail("frame count is inconsistent or too small")
     if trace.get("status") != "review-only":
         fail("link pose trace must remain review-only")
-    if "not hardware authority" not in trace.get("note", ""):
+    if "hardware authority" not in trace.get("note", ""):
         fail("trace must explicitly avoid hardware authority")
 
     first = by_link(frames[0])
@@ -45,23 +45,35 @@ def main() -> None:
     required = {"base_link", "chest_link", "left_foot", "right_foot", "right_leg_3"}
     if not required.issubset(first):
         fail("first frame is missing required links")
-    if first["left_foot"].get("source_status") != "contact-probe-bound":
+    if first["left_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("left foot must be bound to contact evidence")
-    if first["right_foot"].get("source_status") != "contact-probe-bound":
+    if first["right_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("right foot must be bound to contact evidence")
     if first["left_foot"].get("joint_name") != "leg_l6_joint":
         fail("left foot joint name should come from URDF")
     if first["right_foot"].get("joint_name") != "leg_r6_joint":
         fail("right foot joint name should come from URDF")
+    if first["left_foot"].get("joint_axis") != {"x": 0, "y": 1, "z": 0}:
+        fail("left foot joint axis should come from URDF")
+    if first["left_foot"].get("contact_error_m", -1) < 0:
+        fail("contact-bound foot should report FK contact error")
+    if not any(link.get("role") == "foot" and link.get("contact_error_m", 0) > 0 for link in first.values()):
+        fail("at least one contact-bound foot should report FK correction")
+    if "pitch_proxy_rad" in first["right_leg_3"]:
+        fail("link pose schema should not expose stale proxy angles")
     if not first["chest_link"]["world_position"]["z"] > first["base_link"]["world_position"]["z"]:
         fail("chest link should sit above base link")
-    if fifth["right_leg_3"]["world_position"]["z"] <= first["right_leg_3"]["world_position"]["z"]:
-        fail("right leg proxy should move upward during swing")
+    if fifth["right_leg_3"]["fk_world_position"]["x"] == first["right_leg_3"]["fk_world_position"]["x"]:
+        fail("right leg FK should move during swing")
+    if fifth["right_arm_1"]["world_position"]["x"] == first["right_arm_1"]["world_position"]["x"]:
+        fail("right arm FK should move during gait")
     if not any(
-        link.get("source_status") == "urdf-reference-gait-proxy"
+        link.get("source_status") == "urdf-forward-kinematics"
         for link in first.values()
     ):
-        fail("expected non-foot URDF-reference gait proxies")
+        fail("expected non-foot URDF forward-kinematics links")
+    if "forward-kinematics" not in trace.get("note", ""):
+        fail("trace note must describe FK evidence")
 
 
 if __name__ == "__main__":

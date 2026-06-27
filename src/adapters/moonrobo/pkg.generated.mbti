@@ -348,8 +348,11 @@ pub(all) struct NoetixLinkPose {
   role : String
   side : String
   nominal_parent_offset_m : @moonphys.Vec3
+  joint_axis : @moonphys.Vec3
+  joint_position_rad : Double
+  fk_world_position : @moonphys.Vec3
   world_position : @moonphys.Vec3
-  pitch_proxy_rad : Double
+  contact_error_m : Double
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -450,6 +453,7 @@ pub(all) struct NoetixReferenceLink {
   role : String
   side : String
   nominal_parent_offset_m : @moonphys.Vec3
+  joint_axis : @moonphys.Vec3
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

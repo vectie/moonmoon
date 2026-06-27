@@ -19,8 +19,9 @@ evidence.
   report backed by generic Moonphys support assessment.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
-- Moonrobo exports URDF-reference Noetix link-pose evidence: feet are bound to
-  Moonphys contact probes, and body/limb links are review-grade gait proxies.
+- Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
+  use compact URDF forward kinematics, and feet are bound to Moonphys contact
+  probes with FK contact error.
 - MoonClaw exports a Noetix simulation review task that ties the walk trace,
   URDF-reference link poses, static support report, dynamic-stability report,
   and Rabbita playback into a hardware-denied review packet.
@@ -232,9 +233,9 @@ Tests:
 
 ## Phase 4: URDF-Aware Noetix Pose
 
-Status: first URDF-reference link-pose slice implemented in
-`src/adapters/moonrobo/noetix_link_pose.mbt`; full URDF forward kinematics,
-collision geometry, and dynamics remain future work.
+Status: compact URDF-reference forward kinematics implemented in
+`src/adapters/moonrobo/noetix_link_pose.mbt`; mesh geometry, collision
+geometry, inertial metadata, and full dynamics remain future work.
 
 Use Moonrobo's URDF work as the robot-specific layer.
 
@@ -249,8 +250,9 @@ In this repo, initially avoid copying full URDF parsing. Instead:
 - keep Noetix metadata as references
 - encode the compact Noetix URDF link tree in the Moonrobo adapter
 - bind feet to Moonphys contact probes from the walking trace
-- expose non-foot body/limb poses as deterministic gait proxies until Moonrobo
-  supplies full FK/inertial/collision metadata
+- compute body/limb poses with the compact URDF link tree, joint origins, joint
+  axes, and gait joint phases until Moonrobo supplies full mesh/inertial/
+  collision metadata
 
 Implemented contract:
 
@@ -266,12 +268,13 @@ The first pose slice includes:
 - all 25 URDF-reference links from the compact Noetix E1 model
 - source walk trace id
 - parent link and joint names
-- nominal URDF origin offsets
+- nominal URDF origin offsets and joint axes
 - world positions per frame
+- FK world positions and contact error for terrain-bound feet
 - explicit review-only status and no hardware authority
 
-This gives downstream viewers enough structure to draw the robot walking without
-claiming full dynamics.
+This gives downstream viewers enough structure to draw the robot walking with a
+real FK tree without claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 
@@ -420,7 +423,8 @@ or as a data artifact beside the Noetix model.
    collision metadata when available.
 2. Replace capture-point-only review with controller, actuator, inertia, and
    collision evidence.
-3. Replace review-grade gait proxies with full URDF forward kinematics.
+3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
+   it.
 4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
 
 This gives the project a clean physics library plus a credible first Noetix

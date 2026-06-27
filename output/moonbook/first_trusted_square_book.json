@@ -712,7 +712,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.56,
       "path": "moonrobo/first-trusted-square/noetix-link-poses.json",
-      "summary": "noetix-e1-lab-01 review-only link pose trace has 32 frames and 25 URDF-reference links per frame; feet are contact-bound and non-foot links are gait proxies, not hardware authority"
+      "summary": "noetix-e1-lab-01 review-only link pose trace has 32 frames and 25 URDF-reference links per frame; non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/noetix-review-task",

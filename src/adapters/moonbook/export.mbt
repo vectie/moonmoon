@@ -1004,7 +1004,7 @@ fn moonrobo_noetix_link_poses_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Simulated,
     confidence: 0.56,
     path: "moonrobo/\{dossier.site.site_id}/noetix-link-poses.json",
-    summary: "\{trace.robot_id} review-only link pose trace has \{trace.frame_count} frames and \{trace.links_per_frame} URDF-reference links per frame; feet are contact-bound and non-foot links are gait proxies, not hardware authority",
+    summary: "\{trace.robot_id} review-only link pose trace has \{trace.frame_count} frames and \{trace.links_per_frame} URDF-reference links per frame; non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied",
   }
 }
 

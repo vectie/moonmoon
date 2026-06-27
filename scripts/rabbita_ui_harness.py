@@ -220,7 +220,7 @@ def assert_noetix_walk_panel(
     "body x": "0.000 m",
     "joints": "24 kinematic phases",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
-    "pose status": "review-only-link-pose",
+    "pose status": "review-only-urdf-fk",
   }
   for key, value in expected.items():
     if facts.get(key) != value:
