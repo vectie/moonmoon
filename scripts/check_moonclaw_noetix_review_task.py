@@ -31,14 +31,19 @@ def main() -> None:
         fail("dynamic stability review blocker should be explicit")
     if task.get("joint_control_review_frame_count", 0) <= 0:
         fail("joint control review blocker should be explicit")
+    if task.get("inertial_collision_review_frame_count", 0) <= 0:
+        fail("inertial collision review blocker should be explicit")
     if task.get("hardware_state") != "HardwareDenied":
         fail("hardware state must remain denied")
     if task.get("hardware_authority") != "moonmoon-safety-gate-only":
         fail("unexpected hardware authority")
     if not task.get("hardware_denied"):
         fail("hardware_denied must be true")
-    if "joint-control" not in task.get("safety_gate", ""):
+    safety_gate = task.get("safety_gate", "")
+    if "joint-control" not in safety_gate:
         fail("safety gate must name joint-control evidence")
+    if "inertial/collision" not in safety_gate:
+        fail("safety gate must name inertial/collision evidence")
 
     inputs = {item.get("input_id") for item in task.get("inputs", [])}
     expected_inputs = {
@@ -47,6 +52,7 @@ def main() -> None:
         "noetix-static-support",
         "noetix-dynamic-stability",
         "noetix-joint-control",
+        "noetix-inertial-collision",
         "noetix-rabbita-playback",
     }
     if inputs != expected_inputs:
@@ -59,6 +65,7 @@ def main() -> None:
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
+        "noetix-inertial-collision-review",
         "noetix-rabbita-playback",
     }
     if set(artifacts) != expected_artifacts:
@@ -75,6 +82,10 @@ def main() -> None:
         fail("joint control artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-joint-control-review"].get("blocking_reason", ""):
         fail("joint control blocker must explain review-only state")
+    if artifacts["noetix-inertial-collision-review"].get("ready"):
+        fail("inertial collision artifact must remain review-blocked")
+    if "review-only" not in artifacts["noetix-inertial-collision-review"].get("blocking_reason", ""):
+        fail("inertial collision blocker must explain review-only state")
 
     commands = "\n".join(task.get("commands", []))
     for expected in [
@@ -83,6 +94,7 @@ def main() -> None:
         "check_moonrobo_noetix_stability.py",
         "check_moonrobo_noetix_dynamics.py",
         "check_moonrobo_noetix_control.py",
+        "check_moonrobo_noetix_inertial_collision.py",
         "check_rabbita_noetix_walk.py",
     ]:
         if expected not in commands:

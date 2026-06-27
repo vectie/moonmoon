@@ -94,6 +94,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- moonrobo noetix dynamics json
     #|  moon run cmd/main -- moonrobo noetix control
     #|  moon run cmd/main -- moonrobo noetix control json
+    #|  moon run cmd/main -- moonrobo noetix collision
+    #|  moon run cmd/main -- moonrobo noetix collision json
     #|  moon run cmd/main -- moonrobo noetix poses
     #|  moon run cmd/main -- moonrobo noetix poses json
     #|
@@ -594,6 +596,20 @@ fn main {
       )
     } else {
       println(@moonrobo.first_trusted_square_noetix_link_pose_markdown())
+    }
+  } else if args.contains("moonrobo") &&
+    args.contains("noetix") &&
+    args.contains("collision") {
+    if output_json {
+      println(
+        @moonrobo.first_trusted_square_noetix_inertial_collision_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonrobo.first_trusted_square_noetix_inertial_collision_markdown(),
+      )
     }
   } else if args.contains("moonrobo") &&
     args.contains("noetix") &&

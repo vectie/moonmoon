@@ -68,6 +68,7 @@ pub(all) enum BookEntryKind {
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
   MoonroboNoetixJointControl
+  MoonroboNoetixInertialCollision
   MoonroboNoetixLinkPoses
   MoonroboGapModeling
   MoonroboRemediationMarginModeling

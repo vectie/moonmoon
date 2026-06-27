@@ -22,6 +22,7 @@ pub(all) enum BookEntryKind {
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
   MoonroboNoetixJointControl
+  MoonroboNoetixInertialCollision
   MoonroboNoetixLinkPoses
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
@@ -153,6 +154,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
     MoonroboNoetixDynamics => "moonrobo-noetix-dynamics"
     MoonroboNoetixJointControl => "moonrobo-noetix-joint-control"
+    MoonroboNoetixInertialCollision => "moonrobo-noetix-inertial-collision"
     MoonroboNoetixLinkPoses => "moonrobo-noetix-link-poses"
     MoonroboGapModeling => "moonrobo-gap-modeling"
     MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
@@ -1041,6 +1043,22 @@ fn moonrobo_noetix_joint_control_entry(
 }
 
 ///|
+fn moonrobo_noetix_inertial_collision_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let report = @moonrobo.first_trusted_square_noetix_inertial_collision_report()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-inertial-collision",
+    title: "Moonrobo Noetix inertial/collision evidence for \{dossier.site.name}",
+    kind: MoonroboNoetixInertialCollision,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.54,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-inertial-collision.json",
+    summary: "\{report.profile.robot_id} inertial/collision report has \{report.frame_count} frames, \{report.shapes_per_frame} shapes per frame, \{report.self_contact_frame_count} conservative self-contact review frames, status \{report.status}, hardware authority \{report.hardware_authority}",
+  }
+}
+
+///|
 fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
   let task = @moonclaw.first_trusted_square_noetix_review_task()
   {
@@ -1050,7 +1068,7 @@ fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.58,
     path: "moonclaw/\{dossier.site.site_id}/noetix-review-task.json",
-    summary: "\{task.robot_id} review task links walk, link poses, static support, dynamic stability, joint control, and Rabbita playback; \{task.joint_control_review_frame_count}/\{task.frame_count} frames require joint-control review, hardware authority \{task.hardware_authority}",
+    summary: "\{task.robot_id} review task links walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback; \{task.inertial_collision_review_frame_count}/\{task.frame_count} frames require inertial/collision review, hardware authority \{task.hardware_authority}",
   }
 }
 
@@ -1958,6 +1976,7 @@ fn book_entries(
   entries.push(moonrobo_noetix_physics_entry(dossier))
   entries.push(moonrobo_noetix_dynamics_entry(dossier))
   entries.push(moonrobo_noetix_joint_control_entry(dossier))
+  entries.push(moonrobo_noetix_inertial_collision_entry(dossier))
   entries.push(moonrobo_noetix_link_poses_entry(dossier))
   entries.push(moonclaw_noetix_review_task_entry(dossier))
   entries

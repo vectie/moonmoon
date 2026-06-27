@@ -151,6 +151,9 @@ MOONROBO_NOETIX_DYNAMICS_JSON = (
 MOONROBO_NOETIX_CONTROL_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_noetix_control.json"
 )
+MOONROBO_NOETIX_INERTIAL_COLLISION_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_noetix_inertial_collision.json"
+)
 MOONROBO_NOETIX_LINK_POSES_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_noetix_link_poses.json"
 )
@@ -416,6 +419,7 @@ def payload_for_entry(
   moonrobo_noetix_stability: dict[str, Any],
   moonrobo_noetix_dynamics: dict[str, Any],
   moonrobo_noetix_control: dict[str, Any],
+  moonrobo_noetix_inertial_collision: dict[str, Any],
   moonrobo_noetix_link_poses: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
   lookups: dict[str, dict[str, dict[str, Any]]],
@@ -537,6 +541,8 @@ def payload_for_entry(
     return moonrobo_noetix_dynamics
   if kind == "MoonroboNoetixJointControl":
     return moonrobo_noetix_control
+  if kind == "MoonroboNoetixInertialCollision":
+    return moonrobo_noetix_inertial_collision
   if kind == "MoonroboNoetixLinkPoses":
     return moonrobo_noetix_link_poses
   if kind == "MoonClawProposal":
@@ -572,6 +578,7 @@ def payload_for_entry(
       "source_static_support": moonrobo_noetix_stability,
       "source_dynamic_stability": moonrobo_noetix_dynamics,
       "source_joint_control": moonrobo_noetix_control,
+      "source_inertial_collision": moonrobo_noetix_inertial_collision,
       "source_link_poses": moonrobo_noetix_link_poses,
     }
   if kind == "MoonClawRemediationMarginRefreshTask":
@@ -764,6 +771,7 @@ def workspace_files(
   moonrobo_noetix_stability: dict[str, Any],
   moonrobo_noetix_dynamics: dict[str, Any],
   moonrobo_noetix_control: dict[str, Any],
+  moonrobo_noetix_inertial_collision: dict[str, Any],
   moonrobo_noetix_link_poses: dict[str, Any],
   mission_horizon: dict[str, Any],
   mission_terrain_remediation: dict[str, Any],
@@ -823,6 +831,7 @@ def workspace_files(
     "output/moonrobo/first_trusted_square_noetix_stability.json",
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
     "output/moonrobo/first_trusted_square_noetix_control.json",
+    "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
     "output/moonrobo/first_trusted_square_noetix_link_poses.json",
   ]
   if moonclaw_gap_tasks:
@@ -947,6 +956,7 @@ def workspace_files(
       moonrobo_noetix_stability,
       moonrobo_noetix_dynamics,
       moonrobo_noetix_control,
+      moonrobo_noetix_inertial_collision,
       moonrobo_noetix_link_poses,
       mission_energy_remediation,
       lookups,
@@ -1018,6 +1028,7 @@ def workspace_files(
     "- Source MoonRobo Noetix static support: `output/moonrobo/first_trusted_square_noetix_stability.json`\n"
     "- Source MoonRobo Noetix dynamic stability: `output/moonrobo/first_trusted_square_noetix_dynamics.json`\n"
     "- Source MoonRobo Noetix joint control: `output/moonrobo/first_trusted_square_noetix_control.json`\n"
+    "- Source MoonRobo Noetix inertial/collision: `output/moonrobo/first_trusted_square_noetix_inertial_collision.json`\n"
     "- Source MoonRobo Noetix link poses: `output/moonrobo/first_trusted_square_noetix_link_poses.json`\n"
   )
   if moonclaw_gap_tasks:
@@ -1239,6 +1250,9 @@ def main() -> int:
   moonrobo_noetix_stability = load_json(MOONROBO_NOETIX_STABILITY_JSON)
   moonrobo_noetix_dynamics = load_json(MOONROBO_NOETIX_DYNAMICS_JSON)
   moonrobo_noetix_control = load_json(MOONROBO_NOETIX_CONTROL_JSON)
+  moonrobo_noetix_inertial_collision = load_json(
+    MOONROBO_NOETIX_INERTIAL_COLLISION_JSON,
+  )
   moonrobo_noetix_link_poses = load_json(MOONROBO_NOETIX_LINK_POSES_JSON)
   mission_horizon = load_json(MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(MISSION_TERRAIN_REMEDIATION_JSON)
@@ -1288,6 +1302,7 @@ def main() -> int:
     moonrobo_noetix_stability,
     moonrobo_noetix_dynamics,
     moonrobo_noetix_control,
+    moonrobo_noetix_inertial_collision,
     moonrobo_noetix_link_poses,
     mission_horizon,
     mission_terrain_remediation,

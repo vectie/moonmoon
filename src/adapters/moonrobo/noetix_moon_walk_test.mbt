@@ -163,6 +163,48 @@ test "noetix joint control report preserves urdf limits" {
 }
 
 ///|
+test "noetix inertial collision report maps profile shapes onto moonphys" {
+  let field = first_trusted_square_noetix_heightfield()
+  let trace = noetix_moon_walk_trace(field, 12)
+  let report = noetix_inertial_collision_report(trace, field)
+  assert_eq(report.frame_count, 12)
+  assert_eq(report.profile.robot_id, trace.robot.robot_id)
+  assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
+  assert_true(report.shapes_per_frame >= 6)
+  assert_true(report.max_support_contact_torque_nm > 0.0)
+  assert_true(report.note.contains("Moonphys diagonal inertia"))
+  assert_true(report.note.contains("not authoritative"))
+  assert_true(
+    report.frames[0].shapes.any(fn(shape) {
+      shape.link_name == "chest_link" &&
+      shape.bounds.status == "conservative-bounds"
+    }),
+  )
+}
+
+///|
+test "noetix inertial collision report checks terrain and self contacts" {
+  let report = first_trusted_square_noetix_inertial_collision_report()
+  assert_eq(report.frame_count, 32)
+  assert_true(report.frames[0].terrain_collisions.length() == 2)
+  assert_true(
+    report.frames.all(fn(frame) {
+      frame.terrain_collisions.any(fn(collision) {
+        collision.link_name == "left_foot" &&
+        collision.status == "terrain-collision-matches-walk-contact"
+      }) &&
+      frame.terrain_collisions.any(fn(collision) {
+        collision.link_name == "right_foot" &&
+        collision.status == "terrain-collision-matches-walk-contact"
+      })
+    }),
+  )
+  assert_true(report.self_contact_frame_count > 0)
+  assert_true(report.max_self_penetration_m >= 0.0)
+  assert_true(report.frames[0].self_contact_manifold.contacts.length() > 0)
+}
+
+///|
 test "noetix reference links mirror the compact urdf tree" {
   let links = noetix_reference_links()
   assert_eq(links.length(), 25)

@@ -10,11 +10,13 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_static_support_report_id : String
   source_dynamic_stability_report_id : String
   source_joint_control_report_id : String
+  source_inertial_collision_report_id : String
   source_link_pose_trace_id : String
   frame_count : Int
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
+  inertial_collision_review_frame_count : Int
   link_pose_count_per_frame : Int
   hardware_state : @moonrobo.MoonroboExecutionState
   hardware_authority : String
@@ -118,6 +120,22 @@ fn noetix_joint_control_artifact(
 }
 
 ///|
+fn noetix_inertial_collision_artifact(
+  report : @moonrobo.NoetixInertialCollisionReport,
+) -> MoonClawTaskArtifact {
+  task_artifact(
+    "noetix-inertial-collision-review",
+    "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+    "moon run cmd/main -- moonrobo noetix collision json",
+    "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
+    "\{report.frame_count} frames; \{report.shapes_per_frame} shapes per frame; self-contact review frames \{report.self_contact_frame_count}; terrain-review frames \{report.terrain_review_frame_count}; status \{report.status}",
+    false,
+    "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
+    "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+  )
+}
+
+///|
 fn noetix_rabbita_artifact() -> MoonClawTaskArtifact {
   task_artifact(
     "noetix-rabbita-playback", "output/ui/rabbita/first_trusted_square.html", "scripts/build_rabbita_ui.sh",
@@ -146,6 +164,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
   let support = @moonrobo.first_trusted_square_noetix_stability_report()
   let dynamic = @moonrobo.first_trusted_square_noetix_dynamic_stability_report()
   let control = @moonrobo.first_trusted_square_noetix_joint_control_report()
+  let collision = @moonrobo.first_trusted_square_noetix_inertial_collision_report()
   let poses = @moonrobo.first_trusted_square_noetix_link_pose_trace()
   {
     task_id: "moonclaw/first-trusted-square/noetix-review-task",
@@ -158,11 +177,13 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_static_support_report_id: support.report_id,
     source_dynamic_stability_report_id: dynamic.report_id,
     source_joint_control_report_id: control.report_id,
+    source_inertial_collision_report_id: collision.report_id,
     source_link_pose_trace_id: poses.trace_id,
     frame_count: walk.frame_count,
     static_support_review_frame_count: support.review_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
+    inertial_collision_review_frame_count: collision.self_contact_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
     hardware_state: @moonrobo.MoonroboExecutionState::HardwareDenied,
     hardware_authority: "moonmoon-safety-gate-only",
@@ -199,6 +220,12 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "Moonphys joint-control replay over Noetix gait phases and URDF joint limits.",
       ),
       input(
+        "noetix-inertial-collision",
+        "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        @core.ClaimKind::Simulated,
+        "Moonphys inertial/collision review report over Noetix mass assumptions, shape bounds, terrain collisions, and self-contact manifolds.",
+      ),
+      input(
         "noetix-rabbita-playback",
         "output/ui/rabbita/first_trusted_square.html",
         @core.ClaimKind::Derived,
@@ -211,6 +238,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
       noetix_static_support_artifact(support),
       noetix_dynamic_stability_artifact(dynamic),
       noetix_joint_control_artifact(control),
+      noetix_inertial_collision_artifact(collision),
       noetix_rabbita_artifact(),
     ],
     commands: [
@@ -219,6 +247,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
       "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
       "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+      "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
       "python3 scripts/check_rabbita_noetix_walk.py", "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
       "/Users/kq/.moon/bin/moon test",
     ],
@@ -233,14 +262,17 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "review-only-joint-control-preserved", "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.",
       ),
       criterion(
+        "review-only-inertial-collision-preserved", "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.",
+      ),
+      criterion(
         "hardware-denial-preserved", "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.",
       ),
       criterion(
-        "next-physics-step-clear", "Task names inertia and collision evidence as the next requirement before stronger simulation claims.",
+        "next-physics-step-clear", "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims.",
       ),
     ],
-    safety_gate: "Do not convert the Noetix walk trace, link poses, static support, dynamic stability, or joint-control report into hardware authority. Inertia and collision evidence must be added before any claim beyond simulation review.",
-    next_action: "Use this task to review contact, link-pose, static-support, dynamic-stability, and joint-control evidence; then add inertia/collision evidence or keep hardware denied.",
+    safety_gate: "Do not convert the Noetix walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.",
+    next_action: "Use this task to review contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.",
   }
 }
 
@@ -266,6 +298,7 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"
     text += "  - dynamic-stability review frames: \{task.dynamic_stability_review_frame_count}\n"
     text += "  - joint-control review frames: \{task.joint_control_review_frame_count}\n"
+    text += "  - inertial-collision review frames: \{task.inertial_collision_review_frame_count}\n"
     text += "  - hardware state: \{@moonrobo.execution_state_label(task.hardware_state)}\n"
     text += "  - hardware authority: \{task.hardware_authority}\n"
     text += "  - safety gate: \{task.safety_gate}\n"

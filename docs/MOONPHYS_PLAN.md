@@ -22,9 +22,13 @@ evidence.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
   use compact URDF forward kinematics, and feet are bound to Moonphys contact
   probes with FK contact error.
+- Moonrobo exports Noetix inertial/collision review evidence backed by
+  Moonphys diagonal inertia, collision bounds, terrain collision probes,
+  contact torque, and conservative self-collision manifolds.
 - MoonClaw exports a Noetix simulation review task that ties the walk trace,
   URDF-reference link poses, static support report, dynamic-stability report,
-  and Rabbita playback into a hardware-denied review packet.
+  joint-control report, inertial/collision report, and Rabbita playback into a
+  hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
   invariants.
@@ -32,6 +36,8 @@ evidence.
   stability invariants.
 - `scripts/check_moonrobo_noetix_link_poses.py` verifies link-pose trace
   invariants.
+- `scripts/check_moonrobo_noetix_inertial_collision.py` verifies inertial and
+  collision review invariants.
 - `scripts/check_moonclaw_noetix_review_task.py` verifies review-task
   invariants.
 
@@ -312,7 +318,8 @@ Do not connect this to hardware controls.
 ## Phase 6: Evidence Export
 
 Status: first walk, physics-profile, static-support, dynamic-stability,
-link-pose, and MoonClaw review-task exports and verifiers implemented.
+joint-control, inertial/collision, link-pose, and MoonClaw review-task exports
+and verifiers implemented.
 
 Add generated outputs to the dossier build.
 
@@ -344,8 +351,8 @@ Check invariants:
 ## Phase 7: MoonBook / MoonClaw Integration
 
 Status: MoonBook entries and workspace payloads implemented for the Noetix walk
-trace, physics assumptions, dynamic-stability report, link poses, and MoonClaw
-review task.
+trace, physics assumptions, dynamic-stability report, joint-control report,
+inertial/collision report, link poses, and MoonClaw review task.
 
 After the trace is stable, make it durable evidence.
 
@@ -379,17 +386,19 @@ Moonrobo simulation packet:
 
 Status: generic support-margin, capture-point, rigid-body gravity integration,
 material contact, heightfield collision, single-body heightfield contact
-resolution, deterministic rigid-body heightfield replay, and diagonal-inertia
-angular dynamics helpers, and conservative sphere/capsule/box collision shape
-bounds plus exact sphere contacts, contact manifold summaries, and generic joint
-servo/limit integration implemented; Noetix static support and
-dynamic-stability review reports implemented; full multi-contact simulation
-remains future work. Moonrobo's Noetix URDF joint limits are now carried into
-the robot-specific profile as Moonphys joint limits; mass, inertia, and
-authoritative collision tags are still absent from the referenced model.
-Noetix joint-control review evidence now replays the gait phases through
-Moonphys joint servo, torque, velocity, and position limits while preserving
-review-only authority.
+resolution, deterministic rigid-body heightfield replay, diagonal-inertia
+angular dynamics helpers, conservative sphere/capsule/box collision shape
+bounds, exact sphere contacts, contact manifold summaries, and generic joint
+servo/limit integration implemented; Noetix static support, dynamic-stability,
+joint-control, and inertial/collision review reports implemented; full
+multi-contact simulation remains future work. Moonrobo's Noetix URDF joint
+limits are carried into the robot-specific profile as Moonphys joint limits.
+Noetix joint-control review evidence replays the gait phases through Moonphys
+joint servo, torque, velocity, and position limits. Noetix inertial/collision
+review evidence maps the assumed profile onto Moonphys diagonal inertia,
+collision bounds, terrain collision probes, contact torque, and conservative
+self-collision manifolds. Mass, inertia, and authoritative collision tags are
+still absent from the referenced model, so the evidence remains review-only.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -439,8 +448,8 @@ or as a data artifact beside the Noetix model.
 
 1. Replace assumed mass/sole/friction profile with Moonrobo inertial and
    authoritative collision metadata when available.
-2. Replace capture-point/joint-control review with inertia and collision
-   evidence.
+2. Replace review-only inertial/collision evidence with authoritative Moonrobo
+   collision/inertia tags once the source model exposes them.
 3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
    it.
 4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
