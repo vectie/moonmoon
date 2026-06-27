@@ -614,6 +614,17 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
 .noetix-link-segment {
   stroke-linejoin: round;
 }
+.noetix-link-visual {
+  opacity: 0.28;
+  stroke-width: 1.15;
+  vector-effect: non-scaling-stroke;
+}
+.noetix-link-box {
+  stroke-dasharray: 0;
+}
+.noetix-link-mesh {
+  stroke-dasharray: 4 3;
+}
 .noetix-link-body {
   stroke: #75d1c5;
   fill: #75d1c5;

@@ -60,6 +60,8 @@ return {
   authority,
   viewer_children: viewer.children.length,
   stage_class: viewer.children[0].attributes.class,
+  link_visual_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-visual')).length,
+  mesh_visual_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-mesh')).length,
   link_segment_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-segment')).length,
   link_joint_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-joint')).length,
   left_foot_joint_count: svgNodes.filter(node => node.attributes['data-link-name'] === 'left_foot').length,
@@ -197,6 +199,15 @@ def assert_noetix_walk_panel(
     raise AssertionError(rendered)
   if rendered["link_joint_count"] < noetix_link_poses["links_per_frame"]:
     raise AssertionError(rendered)
+  expected_visuals = sum(
+    1
+    for link in pose_frames[0]["links"]
+    if link.get("visual_geometry", {}).get("has_visual_geometry")
+  )
+  if rendered["link_visual_count"] < expected_visuals:
+    raise AssertionError({"rendered": rendered, "expected_visuals": expected_visuals})
+  if rendered["mesh_visual_count"] < 1:
+    raise AssertionError(rendered)
   if rendered["left_foot_joint_count"] < 1:
     raise AssertionError(rendered)
   if rendered["control_count"] != 3:
@@ -220,6 +231,7 @@ def assert_noetix_walk_panel(
     "body x": "0.000 m",
     "joints": "24 kinematic phases",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
+    "visuals": f"{expected_visuals} source visual geometries",
     "pose status": "review-only-urdf-fk",
   }
   for key, value in expected.items():
