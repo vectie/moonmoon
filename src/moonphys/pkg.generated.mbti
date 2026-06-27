@@ -569,6 +569,11 @@ pub(all) struct RigidBodyWrenchStep {
   dt_s : Double
   linear_acceleration_mps2 : Vec3
   angular_acceleration_rad_s2 : Vec3
+  linear_impulse_ns : Vec3
+  angular_impulse_nms : Vec3
+  kinetic_energy_before_j : Double
+  kinetic_energy_after_j : Double
+  kinetic_energy_delta_j : Double
   after : RigidBodyMotionState
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

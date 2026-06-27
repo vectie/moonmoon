@@ -18,6 +18,11 @@ pub(all) struct RigidBodyWrenchStep {
   dt_s : Double
   linear_acceleration_mps2 : Vec3
   angular_acceleration_rad_s2 : Vec3
+  linear_impulse_ns : Vec3
+  angular_impulse_nms : Vec3
+  kinetic_energy_before_j : Double
+  kinetic_energy_after_j : Double
+  kinetic_energy_delta_j : Double
   after : RigidBodyMotionState
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -67,6 +72,28 @@ fn rigid_body_wrench_step_status(state : RigidBodyMotionState) -> String {
 }
 
 ///|
+fn linear_kinetic_energy(state : RigidBodyState) -> Double {
+  0.5 * state.mass_kg * state.velocity.length_squared()
+}
+
+///|
+fn angular_kinetic_energy(
+  state : RigidBodyAngularState,
+  inertia : RigidBodyInertia,
+) -> Double {
+  0.5 * state.angular_velocity_rad_s.dot(angular_momentum(inertia, state))
+}
+
+///|
+fn motion_kinetic_energy(
+  state : RigidBodyMotionState,
+  inertia : RigidBodyInertia,
+) -> Double {
+  linear_kinetic_energy(state.linear) +
+  angular_kinetic_energy(state.angular, inertia)
+}
+
+///|
 pub fn integrate_rigid_body_wrench(
   state : RigidBodyMotionState,
   inertia : RigidBodyInertia,
@@ -87,17 +114,25 @@ pub fn integrate_rigid_body_wrench(
     dt_s,
     torque_nm: wrench.torque_nm,
   })
+  let after = {
+    body_id: state.body_id,
+    linear: linear_after,
+    angular: angular_after,
+  }
+  let energy_before = motion_kinetic_energy(state, inertia)
+  let energy_after = motion_kinetic_energy(after, inertia)
   {
     before: state,
     wrench,
     dt_s,
     linear_acceleration_mps2: linear_acceleration,
     angular_acceleration_rad_s2: angular_accel,
-    after: {
-      body_id: state.body_id,
-      linear: linear_after,
-      angular: angular_after,
-    },
+    linear_impulse_ns: wrench.force_n.scale(dt_s),
+    angular_impulse_nms: wrench.torque_nm.scale(dt_s),
+    kinetic_energy_before_j: energy_before,
+    kinetic_energy_after_j: energy_after,
+    kinetic_energy_delta_j: energy_after - energy_before,
+    after,
     status: rigid_body_wrench_step_status(state),
   }
 }

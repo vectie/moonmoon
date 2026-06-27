@@ -62511,6 +62511,19 @@
               "y": 6.803173224809811,
               "z": 3.664205936093088
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7778262117806012,
+              "y": 2.2458555914048435,
+              "z": 0.19067401076524843
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.9898549700544943,
+            "kinetic_energy_delta_j": 1.5946549700544943,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -63815,6 +63828,19 @@
               "y": 7.129451121853591,
               "z": 3.353127242136269
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7702987757798496,
+              "y": 2.299762230379288,
+              "z": 0.17379388517095584
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.0461829105885827,
+            "kinetic_energy_delta_j": 1.6509829105885827,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -65119,6 +65145,19 @@
               "y": 7.46500688702172,
               "z": 3.0369200467949216
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7627713397787794,
+              "y": 2.3536688693531955,
+              "z": 0.15691375957666326
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.1058185267626235,
+            "kinetic_energy_delta_j": 1.7106185267626235,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -66423,6 +66462,19 @@
               "y": 7.835202876943654,
               "z": 2.716361689730509
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7554045718244944,
+              "y": 2.4078464625254026,
+              "z": 0.1400336339823707
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.173572632215708,
+            "kinetic_energy_delta_j": 1.7783726322157078,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -67727,6 +67779,19 @@
               "y": 8.20949773628634,
               "z": 2.3922606733174425
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7480003299308722,
+              "y": 2.461960858805675,
+              "z": 0.1231535083880781
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.2438960678694446,
+            "kinetic_energy_delta_j": 1.8486960678694446,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -69031,6 +69096,19 @@
               "y": 8.572488100449503,
               "z": 2.0654499663864474
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7404728939298817,
+              "y": 2.515867497779716,
+              "z": 0.10627338279378554
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.313978071290889,
+            "kinetic_energy_delta_j": 1.9187780712908888,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -70335,6 +70413,19 @@
               "y": 8.848159221010281,
               "z": 1.7367799143981237
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.732391756375754,
+              "y": 2.56884036203358,
+              "z": 0.08939325719949297
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.369483895248436,
+            "kinetic_energy_delta_j": 1.974283895248436,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -71639,6 +71730,19 @@
               "y": 8.993862629887367,
               "z": 1.4071108818240112
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.7235556324723562,
+              "y": 2.620540000371725,
+              "z": 0.07251313160520038
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.402086776519037,
+            "kinetic_energy_delta_j": 2.006886776519037,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -72943,6 +73047,19 @@
               "y": 9.165240600990971,
               "z": 1.0773057599915383
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.714880176615584,
+              "y": 2.672510592907902,
+              "z": 0.055633006010907794
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.441115428971902,
+            "kinetic_energy_delta_j": 2.045915428971902,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -74247,6 +74364,19 @@
               "y": 9.334543579853326,
               "z": 0.7482224770079441
             },
+            "linear_impulse_ns": {
+              "x": -2.363614545168893,
+              "y": 1.4015554462946382,
+              "z": 5.52988188054934
+            },
+            "angular_impulse_nms": {
+              "x": 1.706204720758493,
+              "y": 2.724481185443541,
+              "z": 0.03875288041661523
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.4813200962113187,
+            "kinetic_energy_delta_j": 2.0861200962113187,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -75551,6 +75681,19 @@
               "y": 4.29418105021527,
               "z": -2.9457355066726794
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.29493478937568784,
+              "y": 1.2469255003065585,
+              "z": -0.1532870186629739
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.0879985514298094,
+            "kinetic_energy_delta_j": 0.6927985514298094,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -76855,6 +76998,19 @@
               "y": 4.644020785582506,
               "z": -3.1531145186847604
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2904129467294656,
+              "y": 1.3183787005240608,
+              "z": -0.1634271481573865
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.129448991427793,
+            "kinetic_energy_delta_j": 0.734248991427793,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -78159,6 +78315,19 @@
               "y": 4.908721713681073,
               "z": -3.359233418346843
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.28528779140106963,
+              "y": 1.389554936635903,
+              "z": -0.1735672776517992
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.1672822916524468,
+            "kinetic_energy_delta_j": 0.7720822916524468,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -79463,6 +79632,19 @@
               "y": 5.175780124137168,
               "z": -3.5635421912604044
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2801729641080174,
+              "y": 1.4607359140620861,
+              "z": -0.1837074071462119
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.2073774467251401,
+            "kinetic_energy_delta_j": 0.8121774467251401,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -80767,6 +80949,19 @@
               "y": 5.43946736893082,
               "z": -3.7654943378756367
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.27503562569118173,
+              "y": 1.5319065572562025,
+              "z": -0.19384753664062448
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.249291963281629,
+            "kinetic_energy_delta_j": 0.8540919632816291,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -82071,6 +82266,19 @@
               "y": 5.689305472203136,
               "z": -3.9645516787529975
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2698242828369114,
+              "y": 1.6030432270673047,
+              "z": -0.20398766613503716
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.292109681859526,
+            "kinetic_energy_delta_j": 0.8969096818595259,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -83375,6 +83583,19 @@
               "y": 5.923054233931384,
               "z": -4.160189103901274
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2645389355448713,
+              "y": 1.6741459234952387,
+              "z": -0.2141277956294498
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.3354873239555474,
+            "kinetic_energy_delta_j": 0.9402873239555474,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -84679,6 +84900,19 @@
               "y": 6.149149226753151,
               "z": -4.351899178813673
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2592310771292393,
+              "y": 1.7452382856911948,
+              "z": -0.22426792512386245
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.3800115377134832,
+            "kinetic_energy_delta_j": 0.9848115377134832,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -85983,6 +86217,19 @@
               "y": 6.392631090712479,
               "z": -4.53919652263921
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.2540197342748254,
+              "y": 1.816374955502231,
+              "z": -0.23440805461827516
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.4279340990132319,
+            "kinetic_energy_delta_j": 1.0327340990132319,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -87287,6 +87534,19 @@
               "y": 6.634246507455215,
               "z": -4.721621879392977
             },
+            "linear_impulse_ns": {
+              "x": -0.38650858497543106,
+              "y": 0.8419341218546521,
+              "z": 6.105111223245416
+            },
+            "angular_impulse_nms": {
+              "x": 0.24880839142041153,
+              "y": 1.8875116253132675,
+              "z": -0.2445481841126878
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 1.4775523871923806,
+            "kinetic_energy_delta_j": 1.0823523871923806,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -88591,6 +88851,19 @@
               "y": -8.024749407851887,
               "z": -7.1290005387578645
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.8415350187506598,
+              "y": -2.275267452389565,
+              "z": -0.3709712688588488
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.959590400620534,
+            "kinetic_energy_delta_j": 2.564390400620534,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -89895,6 +90168,19 @@
               "y": -7.74059248849007,
               "z": -7.471928718914108
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.8331568449285165,
+              "y": -2.1936829431187235,
+              "z": -0.3872729628217766
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.9027356883211413,
+            "kinetic_energy_delta_j": 2.5075356883211413,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -91199,6 +91485,19 @@
               "y": -7.454679520101844,
               "z": -7.810812569110911
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.8247786711063736,
+              "y": -2.112098433847882,
+              "z": -0.4035746567847044
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.848494990092788,
+            "kinetic_energy_delta_j": 2.453294990092788,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -92503,6 +92802,19 @@
               "y": -7.1901371643730165,
               "z": -8.144729242249788
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.8165556597150188,
+              "y": -2.0308294006541106,
+              "z": -0.4198763507476323
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.8010763430163355,
+            "kinetic_energy_delta_j": 2.4058763430163355,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -93807,6 +94119,19 @@
               "y": -6.91754216932213,
               "z": -8.472771881069539
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.8082964585051606,
+              "y": -1.9494867863626908,
+              "z": -0.43617804471056004
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.755000840633029,
+            "kinetic_energy_delta_j": 2.359800840633029,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -95111,6 +95436,19 @@
               "y": -6.626076336100326,
               "z": -8.794057707254566
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.7999182846829402,
+              "y": -1.8679022770916924,
+              "z": -0.452479738673488
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.7083430666042276,
+            "kinetic_energy_delta_j": 2.3131430666042276,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -96415,6 +96753,19 @@
               "y": -6.317624079484977,
               "z": -9.107735884696261
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.7914211382484355,
+              "y": -1.7860758728412724,
+              "z": -0.46878143263641603
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.661487602971526,
+            "kinetic_energy_delta_j": 2.266287602971526,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -97719,6 +98070,19 @@
               "y": -6.004797943618018,
               "z": -9.412995010936745
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.782887801995427,
+              "y": -1.7041758874932051,
+              "z": -0.48508312659934366
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.6166779993603173,
+            "kinetic_energy_delta_j": 2.2214779993603173,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -99023,6 +99387,19 @@
               "y": -5.711983518759326,
               "z": -9.709070098749551
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.7745096281731305,
+              "y": -1.622591378222051,
+              "z": -0.5013848205622715
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.578158329789519,
+            "kinetic_energy_delta_j": 2.182958329789519,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -100327,6 +100704,19 @@
               "y": -5.418635329762337,
               "z": -9.99524892207962
             },
+            "linear_impulse_ns": {
+              "x": 2.7519922248141153,
+              "y": 1.3535283152925783,
+              "z": 5.359582529849121
+            },
+            "angular_impulse_nms": {
+              "x": 1.7661314543510642,
+              "y": -1.5410068689513654,
+              "z": -0.5176865145251995
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.5422212094930137,
+            "kinetic_energy_delta_j": 2.1470212094930137,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -101631,6 +102021,19 @@
               "y": -7.8707142867561295,
               "z": 2.7769952152127035
             },
+            "linear_impulse_ns": {
+              "x": 2.800964107243508,
+              "y": 0.7537479420926595,
+              "z": 5.451338286120635
+            },
+            "angular_impulse_nms": {
+              "x": 0.3185015003247548,
+              "y": -2.2286813173894937,
+              "z": 0.1445062927126535
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.0872064765258047,
+            "kinetic_energy_delta_j": 1.6920064765258047,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -102935,6 +103338,19 @@
               "y": -7.579738005594453,
               "z": 2.6129124306857765
             },
+            "linear_impulse_ns": {
+              "x": 2.800964107243508,
+              "y": 0.7537479420926595,
+              "z": 5.451338286120635
+            },
+            "angular_impulse_nms": {
+              "x": 0.31383600589945604,
+              "y": -2.145689004082751,
+              "z": 0.13542826446724865
+            },
+            "kinetic_energy_before_j": 0.3952,
+            "kinetic_energy_after_j": 2.0204455911320234,
+            "kinetic_energy_delta_j": 1.6252455911320234,
             "after": {
               "body_id": "noetix-e1-lab-01/support-wrench-review-body",
               "linear": {
@@ -104076,7 +104492,7 @@
       ],
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "inertial-collision-self-review",
-      "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+      "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
     },
     "source_link_poses": {
       "trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",

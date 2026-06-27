@@ -476,9 +476,14 @@ test "rigid body wrench integration combines force and torque" {
   assert_eq(step.status, "wrench-integrated")
   assert_true(step.linear_acceleration_mps2 == vec3(2.0, 0.0, 0.0))
   assert_true(step.angular_acceleration_rad_s2 == vec3(0.0, 2.0, 2.0))
+  assert_true(step.linear_impulse_ns == vec3(2.0, 0.0, 0.0))
+  assert_true(step.angular_impulse_nms == vec3(0.0, 2.0, 4.0))
   assert_true(step.after.linear.velocity == vec3(1.0, 0.0, 0.0))
   assert_true(step.after.linear.position == vec3(0.5, 0.0, 0.0))
   assert_true(step.after.angular.angular_velocity_rad_s == vec3(0.0, 1.0, 1.0))
+  assert_true(nearly_equal(step.kinetic_energy_before_j, 0.0))
+  assert_true(nearly_equal(step.kinetic_energy_after_j, 4.0))
+  assert_true(nearly_equal(step.kinetic_energy_delta_j, 4.0))
 }
 
 ///|
@@ -500,6 +505,8 @@ test "rigid body wrench integration flags zero mass review" {
   )
   assert_eq(step.status, "wrench-zero-mass-review")
   assert_true(step.linear_acceleration_mps2 == vec3(0.0, 0.0, 0.0))
+  assert_true(step.linear_impulse_ns == vec3(2.0, 0.0, 0.0))
+  assert_true(nearly_equal(step.kinetic_energy_delta_j, 0.0))
   assert_true(step.after.linear.position == vec3(0.0, 0.0, 0.0))
 }
 

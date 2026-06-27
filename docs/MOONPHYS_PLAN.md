@@ -51,8 +51,9 @@ evidence.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys composite primitive-shape mass properties, collision bounds,
   terrain collision probes, per-foot patch-load contact wrenches, narrow-phase
-  self-collision manifolds, support-wrench motion preview, and generic
-  multi-contact manifold resolution with impulse accounting.
+  self-collision manifolds, support-wrench motion preview with impulse and
+  kinetic-energy accounting, and generic multi-contact manifold resolution
+  with impulse accounting.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -470,7 +471,8 @@ bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
   assessment, generic joint servo/limit integration, joint-frame motor replay,
   primitive-shape diagonal inertia, composite mass properties, rigid-body
-  wrench integration, and joint mechanical power/work accounting implemented;
+  wrench integration with impulse and kinetic-energy accounting, and joint
+  mechanical power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -483,8 +485,9 @@ position limits, and mechanical power/work accounting.
 Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys composite primitive-shape mass properties, collision bounds, terrain
 collision probes, per-foot patch-load contact wrenches, narrow-phase
-self-collision manifolds, support-wrench motion preview, generic manifold
-resolution, impulse accounting, and traction margin review.
+self-collision manifolds, support-wrench motion preview with impulse and
+kinetic-energy accounting, generic manifold resolution, impulse accounting,
+and traction margin review.
 Mass, inertia, and authoritative collision tags are still absent from the
 referenced model, so the evidence remains review-only.
 
@@ -509,7 +512,8 @@ Next `moonphys` capabilities:
 - diagonal inertia and angular velocity integration (implemented)
 - primitive sphere/capsule/box diagonal inertia helpers (implemented)
 - composite mass properties with parallel-axis inertia (implemented)
-- rigid-body force/torque wrench integration (implemented)
+- rigid-body force/torque wrench integration with impulse and kinetic-energy
+  accounting (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)
