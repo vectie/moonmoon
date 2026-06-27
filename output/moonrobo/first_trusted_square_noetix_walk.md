@@ -4,8 +4,12 @@
 - robot: noetix-e1-lab-01 (Noetix E1 Lab 01)
 - source model: ../moonrobo/examples/noetix-e1/model/robot.urdf
 - terrain: first-trusted-square-northeast-stepout-lola
+- terrain source: first-trusted-square-northeast-stepout-lola
 - gravity: 1.625 m/s^2
 - speed: 0.12 m/s
+- heading: 0 rad
+- stride frequency: 0.75 Hz
+- foot radius: 0.012 m
 - frames: 32
 - endless axis: +x
 - note: Kinematic endless-walk trace for MoonSuite collaboration: Moonmoon terrain plus Moonrobo Noetix model references. This is simulation evidence only, not hardware authority.
@@ -14,15 +18,15 @@
 
 - frame 0 t=0s phase=left-support body_x=0 status=walking-needs-review
   - left: x=-0.04 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.08 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=-0.08 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 1 t=0.1s phase=left-support body_x=0.012 status=walking-needs-review
   - left: x=-0.028 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.050222222222222224 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=-0.050222222222222224 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 2 t=0.2s phase=left-support body_x=0.024 status=walking-needs-review
   - left: x=-0.016 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=-0.020444444444444446 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=-0.020444444444444446 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 3 t=0.30000000000000004s phase=left-support body_x=0.036 status=walking-needs-review
   - left: x=-0.0040000000000000036 z=337.032 contact=true clearance=0 status=terrain-grade-review
@@ -42,26 +46,26 @@
   - joints: 24 kinematic phases
 - frame 7 t=0.7000000000000001s phase=left-support body_x=0.084 status=walking-needs-review
   - left: x=0.044000000000000004 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.12844444444444444 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=0.12844444444444444 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 8 t=0.8s phase=left-support body_x=0.096 status=walking-needs-review
   - left: x=0.056 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.1582222222222222 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.1582222222222222 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 9 t=0.9s phase=left-support body_x=0.10800000000000001 status=walking-needs-review
   - left: x=0.068 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.188 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.188 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 10 t=1s phase=right-support body_x=0.12 status=walking-needs-review
-  - left: x=0.039999999999999994 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.039999999999999994 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.07999999999999999 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 11 t=1.1s phase=right-support body_x=0.13199999999999998 status=walking-needs-review
-  - left: x=0.06977777777777774 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.06977777777777774 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.09199999999999997 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 12 t=1.2000000000000002s phase=right-support body_x=0.144 status=walking-needs-review
-  - left: x=0.09955555555555554 z=337.06092544243586 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - left: x=0.09955555555555554 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.10399999999999998 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 13 t=1.3s phase=right-support body_x=0.15600000000000003 status=walking-needs-review
@@ -81,28 +85,28 @@
   - right: x=0.152 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 17 t=1.7000000000000002s phase=right-support body_x=0.20400000000000001 status=walking-needs-review
-  - left: x=0.24844444444444447 z=337.06092544243586 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - left: x=0.24844444444444447 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.164 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 18 t=1.8s phase=right-support body_x=0.21600000000000003 status=walking-needs-review
-  - left: x=0.27822222222222226 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.27822222222222226 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.17600000000000002 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 19 t=1.9000000000000001s phase=right-support body_x=0.22799999999999998 status=walking-needs-review
-  - left: x=0.308 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.308 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.18799999999999997 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 20 t=2s phase=left-support body_x=0.24 status=walking-needs-review
   - left: x=0.19999999999999998 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.15999999999999998 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.15999999999999998 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 21 t=2.1s phase=left-support body_x=0.252 status=walking-needs-review
   - left: x=0.212 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.18977777777777777 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.18977777777777777 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 22 t=2.2s phase=left-support body_x=0.26399999999999996 status=walking-needs-review
   - left: x=0.22399999999999995 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.2195555555555555 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=0.2195555555555555 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 23 t=2.3000000000000003s phase=left-support body_x=0.27599999999999997 status=walking-needs-review
   - left: x=0.23599999999999996 z=337.032 contact=true clearance=0 status=terrain-grade-review
@@ -122,22 +126,22 @@
   - joints: 24 kinematic phases
 - frame 27 t=2.7s phase=left-support body_x=0.324 status=walking-needs-review
   - left: x=0.28400000000000003 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.36844444444444446 z=339.8149254424359 contact=false clearance=0.028925442435877358 status=terrain-grade-review
+  - right: x=0.36844444444444446 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 28 t=2.8000000000000003s phase=left-support body_x=0.336 status=walking-needs-review
   - left: x=0.29600000000000004 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.39822222222222226 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.39822222222222226 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 29 t=2.9000000000000004s phase=left-support body_x=0.34800000000000003 status=walking-needs-review
   - left: x=0.30800000000000005 z=337.032 contact=true clearance=0 status=terrain-grade-review
-  - right: x=0.42800000000000005 z=339.806 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - right: x=0.42800000000000005 z=339.818 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 30 t=3s phase=right-support body_x=0.36 status=walking-needs-review
-  - left: x=0.27999999999999997 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.27999999999999997 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.32 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 - frame 31 t=3.1s phase=right-support body_x=0.372 status=walking-needs-review
-  - left: x=0.30977777777777776 z=337.05199999999996 contact=false clearance=0.01999999999998181 status=terrain-grade-review
+  - left: x=0.30977777777777776 z=337.06399999999996 contact=false clearance=0.031999999999982265 status=terrain-grade-review
   - right: x=0.332 z=339.786 contact=true clearance=0 status=terrain-grade-review
   - joints: 24 kinematic phases
 

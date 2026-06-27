@@ -3,11 +3,55 @@ test "noetix endless moon walk advances in one direction" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=24)
   assert_eq(trace.frame_count, 24)
   assert_eq(trace.robot.robot_id, "noetix-e1-lab-01")
+  assert_eq(trace.config.terrain_source_id, trace.terrain_tile_id)
+  assert_eq(trace.config.heading_rad, 0.0)
+  assert_true(trace.config.start_position == @moonphys.vec3(0.0, 0.0, 0.0))
+  assert_true(trace.config.foot_radius_m > 0.0)
+  assert_true(
+    trace.config.speed_mps ==
+    trace.config.step_length_m * trace.config.stride_frequency_hz,
+  )
   assert_true(
     trace.frames[23].body_position.x > trace.frames[0].body_position.x,
   )
   assert_eq(trace.frames[0].support_phase, "left-support")
   assert_eq(trace.frames[10].support_phase, "right-support")
+}
+
+///|
+test "noetix endless moon walk honors heading and start position" {
+  let field = first_trusted_square_noetix_heightfield()
+  let config : NoetixMoonWalkConfig = {
+    config_id: "test/heading",
+    gravity_mps2: @moonphys.lunar_environment().gravity_mps2,
+    dt_s: 0.1,
+    speed_mps: 0.12,
+    heading_rad: 3.141592653589793 / 2.0,
+    start_position: @moonphys.vec3(1.0, 2.0, 0.1),
+    step_length_m: 0.16,
+    step_height_m: 0.045,
+    stride_frequency_hz: 0.75,
+    cycle_frames: 20,
+    lateral_foot_offset_m: 0.08,
+    min_swing_clearance_m: 0.02,
+    foot_radius_m: 0.012,
+    caution_grade: 0.18,
+    body_height_m: 0.72,
+    terrain_source_id: field.field_id,
+  }
+  let trace = noetix_moon_walk_trace(field, 3, config~)
+  assert_eq(trace.endless_axis, "heading-rad:\{config.heading_rad}")
+  assert_true(trace.frames[0].body_position.x > 0.999999)
+  assert_true(trace.frames[0].body_position.y > 1.999999)
+  assert_true(trace.frames[2].body_position.y > trace.frames[0].body_position.y)
+  assert_true(
+    trace.frames[2].body_position.x < trace.frames[0].body_position.x + 0.000001,
+  )
+  assert_true(
+    trace.frames[0].body_position.z >
+    @moonphys.sample_heightfield(field, 1.0, 2.0).elevation_m +
+    config.body_height_m,
+  )
 }
 
 ///|

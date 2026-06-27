@@ -220,6 +220,8 @@ Current version already has the first shape:
 - terrain elevation probe
 - terrain grade review status
 - finite trace prefix represents an endless periodic gait
+- configurable heading, start position, stride frequency, body height, foot
+  radius, and terrain source provenance
 
 Next improvements:
 
@@ -229,13 +231,9 @@ Next improvements:
   - `NoetixFootContactProbe`
 - Keep `frame_count` finite in exports, but make the gait mathematically endless
   through cycle indexing.
-- Add config fields:
-  - `heading_rad`
-  - `start_position`
-  - `stride_frequency_hz`
-  - `body_height_m`
-  - `foot_radius_m`
-  - `terrain_source_id`
+- Replace the kinematic phase generator with a controller-backed gait once
+  Moonrobo supplies authoritative mass, inertia, collision, damping, stiffness,
+  and actuator metadata.
 
 Tests:
 

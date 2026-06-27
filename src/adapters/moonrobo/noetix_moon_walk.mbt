@@ -15,13 +15,18 @@ pub(all) struct NoetixMoonWalkConfig {
   gravity_mps2 : Double
   dt_s : Double
   speed_mps : Double
+  heading_rad : Double
+  start_position : @moonphys.Vec3
   step_length_m : Double
   step_height_m : Double
+  stride_frequency_hz : Double
   cycle_frames : Int
   lateral_foot_offset_m : Double
   min_swing_clearance_m : Double
+  foot_radius_m : Double
   caution_grade : Double
   body_height_m : Double
+  terrain_source_id : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -89,13 +94,18 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     gravity_mps2: @moonphys.lunar_environment().gravity_mps2,
     dt_s: 0.1,
     speed_mps: 0.12,
+    heading_rad: 0.0,
+    start_position: @moonphys.vec3(0.0, 0.0, 0.0),
     step_length_m: 0.16,
     step_height_m: 0.045,
+    stride_frequency_hz: 0.75,
     cycle_frames: 20,
     lateral_foot_offset_m: 0.08,
     min_swing_clearance_m: 0.02,
+    foot_radius_m: 0.012,
     caution_grade: 0.18,
     body_height_m: 0.72,
+    terrain_source_id: "first-trusted-square-northeast-stepout-lola",
   }
 }
 
@@ -133,6 +143,44 @@ fn swing_lift(config : NoetixMoonWalkConfig, progress : Double) -> Double {
 }
 
 ///|
+fn noetix_heading_forward(config : NoetixMoonWalkConfig) -> @moonphys.Vec3 {
+  @moonphys.vec3(
+    @math.cos(config.heading_rad),
+    @math.sin(config.heading_rad),
+    0.0,
+  )
+}
+
+///|
+fn noetix_heading_lateral(config : NoetixMoonWalkConfig) -> @moonphys.Vec3 {
+  @moonphys.vec3(
+    0.0 - @math.sin(config.heading_rad),
+    @math.cos(config.heading_rad),
+    0.0,
+  )
+}
+
+///|
+fn noetix_walk_xy(
+  config : NoetixMoonWalkConfig,
+  forward_m : Double,
+  lateral_m : Double,
+) -> @moonphys.Vec3 {
+  config.start_position
+  .add(noetix_heading_forward(config).scale(forward_m))
+  .add(noetix_heading_lateral(config).scale(lateral_m))
+}
+
+///|
+fn noetix_endless_axis(config : NoetixMoonWalkConfig) -> String {
+  if abs_double(config.heading_rad) < 0.000000001 {
+    "+x"
+  } else {
+    "heading-rad:\{config.heading_rad}"
+  }
+}
+
+///|
 fn foot_status(
   in_contact : Bool,
   clearance_m : Double,
@@ -161,6 +209,8 @@ fn foot_probe(
   let terrain = @moonphys.sample_heightfield(field, x, y)
   let clearance = if in_contact {
     0.0
+  } else if lift_m < config.min_swing_clearance_m + config.foot_radius_m {
+    config.min_swing_clearance_m + config.foot_radius_m
   } else if lift_m < config.min_swing_clearance_m {
     config.min_swing_clearance_m
   } else {
@@ -290,27 +340,31 @@ pub fn noetix_moon_walk_frame(
   let left_support = phase < half_cycle
   let local_phase = if left_support { phase } else { phase - half_cycle }
   let progress = phase_progress(local_phase, half_cycle)
-  let body_x = frame_index.to_double() * config.speed_mps * config.dt_s
-  let body_y = 0.0
-  let body_sample = @moonphys.sample_heightfield(field, body_x, body_y)
-  let body_z = body_sample.elevation_m + config.body_height_m
+  let body_forward = frame_index.to_double() * config.speed_mps * config.dt_s
+  let body_xy = noetix_walk_xy(config, body_forward, 0.0)
+  let body_sample = @moonphys.sample_heightfield(field, body_xy.x, body_xy.y)
+  let body_z = body_sample.elevation_m +
+    config.body_height_m +
+    config.start_position.z
   let swing_offset = (progress - 0.5) * config.step_length_m
   let support_offset = 0.0 - config.step_length_m * 0.25
   let left = if left_support {
-    foot_probe(
-      "left-foot",
-      body_x + support_offset,
-      body_y + config.lateral_foot_offset_m,
-      0.0,
-      true,
-      field,
+    let foot_xy = noetix_walk_xy(
       config,
+      body_forward + support_offset,
+      config.lateral_foot_offset_m,
     )
+    foot_probe("left-foot", foot_xy.x, foot_xy.y, 0.0, true, field, config)
   } else {
+    let foot_xy = noetix_walk_xy(
+      config,
+      body_forward + swing_offset,
+      config.lateral_foot_offset_m,
+    )
     foot_probe(
       "left-foot",
-      body_x + swing_offset,
-      body_y + config.lateral_foot_offset_m,
+      foot_xy.x,
+      foot_xy.y,
       swing_lift(config, progress),
       false,
       field,
@@ -318,30 +372,32 @@ pub fn noetix_moon_walk_frame(
     )
   }
   let right = if left_support {
+    let foot_xy = noetix_walk_xy(
+      config,
+      body_forward + swing_offset,
+      0.0 - config.lateral_foot_offset_m,
+    )
     foot_probe(
       "right-foot",
-      body_x + swing_offset,
-      body_y - config.lateral_foot_offset_m,
+      foot_xy.x,
+      foot_xy.y,
       swing_lift(config, progress),
       false,
       field,
       config,
     )
   } else {
-    foot_probe(
-      "right-foot",
-      body_x + support_offset,
-      body_y - config.lateral_foot_offset_m,
-      0.0,
-      true,
-      field,
+    let foot_xy = noetix_walk_xy(
       config,
+      body_forward + support_offset,
+      0.0 - config.lateral_foot_offset_m,
     )
+    foot_probe("right-foot", foot_xy.x, foot_xy.y, 0.0, true, field, config)
   }
   {
     frame_index,
     time_s: frame_index.to_double() * config.dt_s,
-    body_position: @moonphys.vec3(body_x, body_y, body_z),
+    body_position: @moonphys.vec3(body_xy.x, body_xy.y, body_z),
     support_phase: if left_support {
       "left-support"
     } else {
@@ -372,7 +428,7 @@ pub fn noetix_moon_walk_trace(
     terrain_tile_id: field.field_id,
     terrain_cell_size_m: field.cell_size_m,
     frame_count: frames.length(),
-    endless_axis: "+x",
+    endless_axis: noetix_endless_axis(config),
     frames,
     note: "Kinematic endless-walk trace for MoonSuite collaboration: Moonmoon terrain plus Moonrobo Noetix model references. This is simulation evidence only, not hardware authority.",
   }
@@ -397,8 +453,12 @@ pub fn render_noetix_moon_walk_markdown(trace : NoetixMoonWalkTrace) -> String {
   text += "- robot: \{trace.robot.robot_id} (\{trace.robot.label})\n"
   text += "- source model: \{trace.robot.source_model_path}\n"
   text += "- terrain: \{trace.terrain_tile_id}\n"
+  text += "- terrain source: \{trace.config.terrain_source_id}\n"
   text += "- gravity: \{trace.config.gravity_mps2} m/s^2\n"
   text += "- speed: \{trace.config.speed_mps} m/s\n"
+  text += "- heading: \{trace.config.heading_rad} rad\n"
+  text += "- stride frequency: \{trace.config.stride_frequency_hz} Hz\n"
+  text += "- foot radius: \{trace.config.foot_radius_m} m\n"
   text += "- frames: \{trace.frame_count}\n"
   text += "- endless axis: \{trace.endless_axis}\n"
   text += "- note: \{trace.note}\n\n"

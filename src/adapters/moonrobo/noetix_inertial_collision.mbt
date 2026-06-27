@@ -264,7 +264,9 @@ fn noetix_review_body_velocity(
   } else {
     0.0
   }
-  @moonphys.vec3(config.speed_mps, lateral_direction * lateral_speed, 0.0)
+  noetix_heading_forward(config)
+  .scale(config.speed_mps)
+  .add(noetix_heading_lateral(config).scale(lateral_direction * lateral_speed))
 }
 
 ///|

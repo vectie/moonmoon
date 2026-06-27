@@ -559,13 +559,22 @@
         "gravity_mps2": 1.625,
         "dt_s": 0.1,
         "speed_mps": 0.12,
+        "heading_rad": 0,
+        "start_position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
         "step_length_m": 0.16,
         "step_height_m": 0.045,
+        "stride_frequency_hz": 0.75,
         "cycle_frames": 20,
         "lateral_foot_offset_m": 0.08,
         "min_swing_clearance_m": 0.02,
+        "foot_radius_m": 0.012,
         "caution_grade": 0.18,
-        "body_height_m": 0.72
+        "body_height_m": 0.72,
+        "terrain_source_id": "first-trusted-square-northeast-stepout-lola"
       },
       "terrain_tile_id": "first-trusted-square-northeast-stepout-lola",
       "terrain_cell_size_m": 20,
@@ -599,10 +608,10 @@
             "position": {
               "x": -0.08,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -806,10 +815,10 @@
             "position": {
               "x": -0.050222222222222224,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -1013,10 +1022,10 @@
             "position": {
               "x": -0.020444444444444446,
               "y": -0.08,
-              "z": 339.8149254424359
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -2048,10 +2057,10 @@
             "position": {
               "x": 0.12844444444444444,
               "y": -0.08,
-              "z": 339.8149254424359
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -2255,10 +2264,10 @@
             "position": {
               "x": 0.1582222222222222,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -2462,10 +2471,10 @@
             "position": {
               "x": 0.188,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -2656,10 +2665,10 @@
             "position": {
               "x": 0.039999999999999994,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -2863,10 +2872,10 @@
             "position": {
               "x": 0.06977777777777774,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -3070,10 +3079,10 @@
             "position": {
               "x": 0.09955555555555554,
               "y": 0.08,
-              "z": 337.06092544243586
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -4105,10 +4114,10 @@
             "position": {
               "x": 0.24844444444444447,
               "y": 0.08,
-              "z": 337.06092544243586
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -4312,10 +4321,10 @@
             "position": {
               "x": 0.27822222222222226,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -4519,10 +4528,10 @@
             "position": {
               "x": 0.308,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -4739,10 +4748,10 @@
             "position": {
               "x": 0.15999999999999998,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -4946,10 +4955,10 @@
             "position": {
               "x": 0.18977777777777777,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -5153,10 +5162,10 @@
             "position": {
               "x": 0.2195555555555555,
               "y": -0.08,
-              "z": 339.8149254424359
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -6188,10 +6197,10 @@
             "position": {
               "x": 0.36844444444444446,
               "y": -0.08,
-              "z": 339.8149254424359
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.028925442435877358,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -6395,10 +6404,10 @@
             "position": {
               "x": 0.39822222222222226,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -6602,10 +6611,10 @@
             "position": {
               "x": 0.42800000000000005,
               "y": -0.08,
-              "z": 339.806
+              "z": 339.818
             },
             "terrain_elevation_m": 339.786,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.47949999999999876,
             "status": "terrain-grade-review"
@@ -6796,10 +6805,10 @@
             "position": {
               "x": 0.27999999999999997,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -7003,10 +7012,10 @@
             "position": {
               "x": 0.30977777777777776,
               "y": 0.08,
-              "z": 337.05199999999996
+              "z": 337.06399999999996
             },
             "terrain_elevation_m": 337.032,
-            "clearance_m": 0.01999999999998181,
+            "clearance_m": 0.031999999999982265,
             "in_contact": false,
             "local_grade": 0.5139499999999998,
             "status": "terrain-grade-review"
@@ -43892,7 +43901,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -43998,9 +44007,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -44088,9 +44097,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -44154,15 +44163,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -44208,15 +44217,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -44244,15 +44253,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -44753,7 +44762,7 @@
                 "translation": {
                   "x": -0.08,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -44762,18 +44771,18 @@
                 "center": {
                   "x": -0.08,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.19945291959596467,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.039452919595964656,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -44830,7 +44839,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -44991,7 +45000,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -45097,9 +45106,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -45187,9 +45196,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -45253,15 +45262,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.011999999999999997,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -45307,15 +45316,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.011999999999999997,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -45343,15 +45352,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.011999999999999997,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -45852,7 +45861,7 @@
                 "translation": {
                   "x": -0.050222222222222224,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -45861,18 +45870,18 @@
                 "center": {
                   "x": -0.050222222222222224,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.16967514181818688,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.06923069737374243,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -45929,7 +45938,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -46090,7 +46099,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.0309254424358687,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -46196,9 +46205,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.6409254424358755,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -46288,7 +46297,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 1.4609254424358686,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -46352,15 +46361,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.024,
-                  "y": 0.15507122127009987,
-                  "z": 338.4666512213383
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14082224942571708,
-                  "z": 0.9900348953782796
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3497243656114253,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -46406,15 +46415,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.024,
-                  "y": -0.15910673408260936,
-                  "z": 338.4669885992289
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025521883354017956,
-                  "z": 0.9996742636829579
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.336372148148694,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -46442,15 +46451,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.024,
-                  "y": 0.07749289223906067,
-                  "z": 337.7869301058387
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.05571350579865177,
-                  "z": 0.9984467964151238
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0191314588173506,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -46951,7 +46960,7 @@
                 "translation": {
                   "x": -0.020444444444444446,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -46960,18 +46969,18 @@
                 "center": {
                   "x": -0.020444444444444446,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.1398973640404091,
                   "y": -0.19945291959596467,
-                  "z": 339.6954725228399
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.09900847515152021,
                   "y": 0.039452919595964656,
-                  "z": 339.93437836203185
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -47028,7 +47037,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -51585,7 +51594,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.0309254424358687,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -51691,9 +51700,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.6409254424358755,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -51783,7 +51792,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 1.4609254424358686,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -51847,15 +51856,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.084,
-                  "y": 0.15507122127009987,
-                  "z": 338.4666512213383
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14082224942571708,
-                  "z": 0.9900348953782796
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3497243656114253,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -51901,15 +51910,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.084,
-                  "y": -0.15910673408260936,
-                  "z": 338.4669885992289
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025521883354017956,
-                  "z": 0.9996742636829579
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.336372148148694,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -51937,15 +51946,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.084,
-                  "y": 0.07749289223906067,
-                  "z": 337.7869301058387
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.05571350579865177,
-                  "z": 0.9984467964151238
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0191314588173506,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -52446,7 +52455,7 @@
                 "translation": {
                   "x": 0.12844444444444444,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -52455,18 +52464,18 @@
                 "center": {
                   "x": 0.12844444444444444,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.008991524848479787,
                   "y": -0.19945291959596467,
-                  "z": 339.6954725228399
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.2478973640404091,
                   "y": 0.039452919595964656,
-                  "z": 339.93437836203185
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -52523,7 +52532,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -52684,7 +52693,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -52790,9 +52799,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -52880,9 +52889,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -52946,15 +52955,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.096,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -53000,15 +53009,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.096,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -53036,15 +53045,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.096,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -53545,7 +53554,7 @@
                 "translation": {
                   "x": 0.1582222222222222,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -53554,18 +53563,18 @@
                 "center": {
                   "x": 0.1582222222222222,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.03876930262625755,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.27767514181818687,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -53622,7 +53631,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -53783,7 +53792,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -53889,9 +53898,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -53979,9 +53988,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -54045,15 +54054,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.10800000000000001,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -54099,15 +54108,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.10800000000000001,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -54135,15 +54144,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.10800000000000001,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -54644,7 +54653,7 @@
                 "translation": {
                   "x": 0.188,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -54653,18 +54662,18 @@
                 "center": {
                   "x": 0.188,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.06854708040403534,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.30745291959596466,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -54721,7 +54730,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -54864,7 +54873,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -54970,9 +54979,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -55062,7 +55071,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -55126,15 +55135,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.12,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -55180,15 +55189,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.12,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -55224,7 +55233,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -55253,7 +55262,7 @@
                 "point": {
                   "x": 0.039999999999999994,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -55689,7 +55698,7 @@
                 "translation": {
                   "x": 0.039999999999999994,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -55698,18 +55707,18 @@
                 "center": {
                   "x": 0.039999999999999994,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.07945291959596466,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.15945291959596464,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -55791,7 +55800,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -55963,7 +55972,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -56069,9 +56078,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -56161,7 +56170,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -56225,15 +56234,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.13199999999999998,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -56279,15 +56288,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.13199999999999998,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -56323,7 +56332,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -56352,7 +56361,7 @@
                 "point": {
                   "x": 0.06977777777777774,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -56788,7 +56797,7 @@
                 "translation": {
                   "x": 0.06977777777777774,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -56797,18 +56806,18 @@
                 "center": {
                   "x": 0.06977777777777774,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.04967514181818691,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.1892306973737424,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -56890,7 +56899,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -57060,9 +57069,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -0.9999999999999999
+                  "z": -1
                 },
-                "separation_m": 0.6590745575641495,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -57168,9 +57177,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9090745575641427,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -57260,7 +57269,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.0890745575641494,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -57324,15 +57333,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.144,
-                  "y": 0.15901175310299637,
-                  "z": 338.2770139546666
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028235625628675206,
-                  "z": -0.9996012952399358
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2045687795369802,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -57378,15 +57387,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.144,
-                  "y": -0.15455882568849838,
-                  "z": 338.2774255351146
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15546212318576003,
-                  "z": -0.9878418538686117
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2193248220468247,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -57422,7 +57431,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4840745575641722,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -57451,7 +57460,7 @@
                 "point": {
                   "x": 0.09955555555555554,
                   "y": 0.035,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -57887,7 +57896,7 @@
                 "translation": {
                   "x": 0.09955555555555554,
                   "y": 0.08,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -57896,18 +57905,18 @@
                 "center": {
                   "x": 0.09955555555555554,
                   "y": 0.08,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": -0.01989736404040912,
                   "y": -0.039452919595964656,
-                  "z": 336.9414725228399
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.2190084751515202,
                   "y": 0.19945291959596467,
-                  "z": 337.18037836203183
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -57989,7 +57998,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -62555,9 +62564,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -0.9999999999999999
+                  "z": -1
                 },
-                "separation_m": 0.6590745575641495,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -62663,9 +62672,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9090745575641427,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -62755,7 +62764,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.0890745575641494,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -62819,15 +62828,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.20400000000000001,
-                  "y": 0.15901175310299637,
-                  "z": 338.2770139546666
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028235625628675206,
-                  "z": -0.9996012952399358
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2045687795369802,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -62873,15 +62882,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.20400000000000001,
-                  "y": -0.15455882568849838,
-                  "z": 338.2774255351146
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15546212318576003,
-                  "z": -0.9878418538686117
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2193248220468247,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -62917,7 +62926,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4840745575641722,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -62946,7 +62955,7 @@
                 "point": {
                   "x": 0.24844444444444447,
                   "y": 0.035,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -63382,7 +63391,7 @@
                 "translation": {
                   "x": 0.24844444444444447,
                   "y": 0.08,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -63391,18 +63400,18 @@
                 "center": {
                   "x": 0.24844444444444447,
                   "y": 0.08,
-                  "z": 337.06092544243586
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.1289915248484798,
                   "y": -0.039452919595964656,
-                  "z": 336.9414725228399
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.3678973640404091,
                   "y": 0.19945291959596467,
-                  "z": 337.18037836203183
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -63484,7 +63493,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -63656,7 +63665,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -63762,9 +63771,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -63854,7 +63863,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -63918,15 +63927,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.21600000000000003,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -63972,15 +63981,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.21600000000000003,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -64016,7 +64025,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -64045,7 +64054,7 @@
                 "point": {
                   "x": 0.27822222222222226,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -64481,7 +64490,7 @@
                 "translation": {
                   "x": 0.27822222222222226,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -64490,18 +64499,18 @@
                 "center": {
                   "x": 0.27822222222222226,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.1587693026262576,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.3976751418181869,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -64583,7 +64592,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -64755,7 +64764,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -64861,9 +64870,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -64953,7 +64962,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -65017,15 +65026,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.22799999999999998,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -65071,15 +65080,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.22799999999999998,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -65115,7 +65124,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -65144,7 +65153,7 @@
                 "point": {
                   "x": 0.308,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -65580,7 +65589,7 @@
                 "translation": {
                   "x": 0.308,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -65589,18 +65598,18 @@
                 "center": {
                   "x": 0.308,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.18854708040403534,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.42745291959596465,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -65682,7 +65691,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -65872,7 +65881,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -65978,9 +65987,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -66068,9 +66077,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -66134,15 +66143,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.24,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -66188,15 +66197,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.24,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -66224,15 +66233,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.24,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -66733,7 +66742,7 @@
                 "translation": {
                   "x": 0.15999999999999998,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -66742,18 +66751,18 @@
                 "center": {
                   "x": 0.15999999999999998,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.04054708040403532,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.27945291959596463,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -66810,7 +66819,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -66971,7 +66980,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -67077,9 +67086,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -67167,9 +67176,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -67233,15 +67242,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.252,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -67287,15 +67296,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.252,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -67323,15 +67332,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.252,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -67832,7 +67841,7 @@
                 "translation": {
                   "x": 0.18977777777777777,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -67841,18 +67850,18 @@
                 "center": {
                   "x": 0.18977777777777777,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.07032485818181311,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.3092306973737424,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -67909,7 +67918,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -68070,7 +68079,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.0309254424358687,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -68176,9 +68185,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.6409254424358755,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -68268,7 +68277,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 1.4609254424358686,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -68332,15 +68341,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.26399999999999996,
-                  "y": 0.15507122127009987,
-                  "z": 338.4666512213383
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14082224942571708,
-                  "z": 0.9900348953782796
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3497243656114253,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -68386,15 +68395,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.26399999999999996,
-                  "y": -0.15910673408260936,
-                  "z": 338.4669885992289
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025521883354017956,
-                  "z": 0.9996742636829579
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.336372148148694,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -68422,15 +68431,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.26399999999999996,
-                  "y": 0.07749289223906067,
-                  "z": 337.7869301058387
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.05571350579865177,
-                  "z": 0.9984467964151238
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0191314588173506,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -68931,7 +68940,7 @@
                 "translation": {
                   "x": 0.2195555555555555,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -68940,18 +68949,18 @@
                 "center": {
                   "x": 0.2195555555555555,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.10010263595959085,
                   "y": -0.19945291959596467,
-                  "z": 339.6954725228399
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.33900847515152016,
                   "y": 0.039452919595964656,
-                  "z": 339.93437836203185
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -69008,7 +69017,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -73565,7 +73574,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.0309254424358687,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -73671,9 +73680,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.6409254424358755,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -73763,7 +73772,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 1.4609254424358686,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -73827,15 +73836,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.324,
-                  "y": 0.15507122127009987,
-                  "z": 338.4666512213383
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14082224942571708,
-                  "z": 0.9900348953782796
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3497243656114253,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -73881,15 +73890,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.324,
-                  "y": -0.15910673408260936,
-                  "z": 338.4669885992289
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025521883354017956,
-                  "z": 0.9996742636829579
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.336372148148694,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -73917,15 +73926,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.324,
-                  "y": 0.07749289223906067,
-                  "z": 337.7869301058387
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.05571350579865177,
-                  "z": 0.9984467964151238
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0191314588173506,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -74426,7 +74435,7 @@
                 "translation": {
                   "x": 0.36844444444444446,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -74435,18 +74444,18 @@
                 "center": {
                   "x": 0.36844444444444446,
                   "y": -0.08,
-                  "z": 339.8149254424359
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.2489915248484798,
                   "y": -0.19945291959596467,
-                  "z": 339.6954725228399
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.4878973640404091,
                   "y": 0.039452919595964656,
-                  "z": 339.93437836203185
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -74503,7 +74512,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.028925442435877358,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -74664,7 +74673,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -74770,9 +74779,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -74860,9 +74869,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -74926,15 +74935,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.336,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -74980,15 +74989,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.336,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -75016,15 +75025,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.336,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -75525,7 +75534,7 @@
                 "translation": {
                   "x": 0.39822222222222226,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -75534,18 +75543,18 @@
                 "center": {
                   "x": 0.39822222222222226,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.2787693026262576,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.5176751418181869,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -75602,7 +75611,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -75763,7 +75772,7 @@
                   "y": 0,
                   "z": 1
                 },
-                "separation_m": 2.021999999999973,
+                "separation_m": 2.0339999999999736,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -75869,9 +75878,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 1
+                  "z": 0.9999999999999999
                 },
-                "separation_m": 1.63199999999998,
+                "separation_m": 1.6439999999999804,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -75959,9 +75968,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": 0.9999999999999999
+                  "z": 1
                 },
-                "separation_m": 1.451999999999973,
+                "separation_m": 1.4639999999999735,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -76025,15 +76034,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.34800000000000003,
-                  "y": 0.1550395687612692,
-                  "z": 338.4666467043444
+                  "y": 0.15508203225123224,
+                  "z": 338.46665275736825
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.14172660682087884,
-                  "z": 0.9899058384104218
+                  "y": -0.14051336425050687,
+                  "z": 0.9900787819497014
                 },
-                "separation_m": 1.3408884402450325,
+                "separation_m": 1.3527683524277059,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -76079,15 +76088,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.34800000000000003,
-                  "y": -0.15910088419333712,
-                  "z": 338.4669884493907
+                  "y": -0.1591087316186849,
+                  "z": 338.46698865016936
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.025689023047510955,
-                  "z": 0.9996699825916873
+                  "y": 0.025464810894716895,
+                  "z": 0.9996757191240048
                 },
-                "separation_m": 1.3274496320965075,
+                "separation_m": 1.3394457064576648,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -76115,15 +76124,15 @@
                 "shape_b_id": "right_foot/assumed-sole",
                 "point": {
                   "x": 0.34800000000000003,
-                  "y": 0.07748202131539919,
-                  "z": 337.78692949792
+                  "y": 0.07749661528849934,
+                  "z": 337.7869303134308
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.055955081880018125,
-                  "z": 0.9984332871112624
+                  "y": -0.055630771366681216,
+                  "z": 0.9984514095724177
                 },
-                "separation_m": 2.0102199395684766,
+                "separation_m": 2.0222012480646034,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -76624,7 +76633,7 @@
                 "translation": {
                   "x": 0.42800000000000005,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 }
               },
               "bounds": {
@@ -76633,18 +76642,18 @@
                 "center": {
                   "x": 0.42800000000000005,
                   "y": -0.08,
-                  "z": 339.806
+                  "z": 339.818
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.3085470804040354,
                   "y": -0.19945291959596467,
-                  "z": 339.686547080404
+                  "z": 339.698547080404
                 },
                 "max": {
                   "x": 0.5474529195959648,
                   "y": 0.039452919595964656,
-                  "z": 339.92545291959595
+                  "z": 339.93745291959596
                 },
                 "status": "conservative-bounds"
               },
@@ -76701,7 +76710,7 @@
                   "y": -0.08,
                   "z": 339.798
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -76844,7 +76853,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -76950,9 +76959,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -77042,7 +77051,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -77106,15 +77115,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.36,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -77160,15 +77169,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.36,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -77204,7 +77213,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -77233,7 +77242,7 @@
                 "point": {
                   "x": 0.27999999999999997,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -77669,7 +77678,7 @@
                 "translation": {
                   "x": 0.27999999999999997,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -77678,18 +77687,18 @@
                 "center": {
                   "x": 0.27999999999999997,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.16054708040403531,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.39945291959596463,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -77771,7 +77780,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -77943,7 +77952,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.668000000000045,
+                "separation_m": 0.6560000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -78049,9 +78058,9 @@
                 "normal": {
                   "x": 0,
                   "y": 0,
-                  "z": -1
+                  "z": -0.9999999999999999
                 },
-                "separation_m": 0.9180000000000382,
+                "separation_m": 0.9060000000000378,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -78141,7 +78150,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 1.098000000000045,
+                "separation_m": 1.0860000000000445,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "box-box-clear"
@@ -78205,15 +78214,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.372,
-                  "y": 0.15901881526951125,
-                  "z": 338.2770137558957
+                  "y": 0.1590092967999624,
+                  "z": 338.27701402413584
                 },
                 "normal": {
                   "x": 0,
-                  "y": -0.028033849442535445,
-                  "z": -0.9996069744081588
+                  "y": -0.028305805715360118,
+                  "z": -0.9995993104053266
                 },
-                "separation_m": 1.2134906887919181,
+                "separation_m": 1.201495450861068,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -78259,15 +78268,15 @@
                 "shape_b_id": "left_foot/assumed-sole",
                 "point": {
                   "x": 0.372,
-                  "y": -0.15459680919042385,
-                  "z": 338.27741957881875
+                  "y": -0.15454561904519765,
+                  "z": 338.2774276161019
                 },
                 "normal": {
                   "x": 0,
-                  "y": 0.15437688027360386,
-                  "z": -0.9880120337511024
+                  "y": 0.15583945585149536,
+                  "z": -0.9877823970895158
                 },
-                "separation_m": 1.2281425097747753,
+                "separation_m": 1.2162877366937295,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -78303,7 +78312,7 @@
                   "y": 0,
                   "z": -1
                 },
-                "separation_m": 0.4930000000000678,
+                "separation_m": 0.4810000000000673,
                 "penetration_depth_m": 0,
                 "in_contact": false,
                 "status": "capsule-box-clear"
@@ -78332,7 +78341,7 @@
                 "point": {
                   "x": 0.30977777777777776,
                   "y": 0.035,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "normal": {
                   "x": 0,
@@ -78768,7 +78777,7 @@
                 "translation": {
                   "x": 0.30977777777777776,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 }
               },
               "bounds": {
@@ -78777,18 +78786,18 @@
                 "center": {
                   "x": 0.30977777777777776,
                   "y": 0.08,
-                  "z": 337.05199999999996
+                  "z": 337.06399999999996
                 },
                 "bounding_radius_m": 0.11945291959596466,
                 "min": {
                   "x": 0.1903248581818131,
                   "y": -0.039452919595964656,
-                  "z": 336.932547080404
+                  "z": 336.944547080404
                 },
                 "max": {
                   "x": 0.4292306973737424,
                   "y": 0.19945291959596467,
-                  "z": 337.17145291959594
+                  "z": 337.18345291959594
                 },
                 "status": "conservative-bounds"
               },
@@ -78870,7 +78879,7 @@
                   "y": 0.08,
                   "z": 337.044
                 },
-                "clearance_m": 0.01999999999998181,
+                "clearance_m": 0.031999999999982265,
                 "penetration_depth_m": 0,
                 "normal_velocity_mps": 0,
                 "tangent_speed_mps": 0,
@@ -80255,9 +80264,9 @@
               "world_position": {
                 "x": -0.08,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.876504128277958,
+              "contact_error_m": 2.888493725110051,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -81618,9 +81627,9 @@
               "world_position": {
                 "x": -0.050222222222222224,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.8716382855538214,
+              "contact_error_m": 2.883638047707073,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -82981,9 +82990,9 @@
               "world_position": {
                 "x": -0.020444444444444446,
                 "y": -0.08,
-                "z": 339.8149254424359
+                "z": 339.818
               },
-              "contact_error_m": 2.868582685979828,
+              "contact_error_m": 2.8716558658145863,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -89796,9 +89805,9 @@
               "world_position": {
                 "x": 0.12844444444444444,
                 "y": -0.08,
-                "z": 339.8149254424359
+                "z": 339.818
               },
-              "contact_error_m": 2.872511157472033,
+              "contact_error_m": 2.8755801388876985,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -91159,9 +91168,9 @@
               "world_position": {
                 "x": 0.1582222222222222,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.873786270963031,
+              "contact_error_m": 2.8857771012850195,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -92522,9 +92531,9 @@
               "world_position": {
                 "x": 0.188,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.8742783442109663,
+              "contact_error_m": 2.8862771869659607,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -93561,9 +93570,9 @@
               "world_position": {
                 "x": 0.039999999999999994,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.16970562748477463,
+              "contact_error_m": 0.17839282496782577,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -94924,9 +94933,9 @@
               "world_position": {
                 "x": 0.06977777777777774,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.11896881014579481,
+              "contact_error_m": 0.1308416023781029,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -96287,9 +96296,9 @@
               "world_position": {
                 "x": 0.09955555555555554,
                 "y": 0.08,
-                "z": 337.06092544243586
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.1421862539659102,
+              "contact_error_m": 0.14464803184919803,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -103102,9 +103111,9 @@
               "world_position": {
                 "x": 0.24844444444444447,
                 "y": 0.08,
-                "z": 337.06092544243586
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.20681067263304553,
+              "contact_error_m": 0.2085108549114914,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -104465,9 +104474,9 @@
               "world_position": {
                 "x": 0.27822222222222226,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.16277182159274248,
+              "contact_error_m": 0.17164094217284812,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -105828,9 +105837,9 @@
               "world_position": {
                 "x": 0.308,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.1264911064067395,
+              "contact_error_m": 0.13792751719653815,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -107515,9 +107524,9 @@
               "world_position": {
                 "x": 0.15999999999999998,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.876504128277958,
+              "contact_error_m": 2.888493725110051,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -108878,9 +108887,9 @@
               "world_position": {
                 "x": 0.18977777777777777,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.8716382855538214,
+              "contact_error_m": 2.883638047707073,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -110241,9 +110250,9 @@
               "world_position": {
                 "x": 0.2195555555555555,
                 "y": -0.08,
-                "z": 339.8149254424359
+                "z": 339.818
               },
-              "contact_error_m": 2.868582685979828,
+              "contact_error_m": 2.8716558658145863,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -117056,9 +117065,9 @@
               "world_position": {
                 "x": 0.36844444444444446,
                 "y": -0.08,
-                "z": 339.8149254424359
+                "z": 339.818
               },
-              "contact_error_m": 2.872511157472033,
+              "contact_error_m": 2.8755801388876985,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -118419,9 +118428,9 @@
               "world_position": {
                 "x": 0.39822222222222226,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.873786270963031,
+              "contact_error_m": 2.8857771012850195,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -119782,9 +119791,9 @@
               "world_position": {
                 "x": 0.42800000000000005,
                 "y": -0.08,
-                "z": 339.806
+                "z": 339.818
               },
-              "contact_error_m": 2.8742783442109663,
+              "contact_error_m": 2.8862771869659607,
               "visual_geometry": {
                 "link_name": "right_foot",
                 "has_visual_geometry": false,
@@ -120821,9 +120830,9 @@
               "world_position": {
                 "x": 0.27999999999999997,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.1697056274847746,
+              "contact_error_m": 0.17839282496782577,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,
@@ -122184,9 +122193,9 @@
               "world_position": {
                 "x": 0.30977777777777776,
                 "y": 0.08,
-                "z": 337.05199999999996
+                "z": 337.06399999999996
               },
-              "contact_error_m": 0.11896881014579481,
+              "contact_error_m": 0.1308416023781029,
               "visual_geometry": {
                 "link_name": "left_foot",
                 "has_visual_geometry": false,

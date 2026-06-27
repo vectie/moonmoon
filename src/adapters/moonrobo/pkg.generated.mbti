@@ -542,13 +542,18 @@ pub(all) struct NoetixMoonWalkConfig {
   gravity_mps2 : Double
   dt_s : Double
   speed_mps : Double
+  heading_rad : Double
+  start_position : @moonphys.Vec3
   step_length_m : Double
   step_height_m : Double
+  stride_frequency_hz : Double
   cycle_frames : Int
   lateral_foot_offset_m : Double
   min_swing_clearance_m : Double
+  foot_radius_m : Double
   caution_grade : Double
   body_height_m : Double
+  terrain_source_id : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixMoonWalkFrame {

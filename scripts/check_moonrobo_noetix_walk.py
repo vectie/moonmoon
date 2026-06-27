@@ -25,8 +25,23 @@ def main() -> None:
         fail("unexpected robot id")
     if trace.get("terrain_tile_id") != "first-trusted-square-northeast-stepout-lola":
         fail("unexpected terrain tile")
-    if abs(trace.get("config", {}).get("gravity_mps2", 0) - 1.625) > 1e-9:
+    config = trace.get("config", {})
+    if abs(config.get("gravity_mps2", 0) - 1.625) > 1e-9:
         fail("gravity is not lunar")
+    if config.get("terrain_source_id") != trace.get("terrain_tile_id"):
+        fail("walk config terrain source does not match terrain tile")
+    if abs(config.get("heading_rad", 999)) > 1e-9:
+        fail("default walk heading should remain +x")
+    start = config.get("start_position", {})
+    if start.get("x") != 0 or start.get("y") != 0 or start.get("z") != 0:
+        fail("default walk should start at terrain origin")
+    if config.get("foot_radius_m", 0) <= 0:
+        fail("foot radius must be explicit")
+    if abs(
+        config.get("speed_mps", 0)
+        - config.get("step_length_m", 0) * config.get("stride_frequency_hz", 0)
+    ) > 1e-9:
+        fail("stride frequency must match configured speed and step length")
     if trace.get("endless_axis") != "+x":
         fail("unexpected endless axis")
     if trace.get("frame_count") != len(frames) or len(frames) < 24:

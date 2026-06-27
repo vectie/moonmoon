@@ -4978,13 +4978,22 @@
     "gravity_mps2": 1.625,
     "dt_s": 0.1,
     "speed_mps": 0.12,
+    "heading_rad": 0,
+    "start_position": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
     "step_length_m": 0.16,
     "step_height_m": 0.045,
+    "stride_frequency_hz": 0.75,
     "cycle_frames": 20,
     "lateral_foot_offset_m": 0.08,
     "min_swing_clearance_m": 0.02,
+    "foot_radius_m": 0.012,
     "caution_grade": 0.18,
-    "body_height_m": 0.72
+    "body_height_m": 0.72,
+    "terrain_source_id": "first-trusted-square-northeast-stepout-lola"
   },
   "terrain_tile_id": "first-trusted-square-northeast-stepout-lola",
   "terrain_cell_size_m": 20,
@@ -5018,10 +5027,10 @@
         "position": {
           "x": -0.08,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -5225,10 +5234,10 @@
         "position": {
           "x": -0.050222222222222224,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -5432,10 +5441,10 @@
         "position": {
           "x": -0.020444444444444446,
           "y": -0.08,
-          "z": 339.8149254424359
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -6467,10 +6476,10 @@
         "position": {
           "x": 0.12844444444444444,
           "y": -0.08,
-          "z": 339.8149254424359
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -6674,10 +6683,10 @@
         "position": {
           "x": 0.1582222222222222,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -6881,10 +6890,10 @@
         "position": {
           "x": 0.188,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -7075,10 +7084,10 @@
         "position": {
           "x": 0.039999999999999994,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -7282,10 +7291,10 @@
         "position": {
           "x": 0.06977777777777774,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -7489,10 +7498,10 @@
         "position": {
           "x": 0.09955555555555554,
           "y": 0.08,
-          "z": 337.06092544243586
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -8524,10 +8533,10 @@
         "position": {
           "x": 0.24844444444444447,
           "y": 0.08,
-          "z": 337.06092544243586
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -8731,10 +8740,10 @@
         "position": {
           "x": 0.27822222222222226,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -8938,10 +8947,10 @@
         "position": {
           "x": 0.308,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -9158,10 +9167,10 @@
         "position": {
           "x": 0.15999999999999998,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -9365,10 +9374,10 @@
         "position": {
           "x": 0.18977777777777777,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -9572,10 +9581,10 @@
         "position": {
           "x": 0.2195555555555555,
           "y": -0.08,
-          "z": 339.8149254424359
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -10607,10 +10616,10 @@
         "position": {
           "x": 0.36844444444444446,
           "y": -0.08,
-          "z": 339.8149254424359
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.028925442435877358,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -10814,10 +10823,10 @@
         "position": {
           "x": 0.39822222222222226,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -11021,10 +11030,10 @@
         "position": {
           "x": 0.42800000000000005,
           "y": -0.08,
-          "z": 339.806
+          "z": 339.818
         },
         "terrain_elevation_m": 339.786,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.47949999999999876,
         "status": "terrain-grade-review"
@@ -11215,10 +11224,10 @@
         "position": {
           "x": 0.27999999999999997,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -11422,10 +11431,10 @@
         "position": {
           "x": 0.30977777777777776,
           "y": 0.08,
-          "z": 337.05199999999996
+          "z": 337.06399999999996
         },
         "terrain_elevation_m": 337.032,
-        "clearance_m": 0.01999999999998181,
+        "clearance_m": 0.031999999999982265,
         "in_contact": false,
         "local_grade": 0.5139499999999998,
         "status": "terrain-grade-review"
@@ -12959,9 +12968,9 @@
           "world_position": {
             "x": -0.08,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.876504128277958,
+          "contact_error_m": 2.888493725110051,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -14322,9 +14331,9 @@
           "world_position": {
             "x": -0.050222222222222224,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.8716382855538214,
+          "contact_error_m": 2.883638047707073,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -15685,9 +15694,9 @@
           "world_position": {
             "x": -0.020444444444444446,
             "y": -0.08,
-            "z": 339.8149254424359
+            "z": 339.818
           },
-          "contact_error_m": 2.868582685979828,
+          "contact_error_m": 2.8716558658145863,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -22500,9 +22509,9 @@
           "world_position": {
             "x": 0.12844444444444444,
             "y": -0.08,
-            "z": 339.8149254424359
+            "z": 339.818
           },
-          "contact_error_m": 2.872511157472033,
+          "contact_error_m": 2.8755801388876985,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -23863,9 +23872,9 @@
           "world_position": {
             "x": 0.1582222222222222,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.873786270963031,
+          "contact_error_m": 2.8857771012850195,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -25226,9 +25235,9 @@
           "world_position": {
             "x": 0.188,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.8742783442109663,
+          "contact_error_m": 2.8862771869659607,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -26265,9 +26274,9 @@
           "world_position": {
             "x": 0.039999999999999994,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.16970562748477463,
+          "contact_error_m": 0.17839282496782577,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -27628,9 +27637,9 @@
           "world_position": {
             "x": 0.06977777777777774,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.11896881014579481,
+          "contact_error_m": 0.1308416023781029,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -28991,9 +29000,9 @@
           "world_position": {
             "x": 0.09955555555555554,
             "y": 0.08,
-            "z": 337.06092544243586
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.1421862539659102,
+          "contact_error_m": 0.14464803184919803,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -35806,9 +35815,9 @@
           "world_position": {
             "x": 0.24844444444444447,
             "y": 0.08,
-            "z": 337.06092544243586
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.20681067263304553,
+          "contact_error_m": 0.2085108549114914,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -37169,9 +37178,9 @@
           "world_position": {
             "x": 0.27822222222222226,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.16277182159274248,
+          "contact_error_m": 0.17164094217284812,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -38532,9 +38541,9 @@
           "world_position": {
             "x": 0.308,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.1264911064067395,
+          "contact_error_m": 0.13792751719653815,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -40219,9 +40228,9 @@
           "world_position": {
             "x": 0.15999999999999998,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.876504128277958,
+          "contact_error_m": 2.888493725110051,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -41582,9 +41591,9 @@
           "world_position": {
             "x": 0.18977777777777777,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.8716382855538214,
+          "contact_error_m": 2.883638047707073,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -42945,9 +42954,9 @@
           "world_position": {
             "x": 0.2195555555555555,
             "y": -0.08,
-            "z": 339.8149254424359
+            "z": 339.818
           },
-          "contact_error_m": 2.868582685979828,
+          "contact_error_m": 2.8716558658145863,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -49760,9 +49769,9 @@
           "world_position": {
             "x": 0.36844444444444446,
             "y": -0.08,
-            "z": 339.8149254424359
+            "z": 339.818
           },
-          "contact_error_m": 2.872511157472033,
+          "contact_error_m": 2.8755801388876985,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -51123,9 +51132,9 @@
           "world_position": {
             "x": 0.39822222222222226,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.873786270963031,
+          "contact_error_m": 2.8857771012850195,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -52486,9 +52495,9 @@
           "world_position": {
             "x": 0.42800000000000005,
             "y": -0.08,
-            "z": 339.806
+            "z": 339.818
           },
-          "contact_error_m": 2.8742783442109663,
+          "contact_error_m": 2.8862771869659607,
           "visual_geometry": {
             "link_name": "right_foot",
             "has_visual_geometry": false,
@@ -53525,9 +53534,9 @@
           "world_position": {
             "x": 0.27999999999999997,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.1697056274847746,
+          "contact_error_m": 0.17839282496782577,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
@@ -54888,9 +54897,9 @@
           "world_position": {
             "x": 0.30977777777777776,
             "y": 0.08,
-            "z": 337.05199999999996
+            "z": 337.06399999999996
           },
-          "contact_error_m": 0.11896881014579481,
+          "contact_error_m": 0.1308416023781029,
           "visual_geometry": {
             "link_name": "left_foot",
             "has_visual_geometry": false,
