@@ -2,6 +2,7 @@
 package "vectie/moonmoon"
 
 import {
+  "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/ui",
@@ -25,6 +26,12 @@ pub fn trusted_square_markdown() -> String
 pub fn trusted_square_moonclaw_json() -> Json
 
 pub fn trusted_square_moonrobo_json() -> Json
+
+pub fn trusted_square_noetix_walk_json() -> Json
+
+pub fn trusted_square_noetix_walk_markdown() -> String
+
+pub fn trusted_square_noetix_walk_trace() -> @moonrobo.NoetixMoonWalkTrace
 
 pub fn trusted_square_view_json() -> Json
 

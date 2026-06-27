@@ -5,10 +5,14 @@ import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
   "vectie/moonmoon/src/mission",
+  "vectie/moonmoon/src/moonphys",
   "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/terrain",
 }
 
 // Values
+pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig
+
 pub fn execution_state_label(MoonroboExecutionState) -> String
 
 pub fn first_trusted_square_handoffs() -> Array[MoonroboTaskHandoff]
@@ -16,6 +20,12 @@ pub fn first_trusted_square_handoffs() -> Array[MoonroboTaskHandoff]
 pub fn first_trusted_square_json() -> Json
 
 pub fn first_trusted_square_markdown() -> String
+
+pub fn first_trusted_square_noetix_walk_json() -> Json
+
+pub fn first_trusted_square_noetix_walk_markdown() -> String
+
+pub fn first_trusted_square_noetix_walk_trace(frame_count? : Int) -> NoetixMoonWalkTrace
 
 pub fn first_trusted_square_primary_handoff() -> MoonroboTaskHandoff
 
@@ -83,6 +93,12 @@ pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
 
 pub fn handoff_status_label(MoonroboTaskHandoff) -> String
 
+pub fn noetix_moon_walk_frame(@terrain.TerrainGrid, NoetixMoonWalkConfig, Int) -> NoetixMoonWalkFrame
+
+pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile
+
+pub fn noetix_moon_walk_trace(@terrain.TerrainGrid, Int, config? : NoetixMoonWalkConfig) -> NoetixMoonWalkTrace
+
 pub fn precondition_status_label(RobotPrecondition) -> String
 
 pub fn regenerated_receipt_readiness_action_receipt_closeout(String, String, String, String, Array[RegeneratedReceiptReadinessActionReceiptInput]) -> RegeneratedReceiptReadinessActionReceiptCloseout
@@ -140,6 +156,8 @@ pub fn remediation_margin_regenerated_receipt_readiness_state_label(RemediationM
 pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
+
+pub fn render_noetix_moon_walk_markdown(NoetixMoonWalkTrace) -> String
 
 pub fn render_regenerated_receipt_readiness_action_receipt_closeout_json(RegeneratedReceiptReadinessActionReceiptCloseout) -> Json
 
@@ -223,6 +241,61 @@ pub(all) struct MoonroboTaskHandoff {
   execution : MoonroboExecutionEnvelope
   preconditions : Array[RobotPrecondition]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixFootContactProbe {
+  foot_id : String
+  position : @moonphys.Vec3
+  terrain_elevation_m : Double
+  clearance_m : Double
+  in_contact : Bool
+  local_grade : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixMoonWalkConfig {
+  config_id : String
+  gravity_mps2 : Double
+  dt_s : Double
+  speed_mps : Double
+  step_length_m : Double
+  step_height_m : Double
+  cycle_frames : Int
+  lateral_foot_offset_m : Double
+  min_swing_clearance_m : Double
+  caution_grade : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixMoonWalkFrame {
+  frame_index : Int
+  time_s : Double
+  body_position : @moonphys.Vec3
+  support_phase : String
+  left_foot : NoetixFootContactProbe
+  right_foot : NoetixFootContactProbe
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixMoonWalkRobotProfile {
+  robot_id : String
+  label : String
+  source_suite : String
+  source_model_path : String
+  source_profile_path : String
+  joint_count : Int
+  model_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixMoonWalkTrace {
+  trace_id : String
+  robot : NoetixMoonWalkRobotProfile
+  config : NoetixMoonWalkConfig
+  terrain_tile_id : String
+  terrain_cell_size_m : Double
+  frame_count : Int
+  endless_axis : String
+  frames : Array[NoetixMoonWalkFrame]
+  note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RegeneratedReceiptReadinessActionReceiptCloseout {

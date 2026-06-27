@@ -44,6 +44,21 @@ pub fn trusted_square_moonrobo_json() -> Json {
 }
 
 ///|
+pub fn trusted_square_noetix_walk_trace() -> @moonrobo.NoetixMoonWalkTrace {
+  @moonrobo.first_trusted_square_noetix_walk_trace()
+}
+
+///|
+pub fn trusted_square_noetix_walk_markdown() -> String {
+  @moonrobo.first_trusted_square_noetix_walk_markdown()
+}
+
+///|
+pub fn trusted_square_noetix_walk_json() -> Json {
+  @moonrobo.first_trusted_square_noetix_walk_json()
+}
+
+///|
 pub fn trusted_square_view_model() -> @ui.TrustedSquareViewModel {
   @ui.first_trusted_square_view_model()
 }

@@ -1,0 +1,31 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/moonphys"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn lunar_environment() -> PhysicsEnvironment
+
+pub fn vec3(Double, Double, Double) -> Vec3
+
+// Errors
+
+// Types and methods
+pub(all) struct PhysicsEnvironment {
+  environment_id : String
+  gravity_mps2 : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Vec3 {
+  x : Double
+  y : Double
+  z : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+
