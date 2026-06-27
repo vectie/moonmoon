@@ -43,6 +43,7 @@ pub(all) struct NoetixSourceModelReport {
   missing_collision_link_count : Int
   missing_inertial_link_count : Int
   source_metadata_blocker_count : Int
+  source_metadata_inventory : @moonphys.ModelMetadataInventory
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool
@@ -206,12 +207,20 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
   let robot = noetix_moon_walk_robot_profile()
   let visuals = noetix_source_visual_geometries()
   let joint_limits = noetix_source_joint_limits()
+  let link_names : Array[String] = []
   let missing_collision_links : Array[String] = []
   let missing_inertial_links : Array[String] = []
   for link in noetix_reference_links() {
+    link_names.push(link.link_name)
     missing_collision_links.push(link.link_name)
     missing_inertial_links.push(link.link_name)
   }
+  let metadata_inventory = @moonphys.model_metadata_inventory(
+    "noetix-e1-source-model",
+    link_names,
+    [],
+    [],
+  )
   {
     report_id: "moonrobo/noetix-e1/source-model/audit-v0",
     robot_id: robot.robot_id,
@@ -225,8 +234,8 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     inertial_tag_count: 0,
     missing_collision_link_count: missing_collision_links.length(),
     missing_inertial_link_count: missing_inertial_links.length(),
-    source_metadata_blocker_count: missing_collision_links.length() +
-    missing_inertial_links.length(),
+    source_metadata_blocker_count: metadata_inventory.blocker_count,
+    source_metadata_inventory: metadata_inventory,
     joint_limit_count: joint_limits.length(),
     low_level_joint_control_enabled: false,
     high_level_walk_requires_approval: true,
@@ -267,6 +276,7 @@ pub fn render_noetix_source_model_markdown(
   text += "- missing collision links: \{report.missing_collision_link_count}\n"
   text += "- missing inertial links: \{report.missing_inertial_link_count}\n"
   text += "- source metadata blockers: \{report.source_metadata_blocker_count}\n"
+  text += "- source metadata inventory: \{report.source_metadata_inventory.status}\n"
   text += "- joint limits: \{report.joint_limit_count}\n"
   text += "- low-level joint control enabled: \{report.low_level_joint_control_enabled}\n"
   text += "- high-level walk requires approval: \{report.high_level_walk_requires_approval}\n"

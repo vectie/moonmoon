@@ -43,6 +43,22 @@ def main(argv: list[str]) -> int:
   require(report["missing_collision_link_count"] == 25, "missing collision links")
   require(report["missing_inertial_link_count"] == 25, "missing inertial links")
   require(report["source_metadata_blocker_count"] == 50, "metadata blockers")
+  inventory = report["source_metadata_inventory"]
+  require(inventory["model_id"] == "noetix-e1-source-model", "inventory model id")
+  require(inventory["link_count"] == 25, "inventory link count")
+  require(inventory["collision_shape_link_count"] == 0, "inventory collision links")
+  require(inventory["inertial_link_count"] == 0, "inventory inertial links")
+  require(inventory["blocker_count"] == 50, "inventory blocker count")
+  require(not inventory["ready"], "inventory must not be ready")
+  require(inventory["status"] == "model-metadata-blocked", "inventory status")
+  require(
+    len(inventory["missing_collision_shape_links"]) == 25,
+    "inventory missing collision link array",
+  )
+  require(
+    len(inventory["missing_inertial_links"]) == 25,
+    "inventory missing inertial link array",
+  )
   require(len(report["missing_collision_links"]) == 25, "missing collision link array")
   require(len(report["missing_inertial_links"]) == 25, "missing inertial link array")
   require("left_foot" in report["missing_collision_links"], "left foot collision blocker")

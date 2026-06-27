@@ -134,6 +134,38 @@ test "contact patch load flags partial contact pressure" {
 }
 
 ///|
+test "model metadata inventory reports missing collision and inertial links" {
+  let inventory = model_metadata_inventory(
+    "robot-source",
+    ["base", "foot"],
+    ["base"],
+    [],
+  )
+  assert_eq(inventory.link_count, 2)
+  assert_eq(inventory.collision_shape_link_count, 1)
+  assert_eq(inventory.inertial_link_count, 0)
+  assert_eq(inventory.blocker_count, 3)
+  assert_true(!inventory.ready)
+  assert_eq(inventory.status, "model-metadata-blocked")
+  assert_true(inventory.missing_collision_shape_links.contains("foot"))
+  assert_true(inventory.missing_inertial_links.contains("base"))
+  assert_true(inventory.missing_inertial_links.contains("foot"))
+}
+
+///|
+test "model metadata inventory is ready when required metadata is present" {
+  let inventory = model_metadata_inventory(
+    "robot-source",
+    ["base", "foot"],
+    ["base", "foot"],
+    ["base", "foot"],
+  )
+  assert_eq(inventory.blocker_count, 0)
+  assert_true(inventory.ready)
+  assert_eq(inventory.status, "model-metadata-ready")
+}
+
+///|
 test "heightfield contact patch exposes partial sole penetration" {
   let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
   let patch = heightfield_contact_patch(

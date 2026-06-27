@@ -35,6 +35,8 @@ evidence.
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, zero authoritative collision or
   inertial tags, and explicit per-link collision/inertial metadata blockers.
+  The blocker count is now backed by a generic Moonphys model-metadata
+  inventory contract, keeping readiness semantics reusable and robot-agnostic.
 - A source-sync verifier parses sibling Moonrobo `robot.json` and
   `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
   collision tags, and high-control limits cannot silently drift from the source.
@@ -506,13 +508,16 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   and correction estimates, generic hinge-joint assessment over rigid body
   motion states, generic hinge-joint frame assessment over multi-body joint
   sets, and joint mechanical power/work accounting implemented;
+generic source-model metadata inventory/readiness with missing collision-shape
+and inertial-link blocker accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
 URDF/profile paths, visual geometry, concrete joint-limit records, and the
-absence of authoritative collision/inertial tags. Moonrobo's Noetix URDF joint
-limits are carried from the source audit into the robot-specific profile as
-Moonphys joint limits. Noetix joint-control review evidence replays the gait
+absence of authoritative collision/inertial tags through the generic Moonphys
+metadata inventory. Moonrobo's Noetix URDF joint limits are carried from the
+source audit into the robot-specific profile as Moonphys joint limits. Noetix
+joint-control review evidence replays the gait
 phases through Moonphys joint-frame motor integration, servo, torque, velocity,
 position limits, mechanical power/work accounting, and compact Moonphys
 hinge-joint frame assessment plus world hinge constraint replay summaries for
@@ -611,6 +616,8 @@ Next `moonphys` capabilities:
 - rectangular heightfield contact-patch sampling over center/corner probes
   (implemented)
 - deterministic rigid-body heightfield replay (implemented)
+- generic source-model metadata inventory/readiness for collision and inertial
+  blockers (implemented)
 
 Robot-specific missing metadata:
 
