@@ -119,6 +119,8 @@ pub fn noetix_dynamic_stability_frame(NoetixMoonWalkTrace, Int, NoetixPhysicsPro
 
 pub fn noetix_dynamic_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixDynamicStabilityReport
 
+pub fn noetix_joint_actuator_profiles() -> Array[NoetixJointActuatorProfile]
+
 pub fn noetix_link_pose_frame(NoetixMoonWalkFrame) -> NoetixLinkPoseFrame
 
 pub fn noetix_link_pose_trace(NoetixMoonWalkTrace) -> NoetixLinkPoseTrace
@@ -287,6 +289,12 @@ pub(all) struct MoonroboTaskHandoff {
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixCollisionShapeProfile {
+  link_name : String
+  shape : @moonphys.CollisionShape
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixDynamicStabilityFrame {
   frame_index : Int
   time_s : Double
@@ -330,6 +338,15 @@ pub(all) struct NoetixFootGeometry {
   half_width_m : Double
   sole_radius_m : Double
   friction_coefficient : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixJointActuatorProfile {
+  joint_name : String
+  joint_index : Int
+  limit : @moonphys.JointLimit
+  servo : @moonphys.JointServoConfig
+  inertia_kg_m2 : Double
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -440,6 +457,8 @@ pub(all) struct NoetixPhysicsProfile {
   source_profile_path : String
   mass_model : NoetixMassModel
   foot_geometry : Array[NoetixFootGeometry]
+  actuator_profiles : Array[NoetixJointActuatorProfile]
+  collision_shapes : Array[NoetixCollisionShapeProfile]
   material_model : String
   hardware_authority : String
   status : String

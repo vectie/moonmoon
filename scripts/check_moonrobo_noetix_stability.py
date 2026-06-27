@@ -19,6 +19,8 @@ def main() -> None:
     profile = report.get("profile", {})
     mass_model = profile.get("mass_model", {})
     foot_geometry = profile.get("foot_geometry", [])
+    actuator_profiles = profile.get("actuator_profiles", [])
+    collision_shapes = profile.get("collision_shapes", [])
 
     if report.get("report_id") != (
         "moonrobo/noetix-e1/static-support/"
@@ -41,6 +43,37 @@ def main() -> None:
         fail("expected left and right foot geometry")
     if any("simulation-assumption" not in foot.get("source_status", "") for foot in foot_geometry):
         fail("foot geometry must be marked as an assumption")
+    if len(actuator_profiles) != 24:
+        fail("expected 24 URDF actuator limit profiles")
+    leg_l4 = next((act for act in actuator_profiles if act.get("joint_name") == "leg_l4_joint"), None)
+    if not leg_l4:
+        fail("missing leg_l4_joint actuator profile")
+    leg_l4_limit = leg_l4.get("limit", {})
+    if (
+        leg_l4.get("joint_index") != 8
+        or leg_l4_limit.get("min_position_rad") != -1.8
+        or leg_l4_limit.get("max_position_rad") != 1.8
+        or leg_l4_limit.get("max_torque_nm") != 100
+        or leg_l4_limit.get("max_velocity_rad_s") != 3
+    ):
+        fail("leg_l4_joint URDF limits were not preserved")
+    if "urdf-limit-tag" not in leg_l4.get("source_status", ""):
+        fail("actuator profile source must cite URDF limit tags")
+    if len(collision_shapes) < 6:
+        fail("expected review collision shape profiles")
+    if not any(
+        shape.get("link_name") == "chest_link"
+        and shape.get("shape", {}).get("kind") == "BoxShape"
+        and "urdf-visual-box" in shape.get("source_status", "")
+        for shape in collision_shapes
+    ):
+        fail("missing chest visual-box review collision shape")
+    if not any(
+        shape.get("link_name") == "left_foot"
+        and "simulation-assumption" in shape.get("source_status", "")
+        for shape in collision_shapes
+    ):
+        fail("missing assumed left-foot sole collision shape")
     if report.get("frame_count") != len(frames) or len(frames) < 24:
         fail("frame count is inconsistent or too small")
     if report.get("status") != "static-support-review":

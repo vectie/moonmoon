@@ -4,6 +4,8 @@
 - trace: moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola
 - profile: moonrobo/noetix-e1/physics-profile-v0
 - mass: 38 kg (simulation-assumption; no inertial tags in referenced URDF/profile)
+- actuator profiles: 24 URDF joint limits
+- collision profiles: 6 review shapes
 - frames: 32
 - stable frames: 0
 - review frames: 32

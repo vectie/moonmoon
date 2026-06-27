@@ -40,12 +40,57 @@ test "noetix physics profile keeps assumed dynamics explicit" {
   let profile = default_noetix_physics_profile()
   assert_eq(profile.robot_id, "noetix-e1-lab-01")
   assert_eq(profile.foot_geometry.length(), 2)
+  assert_eq(profile.actuator_profiles.length(), 24)
+  assert_true(profile.collision_shapes.length() >= 6)
   assert_true(profile.mass_model.mass_kg > 0.0)
   assert_true(
     profile.mass_model.source_status.contains("simulation-assumption"),
   )
+  assert_true(profile.note.contains("URDF joint limits"))
   assert_true(profile.note.contains("simulation assumptions"))
   assert_eq(profile.hardware_authority, "moonmoon-safety-gate-only")
+}
+
+///|
+test "noetix actuator profiles carry urdf joint limits into moonphys" {
+  let actuators = noetix_joint_actuator_profiles()
+  assert_eq(actuators.length(), 24)
+  assert_true(
+    actuators.any(fn(actuator) {
+      actuator.joint_name == "leg_l4_joint" &&
+      actuator.joint_index == 8 &&
+      actuator.limit.min_position_rad == -1.8 &&
+      actuator.limit.max_position_rad == 1.8 &&
+      actuator.limit.max_torque_nm == 100.0 &&
+      actuator.limit.max_velocity_rad_s == 3.0 &&
+      actuator.source_status.contains("urdf-limit-tag")
+    }),
+  )
+  assert_true(
+    actuators.any(fn(actuator) {
+      actuator.joint_name == "waist_2_joint" &&
+      actuator.limit.max_velocity_rad_s == 2.0
+    }),
+  )
+}
+
+///|
+test "noetix collision profiles expose moonphys review shapes" {
+  let profile = default_noetix_physics_profile()
+  assert_true(
+    profile.collision_shapes.any(fn(collision) {
+      collision.link_name == "chest_link" &&
+      collision.shape.kind == @moonphys.BoxShape &&
+      collision.source_status.contains("urdf-visual-box")
+    }),
+  )
+  assert_true(
+    profile.collision_shapes.any(fn(collision) {
+      collision.link_name == "left_foot" &&
+      collision.shape.kind == @moonphys.BoxShape &&
+      collision.source_status.contains("simulation-assumption")
+    }),
+  )
 }
 
 ///|

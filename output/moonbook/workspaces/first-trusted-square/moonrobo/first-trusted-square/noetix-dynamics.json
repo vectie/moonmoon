@@ -45,10 +45,536 @@
           "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
         }
       ],
+      "actuator_profiles": [
+        {
+          "joint_name": "arm_l1_joint",
+          "joint_index": 0,
+          "limit": {
+            "joint_id": "arm_l1_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 45
+          },
+          "servo": {
+            "joint_id": "arm_l1_joint",
+            "stiffness_nm_per_rad": 11.25,
+            "damping_nm_s_per_rad": 0.9
+          },
+          "inertia_kg_m2": 0.04,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_l2_joint",
+          "joint_index": 1,
+          "limit": {
+            "joint_id": "arm_l2_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 45
+          },
+          "servo": {
+            "joint_id": "arm_l2_joint",
+            "stiffness_nm_per_rad": 11.25,
+            "damping_nm_s_per_rad": 0.9
+          },
+          "inertia_kg_m2": 0.04,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_l3_joint",
+          "joint_index": 2,
+          "limit": {
+            "joint_id": "arm_l3_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 35
+          },
+          "servo": {
+            "joint_id": "arm_l3_joint",
+            "stiffness_nm_per_rad": 8.75,
+            "damping_nm_s_per_rad": 0.7000000000000001
+          },
+          "inertia_kg_m2": 0.03,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_l4_joint",
+          "joint_index": 3,
+          "limit": {
+            "joint_id": "arm_l4_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 30
+          },
+          "servo": {
+            "joint_id": "arm_l4_joint",
+            "stiffness_nm_per_rad": 7.5,
+            "damping_nm_s_per_rad": 0.6
+          },
+          "inertia_kg_m2": 0.03,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_l5_joint",
+          "joint_index": 4,
+          "limit": {
+            "joint_id": "arm_l5_joint",
+            "min_position_rad": -1.2,
+            "max_position_rad": 1.2,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 20
+          },
+          "servo": {
+            "joint_id": "arm_l5_joint",
+            "stiffness_nm_per_rad": 5,
+            "damping_nm_s_per_rad": 0.4
+          },
+          "inertia_kg_m2": 0.02,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l1_joint",
+          "joint_index": 5,
+          "limit": {
+            "joint_id": "leg_l1_joint",
+            "min_position_rad": -1.2,
+            "max_position_rad": 1.2,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 90
+          },
+          "servo": {
+            "joint_id": "leg_l1_joint",
+            "stiffness_nm_per_rad": 22.5,
+            "damping_nm_s_per_rad": 1.8
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l2_joint",
+          "joint_index": 6,
+          "limit": {
+            "joint_id": "leg_l2_joint",
+            "min_position_rad": -0.9,
+            "max_position_rad": 0.9,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 90
+          },
+          "servo": {
+            "joint_id": "leg_l2_joint",
+            "stiffness_nm_per_rad": 22.5,
+            "damping_nm_s_per_rad": 1.8
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l3_joint",
+          "joint_index": 7,
+          "limit": {
+            "joint_id": "leg_l3_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 100
+          },
+          "servo": {
+            "joint_id": "leg_l3_joint",
+            "stiffness_nm_per_rad": 25,
+            "damping_nm_s_per_rad": 2
+          },
+          "inertia_kg_m2": 0.1,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l4_joint",
+          "joint_index": 8,
+          "limit": {
+            "joint_id": "leg_l4_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 100
+          },
+          "servo": {
+            "joint_id": "leg_l4_joint",
+            "stiffness_nm_per_rad": 25,
+            "damping_nm_s_per_rad": 2
+          },
+          "inertia_kg_m2": 0.1,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l5_joint",
+          "joint_index": 9,
+          "limit": {
+            "joint_id": "leg_l5_joint",
+            "min_position_rad": -0.8,
+            "max_position_rad": 0.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "leg_l5_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_l6_joint",
+          "joint_index": 10,
+          "limit": {
+            "joint_id": "leg_l6_joint",
+            "min_position_rad": -0.8,
+            "max_position_rad": 0.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "leg_l6_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.06,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_r1_joint",
+          "joint_index": 11,
+          "limit": {
+            "joint_id": "arm_r1_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 45
+          },
+          "servo": {
+            "joint_id": "arm_r1_joint",
+            "stiffness_nm_per_rad": 11.25,
+            "damping_nm_s_per_rad": 0.9
+          },
+          "inertia_kg_m2": 0.04,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_r2_joint",
+          "joint_index": 12,
+          "limit": {
+            "joint_id": "arm_r2_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 45
+          },
+          "servo": {
+            "joint_id": "arm_r2_joint",
+            "stiffness_nm_per_rad": 11.25,
+            "damping_nm_s_per_rad": 0.9
+          },
+          "inertia_kg_m2": 0.04,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_r3_joint",
+          "joint_index": 13,
+          "limit": {
+            "joint_id": "arm_r3_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 35
+          },
+          "servo": {
+            "joint_id": "arm_r3_joint",
+            "stiffness_nm_per_rad": 8.75,
+            "damping_nm_s_per_rad": 0.7000000000000001
+          },
+          "inertia_kg_m2": 0.03,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_r4_joint",
+          "joint_index": 14,
+          "limit": {
+            "joint_id": "arm_r4_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 30
+          },
+          "servo": {
+            "joint_id": "arm_r4_joint",
+            "stiffness_nm_per_rad": 7.5,
+            "damping_nm_s_per_rad": 0.6
+          },
+          "inertia_kg_m2": 0.03,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "arm_r5_joint",
+          "joint_index": 15,
+          "limit": {
+            "joint_id": "arm_r5_joint",
+            "min_position_rad": -1.2,
+            "max_position_rad": 1.2,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 20
+          },
+          "servo": {
+            "joint_id": "arm_r5_joint",
+            "stiffness_nm_per_rad": 5,
+            "damping_nm_s_per_rad": 0.4
+          },
+          "inertia_kg_m2": 0.02,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r1_joint",
+          "joint_index": 16,
+          "limit": {
+            "joint_id": "leg_r1_joint",
+            "min_position_rad": -1.2,
+            "max_position_rad": 1.2,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 90
+          },
+          "servo": {
+            "joint_id": "leg_r1_joint",
+            "stiffness_nm_per_rad": 22.5,
+            "damping_nm_s_per_rad": 1.8
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r2_joint",
+          "joint_index": 17,
+          "limit": {
+            "joint_id": "leg_r2_joint",
+            "min_position_rad": -0.9,
+            "max_position_rad": 0.9,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 90
+          },
+          "servo": {
+            "joint_id": "leg_r2_joint",
+            "stiffness_nm_per_rad": 22.5,
+            "damping_nm_s_per_rad": 1.8
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r3_joint",
+          "joint_index": 18,
+          "limit": {
+            "joint_id": "leg_r3_joint",
+            "min_position_rad": -1.6,
+            "max_position_rad": 1.6,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 100
+          },
+          "servo": {
+            "joint_id": "leg_r3_joint",
+            "stiffness_nm_per_rad": 25,
+            "damping_nm_s_per_rad": 2
+          },
+          "inertia_kg_m2": 0.1,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r4_joint",
+          "joint_index": 19,
+          "limit": {
+            "joint_id": "leg_r4_joint",
+            "min_position_rad": -1.8,
+            "max_position_rad": 1.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 100
+          },
+          "servo": {
+            "joint_id": "leg_r4_joint",
+            "stiffness_nm_per_rad": 25,
+            "damping_nm_s_per_rad": 2
+          },
+          "inertia_kg_m2": 0.1,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r5_joint",
+          "joint_index": 20,
+          "limit": {
+            "joint_id": "leg_r5_joint",
+            "min_position_rad": -0.8,
+            "max_position_rad": 0.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "leg_r5_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.08,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "leg_r6_joint",
+          "joint_index": 21,
+          "limit": {
+            "joint_id": "leg_r6_joint",
+            "min_position_rad": -0.8,
+            "max_position_rad": 0.8,
+            "max_velocity_rad_s": 3,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "leg_r6_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.06,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "waist_1_joint",
+          "joint_index": 22,
+          "limit": {
+            "joint_id": "waist_1_joint",
+            "min_position_rad": -0.8,
+            "max_position_rad": 0.8,
+            "max_velocity_rad_s": 2,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "waist_1_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.12,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        },
+        {
+          "joint_name": "waist_2_joint",
+          "joint_index": 23,
+          "limit": {
+            "joint_id": "waist_2_joint",
+            "min_position_rad": -0.5,
+            "max_position_rad": 0.5,
+            "max_velocity_rad_s": 2,
+            "max_torque_nm": 80
+          },
+          "servo": {
+            "joint_id": "waist_2_joint",
+            "stiffness_nm_per_rad": 20,
+            "damping_nm_s_per_rad": 1.6
+          },
+          "inertia_kg_m2": 0.12,
+          "source_status": "urdf-limit-tag; servo gains and inertia are simulation assumptions"
+        }
+      ],
+      "collision_shapes": [
+        {
+          "link_name": "torso_link",
+          "shape": {
+            "shape_id": "torso_link/visual-box",
+            "kind": "BoxShape",
+            "radius_m": 0,
+            "half_height_m": 0,
+            "half_extents_m": {
+              "x": 0.11,
+              "y": 0.08,
+              "z": 0.09
+            }
+          },
+          "source_status": "urdf-visual-box-derived-review-shape"
+        },
+        {
+          "link_name": "chest_link",
+          "shape": {
+            "shape_id": "chest_link/visual-box",
+            "kind": "BoxShape",
+            "radius_m": 0,
+            "half_height_m": 0,
+            "half_extents_m": {
+              "x": 0.14,
+              "y": 0.17,
+              "z": 0.09
+            }
+          },
+          "source_status": "urdf-visual-box-derived-review-shape"
+        },
+        {
+          "link_name": "left_leg_1",
+          "shape": {
+            "shape_id": "left_leg_1/visual-cylinder",
+            "kind": "CapsuleShape",
+            "radius_m": 0.045,
+            "half_height_m": 0.07,
+            "half_extents_m": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "source_status": "urdf-visual-cylinder-derived-review-shape"
+        },
+        {
+          "link_name": "right_leg_1",
+          "shape": {
+            "shape_id": "right_leg_1/visual-cylinder",
+            "kind": "CapsuleShape",
+            "radius_m": 0.045,
+            "half_height_m": 0.07,
+            "half_extents_m": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "source_status": "urdf-visual-cylinder-derived-review-shape"
+        },
+        {
+          "link_name": "left_foot",
+          "shape": {
+            "shape_id": "left_foot/assumed-sole",
+            "kind": "BoxShape",
+            "radius_m": 0,
+            "half_height_m": 0,
+            "half_extents_m": {
+              "x": 0.11,
+              "y": 0.045,
+              "z": 0.012
+            }
+          },
+          "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
+        },
+        {
+          "link_name": "right_foot",
+          "shape": {
+            "shape_id": "right_foot/assumed-sole",
+            "kind": "BoxShape",
+            "radius_m": 0,
+            "half_height_m": 0,
+            "half_extents_m": {
+              "x": 0.11,
+              "y": 0.045,
+              "z": 0.012
+            }
+          },
+          "source_status": "simulation-assumption; URDF names link but omits sole collision geometry"
+        }
+      ],
       "material_model": "dry-regolith-review-assumption",
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "review-only",
-      "note": "Mass, center of mass, foot sole geometry, and friction are explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
+      "note": "URDF joint limits are represented as Moonphys joint limits. Mass, center of mass, servo gains, inertia, foot sole geometry, and friction remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
     },
     "frame_count": 32,
     "capture_stable_frame_count": 0,

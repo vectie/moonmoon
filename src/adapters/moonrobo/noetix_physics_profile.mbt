@@ -20,6 +20,23 @@ pub(all) struct NoetixFootGeometry {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixJointActuatorProfile {
+  joint_name : String
+  joint_index : Int
+  limit : @moonphys.JointLimit
+  servo : @moonphys.JointServoConfig
+  inertia_kg_m2 : Double
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct NoetixCollisionShapeProfile {
+  link_name : String
+  shape : @moonphys.CollisionShape
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixPhysicsProfile {
   profile_id : String
   robot_id : String
@@ -27,6 +44,8 @@ pub(all) struct NoetixPhysicsProfile {
   source_profile_path : String
   mass_model : NoetixMassModel
   foot_geometry : Array[NoetixFootGeometry]
+  actuator_profiles : Array[NoetixJointActuatorProfile]
+  collision_shapes : Array[NoetixCollisionShapeProfile]
   material_model : String
   hardware_authority : String
   status : String
@@ -59,8 +78,150 @@ pub(all) struct NoetixWalkStabilityReport {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+fn actuator_profile(
+  joint_name : String,
+  joint_index : Int,
+  lower_rad : Double,
+  upper_rad : Double,
+  effort_nm : Double,
+  velocity_rad_s : Double,
+  inertia_kg_m2 : Double,
+) -> NoetixJointActuatorProfile {
+  {
+    joint_name,
+    joint_index,
+    limit: @moonphys.joint_limit(
+      joint_name, lower_rad, upper_rad, velocity_rad_s, effort_nm,
+    ),
+    servo: @moonphys.joint_servo_config(
+      joint_name,
+      effort_nm * 0.25,
+      effort_nm * 0.02,
+    ),
+    inertia_kg_m2,
+    source_status: "urdf-limit-tag; servo gains and inertia are simulation assumptions",
+  }
+}
+
+///|
+pub fn noetix_joint_actuator_profiles() -> Array[NoetixJointActuatorProfile] {
+  [
+    actuator_profile("arm_l1_joint", 0, -1.8, 1.8, 45.0, 3.0, 0.04),
+    actuator_profile("arm_l2_joint", 1, -1.6, 1.6, 45.0, 3.0, 0.04),
+    actuator_profile("arm_l3_joint", 2, -1.8, 1.8, 35.0, 3.0, 0.03),
+    actuator_profile("arm_l4_joint", 3, -1.6, 1.6, 30.0, 3.0, 0.03),
+    actuator_profile("arm_l5_joint", 4, -1.2, 1.2, 20.0, 3.0, 0.02),
+    actuator_profile("leg_l1_joint", 5, -1.2, 1.2, 90.0, 3.0, 0.08),
+    actuator_profile("leg_l2_joint", 6, -0.9, 0.9, 90.0, 3.0, 0.08),
+    actuator_profile("leg_l3_joint", 7, -1.6, 1.6, 100.0, 3.0, 0.10),
+    actuator_profile("leg_l4_joint", 8, -1.8, 1.8, 100.0, 3.0, 0.10),
+    actuator_profile("leg_l5_joint", 9, -0.8, 0.8, 80.0, 3.0, 0.08),
+    actuator_profile("leg_l6_joint", 10, -0.8, 0.8, 80.0, 3.0, 0.06),
+    actuator_profile("arm_r1_joint", 11, -1.8, 1.8, 45.0, 3.0, 0.04),
+    actuator_profile("arm_r2_joint", 12, -1.6, 1.6, 45.0, 3.0, 0.04),
+    actuator_profile("arm_r3_joint", 13, -1.8, 1.8, 35.0, 3.0, 0.03),
+    actuator_profile("arm_r4_joint", 14, -1.6, 1.6, 30.0, 3.0, 0.03),
+    actuator_profile("arm_r5_joint", 15, -1.2, 1.2, 20.0, 3.0, 0.02),
+    actuator_profile("leg_r1_joint", 16, -1.2, 1.2, 90.0, 3.0, 0.08),
+    actuator_profile("leg_r2_joint", 17, -0.9, 0.9, 90.0, 3.0, 0.08),
+    actuator_profile("leg_r3_joint", 18, -1.6, 1.6, 100.0, 3.0, 0.10),
+    actuator_profile("leg_r4_joint", 19, -1.8, 1.8, 100.0, 3.0, 0.10),
+    actuator_profile("leg_r5_joint", 20, -0.8, 0.8, 80.0, 3.0, 0.08),
+    actuator_profile("leg_r6_joint", 21, -0.8, 0.8, 80.0, 3.0, 0.06),
+    actuator_profile("waist_1_joint", 22, -0.8, 0.8, 80.0, 2.0, 0.12),
+    actuator_profile("waist_2_joint", 23, -0.5, 0.5, 80.0, 2.0, 0.12),
+  ]
+}
+
+///|
+fn collision_shape_profile(
+  link_name : String,
+  shape : @moonphys.CollisionShape,
+  source_status : String,
+) -> NoetixCollisionShapeProfile {
+  { link_name, shape, source_status }
+}
+
+///|
+fn noetix_collision_shape_profiles(
+  left_foot : NoetixFootGeometry,
+  right_foot : NoetixFootGeometry,
+) -> Array[NoetixCollisionShapeProfile] {
+  [
+    collision_shape_profile(
+      "torso_link",
+      @moonphys.collision_box(
+        "torso_link/visual-box",
+        @moonphys.vec3(0.11, 0.08, 0.09),
+      ),
+      "urdf-visual-box-derived-review-shape",
+    ),
+    collision_shape_profile(
+      "chest_link",
+      @moonphys.collision_box(
+        "chest_link/visual-box",
+        @moonphys.vec3(0.14, 0.17, 0.09),
+      ),
+      "urdf-visual-box-derived-review-shape",
+    ),
+    collision_shape_profile(
+      "left_leg_1",
+      @moonphys.collision_capsule("left_leg_1/visual-cylinder", 0.045, 0.07),
+      "urdf-visual-cylinder-derived-review-shape",
+    ),
+    collision_shape_profile(
+      "right_leg_1",
+      @moonphys.collision_capsule("right_leg_1/visual-cylinder", 0.045, 0.07),
+      "urdf-visual-cylinder-derived-review-shape",
+    ),
+    collision_shape_profile(
+      left_foot.link_name,
+      @moonphys.collision_box(
+        "\{left_foot.link_name}/assumed-sole",
+        @moonphys.vec3(
+          left_foot.half_length_m,
+          left_foot.half_width_m,
+          left_foot.sole_radius_m,
+        ),
+      ),
+      left_foot.source_status,
+    ),
+    collision_shape_profile(
+      right_foot.link_name,
+      @moonphys.collision_box(
+        "\{right_foot.link_name}/assumed-sole",
+        @moonphys.vec3(
+          right_foot.half_length_m,
+          right_foot.half_width_m,
+          right_foot.sole_radius_m,
+        ),
+      ),
+      right_foot.source_status,
+    ),
+  ]
+}
+
+///|
 pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
   let robot = noetix_moon_walk_robot_profile()
+  let left_foot : NoetixFootGeometry = {
+    foot_id: "left-foot",
+    link_name: "left_foot",
+    half_length_m: 0.11,
+    half_width_m: 0.045,
+    sole_radius_m: 0.012,
+    friction_coefficient: 0.62,
+    source_status: "simulation-assumption; URDF names link but omits sole collision geometry",
+  }
+  let right_foot : NoetixFootGeometry = {
+    foot_id: "right-foot",
+    link_name: "right_foot",
+    half_length_m: 0.11,
+    half_width_m: 0.045,
+    sole_radius_m: 0.012,
+    friction_coefficient: 0.62,
+    source_status: "simulation-assumption; URDF names link but omits sole collision geometry",
+  }
   {
     profile_id: "moonrobo/noetix-e1/physics-profile-v0",
     robot_id: robot.robot_id,
@@ -74,30 +235,13 @@ pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
       com_y_offset_m: 0.0,
       source_status: "simulation-assumption; no inertial tags in referenced URDF/profile",
     },
-    foot_geometry: [
-      {
-        foot_id: "left-foot",
-        link_name: "left_foot",
-        half_length_m: 0.11,
-        half_width_m: 0.045,
-        sole_radius_m: 0.012,
-        friction_coefficient: 0.62,
-        source_status: "simulation-assumption; URDF names link but omits sole collision geometry",
-      },
-      {
-        foot_id: "right-foot",
-        link_name: "right_foot",
-        half_length_m: 0.11,
-        half_width_m: 0.045,
-        sole_radius_m: 0.012,
-        friction_coefficient: 0.62,
-        source_status: "simulation-assumption; URDF names link but omits sole collision geometry",
-      },
-    ],
+    foot_geometry: [left_foot, right_foot],
+    actuator_profiles: noetix_joint_actuator_profiles(),
+    collision_shapes: noetix_collision_shape_profiles(left_foot, right_foot),
     material_model: "dry-regolith-review-assumption",
     hardware_authority: "moonmoon-safety-gate-only",
     status: "review-only",
-    note: "Mass, center of mass, foot sole geometry, and friction are explicit simulation assumptions until Moonrobo provides inertial/collision metadata.",
+    note: "URDF joint limits are represented as Moonphys joint limits. Mass, center of mass, servo gains, inertia, foot sole geometry, and friction remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata.",
   }
 }
 
@@ -236,6 +380,8 @@ pub fn render_noetix_stability_markdown(
   text += "- trace: \{report.trace_id}\n"
   text += "- profile: \{report.profile.profile_id}\n"
   text += "- mass: \{report.profile.mass_model.mass_kg} kg (\{report.profile.mass_model.source_status})\n"
+  text += "- actuator profiles: \{report.profile.actuator_profiles.length()} URDF joint limits\n"
+  text += "- collision profiles: \{report.profile.collision_shapes.length()} review shapes\n"
   text += "- frames: \{report.frame_count}\n"
   text += "- stable frames: \{report.stable_frame_count}\n"
   text += "- review frames: \{report.review_frame_count}\n"
