@@ -23,6 +23,8 @@ def main() -> None:
         fail("unexpected robot id")
     if task.get("frame_count", 0) < 24:
         fail("expected at least 24 walk frames")
+    if task.get("endless_gait_cycle_frames") != 20:
+        fail("unexpected endless gait cycle length")
     if task.get("source_model_collision_tag_count") != 0:
         fail("source model should have no authoritative collision tags yet")
     if task.get("source_model_inertial_tag_count") != 0:
@@ -60,6 +62,7 @@ def main() -> None:
     inputs = {item.get("input_id") for item in task.get("inputs", [])}
     expected_inputs = {
         "noetix-source-model",
+        "noetix-endless-gait",
         "noetix-walk-trace",
         "noetix-walk-command-plan",
         "noetix-link-poses",
@@ -76,6 +79,7 @@ def main() -> None:
     expected_artifacts = {
         "noetix-source-model-audit",
         "noetix-moonrobo-source-sync",
+        "noetix-endless-gait-window",
         "noetix-endless-walk-trace",
         "noetix-high-control-walk-command-plan",
         "noetix-urdf-reference-link-poses",
@@ -97,6 +101,12 @@ def main() -> None:
         fail("source sync artifact should not be blocked")
     if "check_moonrobo_noetix_source_sync" not in artifacts["noetix-moonrobo-source-sync"].get("validation_gate", ""):
         fail("source sync artifact must have validator")
+    if not artifacts["noetix-endless-gait-window"].get("ready"):
+        fail("endless gait artifact should be ready evidence")
+    if artifacts["noetix-endless-gait-window"].get("blocking_reason") != "none":
+        fail("endless gait artifact should not be blocked")
+    if "check_moonrobo_noetix_endless_gait" not in artifacts["noetix-endless-gait-window"].get("validation_gate", ""):
+        fail("endless gait artifact must have validator")
     if not artifacts["noetix-high-control-walk-command-plan"].get("ready"):
         fail("walk command plan should be ready dry-run evidence")
     if artifacts["noetix-high-control-walk-command-plan"].get("blocking_reason") != "none":
@@ -124,6 +134,7 @@ def main() -> None:
     for expected in [
         "check_moonrobo_noetix_source_model.py",
         "check_moonrobo_noetix_source_sync.py",
+        "check_moonrobo_noetix_endless_gait.py",
         "check_moonrobo_noetix_walk.py",
         "check_moonrobo_noetix_walk_command.py",
         "check_moonrobo_noetix_link_poses.py",

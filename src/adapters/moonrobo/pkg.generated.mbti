@@ -29,6 +29,12 @@ pub fn first_trusted_square_noetix_dynamic_stability_markdown() -> String
 
 pub fn first_trusted_square_noetix_dynamic_stability_report() -> NoetixDynamicStabilityReport
 
+pub fn first_trusted_square_noetix_endless_gait_evidence() -> NoetixEndlessGaitEvidence
+
+pub fn first_trusted_square_noetix_endless_gait_json() -> Json
+
+pub fn first_trusted_square_noetix_endless_gait_markdown() -> String
+
 pub fn first_trusted_square_noetix_heightfield() -> @moonphys.Heightfield
 
 pub fn first_trusted_square_noetix_inertial_collision_json() -> Json
@@ -143,6 +149,8 @@ pub fn noetix_dynamic_stability_frame(NoetixMoonWalkTrace, Int, NoetixPhysicsPro
 
 pub fn noetix_dynamic_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixDynamicStabilityReport
 
+pub fn noetix_endless_gait_evidence(@moonphys.Heightfield, reference_frame_index? : Int, config? : NoetixMoonWalkConfig) -> NoetixEndlessGaitEvidence
+
 pub fn noetix_high_control_limits() -> NoetixHighControlLimits
 
 pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3) -> NoetixInertialCollisionFrame
@@ -238,6 +246,8 @@ pub fn render_json(Array[MoonroboTaskHandoff]) -> Json
 pub fn render_markdown(Array[MoonroboTaskHandoff]) -> String
 
 pub fn render_noetix_dynamic_stability_markdown(NoetixDynamicStabilityReport) -> String
+
+pub fn render_noetix_endless_gait_markdown(NoetixEndlessGaitEvidence) -> String
 
 pub fn render_noetix_inertial_collision_markdown(NoetixInertialCollisionReport) -> String
 
@@ -374,6 +384,28 @@ pub(all) struct NoetixDynamicStabilityReport {
   review_frame_count : Int
   worst_capture_margin_m : Double
   frames : Array[NoetixDynamicStabilityFrame]
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixEndlessGaitEvidence {
+  evidence_id : String
+  trace_id : String
+  robot_id : String
+  terrain_tile_id : String
+  reference_frame_index : Int
+  repeated_frame_index : Int
+  cycle_frames : Int
+  dt_s : Double
+  speed_mps : Double
+  expected_forward_offset_m : Double
+  observed_forward_offset_m : Double
+  reference_support_phase : String
+  repeated_support_phase : String
+  phase_repeat_verified : Bool
+  contact_repeat_verified : Bool
+  monotonic_forward_verified : Bool
   hardware_authority : String
   status : String
   note : String

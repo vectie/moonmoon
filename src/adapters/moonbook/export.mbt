@@ -20,6 +20,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonroboNoetixSourceModel
   MoonroboNoetixWalk
+  MoonroboNoetixEndlessGait
   MoonroboNoetixWalkCommand
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
@@ -154,6 +155,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboNoetixSourceModel => "moonrobo-noetix-source-model"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
+    MoonroboNoetixEndlessGait => "moonrobo-noetix-endless-gait"
     MoonroboNoetixWalkCommand => "moonrobo-noetix-walk-command"
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
     MoonroboNoetixDynamics => "moonrobo-noetix-dynamics"
@@ -985,6 +987,20 @@ fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
     confidence: 0.62,
     path: "moonrobo/\{dossier.site.site_id}/noetix-walk.json",
     summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame using URDF leg IK, and hardware authority denied",
+  }
+}
+
+///|
+fn moonrobo_noetix_endless_gait_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let evidence = @moonrobo.first_trusted_square_noetix_endless_gait_evidence()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-endless-gait",
+    title: "Moonrobo Noetix endless gait evidence for \{dossier.site.name}",
+    kind: MoonroboNoetixEndlessGait,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.6,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-endless-gait.json",
+    summary: "\{evidence.robot_id} repeats support/contact phase from frame \{evidence.reference_frame_index} to \{evidence.repeated_frame_index} while advancing \{evidence.observed_forward_offset_m} m; status \{evidence.status}, hardware authority \{evidence.hardware_authority}",
   }
 }
 
@@ -2005,6 +2021,7 @@ fn book_entries(
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries.push(moonrobo_noetix_source_model_entry(dossier))
+  entries.push(moonrobo_noetix_endless_gait_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
   entries.push(moonrobo_noetix_walk_command_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))

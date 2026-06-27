@@ -385,6 +385,11 @@
   - claim: simulated
   - confidence: 0.6
   - path: moonrobo/first-trusted-square/noetix-source-model.json
+- moonrobo/first-trusted-square/noetix-endless-gait: Moonrobo Noetix endless gait evidence for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-endless-gait
+  - claim: simulated
+  - confidence: 0.6
+  - path: moonrobo/first-trusted-square/noetix-endless-gait.json
 - moonrobo/first-trusted-square/noetix-walk: Moonrobo Noetix endless moon-walk trace for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moonrobo-noetix-walk
   - claim: simulated

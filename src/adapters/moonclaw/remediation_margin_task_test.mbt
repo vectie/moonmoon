@@ -1507,6 +1507,7 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_eq(task.task_id, "moonclaw/first-trusted-square/noetix-review-task")
   assert_eq(task.robot_id, "noetix-e1-lab-01")
   assert_eq(task.frame_count, 32)
+  assert_eq(task.endless_gait_cycle_frames, 20)
   assert_eq(task.source_model_collision_tag_count, 0)
   assert_eq(task.source_model_inertial_tag_count, 0)
   assert_eq(task.link_pose_count_per_frame, 25)
@@ -1517,8 +1518,8 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.walk_command_segment_count > 0)
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
-  assert_eq(task.inputs.length(), 9)
-  assert_eq(task.artifacts.length(), 10)
+  assert_eq(task.inputs.length(), 10)
+  assert_eq(task.artifacts.length(), 11)
   assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 4)
   assert_true(
     task.artifacts.any(fn(artifact) {
@@ -1532,6 +1533,13 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       artifact.artifact_id == "noetix-moonrobo-source-sync" &&
       artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_source_sync")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-endless-gait-window" &&
+      artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_endless_gait")
     }),
   )
   assert_true(
@@ -1578,6 +1586,11 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   )
   assert_true(
     task.commands.any(fn(command) {
+      command.contains("check_moonrobo_noetix_endless_gait")
+    }),
+  )
+  assert_true(
+    task.commands.any(fn(command) {
       command.contains("check_moonrobo_noetix_walk_command")
     }),
   )
@@ -1594,6 +1607,7 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(markdown.contains("MoonClaw Noetix Review Tasks"))
   assert_true(markdown.contains("noetix-review-task"))
   assert_true(markdown.contains("source collision tags: 0"))
+  assert_true(markdown.contains("endless gait cycle frames"))
   assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
   assert_true(markdown.contains("inertial-collision review frames"))

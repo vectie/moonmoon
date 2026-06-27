@@ -7,6 +7,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   state : MoonClawReceiptStatus
   objective : String
   source_model_report_id : String
+  source_endless_gait_evidence_id : String
   source_walk_trace_id : String
   source_walk_command_plan_id : String
   source_static_support_report_id : String
@@ -15,6 +16,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_inertial_collision_report_id : String
   source_link_pose_trace_id : String
   frame_count : Int
+  endless_gait_cycle_frames : Int
   source_model_collision_tag_count : Int
   source_model_inertial_tag_count : Int
   static_support_review_frame_count : Int
@@ -52,6 +54,30 @@ fn noetix_walk_artifact(
       "walk trace must advance in +x with at least one generated frame"
     },
     "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+  )
+}
+
+///|
+fn noetix_endless_gait_artifact(
+  evidence : @moonrobo.NoetixEndlessGaitEvidence,
+) -> MoonClawTaskArtifact {
+  let ready = evidence.phase_repeat_verified &&
+    evidence.contact_repeat_verified &&
+    evidence.monotonic_forward_verified &&
+    evidence.status == "endless-gait-window-verified"
+  task_artifact(
+    "noetix-endless-gait-window",
+    "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+    "moon run cmd/main -- moonrobo noetix endless json",
+    "Moonrobo evidence that the finite Noetix trace prefix is a window over an endless one-direction gait",
+    "cycle \{evidence.cycle_frames} frames; frame \{evidence.reference_frame_index} repeats at \{evidence.repeated_frame_index}; forward offset \{evidence.observed_forward_offset_m} m; status \{evidence.status}",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "endless gait evidence must verify phase repeat, contact repeat, and monotonic forward motion"
+    },
+    "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json",
   )
 }
 
@@ -237,6 +263,7 @@ pub fn noetix_review_task_blocked_artifact_count(
 ///|
 pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
   let source_model = @moonrobo.first_trusted_square_noetix_source_model_report()
+  let endless = @moonrobo.first_trusted_square_noetix_endless_gait_evidence()
   let walk = @moonrobo.first_trusted_square_noetix_walk_trace()
   let command = @moonrobo.first_trusted_square_noetix_walk_command_plan()
   let support = @moonrobo.first_trusted_square_noetix_stability_report()
@@ -252,6 +279,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     state: Accepted,
     objective: "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
     source_model_report_id: source_model.report_id,
+    source_endless_gait_evidence_id: endless.evidence_id,
     source_walk_trace_id: walk.trace_id,
     source_walk_command_plan_id: command.plan_id,
     source_static_support_report_id: support.report_id,
@@ -260,6 +288,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_inertial_collision_report_id: collision.report_id,
     source_link_pose_trace_id: poses.trace_id,
     frame_count: walk.frame_count,
+    endless_gait_cycle_frames: endless.cycle_frames,
     source_model_collision_tag_count: source_model.collision_tag_count,
     source_model_inertial_tag_count: source_model.inertial_tag_count,
     static_support_review_frame_count: support.review_frame_count,
@@ -277,6 +306,12 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "output/moonrobo/first_trusted_square_noetix_source_model.json",
         @core.ClaimKind::Simulated,
         "Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.",
+      ),
+      input(
+        "noetix-endless-gait",
+        "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+        @core.ClaimKind::Simulated,
+        "Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait.",
       ),
       input(
         "noetix-walk-trace",
@@ -330,6 +365,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     artifacts: [
       noetix_source_model_artifact(source_model),
       noetix_source_sync_artifact(source_model, command),
+      noetix_endless_gait_artifact(endless),
       noetix_walk_artifact(walk),
       noetix_walk_command_artifact(command),
       noetix_link_pose_artifact(poses),
@@ -342,6 +378,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     commands: [
       "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
       "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+      "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json",
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
       "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
@@ -363,6 +400,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "moonrobo-source-sync-preserved", "Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.",
       ),
       criterion(
+        "endless-gait-window-preserved", "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.",
+      ),
+      criterion(
         "review-only-static-support-preserved", "Static support review frames remain explicit blockers for dynamic walking evidence.",
       ),
       criterion(
@@ -381,8 +421,8 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "next-physics-step-clear", "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims.",
       ),
     ],
-    safety_gate: "Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
-    next_action: "Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.",
+    safety_gate: "Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+    next_action: "Use this task to review source-model, endless-gait, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.",
   }
 }
 
@@ -404,6 +444,7 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - state: \{receipt_status_label(task.state)}\n"
     text += "  - robot: \{task.robot_id}\n"
     text += "  - frames: \{task.frame_count}\n"
+    text += "  - endless gait cycle frames: \{task.endless_gait_cycle_frames}\n"
     text += "  - source collision tags: \{task.source_model_collision_tag_count}\n"
     text += "  - source inertial tags: \{task.source_model_inertial_tag_count}\n"
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"

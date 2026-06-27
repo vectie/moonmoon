@@ -64,6 +64,24 @@ test "noetix endless moon walk alternates contact feet" {
 }
 
 ///|
+test "noetix endless gait evidence verifies periodic phase and forward offset" {
+  let evidence = first_trusted_square_noetix_endless_gait_evidence()
+  assert_eq(evidence.robot_id, "noetix-e1-lab-01")
+  assert_eq(evidence.reference_frame_index, 0)
+  assert_eq(evidence.repeated_frame_index, evidence.cycle_frames)
+  assert_eq(evidence.reference_support_phase, evidence.repeated_support_phase)
+  assert_true(evidence.phase_repeat_verified)
+  assert_true(evidence.contact_repeat_verified)
+  assert_true(evidence.monotonic_forward_verified)
+  assert_true(evidence.observed_forward_offset_m > 0.0)
+  let offset_error = evidence.observed_forward_offset_m -
+    evidence.expected_forward_offset_m
+  assert_true(offset_error < 0.000001 && offset_error > -0.000001)
+  assert_eq(evidence.status, "endless-gait-window-verified")
+  assert_eq(evidence.hardware_authority, "moonmoon-safety-gate-only")
+}
+
+///|
 test "noetix endless moon walk carries urdf leg ik phases" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
   assert_eq(trace.frames[0].joint_phases.length(), 24)

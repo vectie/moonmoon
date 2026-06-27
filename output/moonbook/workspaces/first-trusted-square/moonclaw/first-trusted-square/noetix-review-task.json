@@ -17,6 +17,7 @@
       "state": "Accepted",
       "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
       "source_model_report_id": "moonrobo/noetix-e1/source-model/audit-v0",
+      "source_endless_gait_evidence_id": "moonrobo/noetix-e1/endless-gait/first-trusted-square-northeast-stepout-lola",
       "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
       "source_walk_command_plan_id": "moonrobo/noetix-e1/high-control-walk-plan/first-trusted-square-northeast-stepout-lola",
       "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
@@ -25,6 +26,7 @@
       "source_inertial_collision_report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
       "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
       "frame_count": 32,
+      "endless_gait_cycle_frames": 20,
       "source_model_collision_tag_count": 0,
       "source_model_inertial_tag_count": 0,
       "static_support_review_frame_count": 32,
@@ -42,6 +44,12 @@
           "evidence_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
           "claim_kind": "Simulated",
           "summary": "Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags."
+        },
+        {
+          "input_id": "noetix-endless-gait",
+          "evidence_path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+          "claim_kind": "Simulated",
+          "summary": "Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait."
         },
         {
           "input_id": "noetix-walk-trace",
@@ -112,6 +120,16 @@
           "ready": true,
           "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json"
+        },
+        {
+          "artifact_id": "noetix-endless-gait-window",
+          "path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+          "producer": "moon run cmd/main -- moonrobo noetix endless json",
+          "required_state": "Moonrobo evidence that the finite Noetix trace prefix is a window over an endless one-direction gait",
+          "current_state": "cycle 20 frames; frame 0 repeats at 20; forward offset 0.24 m; status endless-gait-window-verified",
+          "ready": true,
+          "blocking_reason": "none",
+          "validation_gate": "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json"
         },
         {
           "artifact_id": "noetix-endless-walk-trace",
@@ -197,6 +215,7 @@
       "commands": [
         "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
         "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json",
         "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
         "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
         "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
@@ -220,6 +239,10 @@
         {
           "criterion_id": "moonrobo-source-sync-preserved",
           "description": "Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts."
+        },
+        {
+          "criterion_id": "endless-gait-window-preserved",
+          "description": "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait."
         },
         {
           "criterion_id": "review-only-static-support-preserved",
@@ -246,8 +269,8 @@
           "description": "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims."
         }
       ],
-      "safety_gate": "Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
-      "next_action": "Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
+      "safety_gate": "Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+      "next_action": "Use this task to review source-model, endless-gait, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
     },
     "tasks": [
       {
@@ -258,6 +281,7 @@
         "state": "Accepted",
         "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
         "source_model_report_id": "moonrobo/noetix-e1/source-model/audit-v0",
+        "source_endless_gait_evidence_id": "moonrobo/noetix-e1/endless-gait/first-trusted-square-northeast-stepout-lola",
         "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
         "source_walk_command_plan_id": "moonrobo/noetix-e1/high-control-walk-plan/first-trusted-square-northeast-stepout-lola",
         "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
@@ -266,6 +290,7 @@
         "source_inertial_collision_report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
         "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
         "frame_count": 32,
+        "endless_gait_cycle_frames": 20,
         "source_model_collision_tag_count": 0,
         "source_model_inertial_tag_count": 0,
         "static_support_review_frame_count": 32,
@@ -283,6 +308,12 @@
             "evidence_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
             "claim_kind": "Simulated",
             "summary": "Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags."
+          },
+          {
+            "input_id": "noetix-endless-gait",
+            "evidence_path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+            "claim_kind": "Simulated",
+            "summary": "Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait."
           },
           {
             "input_id": "noetix-walk-trace",
@@ -353,6 +384,16 @@
             "ready": true,
             "blocking_reason": "none",
             "validation_gate": "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json"
+          },
+          {
+            "artifact_id": "noetix-endless-gait-window",
+            "path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
+            "producer": "moon run cmd/main -- moonrobo noetix endless json",
+            "required_state": "Moonrobo evidence that the finite Noetix trace prefix is a window over an endless one-direction gait",
+            "current_state": "cycle 20 frames; frame 0 repeats at 20; forward offset 0.24 m; status endless-gait-window-verified",
+            "ready": true,
+            "blocking_reason": "none",
+            "validation_gate": "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json"
           },
           {
             "artifact_id": "noetix-endless-walk-trace",
@@ -438,6 +479,7 @@
         "commands": [
           "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
           "python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+          "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json",
           "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
           "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
           "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
@@ -461,6 +503,10 @@
           {
             "criterion_id": "moonrobo-source-sync-preserved",
             "description": "Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts."
+          },
+          {
+            "criterion_id": "endless-gait-window-preserved",
+            "description": "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait."
           },
           {
             "criterion_id": "review-only-static-support-preserved",
@@ -487,8 +533,8 @@
             "description": "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims."
           }
         ],
-        "safety_gate": "Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
-        "next_action": "Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
+        "safety_gate": "Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+        "next_action": "Use this task to review source-model, endless-gait, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
       }
     ],
     "source_model": {
@@ -836,6 +882,27 @@
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "source-model-audit-review",
       "note": "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags."
+    },
+    "source_endless_gait": {
+      "evidence_id": "moonrobo/noetix-e1/endless-gait/first-trusted-square-northeast-stepout-lola",
+      "trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+      "robot_id": "noetix-e1-lab-01",
+      "terrain_tile_id": "first-trusted-square-northeast-stepout-lola",
+      "reference_frame_index": 0,
+      "repeated_frame_index": 20,
+      "cycle_frames": 20,
+      "dt_s": 0.1,
+      "speed_mps": 0.12,
+      "expected_forward_offset_m": 0.24,
+      "observed_forward_offset_m": 0.24,
+      "reference_support_phase": "left-support",
+      "repeated_support_phase": "left-support",
+      "phase_repeat_verified": true,
+      "contact_repeat_verified": true,
+      "monotonic_forward_verified": true,
+      "hardware_authority": "moonmoon-safety-gate-only",
+      "status": "endless-gait-window-verified",
+      "note": "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only."
     },
     "source_walk": {
       "trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",

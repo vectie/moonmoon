@@ -18,6 +18,10 @@ evidence.
 - Moonrobo exports a high-control Noetix walk command plan that segments the
   finite trace prefix into dry-run approval windows from the sibling robot
   profile limits; it is review evidence only and never hardware authority.
+- Moonrobo exports explicit Noetix endless-gait evidence: frame `N + cycle`
+  repeats support/contact phase while the body advances by the configured
+  forward offset, proving finite trace exports are windows over a one-direction
+  gait.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
   report backed by generic Moonphys support assessment.
@@ -39,11 +43,14 @@ evidence.
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
   contact torque, narrow-phase self-collision manifolds, and generic
   multi-contact manifold resolution with impulse accounting.
-- MoonClaw exports a Noetix simulation review task that ties the walk trace,
-  high-control dry-run command plan, URDF-reference link poses, static support
-  report, dynamic-stability report, joint-control report, inertial/collision
-  report, and Rabbita playback into a hardware-denied review packet.
+- MoonClaw exports a Noetix simulation review task that ties endless-gait
+  evidence, the walk trace, high-control dry-run command plan, URDF-reference
+  link poses, static support report, dynamic-stability report, joint-control
+  report, inertial/collision report, and Rabbita playback into a
+  hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
+- `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
+  invariants.
 - `scripts/check_moonrobo_noetix_walk_command.py` verifies high-control
   dry-run command-plan invariants.
 - `scripts/check_moonrobo_noetix_source_model.py` verifies source-model audit
@@ -218,8 +225,8 @@ Rules:
 
 ## Phase 3: Endless Kinematic Walker
 
-Status: first Noetix endless walk trace implemented in
-`src/adapters/moonrobo/noetix_moon_walk.mbt`.
+Status: first Noetix endless walk trace and explicit endless-gait window
+evidence implemented in `src/adapters/moonrobo/noetix_moon_walk.mbt`.
 
 Keep this in `src/adapters/moonrobo`, not `moonphys`.
 
@@ -231,6 +238,8 @@ Current version already has the first shape:
 - terrain elevation probe
 - terrain grade review status
 - finite trace prefix represents an endless periodic gait
+- explicit endless-gait evidence verifies frame `N + cycle` repeats support and
+  contact phase while moving forward by the configured cycle offset
 - configurable heading, start position, stride frequency, body height, foot
   radius, and terrain source provenance
 
@@ -240,8 +249,8 @@ Next improvements:
   - `NoetixMoonWalkTrace`
   - `NoetixMoonWalkFrame`
   - `NoetixFootContactProbe`
-- Keep `frame_count` finite in exports, but make the gait mathematically endless
-  through cycle indexing.
+- Keep `frame_count` finite in exports, but make the gait mathematically
+  endless through cycle indexing and durable endless-gait evidence.
 - Replace the kinematic phase generator with a controller-backed gait once
   Moonrobo supplies authoritative mass, inertia, collision, damping, stiffness,
   and actuator metadata.
@@ -338,12 +347,12 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
-Status: first source-model audit, walk, high-control dry-run command plan,
-physics-profile, static-support, dynamic-stability, joint-control,
-inertial/collision, link-pose, and MoonClaw review-task exports and verifiers
-implemented. The dossier build also enforces sibling Moonrobo source sync for
-robot.json, URDF joint limits, visual links, missing inertial/collision tags,
-and high-control limits.
+Status: first source-model audit, endless-gait evidence, walk, high-control
+dry-run command plan, physics-profile, static-support, dynamic-stability,
+joint-control, inertial/collision, link-pose, and MoonClaw review-task exports
+and verifiers implemented. The dossier build also enforces sibling Moonrobo
+source sync for robot.json, URDF joint limits, visual links, missing
+inertial/collision tags, and high-control limits.
 
 Add generated outputs to the dossier build.
 
@@ -352,8 +361,11 @@ Candidate files:
 ```text
 output/moonrobo/first_trusted_square_noetix_walk.json
 output/moonrobo/first_trusted_square_noetix_walk.md
+output/moonrobo/first_trusted_square_noetix_endless_gait.json
+output/moonrobo/first_trusted_square_noetix_endless_gait.md
 output/moonrobo/first_trusted_square_noetix_walk_command.json
 output/moonrobo/first_trusted_square_noetix_walk_command.md
+output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/noetix-endless-gait.json
 output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/noetix-walk.json
 output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/noetix-walk-command.json
 ```
@@ -362,6 +374,7 @@ Add verifier:
 
 ```text
 scripts/check_moonrobo_noetix_walk.py
+scripts/check_moonrobo_noetix_endless_gait.py
 scripts/check_moonrobo_noetix_walk_command.py
 scripts/check_moonrobo_noetix_source_sync.py
 ```
@@ -380,12 +393,13 @@ Check invariants:
 ## Phase 7: MoonBook / MoonClaw Integration
 
 Status: MoonBook entries and workspace payloads implemented for the Noetix
-source-model audit, walk trace, high-control dry-run command plan, physics
-assumptions, dynamic-stability report, joint-control report,
+source-model audit, endless-gait evidence, walk trace, high-control dry-run
+command plan, physics assumptions, dynamic-stability report, joint-control report,
 inertial/collision report, link poses, and MoonClaw review task.
-The MoonClaw Noetix task now includes a source-sync artifact that verifies
-Moonmoon evidence against the sibling Moonrobo robot book and URDF before any
-stronger physics claim.
+The MoonClaw Noetix task now includes source-sync and endless-gait artifacts
+that verify Moonmoon evidence against the sibling Moonrobo robot book/URDF and
+prove the exported finite trace remains a window over the cyclic forward gait
+before any stronger physics claim.
 
 After the trace is stable, make it durable evidence.
 

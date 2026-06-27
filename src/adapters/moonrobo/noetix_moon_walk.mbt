@@ -75,6 +75,29 @@ pub(all) struct NoetixMoonWalkTrace {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixEndlessGaitEvidence {
+  evidence_id : String
+  trace_id : String
+  robot_id : String
+  terrain_tile_id : String
+  reference_frame_index : Int
+  repeated_frame_index : Int
+  cycle_frames : Int
+  dt_s : Double
+  speed_mps : Double
+  expected_forward_offset_m : Double
+  observed_forward_offset_m : Double
+  reference_support_phase : String
+  repeated_support_phase : String
+  phase_repeat_verified : Bool
+  contact_repeat_verified : Bool
+  monotonic_forward_verified : Bool
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile {
   {
     robot_id: "noetix-e1-lab-01",
@@ -589,6 +612,76 @@ pub fn noetix_moon_walk_trace(
 }
 
 ///|
+pub fn noetix_endless_gait_evidence(
+  field : @moonphys.Heightfield,
+  reference_frame_index? : Int = 0,
+  config? : NoetixMoonWalkConfig = default_noetix_moon_walk_config(),
+) -> NoetixEndlessGaitEvidence {
+  let cycle_frames = if config.cycle_frames < 2 {
+    2
+  } else {
+    config.cycle_frames
+  }
+  let reference_index = if reference_frame_index < 0 {
+    0
+  } else {
+    reference_frame_index
+  }
+  let repeated_index = reference_index + cycle_frames
+  let reference = noetix_moon_walk_frame(field, config, reference_index)
+  let repeated = noetix_moon_walk_frame(field, config, repeated_index)
+  let forward = noetix_heading_forward(config)
+  let observed_offset = repeated.body_position
+    .sub(reference.body_position)
+    .dot(forward)
+  let expected_offset = cycle_frames.to_double() *
+    config.dt_s *
+    config.speed_mps
+  let phase_repeat = reference.support_phase == repeated.support_phase
+  let contact_repeat = reference.left_foot.in_contact ==
+    repeated.left_foot.in_contact &&
+    reference.right_foot.in_contact == repeated.right_foot.in_contact
+  let monotonic = observed_offset > 0.0 &&
+    abs_double(observed_offset - expected_offset) < 0.000001
+  let ready = phase_repeat && contact_repeat && monotonic
+  {
+    evidence_id: "moonrobo/noetix-e1/endless-gait/\{field.field_id}",
+    trace_id: "moonrobo/noetix-e1/endless-forward-moon-walk/\{field.field_id}",
+    robot_id: noetix_moon_walk_robot_profile().robot_id,
+    terrain_tile_id: field.field_id,
+    reference_frame_index: reference_index,
+    repeated_frame_index: repeated_index,
+    cycle_frames,
+    dt_s: config.dt_s,
+    speed_mps: config.speed_mps,
+    expected_forward_offset_m: expected_offset,
+    observed_forward_offset_m: observed_offset,
+    reference_support_phase: reference.support_phase,
+    repeated_support_phase: repeated.support_phase,
+    phase_repeat_verified: phase_repeat,
+    contact_repeat_verified: contact_repeat,
+    monotonic_forward_verified: monotonic,
+    hardware_authority: "moonmoon-safety-gate-only",
+    status: if ready {
+      "endless-gait-window-verified"
+    } else {
+      "endless-gait-window-review"
+    },
+    note: "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only.",
+  }
+}
+
+///|
+pub fn first_trusted_square_noetix_endless_gait_evidence() -> NoetixEndlessGaitEvidence {
+  noetix_endless_gait_evidence(first_trusted_square_noetix_heightfield())
+}
+
+///|
+pub fn first_trusted_square_noetix_endless_gait_json() -> Json {
+  first_trusted_square_noetix_endless_gait_evidence().to_json()
+}
+
+///|
 pub fn first_trusted_square_noetix_walk_trace(
   frame_count? : Int = 32,
 ) -> NoetixMoonWalkTrace {
@@ -598,6 +691,38 @@ pub fn first_trusted_square_noetix_walk_trace(
 ///|
 pub fn first_trusted_square_noetix_walk_json() -> Json {
   first_trusted_square_noetix_walk_trace().to_json()
+}
+
+///|
+pub fn render_noetix_endless_gait_markdown(
+  evidence : NoetixEndlessGaitEvidence,
+) -> String {
+  let mut text = "# Noetix Endless Gait Evidence\n\n"
+  text += "- evidence: \{evidence.evidence_id}\n"
+  text += "- trace: \{evidence.trace_id}\n"
+  text += "- robot: \{evidence.robot_id}\n"
+  text += "- terrain: \{evidence.terrain_tile_id}\n"
+  text += "- reference frame: \{evidence.reference_frame_index}\n"
+  text += "- repeated frame: \{evidence.repeated_frame_index}\n"
+  text += "- cycle frames: \{evidence.cycle_frames}\n"
+  text += "- expected forward offset: \{evidence.expected_forward_offset_m} m\n"
+  text += "- observed forward offset: \{evidence.observed_forward_offset_m} m\n"
+  text += "- reference support: \{evidence.reference_support_phase}\n"
+  text += "- repeated support: \{evidence.repeated_support_phase}\n"
+  text += "- phase repeat verified: \{evidence.phase_repeat_verified}\n"
+  text += "- contact repeat verified: \{evidence.contact_repeat_verified}\n"
+  text += "- monotonic forward verified: \{evidence.monotonic_forward_verified}\n"
+  text += "- hardware authority: \{evidence.hardware_authority}\n"
+  text += "- status: \{evidence.status}\n"
+  text += "- note: \{evidence.note}"
+  text
+}
+
+///|
+pub fn first_trusted_square_noetix_endless_gait_markdown() -> String {
+  render_noetix_endless_gait_markdown(
+    first_trusted_square_noetix_endless_gait_evidence(),
+  )
 }
 
 ///|

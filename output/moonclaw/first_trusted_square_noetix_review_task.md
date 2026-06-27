@@ -5,6 +5,7 @@
   - state: accepted
   - robot: noetix-e1-lab-01
   - frames: 32
+  - endless gait cycle frames: 20
   - source collision tags: 0
   - source inertial tags: 0
   - link poses per frame: 25
@@ -15,10 +16,11 @@
   - inertial-collision review frames: 32
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
-  - safety gate: Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.
-  - next action: Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
+  - safety gate: Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.
+  - next action: Use this task to review source-model, endless-gait, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
   - inputs:
     - noetix-source-model: output/moonrobo/first_trusted_square_noetix_source_model.json - Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.
+    - noetix-endless-gait: output/moonrobo/first_trusted_square_noetix_endless_gait.json - Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait.
     - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases.
     - noetix-walk-command-plan: output/moonrobo/first_trusted_square_noetix_walk_command.json - Moonrobo high-control dry-run command plan for the Noetix walk trace.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
@@ -38,6 +40,11 @@
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json
+    - noetix-endless-gait-window: output/moonrobo/first_trusted_square_noetix_endless_gait.json
+      - current: cycle 20 frames; frame 0 repeats at 20; forward offset 0.24 m; status endless-gait-window-verified
+      - ready: true
+      - blocking: none
+      - gate: python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json
     - noetix-endless-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json
       - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded leg IK
       - ready: true
@@ -81,6 +88,7 @@
   - commands:
     - python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json
+    - python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json
     - python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
     - python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json
     - python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
@@ -95,6 +103,7 @@
     - all-noetix-evidence-linked: Task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback evidence with concrete validation commands.
     - source-model-gaps-preserved: Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.
     - moonrobo-source-sync-preserved: Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.
+    - endless-gait-window-preserved: Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.
     - review-only-static-support-preserved: Static support review frames remain explicit blockers for dynamic walking evidence.
     - review-only-joint-control-preserved: Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.
     - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
