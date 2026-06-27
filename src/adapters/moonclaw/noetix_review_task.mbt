@@ -26,6 +26,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
+  joint_control_world_support_review_frame_count : Int
+  joint_control_world_capture_review_frame_count : Int
+  joint_control_worst_capture_support_margin_m : Double
   inertial_collision_review_frame_count : Int
   link_pose_count_per_frame : Int
   walk_command_segment_count : Int
@@ -219,7 +222,7 @@ fn noetix_joint_control_artifact(
     "output/moonrobo/first_trusted_square_noetix_control.json",
     "moon run cmd/main -- moonrobo noetix control json",
     "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-    "\{report.frame_count} frames; \{report.joint_count_per_frame} joints per frame; saturated frames \{report.saturated_frame_count}; limit-review frames \{report.limit_review_frame_count}; heightfield motor contacts \{report.hinge_motor_world_trace.contact_count}; resolved world hinges \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}; body samples \{report.hinge_motor_world_trace.body_sample_count}; max world speed \{report.hinge_motor_world_trace.max_speed_mps} m/s; max world energy \{report.hinge_motor_world_trace.max_kinetic_energy_j} J; envelope \{report.hinge_motor_world_trace.envelope_status}; max power \{report.max_abs_mechanical_power_w} W; absolute work \{report.total_absolute_work_j} J; status \{report.status}",
+    "\{report.frame_count} frames; \{report.joint_count_per_frame} joints per frame; saturated frames \{report.saturated_frame_count}; limit-review frames \{report.limit_review_frame_count}; heightfield motor contacts \{report.hinge_motor_world_trace.contact_count}; support-review frames \{report.hinge_motor_world_trace.support_review_frame_count}; capture-review frames \{report.hinge_motor_world_trace.capture_support_review_frame_count}; worst capture support margin \{report.hinge_motor_world_trace.worst_capture_support_margin_m} m; resolved world hinges \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}; body samples \{report.hinge_motor_world_trace.body_sample_count}; max world speed \{report.hinge_motor_world_trace.max_speed_mps} m/s; max world energy \{report.hinge_motor_world_trace.max_kinetic_energy_j} J; envelope \{report.hinge_motor_world_trace.envelope_status}; max power \{report.max_abs_mechanical_power_w} W; absolute work \{report.total_absolute_work_j} J; status \{report.status}",
     false,
     "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
     "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
@@ -303,6 +306,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     static_support_review_frame_count: support.review_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
+    joint_control_world_support_review_frame_count: control.hinge_motor_world_trace.support_review_frame_count,
+    joint_control_world_capture_review_frame_count: control.hinge_motor_world_trace.capture_support_review_frame_count,
+    joint_control_worst_capture_support_margin_m: control.hinge_motor_world_trace.worst_capture_support_margin_m,
     inertial_collision_review_frame_count: collision.self_contact_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
     walk_command_segment_count: command.segment_count,
@@ -465,6 +471,9 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"
     text += "  - dynamic-stability review frames: \{task.dynamic_stability_review_frame_count}\n"
     text += "  - joint-control review frames: \{task.joint_control_review_frame_count}\n"
+    text += "  - joint-control world-support review frames: \{task.joint_control_world_support_review_frame_count}\n"
+    text += "  - joint-control world-capture review frames: \{task.joint_control_world_capture_review_frame_count}\n"
+    text += "  - joint-control worst capture support margin: \{task.joint_control_worst_capture_support_margin_m} m\n"
     text += "  - inertial-collision review frames: \{task.inertial_collision_review_frame_count}\n"
     text += "  - hardware state: \{@moonrobo.execution_state_label(task.hardware_state)}\n"
     text += "  - hardware authority: \{task.hardware_authority}\n"

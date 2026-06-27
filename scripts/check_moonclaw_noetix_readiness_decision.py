@@ -57,10 +57,14 @@ def main() -> None:
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
         "joint_control_review_frame_count",
+        "joint_control_world_support_review_frame_count",
+        "joint_control_world_capture_review_frame_count",
         "inertial_collision_review_frame_count",
     ]:
         if decision.get(field, 0) <= 0:
             fail(f"{field} must be explicit")
+    if decision.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
+        fail("joint control worst capture support margin must remain a blocker")
 
     ready_artifacts = decision.get("ready_artifacts", [])
     blocked_artifacts = decision.get("blocked_artifacts", [])

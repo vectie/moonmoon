@@ -14,6 +14,9 @@
 - static-support review frames: 32
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
+- joint-control world-support review frames: 11
+- joint-control world-capture review frames: 32
+- joint-control worst capture support margin: -1.9471892830999706 m
 - inertial-collision review frames: 32
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only

@@ -75,6 +75,9 @@
   "static_support_review_frame_count": 32,
   "dynamic_stability_review_frame_count": 32,
   "joint_control_review_frame_count": 32,
+  "joint_control_world_support_review_frame_count": 11,
+  "joint_control_world_capture_review_frame_count": 32,
+  "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
   "inertial_collision_review_frame_count": 32,
   "ready_artifacts": [
     "noetix-source-model-audit",

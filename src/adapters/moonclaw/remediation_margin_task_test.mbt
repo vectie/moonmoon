@@ -1527,6 +1527,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.static_support_review_frame_count > 0)
   assert_true(task.dynamic_stability_review_frame_count > 0)
   assert_true(task.joint_control_review_frame_count > 0)
+  assert_true(task.joint_control_world_support_review_frame_count > 0)
+  assert_true(task.joint_control_world_capture_review_frame_count > 0)
+  assert_true(task.joint_control_worst_capture_support_margin_m < 0.0)
   assert_true(task.inertial_collision_review_frame_count > 0)
   assert_true(task.walk_command_segment_count > 0)
   assert_true(task.hardware_denied)
@@ -1582,6 +1585,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       !artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_control") &&
       artifact.current_state.contains("heightfield motor contacts") &&
+      artifact.current_state.contains("support-review frames") &&
+      artifact.current_state.contains("capture-review frames") &&
+      artifact.current_state.contains("worst capture support margin") &&
       artifact.current_state.contains("resolved world hinges") &&
       artifact.current_state.contains("body samples") &&
       artifact.current_state.contains("world-trace-envelope")
@@ -1631,6 +1637,9 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(markdown.contains("endless gait cycle frames"))
   assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
+  assert_true(markdown.contains("joint-control world-support review frames"))
+  assert_true(markdown.contains("joint-control world-capture review frames"))
+  assert_true(markdown.contains("joint-control worst capture support margin"))
   assert_true(markdown.contains("inertial-collision review frames"))
   let json = @moonclaw.first_trusted_square_noetix_review_tasks_json().stringify(
     indent=2,
@@ -1668,6 +1677,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(!decision.source_metadata_ready)
   assert_eq(decision.source_metadata_inventory.blocker_count, 50)
   assert_eq(decision.source_metadata_inventory.status, "model-metadata-blocked")
+  assert_true(decision.joint_control_world_support_review_frame_count > 0)
+  assert_true(decision.joint_control_world_capture_review_frame_count > 0)
+  assert_true(decision.joint_control_worst_capture_support_margin_m < 0.0)
   assert_true(
     decision.blocked_artifacts.contains("noetix-static-support-review"),
   )
@@ -1702,6 +1714,8 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(markdown.contains("noetix-simulation-blocked"))
   assert_true(markdown.contains("source metadata ready: false"))
   assert_true(markdown.contains("model-metadata-blocked"))
+  assert_true(markdown.contains("joint-control world-capture review frames"))
+  assert_true(markdown.contains("joint-control worst capture support margin"))
   assert_true(markdown.contains("noetix-joint-control-review"))
   let json = @moonclaw.first_trusted_square_noetix_simulation_readiness_decision_json().stringify(
     indent=2,

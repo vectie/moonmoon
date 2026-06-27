@@ -20,6 +20,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
+  joint_control_world_support_review_frame_count : Int
+  joint_control_world_capture_review_frame_count : Int
+  joint_control_worst_capture_support_margin_m : Double
   inertial_collision_review_frame_count : Int
   ready_artifacts : Array[String]
   blocked_artifacts : Array[String]
@@ -131,6 +134,9 @@ pub fn noetix_simulation_readiness_decision(
     static_support_review_frame_count: task.static_support_review_frame_count,
     dynamic_stability_review_frame_count: task.dynamic_stability_review_frame_count,
     joint_control_review_frame_count: task.joint_control_review_frame_count,
+    joint_control_world_support_review_frame_count: task.joint_control_world_support_review_frame_count,
+    joint_control_world_capture_review_frame_count: task.joint_control_world_capture_review_frame_count,
+    joint_control_worst_capture_support_margin_m: task.joint_control_worst_capture_support_margin_m,
     inertial_collision_review_frame_count: task.inertial_collision_review_frame_count,
     ready_artifacts,
     blocked_artifacts,
@@ -173,6 +179,9 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- static-support review frames: \{decision.static_support_review_frame_count}\n"
   text += "- dynamic-stability review frames: \{decision.dynamic_stability_review_frame_count}\n"
   text += "- joint-control review frames: \{decision.joint_control_review_frame_count}\n"
+  text += "- joint-control world-support review frames: \{decision.joint_control_world_support_review_frame_count}\n"
+  text += "- joint-control world-capture review frames: \{decision.joint_control_world_capture_review_frame_count}\n"
+  text += "- joint-control worst capture support margin: \{decision.joint_control_worst_capture_support_margin_m} m\n"
   text += "- inertial-collision review frames: \{decision.inertial_collision_review_frame_count}\n"
   text += "- hardware state: \{@moonrobo.execution_state_label(decision.hardware_state)}\n"
   text += "- hardware authority: \{decision.hardware_authority}\n"
