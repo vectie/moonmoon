@@ -113,7 +113,7 @@ pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactMod
 
 pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
 
-pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody]) -> RigidBodyHeightfieldWorld
+pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody], constraints? : Array[RigidBodyWorldDistanceConstraint]) -> RigidBodyHeightfieldWorld
 
 pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
 
@@ -132,6 +132,10 @@ pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, external_force_n? : Vec3) -> RigidBodyWorldBody
 
 pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
+
+pub fn rigid_body_world_distance_constraint(String, String, String, Double, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
+
+pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
 pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
 
@@ -561,6 +565,7 @@ pub(all) struct RigidBodyHeightfieldWorld {
   material : MaterialContactModel
   heightfield_id : String
   bodies : Array[RigidBodyWorldBody]
+  constraints : Array[RigidBodyWorldDistanceConstraint]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyHeightfieldWorldStep {
@@ -577,6 +582,9 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   body_pair_contact_count : Int
   body_contact_schedule : RigidBodyWorldContactSchedule
   body_contact_resolution : RigidBodyWorldContactResolution
+  constraint_count : Int
+  resolved_constraint_count : Int
+  constraint_resolution : RigidBodyWorldConstraintFrame
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -635,6 +643,37 @@ pub(all) struct RigidBodyWorldBodyFrame {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyWorldConstraintFrame {
+  world_id : String
+  constraint_count : Int
+  resolved_constraint_count : Int
+  max_error_m : Double
+  impulse_ns : Double
+  resolutions : Array[RigidBodyWorldConstraintResolution]
+  before : RigidBodyHeightfieldWorld
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldConstraintResolution {
+  constraint_id : String
+  body_a_id : String
+  body_b_id : String
+  rest_length_m : Double
+  current_length_m : Double
+  error_m : Double
+  before_a : RigidBodyState
+  before_b : RigidBodyState
+  after_a : RigidBodyState
+  after_b : RigidBodyState
+  correction_a : Vec3
+  correction_b : Vec3
+  velocity_delta_a : Vec3
+  velocity_delta_b : Vec3
+  impulse_ns : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyWorldContactResolution {
   world_id : String
   schedule : RigidBodyWorldContactSchedule
@@ -655,6 +694,14 @@ pub(all) struct RigidBodyWorldContactSchedule {
   pairs : Array[RigidBodyWorldPairContact]
   manifold : CollisionContactManifold
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldDistanceConstraint {
+  constraint_id : String
+  body_a_id : String
+  body_b_id : String
+  rest_length_m : Double
+  stiffness : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyWorldPairContact {

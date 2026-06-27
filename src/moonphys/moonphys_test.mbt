@@ -550,6 +550,92 @@ test "rigid body heightfield world step applies body contact response" {
 }
 
 ///|
+test "rigid body world constraints restore distance" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "left",
+          1.0,
+          0.1,
+          vec3(0.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "right",
+          3.0,
+          0.1,
+          vec3(2.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+    constraints=[
+      rigid_body_world_distance_constraint("link", "left", "right", 1.0),
+    ],
+  )
+  let resolution = rigid_body_world_resolve_constraints(world)
+  assert_eq(resolution.status, "world-constraint-resolved")
+  assert_eq(resolution.constraint_count, 1)
+  assert_eq(resolution.resolved_constraint_count, 1)
+  assert_true(nearly_equal(resolution.max_error_m, 1.0))
+  assert_true(nearly_equal(resolution.after.bodies[0].state.position.x, 0.75))
+  assert_true(nearly_equal(resolution.after.bodies[1].state.position.x, 1.75))
+  assert_true(nearly_equal(resolution.resolutions[0].correction_a.x, 0.75))
+  assert_true(nearly_equal(resolution.resolutions[0].correction_b.x, -0.25))
+}
+
+///|
+test "rigid body heightfield world step applies constraints" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "left",
+          1.0,
+          0.1,
+          vec3(0.0, 0.0, 2.0),
+          vec3(1.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "right",
+          1.0,
+          0.1,
+          vec3(2.0, 0.0, 2.0),
+          vec3(0.0 - 1.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+    constraints=[
+      rigid_body_world_distance_constraint("link", "left", "right", 1.0),
+    ],
+  )
+  let step = rigid_body_heightfield_world_step(world, field, 0.0)
+  assert_eq(step.status, "world-step-constrained")
+  assert_eq(step.constraint_count, 1)
+  assert_eq(step.resolved_constraint_count, 1)
+  assert_eq(step.constraint_resolution.status, "world-constraint-resolved")
+  assert_true(nearly_equal(step.after.bodies[0].state.position.x, 0.5))
+  assert_true(nearly_equal(step.after.bodies[1].state.position.x, 1.5))
+  assert_true(nearly_equal(step.after.bodies[0].state.velocity.x, 0.0))
+  assert_true(nearly_equal(step.after.bodies[1].state.velocity.x, 0.0))
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

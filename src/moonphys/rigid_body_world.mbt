@@ -63,6 +63,7 @@ pub(all) struct RigidBodyHeightfieldWorld {
   material : MaterialContactModel
   heightfield_id : String
   bodies : Array[RigidBodyWorldBody]
+  constraints : Array[RigidBodyWorldDistanceConstraint]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -95,6 +96,9 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   body_pair_contact_count : Int
   body_contact_schedule : RigidBodyWorldContactSchedule
   body_contact_resolution : RigidBodyWorldContactResolution
+  constraint_count : Int
+  resolved_constraint_count : Int
+  constraint_resolution : RigidBodyWorldConstraintFrame
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -134,8 +138,16 @@ pub fn rigid_body_heightfield_world(
   material : MaterialContactModel,
   environment : PhysicsEnvironment,
   bodies : Array[RigidBodyWorldBody],
+  constraints? : Array[RigidBodyWorldDistanceConstraint] = [],
 ) -> RigidBodyHeightfieldWorld {
-  { world_id, environment, material, heightfield_id: field.field_id, bodies }
+  {
+    world_id,
+    environment,
+    material,
+    heightfield_id: field.field_id,
+    bodies,
+    constraints,
+  }
 }
 
 ///|
@@ -275,6 +287,19 @@ fn rigid_body_world_body_array_index(
     }
   }
   0
+}
+
+///|
+fn rigid_body_world_body_array_find_index(
+  bodies : Array[RigidBodyWorldBody],
+  body_id : String,
+) -> Int {
+  for index, body in bodies {
+    if body.state.body_id == body_id {
+      return index
+    }
+  }
+  0 - 1
 }
 
 ///|
@@ -477,6 +502,7 @@ pub fn rigid_body_world_resolve_contacts(
     material: world.material,
     heightfield_id: world.heightfield_id,
     bodies,
+    constraints: world.constraints,
   }
   {
     world_id: world.world_id,
@@ -574,6 +600,7 @@ fn rigid_body_heightfield_world_step_status(
   contact_count : Int,
   review_count : Int,
   body_pair_contact_count : Int,
+  resolved_constraint_count : Int,
 ) -> String {
   if !field_matches {
     "world-heightfield-mismatch-review"
@@ -581,6 +608,8 @@ fn rigid_body_heightfield_world_step_status(
     "world-step-review"
   } else if body_pair_contact_count > 0 {
     "world-step-body-contact"
+  } else if resolved_constraint_count > 0 {
+    "world-step-constrained"
   } else if contact_count > 0 {
     "world-step-contact"
   } else {
@@ -631,12 +660,19 @@ pub fn rigid_body_heightfield_world_step(
     material: world.material,
     heightfield_id: world.heightfield_id,
     bodies: next_bodies,
+    constraints: world.constraints,
   }
   let contact_schedule = rigid_body_world_contact_schedule(integrated_world)
   let contact_resolution = rigid_body_world_resolve_contacts(
     integrated_world, contact_schedule,
   )
-  let after = contact_resolution.after
+  let constraint_resolution = rigid_body_world_resolve_constraints(
+    contact_resolution.after,
+  )
+  if constraint_resolution.status == "world-constraint-review" {
+    review_count += 1
+  }
+  let after = constraint_resolution.after
   energy_after = rigid_body_world_linear_kinetic_energy(after)
   let field_matches = world.heightfield_id == field.field_id
   {
@@ -653,6 +689,9 @@ pub fn rigid_body_heightfield_world_step(
     body_pair_contact_count: contact_schedule.contact_count,
     body_contact_schedule: contact_schedule,
     body_contact_resolution: contact_resolution,
+    constraint_count: constraint_resolution.constraint_count,
+    resolved_constraint_count: constraint_resolution.resolved_constraint_count,
+    constraint_resolution,
     review_count,
     kinetic_energy_before_j: energy_before,
     kinetic_energy_after_j: energy_after,
@@ -662,6 +701,7 @@ pub fn rigid_body_heightfield_world_step(
       contact_count,
       review_count,
       contact_schedule.contact_count,
+      constraint_resolution.resolved_constraint_count,
     ),
   }
 }
