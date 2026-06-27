@@ -8,44 +8,44 @@
 - shapes per frame: 8
 - self-contact frames: 32
 - terrain-review frames: 0
-- max self penetration: 0.2210026093704005 m
-- max self-contact correction: 0.2210026093704005 m
+- max self penetration: 0.045 m
+- max self-contact correction: 0.045 m
 - max support contact torque: 5.523087904424481 Nm
 - status: inertial-collision-self-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.
+- note: Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, and generic manifold resolution. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.
 
 ## Frame Collision Summary
 
-- frame 0 t=0s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 1 t=0.1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 2 t=0.2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 3 t=0.30000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 4 t=0.4s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 5 t=0.5s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 6 t=0.6000000000000001s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 7 t=0.7000000000000001s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 8 t=0.8s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 9 t=0.9s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 10 t=1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 11 t=1.1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 12 t=1.2000000000000002s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 13 t=1.3s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 14 t=1.4000000000000001s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 15 t=1.5s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 16 t=1.6s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 17 t=1.7000000000000002s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 18 t=1.8s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 19 t=1.9000000000000001s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 20 t=2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 21 t=2.1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 22 t=2.2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 23 t=2.3000000000000003s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 24 t=2.4000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 25 t=2.5s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 26 t=2.6s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 27 t=2.7s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 28 t=2.8000000000000003s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 29 t=2.9000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 30 t=3s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
-- frame 31 t=3.1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=5 status=conservative-self-collision-review
+- frame 0 t=0s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 1 t=0.1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 2 t=0.2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 3 t=0.30000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 4 t=0.4s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 5 t=0.5s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 6 t=0.6000000000000001s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 7 t=0.7000000000000001s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 8 t=0.8s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 9 t=0.9s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 10 t=1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 11 t=1.1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 12 t=1.2000000000000002s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 13 t=1.3s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 14 t=1.4000000000000001s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 15 t=1.5s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 16 t=1.6s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 17 t=1.7000000000000002s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 18 t=1.8s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 19 t=1.9000000000000001s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 20 t=2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 21 t=2.1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 22 t=2.2s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 23 t=2.3000000000000003s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 24 t=2.4000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 25 t=2.5s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 26 t=2.6s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 27 t=2.7s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 28 t=2.8000000000000003s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 29 t=2.9000000000000004s phase=left-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 30 t=3s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review
+- frame 31 t=3.1s phase=right-support shapes=8 terrain_contacts=1 self_contacts=3 status=self-collision-review

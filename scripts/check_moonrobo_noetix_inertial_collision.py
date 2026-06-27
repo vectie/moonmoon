@@ -91,6 +91,25 @@ def main(argv: list[str]) -> int:
     first["self_contact_manifold"]["contacts"],
     "missing self-contact contact set",
   )
+  contact_statuses = {
+    contact["status"]
+    for frame in frames
+    for contact in frame["self_contact_manifold"]["contacts"]
+  }
+  require(
+    "conservative-contact" not in contact_statuses
+    and "conservative-clear" not in contact_statuses,
+    "self-contact manifold fell back to conservative pair statuses",
+  )
+  require(
+    "box-capsule-contact" in contact_statuses
+    or "capsule-box-contact" in contact_statuses,
+    "missing narrow-phase box/capsule contact",
+  )
+  require(
+    "box-box-clear" in contact_statuses,
+    "missing narrow-phase box/box clear evidence",
+  )
   require(
     first["self_contact_resolution"]["manifold_id"]
     == first["self_contact_manifold"]["manifold_id"],

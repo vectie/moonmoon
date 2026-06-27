@@ -313,16 +313,53 @@ test "sphere sphere contact reports exact penetration" {
 }
 
 ///|
-test "collision pair contact uses conservative bounds for non spheres" {
-  let contact = collision_pair_contact(
-    collision_box("box", vec3(1.0, 1.0, 1.0)),
+test "collision pair contact uses narrow phase for non spheres" {
+  let sphere_capsule = collision_pair_contact(
+    collision_sphere("sphere", 0.25),
     transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
     collision_capsule("capsule", 0.2, 0.5),
-    transform3(identity_basis3(), vec3(2.0, 0.0, 0.0)),
+    transform3(identity_basis3(), vec3(0.4, 0.0, 0.0)),
   )
-  assert_true(contact.in_contact)
-  assert_eq(contact.status, "conservative-contact")
-  assert_true(contact.penetration_depth_m > 0.0)
+  assert_true(sphere_capsule.in_contact)
+  assert_eq(sphere_capsule.status, "sphere-capsule-contact")
+  let capsule_capsule = collision_pair_contact(
+    collision_capsule("a", 0.2, 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_capsule("b", 0.2, 0.5),
+    transform3(identity_basis3(), vec3(0.35, 0.0, 0.0)),
+  )
+  assert_true(capsule_capsule.in_contact)
+  assert_eq(capsule_capsule.status, "capsule-capsule-contact")
+  let capsule_box = collision_pair_contact(
+    collision_capsule("capsule", 0.2, 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_box("box", vec3(0.3, 0.3, 0.3)),
+    transform3(identity_basis3(), vec3(0.45, 0.0, 0.0)),
+  )
+  assert_true(capsule_box.in_contact)
+  assert_eq(capsule_box.status, "capsule-box-contact")
+}
+
+///|
+test "box box narrow phase rejects bounding sphere false positive" {
+  let clear = collision_pair_contact(
+    collision_box("a", vec3(1.0, 1.0, 0.1)),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_box("b", vec3(1.0, 1.0, 0.1)),
+    transform3(identity_basis3(), vec3(2.1, 0.0, 0.0)),
+  )
+  assert_true(!clear.in_contact)
+  assert_eq(clear.status, "box-box-clear")
+  assert_true(nearly_equal(clear.separation_m, 0.1))
+  let rotated = collision_pair_contact(
+    collision_box("a", vec3(1.0, 0.25, 0.25)),
+    transform3(yaw_basis3(3.141592653589793 / 4.0), vec3(0.0, 0.0, 0.0)),
+    collision_box("b", vec3(0.5, 0.5, 0.5)),
+    transform3(identity_basis3(), vec3(0.75, 0.0, 0.0)),
+  )
+  assert_true(rotated.in_contact)
+  assert_eq(rotated.status, "box-box-contact")
+  assert_true(rotated.penetration_depth_m > 0.0)
 }
 
 ///|

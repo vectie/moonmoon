@@ -253,7 +253,7 @@ fn inertial_collision_frame_status(
   if terrain_review_count > 0 {
     "terrain-collision-review"
   } else if self_contact_count > 0 {
-    "conservative-self-collision-review"
+    "self-collision-review"
   } else {
     "collision-clear-review"
   }
@@ -377,7 +377,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, and generic manifold resolution. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 
