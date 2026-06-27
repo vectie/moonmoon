@@ -686,7 +686,8 @@ test "support assessment reports static margin" {
   ])
   assert_true(assessment.stable)
   assert_eq(assessment.support_count, 1)
-  inspect(assessment.planar_margin_m, content="0.1")
+  assert_eq(assessment.support_polygon_vertex_count, 4)
+  assert_true(nearly_equal(assessment.planar_margin_m, 0.1))
   assert_eq(assessment.status, "inside-support")
 }
 
@@ -698,6 +699,25 @@ test "support assessment flags projection outside support" {
   assert_true(!assessment.stable)
   assert_true(assessment.planar_margin_m < 0.0)
   assert_eq(assessment.status, "outside-support")
+}
+
+///|
+test "support assessment uses convex support polygon" {
+  let footprints = [
+    support_footprint("rear-left", vec3(0.0, 0.0, 0.0), 0.1, 0.1),
+    support_footprint("front-right", vec3(1.0, 1.0, 0.0), 0.1, 0.1),
+  ]
+  let inside = support_assessment(vec3(0.5, 0.5, 1.0), footprints)
+  assert_true(inside.stable)
+  assert_eq(inside.support_count, 2)
+  assert_true(inside.support_polygon_vertex_count > 4)
+  assert_true(inside.planar_margin_m > 0.0)
+  let outside_hull = support_assessment(vec3(0.9, 0.1, 1.0), footprints)
+  assert_true(!outside_hull.stable)
+  assert_true(outside_hull.margin_x_m > 0.0)
+  assert_true(outside_hull.margin_y_m > 0.0)
+  assert_true(outside_hull.planar_margin_m < 0.0)
+  assert_eq(outside_hull.status, "outside-support")
 }
 
 ///|

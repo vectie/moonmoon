@@ -94,8 +94,14 @@ def main() -> None:
     if not any(frame.get("contact_patch_status") == "contact-patch-review" for frame in frames):
         fail("expected contact patch review evidence")
     first = frames[0]
-    if first.get("support_assessment", {}).get("support_count") != 1:
+    first_support = first.get("support_assessment", {})
+    if first_support.get("support_count") != 1:
         fail("first frame should have one active support foot")
+    polygon_vertices = first_support.get("support_polygon_vertices", [])
+    if first_support.get("support_polygon_vertex_count", 0) < 3:
+        fail("support assessment must expose a convex support polygon")
+    if first_support.get("support_polygon_vertex_count") != len(polygon_vertices):
+        fail("support polygon vertex count must match vertices")
     patches = first.get("contact_patches", [])
     if len(patches) != 2:
         fail("expected per-foot contact patches")

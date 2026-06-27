@@ -18,11 +18,11 @@
 - frame 1 t=0.1s phase=left-support capture_margin=-0.035m status=capture-point-review
 - frame 2 t=0.2s phase=left-support capture_margin=-0.035m status=capture-point-review
 - frame 3 t=0.30000000000000004s phase=left-support capture_margin=-0.035876828256432944m status=capture-point-review
-- frame 4 t=0.4s phase=left-support capture_margin=-0.04787682825643304m status=capture-point-review
-- frame 5 t=0.5s phase=left-support capture_margin=-0.05987682825643299m status=capture-point-review
+- frame 4 t=0.4s phase=left-support capture_margin=-0.04787682825643303m status=capture-point-review
+- frame 5 t=0.5s phase=left-support capture_margin=-0.059876828256432986m status=capture-point-review
 - frame 6 t=0.6000000000000001s phase=left-support capture_margin=-0.07187682825643289m status=capture-point-review
 - frame 7 t=0.7000000000000001s phase=left-support capture_margin=-0.08387682825643307m status=capture-point-review
-- frame 8 t=0.8s phase=left-support capture_margin=-0.095876828256433m status=capture-point-review
+- frame 8 t=0.8s phase=left-support capture_margin=-0.09587682825643298m status=capture-point-review
 - frame 9 t=0.9s phase=left-support capture_margin=-0.10787682825643309m status=capture-point-review
 - frame 10 t=1s phase=right-support capture_margin=-0.035m status=capture-point-review
 - frame 11 t=1.1s phase=right-support capture_margin=-0.035m status=capture-point-review
@@ -39,7 +39,7 @@
 - frame 22 t=2.2s phase=left-support capture_margin=-0.035m status=capture-point-review
 - frame 23 t=2.3000000000000003s phase=left-support capture_margin=-0.03587682825643296m status=capture-point-review
 - frame 24 t=2.4000000000000004s phase=left-support capture_margin=-0.04787682825643297m status=capture-point-review
-- frame 25 t=2.5s phase=left-support capture_margin=-0.059876828256433756m status=capture-point-review
+- frame 25 t=2.5s phase=left-support capture_margin=-0.05987682825643376m status=capture-point-review
 - frame 26 t=2.6s phase=left-support capture_margin=-0.07187682825643305m status=capture-point-review
 - frame 27 t=2.7s phase=left-support capture_margin=-0.08387682825643261m status=capture-point-review
 - frame 28 t=2.8000000000000003s phase=left-support capture_margin=-0.09587682825643301m status=capture-point-review

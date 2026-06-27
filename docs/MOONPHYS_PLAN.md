@@ -8,8 +8,8 @@ evidence.
 ## Current Implementation Status
 
 - `moonphys` has generic vector, transform, environment, bilinear heightfield,
-  terrain-normal point and patch contact, kinematic, support-margin, and trace
-  primitives.
+  terrain-normal point and patch contact, kinematic, convex support-polygon
+  margin, and trace primitives.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
@@ -27,7 +27,7 @@ evidence.
   between plant anchors, eliminating the earlier sliding-contact artifact.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
-  report backed by generic Moonphys support assessment.
+  report backed by generic Moonphys convex support-polygon assessment.
 - Moonrobo exports a Noetix source-model audit that records the sibling
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, and zero authoritative collision or
@@ -454,10 +454,11 @@ Moonrobo simulation packet:
 
 ## Phase 8: Toward Real Physics
 
-Status: generic support-margin, capture-point, rigid-body gravity integration,
-material contact, bilinear heightfield collision, terrain-normal single-body
-heightfield contact resolution, rectangular heightfield contact-patch sampling,
-deterministic rigid-body heightfield replay, diagonal-inertia
+Status: generic convex support-polygon margin, capture-point, rigid-body
+gravity integration, material contact, bilinear heightfield collision,
+terrain-normal single-body heightfield contact resolution, rectangular
+heightfield contact-patch sampling, deterministic rigid-body heightfield replay,
+diagonal-inertia
 angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, narrow-phase sphere/capsule/box contact generation, contact manifold
 summaries, multi-contact manifold resolution, generic traction/friction-cone
@@ -497,7 +498,7 @@ Next `moonphys` capabilities:
   integration (implemented)
 - conservative sphere/capsule/box collision shape bounds (implemented)
 - diagonal inertia and angular velocity integration (implemented)
-- support polygon / center of mass helper (implemented)
+- convex support polygon / center of mass margin helper (implemented)
 - capture point / linear inverted-pendulum review helper (implemented)
 - semi-implicit rigid-body gravity integration (implemented)
 - material/friction model (implemented)

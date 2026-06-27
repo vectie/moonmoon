@@ -452,6 +452,8 @@ pub(all) struct SupportAssessment {
   margin_x_m : Double
   margin_y_m : Double
   planar_margin_m : Double
+  support_polygon_vertices : Array[Vec3]
+  support_polygon_vertex_count : Int
   stable : Bool
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
