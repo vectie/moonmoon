@@ -14,6 +14,7 @@ evidence.
   instead of owning terrain math.
 - Every walk frame includes 24 Noetix joint phases for animation/replay.
 - The trace is exported as Markdown and JSON under `output/moonrobo`.
+- MoonBook materializes the trace as a durable workspace entry.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 
 ## Boundary
@@ -312,6 +313,9 @@ Check invariants:
 
 ## Phase 7: MoonBook / MoonClaw Integration
 
+Status: MoonBook entry and workspace payload implemented for the Noetix walk
+trace; MoonClaw tasking remains future work.
+
 After the trace is stable, make it durable evidence.
 
 MoonBook entry:
@@ -377,11 +381,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Materialize the Noetix walk trace into the MoonBook workspace.
-2. Surface the trace in Rabbita without adding hardware controls.
-3. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
-4. Replace synthetic joint phases with URDF-derived link poses.
-5. Add basic support-polygon and center-of-mass evidence.
+1. Surface the trace in Rabbita without adding hardware controls.
+2. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
+3. Replace synthetic joint phases with URDF-derived link poses.
+4. Add basic support-polygon and center-of-mass evidence.
+5. Add MoonClaw follow-up tasking for trace/contact review.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

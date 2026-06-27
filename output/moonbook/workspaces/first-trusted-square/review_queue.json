@@ -168,32 +168,32 @@
       "severity": "high",
       "reason": "Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
       "owner": "mission-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-terrain-grade-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-terrain-grade-northeast-stepout-request-evidence"
     },
     {
       "item_id": "clear-illumination-confidence-northeast-stepout",
       "severity": "high",
       "reason": "Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
       "owner": "power-thermal-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-illumination-confidence-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-illumination-confidence-northeast-stepout-request-evidence"
     },
     {
       "item_id": "clear-energy-margin",
       "severity": "high",
       "reason": "Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
       "owner": "power-thermal-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-energy-margin-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-energy-margin-request-evidence"
     },
     {
       "item_id": "clear-moonbook-review-northeast-stepout",
       "severity": "high",
       "reason": "MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
       "owner": "mission-review",
-      "status": "Accepted",
-      "last_transition_id": "rabbita-clear-moonbook-review-northeast-stepout-accept"
+      "status": "NeedsEvidence",
+      "last_transition_id": "review-clear-moonbook-review-northeast-stepout-request-evidence"
     },
     {
       "item_id": "moonrobo-handoff",

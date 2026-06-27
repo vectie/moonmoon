@@ -231,42 +231,42 @@
   - confidence: 0.6
   - path: moonrobo/first-trusted-square/handoffs.json
 - moonclaw/first-trusted-square/modeling-proposals: MoonClaw modeling proposals for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-proposal
+  - kind: moonclaw-proposal
   - claim: derived
   - confidence: 0.65
   - path: moonclaw/first-trusted-square/proposals.json
 - moonclaw/first-trusted-square/ephemeris-acquisition-task: MoonClaw ephemeris acquisition task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-task
+  - kind: moonclaw-task
   - claim: derived
   - confidence: 0.6
   - path: moonclaw/first-trusted-square/ephemeris-task.json
 - moonclaw/first-trusted-square/corridor-expansion-task: MoonClaw corridor expansion task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-task
+  - kind: moonclaw-task
   - claim: derived
   - confidence: 0.65
   - path: moonclaw/first-trusted-square/corridor-task.json
 - moonclaw/first-trusted-square/remediation-margin-task: MoonClaw remediation-margin task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-task
+  - kind: moonclaw-task
   - claim: derived
   - confidence: 0.68
   - path: moonclaw/first-trusted-square/remediation-margin-task.json
 - moonclaw/first-trusted-square/remediation-margin-refresh-task: MoonClaw remediation-margin refresh task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-refresh-task
+  - kind: moonclaw-remediation-margin-refresh-task
   - claim: derived
   - confidence: 0.72
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-task.json
 - moonclaw/first-trusted-square/remediation-margin-refresh-receipt: MoonClaw remediation-margin refresh receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-refresh-receipt
+  - kind: moonclaw-remediation-margin-refresh-receipt
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-receipt.json
 - moonclaw/first-trusted-square/route-scoring-receipt: MoonClaw route-scoring receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-receipt
+  - kind: moonclaw-receipt
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/receipts.json
 - moonclaw/first-trusted-square/remediation-margin-receipt: MoonClaw remediation-margin receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-receipt
+  - kind: moonclaw-remediation-margin-receipt
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/remediation-margin-receipt.json
@@ -291,12 +291,12 @@
   - confidence: 0.7
   - path: moonrobo/first-trusted-square/remediation-margin-refresh-projection.json
 - moonclaw/first-trusted-square/remediation-margin-refresh-followup-task: MoonClaw remediation-margin refresh follow-up task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-refresh-followup-task
+  - kind: moonclaw-remediation-margin-refresh-followup-task
   - claim: derived
   - confidence: 0.72
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-followup-task.json
 - moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt: MoonClaw remediation-margin refresh follow-up receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-refresh-followup-receipt
+  - kind: moonclaw-remediation-margin-refresh-followup-receipt
   - claim: derived
   - confidence: 0.7
   - path: moonclaw/first-trusted-square/remediation-margin-refresh-followup-receipt.json
@@ -316,37 +316,37 @@
   - confidence: 0.7
   - path: moonrobo/first-trusted-square/remediation-margin-cycle-closeout-policy.json
 - moonclaw/first-trusted-square/remediation-margin-closeout-action-task: MoonClaw remediation-margin closeout action task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-closeout-action-task
+  - kind: moonclaw-remediation-margin-closeout-action-task
   - claim: derived
   - confidence: 0.72
   - path: moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json
 - moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan: MoonClaw reviewed remediation-margin action plan for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-reviewed-action-plan
+  - kind: moonclaw-remediation-margin-reviewed-action-plan
   - claim: derived
   - confidence: 0.74
   - path: moonclaw/first-trusted-square/remediation-margin-reviewed-action-plan.json
 - moonclaw/first-trusted-square/remediation-margin-reviewed-work-items: MoonClaw reviewed remediation-margin work items for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-reviewed-work-items
+  - kind: moonclaw-remediation-margin-reviewed-work-items
   - claim: derived
   - confidence: 0.75
   - path: moonclaw/first-trusted-square/remediation-margin-reviewed-work-items.json
 - moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts: MoonClaw reviewed remediation-margin work item receipts for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-reviewed-work-item-receipts
+  - kind: moonclaw-remediation-margin-reviewed-work-item-receipts
   - claim: derived
   - confidence: 0.76
   - path: moonclaw/first-trusted-square/remediation-margin-reviewed-work-item-receipts.json
 - moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task: MoonClaw reviewed remediation-margin fresh evidence task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-reviewed-fresh-evidence-task
+  - kind: moonclaw-remediation-margin-reviewed-fresh-evidence-task
   - claim: derived
   - confidence: 0.77
   - path: moonclaw/first-trusted-square/remediation-margin-reviewed-fresh-evidence-task.json
 - moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts: MoonClaw remediation-margin fresh evidence action receipts for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-fresh-evidence-action-receipts
+  - kind: moonclaw-remediation-margin-fresh-evidence-action-receipts
   - claim: derived
   - confidence: 0.78
   - path: moonclaw/first-trusted-square/remediation-margin-fresh-evidence-action-receipts.json
 - moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts: MoonClaw regenerated reviewed work item receipts for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-remediation-margin-regenerated-reviewed-work-item-receipts
+  - kind: moonclaw-remediation-margin-regenerated-reviewed-work-item-receipts
   - claim: derived
   - confidence: 0.79
   - path: moonclaw/first-trusted-square/remediation-margin-regenerated-reviewed-work-item-receipts.json
@@ -356,12 +356,12 @@
   - confidence: 0.8
   - path: moonrobo/first-trusted-square/remediation-margin-regenerated-receipt-readiness.json
 - moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task: MoonClaw regenerated receipt readiness fresh evidence task for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-regenerated-receipt-readiness-fresh-evidence-task
+  - kind: moonclaw-regenerated-receipt-readiness-fresh-evidence-task
   - claim: derived
   - confidence: 0.81
   - path: moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-task.json
 - moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts: MoonClaw regenerated receipt readiness fresh evidence action receipts for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-regenerated-receipt-readiness-fresh-evidence-action-receipts
+  - kind: moonclaw-regenerated-receipt-readiness-fresh-evidence-action-receipts
   - claim: derived
   - confidence: 0.82
   - path: moonclaw/first-trusted-square/regenerated-receipt-readiness-fresh-evidence-action-receipts.json
@@ -371,74 +371,49 @@
   - confidence: 0.83
   - path: moonrobo/first-trusted-square/regenerated-receipt-readiness-action-receipt-closeout.json
 - moonclaw/first-trusted-square/ephemeris-receipt: MoonClaw ephemeris receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-ephemeris-receipt
+  - kind: moonclaw-ephemeris-receipt
   - claim: derived
   - confidence: 0.55
   - path: moonclaw/first-trusted-square/ephemeris-receipts.json
 - moonclaw/first-trusted-square/corridor-expansion-receipt: MoonClaw corridor-expansion receipt for First Trusted Square / Shackleton Rim rehearsal tile
-  - kind: moon-claw-corridor-receipt
+  - kind: moonclaw-corridor-receipt
   - claim: derived
   - confidence: 0.75
   - path: moonclaw/first-trusted-square/corridor-receipts.json
-- moonclaw/first-trusted-square/moonrobo-gap-remediation-task: MoonClaw MoonRobo gap remediation task
-  - kind: moon-claw-task
-  - claim: derived
-  - confidence: 0.82
-  - path: moonclaw/first-trusted-square/moonrobo-gap-task.json
-- moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt: MoonClaw MoonRobo gap remediation receipt
-  - kind: moon-claw-gap-receipt
-  - claim: derived
-  - confidence: 0.82
-  - path: moonclaw/first-trusted-square/moonrobo-gap-receipt.json
-- moonrobo/first-trusted-square/gap-remediation-modeling-pass: MoonRobo gap remediation modeling pass
-  - kind: moonrobo-gap-modeling
-  - claim: derived
-  - confidence: 0.82
-  - path: moonrobo/first-trusted-square/gap-remediation-modeling.json
-- moonrobo/first-trusted-square/simulation-review-packet: MoonRobo selected-route simulation review packet
-  - kind: moonrobo-simulation-review-packet
-  - claim: derived
-  - confidence: 0.84
-  - path: moonrobo/first-trusted-square/simulation-review-packet.json
-- moonrobo/first-trusted-square/simulation-review-decision: MoonRobo selected-route simulation review decision
-  - kind: moonrobo-simulation-review-decision
-  - claim: derived
-  - confidence: 0.84
-  - path: moonrobo/first-trusted-square/simulation-review-decision.json
-- moonrobo/first-trusted-square/simulation-blocker-reduction: MoonRobo simulation blocker reduction
-  - kind: moonrobo-simulation-blocker-reduction
-  - claim: derived
-  - confidence: 0.84
-  - path: moonrobo/first-trusted-square/simulation-blocker-reduction.json
+- moonrobo/first-trusted-square/noetix-walk: Moonrobo Noetix endless moon-walk trace for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-walk
+  - claim: simulated
+  - confidence: 0.62
+  - path: moonrobo/first-trusted-square/noetix-walk.json
 
 ## Review Queue
 
 - workspace-materialized [low/accepted] MoonBook workspace files are materialized from the current generated dossier -> moonbook
 - source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square [medium/open] Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate. -> data-review
-- blocker-0 [high/needsevidence] terrain exceeds early traverse limits -> operator
-- blocker-1 [high/needsevidence] requires alternate route or stronger dataset -> operator
-- traverse-0 [high/needsevidence] max neighbor grade exceeds rover hard limit -> mission-review
-- traverse-1 [high/needsevidence] roughness exceeds rover hard limit -> mission-review
+- blocker-0 [high/needs-evidence] terrain exceeds early traverse limits -> operator
+- blocker-1 [high/needs-evidence] requires alternate route or stronger dataset -> operator
+- traverse-0 [high/needs-evidence] max neighbor grade exceeds rover hard limit -> mission-review
+- traverse-1 [high/needs-evidence] roughness exceeds rover hard limit -> mission-review
 - route-direct-lola-window [high/rejected] Direct traverse across measured LOLA patch from lro-lola-first-trusted-square-dem-v1: do not traverse directly; use this as the baseline hazard case -> mission-review
-- illumination-direct-lola-window [high/needsevidence] Direct traverse across measured LOLA patch: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- route-west-contour-detour [high/needsevidence] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
-- illumination-west-contour-detour [high/needsevidence] West contour detour candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- route-north-rim-stepout [high/needsevidence] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
-- illumination-north-rim-stepout [high/needsevidence] North rim step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- route-southwest-bypass [high/needsevidence] Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation -> mission-review
-- illumination-southwest-bypass [high/needsevidence] Southwest widened bypass candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- route-south-stepout [high/needsevidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
-- illumination-south-stepout [high/needsevidence] South step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- route-northeast-stepout [high/needsevidence] Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation -> mission-review
-- illumination-northeast-stepout [high/needsevidence] Northeast 9x9 step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
-- corridor-scan-best-window [high/needsevidence] best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked -> mission-review
-- energy-window [high/needsevidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
-- clear-terrain-grade-northeast-stepout [high/accepted] Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile -> mission-review
-- clear-illumination-confidence-northeast-stepout [high/accepted] Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable -> power-thermal-review
-- clear-energy-margin [high/accepted] Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation -> power-thermal-review
-- clear-moonbook-review-northeast-stepout [high/accepted] MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation -> mission-review
-- moonrobo-handoff [high/needsevidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
-- moonclaw-proposals [high/needsevidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
+- illumination-direct-lola-window [high/needs-evidence] Direct traverse across measured LOLA patch: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- route-west-contour-detour [high/needs-evidence] West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation -> mission-review
+- illumination-west-contour-detour [high/needs-evidence] West contour detour candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- route-north-rim-stepout [high/needs-evidence] North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review -> mission-review
+- illumination-north-rim-stepout [high/needs-evidence] North rim step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- route-southwest-bypass [high/needs-evidence] Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation -> mission-review
+- illumination-southwest-bypass [high/needs-evidence] Southwest widened bypass candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- route-south-stepout [high/needs-evidence] South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review -> mission-review
+- illumination-south-stepout [high/needs-evidence] South step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- route-northeast-stepout [high/needs-evidence] Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation -> mission-review
+- illumination-northeast-stepout [high/needs-evidence] Northeast 9x9 step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation -> power-thermal-review
+- corridor-scan-best-window [high/needs-evidence] best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked -> mission-review
+- energy-window [high/needs-evidence] energy window budget: revise rover power model, route count, or site window before simulation -> power-thermal-review
+- clear-terrain-grade-northeast-stepout [high/needs-evidence] Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile -> mission-review
+- clear-illumination-confidence-northeast-stepout [high/needs-evidence] Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable -> power-thermal-review
+- clear-energy-margin [high/needs-evidence] Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation -> power-thermal-review
+- clear-moonbook-review-northeast-stepout [high/needs-evidence] MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation -> mission-review
+- moonrobo-handoff [high/needs-evidence] Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared -> moonrobo
+- moonclaw-proposals [high/needs-evidence] MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable -> moonclaw
 - question-0 [low/open] Attach time-windowed solar ephemeris for robot energy and thermal constraints. -> moonclaw
 - question-1 [low/open] Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor. -> moonclaw
 - question-2 [low/open] Review the materialized MoonBook workspace entries and close accepted or rejected queue items. -> moonclaw
@@ -451,31 +426,31 @@
   - append only: true
   - source: workspace/index at moonbook://moonmoon/first-trusted-square/index.json
   - rationale: accepted because the materialized workspace is present in generated MoonBook output
-- review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open: keepopen source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square -> open
+- review-source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square-keep-open: keep-open source-candidate-candidate-lunar-solar-ephemeris-first-trusted-square -> open
   - reviewer: operator/moonbook-policy-v1 as data-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: source-candidate/candidate-lunar-solar-ephemeris-first-trusted-square at moonbook://moonmoon/first-trusted-square/source-candidates/candidate-lunar-solar-ephemeris-first-trusted-square.json
   - rationale: left open for data-review follow-up
-- review-blocker-0-request-evidence: requestevidence blocker-0 -> needsevidence
+- review-blocker-0-request-evidence: request-evidence blocker-0 -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as operator
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: terrain exceeds early traverse limits
-- review-blocker-1-request-evidence: requestevidence blocker-1 -> needsevidence
+- review-blocker-1-request-evidence: request-evidence blocker-1 -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as operator
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: requires alternate route or stronger dataset
-- review-traverse-0-request-evidence: requestevidence traverse-0 -> needsevidence
+- review-traverse-0-request-evidence: request-evidence traverse-0 -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: mission/first-trusted-square/traverse at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/traverse.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: max neighbor grade exceeds rover hard limit
-- review-traverse-1-request-evidence: requestevidence traverse-1 -> needsevidence
+- review-traverse-1-request-evidence: request-evidence traverse-1 -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
@@ -487,141 +462,136 @@
   - append only: true
   - source: route/first-trusted-square/direct-lola-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.json
   - rationale: rejected for this proof slice because the evidence explicitly says not to traverse directly
-- review-illumination-direct-lola-window-request-evidence: requestevidence illumination-direct-lola-window -> needsevidence
+- review-illumination-direct-lola-window-request-evidence: request-evidence illumination-direct-lola-window -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/direct-lola-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/direct-lola-window.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Direct traverse across measured LOLA patch: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-route-west-contour-detour-request-evidence: requestevidence route-west-contour-detour -> needsevidence
+- review-route-west-contour-detour-request-evidence: request-evidence route-west-contour-detour -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: route/first-trusted-square/west-contour-detour at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate from lro-lola-first-trusted-square-west-contour-dem-v1: widen the west corridor extraction before simulation
-- review-illumination-west-contour-detour-request-evidence: requestevidence illumination-west-contour-detour -> needsevidence
+- review-illumination-west-contour-detour-request-evidence: request-evidence illumination-west-contour-detour -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/west-contour-detour at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/west-contour-detour.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: West contour detour candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-route-north-rim-stepout-request-evidence: requestevidence route-north-rim-stepout -> needsevidence
+- review-route-north-rim-stepout-request-evidence: request-evidence route-north-rim-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: route/first-trusted-square/north-rim-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate from lro-lola-first-trusted-square-north-rim-dem-v1: widen the north corridor extraction and add illumination review
-- review-illumination-north-rim-stepout-request-evidence: requestevidence illumination-north-rim-stepout -> needsevidence
+- review-illumination-north-rim-stepout-request-evidence: request-evidence illumination-north-rim-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/north-rim-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/north-rim-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: North rim step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-route-southwest-bypass-request-evidence: requestevidence route-southwest-bypass -> needsevidence
+- review-route-southwest-bypass-request-evidence: request-evidence route-southwest-bypass -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: route/first-trusted-square/southwest-bypass at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate from lro-lola-first-trusted-square-southwest-bypass-dem-v1: continue corridor search beyond the southwest bypass before simulation
-- review-illumination-southwest-bypass-request-evidence: requestevidence illumination-southwest-bypass -> needsevidence
+- review-illumination-southwest-bypass-request-evidence: request-evidence illumination-southwest-bypass -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/southwest-bypass at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/southwest-bypass.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Southwest widened bypass candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-route-south-stepout-request-evidence: requestevidence route-south-stepout -> needsevidence
+- review-route-south-stepout-request-evidence: request-evidence route-south-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: route/first-trusted-square/south-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate from lro-lola-first-trusted-square-south-stepout-dem-v1: continue south corridor extraction and add ephemeris-backed illumination review
-- review-illumination-south-stepout-request-evidence: requestevidence illumination-south-stepout -> needsevidence
+- review-illumination-south-stepout-request-evidence: request-evidence illumination-south-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/south-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/south-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: South step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-route-northeast-stepout-request-evidence: requestevidence route-northeast-stepout -> needsevidence
+- review-route-northeast-stepout-request-evidence: request-evidence route-northeast-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: route/first-trusted-square/northeast-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate from lro-lola-first-trusted-square-northeast-stepout-dem-v1: review the promoted route fixture and attach ephemeris-backed illumination before simulation
-- review-illumination-northeast-stepout-request-evidence: requestevidence illumination-northeast-stepout -> needsevidence
+- review-illumination-northeast-stepout-request-evidence: request-evidence illumination-northeast-stepout -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: illumination/first-trusted-square/northeast-stepout at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.illumination.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Northeast 9x9 step-out candidate: local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation
-- review-corridor-scan-best-window-request-evidence: requestevidence corridor-scan-best-window -> needsevidence
+- review-corridor-scan-best-window-request-evidence: request-evidence corridor-scan-best-window -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as mission-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: corridor/first-trusted-square/first-trusted-square-9x9 at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/corridor-scan.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: best measured corridor window r-12-c+16 selects northeast-stepout and remains block: lowest max-neighbor-grade window in this measured 9x9 scan; selects route northeast-stepout and still blocked
-- review-energy-window-request-evidence: requestevidence energy-window -> needsevidence
+- review-energy-window-request-evidence: request-evidence energy-window -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as power-thermal-review
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: energy/first-trusted-square/conservative-window at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: energy window budget: revise rover power model, route count, or site window before simulation
-- rabbita-clear-terrain-grade-northeast-stepout-accept: accept clear-terrain-grade-northeast-stepout -> accepted
-  - reviewer: operator/rabbita-clearance-review as mission-review
-  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
+- review-clear-terrain-grade-northeast-stepout-request-evidence: request-evidence clear-terrain-grade-northeast-stepout -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
-  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout
-  - rationale: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture
-- rabbita-clear-illumination-confidence-northeast-stepout-accept: accept clear-illumination-confidence-northeast-stepout -> accepted
-  - reviewer: operator/rabbita-clearance-review as power-thermal-review
-  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile
+- review-clear-illumination-confidence-northeast-stepout-request-evidence: request-evidence clear-illumination-confidence-northeast-stepout -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
-  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout
-  - rationale: Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture
-- rabbita-clear-energy-margin-accept: accept clear-energy-margin -> accepted
-  - reviewer: operator/rabbita-clearance-review as power-thermal-review
-  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable
+- review-clear-energy-margin-request-evidence: request-evidence clear-energy-margin -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as power-thermal-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
-  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin
-  - rationale: Rabbita accept decision for clear-energy-margin: imported fixture
-- rabbita-clear-moonbook-review-northeast-stepout-accept: accept clear-moonbook-review-northeast-stepout -> accepted
-  - reviewer: operator/rabbita-clearance-review as mission-review
-  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation
+- review-clear-moonbook-review-northeast-stepout-request-evidence: request-evidence clear-moonbook-review-northeast-stepout -> needs-evidence
+  - reviewer: operator/moonbook-policy-v1 as mission-review
+  - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
-  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout
-  - rationale: Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture
-- review-moonrobo-handoff-request-evidence: requestevidence moonrobo-handoff -> needsevidence
+  - source: mission/first-trusted-square/selected-route-clearance at moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json
+  - rationale: kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation
+- review-moonrobo-handoff-request-evidence: request-evidence moonrobo-handoff -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as moonrobo
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: moonrobo/first-trusted-square/simulation-preconditions at moonbook://moonmoon/first-trusted-square/moonrobo/first-trusted-square/handoffs.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: Moonrobo handoff: Moonrobo must not simulate this route; replay is review-only and hardware is denied until blocking Moonmoon preconditions are cleared
-- review-moonclaw-proposals-request-evidence: requestevidence moonclaw-proposals -> needsevidence
+- review-moonclaw-proposals-request-evidence: request-evidence moonclaw-proposals -> needs-evidence
   - reviewer: operator/moonbook-policy-v1 as moonclaw
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: moonclaw/first-trusted-square/modeling-proposals at moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/proposals.json
   - rationale: kept in review with a request for stronger measured evidence before mission use: MoonClaw proposals dispatch ephemeris, corridor, and route-scoring work before Moonrobo simulation can become reviewable
-- review-question-0-keep-open: keepopen question-0 -> open
+- review-question-0-keep-open: keep-open question-0 -> open
   - reviewer: operator/moonbook-policy-v1 as moonclaw
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: site/first-trusted-square/next-question-0 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
-- review-question-1-keep-open: keepopen question-1 -> open
+- review-question-1-keep-open: keep-open question-1 -> open
   - reviewer: operator/moonbook-policy-v1 as moonclaw
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: site/first-trusted-square/next-question-1 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
-- review-question-2-keep-open: keepopen question-2 -> open
+- review-question-2-keep-open: keep-open question-2 -> open
   - reviewer: operator/moonbook-policy-v1 as moonclaw
   - timestamp: 2026-06-25T00:00:00Z (deterministic-evidence-window-start)
   - append only: true
   - source: site/first-trusted-square/next-question-2 at moonbook://moonmoon/first-trusted-square/review_queue.json
   - rationale: left open for moonclaw follow-up
-- rabbita-moonclaw-remediation-margin-closeout-action-review-accept: accept moonclaw-remediation-margin-closeout-action-review -> accepted
-  - reviewer: operator/rabbita-closeout-action-review as moonclaw-closeout-action-review
-  - timestamp: 2026-06-25T00:00:00Z (operator-browser-export)
-  - append only: true
-  - source: moonclaw/first-trusted-square/remediation-margin-closeout-action-task at moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review
-  - rationale: Rabbita accept decision for moonclaw-remediation-margin-closeout-action-review: terrain escalation, horizon retry-with-new-evidence, and energy freeze actions are operator-reviewed; hardware remains denied
+

@@ -85,71 +85,71 @@
       "clearance_plan": {
         "plan_id": "mission/first-trusted-square/northeast-stepout/selected-route-clearance",
         "route_id": "northeast-stepout",
-        "decision": "Allow",
+        "decision": "Block",
         "items": [
           {
             "clearance_id": "clear-terrain-grade-northeast-stepout",
             "kind": "TerrainGradeClearance",
             "label": "Selected route grade and roughness clearance",
-            "decision": "Allow",
-            "status": "AcceptedEvidence",
+            "decision": "Block",
+            "status": "NeedsEvidence",
             "source_check_id": "terrain-northeast-stepout",
             "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
             "observed": "grade 0.51395, roughness 5.95975 m, blocking edges 11/24, route confidence 0.7544",
             "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
-            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
-            "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
+            "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
+            "accepted_evidence_id": ""
           },
           {
             "clearance_id": "clear-illumination-confidence-northeast-stepout",
             "kind": "IlluminationConfidenceClearance",
             "label": "Selected route illumination confidence clearance",
-            "decision": "Allow",
-            "status": "AcceptedEvidence",
+            "decision": "Block",
+            "status": "NeedsEvidence",
             "source_check_id": "illumination-northeast-stepout",
             "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
             "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.22381250000000003, terrain-shadow margin 26.356833 deg",
             "required": "confidence >= 0.7, relief-shadow risk < 0.22, terrain-shadow margin <= 0 deg",
-            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
-            "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout"
+            "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
+            "accepted_evidence_id": ""
           },
           {
             "clearance_id": "clear-energy-margin",
             "kind": "EnergyMarginClearance",
             "label": "Rover energy margin clearance",
-            "decision": "Allow",
-            "status": "AcceptedEvidence",
+            "decision": "Block",
+            "status": "NeedsEvidence",
             "source_check_id": "energy-window",
             "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
             "observed": "bounded energy margin -855.061927 Wh, available 234.938073 Wh, required 1090 Wh, gap 1105.061927 Wh",
             "required": "bounded margin >= 250 Wh with accepted power, selected-route drive, comms, and thermal assumptions",
-            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-energy-margin: imported fixture; prior action was accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
-            "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
+            "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation; prior action was accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
+            "accepted_evidence_id": ""
           },
           {
             "clearance_id": "clear-moonbook-review-northeast-stepout",
             "kind": "MoonBookReviewClearance",
             "label": "MoonBook accepted review clearance",
-            "decision": "Allow",
-            "status": "AcceptedEvidence",
+            "decision": "Block",
+            "status": "NeedsEvidence",
             "source_check_id": "moonbook-review",
             "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
             "observed": "MoonBook review status is block for selected route northeast-stepout",
             "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
-            "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
-            "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout"
+            "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+            "accepted_evidence_id": ""
           }
         ],
-        "blocking_items": [],
-        "review_items": [],
-        "accepted_items": [
+        "blocking_items": [
           "clear-terrain-grade-northeast-stepout",
           "clear-illumination-confidence-northeast-stepout",
           "clear-energy-margin",
           "clear-moonbook-review-northeast-stepout"
         ],
+        "review_items": [],
+        "accepted_items": [],
         "rejected_items": [],
-        "next_action": "selected-route blockers are cleared; simulation packet can advance to MoonRobo review"
+        "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
       },
       "execution": {
         "simulation_state": "SimulationBlocked",
@@ -1322,71 +1322,71 @@
         "clearance_plan": {
           "plan_id": "mission/first-trusted-square/northeast-stepout/selected-route-clearance",
           "route_id": "northeast-stepout",
-          "decision": "Allow",
+          "decision": "Block",
           "items": [
             {
               "clearance_id": "clear-terrain-grade-northeast-stepout",
               "kind": "TerrainGradeClearance",
               "label": "Selected route grade and roughness clearance",
-              "decision": "Allow",
-              "status": "AcceptedEvidence",
+              "decision": "Block",
+              "status": "NeedsEvidence",
               "source_check_id": "terrain-northeast-stepout",
               "evidence_path": "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
               "observed": "grade 0.51395, roughness 5.95975 m, blocking edges 11/24, route confidence 0.7544",
               "required": "grade < 0.35, roughness < 2.5 m, blocking edges 0, confidence >= 0.7",
-              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-terrain-grade-northeast-stepout: imported fixture; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
-              "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-terrain-grade-northeast-stepout"
+              "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route grade and roughness clearance: accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile; prior action was accept a smoother measured route fixture or keep northeast-stepout out of simulation until terrain remediation clears the rover profile",
+              "accepted_evidence_id": ""
             },
             {
               "clearance_id": "clear-illumination-confidence-northeast-stepout",
               "kind": "IlluminationConfidenceClearance",
               "label": "Selected route illumination confidence clearance",
-              "decision": "Allow",
-              "status": "AcceptedEvidence",
+              "decision": "Block",
+              "status": "NeedsEvidence",
               "source_check_id": "illumination-northeast-stepout",
               "evidence_path": "output/mission/first_trusted_square_northeast_stepout_horizon.json",
               "observed": "illumination confidence 0.45263999999999993, relief-shadow risk 0.22381250000000003, terrain-shadow margin 26.356833 deg",
               "required": "confidence >= 0.7, relief-shadow risk < 0.22, terrain-shadow margin <= 0 deg",
-              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-illumination-confidence-northeast-stepout: imported fixture; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
-              "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-illumination-confidence-northeast-stepout"
+              "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Selected route illumination confidence clearance: accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable; prior action was accept local-horizon and terrain-shadow evidence for northeast-stepout before any MoonRobo simulation packet is consumable",
+              "accepted_evidence_id": ""
             },
             {
               "clearance_id": "clear-energy-margin",
               "kind": "EnergyMarginClearance",
               "label": "Rover energy margin clearance",
-              "decision": "Allow",
-              "status": "AcceptedEvidence",
+              "decision": "Block",
+              "status": "NeedsEvidence",
               "source_check_id": "energy-window",
               "evidence_path": "output/mission/first_trusted_square_energy_remediation.json",
               "observed": "bounded energy margin -855.061927 Wh, available 234.938073 Wh, required 1090 Wh, gap 1105.061927 Wh",
               "required": "bounded margin >= 250 Wh with accepted power, selected-route drive, comms, and thermal assumptions",
-              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-energy-margin: imported fixture; prior action was accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
-              "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-energy-margin"
+              "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: Rover energy margin clearance: accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation; prior action was accept bounded energy remediation with non-negative conservative margin or reduce route/survival demand before simulation",
+              "accepted_evidence_id": ""
             },
             {
               "clearance_id": "clear-moonbook-review-northeast-stepout",
               "kind": "MoonBookReviewClearance",
               "label": "MoonBook accepted review clearance",
-              "decision": "Allow",
-              "status": "AcceptedEvidence",
+              "decision": "Block",
+              "status": "NeedsEvidence",
               "source_check_id": "moonbook-review",
               "evidence_path": "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
               "observed": "MoonBook review status is block for selected route northeast-stepout",
               "required": "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
-              "clearance_action": "accept by operator/rabbita-clearance-review at 2026-06-25T00:00:00Z: Rabbita accept decision for clear-moonbook-review-northeast-stepout: imported fixture; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
-              "accepted_evidence_id": "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/selected-route-clearance.json#clear-moonbook-review-northeast-stepout"
+              "clearance_action": "request-evidence by operator/moonbook-policy-v1 at 2026-06-25T00:00:00Z: kept in review with a request for stronger measured evidence before mission use: MoonBook accepted review clearance: record accepted MoonBook review transitions for the selected route evidence bundle before simulation; prior action was record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+              "accepted_evidence_id": ""
             }
           ],
-          "blocking_items": [],
-          "review_items": [],
-          "accepted_items": [
+          "blocking_items": [
             "clear-terrain-grade-northeast-stepout",
             "clear-illumination-confidence-northeast-stepout",
             "clear-energy-margin",
             "clear-moonbook-review-northeast-stepout"
           ],
+          "review_items": [],
+          "accepted_items": [],
           "rejected_items": [],
-          "next_action": "selected-route blockers are cleared; simulation packet can advance to MoonRobo review"
+          "next_action": "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
         },
         "execution": {
           "simulation_state": "SimulationBlocked",

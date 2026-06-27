@@ -315,33 +315,9 @@
     "review": {
       "item_id": "moonclaw-remediation-margin-closeout-action-review",
       "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
-      "status": "Accepted",
-      "decision": "Accept",
-      "transition": {
-        "transition_id": "rabbita-moonclaw-remediation-margin-closeout-action-review-accept",
-        "item_id": "moonclaw-remediation-margin-closeout-action-review",
-        "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
-        "previous_status": "NeedsReview",
-        "decision": "Accept",
-        "resulting_status": "Accepted",
-        "reviewer_id": "operator/rabbita-closeout-action-review",
-        "reviewer_role": "moonclaw-closeout-action-review",
-        "timestamp_policy": "operator-browser-export",
-        "recorded_at_utc": "2026-06-25T00:00:00Z",
-        "append_only": true,
-        "hardware_authority_change": false,
-        "hardware_state": "HardwareDenied",
-        "hardware_authority": "moonmoon-safety-gate-only",
-        "source_evidence_refs": [
-          {
-            "ref_id": "moonclaw-remediation-margin-closeout-action-review",
-            "entry_id": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task",
-            "path": "moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json",
-            "immutable_uri": "moonbook://moonmoon/first-trusted-square/moonclaw/first-trusted-square/remediation-margin-closeout-action-task.json#moonclaw-remediation-margin-closeout-action-review"
-          }
-        ],
-        "rationale": "Rabbita accept decision for moonclaw-remediation-margin-closeout-action-review: terrain escalation, horizon retry-with-new-evidence, and energy freeze actions are operator-reviewed; hardware remains denied"
-      },
+      "status": "NeedsReview",
+      "decision": "RequestEvidence",
+      "transition": null,
       "hardware_authority_change": false,
       "hardware_state": "HardwareDenied",
       "hardware_authority": "moonmoon-safety-gate-only"

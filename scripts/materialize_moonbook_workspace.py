@@ -136,6 +136,9 @@ MOONCLAW_CORRIDOR_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_corridor_receipts.json"
 )
 MOONROBO_JSON = ROOT / "output/moonrobo/first_trusted_square_handoffs.json"
+MOONROBO_NOETIX_WALK_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_noetix_walk.json"
+)
 MISSION_HORIZON_JSON = (
   ROOT / "output/mission/first_trusted_square_northeast_stepout_horizon.json"
 )
@@ -393,6 +396,7 @@ def payload_for_entry(
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
+  moonrobo_noetix_walk: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
   lookups: dict[str, dict[str, dict[str, Any]]],
 ) -> Any:
@@ -505,6 +509,8 @@ def payload_for_entry(
     return moonrobo_simulation_review_decision
   if kind == "MoonroboSimulationBlockerReduction":
     return moonrobo_simulation_blocker_reduction
+  if kind == "MoonroboNoetixWalk":
+    return moonrobo_noetix_walk
   if kind == "MoonClawProposal":
     return {
       "primary_proposal": moonclaw[0],
@@ -715,6 +721,7 @@ def workspace_files(
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
+  moonrobo_noetix_walk: dict[str, Any],
   mission_horizon: dict[str, Any],
   mission_terrain_remediation: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
@@ -768,6 +775,7 @@ def workspace_files(
     "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
     "output/mission/first_trusted_square_energy_remediation.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
+    "output/moonrobo/first_trusted_square_noetix_walk.json",
   ]
   if moonclaw_gap_tasks:
     source_files.append(
@@ -886,6 +894,7 @@ def workspace_files(
       moonrobo_simulation_review_packet,
       moonrobo_simulation_review_decision,
       moonrobo_simulation_blocker_reduction,
+      moonrobo_noetix_walk,
       mission_energy_remediation,
       lookups,
     )
@@ -951,6 +960,7 @@ def workspace_files(
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
     "- Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`\n"
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
+    "- Source MoonRobo Noetix walk: `output/moonrobo/first_trusted_square_noetix_walk.json`\n"
   )
   if moonclaw_gap_tasks:
     readme += "- Source imported MoonClaw gap task: `output/moonclaw/first_trusted_square_moonrobo_gap_task.json`\n"
@@ -1166,6 +1176,7 @@ def main() -> int:
     MOONROBO_SIMULATION_BLOCKER_REDUCTION_JSON,
     {},
   )
+  moonrobo_noetix_walk = load_json(MOONROBO_NOETIX_WALK_JSON)
   mission_horizon = load_json(MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(MISSION_TERRAIN_REMEDIATION_JSON)
   mission_energy_remediation = load_json(MISSION_ENERGY_REMEDIATION_JSON)
@@ -1209,6 +1220,7 @@ def main() -> int:
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,
+    moonrobo_noetix_walk,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

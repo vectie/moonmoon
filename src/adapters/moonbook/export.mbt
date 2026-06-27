@@ -18,6 +18,7 @@ pub(all) enum BookEntryKind {
   EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
+  MoonroboNoetixWalk
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection
@@ -143,6 +144,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     EnergyRemediationEvidence => "energy-remediation-evidence"
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
+    MoonroboNoetixWalk => "moonrobo-noetix-walk"
     MoonroboGapModeling => "moonrobo-gap-modeling"
     MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
     MoonroboRemediationMarginProjection =>
@@ -948,6 +950,25 @@ fn moonrobo_handoff_entry(
     confidence: 0.6,
     path: "moonrobo/\{dossier.site.site_id}/handoffs.json",
     summary: "\{@moonrobo.handoff_status_label(handoff)} primary route \{handoff.route_id}: \{handoff.next_action}",
+  }
+}
+
+///|
+fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let trace = @moonrobo.first_trusted_square_noetix_walk_trace()
+  let joint_count = if trace.frames.is_empty() {
+    0
+  } else {
+    trace.frames[0].joint_phases.length()
+  }
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-walk",
+    title: "Moonrobo Noetix endless moon-walk trace for \{dossier.site.name}",
+    kind: MoonroboNoetixWalk,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.62,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-walk.json",
+    summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame, and hardware authority denied",
   }
 }
 
@@ -1851,6 +1872,7 @@ fn book_entries(
   )
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
+  entries.push(moonrobo_noetix_walk_entry(dossier))
   entries
 }
 
