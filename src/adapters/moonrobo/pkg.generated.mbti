@@ -396,6 +396,8 @@ pub(all) struct NoetixInertialCollisionFrame {
   terrain_contact_count : Int
   terrain_review_count : Int
   self_contact_manifold : @moonphys.CollisionContactManifold
+  self_contact_resolution : @moonphys.CollisionManifoldResolution
+  self_contact_correction_m : Double
   shapes : Array[NoetixCollisionShapeEvidence]
   terrain_collisions : Array[NoetixTerrainCollisionEvidence]
   status : String
@@ -410,6 +412,7 @@ pub(all) struct NoetixInertialCollisionReport {
   self_contact_frame_count : Int
   terrain_review_frame_count : Int
   max_self_penetration_m : Double
+  max_self_contact_correction_m : Double
   max_support_contact_torque_nm : Double
   frames : Array[NoetixInertialCollisionFrame]
   hardware_authority : String

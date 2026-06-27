@@ -9,6 +9,7 @@
 - self-contact frames: 32
 - terrain-review frames: 0
 - max self penetration: 0.2210026093704005 m
+- max self-contact correction: 0.2210026093704005 m
 - max support contact torque: 5.523087904424481 Nm
 - status: inertial-collision-self-review
 - hardware authority: moonmoon-safety-gate-only

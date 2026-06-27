@@ -52,6 +52,10 @@ def main(argv: list[str]) -> int:
   require("Moonphys diagonal inertia" in report["note"], "missing inertia note")
   require(report["max_support_contact_torque_nm"] > 0, "missing support torque")
   require(report["max_self_penetration_m"] >= 0, "bad self penetration")
+  require(
+    report["max_self_contact_correction_m"] >= 0,
+    "bad self-contact correction",
+  )
 
   frames = report["frames"]
   require(len(frames) == report["frame_count"], "frame count mismatch")
@@ -86,6 +90,34 @@ def main(argv: list[str]) -> int:
   require(
     first["self_contact_manifold"]["contacts"],
     "missing self-contact contact set",
+  )
+  require(
+    first["self_contact_resolution"]["manifold_id"]
+    == first["self_contact_manifold"]["manifold_id"],
+    "self-contact resolution does not reference frame manifold",
+  )
+  require(
+    first["self_contact_resolution"]["contact_count"]
+    == first["self_contact_manifold"]["contact_count"],
+    "self-contact resolution count mismatch",
+  )
+  require(
+    first["self_contact_resolution"]["material"]["material_id"]
+    == "lunar-regolith-review-model",
+    "missing regolith material resolution",
+  )
+  require(
+    first["self_contact_resolution"]["status"]
+    in {"single-contact-resolved", "multi-contact-resolved", "no-contact"},
+    "bad self-contact resolution status",
+  )
+  require(
+    any(
+      frame["self_contact_resolution"]["status"] == "multi-contact-resolved"
+      and frame["self_contact_correction_m"] > 0
+      for frame in frames
+    ),
+    "missing resolved multi-contact frame",
   )
   require(
     report["self_contact_frame_count"] >= 0

@@ -21,6 +21,20 @@ pub(all) struct CollisionContactManifold {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct CollisionManifoldResolution {
+  before : RigidBodyState
+  after : RigidBodyState
+  manifold_id : String
+  contact_count : Int
+  max_penetration_m : Double
+  material : MaterialContactModel
+  correction : Vec3
+  normal_speed_mps : Double
+  tangent_speed_mps : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn contact_normal(from : Vec3, to : Vec3) -> Vec3 {
   let delta = to.sub(from)
   let distance = delta.length_squared().sqrt()
@@ -122,6 +136,76 @@ fn normalized_or_up(value : Vec3) -> Vec3 {
     value.scale(1.0 / length)
   } else {
     vec3(0.0, 0.0, 1.0)
+  }
+}
+
+///|
+fn collision_friction_scale(material : MaterialContactModel) -> Double {
+  let raw = 1.0 - material.friction_coefficient
+  if raw < 0.0 {
+    0.0
+  } else if raw > 1.0 {
+    1.0
+  } else {
+    raw
+  }
+}
+
+///|
+pub fn resolve_collision_manifold(
+  state : RigidBodyState,
+  manifold : CollisionContactManifold,
+  material : MaterialContactModel,
+) -> CollisionManifoldResolution {
+  if manifold.contact_count == 0 {
+    {
+      before: state,
+      after: state,
+      manifold_id: manifold.manifold_id,
+      contact_count: 0,
+      max_penetration_m: 0.0,
+      material,
+      correction: vec3(0.0, 0.0, 0.0),
+      normal_speed_mps: 0.0,
+      tangent_speed_mps: state.velocity.length_squared().sqrt(),
+      status: "no-contact",
+    }
+  } else {
+    let normal = normalized_or_up(manifold.average_normal)
+    let normal_speed = state.velocity.dot(normal)
+    let normal_velocity = normal.scale(normal_speed)
+    let tangent_velocity = state.velocity.sub(normal_velocity)
+    let tangent_speed = tangent_velocity.length_squared().sqrt()
+    let scale = collision_friction_scale(material)
+    let resolved_normal_velocity = if normal_speed > 0.0 {
+      normal.scale((0.0 - normal_speed) * material.restitution_coefficient)
+    } else {
+      normal_velocity
+    }
+    let correction = normal.scale(0.0 - manifold.max_penetration_m)
+    let after = {
+      body_id: state.body_id,
+      mass_kg: state.mass_kg,
+      collision_radius_m: state.collision_radius_m,
+      position: state.position.add(correction),
+      velocity: tangent_velocity.scale(scale).add(resolved_normal_velocity),
+    }
+    {
+      before: state,
+      after,
+      manifold_id: manifold.manifold_id,
+      contact_count: manifold.contact_count,
+      max_penetration_m: manifold.max_penetration_m,
+      material,
+      correction,
+      normal_speed_mps: normal_speed,
+      tangent_speed_mps: tangent_speed,
+      status: if manifold.contact_count > 1 {
+        "multi-contact-resolved"
+      } else {
+        "single-contact-resolved"
+      },
+    }
   }
 }
 

@@ -354,6 +354,74 @@ test "collision contact manifold summarizes active contacts" {
 }
 
 ///|
+test "collision manifold resolution separates and damps one body" {
+  let contact = sphere_sphere_contact(
+    collision_sphere("body", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("blocker", 0.5),
+    transform3(identity_basis3(), vec3(0.75, 0.0, 0.0)),
+  )
+  let manifold = collision_contact_manifold("m", [contact])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.5,
+    vec3(0.0, 0.0, 0.0),
+    vec3(2.0, 1.0, 0.0),
+  )
+  let resolution = resolve_collision_manifold(
+    state,
+    manifold,
+    material_contact_model("test", 0.25, 0.1),
+  )
+  assert_eq(resolution.status, "single-contact-resolved")
+  assert_true(nearly_equal(resolution.correction.x, -0.25))
+  assert_true(nearly_equal(resolution.after.position.x, -0.25))
+  assert_true(nearly_equal(resolution.normal_speed_mps, 2.0))
+  assert_true(nearly_equal(resolution.tangent_speed_mps, 1.0))
+  assert_true(nearly_equal(resolution.after.velocity.x, -0.2))
+  assert_true(nearly_equal(resolution.after.velocity.y, 0.75))
+}
+
+///|
+test "collision manifold resolution handles multi and clear contacts" {
+  let first = sphere_sphere_contact(
+    collision_sphere("body", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("front", 0.5),
+    transform3(identity_basis3(), vec3(0.75, 0.0, 0.0)),
+  )
+  let second = sphere_sphere_contact(
+    collision_sphere("body", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("side", 0.5),
+    transform3(identity_basis3(), vec3(0.0, 0.8, 0.0)),
+  )
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.5,
+    vec3(0.0, 0.0, 0.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let multi = resolve_collision_manifold(
+    state,
+    collision_contact_manifold("multi", [first, second]),
+    lunar_regolith_contact_model(),
+  )
+  assert_eq(multi.status, "multi-contact-resolved")
+  assert_true(multi.correction.x < 0.0)
+  assert_true(multi.correction.y < 0.0)
+  let clear = resolve_collision_manifold(
+    state,
+    collision_contact_manifold("clear", []),
+    lunar_regolith_contact_model(),
+  )
+  assert_eq(clear.status, "no-contact")
+  assert_true(clear.after == state)
+}
+
+///|
 test "joint servo output applies pd torque and saturation" {
   let state = joint_motor_state("hip", 0.0, 0.0)
   let command = joint_motor_command("hip", 1.0, 0.0, 0.0)

@@ -600,6 +600,7 @@
   "self_contact_frame_count": 32,
   "terrain_review_frame_count": 0,
   "max_self_penetration_m": 0.2210026093704005,
+  "max_self_contact_correction_m": 0.2210026093704005,
   "max_support_contact_torque_nm": 5.523087904424481,
   "frames": [
     {
@@ -1144,6 +1145,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-0",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -2182,6 +2232,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.012,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.012,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-1",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -3220,6 +3319,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.024,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.024,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-2",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -4258,6 +4406,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.036,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.036,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-3",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -5296,6 +5493,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.048,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.048,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-4",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -6334,6 +6580,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.06,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.06,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-5",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -7372,6 +7667,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.072,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.072,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-6",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -8410,6 +8754,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.084,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.084,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-7",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -9448,6 +9841,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.096,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.096,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-8",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -10486,6 +10928,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.10800000000000001,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.10800000000000001,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-9",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -11524,6 +12015,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.12,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.12,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-10",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -12562,6 +13102,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.13199999999999998,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.13199999999999998,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-11",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -13600,6 +14189,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.144,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.144,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-12",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -14638,6 +15276,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.15600000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.15600000000000003,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-13",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -15676,6 +16363,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.168,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.168,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-14",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -16714,6 +17450,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.18,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.18,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-15",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -17752,6 +18537,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.192,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.192,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-16",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -18790,6 +19624,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.20400000000000001,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.20400000000000001,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-17",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -19828,6 +20711,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.21600000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.21600000000000003,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-18",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -20866,6 +21798,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.22799999999999998,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.22799999999999998,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-19",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -21904,6 +22885,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.24,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.24,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-20",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -22942,6 +23972,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.252,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.252,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-21",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -23980,6 +25059,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.26399999999999996,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.26399999999999996,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-22",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -25018,6 +26146,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.27599999999999997,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.27599999999999997,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-23",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -26056,6 +27233,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.288,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.288,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-24",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -27094,6 +28320,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.30000000000000004,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.30000000000000004,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-25",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -28132,6 +29407,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.31200000000000006,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.31200000000000006,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-26",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -29170,6 +30494,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.324,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.324,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-27",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -30208,6 +31581,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.336,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.336,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-28",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -31246,6 +32668,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.34800000000000003,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.34800000000000003,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-29",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -32284,6 +33755,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.36,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.36,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-30",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",
@@ -33322,6 +34842,55 @@
         },
         "status": "multi-contact"
       },
+      "self_contact_resolution": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.372,
+            "y": 0,
+            "z": 337.752
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/self-contact-review-body",
+          "mass_kg": 38,
+          "collision_radius_m": 0,
+          "position": {
+            "x": 0.372,
+            "y": -0.06030801409267403,
+            "z": 337.5393850974538
+          },
+          "velocity": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        "manifold_id": "noetix-e1/self-collision/frame-31",
+        "contact_count": 5,
+        "max_penetration_m": 0.2210026093704005,
+        "material": {
+          "material_id": "lunar-regolith-review-model",
+          "friction_coefficient": 0.62,
+          "restitution_coefficient": 0.04
+        },
+        "correction": {
+          "x": 0,
+          "y": -0.06030801409267403,
+          "z": -0.21261490254618481
+        },
+        "normal_speed_mps": 0,
+        "tangent_speed_mps": 0,
+        "status": "multi-contact-resolved"
+      },
+      "self_contact_correction_m": 0.2210026093704005,
       "shapes": [
         {
           "link_name": "base_link",

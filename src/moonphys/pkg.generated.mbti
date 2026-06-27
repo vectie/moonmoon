@@ -73,6 +73,8 @@ pub fn lunar_regolith_contact_model() -> MaterialContactModel
 
 pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
+pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
+
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
 
 pub fn rigid_body_angular_state(String, Basis3, Vec3) -> RigidBodyAngularState
@@ -155,6 +157,19 @@ pub(all) struct CollisionContactManifold {
   contact_count : Int
   max_penetration_m : Double
   average_normal : Vec3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionManifoldResolution {
+  before : RigidBodyState
+  after : RigidBodyState
+  manifold_id : String
+  contact_count : Int
+  max_penetration_m : Double
+  material : MaterialContactModel
+  correction : Vec3
+  normal_speed_mps : Double
+  tangent_speed_mps : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

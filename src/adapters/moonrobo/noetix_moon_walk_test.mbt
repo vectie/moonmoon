@@ -206,6 +206,7 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(report.shapes_per_frame >= 6)
   assert_true(report.max_support_contact_torque_nm > 0.0)
+  assert_true(report.max_self_contact_correction_m >= 0.0)
   assert_true(report.note.contains("Moonphys diagonal inertia"))
   assert_true(report.note.contains("not authoritative"))
   assert_true(
@@ -236,6 +237,12 @@ test "noetix inertial collision report checks terrain and self contacts" {
   assert_true(report.self_contact_frame_count > 0)
   assert_true(report.max_self_penetration_m >= 0.0)
   assert_true(report.frames[0].self_contact_manifold.contacts.length() > 0)
+  assert_true(
+    report.frames.any(fn(frame) {
+      frame.self_contact_resolution.status == "multi-contact-resolved" &&
+      frame.self_contact_correction_m > 0.0
+    }),
+  )
 }
 
 ///|
