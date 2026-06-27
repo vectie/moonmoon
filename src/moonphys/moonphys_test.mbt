@@ -956,6 +956,85 @@ test "hinge joint assessment composes anchor and axis evidence" {
 }
 
 ///|
+test "hinge joint frame assessment aggregates joints" {
+  let root = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(2.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let lower = rigid_body_motion_state(
+    "lower",
+    2.0,
+    0.1,
+    vec3(4.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let frame = rigid_body_hinge_joint_frame_assessment(
+    "leg-frame",
+    [
+      rigid_body_joint_frame_body(
+        root,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        lower,
+        rigid_body_inertia("lower", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    [
+      rigid_body_hinge_joint_constraint(
+        "hip",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(-1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+      rigid_body_hinge_joint_constraint(
+        "knee",
+        "upper",
+        "lower",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(-1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  assert_eq(frame.status, "hinge-joint-frame-correction-estimated")
+  assert_eq(frame.body_count, 3)
+  assert_eq(frame.joint_count, 2)
+  assert_eq(frame.assessed_joint_count, 2)
+  assert_eq(frame.review_count, 0)
+  assert_true(nearly_equal(frame.max_position_error_m, 0.0))
+  assert_true(
+    nearly_equal(frame.max_angular_error_rad, 3.141592653589793 / 2.0),
+  )
+  assert_eq(frame.joints[0].status, "hinge-joint-satisfied")
+  assert_eq(frame.joints[1].status, "hinge-joint-correction-estimated")
+}
+
+///|
 test "primitive diagonal inertia uses solid shape formulas" {
   let sphere = sphere_diagonal_inertia("sphere", 10.0, 2.0)
   assert_true(nearly_equal(sphere.diagonal_kg_m2.x, 16.0))

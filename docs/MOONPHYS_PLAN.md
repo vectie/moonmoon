@@ -67,9 +67,10 @@ evidence.
   constraint-axis impulse accounting, plus generic hinge-axis alignment and
   inverse-inertia weighted correction estimates over angular body states.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
-  correction evidence from rigid body motion states. Full rotational constraint
-  solving inside world replay and actuated articulated coupled dynamics remain
-  future work.
+  correction evidence from rigid body motion states, and generic hinge-joint
+  frame assessment aggregates multi-joint body graphs. Full rotational
+  constraint solving inside world replay and actuated articulated coupled
+  dynamics remain future work.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -493,7 +494,8 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   constraints between anchored body points with inverse-mass weighted
   correction and impulse accounting, generic hinge-axis alignment assessment
   and correction estimates, generic hinge-joint assessment over rigid body
-  motion states, and joint mechanical power/work accounting implemented;
+  motion states, generic hinge-joint frame assessment over multi-body joint
+  sets, and joint mechanical power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -517,8 +519,8 @@ response, and anchored-point distance constraints; rotational joints and
 actuated articulated dynamics remain future work. Moonphys can now assess
 hinge-axis alignment and estimate inverse-inertia weighted corrections from
 angular body states, and can compose hinge-joint position/axis evidence from
-rigid body motion states, but it does not yet solve angular constraints inside
-world replay.
+rigid body motion states into multi-joint frame evidence, but it does not yet
+solve angular constraints inside world replay.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -558,6 +560,8 @@ Next `moonphys` capabilities:
   (implemented)
 - generic hinge-joint assessment that composes anchored position and hinge-axis
   correction evidence from rigid body motion states (implemented)
+- generic hinge-joint frame assessment over multi-body joint sets
+  (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

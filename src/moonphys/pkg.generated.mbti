@@ -131,7 +131,11 @@ pub fn rigid_body_hinge_joint_assessment(RigidBodyHingeJointConstraint, RigidBod
 
 pub fn rigid_body_hinge_joint_constraint(String, String, String, anchor_a_m? : Vec3, anchor_b_m? : Vec3, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeJointConstraint
 
+pub fn rigid_body_hinge_joint_frame_assessment(String, Array[RigidBodyJointFrameBody], Array[RigidBodyHingeJointConstraint]) -> RigidBodyHingeJointFrameAssessment
+
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
+
+pub fn rigid_body_joint_frame_body(RigidBodyMotionState, RigidBodyInertia) -> RigidBodyJointFrameBody
 
 pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
 
@@ -672,9 +676,29 @@ pub(all) struct RigidBodyHingeJointConstraint {
   axis : RigidBodyHingeAxisConstraint
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyHingeJointFrameAssessment {
+  frame_id : String
+  body_count : Int
+  joint_count : Int
+  assessed_joint_count : Int
+  review_count : Int
+  max_position_error_m : Double
+  max_angular_error_rad : Double
+  linear_impulse_ns : Double
+  angular_impulse_nms : Double
+  joints : Array[RigidBodyHingeJointAssessment]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyInertia {
   body_id : String
   diagonal_kg_m2 : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyJointFrameBody {
+  body_id : String
+  state : RigidBodyMotionState
+  inertia : RigidBodyInertia
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyMotionState {
