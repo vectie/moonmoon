@@ -66,12 +66,12 @@
       - blocking: static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
     - noetix-dynamic-stability-review: output/moonrobo/first_trusted_square_noetix_dynamics.json
-      - current: 32/32 frames require capture-point review; worst capture margin -0.035 m; status dynamic-stability-review
+      - current: 32/32 frames require capture-point review; worst capture margin -0.10787682825643309 m; status dynamic-stability-review
       - ready: false
       - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 4; limit-review frames 4; max power 270 W; absolute work 211.7677564009256 J; status joint-control-limit-review
+      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; max power 14.89777245658858 W; absolute work 31.759430501284008 J; status joint-control-assumption-review
       - ready: false
       - blocking: joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json

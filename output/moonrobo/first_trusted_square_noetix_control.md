@@ -5,48 +5,48 @@
 - profile: moonrobo/noetix-e1/physics-profile-v0
 - frames: 32
 - joints per frame: 24
-- saturated frames: 4
-- limit-review frames: 4
-- max position error: 2.100000000000001 rad
-- max target velocity: 24.000000000000085 rad/s
-- max mechanical power: 270 W
-- net joint work: 211.7677564009256 J
-- absolute joint work: 211.7677564009256 J
-- status: joint-control-limit-review
+- saturated frames: 0
+- limit-review frames: 0
+- max position error: 0.23863166210708642 rad
+- max target velocity: 1.2261541116533836 rad/s
+- max mechanical power: 14.89777245658858 W
+- net joint work: 31.759430501284008 J
+- absolute joint work: 31.759430501284008 J
+- status: joint-control-assumption-review
 - hardware authority: moonmoon-safety-gate-only
 - note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys servo, torque, velocity, and position limits. It remains review evidence only because servo gains and joint inertias are assumptions.
 
 ## Frame Joint Control
 
 - frame 0 t=0s joints=24 saturated=0 limit_review=0 max_power=0W abs_work=0J status=joint-command-review
-- frame 1 t=0.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266188W abs_work=0.9895663048218335J status=joint-command-review
-- frame 2 t=0.2s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108776W abs_work=0.7877431853288259J status=joint-command-review
-- frame 3 t=0.30000000000000004s joints=24 saturated=0 limit_review=0 max_power=1.65527638347996W abs_work=0.43396867781795545J status=joint-command-review
-- frame 4 t=0.4s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907744W abs_work=0.12286459706855726J status=joint-command-review
-- frame 5 t=0.5s joints=24 saturated=0 limit_review=0 max_power=0W abs_work=0J status=joint-command-review
-- frame 6 t=0.6000000000000001s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907633W abs_work=0.12286459706855712J status=joint-command-review
-- frame 7 t=0.7000000000000001s joints=24 saturated=1 limit_review=2 max_power=270W abs_work=44.71396867781793J status=joint-limit-review
-- frame 8 t=0.8s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108816W abs_work=0.7877431853288265J status=joint-command-review
-- frame 9 t=0.9s joints=24 saturated=0 limit_review=0 max_power=3.739990267266188W abs_work=0.9895663048218333J status=joint-command-review
-- frame 10 t=1s joints=24 saturated=1 limit_review=2 max_power=270W abs_work=48.909369351953146J status=joint-limit-review
-- frame 11 t=1.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.253649756096283J status=joint-command-review
-- frame 12 t=1.2000000000000002s joints=24 saturated=0 limit_review=0 max_power=3.004670054710879W abs_work=1.078827510694215J status=joint-command-review
-- frame 13 t=1.3s joints=24 saturated=0 limit_review=0 max_power=1.6552763834799598W abs_work=0.7036668448568956J status=joint-command-review
-- frame 14 t=1.4000000000000001s joints=24 saturated=0 limit_review=0 max_power=0.7957208667525619W abs_work=0.3607570214858427J status=joint-command-review
-- frame 15 t=1.5s joints=24 saturated=0 limit_review=0 max_power=2.1315828637012735W abs_work=0.41154538285661313J status=joint-command-review
-- frame 16 t=1.6s joints=24 saturated=0 limit_review=0 max_power=4.425065208926839W abs_work=1.0391733881653449J status=joint-command-review
-- frame 17 t=1.7000000000000002s joints=24 saturated=0 limit_review=0 max_power=5.51440423767967W abs_work=1.6112923391855438J status=joint-command-review
-- frame 18 t=1.8s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108802W abs_work=1.2957476283375702J status=joint-command-review
-- frame 19 t=1.9000000000000001s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.5397807151811225J status=joint-command-review
-- frame 20 t=2s joints=24 saturated=0 limit_review=0 max_power=14.634965097952724W abs_work=5.504356293915086J status=joint-command-review
-- frame 21 t=2.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=0.9895663048218339J status=joint-command-review
-- frame 22 t=2.2s joints=24 saturated=0 limit_review=0 max_power=3.004670054710879W abs_work=0.787743185328827J status=joint-command-review
-- frame 23 t=2.3000000000000003s joints=24 saturated=0 limit_review=0 max_power=1.65527638347996W abs_work=0.4339686778179556J status=joint-command-review
-- frame 24 t=2.4000000000000004s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907766W abs_work=0.12286459706855746J status=joint-command-review
-- frame 25 t=2.5s joints=24 saturated=0 limit_review=0 max_power=0W abs_work=0J status=joint-command-review
-- frame 26 t=2.6s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907633W abs_work=0.12286459706855712J status=joint-command-review
-- frame 27 t=2.7s joints=24 saturated=1 limit_review=2 max_power=270W abs_work=44.713968677817974J status=joint-limit-review
-- frame 28 t=2.8000000000000003s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108807W abs_work=0.7877431853288274J status=joint-command-review
-- frame 29 t=2.9000000000000004s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=0.9895663048218339J status=joint-command-review
-- frame 30 t=3s joints=24 saturated=1 limit_review=2 max_power=270W abs_work=48.90936935195303J status=joint-limit-review
-- frame 31 t=3.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.2536497560962871J status=joint-command-review
+- frame 1 t=0.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266188W abs_work=1.114768026395261J status=joint-command-review
+- frame 2 t=0.2s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108776W abs_work=0.9045652651770082J status=joint-command-review
+- frame 3 t=0.30000000000000004s joints=24 saturated=0 limit_review=0 max_power=1.65527638347996W abs_work=0.5432304709316564J status=joint-command-review
+- frame 4 t=0.4s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907744W abs_work=0.2254755011206162J status=joint-command-review
+- frame 5 t=0.5s joints=24 saturated=0 limit_review=0 max_power=0.4081791538686141W abs_work=0.09697650136002398J status=joint-command-review
+- frame 6 t=0.6000000000000001s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907633W abs_work=0.21535182886093635J status=joint-command-review
+- frame 7 t=0.7000000000000001s joints=24 saturated=0 limit_review=0 max_power=1.6552763834799593W abs_work=0.5232684082993393J status=joint-command-review
+- frame 8 t=0.8s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108816W abs_work=0.8753509926042734J status=joint-command-review
+- frame 9 t=0.9s joints=24 saturated=0 limit_review=0 max_power=3.739990267266188W abs_work=1.0772219949058535J status=joint-command-review
+- frame 10 t=1s joints=24 saturated=0 limit_review=0 max_power=14.897772456588562W abs_work=4.043449547022313J status=joint-command-review
+- frame 11 t=1.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.0950169850076594J status=joint-command-review
+- frame 12 t=1.2000000000000002s joints=24 saturated=0 limit_review=0 max_power=3.004670054710879W abs_work=0.9287243894808135J status=joint-command-review
+- frame 13 t=1.3s joints=24 saturated=0 limit_review=0 max_power=2.0932227314226286W abs_work=0.7990084362439848J status=joint-command-review
+- frame 14 t=1.4000000000000001s joints=24 saturated=0 limit_review=0 max_power=1.3326384383561536W abs_work=0.349042375299381J status=joint-command-review
+- frame 15 t=1.5s joints=24 saturated=0 limit_review=0 max_power=0.8201768446044883W abs_work=0.1777559891942782J status=joint-command-review
+- frame 16 t=1.6s joints=24 saturated=0 limit_review=0 max_power=2.5166166751271994W abs_work=0.6358013264159249J status=joint-command-review
+- frame 17 t=1.7000000000000002s joints=24 saturated=0 limit_review=0 max_power=3.421535871379481W abs_work=1.1479629611425806J status=joint-command-review
+- frame 18 t=1.8s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108802W abs_work=1.001165094108553J status=joint-command-review
+- frame 19 t=1.9000000000000001s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.22110477501467J status=joint-command-review
+- frame 20 t=2s joints=24 saturated=0 limit_review=0 max_power=13.427623082608951W abs_work=4.069514111013945J status=joint-command-review
+- frame 21 t=2.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.114768026395263J status=joint-command-review
+- frame 22 t=2.2s joints=24 saturated=0 limit_review=0 max_power=3.004670054710879W abs_work=0.9045652651770064J status=joint-command-review
+- frame 23 t=2.3000000000000003s joints=24 saturated=0 limit_review=0 max_power=1.65527638347996W abs_work=0.5432304709316582J status=joint-command-review
+- frame 24 t=2.4000000000000004s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907766W abs_work=0.2254755011206164J status=joint-command-review
+- frame 25 t=2.5s joints=24 saturated=0 limit_review=0 max_power=0.40817915386861386W abs_work=0.09697650136002417J status=joint-command-review
+- frame 26 t=2.6s joints=24 saturated=0 limit_review=0 max_power=0.46863950392907633W abs_work=0.21535182886093696J status=joint-command-review
+- frame 27 t=2.7s joints=24 saturated=0 limit_review=0 max_power=1.6552763834799589W abs_work=0.5232684082993388J status=joint-command-review
+- frame 28 t=2.8000000000000003s joints=24 saturated=0 limit_review=0 max_power=3.0046700547108807W abs_work=0.8753509926042745J status=joint-command-review
+- frame 29 t=2.9000000000000004s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.0772219949058541J status=joint-command-review
+- frame 30 t=3s joints=24 saturated=0 limit_review=0 max_power=14.89777245658858W abs_work=4.043449547022306J status=joint-command-review
+- frame 31 t=3.1s joints=24 saturated=0 limit_review=0 max_power=3.739990267266186W abs_work=1.0950169850076594J status=joint-command-review

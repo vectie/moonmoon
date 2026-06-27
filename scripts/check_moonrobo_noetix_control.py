@@ -36,6 +36,12 @@ def main() -> None:
         fail("expected 24 controlled joints per frame")
     if "review" not in report.get("status", ""):
         fail("control report must remain review evidence")
+    if report.get("status") != "joint-control-assumption-review":
+        fail("control report should remain assumption-review without limit hits")
+    if report.get("saturated_frame_count") != 0:
+        fail("planted-foot gait should not saturate joint control")
+    if report.get("limit_review_frame_count") != 0:
+        fail("planted-foot gait should remain within joint limits")
     if "servo gains" not in report.get("note", ""):
         fail("report note must mention assumed servo gains")
     if report.get("max_abs_velocity_rad_s", -1) < 0:

@@ -64,6 +64,23 @@ test "noetix endless moon walk alternates contact feet" {
 }
 
 ///|
+test "noetix support feet stay planted while in contact" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=24)
+  let left_plant = trace.frames[0].left_foot.position
+  for index in 0..<10 {
+    assert_true(trace.frames[index].left_foot.in_contact)
+    let delta = trace.frames[index].left_foot.position.sub(left_plant)
+    assert_true(delta.length_squared() < 0.000000000001)
+  }
+  let right_plant = trace.frames[10].right_foot.position
+  for index in 10..<20 {
+    assert_true(trace.frames[index].right_foot.in_contact)
+    let delta = trace.frames[index].right_foot.position.sub(right_plant)
+    assert_true(delta.length_squared() < 0.000000000001)
+  }
+}
+
+///|
 test "noetix endless gait evidence verifies periodic phase and forward offset" {
   let evidence = first_trusted_square_noetix_endless_gait_evidence()
   assert_eq(evidence.robot_id, "noetix-e1-lab-01")
@@ -285,8 +302,8 @@ test "noetix joint control report preserves urdf limits" {
       step.motor_step.limit.max_velocity_rad_s == 2.0
     }),
   )
-  assert_true(report.limit_review_frame_count > 0)
-  assert_eq(report.status, "joint-control-limit-review")
+  assert_eq(report.limit_review_frame_count, 0)
+  assert_eq(report.status, "joint-control-assumption-review")
 }
 
 ///|

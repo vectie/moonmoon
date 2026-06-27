@@ -22,6 +22,8 @@ evidence.
   repeats support/contact phase while the body advances by the configured
   forward offset, proving finite trace exports are windows over a one-direction
   gait.
+- The Noetix gait keeps support feet planted while in contact; swing feet move
+  between plant anchors, eliminating the earlier sliding-contact artifact.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
   report backed by generic Moonphys support assessment.
@@ -234,6 +236,7 @@ Current version already has the first shape:
 
 - body moves in `+x`
 - alternating left/right support
+- planted support feet with no sliding while `in_contact`
 - swing foot clearance
 - terrain elevation probe
 - terrain grade review status
@@ -262,6 +265,7 @@ Tests:
 - support foot alternates
 - swing foot clears ground
 - contact foot is on terrain
+- contact foot stays planted during each support half-cycle
 - trace includes lunar gravity from `moonphys`
 
 ## Phase 4: URDF-Aware Noetix Pose

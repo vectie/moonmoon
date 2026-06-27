@@ -785,7 +785,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
-      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.035 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.10787682825643309 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-joint-control",
@@ -794,7 +794,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
-      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 270 W, absolute work 211.7677564009256 J, status joint-control-limit-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 14.89777245658858 W, absolute work 31.759430501284008 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-inertial-collision",

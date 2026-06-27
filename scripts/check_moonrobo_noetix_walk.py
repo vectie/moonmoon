@@ -9,6 +9,14 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
+def same_position(a: dict, b: dict) -> bool:
+    return (
+        abs(a.get("x", 0) - b.get("x", 0)) <= 1e-9
+        and abs(a.get("y", 0) - b.get("y", 0)) <= 1e-9
+        and abs(a.get("z", 0) - b.get("z", 0)) <= 1e-9
+    )
+
+
 def main() -> None:
     if len(sys.argv) != 2:
         fail("usage: check_moonrobo_noetix_walk.py TRACE_JSON")
@@ -65,6 +73,18 @@ def main() -> None:
         fail("left foot should swing frame 10")
     if not frames[10]["right_foot"]["in_contact"]:
         fail("right foot should support frame 10")
+    left_plant = frames[0]["left_foot"]["position"]
+    for index in range(0, 10):
+        if not frames[index]["left_foot"]["in_contact"]:
+            fail(f"left foot should remain planted at frame {index}")
+        if not same_position(frames[index]["left_foot"]["position"], left_plant):
+            fail(f"left support foot slides at frame {index}")
+    right_plant = frames[10]["right_foot"]["position"]
+    for index in range(10, 20):
+        if not frames[index]["right_foot"]["in_contact"]:
+            fail(f"right foot should remain planted at frame {index}")
+        if not same_position(frames[index]["right_foot"]["position"], right_plant):
+            fail(f"right support foot slides at frame {index}")
     if not any(frame.get("status") == "walking-needs-review" for frame in frames):
         fail("trace should preserve terrain review status")
     if len(frames[0].get("joint_phases", [])) != 24:
