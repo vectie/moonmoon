@@ -601,6 +601,8 @@
   "terrain_review_frame_count": 0,
   "max_self_penetration_m": 0.045,
   "max_self_contact_correction_m": 0.045,
+  "max_self_contact_normal_impulse_ns": 0,
+  "max_self_contact_friction_impulse_ns": 1.8848000000000003,
   "max_support_contact_torque_nm": 5.523087904424481,
   "frames": [
     {
@@ -1156,8 +1158,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -1171,8 +1173,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -1184,13 +1186,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -2243,8 +2257,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -2258,8 +2272,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -2271,13 +2285,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -3330,8 +3356,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -3345,8 +3371,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -3358,13 +3384,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -4417,8 +4455,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -4432,8 +4470,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -4445,13 +4483,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -5504,8 +5554,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -5519,8 +5569,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -5532,13 +5582,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -6591,8 +6653,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -6606,8 +6668,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -6619,13 +6681,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -7678,8 +7752,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -7693,8 +7767,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -7706,13 +7780,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -8765,8 +8851,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -8780,8 +8866,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -8793,13 +8879,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -9852,8 +9950,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -9867,8 +9965,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -9880,13 +9978,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -10939,8 +11049,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -10954,8 +11064,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -10967,13 +11077,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -12026,8 +12148,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -12041,8 +12163,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -12054,13 +12176,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -13113,8 +13247,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -13128,8 +13262,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -13141,13 +13275,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -14200,8 +14346,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -14215,8 +14361,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -14228,13 +14374,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -15287,8 +15445,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -15302,8 +15460,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -15315,13 +15473,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -16374,8 +16544,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -16389,8 +16559,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -16402,13 +16572,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -17461,8 +17643,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -17476,8 +17658,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -17489,13 +17671,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -18548,8 +18742,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -18563,8 +18757,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -18576,13 +18770,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -19635,8 +19841,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -19650,8 +19856,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -19663,13 +19869,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -20722,8 +20940,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -20737,8 +20955,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -20750,13 +20968,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -21809,8 +22039,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -21824,8 +22054,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -21837,13 +22067,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -22896,8 +23138,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -22911,8 +23153,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -22924,13 +23166,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -23983,8 +24237,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -23998,8 +24252,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -24011,13 +24265,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -25070,8 +25336,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -25085,8 +25351,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -25098,13 +25364,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -26157,8 +26435,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -26172,8 +26450,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -26185,13 +26463,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -27244,8 +27534,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -27259,8 +27549,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -27272,13 +27562,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -28331,8 +28633,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -28346,8 +28648,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -28359,13 +28661,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -29418,8 +29732,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -29433,8 +29747,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -29446,13 +29760,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -30505,8 +30831,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -30520,8 +30846,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -30533,13 +30859,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -31592,8 +31930,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -31607,8 +31945,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -31620,13 +31958,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -32679,8 +33029,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.08,
             "z": 0
           }
         },
@@ -32694,8 +33044,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": 0.0304,
             "z": 0
           }
         },
@@ -32707,13 +33057,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": -0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -33766,8 +34128,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -33781,8 +34143,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -33794,13 +34156,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -34853,8 +35227,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.08,
             "z": 0
           }
         },
@@ -34868,8 +35242,8 @@
             "z": 337.752
           },
           "velocity": {
-            "x": 0,
-            "y": 0,
+            "x": 0.12,
+            "y": -0.0304,
             "z": 0
           }
         },
@@ -34881,13 +35255,25 @@
           "friction_coefficient": 0.62,
           "restitution_coefficient": 0.04
         },
+        "average_normal": {
+          "x": -1,
+          "y": 0,
+          "z": 0
+        },
         "correction": {
           "x": 0.045,
           "y": 0,
           "z": 0
         },
-        "normal_speed_mps": 0,
-        "tangent_speed_mps": 0,
+        "velocity_delta": {
+          "x": 0,
+          "y": 0.049600000000000005,
+          "z": 0
+        },
+        "normal_speed_mps": -0.12,
+        "tangent_speed_mps": 0.08,
+        "normal_impulse_ns": 0,
+        "friction_impulse_ns": 1.8848000000000003,
         "status": "multi-contact-resolved"
       },
       "self_contact_correction_m": 0.045,
@@ -35390,5 +35776,5 @@
   ],
   "hardware_authority": "moonmoon-safety-gate-only",
   "status": "inertial-collision-self-review",
-  "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, and generic manifold resolution. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+  "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
 }

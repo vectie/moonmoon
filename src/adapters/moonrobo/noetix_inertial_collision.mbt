@@ -46,6 +46,8 @@ pub(all) struct NoetixInertialCollisionReport {
   terrain_review_frame_count : Int
   max_self_penetration_m : Double
   max_self_contact_correction_m : Double
+  max_self_contact_normal_impulse_ns : Double
+  max_self_contact_friction_impulse_ns : Double
   max_support_contact_torque_nm : Double
   frames : Array[NoetixInertialCollisionFrame]
   hardware_authority : String
@@ -230,6 +232,7 @@ fn self_contact_manifold(
 fn self_contact_resolution(
   profile : NoetixPhysicsProfile,
   center_of_mass : @moonphys.Vec3,
+  body_velocity : @moonphys.Vec3,
   manifold : @moonphys.CollisionContactManifold,
 ) -> @moonphys.CollisionManifoldResolution {
   @moonphys.resolve_collision_manifold(
@@ -238,11 +241,30 @@ fn self_contact_resolution(
       profile.mass_model.mass_kg,
       0.0,
       center_of_mass,
-      @moonphys.vec3(0.0, 0.0, 0.0),
+      body_velocity,
     ),
     manifold,
     @moonphys.lunar_regolith_contact_model(),
   )
+}
+
+///|
+fn noetix_review_body_velocity(
+  config : NoetixMoonWalkConfig,
+  frame : NoetixMoonWalkFrame,
+) -> @moonphys.Vec3 {
+  let lateral_direction = if frame.support_phase == "left-support" {
+    1.0
+  } else {
+    0.0 - 1.0
+  }
+  let half_cycle_s = config.dt_s * config.cycle_frames.to_double() * 0.5
+  let lateral_speed = if half_cycle_s > 0.0 {
+    config.lateral_foot_offset_m / half_cycle_s
+  } else {
+    0.0
+  }
+  @moonphys.vec3(config.speed_mps, lateral_direction * lateral_speed, 0.0)
 }
 
 ///|
@@ -265,6 +287,11 @@ pub fn noetix_inertial_collision_frame(
   walk_frame : NoetixMoonWalkFrame,
   pose_frame : NoetixLinkPoseFrame,
   profile : NoetixPhysicsProfile,
+  body_velocity? : @moonphys.Vec3 = @moonphys.vec3(
+    default_noetix_moon_walk_config().speed_mps,
+    0.0,
+    0.0,
+  ),
 ) -> NoetixInertialCollisionFrame {
   let center_of_mass = frame_center_of_mass(walk_frame, profile)
   let inertia = noetix_assumed_body_inertia(profile)
@@ -290,7 +317,9 @@ pub fn noetix_inertial_collision_frame(
     }
   }
   let manifold = self_contact_manifold(walk_frame.frame_index, shapes)
-  let resolution = self_contact_resolution(profile, center_of_mass, manifold)
+  let resolution = self_contact_resolution(
+    profile, center_of_mass, body_velocity, manifold,
+  )
   {
     frame_index: walk_frame.frame_index,
     time_s: walk_frame.time_s,
@@ -327,6 +356,8 @@ pub fn noetix_inertial_collision_report(
   let mut terrain_review_frame_count = 0
   let mut max_self_penetration = 0.0
   let mut max_self_contact_correction = 0.0
+  let mut max_self_contact_normal_impulse = 0.0
+  let mut max_self_contact_friction_impulse = 0.0
   let mut max_torque = 0.0
   let mut shapes_per_frame = 0
   for index, frame in trace.frames {
@@ -335,6 +366,7 @@ pub fn noetix_inertial_collision_report(
       frame,
       pose_trace.frames[index],
       profile,
+      body_velocity=noetix_review_body_velocity(trace.config, frame),
     )
     if evidence.self_contact_manifold.contact_count > 0 {
       self_contact_frame_count += 1
@@ -347,6 +379,14 @@ pub fn noetix_inertial_collision_report(
     }
     if evidence.self_contact_correction_m > max_self_contact_correction {
       max_self_contact_correction = evidence.self_contact_correction_m
+    }
+    if evidence.self_contact_resolution.normal_impulse_ns >
+      max_self_contact_normal_impulse {
+      max_self_contact_normal_impulse = evidence.self_contact_resolution.normal_impulse_ns
+    }
+    if evidence.self_contact_resolution.friction_impulse_ns >
+      max_self_contact_friction_impulse {
+      max_self_contact_friction_impulse = evidence.self_contact_resolution.friction_impulse_ns
     }
     let torque = vec_length(evidence.support_contact_torque_nm)
     if torque > max_torque {
@@ -367,6 +407,8 @@ pub fn noetix_inertial_collision_report(
     terrain_review_frame_count,
     max_self_penetration_m: max_self_penetration,
     max_self_contact_correction_m: max_self_contact_correction,
+    max_self_contact_normal_impulse_ns: max_self_contact_normal_impulse,
+    max_self_contact_friction_impulse_ns: max_self_contact_friction_impulse,
     max_support_contact_torque_nm: max_torque,
     frames,
     hardware_authority: profile.hardware_authority,
@@ -377,7 +419,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, and generic manifold resolution. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 
@@ -407,6 +449,8 @@ pub fn render_noetix_inertial_collision_markdown(
   text += "- terrain-review frames: \{report.terrain_review_frame_count}\n"
   text += "- max self penetration: \{report.max_self_penetration_m} m\n"
   text += "- max self-contact correction: \{report.max_self_contact_correction_m} m\n"
+  text += "- max self-contact normal impulse: \{report.max_self_contact_normal_impulse_ns} Ns\n"
+  text += "- max self-contact friction impulse: \{report.max_self_contact_friction_impulse_ns} Ns\n"
   text += "- max support contact torque: \{report.max_support_contact_torque_nm} Nm\n"
   text += "- status: \{report.status}\n"
   text += "- hardware authority: \{report.hardware_authority}\n"

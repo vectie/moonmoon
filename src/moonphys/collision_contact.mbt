@@ -28,9 +28,13 @@ pub(all) struct CollisionManifoldResolution {
   contact_count : Int
   max_penetration_m : Double
   material : MaterialContactModel
+  average_normal : Vec3
   correction : Vec3
+  velocity_delta : Vec3
   normal_speed_mps : Double
   tangent_speed_mps : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -663,9 +667,13 @@ pub fn resolve_collision_manifold(
       contact_count: 0,
       max_penetration_m: 0.0,
       material,
+      average_normal: vec3(0.0, 0.0, 1.0),
       correction: vec3(0.0, 0.0, 0.0),
+      velocity_delta: vec3(0.0, 0.0, 0.0),
       normal_speed_mps: 0.0,
       tangent_speed_mps: state.velocity.length_squared().sqrt(),
+      normal_impulse_ns: 0.0,
+      friction_impulse_ns: 0.0,
       status: "no-contact",
     }
   } else {
@@ -688,6 +696,13 @@ pub fn resolve_collision_manifold(
       position: state.position.add(correction),
       velocity: tangent_velocity.scale(scale).add(resolved_normal_velocity),
     }
+    let velocity_delta = after.velocity.sub(state.velocity)
+    let normal_impulse = abs_double(velocity_delta.dot(normal)) * state.mass_kg
+    let friction_impulse = velocity_delta
+      .sub(normal.scale(velocity_delta.dot(normal)))
+      .length_squared()
+      .sqrt() *
+      state.mass_kg
     {
       before: state,
       after,
@@ -695,9 +710,13 @@ pub fn resolve_collision_manifold(
       contact_count: manifold.contact_count,
       max_penetration_m: manifold.max_penetration_m,
       material,
+      average_normal: normal,
       correction,
+      velocity_delta,
       normal_speed_mps: normal_speed,
       tangent_speed_mps: tangent_speed,
+      normal_impulse_ns: normal_impulse,
+      friction_impulse_ns: friction_impulse,
       status: if manifold.contact_count > 1 {
         "multi-contact-resolved"
       } else {

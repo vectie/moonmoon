@@ -56,6 +56,15 @@ def main(argv: list[str]) -> int:
     report["max_self_contact_correction_m"] >= 0,
     "bad self-contact correction",
   )
+  require(
+    report["max_self_contact_normal_impulse_ns"] >= 0,
+    "bad self-contact normal impulse",
+  )
+  require(
+    report["max_self_contact_friction_impulse_ns"] > 0,
+    "missing self-contact friction impulse",
+  )
+  require("impulse accounting" in report["note"], "missing impulse note")
 
   frames = report["frames"]
   require(len(frames) == report["frame_count"], "frame count mismatch")
@@ -126,6 +135,14 @@ def main(argv: list[str]) -> int:
     "missing regolith material resolution",
   )
   require(
+    first["self_contact_resolution"]["average_normal"],
+    "missing average contact normal",
+  )
+  require(
+    first["self_contact_resolution"]["velocity_delta"],
+    "missing self-contact velocity delta",
+  )
+  require(
     first["self_contact_resolution"]["status"]
     in {"single-contact-resolved", "multi-contact-resolved", "no-contact"},
     "bad self-contact resolution status",
@@ -134,9 +151,10 @@ def main(argv: list[str]) -> int:
     any(
       frame["self_contact_resolution"]["status"] == "multi-contact-resolved"
       and frame["self_contact_correction_m"] > 0
+      and frame["self_contact_resolution"]["friction_impulse_ns"] > 0
       for frame in frames
     ),
-    "missing resolved multi-contact frame",
+    "missing resolved multi-contact impulse frame",
   )
   require(
     report["self_contact_frame_count"] >= 0

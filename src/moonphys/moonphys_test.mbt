@@ -418,6 +418,11 @@ test "collision manifold resolution separates and damps one body" {
   assert_true(nearly_equal(resolution.tangent_speed_mps, 1.0))
   assert_true(nearly_equal(resolution.after.velocity.x, -0.2))
   assert_true(nearly_equal(resolution.after.velocity.y, 0.75))
+  assert_true(resolution.average_normal == vec3(1.0, 0.0, 0.0))
+  assert_true(nearly_equal(resolution.velocity_delta.x, -2.2))
+  assert_true(nearly_equal(resolution.velocity_delta.y, -0.25))
+  assert_true(nearly_equal(resolution.normal_impulse_ns, 8.8))
+  assert_true(nearly_equal(resolution.friction_impulse_ns, 1.0))
 }
 
 ///|
@@ -456,6 +461,9 @@ test "collision manifold resolution handles multi and clear contacts" {
   )
   assert_eq(clear.status, "no-contact")
   assert_true(clear.after == state)
+  assert_true(clear.velocity_delta == vec3(0.0, 0.0, 0.0))
+  assert_true(nearly_equal(clear.normal_impulse_ns, 0.0))
+  assert_true(nearly_equal(clear.friction_impulse_ns, 0.0))
 }
 
 ///|

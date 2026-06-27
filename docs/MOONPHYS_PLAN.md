@@ -31,7 +31,7 @@ evidence.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys diagonal inertia, collision bounds, terrain collision probes,
   contact torque, narrow-phase self-collision manifolds, and generic
-  multi-contact manifold resolution.
+  multi-contact manifold resolution with impulse accounting.
 - MoonClaw exports a Noetix simulation review task that ties the walk trace,
   URDF-reference link poses, static support report, dynamic-stability report,
   joint-control report, inertial/collision report, and Rabbita playback into a
@@ -414,15 +414,16 @@ joint-control review evidence replays the gait phases through Moonphys joint
 servo, torque, velocity, and position limits. Noetix inertial/collision review
 evidence maps the assumed profile onto Moonphys diagonal inertia, collision
 bounds, terrain collision probes, contact torque, narrow-phase self-collision
-manifolds, and generic manifold resolution. Mass, inertia, and authoritative
-collision tags are still absent from the referenced model, so the evidence
-remains review-only.
+manifolds, generic manifold resolution, and impulse accounting. Mass, inertia,
+and authoritative collision tags are still absent from the referenced model, so
+the evidence remains review-only.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
 Next `moonphys` capabilities:
 
 - multi-contact manifold resolution (implemented)
+- contact impulse accounting for manifold resolution (implemented)
 - narrow-phase capsule/box contact generation for shape pairs (implemented)
 - robot-specific inertia/collision profiles from Moonrobo data
 - Noetix URDF joint limits mapped into Moonphys joint limits (implemented)

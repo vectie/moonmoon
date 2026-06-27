@@ -167,9 +167,13 @@ pub(all) struct CollisionManifoldResolution {
   contact_count : Int
   max_penetration_m : Double
   material : MaterialContactModel
+  average_normal : Vec3
   correction : Vec3
+  velocity_delta : Vec3
   normal_speed_mps : Double
   tangent_speed_mps : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -137,7 +137,7 @@ pub fn noetix_dynamic_stability_frame(NoetixMoonWalkTrace, Int, NoetixPhysicsPro
 
 pub fn noetix_dynamic_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixDynamicStabilityReport
 
-pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile) -> NoetixInertialCollisionFrame
+pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3) -> NoetixInertialCollisionFrame
 
 pub fn noetix_inertial_collision_report(NoetixMoonWalkTrace, @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixInertialCollisionReport
 
@@ -413,6 +413,8 @@ pub(all) struct NoetixInertialCollisionReport {
   terrain_review_frame_count : Int
   max_self_penetration_m : Double
   max_self_contact_correction_m : Double
+  max_self_contact_normal_impulse_ns : Double
+  max_self_contact_friction_impulse_ns : Double
   max_support_contact_torque_nm : Double
   frames : Array[NoetixInertialCollisionFrame]
   hardware_authority : String

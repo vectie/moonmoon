@@ -207,7 +207,10 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_true(report.shapes_per_frame >= 6)
   assert_true(report.max_support_contact_torque_nm > 0.0)
   assert_true(report.max_self_contact_correction_m >= 0.0)
+  assert_true(report.max_self_contact_normal_impulse_ns >= 0.0)
+  assert_true(report.max_self_contact_friction_impulse_ns > 0.0)
   assert_true(report.note.contains("Moonphys diagonal inertia"))
+  assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))
   assert_true(
     report.frames[0].shapes.any(fn(shape) {
@@ -240,7 +243,8 @@ test "noetix inertial collision report checks terrain and self contacts" {
   assert_true(
     report.frames.any(fn(frame) {
       frame.self_contact_resolution.status == "multi-contact-resolved" &&
-      frame.self_contact_correction_m > 0.0
+      frame.self_contact_correction_m > 0.0 &&
+      frame.self_contact_resolution.friction_impulse_ns > 0.0
     }),
   )
 }
