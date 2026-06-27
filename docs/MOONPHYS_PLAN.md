@@ -365,8 +365,8 @@ real FK tree and approximate source shapes without claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 
-Status: first trace scrubber and link-pose playback implemented in Rabbita;
-full mesh/URDF rendering remains future work.
+Status: first trace scrubber, link-pose playback, and endless-gait loop
+playback implemented in Rabbita; full mesh/URDF rendering remains future work.
 
 Add a viewer surface after the data contract is stable.
 
@@ -387,7 +387,7 @@ Viewer needs:
 - terrain strip
 - body marker
 - left/right foot markers
-- frame scrubber or autoplay
+- frame scrubber and autoplay loop backed by endless-gait evidence
 - status badges:
   - `walking`
   - `walking-needs-review`

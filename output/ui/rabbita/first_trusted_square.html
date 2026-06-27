@@ -11646,6 +11646,29 @@
   "note": "Kinematic endless-walk trace for MoonSuite collaboration: Moonmoon terrain plus Moonrobo Noetix model references. This is simulation evidence only, not hardware authority."
 }
 </script>
+<script id="moonmoon-noetix-endless-gait" type="application/json">
+{
+  "evidence_id": "moonrobo/noetix-e1/endless-gait/first-trusted-square-northeast-stepout-lola",
+  "trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+  "robot_id": "noetix-e1-lab-01",
+  "terrain_tile_id": "first-trusted-square-northeast-stepout-lola",
+  "reference_frame_index": 0,
+  "repeated_frame_index": 20,
+  "cycle_frames": 20,
+  "dt_s": 0.1,
+  "speed_mps": 0.12,
+  "expected_forward_offset_m": 0.24,
+  "observed_forward_offset_m": 0.24,
+  "reference_support_phase": "left-support",
+  "repeated_support_phase": "left-support",
+  "phase_repeat_verified": true,
+  "contact_repeat_verified": true,
+  "monotonic_forward_verified": true,
+  "hardware_authority": "moonmoon-safety-gate-only",
+  "status": "endless-gait-window-verified",
+  "note": "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only."
+}
+</script>
 <script id="moonmoon-noetix-link-poses" type="application/json">
 {
   "trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",

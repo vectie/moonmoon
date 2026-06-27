@@ -1,11 +1,14 @@
 const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
 const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent);
 const noetixTrace = JSON.parse(document.getElementById('moonmoon-noetix-walk').textContent);
+const noetixEndlessGait = JSON.parse(document.getElementById('moonmoon-noetix-endless-gait').textContent);
 const noetixLinkPoseTrace = JSON.parse(document.getElementById('moonmoon-noetix-link-poses').textContent);
 const evidence = window.RabbitaEvidence.create(book);
 let activeLayer = view.active_layer_id;
 let selectedCellId = view.selected_cell_id;
 let activeNoetixFrame = 0;
+let activeNoetixPlayback = true;
+let noetixPlaybackTimer = null;
 const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
 const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
 const clearanceItems = book.review_queue.filter(item => item.item_id.startsWith('clear-'));
@@ -319,6 +322,29 @@ function noetixPath(frames, pointForFrame, project) {
   }).join(' ');
 }
 
+function noetixLoopLabel() {
+  const phase = noetixEndlessGait.phase_repeat_verified ? 'phase' : 'phase review';
+  const contact = noetixEndlessGait.contact_repeat_verified ? 'contact' : 'contact review';
+  return `${noetixEndlessGait.cycle_frames} frames, ${noetixEndlessGait.expected_forward_offset_m.toFixed(3)} m/cycle, ${phase}/${contact}`;
+}
+
+function noetixAdvanceFrame(frames) {
+  if (!frames.length) return;
+  activeNoetixFrame = (activeNoetixFrame + 1) % frames.length;
+  renderNoetixWalk();
+}
+
+function noetixSyncPlayback(frames) {
+  if (typeof setInterval !== 'function' || typeof clearInterval !== 'function') return;
+  if (noetixPlaybackTimer) {
+    clearInterval(noetixPlaybackTimer);
+    noetixPlaybackTimer = null;
+  }
+  if (activeNoetixPlayback && frames.length > 1) {
+    noetixPlaybackTimer = setInterval(() => noetixAdvanceFrame(frames), Math.max(80, noetixTrace.config.dt_s * 1000));
+  }
+}
+
 function noetixStatusClass(status) {
   if (status === 'ok' || status === 'walking') return 'ok';
   if (String(status).includes('review')) return 'review';
@@ -475,6 +501,13 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
 
 function renderNoetixWalkControls(frames) {
   const controls = document.getElementById('noetix-walk-controls');
+  const play = el('button', {
+    className: 'noetix-step-button',
+    type: 'button',
+    title: activeNoetixPlayback ? 'Pause endless playback' : 'Play endless loop',
+    'aria-pressed': String(activeNoetixPlayback),
+    text: activeNoetixPlayback ? 'Ⅱ' : '▶'
+  });
   const previous = el('button', {
     className: 'noetix-step-button',
     type: 'button',
@@ -498,18 +531,25 @@ function renderNoetixWalkControls(frames) {
   });
   scrubber.value = String(activeNoetixFrame);
   previous.addEventListener('click', () => {
+    activeNoetixPlayback = false;
     activeNoetixFrame = activeNoetixFrame <= 0 ? frames.length - 1 : activeNoetixFrame - 1;
     renderNoetixWalk();
   });
   next.addEventListener('click', () => {
+    activeNoetixPlayback = false;
     activeNoetixFrame = (activeNoetixFrame + 1) % frames.length;
     renderNoetixWalk();
   });
   scrubber.addEventListener('input', () => {
+    activeNoetixPlayback = false;
     activeNoetixFrame = Number(scrubber.value);
     renderNoetixWalk();
   });
-  controls.replaceChildren(previous, scrubber, next);
+  play.addEventListener('click', () => {
+    activeNoetixPlayback = !activeNoetixPlayback;
+    renderNoetixWalk();
+  });
+  controls.replaceChildren(play, previous, scrubber, next);
 }
 
 function renderNoetixWalkFacts(frame, poseFrame) {
@@ -522,6 +562,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['phase', frame.support_phase],
     ['time', `${frame.time_s.toFixed(2)} s`],
     ['body x', `${frame.body_position.x.toFixed(3)} m`],
+    ['endless loop', noetixLoopLabel()],
     ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
     ['joints', `${jointCount} phases, URDF leg IK`],
@@ -546,11 +587,12 @@ function renderNoetixWalk() {
   const poseFrame = noetixPoseFrame(frame.frame_index);
   const project = noetixProjector(frames, poseFrames);
   document.getElementById('noetix-walk-summary').textContent =
-    `${noetixTrace.robot.label}, ${noetixTrace.frame_count} frames, ${noetixLinkPoseTrace.links_per_frame} links, ${noetixTrace.config.gravity_mps2} m/s²`;
+    `${noetixTrace.robot.label}, ${noetixTrace.frame_count} frames looping ${noetixEndlessGait.cycle_frames}-frame gait, ${noetixLinkPoseTrace.links_per_frame} links, ${noetixTrace.config.gravity_mps2} m/s²`;
   document.getElementById('noetix-walk-authority').textContent = 'simulation evidence only';
   renderNoetixWalkViewer(frames, frame, poseFrame, project);
   renderNoetixWalkControls(frames);
   renderNoetixWalkFacts(frame, poseFrame);
+  noetixSyncPlayback(frames);
 }
 
 function renderMissionEvidenceSummary(rows, counts) {
