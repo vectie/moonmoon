@@ -297,6 +297,49 @@ test "collision pair probe reports broadphase overlap and clear" {
 }
 
 ///|
+test "joint servo output applies pd torque and saturation" {
+  let state = joint_motor_state("hip", 0.0, 0.0)
+  let command = joint_motor_command("hip", 1.0, 0.0, 0.0)
+  let config = joint_servo_config("hip", 8.0, 1.0)
+  let limit = joint_limit("hip", -2.0, 2.0, 4.0, 3.0)
+  let servo = joint_servo_output(state, command, config, limit)
+  assert_true(nearly_equal(servo.position_error_rad, 1.0))
+  assert_true(nearly_equal(servo.commanded_torque_nm, 3.0))
+  assert_true(servo.saturated)
+  assert_eq(servo.status, "torque-saturated")
+}
+
+///|
+test "joint motor integration applies torque semi implicitly" {
+  let step = integrate_joint_motor(
+    joint_motor_state("knee", 0.0, 0.0),
+    joint_motor_command("knee", 1.0, 0.0, 0.0),
+    joint_servo_config("knee", 2.0, 0.0),
+    joint_limit("knee", -2.0, 2.0, 4.0, 10.0),
+    2.0,
+    0.5,
+  )
+  assert_eq(step.status, "torque-commanded")
+  assert_true(nearly_equal(step.after.velocity_rad_s, 0.5))
+  assert_true(nearly_equal(step.after.position_rad, 0.25))
+}
+
+///|
+test "joint motor integration respects velocity and position limits" {
+  let step = integrate_joint_motor(
+    joint_motor_state("ankle", 0.9, 0.0),
+    joint_motor_command("ankle", 5.0, 0.0, 0.0),
+    joint_servo_config("ankle", 100.0, 0.0),
+    joint_limit("ankle", -1.0, 1.0, 0.5, 100.0),
+    1.0,
+    1.0,
+  )
+  assert_eq(step.status, "position-limit")
+  assert_true(nearly_equal(step.after.position_rad, 1.0))
+  assert_true(nearly_equal(step.after.velocity_rad_s, 0.0))
+}
+
+///|
 test "transform translates local point" {
   let transform = transform3(identity_basis3(), vec3(1.0, 2.0, 3.0))
   assert_true(

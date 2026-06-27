@@ -41,11 +41,23 @@ pub fn identity_basis3() -> Basis3
 
 pub fn integrate_angular_rigid_body(RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularStep) -> RigidBodyAngularState
 
+pub fn integrate_joint_motor(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit, Double, Double) -> JointMotorStep
+
 pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
 
 pub fn integrate_rigid_body(RigidBodyState, Double, Vec3) -> RigidBodyState
 
 pub fn integrate_rigid_body_gravity(RigidBodyState, PhysicsEnvironment, Double) -> RigidBodyState
+
+pub fn joint_limit(String, Double, Double, Double, Double) -> JointLimit
+
+pub fn joint_motor_command(String, Double, Double, Double) -> JointMotorCommand
+
+pub fn joint_motor_state(String, Double, Double) -> JointMotorState
+
+pub fn joint_servo_config(String, Double, Double) -> JointServoConfig
+
+pub fn joint_servo_output(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit) -> JointServoOutput
 
 pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
 
@@ -189,6 +201,52 @@ pub(all) struct HeightfieldSample {
   y_m : Double
   elevation_m : Double
   local_grade_x : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointLimit {
+  joint_id : String
+  min_position_rad : Double
+  max_position_rad : Double
+  max_velocity_rad_s : Double
+  max_torque_nm : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointMotorCommand {
+  joint_id : String
+  target_position_rad : Double
+  target_velocity_rad_s : Double
+  feedforward_torque_nm : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointMotorState {
+  joint_id : String
+  position_rad : Double
+  velocity_rad_s : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointMotorStep {
+  before : JointMotorState
+  after : JointMotorState
+  servo : JointServoOutput
+  limit : JointLimit
+  dt_s : Double
+  inertia_kg_m2 : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointServoConfig {
+  joint_id : String
+  stiffness_nm_per_rad : Double
+  damping_nm_s_per_rad : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointServoOutput {
+  joint_id : String
+  position_error_rad : Double
+  velocity_error_rad_s : Double
+  commanded_torque_nm : Double
+  saturated : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct KinematicBodyState {
