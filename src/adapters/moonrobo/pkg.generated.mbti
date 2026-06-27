@@ -153,6 +153,8 @@ pub fn noetix_endless_gait_evidence(@moonphys.Heightfield, reference_frame_index
 
 pub fn noetix_high_control_limits() -> NoetixHighControlLimits
 
+pub fn noetix_hinge_joint_frame_evidence(NoetixMoonWalkTrace, Int, NoetixPhysicsProfile) -> NoetixHingeJointFrameEvidence
+
 pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3, dt_s? : Double) -> NoetixInertialCollisionFrame
 
 pub fn noetix_inertial_collision_report(NoetixMoonWalkTrace, @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixInertialCollisionReport
@@ -447,6 +449,19 @@ pub(all) struct NoetixHighControlLimits {
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixHingeJointFrameEvidence {
+  frame_id : String
+  body_count : Int
+  joint_count : Int
+  assessed_joint_count : Int
+  review_count : Int
+  max_position_error_m : Double
+  max_angular_error_rad : Double
+  linear_impulse_ns : Double
+  angular_impulse_nms : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixInertialCollisionFrame {
   frame_index : Int
   time_s : Double
@@ -510,6 +525,7 @@ pub(all) struct NoetixJointControlFrame {
   max_abs_mechanical_power_w : Double
   net_work_j : Double
   total_absolute_work_j : Double
+  hinge_joint_frame : NoetixHingeJointFrameEvidence
   steps : Array[NoetixJointControlStep]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -522,9 +538,16 @@ pub(all) struct NoetixJointControlReport {
   joint_count_per_frame : Int
   saturated_frame_count : Int
   limit_review_frame_count : Int
+  hinge_joint_frame_count : Int
+  hinge_review_frame_count : Int
+  hinge_joint_count_per_frame : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
   max_abs_mechanical_power_w : Double
+  max_hinge_position_error_m : Double
+  max_hinge_angular_error_rad : Double
+  hinge_linear_impulse_ns : Double
+  hinge_angular_impulse_nms : Double
   net_work_j : Double
   total_absolute_work_j : Double
   frames : Array[NoetixJointControlFrame]

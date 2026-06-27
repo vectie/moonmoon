@@ -305,11 +305,25 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(report.status.contains("joint-control"))
   assert_true(report.note.contains("joint-frame motor integration"))
+  assert_true(report.note.contains("hinge-joint frame assessment"))
   assert_true(report.note.contains("servo gains"))
+  assert_eq(report.hinge_joint_frame_count, 12)
+  assert_eq(report.hinge_joint_count_per_frame, 24)
+  assert_true(report.hinge_review_frame_count >= 0)
+  assert_true(report.max_hinge_position_error_m >= 0.0)
+  assert_true(report.max_hinge_angular_error_rad >= 0.0)
+  assert_true(report.hinge_linear_impulse_ns >= 0.0)
+  assert_true(report.hinge_angular_impulse_nms >= 0.0)
   assert_true(report.max_abs_velocity_rad_s >= 0.0)
   assert_true(report.max_abs_mechanical_power_w > 0.0)
   assert_true(report.total_absolute_work_j > 0.0)
   assert_true(report.frames[0].steps.length() == 24)
+  assert_eq(report.frames[0].hinge_joint_frame.body_count, 25)
+  assert_eq(report.frames[0].hinge_joint_frame.joint_count, 24)
+  assert_eq(report.frames[0].hinge_joint_frame.assessed_joint_count, 24)
+  assert_true(
+    report.frames[0].hinge_joint_frame.status.contains("hinge-joint-frame"),
+  )
   assert_true(
     report.frames.any(fn(frame) {
       frame.steps.any(fn(step) {

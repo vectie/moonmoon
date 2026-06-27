@@ -46,6 +46,22 @@ def main() -> None:
         fail("report note must mention assumed servo gains")
     if "joint-frame motor integration" not in report.get("note", ""):
         fail("report note must mention Moonphys joint-frame replay")
+    if "hinge-joint frame assessment" not in report.get("note", ""):
+        fail("report note must mention Moonphys hinge-frame assessment")
+    if report.get("hinge_joint_frame_count") != len(frames):
+        fail("hinge joint frame count must match report frames")
+    if report.get("hinge_joint_count_per_frame") != 24:
+        fail("expected 24 hinge joints per frame")
+    if report.get("hinge_review_frame_count", -1) < 0:
+        fail("hinge review frame count must be present")
+    if report.get("max_hinge_position_error_m", -1) < 0:
+        fail("max hinge position error must be present")
+    if report.get("max_hinge_angular_error_rad", -1) < 0:
+        fail("max hinge angular error must be present")
+    if report.get("hinge_linear_impulse_ns", -1) < 0:
+        fail("hinge linear impulse must be present")
+    if report.get("hinge_angular_impulse_nms", -1) < 0:
+        fail("hinge angular impulse must be present")
     if report.get("max_abs_velocity_rad_s", -1) < 0:
         fail("max velocity must be present")
     if report.get("max_abs_mechanical_power_w", 0) <= 0:
@@ -57,8 +73,17 @@ def main() -> None:
 
     first = frames[0]
     steps = first.get("steps", [])
+    hinge_frame = first.get("hinge_joint_frame", {})
     if first.get("joint_count") != 24 or len(steps) != 24:
         fail("first frame should carry all joint control steps")
+    if hinge_frame.get("body_count") != 25:
+        fail("first hinge frame should carry all reference links as bodies")
+    if hinge_frame.get("joint_count") != 24:
+        fail("first hinge frame should carry all URDF joints")
+    if hinge_frame.get("assessed_joint_count") != 24:
+        fail("first hinge frame should assess all URDF joints")
+    if "hinge-joint-frame" not in hinge_frame.get("status", ""):
+        fail("first hinge frame must expose Moonphys hinge-frame status")
     if not all(step.get("motor_step", {}).get("limit") for step in steps):
         fail("every step must carry a Moonphys joint limit")
     if not all(
