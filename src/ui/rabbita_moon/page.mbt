@@ -2,15 +2,20 @@
 fn app_data_script(
   view : @ui.TrustedSquareViewModel,
   book : @moonbook.MoonBookDossier,
+  noetix_walk : @moonrobo.NoetixMoonWalkTrace,
 ) -> String {
   let view_json = @ui.render_json(view).stringify(indent=2)
   let book_json = @moonbook.render_json(book).stringify(indent=2)
+  let noetix_walk_json = noetix_walk.to_json().stringify(indent=2)
   let html =
     $|<script id="moonmoon-view-model" type="application/json">
     $|\{view_json}
     $|</script>
     $|<script id="moonmoon-moonbook" type="application/json">
     $|\{book_json}
+    $|</script>
+    $|<script id="moonmoon-noetix-walk" type="application/json">
+    $|\{noetix_walk_json}
     $|</script>
     $|
   html
@@ -69,7 +74,7 @@ pub fn render_html(
     $|\{app_styles()}
     $|</head>
     $|<body>
-    $|\{app_data_script(view, book)}
+    $|\{app_data_script(view, book, @moonrobo.first_trusted_square_noetix_walk_trace())}
     $|<main class="shell">
     $|  <section class="map-pane" aria-label="Lunar terrain inspection">
     $|    <div class="topline">
@@ -148,6 +153,18 @@ pub fn render_html(
     $|        <span id="active-layer"></span>
     $|      </div>
     $|    </div>
+    $|    <section class="noetix-panel" aria-label="Noetix walking trace">
+    $|      <div class="noetix-panel-header">
+    $|        <div>
+    $|          <h2>Noetix Walk</h2>
+    $|          <p id="noetix-walk-summary"></p>
+    $|        </div>
+    $|        <span id="noetix-walk-authority" class="status-pill"></span>
+    $|      </div>
+    $|      <div id="noetix-walk-viewer" class="noetix-viewer"></div>
+    $|      <div id="noetix-walk-controls" class="noetix-controls" aria-label="Noetix trace frame controls"></div>
+    $|      <div id="noetix-walk-facts" class="noetix-facts"></div>
+    $|    </section>
     $|  </section>
     $|  <aside class="side-pane" aria-label="Inspection details">
     $|    <section class="section">

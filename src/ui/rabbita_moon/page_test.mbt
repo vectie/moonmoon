@@ -5,11 +5,13 @@ test "Rabbita Moon page renders standalone operator shell" {
   assert_true(html.contains("Rabbita Moon"))
   assert_true(html.contains("moonmoon-view-model"))
   assert_true(html.contains("moonmoon-moonbook"))
+  assert_true(html.contains("moonmoon-noetix-walk"))
   assert_true(html.contains("globe_overlay"))
   assert_true(html.contains("site_latitude_deg"))
   assert_true(html.contains("site_longitude_deg"))
   assert_true(html.contains("hardware_authority"))
   assert_true(html.contains("blocker_count"))
+  assert_true(html.contains("noetix-e1-lab-01"))
 }
 
 ///|
@@ -45,6 +47,9 @@ test "Rabbita Moon page exposes globe and review anchors" {
   assert_true(html.contains("mission-evidence-summary"))
   assert_true(html.contains("mission-evidence-filters"))
   assert_true(html.contains("mission-evidence-queue"))
+  assert_true(html.contains("noetix-walk-viewer"))
+  assert_true(html.contains("noetix-walk-controls"))
+  assert_true(html.contains("noetix-walk-facts"))
   assert_true(html.contains("clearance-review"))
   assert_true(html.contains("transition-export"))
   assert_true(html.contains("closeout-action-review"))

@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RABBITA_OUTPUT = ROOT / "output/ui/rabbita"
 RABBITA_ASSETS = RABBITA_OUTPUT / "assets"
 HTML_PATH = RABBITA_OUTPUT / "first_trusted_square.html"
+NOETIX_TRACE_PATH = ROOT / "output/moonrobo/first_trusted_square_noetix_walk.json"
 
 MISSION_EVIDENCE_SNAPSHOT_JS = r"""
 const rows = document.getElementById('mission-evidence-queue').children.map(row => ({
@@ -33,6 +34,28 @@ const summary = document.getElementById('mission-evidence-summary').children.map
   label: row.children[1].textContent
 }));
 return { rows, filters, summary };
+"""
+
+NOETIX_WALK_SNAPSHOT_JS = r"""
+const viewer = document.getElementById('noetix-walk-viewer');
+const controls = document.getElementById('noetix-walk-controls');
+const facts = document.getElementById('noetix-walk-facts');
+const summary = document.getElementById('noetix-walk-summary').textContent;
+const authority = document.getElementById('noetix-walk-authority').textContent;
+const factRows = facts.children.map(row => ({
+  label: row.children[0].textContent,
+  value: row.children[1].textContent
+}));
+return {
+  summary,
+  authority,
+  viewer_children: viewer.children.length,
+  stage_class: viewer.children[0].attributes.class,
+  control_count: controls.children.length,
+  scrubber_max: controls.children[1].attributes.max,
+  scrubber_value: controls.children[1].value,
+  facts: factRows
+};
 """
 
 
@@ -66,6 +89,10 @@ def rabbita_app_script() -> str:
   if missing:
     raise AssertionError(f"missing Rabbita assets: {missing}")
   return "\n".join(path.read_text(encoding="utf-8") for path in scripts)
+
+
+def read_noetix_trace() -> Any:
+  return json.loads(NOETIX_TRACE_PATH.read_text(encoding="utf-8"))
 
 
 def is_mission_evidence_entry(entry: dict[str, Any]) -> bool:
@@ -108,6 +135,56 @@ def render_mission_evidence_queue(
   prefix: str = "moonmoon-rabbita-mission-evidence-",
 ) -> dict[str, Any]:
   return run_rabbita_vm(view, book, MISSION_EVIDENCE_SNAPSHOT_JS, prefix=prefix)
+
+
+def render_noetix_walk_panel(
+  view: Any,
+  book: Any,
+  noetix_trace: Any,
+  *,
+  prefix: str = "moonmoon-rabbita-noetix-walk-",
+) -> dict[str, Any]:
+  return run_rabbita_vm(
+    view,
+    book,
+    NOETIX_WALK_SNAPSHOT_JS,
+    prefix=prefix,
+    noetix_trace=noetix_trace,
+  )
+
+
+def assert_noetix_walk_panel(rendered: dict[str, Any], noetix_trace: dict[str, Any]) -> None:
+  frames = noetix_trace["frames"]
+  if rendered["viewer_children"] != 1:
+    raise AssertionError(rendered)
+  if rendered["stage_class"] != "noetix-stage":
+    raise AssertionError(rendered)
+  if rendered["control_count"] != 3:
+    raise AssertionError(rendered)
+  if rendered["scrubber_max"] != str(len(frames) - 1):
+    raise AssertionError(rendered)
+  if rendered["scrubber_value"] != "0":
+    raise AssertionError(rendered)
+  if "Noetix E1 Lab 01" not in rendered["summary"]:
+    raise AssertionError(rendered)
+  if "1.625" not in rendered["summary"]:
+    raise AssertionError(rendered)
+  if rendered["authority"] != "simulation evidence only":
+    raise AssertionError(rendered)
+  facts = {row["label"]: row["value"] for row in rendered["facts"]}
+  expected = {
+    "phase": frames[0]["support_phase"],
+    "time": "0.00 s",
+    "body x": "0.000 m",
+    "joints": "24 kinematic phases",
+  }
+  for key, value in expected.items():
+    if facts.get(key) != value:
+      raise AssertionError({"facts": facts, "expected": expected})
+  if "terrain-grade-review" not in facts.get("left foot", ""):
+    raise AssertionError(facts)
+  if "terrain-grade-review" not in facts.get("right foot", ""):
+    raise AssertionError(facts)
 
 
 def assert_mission_evidence_queue(rendered: dict[str, Any], book: dict[str, Any]) -> None:
@@ -161,6 +238,7 @@ def run_rabbita_vm(
   snapshot_js: str,
   *,
   prefix: str = "moonmoon-rabbita-ui-",
+  noetix_trace: Any | None = None,
 ) -> dict[str, Any]:
   """Execute Rabbita assets in a minimal DOM and return a JSON snapshot."""
   harness = r"""
@@ -199,6 +277,7 @@ const document = {
 
 document.getElementById('moonmoon-view-model').textContent = JSON.stringify(input.view);
 document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.book);
+document.getElementById('moonmoon-noetix-walk').textContent = JSON.stringify(input.noetix_trace);
 
 const downloads = [];
 const context = {
@@ -231,6 +310,7 @@ console.log(JSON.stringify(snapshot, null, 2));
         {
           "view": view,
           "book": book,
+          "noetix_trace": noetix_trace if noetix_trace is not None else read_noetix_trace(),
           "script": rabbita_app_script(),
           "snapshot_js": snapshot_js,
         },

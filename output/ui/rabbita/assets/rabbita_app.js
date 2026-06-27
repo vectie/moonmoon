@@ -1,8 +1,10 @@
 const view = JSON.parse(document.getElementById('moonmoon-view-model').textContent);
 const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent);
+const noetixTrace = JSON.parse(document.getElementById('moonmoon-noetix-walk').textContent);
 const evidence = window.RabbitaEvidence.create(book);
 let activeLayer = view.active_layer_id;
 let selectedCellId = view.selected_cell_id;
+let activeNoetixFrame = 0;
 const reviewByItem = new Map(book.review_queue.map(item => [item.item_id, item]));
 const transitionByItem = new Map(book.review_transitions.map(item => [item.item_id, item]));
 const clearanceItems = book.review_queue.filter(item => item.item_id.startsWith('clear-'));
@@ -261,6 +263,190 @@ function renderRemediationEvidence() {
       el('p', { className: 'source-path', text: `moonbook://moonmoon/first-trusted-square/${entry.path}` })
     ])
   ));
+}
+
+function noetixFrames() {
+  return noetixTrace.frames || [];
+}
+
+function noetixPointBounds(frames) {
+  const points = frames.flatMap(frame => [
+    frame.body_position,
+    frame.left_foot.position,
+    frame.right_foot.position,
+  ]);
+  const xs = points.map(point => point.x);
+  const zs = points.map(point => point.z);
+  return {
+    minX: Math.min(...xs),
+    maxX: Math.max(...xs),
+    minZ: Math.min(...zs),
+    maxZ: Math.max(...zs),
+  };
+}
+
+function noetixProjector(frames) {
+  const bounds = noetixPointBounds(frames);
+  const xSpan = Math.max(0.001, bounds.maxX - bounds.minX);
+  const zSpan = Math.max(0.001, bounds.maxZ - bounds.minZ);
+  return point => ({
+    x: 36 + ((point.x - bounds.minX) / xSpan) * 348,
+    y: 136 - ((point.z - bounds.minZ) / zSpan) * 92,
+  });
+}
+
+function noetixPath(frames, pointForFrame, project) {
+  return frames.map(frame => {
+    const point = project(pointForFrame(frame));
+    return `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+  }).join(' ');
+}
+
+function noetixStatusClass(status) {
+  if (status === 'ok' || status === 'walking') return 'ok';
+  if (String(status).includes('review')) return 'review';
+  return 'blocked';
+}
+
+function renderNoetixWalkViewer(frames, frame, project) {
+  const body = project(frame.body_position);
+  const left = project(frame.left_foot.position);
+  const right = project(frame.right_foot.position);
+  const supportFoot = frame.support_phase === 'left-support' ? left : right;
+  const svg = svgEl('svg', {
+    class: 'noetix-stage',
+    viewBox: '0 0 420 170',
+    role: 'img',
+    'aria-label': `Noetix frame ${frame.frame_index} ${frame.support_phase}`
+  }, [
+    svgEl('rect', { class: 'noetix-stage-bg', x: '0', y: '0', width: '420', height: '170' }),
+    svgEl('line', { class: 'noetix-ground', x1: '28', y1: '138', x2: '392', y2: '138' }),
+    svgEl('polyline', {
+      class: 'noetix-body-path',
+      points: noetixPath(frames, item => item.body_position, project)
+    }),
+    svgEl('polyline', {
+      class: 'noetix-foot-path noetix-left-path',
+      points: noetixPath(frames, item => item.left_foot.position, project)
+    }),
+    svgEl('polyline', {
+      class: 'noetix-foot-path noetix-right-path',
+      points: noetixPath(frames, item => item.right_foot.position, project)
+    }),
+    svgEl('line', {
+      class: 'noetix-leg',
+      x1: body.x.toFixed(2),
+      y1: body.y.toFixed(2),
+      x2: left.x.toFixed(2),
+      y2: left.y.toFixed(2)
+    }),
+    svgEl('line', {
+      class: 'noetix-leg',
+      x1: body.x.toFixed(2),
+      y1: body.y.toFixed(2),
+      x2: right.x.toFixed(2),
+      y2: right.y.toFixed(2)
+    }),
+    svgEl('circle', {
+      class: `noetix-foot noetix-foot-left noetix-status-${noetixStatusClass(frame.left_foot.status)}`,
+      cx: left.x.toFixed(2),
+      cy: left.y.toFixed(2),
+      r: frame.left_foot.in_contact ? '7' : '5'
+    }),
+    svgEl('circle', {
+      class: `noetix-foot noetix-foot-right noetix-status-${noetixStatusClass(frame.right_foot.status)}`,
+      cx: right.x.toFixed(2),
+      cy: right.y.toFixed(2),
+      r: frame.right_foot.in_contact ? '7' : '5'
+    }),
+    svgEl('circle', {
+      class: `noetix-body noetix-status-${noetixStatusClass(frame.status)}`,
+      cx: body.x.toFixed(2),
+      cy: body.y.toFixed(2),
+      r: '9'
+    }),
+    svgEl('line', {
+      class: 'noetix-support-line',
+      x1: supportFoot.x.toFixed(2),
+      y1: supportFoot.y.toFixed(2),
+      x2: body.x.toFixed(2),
+      y2: body.y.toFixed(2)
+    }),
+    svgEl('text', { class: 'noetix-axis-label', x: '28', y: '158', text: noetixTrace.endless_axis }),
+    svgEl('text', { class: 'noetix-frame-label', x: '318', y: '24', text: `frame ${frame.frame_index}` })
+  ]);
+  document.getElementById('noetix-walk-viewer').replaceChildren(svg);
+}
+
+function renderNoetixWalkControls(frames) {
+  const controls = document.getElementById('noetix-walk-controls');
+  const previous = el('button', {
+    className: 'noetix-step-button',
+    type: 'button',
+    title: 'Previous frame',
+    text: '‹'
+  });
+  const next = el('button', {
+    className: 'noetix-step-button',
+    type: 'button',
+    title: 'Next frame',
+    text: '›'
+  });
+  const scrubber = el('input', {
+    className: 'noetix-scrubber',
+    type: 'range',
+    min: '0',
+    max: String(Math.max(0, frames.length - 1)),
+    step: '1',
+    value: String(activeNoetixFrame),
+    'aria-label': 'Noetix walk frame'
+  });
+  scrubber.value = String(activeNoetixFrame);
+  previous.addEventListener('click', () => {
+    activeNoetixFrame = activeNoetixFrame <= 0 ? frames.length - 1 : activeNoetixFrame - 1;
+    renderNoetixWalk();
+  });
+  next.addEventListener('click', () => {
+    activeNoetixFrame = (activeNoetixFrame + 1) % frames.length;
+    renderNoetixWalk();
+  });
+  scrubber.addEventListener('input', () => {
+    activeNoetixFrame = Number(scrubber.value);
+    renderNoetixWalk();
+  });
+  controls.replaceChildren(previous, scrubber, next);
+}
+
+function renderNoetixWalkFacts(frame) {
+  const jointCount = frame.joint_phases.length;
+  const facts = [
+    ['phase', frame.support_phase],
+    ['time', `${frame.time_s.toFixed(2)} s`],
+    ['body x', `${frame.body_position.x.toFixed(3)} m`],
+    ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
+    ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
+    ['joints', `${jointCount} kinematic phases`],
+  ];
+  document.getElementById('noetix-walk-facts').replaceChildren(...facts.map(([label, value]) =>
+    el('div', { className: 'noetix-fact' }, [
+      el('b', { text: label }),
+      el('span', { text: value })
+    ])
+  ));
+}
+
+function renderNoetixWalk() {
+  const frames = noetixFrames();
+  if (!frames.length) return;
+  activeNoetixFrame = Math.max(0, Math.min(frames.length - 1, activeNoetixFrame));
+  const frame = frames[activeNoetixFrame];
+  const project = noetixProjector(frames);
+  document.getElementById('noetix-walk-summary').textContent =
+    `${noetixTrace.robot.label}, ${noetixTrace.frame_count} frames, ${noetixTrace.config.gravity_mps2} m/s²`;
+  document.getElementById('noetix-walk-authority').textContent = 'simulation evidence only';
+  renderNoetixWalkViewer(frames, frame, project);
+  renderNoetixWalkControls(frames);
+  renderNoetixWalkFacts(frame);
 }
 
 function renderMissionEvidenceSummary(rows, counts) {
@@ -579,6 +765,7 @@ function render() {
   renderReview();
   renderGapEvidence();
   renderRemediationEvidence();
+  renderNoetixWalk();
   renderMissionEvidenceQueue();
   renderClearanceReview();
   renderCloseoutActionReview();

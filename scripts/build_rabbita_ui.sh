@@ -24,6 +24,7 @@ done
 python3 scripts/check_rabbita_bundle.py
 python3 scripts/check_rabbita_runtime.py
 python3 scripts/check_rabbita_mission_evidence_queue.py
+python3 scripts/check_rabbita_noetix_walk.py
 
 printf 'wrote %s\n' "$RABBITA_OUT/first_trusted_square.html"
 for RABBITA_ASSET in "${RABBITA_ASSETS[@]}"; do

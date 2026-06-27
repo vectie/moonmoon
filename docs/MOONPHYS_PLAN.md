@@ -252,6 +252,9 @@ This gives the viewer enough to animate walking without claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 
+Status: first trace scrubber implemented in Rabbita; richer robot rendering
+remains future work.
+
 Add a viewer surface after the data contract is stable.
 
 Options:
@@ -381,11 +384,11 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Surface the trace in Rabbita without adding hardware controls.
-2. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
-3. Replace synthetic joint phases with URDF-derived link poses.
-4. Add basic support-polygon and center-of-mass evidence.
-5. Add MoonClaw follow-up tasking for trace/contact review.
+1. Add mass/contact metadata as a Moonrobo-side Noetix physics profile.
+2. Replace synthetic joint phases with URDF-derived link poses.
+3. Add basic support-polygon and center-of-mass evidence.
+4. Add MoonClaw follow-up tasking for trace/contact review.
+5. Add richer Rabbita playback once link-pose evidence exists.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.
