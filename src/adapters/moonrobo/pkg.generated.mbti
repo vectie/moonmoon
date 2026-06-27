@@ -49,6 +49,12 @@ pub fn first_trusted_square_noetix_link_pose_markdown() -> String
 
 pub fn first_trusted_square_noetix_link_pose_trace() -> NoetixLinkPoseTrace
 
+pub fn first_trusted_square_noetix_source_model_json() -> Json
+
+pub fn first_trusted_square_noetix_source_model_markdown() -> String
+
+pub fn first_trusted_square_noetix_source_model_report() -> NoetixSourceModelReport
+
 pub fn first_trusted_square_noetix_stability_json() -> Json
 
 pub fn first_trusted_square_noetix_stability_markdown() -> String
@@ -153,6 +159,10 @@ pub fn noetix_moon_walk_trace(@moonphys.Heightfield, Int, config? : NoetixMoonWa
 
 pub fn noetix_reference_links() -> Array[NoetixReferenceLink]
 
+pub fn noetix_source_model_report() -> NoetixSourceModelReport
+
+pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
+
 pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile) -> NoetixWalkStabilityFrame
 
 pub fn noetix_walk_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixWalkStabilityReport
@@ -224,6 +234,8 @@ pub fn render_noetix_joint_control_markdown(NoetixJointControlReport) -> String
 pub fn render_noetix_link_pose_markdown(NoetixLinkPoseTrace) -> String
 
 pub fn render_noetix_moon_walk_markdown(NoetixMoonWalkTrace) -> String
+
+pub fn render_noetix_source_model_markdown(NoetixSourceModelReport) -> String
 
 pub fn render_noetix_stability_markdown(NoetixWalkStabilityReport) -> String
 
@@ -576,6 +588,43 @@ pub(all) struct NoetixReferenceLink {
   side : String
   nominal_parent_offset_m : @moonphys.Vec3
   joint_axis : @moonphys.Vec3
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum NoetixSourceGeometryKind {
+  SourceMeshGeometry
+  SourceBoxGeometry
+  SourceCylinderGeometry
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixSourceModelReport {
+  report_id : String
+  robot_id : String
+  source_model_path : String
+  source_profile_path : String
+  link_count : Int
+  joint_count : Int
+  visual_geometry_count : Int
+  mesh_asset_count : Int
+  collision_tag_count : Int
+  inertial_tag_count : Int
+  joint_limit_count : Int
+  low_level_joint_control_enabled : Bool
+  high_level_walk_requires_approval : Bool
+  visual_geometries : Array[NoetixSourceVisualGeometry]
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixSourceVisualGeometry {
+  link_name : String
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  origin_xyz_m : @moonphys.Vec3
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -1,0 +1,204 @@
+///|
+pub(all) enum NoetixSourceGeometryKind {
+  SourceMeshGeometry
+  SourceBoxGeometry
+  SourceCylinderGeometry
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct NoetixSourceVisualGeometry {
+  link_name : String
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  origin_xyz_m : @moonphys.Vec3
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct NoetixSourceModelReport {
+  report_id : String
+  robot_id : String
+  source_model_path : String
+  source_profile_path : String
+  link_count : Int
+  joint_count : Int
+  visual_geometry_count : Int
+  mesh_asset_count : Int
+  collision_tag_count : Int
+  inertial_tag_count : Int
+  joint_limit_count : Int
+  low_level_joint_control_enabled : Bool
+  high_level_walk_requires_approval : Bool
+  visual_geometries : Array[NoetixSourceVisualGeometry]
+  hardware_authority : String
+  status : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+fn source_box_geometry(
+  link_name : String,
+  size_m : @moonphys.Vec3,
+  origin_xyz_m : @moonphys.Vec3,
+) -> NoetixSourceVisualGeometry {
+  {
+    link_name,
+    kind: SourceBoxGeometry,
+    size_m,
+    radius_m: 0.0,
+    length_m: 0.0,
+    mesh_path: "",
+    origin_xyz_m,
+    source_status: "urdf-visual-box",
+  }
+}
+
+///|
+fn source_cylinder_geometry(
+  link_name : String,
+  radius_m : Double,
+  length_m : Double,
+  origin_xyz_m : @moonphys.Vec3,
+) -> NoetixSourceVisualGeometry {
+  {
+    link_name,
+    kind: SourceCylinderGeometry,
+    size_m: @moonphys.vec3(0.0, 0.0, 0.0),
+    radius_m,
+    length_m,
+    mesh_path: "",
+    origin_xyz_m,
+    source_status: "urdf-visual-cylinder",
+  }
+}
+
+///|
+fn source_mesh_geometry(
+  link_name : String,
+  mesh_path : String,
+  size_m : @moonphys.Vec3,
+  origin_xyz_m : @moonphys.Vec3,
+) -> NoetixSourceVisualGeometry {
+  {
+    link_name,
+    kind: SourceMeshGeometry,
+    size_m,
+    radius_m: 0.0,
+    length_m: 0.0,
+    mesh_path,
+    origin_xyz_m,
+    source_status: "urdf-visual-mesh; bounds derived from referenced obj vertices",
+  }
+}
+
+///|
+pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry] {
+  [
+    source_mesh_geometry(
+      "base_link",
+      "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+      @moonphys.vec3(0.24, 0.20, 0.04),
+      @moonphys.vec3(0.0, 0.0, 0.0),
+    ),
+    source_box_geometry(
+      "torso_link",
+      @moonphys.vec3(0.22, 0.16, 0.18),
+      @moonphys.vec3(0.0, 0.0, 0.08),
+    ),
+    source_box_geometry(
+      "chest_link",
+      @moonphys.vec3(0.28, 0.34, 0.18),
+      @moonphys.vec3(0.0, 0.0, 0.08),
+    ),
+    source_cylinder_geometry(
+      "left_arm_1",
+      0.035,
+      0.12,
+      @moonphys.vec3(0.0, 0.0, -0.05),
+    ),
+    source_cylinder_geometry(
+      "right_arm_1",
+      0.035,
+      0.12,
+      @moonphys.vec3(0.0, 0.0, -0.05),
+    ),
+    source_cylinder_geometry(
+      "left_leg_1",
+      0.045,
+      0.14,
+      @moonphys.vec3(0.0, 0.0, -0.06),
+    ),
+  ]
+}
+
+///|
+pub fn noetix_source_model_report() -> NoetixSourceModelReport {
+  let robot = noetix_moon_walk_robot_profile()
+  let visuals = noetix_source_visual_geometries()
+  {
+    report_id: "moonrobo/noetix-e1/source-model/audit-v0",
+    robot_id: robot.robot_id,
+    source_model_path: robot.source_model_path,
+    source_profile_path: robot.source_profile_path,
+    link_count: noetix_reference_links().length(),
+    joint_count: robot.joint_count,
+    visual_geometry_count: visuals.length(),
+    mesh_asset_count: 1,
+    collision_tag_count: 0,
+    inertial_tag_count: 0,
+    joint_limit_count: noetix_joint_actuator_profiles().length(),
+    low_level_joint_control_enabled: false,
+    high_level_walk_requires_approval: true,
+    visual_geometries: visuals,
+    hardware_authority: "moonmoon-safety-gate-only",
+    status: "source-model-audit-review",
+    note: "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags.",
+  }
+}
+
+///|
+pub fn first_trusted_square_noetix_source_model_report() -> NoetixSourceModelReport {
+  noetix_source_model_report()
+}
+
+///|
+pub fn first_trusted_square_noetix_source_model_json() -> Json {
+  first_trusted_square_noetix_source_model_report().to_json()
+}
+
+///|
+pub fn render_noetix_source_model_markdown(
+  report : NoetixSourceModelReport,
+) -> String {
+  let mut text = "# Noetix Source Model Audit\n\n"
+  text += "- report: \{report.report_id}\n"
+  text += "- robot: \{report.robot_id}\n"
+  text += "- source model: \{report.source_model_path}\n"
+  text += "- source profile: \{report.source_profile_path}\n"
+  text += "- links: \{report.link_count}\n"
+  text += "- joints: \{report.joint_count}\n"
+  text += "- visual geometries: \{report.visual_geometry_count}\n"
+  text += "- collision tags: \{report.collision_tag_count}\n"
+  text += "- inertial tags: \{report.inertial_tag_count}\n"
+  text += "- joint limits: \{report.joint_limit_count}\n"
+  text += "- low-level joint control enabled: \{report.low_level_joint_control_enabled}\n"
+  text += "- high-level walk requires approval: \{report.high_level_walk_requires_approval}\n"
+  text += "- status: \{report.status}\n"
+  text += "- hardware authority: \{report.hardware_authority}\n"
+  text += "- note: \{report.note}\n\n"
+  text += "## Visual Geometry\n\n"
+  for geometry in report.visual_geometries {
+    text += "- \{geometry.link_name}: \{geometry.source_status}\n"
+  }
+  text[:text.length() - 1].to_owned()
+}
+
+///|
+pub fn first_trusted_square_noetix_source_model_markdown() -> String {
+  render_noetix_source_model_markdown(
+    first_trusted_square_noetix_source_model_report(),
+  )
+}

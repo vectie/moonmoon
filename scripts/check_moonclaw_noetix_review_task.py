@@ -23,6 +23,10 @@ def main() -> None:
         fail("unexpected robot id")
     if task.get("frame_count", 0) < 24:
         fail("expected at least 24 walk frames")
+    if task.get("source_model_collision_tag_count") != 0:
+        fail("source model should have no authoritative collision tags yet")
+    if task.get("source_model_inertial_tag_count") != 0:
+        fail("source model should have no authoritative inertial tags yet")
     if task.get("link_pose_count_per_frame") != 25:
         fail("expected compact Noetix URDF-reference link count")
     if task.get("static_support_review_frame_count", 0) <= 0:
@@ -47,6 +51,7 @@ def main() -> None:
 
     inputs = {item.get("input_id") for item in task.get("inputs", [])}
     expected_inputs = {
+        "noetix-source-model",
         "noetix-walk-trace",
         "noetix-link-poses",
         "noetix-static-support",
@@ -60,6 +65,7 @@ def main() -> None:
 
     artifacts = {item.get("artifact_id"): item for item in task.get("artifacts", [])}
     expected_artifacts = {
+        "noetix-source-model-audit",
         "noetix-endless-walk-trace",
         "noetix-urdf-reference-link-poses",
         "noetix-static-support-review",
@@ -70,6 +76,10 @@ def main() -> None:
     }
     if set(artifacts) != expected_artifacts:
         fail(f"unexpected artifacts: {sorted(artifacts)}")
+    if not artifacts["noetix-source-model-audit"].get("ready"):
+        fail("source model audit should be ready evidence")
+    if "check_moonrobo_noetix_source_model" not in artifacts["noetix-source-model-audit"].get("validation_gate", ""):
+        fail("source model audit must have validator")
     if artifacts["noetix-static-support-review"].get("ready"):
         fail("static support artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-static-support-review"].get("blocking_reason", ""):
@@ -89,6 +99,7 @@ def main() -> None:
 
     commands = "\n".join(task.get("commands", []))
     for expected in [
+        "check_moonrobo_noetix_source_model.py",
         "check_moonrobo_noetix_walk.py",
         "check_moonrobo_noetix_link_poses.py",
         "check_moonrobo_noetix_stability.py",

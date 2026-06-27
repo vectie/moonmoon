@@ -139,6 +139,9 @@ MOONCLAW_CORRIDOR_RECEIPTS_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_corridor_receipts.json"
 )
 MOONROBO_JSON = ROOT / "output/moonrobo/first_trusted_square_handoffs.json"
+MOONROBO_NOETIX_SOURCE_MODEL_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_noetix_source_model.json"
+)
 MOONROBO_NOETIX_WALK_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_noetix_walk.json"
 )
@@ -415,6 +418,7 @@ def payload_for_entry(
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
+  moonrobo_noetix_source_model: dict[str, Any],
   moonrobo_noetix_walk: dict[str, Any],
   moonrobo_noetix_stability: dict[str, Any],
   moonrobo_noetix_dynamics: dict[str, Any],
@@ -533,6 +537,8 @@ def payload_for_entry(
     return moonrobo_simulation_review_decision
   if kind == "MoonroboSimulationBlockerReduction":
     return moonrobo_simulation_blocker_reduction
+  if kind == "MoonroboNoetixSourceModel":
+    return moonrobo_noetix_source_model
   if kind == "MoonroboNoetixWalk":
     return moonrobo_noetix_walk
   if kind == "MoonroboNoetixPhysics":
@@ -574,6 +580,7 @@ def payload_for_entry(
     return {
       "primary_task": moonclaw_noetix_review_tasks[0],
       "tasks": moonclaw_noetix_review_tasks,
+      "source_model": moonrobo_noetix_source_model,
       "source_walk": moonrobo_noetix_walk,
       "source_static_support": moonrobo_noetix_stability,
       "source_dynamic_stability": moonrobo_noetix_dynamics,
@@ -767,6 +774,7 @@ def workspace_files(
   moonrobo_simulation_review_packet: dict[str, Any],
   moonrobo_simulation_review_decision: dict[str, Any],
   moonrobo_simulation_blocker_reduction: dict[str, Any],
+  moonrobo_noetix_source_model: dict[str, Any],
   moonrobo_noetix_walk: dict[str, Any],
   moonrobo_noetix_stability: dict[str, Any],
   moonrobo_noetix_dynamics: dict[str, Any],
@@ -827,6 +835,7 @@ def workspace_files(
     "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
     "output/mission/first_trusted_square_energy_remediation.json",
     "output/moonrobo/first_trusted_square_handoffs.json",
+    "output/moonrobo/first_trusted_square_noetix_source_model.json",
     "output/moonrobo/first_trusted_square_noetix_walk.json",
     "output/moonrobo/first_trusted_square_noetix_stability.json",
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
@@ -952,6 +961,7 @@ def workspace_files(
       moonrobo_simulation_review_packet,
       moonrobo_simulation_review_decision,
       moonrobo_simulation_blocker_reduction,
+      moonrobo_noetix_source_model,
       moonrobo_noetix_walk,
       moonrobo_noetix_stability,
       moonrobo_noetix_dynamics,
@@ -1024,6 +1034,7 @@ def workspace_files(
     "- Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`\n"
     "- Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`\n"
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
+    "- Source MoonRobo Noetix source model: `output/moonrobo/first_trusted_square_noetix_source_model.json`\n"
     "- Source MoonRobo Noetix walk: `output/moonrobo/first_trusted_square_noetix_walk.json`\n"
     "- Source MoonRobo Noetix static support: `output/moonrobo/first_trusted_square_noetix_stability.json`\n"
     "- Source MoonRobo Noetix dynamic stability: `output/moonrobo/first_trusted_square_noetix_dynamics.json`\n"
@@ -1246,6 +1257,7 @@ def main() -> int:
     MOONROBO_SIMULATION_BLOCKER_REDUCTION_JSON,
     {},
   )
+  moonrobo_noetix_source_model = load_json(MOONROBO_NOETIX_SOURCE_MODEL_JSON)
   moonrobo_noetix_walk = load_json(MOONROBO_NOETIX_WALK_JSON)
   moonrobo_noetix_stability = load_json(MOONROBO_NOETIX_STABILITY_JSON)
   moonrobo_noetix_dynamics = load_json(MOONROBO_NOETIX_DYNAMICS_JSON)
@@ -1298,6 +1310,7 @@ def main() -> int:
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,
+    moonrobo_noetix_source_model,
     moonrobo_noetix_walk,
     moonrobo_noetix_stability,
     moonrobo_noetix_dynamics,

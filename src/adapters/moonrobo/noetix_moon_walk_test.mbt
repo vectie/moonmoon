@@ -75,13 +75,47 @@ test "noetix actuator profiles carry urdf joint limits into moonphys" {
 }
 
 ///|
+test "noetix source model audit records moonrobo urdf metadata gaps" {
+  let report = first_trusted_square_noetix_source_model_report()
+  assert_eq(report.robot_id, "noetix-e1-lab-01")
+  assert_eq(report.link_count, 25)
+  assert_eq(report.joint_count, 24)
+  assert_eq(report.joint_limit_count, 24)
+  assert_eq(report.visual_geometry_count, 6)
+  assert_eq(report.mesh_asset_count, 1)
+  assert_eq(report.collision_tag_count, 0)
+  assert_eq(report.inertial_tag_count, 0)
+  assert_true(!report.low_level_joint_control_enabled)
+  assert_true(report.high_level_walk_requires_approval)
+  assert_true(
+    report.note.contains("no authoritative collision or inertial tags"),
+  )
+  assert_true(
+    report.visual_geometries.any(fn(geometry) {
+      geometry.link_name == "base_link" &&
+      geometry.kind == SourceMeshGeometry &&
+      geometry.mesh_path.contains("base.obj") &&
+      geometry.size_m == @moonphys.vec3(0.24, 0.20, 0.04)
+    }),
+  )
+}
+
+///|
 test "noetix collision profiles expose moonphys review shapes" {
   let profile = default_noetix_physics_profile()
+  assert_true(profile.collision_shapes.length() >= 8)
+  assert_true(
+    profile.collision_shapes.any(fn(collision) {
+      collision.link_name == "base_link" &&
+      collision.shape.kind == @moonphys.BoxShape &&
+      collision.source_status.contains("urdf-visual-mesh")
+    }),
+  )
   assert_true(
     profile.collision_shapes.any(fn(collision) {
       collision.link_name == "chest_link" &&
       collision.shape.kind == @moonphys.BoxShape &&
-      collision.source_status.contains("urdf-visual-box")
+      collision.source_status == "urdf-visual-box"
     }),
   )
   assert_true(

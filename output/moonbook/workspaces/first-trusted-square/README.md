@@ -26,6 +26,7 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source MoonClaw receipts: `output/moonclaw/first_trusted_square_receipts.json`
 - Source MoonClaw ephemeris receipts: `output/moonclaw/first_trusted_square_ephemeris_receipts.json`
 - Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`
+- Source MoonRobo Noetix source model: `output/moonrobo/first_trusted_square_noetix_source_model.json`
 - Source MoonRobo Noetix walk: `output/moonrobo/first_trusted_square_noetix_walk.json`
 - Source MoonRobo Noetix static support: `output/moonrobo/first_trusted_square_noetix_stability.json`
 - Source MoonRobo Noetix dynamic stability: `output/moonrobo/first_trusted_square_noetix_dynamics.json`
@@ -50,6 +51,6 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 82
+- Entries: 83
 - Review queue items: 29
 - Review transitions: 29

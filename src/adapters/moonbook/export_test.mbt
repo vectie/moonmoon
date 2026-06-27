@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 82)
+  assert_eq(dossier.entries.length(), 83)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -212,27 +212,31 @@ test "first trusted square exports a MoonBook evidence dossier" {
     dossier.entries[74].kind == @moonbook.BookEntryKind::MoonClawCorridorReceipt,
   )
   assert_true(
-    dossier.entries[75].kind == @moonbook.BookEntryKind::MoonroboNoetixWalk,
+    dossier.entries[75].kind ==
+    @moonbook.BookEntryKind::MoonroboNoetixSourceModel,
   )
   assert_true(
-    dossier.entries[76].kind == @moonbook.BookEntryKind::MoonroboNoetixPhysics,
+    dossier.entries[76].kind == @moonbook.BookEntryKind::MoonroboNoetixWalk,
   )
   assert_true(
-    dossier.entries[77].kind == @moonbook.BookEntryKind::MoonroboNoetixDynamics,
+    dossier.entries[77].kind == @moonbook.BookEntryKind::MoonroboNoetixPhysics,
   )
   assert_true(
-    dossier.entries[78].kind ==
-    @moonbook.BookEntryKind::MoonroboNoetixJointControl,
+    dossier.entries[78].kind == @moonbook.BookEntryKind::MoonroboNoetixDynamics,
   )
   assert_true(
     dossier.entries[79].kind ==
+    @moonbook.BookEntryKind::MoonroboNoetixJointControl,
+  )
+  assert_true(
+    dossier.entries[80].kind ==
     @moonbook.BookEntryKind::MoonroboNoetixInertialCollision,
   )
   assert_true(
-    dossier.entries[80].kind == @moonbook.BookEntryKind::MoonroboNoetixLinkPoses,
+    dossier.entries[81].kind == @moonbook.BookEntryKind::MoonroboNoetixLinkPoses,
   )
   assert_true(
-    dossier.entries[81].kind ==
+    dossier.entries[82].kind ==
     @moonbook.BookEntryKind::MoonClawNoetixReviewTask,
   )
   assert_eq(
@@ -1230,20 +1234,27 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(dossier.entries[74].summary.contains("81 measured windows"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[75].kind),
-    "moonrobo-noetix-walk",
+    "moonrobo-noetix-source-model",
   )
-  assert_true(dossier.entries[75].path.contains("noetix-walk"))
-  assert_true(dossier.entries[75].summary.contains("noetix-e1-lab-01"))
-  assert_true(dossier.entries[75].summary.contains("32 frames"))
-  assert_true(dossier.entries[75].summary.contains("24 joint phases"))
+  assert_true(dossier.entries[75].path.contains("noetix-source-model"))
+  assert_true(dossier.entries[75].summary.contains("0 collision tags"))
+  assert_true(dossier.entries[75].summary.contains("0 inertial tags"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[76].kind),
+    "moonrobo-noetix-walk",
+  )
+  assert_true(dossier.entries[76].path.contains("noetix-walk"))
+  assert_true(dossier.entries[76].summary.contains("noetix-e1-lab-01"))
+  assert_true(dossier.entries[76].summary.contains("32 frames"))
+  assert_true(dossier.entries[76].summary.contains("24 joint phases"))
+  assert_eq(
+    @moonbook.book_entry_kind_label(dossier.entries[77].kind),
     "moonrobo-noetix-physics",
   )
-  assert_true(dossier.entries[76].path.contains("noetix-physics"))
-  assert_true(dossier.entries[76].summary.contains("mass/sole/friction"))
-  assert_true(dossier.entries[76].summary.contains("static-support review"))
-  assert_true(dossier.entries[76].summary.contains("moonmoon-safety-gate-only"))
+  assert_true(dossier.entries[77].path.contains("noetix-physics"))
+  assert_true(dossier.entries[77].summary.contains("mass/sole/friction"))
+  assert_true(dossier.entries[77].summary.contains("static-support review"))
+  assert_true(dossier.entries[77].summary.contains("moonmoon-safety-gate-only"))
   assert_eq(dossier.review_queue[0].item_id, "workspace-materialized")
   assert_true(
     dossier.review_queue[0].status == @moonbook.ReviewItemStatus::Accepted,

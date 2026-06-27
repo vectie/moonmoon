@@ -17,6 +17,10 @@ evidence.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
   report backed by generic Moonphys support assessment.
+- Moonrobo exports a Noetix source-model audit that records the sibling
+  Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
+  geometries, one placeholder mesh asset, and zero authoritative collision or
+  inertial tags.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
@@ -30,6 +34,8 @@ evidence.
   joint-control report, inertial/collision report, and Rabbita playback into a
   hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
+- `scripts/check_moonrobo_noetix_source_model.py` verifies source-model audit
+  invariants.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
   invariants.
 - `scripts/check_moonrobo_noetix_dynamics.py` verifies capture-point dynamic
@@ -317,9 +323,9 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
-Status: first walk, physics-profile, static-support, dynamic-stability,
-joint-control, inertial/collision, link-pose, and MoonClaw review-task exports
-and verifiers implemented.
+Status: first source-model audit, walk, physics-profile, static-support,
+dynamic-stability, joint-control, inertial/collision, link-pose, and MoonClaw
+review-task exports and verifiers implemented.
 
 Add generated outputs to the dossier build.
 
@@ -350,9 +356,10 @@ Check invariants:
 
 ## Phase 7: MoonBook / MoonClaw Integration
 
-Status: MoonBook entries and workspace payloads implemented for the Noetix walk
-trace, physics assumptions, dynamic-stability report, joint-control report,
-inertial/collision report, link poses, and MoonClaw review task.
+Status: MoonBook entries and workspace payloads implemented for the Noetix
+source-model audit, walk trace, physics assumptions, dynamic-stability report,
+joint-control report, inertial/collision report, link poses, and MoonClaw
+review task.
 
 After the trace is stable, make it durable evidence.
 
@@ -391,7 +398,9 @@ angular dynamics helpers, conservative sphere/capsule/box collision shape
 bounds, exact sphere contacts, contact manifold summaries, and generic joint
 servo/limit integration implemented; Noetix static support, dynamic-stability,
 joint-control, and inertial/collision review reports implemented; full
-multi-contact simulation remains future work. Moonrobo's Noetix URDF joint
+multi-contact simulation remains future work. Moonrobo's Noetix source-model
+audit now records URDF/profile paths, visual geometry, joint limits, and the
+absence of authoritative collision/inertial tags. Moonrobo's Noetix URDF joint
 limits are carried into the robot-specific profile as Moonphys joint limits.
 Noetix joint-control review evidence replays the gait phases through Moonphys
 joint servo, torque, velocity, and position limits. Noetix inertial/collision

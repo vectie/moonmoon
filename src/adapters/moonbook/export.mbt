@@ -18,6 +18,7 @@ pub(all) enum BookEntryKind {
   EnergyRemediationEvidence
   SelectedRouteClearance
   MoonroboHandoff
+  MoonroboNoetixSourceModel
   MoonroboNoetixWalk
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
@@ -150,6 +151,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     EnergyRemediationEvidence => "energy-remediation-evidence"
     SelectedRouteClearance => "selected-route-clearance"
     MoonroboHandoff => "moonrobo-handoff"
+    MoonroboNoetixSourceModel => "moonrobo-noetix-source-model"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
     MoonroboNoetixDynamics => "moonrobo-noetix-dynamics"
@@ -985,6 +987,20 @@ fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
 }
 
 ///|
+fn moonrobo_noetix_source_model_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let report = @moonrobo.first_trusted_square_noetix_source_model_report()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-source-model",
+    title: "Moonrobo Noetix source model audit for \{dossier.site.name}",
+    kind: MoonroboNoetixSourceModel,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.6,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-source-model.json",
+    summary: "\{report.robot_id} source audit has \{report.link_count} links, \{report.joint_count} joints, \{report.visual_geometry_count} visual geometries, \{report.collision_tag_count} collision tags, and \{report.inertial_tag_count} inertial tags; hardware authority \{report.hardware_authority}",
+  }
+}
+
+///|
 fn moonrobo_noetix_physics_entry(dossier : @site.SiteDossier) -> BookEntry {
   let report = @moonrobo.first_trusted_square_noetix_stability_report()
   {
@@ -1068,7 +1084,7 @@ fn moonclaw_noetix_review_task_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Derived,
     confidence: 0.58,
     path: "moonclaw/\{dossier.site.site_id}/noetix-review-task.json",
-    summary: "\{task.robot_id} review task links walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback; \{task.inertial_collision_review_frame_count}/\{task.frame_count} frames require inertial/collision review, hardware authority \{task.hardware_authority}",
+    summary: "\{task.robot_id} review task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback; source collision tags \{task.source_model_collision_tag_count}, source inertial tags \{task.source_model_inertial_tag_count}, hardware authority \{task.hardware_authority}",
   }
 }
 
@@ -1972,6 +1988,7 @@ fn book_entries(
   )
   entries.push(moonclaw_ephemeris_receipt_entry(dossier))
   entries.push(moonclaw_corridor_receipt_entry(dossier))
+  entries.push(moonrobo_noetix_source_model_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))
   entries.push(moonrobo_noetix_dynamics_entry(dossier))

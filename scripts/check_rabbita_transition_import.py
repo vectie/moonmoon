@@ -516,6 +516,9 @@ def materialize_temp_workspace(root: Path) -> None:
       {},
     )
   )
+  moonrobo_noetix_source_model = load_json(
+    materialize_moonbook_workspace.MOONROBO_NOETIX_SOURCE_MODEL_JSON,
+  )
   moonrobo_noetix_walk = load_json(
     materialize_moonbook_workspace.MOONROBO_NOETIX_WALK_JSON,
   )
@@ -582,6 +585,7 @@ def materialize_temp_workspace(root: Path) -> None:
     moonrobo_simulation_review_packet,
     moonrobo_simulation_review_decision,
     moonrobo_simulation_blocker_reduction,
+    moonrobo_noetix_source_model,
     moonrobo_noetix_walk,
     moonrobo_noetix_stability,
     moonrobo_noetix_dynamics,

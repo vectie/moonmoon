@@ -380,6 +380,11 @@
   - claim: derived
   - confidence: 0.75
   - path: moonclaw/first-trusted-square/corridor-receipts.json
+- moonrobo/first-trusted-square/noetix-source-model: Moonrobo Noetix source model audit for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-source-model
+  - claim: simulated
+  - confidence: 0.6
+  - path: moonrobo/first-trusted-square/noetix-source-model.json
 - moonrobo/first-trusted-square/noetix-walk: Moonrobo Noetix endless moon-walk trace for First Trusted Square / Shackleton Rim rehearsal tile
   - kind: moonrobo-noetix-walk
   - claim: simulated

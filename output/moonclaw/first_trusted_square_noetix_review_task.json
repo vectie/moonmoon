@@ -6,6 +6,7 @@
     "priority": "High",
     "state": "Accepted",
     "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
+    "source_model_report_id": "moonrobo/noetix-e1/source-model/audit-v0",
     "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
     "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
     "source_dynamic_stability_report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
@@ -13,6 +14,8 @@
     "source_inertial_collision_report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
     "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
     "frame_count": 32,
+    "source_model_collision_tag_count": 0,
+    "source_model_inertial_tag_count": 0,
     "static_support_review_frame_count": 32,
     "dynamic_stability_review_frame_count": 32,
     "joint_control_review_frame_count": 32,
@@ -22,6 +25,12 @@
     "hardware_authority": "moonmoon-safety-gate-only",
     "hardware_denied": true,
     "inputs": [
+      {
+        "input_id": "noetix-source-model",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
+        "claim_kind": "Simulated",
+        "summary": "Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags."
+      },
       {
         "input_id": "noetix-walk-trace",
         "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
@@ -66,6 +75,16 @@
       }
     ],
     "artifacts": [
+      {
+        "artifact_id": "noetix-source-model-audit",
+        "path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
+        "producer": "moon run cmd/main -- moonrobo noetix model json",
+        "required_state": "Moonrobo source model audit records URDF links, joints, visual geometry, joint limits, and missing inertial/collision tags",
+        "current_state": "25 links; 24 joints; 6 visual geometries; collision tags 0; inertial tags 0",
+        "ready": true,
+        "blocking_reason": "none",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json"
+      },
       {
         "artifact_id": "noetix-endless-walk-trace",
         "path": "output/moonrobo/first_trusted_square_noetix_walk.json",
@@ -121,7 +140,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
         "producer": "moon run cmd/main -- moonrobo noetix collision json",
         "required_state": "Moonphys diagonal inertia, collision bounds, terrain collisions, contact torque, and conservative self-collision manifolds are present for review",
-        "current_state": "32 frames; 6 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
+        "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
         "ready": false,
         "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json"
@@ -138,6 +157,7 @@
       }
     ],
     "commands": [
+      "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
@@ -151,7 +171,11 @@
     "acceptance_criteria": [
       {
         "criterion_id": "all-noetix-evidence-linked",
-        "description": "Task links walk, link poses, static support, dynamic stability, joint control, and Rabbita playback evidence with concrete validation commands."
+        "description": "Task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback evidence with concrete validation commands."
+      },
+      {
+        "criterion_id": "source-model-gaps-preserved",
+        "description": "Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review."
       },
       {
         "criterion_id": "review-only-static-support-preserved",
@@ -174,7 +198,7 @@
         "description": "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims."
       }
     ],
-    "safety_gate": "Do not convert the Noetix walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.",
-    "next_action": "Use this task to review contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
+    "safety_gate": "Do not convert the Noetix source-model audit, walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.",
+    "next_action": "Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
   }
 ]

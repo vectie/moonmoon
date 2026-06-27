@@ -1,0 +1,142 @@
+{
+  "entry": {
+    "entry_id": "moonrobo/first-trusted-square/noetix-source-model",
+    "title": "Moonrobo Noetix source model audit for First Trusted Square / Shackleton Rim rehearsal tile",
+    "kind": "MoonroboNoetixSourceModel",
+    "claim_kind": "Simulated",
+    "confidence": 0.6,
+    "path": "moonrobo/first-trusted-square/noetix-source-model.json",
+    "summary": "noetix-e1-lab-01 source audit has 25 links, 24 joints, 6 visual geometries, 0 collision tags, and 0 inertial tags; hardware authority moonmoon-safety-gate-only"
+  },
+  "payload": {
+    "report_id": "moonrobo/noetix-e1/source-model/audit-v0",
+    "robot_id": "noetix-e1-lab-01",
+    "source_model_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+    "source_profile_path": "../moonrobo/examples/noetix-e1/robot.json",
+    "link_count": 25,
+    "joint_count": 24,
+    "visual_geometry_count": 6,
+    "mesh_asset_count": 1,
+    "collision_tag_count": 0,
+    "inertial_tag_count": 0,
+    "joint_limit_count": 24,
+    "low_level_joint_control_enabled": false,
+    "high_level_walk_requires_approval": true,
+    "visual_geometries": [
+      {
+        "link_name": "base_link",
+        "kind": "SourceMeshGeometry",
+        "size_m": {
+          "x": 0.24,
+          "y": 0.2,
+          "z": 0.04
+        },
+        "radius_m": 0,
+        "length_m": 0,
+        "mesh_path": "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "source_status": "urdf-visual-mesh; bounds derived from referenced obj vertices"
+      },
+      {
+        "link_name": "torso_link",
+        "kind": "SourceBoxGeometry",
+        "size_m": {
+          "x": 0.22,
+          "y": 0.16,
+          "z": 0.18
+        },
+        "radius_m": 0,
+        "length_m": 0,
+        "mesh_path": "",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0.08
+        },
+        "source_status": "urdf-visual-box"
+      },
+      {
+        "link_name": "chest_link",
+        "kind": "SourceBoxGeometry",
+        "size_m": {
+          "x": 0.28,
+          "y": 0.34,
+          "z": 0.18
+        },
+        "radius_m": 0,
+        "length_m": 0,
+        "mesh_path": "",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0.08
+        },
+        "source_status": "urdf-visual-box"
+      },
+      {
+        "link_name": "left_arm_1",
+        "kind": "SourceCylinderGeometry",
+        "size_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius_m": 0.035,
+        "length_m": 0.12,
+        "mesh_path": "",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": -0.05
+        },
+        "source_status": "urdf-visual-cylinder"
+      },
+      {
+        "link_name": "right_arm_1",
+        "kind": "SourceCylinderGeometry",
+        "size_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius_m": 0.035,
+        "length_m": 0.12,
+        "mesh_path": "",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": -0.05
+        },
+        "source_status": "urdf-visual-cylinder"
+      },
+      {
+        "link_name": "left_leg_1",
+        "kind": "SourceCylinderGeometry",
+        "size_m": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "radius_m": 0.045,
+        "length_m": 0.14,
+        "mesh_path": "",
+        "origin_xyz_m": {
+          "x": 0,
+          "y": 0,
+          "z": -0.06
+        },
+        "source_status": "urdf-visual-cylinder"
+      }
+    ],
+    "hardware_authority": "moonmoon-safety-gate-only",
+    "status": "source-model-audit-review",
+    "note": "Sibling Moonrobo Noetix source model provides URDF joint limits and visual geometry, including a placeholder base mesh, but exposes no authoritative collision or inertial tags. Moonphys collision/inertia reports must therefore remain review-only until Moonrobo publishes those tags."
+  },
+  "workspace": "moonbook://moonmoon/first-trusted-square",
+  "site_id": "first-trusted-square",
+  "generated_by": "scripts/materialize_moonbook_workspace.py"
+}

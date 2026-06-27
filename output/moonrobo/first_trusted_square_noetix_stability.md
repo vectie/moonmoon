@@ -5,7 +5,7 @@
 - profile: moonrobo/noetix-e1/physics-profile-v0
 - mass: 38 kg (simulation-assumption; no inertial tags in referenced URDF/profile)
 - actuator profiles: 24 URDF joint limits
-- collision profiles: 6 review shapes
+- collision profiles: 8 review shapes
 - frames: 32
 - stable frames: 0
 - review frames: 32

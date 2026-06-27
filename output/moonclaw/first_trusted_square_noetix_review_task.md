@@ -5,6 +5,8 @@
   - state: accepted
   - robot: noetix-e1-lab-01
   - frames: 32
+  - source collision tags: 0
+  - source inertial tags: 0
   - link poses per frame: 25
   - static-support review frames: 32
   - dynamic-stability review frames: 32
@@ -12,9 +14,10 @@
   - inertial-collision review frames: 32
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
-  - safety gate: Do not convert the Noetix walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.
-  - next action: Use this task to review contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
+  - safety gate: Do not convert the Noetix source-model audit, walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.
+  - next action: Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
   - inputs:
+    - noetix-source-model: output/moonrobo/first_trusted_square_noetix_source_model.json - Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.
     - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
     - noetix-static-support: output/moonrobo/first_trusted_square_noetix_stability.json - Static COM/support report that explicitly remains review-only for dynamic walking.
@@ -23,6 +26,11 @@
     - noetix-inertial-collision: output/moonrobo/first_trusted_square_noetix_inertial_collision.json - Moonphys inertial/collision review report over Noetix mass assumptions, shape bounds, terrain collisions, and self-contact manifolds.
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html - Rabbita playback for inspecting the walk and link-pose skeleton.
   - artifacts:
+    - noetix-source-model-audit: output/moonrobo/first_trusted_square_noetix_source_model.json
+      - current: 25 links; 24 joints; 6 visual geometries; collision tags 0; inertial tags 0
+      - ready: true
+      - blocking: none
+      - gate: python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - noetix-endless-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json
       - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints
       - ready: true
@@ -49,7 +57,7 @@
       - blocking: joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json
     - noetix-inertial-collision-review: output/moonrobo/first_trusted_square_noetix_inertial_collision.json
-      - current: 32 frames; 6 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review
+      - current: 32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review
       - ready: false
       - blocking: inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags
       - gate: python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json
@@ -59,6 +67,7 @@
       - blocking: none
       - gate: python3 scripts/check_rabbita_noetix_walk.py
   - commands:
+    - python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
     - python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
     - python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
@@ -69,7 +78,8 @@
     - python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json
     - /Users/kq/.moon/bin/moon test
   - acceptance:
-    - all-noetix-evidence-linked: Task links walk, link poses, static support, dynamic stability, joint control, and Rabbita playback evidence with concrete validation commands.
+    - all-noetix-evidence-linked: Task links source model, walk, link poses, static support, dynamic stability, joint control, inertial/collision, and Rabbita playback evidence with concrete validation commands.
+    - source-model-gaps-preserved: Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.
     - review-only-static-support-preserved: Static support review frames remain explicit blockers for dynamic walking evidence.
     - review-only-joint-control-preserved: Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.
     - review-only-inertial-collision-preserved: Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.

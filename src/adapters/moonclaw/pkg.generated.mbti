@@ -465,6 +465,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   priority : MoonClawJobPriority
   state : MoonClawReceiptStatus
   objective : String
+  source_model_report_id : String
   source_walk_trace_id : String
   source_static_support_report_id : String
   source_dynamic_stability_report_id : String
@@ -472,6 +473,8 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_inertial_collision_report_id : String
   source_link_pose_trace_id : String
   frame_count : Int
+  source_model_collision_tag_count : Int
+  source_model_inertial_tag_count : Int
   static_support_review_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int

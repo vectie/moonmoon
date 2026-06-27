@@ -143,37 +143,42 @@ fn collision_shape_profile(
 }
 
 ///|
+fn collision_shape_from_source_visual(
+  geometry : NoetixSourceVisualGeometry,
+) -> NoetixCollisionShapeProfile {
+  match geometry.kind {
+    SourceMeshGeometry | SourceBoxGeometry =>
+      collision_shape_profile(
+        geometry.link_name,
+        @moonphys.collision_box(
+          "\{geometry.link_name}/urdf-visual-bounds",
+          geometry.size_m.scale(0.5),
+        ),
+        geometry.source_status,
+      )
+    SourceCylinderGeometry =>
+      collision_shape_profile(
+        geometry.link_name,
+        @moonphys.collision_capsule(
+          "\{geometry.link_name}/urdf-visual-cylinder",
+          geometry.radius_m,
+          geometry.length_m * 0.5,
+        ),
+        geometry.source_status,
+      )
+  }
+}
+
+///|
 fn noetix_collision_shape_profiles(
   left_foot : NoetixFootGeometry,
   right_foot : NoetixFootGeometry,
 ) -> Array[NoetixCollisionShapeProfile] {
-  [
-    collision_shape_profile(
-      "torso_link",
-      @moonphys.collision_box(
-        "torso_link/visual-box",
-        @moonphys.vec3(0.11, 0.08, 0.09),
-      ),
-      "urdf-visual-box-derived-review-shape",
-    ),
-    collision_shape_profile(
-      "chest_link",
-      @moonphys.collision_box(
-        "chest_link/visual-box",
-        @moonphys.vec3(0.14, 0.17, 0.09),
-      ),
-      "urdf-visual-box-derived-review-shape",
-    ),
-    collision_shape_profile(
-      "left_leg_1",
-      @moonphys.collision_capsule("left_leg_1/visual-cylinder", 0.045, 0.07),
-      "urdf-visual-cylinder-derived-review-shape",
-    ),
-    collision_shape_profile(
-      "right_leg_1",
-      @moonphys.collision_capsule("right_leg_1/visual-cylinder", 0.045, 0.07),
-      "urdf-visual-cylinder-derived-review-shape",
-    ),
+  let shapes : Array[NoetixCollisionShapeProfile] = []
+  for geometry in noetix_source_visual_geometries() {
+    shapes.push(collision_shape_from_source_visual(geometry))
+  }
+  shapes.push(
     collision_shape_profile(
       left_foot.link_name,
       @moonphys.collision_box(
@@ -186,6 +191,8 @@ fn noetix_collision_shape_profiles(
       ),
       left_foot.source_status,
     ),
+  )
+  shapes.push(
     collision_shape_profile(
       right_foot.link_name,
       @moonphys.collision_box(
@@ -198,7 +205,8 @@ fn noetix_collision_shape_profiles(
       ),
       right_foot.source_status,
     ),
-  ]
+  )
+  shapes
 }
 
 ///|
@@ -241,7 +249,7 @@ pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
     material_model: "dry-regolith-review-assumption",
     hardware_authority: "moonmoon-safety-gate-only",
     status: "review-only",
-    note: "URDF joint limits are represented as Moonphys joint limits. Mass, center of mass, servo gains, inertia, foot sole geometry, and friction remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata.",
+    note: "URDF joint limits and visual geometry are represented as Moonphys review data. Mass, center of mass, servo gains, inertia, foot sole geometry, friction, and collision tags remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata.",
   }
 }
 

@@ -480,9 +480,24 @@
       ],
       "collision_shapes": [
         {
+          "link_name": "base_link",
+          "shape": {
+            "shape_id": "base_link/urdf-visual-bounds",
+            "kind": "BoxShape",
+            "radius_m": 0,
+            "half_height_m": 0,
+            "half_extents_m": {
+              "x": 0.12,
+              "y": 0.1,
+              "z": 0.02
+            }
+          },
+          "source_status": "urdf-visual-mesh; bounds derived from referenced obj vertices"
+        },
+        {
           "link_name": "torso_link",
           "shape": {
-            "shape_id": "torso_link/visual-box",
+            "shape_id": "torso_link/urdf-visual-bounds",
             "kind": "BoxShape",
             "radius_m": 0,
             "half_height_m": 0,
@@ -492,12 +507,12 @@
               "z": 0.09
             }
           },
-          "source_status": "urdf-visual-box-derived-review-shape"
+          "source_status": "urdf-visual-box"
         },
         {
           "link_name": "chest_link",
           "shape": {
-            "shape_id": "chest_link/visual-box",
+            "shape_id": "chest_link/urdf-visual-bounds",
             "kind": "BoxShape",
             "radius_m": 0,
             "half_height_m": 0,
@@ -507,12 +522,42 @@
               "z": 0.09
             }
           },
-          "source_status": "urdf-visual-box-derived-review-shape"
+          "source_status": "urdf-visual-box"
+        },
+        {
+          "link_name": "left_arm_1",
+          "shape": {
+            "shape_id": "left_arm_1/urdf-visual-cylinder",
+            "kind": "CapsuleShape",
+            "radius_m": 0.035,
+            "half_height_m": 0.06,
+            "half_extents_m": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "source_status": "urdf-visual-cylinder"
+        },
+        {
+          "link_name": "right_arm_1",
+          "shape": {
+            "shape_id": "right_arm_1/urdf-visual-cylinder",
+            "kind": "CapsuleShape",
+            "radius_m": 0.035,
+            "half_height_m": 0.06,
+            "half_extents_m": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          },
+          "source_status": "urdf-visual-cylinder"
         },
         {
           "link_name": "left_leg_1",
           "shape": {
-            "shape_id": "left_leg_1/visual-cylinder",
+            "shape_id": "left_leg_1/urdf-visual-cylinder",
             "kind": "CapsuleShape",
             "radius_m": 0.045,
             "half_height_m": 0.07,
@@ -522,22 +567,7 @@
               "z": 0
             }
           },
-          "source_status": "urdf-visual-cylinder-derived-review-shape"
-        },
-        {
-          "link_name": "right_leg_1",
-          "shape": {
-            "shape_id": "right_leg_1/visual-cylinder",
-            "kind": "CapsuleShape",
-            "radius_m": 0.045,
-            "half_height_m": 0.07,
-            "half_extents_m": {
-              "x": 0,
-              "y": 0,
-              "z": 0
-            }
-          },
-          "source_status": "urdf-visual-cylinder-derived-review-shape"
+          "source_status": "urdf-visual-cylinder"
         },
         {
           "link_name": "left_foot",
@@ -573,7 +603,7 @@
       "material_model": "dry-regolith-review-assumption",
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "review-only",
-      "note": "URDF joint limits are represented as Moonphys joint limits. Mass, center of mass, servo gains, inertia, foot sole geometry, and friction remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
+      "note": "URDF joint limits and visual geometry are represented as Moonphys review data. Mass, center of mass, servo gains, inertia, foot sole geometry, friction, and collision tags remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
     },
     "frame_count": 32,
     "stable_frame_count": 0,
