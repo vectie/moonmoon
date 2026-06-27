@@ -68,6 +68,8 @@ def main() -> None:
         fail("joint control world-capture review blocker should be explicit")
     if task.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
         fail("joint control worst capture support margin should remain a blocker")
+    if task.get("joint_control_world_replay_blocker_count", 0) <= 0:
+        fail("joint control world replay blockers should be explicit")
     if task.get("inertial_collision_review_frame_count", 0) <= 0:
         fail("inertial collision review blocker should be explicit")
     if not task.get("source_walk_command_plan_id", "").startswith(
@@ -161,6 +163,8 @@ def main() -> None:
         fail("joint control artifact must expose world capture-review frames")
     if "worst capture support margin" not in joint_control_state:
         fail("joint control artifact must expose worst capture support margin")
+    if "world replay blockers" not in joint_control_state:
+        fail("joint control artifact must expose world replay blockers")
     if "world-replay-review" not in joint_control_state:
         fail("joint control artifact must expose Moonphys world replay review")
     if artifacts["noetix-inertial-collision-review"].get("ready"):

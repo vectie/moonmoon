@@ -517,6 +517,9 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   max_frame_kinetic_energy_delta_j : Double
   envelope_status : String
   world_review_status : String
+  world_review_ready : Bool
+  world_review_blocker_count : Int
+  world_review_blockers : Array[String]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -37,6 +37,7 @@
 - hinge motor world trace max frame energy delta: 2.050170526416192 J
 - hinge motor world trace envelope: world-trace-envelope-review
 - hinge motor world trace review: world-replay-review-blocked
+- hinge motor world trace review blockers: 3
 - hinge motor world trace status: world-heightfield-hinge-motor-trace-review
 - max position error: 0.24289082981102283 rad
 - max target velocity: 3.2776127345306216 rad/s

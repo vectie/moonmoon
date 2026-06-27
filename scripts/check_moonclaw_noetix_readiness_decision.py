@@ -65,6 +65,8 @@ def main() -> None:
             fail(f"{field} must be explicit")
     if decision.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
         fail("joint control worst capture support margin must remain a blocker")
+    if decision.get("joint_control_world_replay_blocker_count", 0) <= 0:
+        fail("joint control world replay blockers must be explicit")
 
     ready_artifacts = decision.get("ready_artifacts", [])
     blocked_artifacts = decision.get("blocked_artifacts", [])

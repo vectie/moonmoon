@@ -1074,6 +1074,9 @@ pub(all) struct RigidBodyWorldReplayReview {
   capture_stable_frame_count : Int
   capture_review_frame_count : Int
   worst_capture_margin_m : Double
+  ready : Bool
+  blocker_count : Int
+  blockers : Array[String]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -17,6 +17,7 @@
 - joint-control world-support review frames: 11
 - joint-control world-capture review frames: 32
 - joint-control worst capture support margin: -1.9471892830999706 m
+- joint-control world replay blockers: 3
 - inertial-collision review frames: 32
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only

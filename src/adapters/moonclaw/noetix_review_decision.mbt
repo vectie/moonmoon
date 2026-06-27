@@ -23,6 +23,7 @@ pub(all) struct NoetixSimulationReadinessDecision {
   joint_control_world_support_review_frame_count : Int
   joint_control_world_capture_review_frame_count : Int
   joint_control_worst_capture_support_margin_m : Double
+  joint_control_world_replay_blocker_count : Int
   inertial_collision_review_frame_count : Int
   ready_artifacts : Array[String]
   blocked_artifacts : Array[String]
@@ -137,6 +138,7 @@ pub fn noetix_simulation_readiness_decision(
     joint_control_world_support_review_frame_count: task.joint_control_world_support_review_frame_count,
     joint_control_world_capture_review_frame_count: task.joint_control_world_capture_review_frame_count,
     joint_control_worst_capture_support_margin_m: task.joint_control_worst_capture_support_margin_m,
+    joint_control_world_replay_blocker_count: task.joint_control_world_replay_blocker_count,
     inertial_collision_review_frame_count: task.inertial_collision_review_frame_count,
     ready_artifacts,
     blocked_artifacts,
@@ -182,6 +184,7 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- joint-control world-support review frames: \{decision.joint_control_world_support_review_frame_count}\n"
   text += "- joint-control world-capture review frames: \{decision.joint_control_world_capture_review_frame_count}\n"
   text += "- joint-control worst capture support margin: \{decision.joint_control_worst_capture_support_margin_m} m\n"
+  text += "- joint-control world replay blockers: \{decision.joint_control_world_replay_blocker_count}\n"
   text += "- inertial-collision review frames: \{decision.inertial_collision_review_frame_count}\n"
   text += "- hardware state: \{@moonrobo.execution_state_label(decision.hardware_state)}\n"
   text += "- hardware authority: \{decision.hardware_authority}\n"

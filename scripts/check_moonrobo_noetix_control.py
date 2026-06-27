@@ -150,6 +150,13 @@ def main() -> None:
         "world_review_status", ""
     ):
         fail("hinge motor world trace should expose Moonphys world review status")
+    if hinge_motor_world_trace.get("world_review_ready"):
+        fail("hinge motor world trace review must remain blocked")
+    blockers = hinge_motor_world_trace.get("world_review_blockers", [])
+    if hinge_motor_world_trace.get("world_review_blocker_count", 0) != len(blockers):
+        fail("hinge motor world trace blocker count must match blocker list")
+    if "world-dynamic-support-review" not in blockers:
+        fail("hinge motor world trace must expose dynamic support blocker")
     if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
         "status", ""
     ):

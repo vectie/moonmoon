@@ -31,22 +31,42 @@ pub(all) struct RigidBodyWorldReplayReview {
   capture_stable_frame_count : Int
   capture_review_frame_count : Int
   worst_capture_margin_m : Double
+  ready : Bool
+  blocker_count : Int
+  blockers : Array[String]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-fn rigid_body_world_replay_review_status(
+fn rigid_body_world_replay_review_blockers(
   envelope : RigidBodyWorldTraceEnvelope,
   support : RigidBodyWorldSupportTrace,
   dynamic_support : RigidBodyWorldDynamicSupportTrace,
-) -> String {
-  if envelope.status.contains("empty") ||
-    support.status.contains("empty") ||
-    dynamic_support.status.contains("empty") {
+) -> Array[String] {
+  let blockers : Array[String] = []
+  if envelope.status.contains("empty") {
+    blockers.push("world-envelope-empty")
+  } else if envelope.status.contains("review") {
+    blockers.push("world-envelope-review")
+  }
+  if support.status.contains("empty") {
+    blockers.push("world-support-empty")
+  } else if support.review_frame_count > 0 {
+    blockers.push("world-support-review")
+  }
+  if dynamic_support.status.contains("empty") {
+    blockers.push("world-dynamic-support-empty")
+  } else if dynamic_support.review_frame_count > 0 {
+    blockers.push("world-dynamic-support-review")
+  }
+  blockers
+}
+
+///|
+fn rigid_body_world_replay_review_status(blockers : Array[String]) -> String {
+  if blockers.any(fn(blocker) { blocker.contains("empty") }) {
     "world-replay-review-empty"
-  } else if envelope.status.contains("review") ||
-    support.review_frame_count > 0 ||
-    dynamic_support.review_frame_count > 0 {
+  } else if !blockers.is_empty() {
     "world-replay-review-blocked"
   } else {
     "world-replay-review-ready"
@@ -62,6 +82,9 @@ pub fn rigid_body_world_replay_review(
   let review_count = envelope.review_count +
     support.review_frame_count +
     dynamic_support.review_frame_count
+  let blockers = rigid_body_world_replay_review_blockers(
+    envelope, support, dynamic_support,
+  )
   {
     trace_id: envelope.trace_id,
     frame_count: envelope.frame_count,
@@ -94,9 +117,10 @@ pub fn rigid_body_world_replay_review(
     capture_stable_frame_count: dynamic_support.capture_stable_frame_count,
     capture_review_frame_count: dynamic_support.review_frame_count,
     worst_capture_margin_m: dynamic_support.worst_capture_margin_m,
-    status: rigid_body_world_replay_review_status(
-      envelope, support, dynamic_support,
-    ),
+    ready: blockers.is_empty(),
+    blocker_count: blockers.length(),
+    blockers,
+    status: rigid_body_world_replay_review_status(blockers),
   }
 }
 

@@ -422,6 +422,13 @@ test "noetix joint control report replays gait phases through moonphys" {
       "world-replay-review",
     ),
   )
+  assert_true(!report.hinge_motor_world_trace.world_review_ready)
+  assert_true(report.hinge_motor_world_trace.world_review_blocker_count > 0)
+  assert_true(
+    report.hinge_motor_world_trace.world_review_blockers.contains(
+      "world-dynamic-support-review",
+    ),
+  )
   assert_true(
     report.hinge_motor_world_trace.status.contains(
       "world-heightfield-hinge-motor-trace",

@@ -74,6 +74,9 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   max_frame_kinetic_energy_delta_j : Double
   envelope_status : String
   world_review_status : String
+  world_review_ready : Bool
+  world_review_blocker_count : Int
+  world_review_blockers : Array[String]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -335,6 +338,9 @@ fn noetix_hinge_motor_world_trace_evidence(
     max_frame_kinetic_energy_delta_j: review.max_frame_kinetic_energy_delta_j,
     envelope_status: review.envelope_status,
     world_review_status: review.status,
+    world_review_ready: review.ready,
+    world_review_blocker_count: review.blocker_count,
+    world_review_blockers: review.blockers,
     status: world_trace.status,
   }
 }
@@ -558,6 +564,7 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace max frame energy delta: \{report.hinge_motor_world_trace.max_frame_kinetic_energy_delta_j} J\n"
   text += "- hinge motor world trace envelope: \{report.hinge_motor_world_trace.envelope_status}\n"
   text += "- hinge motor world trace review: \{report.hinge_motor_world_trace.world_review_status}\n"
+  text += "- hinge motor world trace review blockers: \{report.hinge_motor_world_trace.world_review_blocker_count}\n"
   text += "- hinge motor world trace status: \{report.hinge_motor_world_trace.status}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"
