@@ -59,6 +59,8 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  traction_assessments : Array[@moonphys.TractionAssessment]
+  traction_status : String
   terrain_contact_status : String
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -71,7 +73,9 @@ pub(all) struct NoetixWalkStabilityReport {
   frame_count : Int
   stable_frame_count : Int
   review_frame_count : Int
+  traction_review_frame_count : Int
   worst_planar_margin_m : Double
+  worst_traction_margin_n : Double
   frames : Array[NoetixWalkStabilityFrame]
   status : String
   note : String
@@ -278,9 +282,12 @@ fn contact_terrain_status(frame : NoetixMoonWalkFrame) -> String {
 ///|
 fn stability_status(
   assessment : @moonphys.SupportAssessment,
+  traction_status : String,
   terrain_status : String,
 ) -> String {
-  if assessment.stable && terrain_status == "terrain-contact-ok" {
+  if traction_status == "traction-review" {
+    "traction-review"
+  } else if assessment.stable && terrain_status == "terrain-contact-ok" {
     "static-margin-ok"
   } else if assessment.stable {
     "terrain-contact-review"
@@ -304,9 +311,123 @@ fn contact_footprint(
 }
 
 ///|
+fn support_count_for_frame(frame : NoetixMoonWalkFrame) -> Int {
+  let mut count = 0
+  if frame.left_foot.in_contact {
+    count += 1
+  }
+  if frame.right_foot.in_contact {
+    count += 1
+  }
+  count
+}
+
+///|
+fn noetix_lateral_speed(config : NoetixMoonWalkConfig) -> Double {
+  let half_cycle_s = config.dt_s * config.cycle_frames.to_double() * 0.5
+  if half_cycle_s > 0.0 {
+    config.lateral_foot_offset_m / half_cycle_s
+  } else {
+    0.0
+  }
+}
+
+///|
+fn noetix_review_tangential_force(
+  config : NoetixMoonWalkConfig,
+  profile : NoetixPhysicsProfile,
+  support_count : Int,
+) -> Double {
+  if support_count <= 0 {
+    0.0
+  } else {
+    let horizontal_speed = (config.speed_mps * config.speed_mps +
+    noetix_lateral_speed(config) * noetix_lateral_speed(config)).sqrt()
+    let cycle_s = config.dt_s * config.cycle_frames.to_double()
+    if cycle_s > 0.0 {
+      profile.mass_model.mass_kg *
+      horizontal_speed /
+      cycle_s /
+      support_count.to_double()
+    } else {
+      0.0
+    }
+  }
+}
+
+///|
+fn foot_traction_assessment(
+  foot : NoetixFootContactProbe,
+  geometry : NoetixFootGeometry,
+  normal_force_n : Double,
+  tangential_force_n : Double,
+) -> @moonphys.TractionAssessment {
+  @moonphys.traction_assessment(
+    geometry.foot_id,
+    @moonphys.material_contact_model(
+      "\{geometry.foot_id}/review-friction",
+      geometry.friction_coefficient,
+      @moonphys.lunar_regolith_contact_model().restitution_coefficient,
+    ),
+    normal_force_n,
+    if foot.in_contact {
+      tangential_force_n
+    } else {
+      0.0
+    },
+  )
+}
+
+///|
+fn traction_assessments_for_frame(
+  frame : NoetixMoonWalkFrame,
+  config : NoetixMoonWalkConfig,
+  profile : NoetixPhysicsProfile,
+  left_geometry : NoetixFootGeometry,
+  right_geometry : NoetixFootGeometry,
+) -> Array[@moonphys.TractionAssessment] {
+  let support_count = support_count_for_frame(frame)
+  let normal_force = if support_count > 0 {
+    profile.mass_model.mass_kg *
+    @moonphys.lunar_environment().gravity_mps2 /
+    support_count.to_double()
+  } else {
+    0.0
+  }
+  let tangential_force = noetix_review_tangential_force(
+    config, profile, support_count,
+  )
+  [
+    foot_traction_assessment(
+      frame.left_foot,
+      left_geometry,
+      normal_force,
+      tangential_force,
+    ),
+    foot_traction_assessment(
+      frame.right_foot,
+      right_geometry,
+      normal_force,
+      tangential_force,
+    ),
+  ]
+}
+
+///|
+fn traction_status(assessments : Array[@moonphys.TractionAssessment]) -> String {
+  for assessment in assessments {
+    if assessment.slipping {
+      return "traction-review"
+    }
+  }
+  "traction-ok"
+}
+
+///|
 pub fn noetix_walk_stability_frame(
   frame : NoetixMoonWalkFrame,
   profile : NoetixPhysicsProfile,
+  config? : NoetixMoonWalkConfig = default_noetix_moon_walk_config(),
 ) -> NoetixWalkStabilityFrame {
   let com_projection = @moonphys.vec3(
     frame.body_position.x + profile.mass_model.com_x_offset_m,
@@ -319,6 +440,10 @@ pub fn noetix_walk_stability_frame(
     contact_footprint(frame.left_foot, left_geometry),
     contact_footprint(frame.right_foot, right_geometry),
   ])
+  let traction = traction_assessments_for_frame(
+    frame, config, profile, left_geometry, right_geometry,
+  )
+  let traction_status = traction_status(traction)
   let terrain_status = contact_terrain_status(frame)
   {
     frame_index: frame.frame_index,
@@ -326,8 +451,10 @@ pub fn noetix_walk_stability_frame(
     support_phase: frame.support_phase,
     com_projection,
     support_assessment: assessment,
+    traction_assessments: traction,
+    traction_status,
     terrain_contact_status: terrain_status,
-    status: stability_status(assessment, terrain_status),
+    status: stability_status(assessment, traction_status, terrain_status),
   }
 }
 
@@ -338,15 +465,29 @@ pub fn noetix_walk_stability_report(
 ) -> NoetixWalkStabilityReport {
   let frames : Array[NoetixWalkStabilityFrame] = []
   let mut stable_count = 0
+  let mut traction_review_count = 0
   let mut worst_margin = 0.0
+  let mut worst_traction_margin = 0.0
   for index, frame in trace.frames {
-    let stability_frame = noetix_walk_stability_frame(frame, profile)
+    let stability_frame = noetix_walk_stability_frame(
+      frame,
+      profile,
+      config=trace.config,
+    )
     if index == 0 ||
       stability_frame.support_assessment.planar_margin_m < worst_margin {
       worst_margin = stability_frame.support_assessment.planar_margin_m
     }
+    for traction in stability_frame.traction_assessments {
+      if index == 0 || traction.margin_n < worst_traction_margin {
+        worst_traction_margin = traction.margin_n
+      }
+    }
     if stability_frame.status == "static-margin-ok" {
       stable_count += 1
+    }
+    if stability_frame.traction_status == "traction-review" {
+      traction_review_count += 1
     }
     frames.push(stability_frame)
   }
@@ -358,14 +499,16 @@ pub fn noetix_walk_stability_report(
     frame_count: frames.length(),
     stable_frame_count: stable_count,
     review_frame_count: review_count,
+    traction_review_frame_count: traction_review_count,
     worst_planar_margin_m: worst_margin,
+    worst_traction_margin_n: worst_traction_margin,
     frames,
     status: if review_count == 0 {
       "static-support-ok"
     } else {
       "static-support-review"
     },
-    note: "Static support evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present.",
+    note: "Static support and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Traction margins use Moonphys friction-cone review over assumed foot friction.",
   }
 }
 
@@ -393,13 +536,15 @@ pub fn render_noetix_stability_markdown(
   text += "- frames: \{report.frame_count}\n"
   text += "- stable frames: \{report.stable_frame_count}\n"
   text += "- review frames: \{report.review_frame_count}\n"
+  text += "- traction-review frames: \{report.traction_review_frame_count}\n"
   text += "- worst planar margin: \{report.worst_planar_margin_m} m\n"
+  text += "- worst traction margin: \{report.worst_traction_margin_n} N\n"
   text += "- status: \{report.status}\n"
   text += "- hardware authority: \{report.profile.hardware_authority}\n"
   text += "- note: \{report.note}\n\n"
   text += "## Frame Margins\n\n"
   for frame in report.frames {
-    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} margin=\{frame.support_assessment.planar_margin_m}m status=\{frame.status}\n"
+    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} margin=\{frame.support_assessment.planar_margin_m}m traction=\{frame.traction_status} status=\{frame.status}\n"
   }
   text
 }

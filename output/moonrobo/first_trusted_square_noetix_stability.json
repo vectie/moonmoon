@@ -598,7 +598,9 @@
   "frame_count": 32,
   "stable_frame_count": 0,
   "review_frame_count": 32,
+  "traction_review_frame_count": 0,
   "worst_planar_margin_m": -0.035,
+  "worst_traction_margin_n": 35.544781030647364,
   "frames": [
     {
       "frame_index": 0,
@@ -626,6 +628,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -655,6 +690,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -684,6 +752,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -713,6 +814,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -742,6 +876,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -771,6 +938,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -800,6 +1000,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -829,6 +1062,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -858,6 +1124,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -887,6 +1186,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -916,6 +1248,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -945,6 +1310,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -974,6 +1372,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1003,6 +1434,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1032,6 +1496,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1061,6 +1558,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1090,6 +1620,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1119,6 +1682,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1148,6 +1744,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1177,6 +1806,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1206,6 +1868,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1235,6 +1930,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1264,6 +1992,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1293,6 +2054,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1322,6 +2116,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1351,6 +2178,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1380,6 +2240,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1409,6 +2302,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1438,6 +2364,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1467,6 +2426,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1496,6 +2488,39 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     },
@@ -1525,10 +2550,43 @@
         "stable": false,
         "status": "outside-support"
       },
+      "traction_assessments": [
+        {
+          "contact_id": "left-foot",
+          "material": {
+            "material_id": "left-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 0,
+          "friction_limit_n": 38.285,
+          "utilization": 0,
+          "margin_n": 38.285,
+          "slipping": false,
+          "status": "traction-ok"
+        },
+        {
+          "contact_id": "right-foot",
+          "material": {
+            "material_id": "right-foot/review-friction",
+            "friction_coefficient": 0.62,
+            "restitution_coefficient": 0.04
+          },
+          "normal_force_n": 61.75,
+          "tangential_force_n": 2.7402189693526315,
+          "friction_limit_n": 38.285,
+          "utilization": 0.0715742188677715,
+          "margin_n": 35.544781030647364,
+          "slipping": false,
+          "status": "traction-ok"
+        }
+      ],
+      "traction_status": "traction-ok",
       "terrain_contact_status": "terrain-contact-review",
       "status": "static-margin-review"
     }
   ],
   "status": "static-support-review",
-  "note": "Static support evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present."
+  "note": "Static support and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Traction margins use Moonphys friction-cone review over assumed foot friction."
 }

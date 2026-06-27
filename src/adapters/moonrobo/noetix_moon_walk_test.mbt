@@ -134,10 +134,22 @@ test "noetix static support report flags kinematic walk for review" {
   assert_eq(report.frame_count, 12)
   assert_eq(report.profile.robot_id, trace.robot.robot_id)
   assert_true(report.review_frame_count > 0)
+  assert_eq(report.traction_review_frame_count, 0)
   assert_true(report.worst_planar_margin_m < 0.0)
+  assert_true(report.worst_traction_margin_n >= 0.0)
   assert_eq(report.status, "static-support-review")
   assert_true(
     report.frames.any(fn(frame) { frame.status == "static-margin-review" }),
+  )
+  assert_true(report.note.contains("friction-cone"))
+  assert_eq(report.frames[0].traction_assessments.length(), 2)
+  assert_eq(report.frames[0].traction_status, "traction-ok")
+  assert_true(
+    report.frames[0].traction_assessments.any(fn(traction) {
+      traction.status == "traction-ok" &&
+      traction.normal_force_n > 0.0 &&
+      traction.margin_n > 0.0
+    }),
   )
 }
 

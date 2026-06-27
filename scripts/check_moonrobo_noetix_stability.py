@@ -80,10 +80,14 @@ def main() -> None:
         fail("report should remain review-only")
     if report.get("review_frame_count", 0) <= 0:
         fail("expected review frames")
+    if report.get("traction_review_frame_count", -1) != 0:
+        fail("expected traction to remain within assumed friction margin")
     if report.get("stable_frame_count", -1) + report.get("review_frame_count", -1) != len(frames):
         fail("stable/review counts do not sum to frame count")
     if report.get("worst_planar_margin_m", 0) >= 0:
         fail("expected negative static support margin")
+    if report.get("worst_traction_margin_n", -1) < 0:
+        fail("expected nonnegative traction margin")
     if not any(frame.get("status") == "static-margin-review" for frame in frames):
         fail("expected static-margin-review frame")
     first = frames[0]
@@ -91,8 +95,28 @@ def main() -> None:
         fail("first frame should have one active support foot")
     if first.get("terrain_contact_status") != "terrain-contact-review":
         fail("terrain contact review must carry through")
+    traction = first.get("traction_assessments", [])
+    if len(traction) != 2:
+        fail("expected per-foot traction assessments")
+    if first.get("traction_status") != "traction-ok":
+        fail("first frame should keep traction margin")
+    if not any(
+        item.get("status") == "traction-ok"
+        and item.get("normal_force_n", 0) > 0
+        and item.get("friction_limit_n", 0) > item.get("tangential_force_n", 0)
+        and item.get("margin_n", 0) > 0
+        for item in traction
+    ):
+        fail("missing active support traction margin")
+    if not all(
+        item.get("material", {}).get("material_id", "").endswith("review-friction")
+        for item in traction
+    ):
+        fail("traction material must cite review foot friction")
     if "dynamic walking can be valid" not in report.get("note", ""):
         fail("report note must distinguish static evidence from dynamics")
+    if "friction-cone" not in report.get("note", ""):
+        fail("report note must mention friction-cone review")
 
 
 if __name__ == "__main__":

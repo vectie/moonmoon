@@ -163,7 +163,7 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport
 
 pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
 
-pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile) -> NoetixWalkStabilityFrame
+pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile, config? : NoetixMoonWalkConfig) -> NoetixWalkStabilityFrame
 
 pub fn noetix_walk_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixWalkStabilityReport
 
@@ -661,6 +661,8 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  traction_assessments : Array[@moonphys.TractionAssessment]
+  traction_status : String
   terrain_contact_status : String
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -672,7 +674,9 @@ pub(all) struct NoetixWalkStabilityReport {
   frame_count : Int
   stable_frame_count : Int
   review_frame_count : Int
+  traction_review_frame_count : Int
   worst_planar_margin_m : Double
+  worst_traction_margin_n : Double
   frames : Array[NoetixWalkStabilityFrame]
   status : String
   note : String

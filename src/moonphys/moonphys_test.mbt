@@ -570,6 +570,27 @@ test "support assessment handles no active support" {
 }
 
 ///|
+test "traction assessment reports friction margin and slip" {
+  let material = material_contact_model("test", 0.5, 0.0)
+  let ok = traction_assessment("foot", material, 100.0, 20.0)
+  assert_eq(ok.status, "traction-ok")
+  assert_true(nearly_equal(ok.friction_limit_n, 50.0))
+  assert_true(nearly_equal(ok.utilization, 0.4))
+  assert_true(nearly_equal(ok.margin_n, 30.0))
+  assert_true(!ok.slipping)
+  let low = traction_assessment("foot", material, 100.0, 45.0)
+  assert_eq(low.status, "friction-margin-low")
+  assert_true(nearly_equal(low.utilization, 0.9))
+  let slip = traction_assessment("foot", material, 100.0, 60.0)
+  assert_eq(slip.status, "friction-limit-exceeded")
+  assert_true(slip.slipping)
+  assert_true(nearly_equal(slip.margin_n, 0.0 - 10.0))
+  let no_normal = traction_assessment("foot", material, 0.0, 1.0)
+  assert_eq(no_normal.status, "no-normal-force-slip")
+  assert_true(no_normal.slipping)
+}
+
+///|
 test "capture point assessment keeps slow COM inside support" {
   let assessment = capture_point_assessment(
     lunar_environment(),

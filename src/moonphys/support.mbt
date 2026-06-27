@@ -23,6 +23,19 @@ pub(all) struct SupportAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct TractionAssessment {
+  contact_id : String
+  material : MaterialContactModel
+  normal_force_n : Double
+  tangential_force_n : Double
+  friction_limit_n : Double
+  utilization : Double
+  margin_n : Double
+  slipping : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn support_footprint(
   footprint_id : String,
   center : Vec3,
@@ -31,6 +44,59 @@ pub fn support_footprint(
   active? : Bool = true,
 ) -> SupportFootprint {
   { footprint_id, center, half_length_m, half_width_m, active }
+}
+
+///|
+fn nonnegative_double(value : Double) -> Double {
+  if value < 0.0 {
+    0.0
+  } else {
+    value
+  }
+}
+
+///|
+pub fn traction_assessment(
+  contact_id : String,
+  material : MaterialContactModel,
+  normal_force_n : Double,
+  tangential_force_n : Double,
+) -> TractionAssessment {
+  let normal = nonnegative_double(normal_force_n)
+  let tangential = nonnegative_double(tangential_force_n)
+  let limit = nonnegative_double(material.friction_coefficient) * normal
+  let utilization = if limit > 0.0 {
+    tangential / limit
+  } else if tangential > 0.0 {
+    1000000000.0
+  } else {
+    0.0
+  }
+  let margin = limit - tangential
+  let slipping = tangential > limit
+  {
+    contact_id,
+    material,
+    normal_force_n: normal,
+    tangential_force_n: tangential,
+    friction_limit_n: limit,
+    utilization,
+    margin_n: margin,
+    slipping,
+    status: if normal <= 0.0 {
+      if tangential > 0.0 {
+        "no-normal-force-slip"
+      } else {
+        "no-load"
+      }
+    } else if slipping {
+      "friction-limit-exceeded"
+    } else if utilization > 0.8 {
+      "friction-margin-low"
+    } else {
+      "traction-ok"
+    },
+  }
 }
 
 ///|
