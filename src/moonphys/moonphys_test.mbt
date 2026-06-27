@@ -544,6 +544,65 @@ test "transform composition applies parent translation and local rotation" {
 }
 
 ///|
+test "articulated pose tree resolves parent first chain transforms" {
+  let tree = articulated_pose_tree(
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    [
+      articulated_link_spec(
+        "base",
+        "",
+        "",
+        vec3(0.0, 0.0, 0.0),
+        vec3(0.0, 0.0, 1.0),
+      ),
+      articulated_link_spec(
+        "shoulder",
+        "base",
+        "shoulder_yaw",
+        vec3(1.0, 0.0, 0.0),
+        vec3(0.0, 0.0, 1.0),
+      ),
+      articulated_link_spec(
+        "elbow",
+        "shoulder",
+        "elbow_fixed",
+        vec3(1.0, 0.0, 0.0),
+        vec3(0.0, 0.0, 1.0),
+      ),
+    ],
+    [articulated_joint_position("shoulder_yaw", 3.141592653589793 / 2.0)],
+  )
+  let shoulder = tree.link_transform("shoulder").translation
+  let elbow = tree.link_transform("elbow").translation
+  assert_eq(tree.status, "articulated-poses")
+  assert_eq(tree.link_count, 3)
+  assert_true(shoulder == vec3(1.0, 0.0, 0.0))
+  assert_true(nearly_equal(elbow.x, 1.0))
+  assert_true(nearly_equal(elbow.y, 1.0))
+}
+
+///|
+test "articulated pose tree reports missing parent" {
+  let tree = articulated_pose_tree(
+    transform3(identity_basis3(), vec3(2.0, 0.0, 0.0)),
+    [
+      articulated_link_spec(
+        "forearm",
+        "missing-upper-arm",
+        "elbow",
+        vec3(1.0, 0.0, 0.0),
+        vec3(0.0, 0.0, 1.0),
+      ),
+    ],
+    [],
+  )
+  assert_eq(tree.status, "articulated-poses-missing-parent-review")
+  assert_eq(tree.missing_parent_count, 1)
+  assert_eq(tree.links[0].status, "missing-parent")
+  assert_true(tree.links[0].world_transform.translation == vec3(3.0, 0.0, 0.0))
+}
+
+///|
 test "support assessment reports static margin" {
   let assessment = support_assessment(vec3(0.0, 0.0, 1.0), [
     support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),

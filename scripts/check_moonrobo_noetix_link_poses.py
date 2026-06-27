@@ -39,6 +39,10 @@ def main() -> None:
         fail("link pose trace must remain review-only")
     if "hardware authority" not in trace.get("note", ""):
         fail("trace must explicitly avoid hardware authority")
+    if "Moonphys evaluates the generic articulated pose tree" not in trace.get(
+        "note", ""
+    ):
+        fail("trace note must preserve Moonphys articulated-tree provenance")
 
     first = by_link(frames[0])
     fifth = by_link(frames[5])

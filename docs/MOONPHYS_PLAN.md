@@ -37,8 +37,9 @@ evidence.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
-  use compact URDF forward kinematics, and feet are bound to Moonphys contact
-  probes with FK contact error. Each link-pose entry now also carries source
+  use a generic Moonphys articulated-chain pose evaluator fed by compact
+  Noetix URDF reference data, and feet are bound to Moonphys contact probes
+  with FK contact error. Each link-pose entry now also carries source
   visual-geometry evidence from the Noetix source-model audit, or an explicit
   missing-visual-geometry status when the URDF link has no visual block.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
@@ -270,7 +271,8 @@ Tests:
 
 ## Phase 4: URDF-Aware Noetix Pose
 
-Status: compact URDF-reference forward kinematics implemented in
+Status: generic articulated-chain pose evaluation implemented in Moonphys and
+used by compact URDF-reference Noetix link poses in
 `src/adapters/moonrobo/noetix_link_pose.mbt`; mesh geometry, collision
 geometry, inertial metadata, and full dynamics remain future work; source
 visual geometry is now carried in each link-pose entry for viewer/render use.
@@ -312,6 +314,7 @@ The first pose slice includes:
 - explicit review-only status and no hardware authority
 - source visual geometry per link when present, and explicit missing-visual
   status when absent
+- a reusable Moonphys articulated pose tree rather than Noetix-local FK state
 
 This gives downstream viewers enough structure to draw the robot walking with a
 real FK tree and approximate source shapes without claiming full dynamics.

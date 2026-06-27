@@ -209,39 +209,40 @@ fn joint_position_rad(
 }
 
 ///|
-priv struct NoetixLinkFkState {
-  link_name : String
-  transform : @moonphys.Transform3
-}
-
-///|
-fn find_fk_transform(
-  states : Array[NoetixLinkFkState],
-  link_name : String,
-) -> @moonphys.Transform3 {
-  for state in states {
-    if state.link_name == link_name {
-      return state.transform
-    }
-  }
-  @moonphys.transform3(
-    @moonphys.identity_basis3(),
-    @moonphys.vec3(0.0, 0.0, 0.0),
-  )
-}
-
-///|
-fn fk_child_transform(
-  parent : @moonphys.Transform3,
+fn reference_link_spec(
   link : NoetixReferenceLink,
-  joint_position : Double,
-) -> @moonphys.Transform3 {
-  parent.compose(
-    @moonphys.transform3(
-      @moonphys.axis_angle_basis3(link.joint_axis, joint_position),
-      link.nominal_parent_offset_m,
-    ),
+) -> @moonphys.ArticulatedLinkSpec {
+  @moonphys.articulated_link_spec(
+    link.link_name,
+    link.parent_link,
+    link.joint_name,
+    link.nominal_parent_offset_m,
+    link.joint_axis,
   )
+}
+
+///|
+fn reference_link_specs(
+  links : Array[NoetixReferenceLink],
+) -> Array[@moonphys.ArticulatedLinkSpec] {
+  let specs : Array[@moonphys.ArticulatedLinkSpec] = []
+  for link in links {
+    specs.push(reference_link_spec(link))
+  }
+  specs
+}
+
+///|
+fn articulated_joint_positions(
+  frame : NoetixMoonWalkFrame,
+) -> Array[@moonphys.ArticulatedJointPosition] {
+  let positions : Array[@moonphys.ArticulatedJointPosition] = []
+  for phase in frame.joint_phases {
+    positions.push(
+      @moonphys.articulated_joint_position(phase.joint_name, phase.position_rad),
+    )
+  }
+  positions
 }
 
 ///|
@@ -342,24 +343,20 @@ fn link_pose(
 pub fn noetix_link_pose_frame(
   frame : NoetixMoonWalkFrame,
 ) -> NoetixLinkPoseFrame {
+  let reference_links = noetix_reference_links()
   let links : Array[NoetixLinkPose] = []
-  let states : Array[NoetixLinkFkState] = []
   let root_transform = @moonphys.transform3(
     @moonphys.identity_basis3(),
     frame.body_position,
   )
-  for link in noetix_reference_links() {
+  let pose_tree = @moonphys.articulated_pose_tree(
+    root_transform,
+    reference_link_specs(reference_links),
+    articulated_joint_positions(frame),
+  )
+  for link in reference_links {
     let joint_position = joint_position_rad(frame, link.joint_name)
-    let transform = if link.parent_link == "" {
-      root_transform
-    } else {
-      fk_child_transform(
-        find_fk_transform(states, link.parent_link),
-        link,
-        joint_position,
-      )
-    }
-    states.push({ link_name: link.link_name, transform })
+    let transform = pose_tree.link_transform(link.link_name)
     let fk_position = transform.translation
     let world_position = if link.role == "foot" {
       contact_position(frame, link.side)
@@ -404,7 +401,7 @@ pub fn noetix_link_pose_trace(
     links_per_frame: noetix_reference_links().length(),
     frames,
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 

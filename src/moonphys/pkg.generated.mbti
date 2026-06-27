@@ -11,6 +11,12 @@ pub fn angular_acceleration(RigidBodyInertia, Vec3) -> Vec3
 
 pub fn angular_momentum(RigidBodyInertia, RigidBodyAngularState) -> Vec3
 
+pub fn articulated_joint_position(String, Double) -> ArticulatedJointPosition
+
+pub fn articulated_link_spec(String, String, String, Vec3, Vec3) -> ArticulatedLinkSpec
+
+pub fn articulated_pose_tree(Transform3, Array[ArticulatedLinkSpec], Array[ArticulatedJointPosition]) -> ArticulatedPoseTree
+
 pub fn axis_angle_basis3(Vec3, Double) -> Basis3
 
 pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
@@ -106,6 +112,38 @@ pub fn yaw_basis3(Double) -> Basis3
 // Errors
 
 // Types and methods
+pub(all) struct ArticulatedJointPosition {
+  joint_id : String
+  position_rad : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ArticulatedLinkPose {
+  link_id : String
+  parent_link_id : String
+  joint_id : String
+  joint_position_rad : Double
+  local_transform : Transform3
+  world_transform : Transform3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ArticulatedLinkSpec {
+  link_id : String
+  parent_link_id : String
+  joint_id : String
+  parent_offset_m : Vec3
+  joint_axis : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ArticulatedPoseTree {
+  root_transform : Transform3
+  link_count : Int
+  missing_parent_count : Int
+  links : Array[ArticulatedLinkPose]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+pub fn ArticulatedPoseTree::link_transform(Self, String) -> Transform3
+
 pub(all) struct Basis3 {
   xx : Double
   xy : Double
