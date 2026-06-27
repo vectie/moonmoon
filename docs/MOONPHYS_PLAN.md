@@ -531,7 +531,9 @@ Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
 corrections from angular body states, compose hinge-joint position/axis
 evidence from rigid body motion states into multi-joint frame evidence, and
 project hinge position/orientation corrections inside world replay after motor
-drive.
+drive. Noetix joint-control evidence now consumes that generic world hinge motor
+replay from Moonrobo-side gait phases while keeping walking primitives outside
+the clean Moonphys core.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 

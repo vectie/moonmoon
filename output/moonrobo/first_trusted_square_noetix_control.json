@@ -600,15 +600,19 @@
   "saturated_frame_count": 0,
   "limit_review_frame_count": 1,
   "hinge_joint_frame_count": 32,
-  "hinge_review_frame_count": 0,
+  "hinge_review_frame_count": 1,
   "hinge_joint_count_per_frame": 24,
+  "hinge_motor_driven_frame_count": 32,
+  "hinge_motor_driven_joint_count": 766,
   "max_abs_position_error_rad": 0.24289082981102283,
   "max_abs_velocity_rad_s": 3.2776127345306216,
   "max_abs_mechanical_power_w": 44.24777191616341,
   "max_hinge_position_error_m": 0,
-  "max_hinge_angular_error_rad": 0,
+  "max_hinge_angular_error_rad": 0.30000000000000016,
+  "max_hinge_motor_angle_delta_rad": 0.30000000000000027,
+  "max_hinge_motor_velocity_delta_rad_s": 3,
   "hinge_linear_impulse_ns": 32.25631400931138,
-  "hinge_angular_impulse_nms": 0.3060844222568561,
+  "hinge_angular_impulse_nms": 1.5000656296828223,
   "net_work_j": 95.11007647969384,
   "total_absolute_work_j": 95.11007647969384,
   "frames": [
@@ -630,14 +634,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 0,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
         "max_angular_error_rad": 0,
+        "max_motor_angle_delta_rad": 0,
+        "max_motor_velocity_delta_rad_s": 0,
         "linear_impulse_ns": 0,
         "angular_impulse_nms": 0,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-satisfied",
-        "status": "noetix-hinge-world-satisfied"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-satisfied",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -1669,14 +1679,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.30000000000000016,
+        "max_motor_angle_delta_rad": 0.30000000000000004,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.165892221971197,
-        "angular_impulse_nms": 0.009136164979891436,
+        "angular_impulse_nms": 0.054134564275387966,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -2708,14 +2724,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2919558448918651,
+        "max_motor_angle_delta_rad": 0.30000000000000004,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.3333236085551199,
-        "angular_impulse_nms": 0.012281341154562574,
+        "angular_impulse_nms": 0.0728877623719045,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -3747,14 +3769,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
-        "review_count": 0,
+        "motor_driven_joint_count": 22,
+        "motor_review_count": 2,
+        "review_count": 2,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999994,
+        "max_motor_angle_delta_rad": 0.30000000000000016,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 2.4607815136322224,
-        "angular_impulse_nms": 0.031205158555991208,
+        "angular_impulse_nms": 0.08624265163782624,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-review",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-review"
       },
       "steps": [
         {
@@ -4786,14 +4814,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.30000000000000016,
+        "max_motor_angle_delta_rad": 0.29999999999999993,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.2711487981110572,
-        "angular_impulse_nms": 0.01735431166503087,
+        "angular_impulse_nms": 0.05708503220815717,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -5825,14 +5859,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 16,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.30000000000000016,
+        "max_motor_angle_delta_rad": 0.30000000000000004,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 0.6754289238716924,
-        "angular_impulse_nms": 0.011125468444604589,
+        "angular_impulse_nms": 0.04021522660250523,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -6864,14 +6904,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.1975458834316627,
+        "max_motor_angle_delta_rad": 0.2414449686386998,
+        "max_motor_velocity_delta_rad_s": 2.4144496863869955,
         "linear_impulse_ns": 0.6022242566173952,
-        "angular_impulse_nms": 0.006626413419188624,
+        "angular_impulse_nms": 0.038821213306226274,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -7903,14 +7949,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999994,
+        "max_motor_angle_delta_rad": 0.29999999999999993,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.0875270835560311,
-        "angular_impulse_nms": 0.009060101325985507,
+        "angular_impulse_nms": 0.054216379731779826,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -8942,14 +8994,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.27407435372134226,
+        "max_motor_angle_delta_rad": 0.27407435372134326,
+        "max_motor_velocity_delta_rad_s": 2.740743537213433,
         "linear_impulse_ns": 1.1994332523394244,
-        "angular_impulse_nms": 0.009457352199926992,
+        "angular_impulse_nms": 0.05377990608020928,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -9981,14 +10039,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.299999999999999,
+        "max_motor_angle_delta_rad": 0.29999999999999993,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.3043558578335566,
-        "angular_impulse_nms": 0.010159172622988743,
+        "angular_impulse_nms": 0.05739777841770645,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -11020,14 +11084,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 12,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999994,
+        "max_motor_angle_delta_rad": 0.30000000000000004,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 0.9236962466733872,
-        "angular_impulse_nms": 0.016752453272874925,
+        "angular_impulse_nms": 0.064309992922077,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -12059,14 +12129,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.29999999999999977,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.4943287224494486,
-        "angular_impulse_nms": 0.01589446793729846,
+        "angular_impulse_nms": 0.06404595540213605,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -13098,14 +13174,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2740743537213431,
+        "max_motor_angle_delta_rad": 0.2740743537213436,
+        "max_motor_velocity_delta_rad_s": 2.7407435372134334,
         "linear_impulse_ns": 1.0764017120921667,
-        "angular_impulse_nms": 0.008011952717840826,
+        "angular_impulse_nms": 0.04406099719183603,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -14137,14 +14219,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.20342543987170977,
+        "max_motor_angle_delta_rad": 0.2034254398717103,
+        "max_motor_velocity_delta_rad_s": 2.034254398717106,
         "linear_impulse_ns": 0.879015832512176,
-        "angular_impulse_nms": 0.0066075935581233185,
+        "angular_impulse_nms": 0.03583990160480453,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -15176,14 +15264,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.17176928960724103,
+        "max_motor_angle_delta_rad": 0.17176928960724203,
+        "max_motor_velocity_delta_rad_s": 1.7176928960724187,
         "linear_impulse_ns": 0.6493834371315123,
-        "angular_impulse_nms": 0.004687009535405881,
+        "angular_impulse_nms": 0.024646604663586407,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -16215,14 +16309,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 13,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.20700931209565723,
+        "max_motor_angle_delta_rad": 0.20700931209565698,
+        "max_motor_velocity_delta_rad_s": 2.0700931209565723,
         "linear_impulse_ns": 0.43529541290213936,
-        "angular_impulse_nms": 0.0030994638432936443,
+        "angular_impulse_nms": 0.016120657072483308,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -17254,14 +17354,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2896828086791584,
+        "max_motor_angle_delta_rad": 0.2896828086791584,
+        "max_motor_velocity_delta_rad_s": 2.8968280867915817,
         "linear_impulse_ns": 0.7872725958943839,
-        "angular_impulse_nms": 0.006733870771593633,
+        "angular_impulse_nms": 0.040612960779860104,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -18293,14 +18399,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.30000000000000016,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.0692183971951277,
-        "angular_impulse_nms": 0.009162381491385827,
+        "angular_impulse_nms": 0.05375423662497856,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -19332,14 +19444,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.27407435372134187,
+        "max_motor_angle_delta_rad": 0.27407435372134276,
+        "max_motor_velocity_delta_rad_s": 2.7407435372134312,
         "linear_impulse_ns": 1.1710016107313965,
-        "angular_impulse_nms": 0.008795225528523132,
+        "angular_impulse_nms": 0.05281826234331313,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -20371,14 +20489,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999994,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.277674249717458,
-        "angular_impulse_nms": 0.009569305878606264,
+        "angular_impulse_nms": 0.05678554712683912,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -21410,14 +21534,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 12,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.29999999999999977,
+        "max_motor_angle_delta_rad": 0.2999999999999997,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 0.7415318309689221,
-        "angular_impulse_nms": 0.012529820733146936,
+        "angular_impulse_nms": 0.055830594640901954,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -22449,14 +22579,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.29999999999999977,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.246542241356066,
-        "angular_impulse_nms": 0.009172845367474088,
+        "angular_impulse_nms": 0.05432387943846796,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -23488,14 +23624,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2740743537213431,
+        "max_motor_angle_delta_rad": 0.2740743537213436,
+        "max_motor_velocity_delta_rad_s": 2.7407435372134334,
         "linear_impulse_ns": 1.14738550061838,
-        "angular_impulse_nms": 0.00843966767505722,
+        "angular_impulse_nms": 0.050588229664615944,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -24527,14 +24669,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.20342543987171033,
+        "max_motor_angle_delta_rad": 0.20342543987171102,
+        "max_motor_velocity_delta_rad_s": 2.034254398717108,
         "linear_impulse_ns": 0.8899505306212235,
-        "angular_impulse_nms": 0.006877434423406717,
+        "angular_impulse_nms": 0.03744721948443461,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -25566,14 +25714,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.172062534389228,
+        "max_motor_angle_delta_rad": 0.1720625343892288,
+        "max_motor_velocity_delta_rad_s": 1.7206253438922872,
         "linear_impulse_ns": 0.6576333340690055,
-        "angular_impulse_nms": 0.004892266500268828,
+        "angular_impulse_nms": 0.025866885369209527,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -26605,14 +26759,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 12,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.21161855494350482,
+        "max_motor_angle_delta_rad": 0.2116185549435048,
+        "max_motor_velocity_delta_rad_s": 2.116185549435056,
         "linear_impulse_ns": 0.43550181165787866,
-        "angular_impulse_nms": 0.003226123673045966,
+        "angular_impulse_nms": 0.015995658937132087,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -27644,14 +27804,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2900062643229855,
+        "max_motor_angle_delta_rad": 0.29000626432298504,
+        "max_motor_velocity_delta_rad_s": 2.9000626432298486,
         "linear_impulse_ns": 0.7789142683077442,
-        "angular_impulse_nms": 0.006135382237109844,
+        "angular_impulse_nms": 0.03311998877445959,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -28683,14 +28849,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.30000000000000016,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.0568992029802349,
-        "angular_impulse_nms": 0.008816810462218614,
+        "angular_impulse_nms": 0.04928870139961704,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -29722,14 +29894,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2740743537213427,
+        "max_motor_angle_delta_rad": 0.2740743537213437,
+        "max_motor_velocity_delta_rad_s": 2.7407435372134343,
         "linear_impulse_ns": 1.170559644158595,
-        "angular_impulse_nms": 0.008863470297531532,
+        "angular_impulse_nms": 0.05226626520323227,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -30761,14 +30939,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999994,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.2768865080504392,
-        "angular_impulse_nms": 0.009409566378347188,
+        "angular_impulse_nms": 0.055836786274330905,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -31800,14 +31984,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 12,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.2999999999999986,
+        "max_motor_angle_delta_rad": 0.29999999999999893,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 0.7447874070415732,
-        "angular_impulse_nms": 0.012894693915608688,
+        "angular_impulse_nms": 0.05169497503989674,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -32839,14 +33029,20 @@
         "assessed_joint_count": 24,
         "projected_body_count": 25,
         "resolved_hinge_constraint_count": 22,
+        "motor_driven_joint_count": 24,
+        "motor_review_count": 0,
         "review_count": 0,
         "max_position_error_m": 0,
-        "max_angular_error_rad": 0,
+        "max_angular_error_rad": 0.29999999999999977,
+        "max_motor_angle_delta_rad": 0.30000000000000027,
+        "max_motor_velocity_delta_rad_s": 3,
         "linear_impulse_ns": 1.2463179956944306,
-        "angular_impulse_nms": 0.009107131690524028,
+        "angular_impulse_nms": 0.05003081509290666,
         "assessment_status": "hinge-joint-frame-satisfied",
         "world_status": "world-hinge-constraint-resolved",
-        "status": "noetix-hinge-world-projected"
+        "motor_status": "world-hinge-motor-driven",
+        "motor_world_status": "world-hinge-constraint-resolved",
+        "status": "noetix-hinge-world-motor-driven"
       },
       "steps": [
         {
@@ -33863,5 +34059,5 @@
   ],
   "hardware_authority": "moonmoon-safety-gate-only",
   "status": "joint-control-limit-review",
-  "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment and world hinge constraint replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
+  "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, and world hinge motor replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
 }

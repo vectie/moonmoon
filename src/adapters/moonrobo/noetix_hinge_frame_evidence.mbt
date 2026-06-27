@@ -6,13 +6,19 @@ pub(all) struct NoetixHingeJointFrameEvidence {
   assessed_joint_count : Int
   projected_body_count : Int
   resolved_hinge_constraint_count : Int
+  motor_driven_joint_count : Int
+  motor_review_count : Int
   review_count : Int
   max_position_error_m : Double
   max_angular_error_rad : Double
+  max_motor_angle_delta_rad : Double
+  max_motor_velocity_delta_rad_s : Double
   linear_impulse_ns : Double
   angular_impulse_nms : Double
   assessment_status : String
   world_status : String
+  motor_status : String
+  motor_world_status : String
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -129,24 +135,38 @@ fn noetix_hinge_frame_constraint(
 fn summarize_hinge_joint_frame(
   assessment : @moonphys.RigidBodyHingeJointFrameAssessment,
   world_resolution : @moonphys.RigidBodyWorldHingeConstraintFrame,
+  motor_resolution : @moonphys.RigidBodyWorldHingeMotorFrame,
 ) -> NoetixHingeJointFrameEvidence {
   {
     frame_id: assessment.frame_id,
     body_count: assessment.body_count,
     joint_count: assessment.joint_count,
     assessed_joint_count: assessment.assessed_joint_count,
-    projected_body_count: world_resolution.after.motion_bodies.length(),
-    resolved_hinge_constraint_count: world_resolution.resolved_hinge_constraint_count,
-    review_count: assessment.review_count + world_resolution.review_count,
-    max_position_error_m: world_resolution.max_position_error_m,
-    max_angular_error_rad: world_resolution.max_angular_error_rad,
-    linear_impulse_ns: world_resolution.linear_impulse_ns,
-    angular_impulse_nms: world_resolution.angular_impulse_nms,
+    projected_body_count: motor_resolution.after.motion_bodies.length(),
+    resolved_hinge_constraint_count: motor_resolution.hinge_constraint_resolution.resolved_hinge_constraint_count,
+    motor_driven_joint_count: motor_resolution.driven_joint_count,
+    motor_review_count: motor_resolution.review_count,
+    review_count: assessment.review_count +
+    world_resolution.review_count +
+    motor_resolution.review_count +
+    motor_resolution.hinge_constraint_resolution.review_count,
+    max_position_error_m: motor_resolution.hinge_constraint_resolution.max_position_error_m,
+    max_angular_error_rad: motor_resolution.hinge_constraint_resolution.max_angular_error_rad,
+    max_motor_angle_delta_rad: motor_resolution.max_abs_angle_delta_rad,
+    max_motor_velocity_delta_rad_s: motor_resolution.max_abs_velocity_delta_rad_s,
+    linear_impulse_ns: motor_resolution.hinge_constraint_resolution.linear_impulse_ns,
+    angular_impulse_nms: motor_resolution.hinge_constraint_resolution.angular_impulse_nms,
     assessment_status: assessment.status,
     world_status: world_resolution.status,
-    status: if world_resolution.status.contains("review") {
+    motor_status: motor_resolution.status,
+    motor_world_status: motor_resolution.hinge_constraint_resolution.status,
+    status: if motor_resolution.status.contains("review") ||
+      motor_resolution.hinge_constraint_resolution.status.contains("review") {
       "noetix-hinge-world-review"
-    } else if world_resolution.resolved_hinge_constraint_count > 0 {
+    } else if motor_resolution.driven_joint_count > 0 {
+      "noetix-hinge-world-motor-driven"
+    } else if motor_resolution.hinge_constraint_resolution.resolved_hinge_constraint_count >
+      0 {
       "noetix-hinge-world-projected"
     } else {
       "noetix-hinge-world-satisfied"
@@ -196,6 +216,7 @@ pub fn noetix_hinge_joint_frame_evidence(
   trace : NoetixMoonWalkTrace,
   frame_index : Int,
   profile : NoetixPhysicsProfile,
+  motor_frame : @moonphys.JointMotorFrame,
 ) -> NoetixHingeJointFrameEvidence {
   let frame = trace.frames[frame_index]
   let previous = previous_frame(trace, frame_index)
@@ -265,5 +286,9 @@ pub fn noetix_hinge_joint_frame_evidence(
   let world_resolution = @moonphys.rigid_body_world_resolve_hinge_constraints(
     noetix_hinge_projection_world(frame, bodies, joints),
   )
-  summarize_hinge_joint_frame(assessment, world_resolution)
+  let motor_resolution = @moonphys.rigid_body_world_integrate_hinge_motors(
+    noetix_hinge_projection_world(frame, bodies, joints),
+    motor_frame,
+  )
+  summarize_hinge_joint_frame(assessment, world_resolution, motor_resolution)
 }

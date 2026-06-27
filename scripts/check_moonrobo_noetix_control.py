@@ -50,16 +50,26 @@ def main() -> None:
         fail("report note must mention Moonphys hinge-frame assessment")
     if "world hinge constraint replay" not in report.get("note", ""):
         fail("report note must mention Moonphys world hinge replay")
+    if "world hinge motor replay" not in report.get("note", ""):
+        fail("report note must mention Moonphys world hinge motor replay")
     if report.get("hinge_joint_frame_count") != len(frames):
         fail("hinge joint frame count must match report frames")
     if report.get("hinge_joint_count_per_frame") != 24:
         fail("expected 24 hinge joints per frame")
+    if report.get("hinge_motor_driven_frame_count") != len(frames):
+        fail("all frames should drive matching Moonphys world hinge motors")
+    if report.get("hinge_motor_driven_joint_count", 0) <= 0:
+        fail("hinge motor driven joint count must be present")
     if report.get("hinge_review_frame_count", -1) < 0:
         fail("hinge review frame count must be present")
     if report.get("max_hinge_position_error_m", -1) < 0:
         fail("max hinge position error must be present")
     if report.get("max_hinge_angular_error_rad", -1) < 0:
         fail("max hinge angular error must be present")
+    if report.get("max_hinge_motor_angle_delta_rad", -1) < 0:
+        fail("max hinge motor angle delta must be present")
+    if report.get("max_hinge_motor_velocity_delta_rad_s", -1) < 0:
+        fail("max hinge motor velocity delta must be present")
     if report.get("hinge_linear_impulse_ns", -1) < 0:
         fail("hinge linear impulse must be present")
     if report.get("hinge_angular_impulse_nms", -1) < 0:
@@ -88,8 +98,20 @@ def main() -> None:
         fail("first hinge frame should project all reference bodies")
     if hinge_frame.get("resolved_hinge_constraint_count", -1) < 0:
         fail("first hinge frame must report resolved hinge count")
+    if hinge_frame.get("motor_driven_joint_count", 0) <= 0:
+        fail("first hinge frame must report driven world hinge motors")
+    if hinge_frame.get("motor_review_count", -1) < 0:
+        fail("first hinge frame must report motor review count")
+    if hinge_frame.get("max_motor_angle_delta_rad", -1) < 0:
+        fail("first hinge frame must report max motor angle delta")
+    if hinge_frame.get("max_motor_velocity_delta_rad_s", -1) < 0:
+        fail("first hinge frame must report max motor velocity delta")
     if "world-hinge-constraint" not in hinge_frame.get("world_status", ""):
         fail("first hinge frame must expose Moonphys world hinge status")
+    if "world-hinge-motor" not in hinge_frame.get("motor_status", ""):
+        fail("first hinge frame must expose Moonphys world hinge motor status")
+    if "world-hinge-constraint" not in hinge_frame.get("motor_world_status", ""):
+        fail("first hinge frame must expose motor replay hinge constraint status")
     if "hinge-joint-frame" not in hinge_frame.get("assessment_status", ""):
         fail("first hinge frame must expose Moonphys hinge-frame assessment")
     if "noetix-hinge-world" not in hinge_frame.get("status", ""):
@@ -101,6 +123,13 @@ def main() -> None:
         for frame in frames
     ):
         fail("expected at least one Moonphys world hinge-resolved frame")
+    if not any(
+        frame.get("hinge_joint_frame", {}).get("motor_driven_joint_count", 0) > 0
+        and frame.get("hinge_joint_frame", {}).get("motor_status")
+        == "world-hinge-motor-driven"
+        for frame in frames
+    ):
+        fail("expected at least one Moonphys world hinge motor-driven frame")
     if not all(step.get("motor_step", {}).get("limit") for step in steps):
         fail("every step must carry a Moonphys joint limit")
     if not all(

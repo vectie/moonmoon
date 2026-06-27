@@ -153,7 +153,7 @@ pub fn noetix_endless_gait_evidence(@moonphys.Heightfield, reference_frame_index
 
 pub fn noetix_high_control_limits() -> NoetixHighControlLimits
 
-pub fn noetix_hinge_joint_frame_evidence(NoetixMoonWalkTrace, Int, NoetixPhysicsProfile) -> NoetixHingeJointFrameEvidence
+pub fn noetix_hinge_joint_frame_evidence(NoetixMoonWalkTrace, Int, NoetixPhysicsProfile, @moonphys.JointMotorFrame) -> NoetixHingeJointFrameEvidence
 
 pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3, dt_s? : Double) -> NoetixInertialCollisionFrame
 
@@ -456,13 +456,19 @@ pub(all) struct NoetixHingeJointFrameEvidence {
   assessed_joint_count : Int
   projected_body_count : Int
   resolved_hinge_constraint_count : Int
+  motor_driven_joint_count : Int
+  motor_review_count : Int
   review_count : Int
   max_position_error_m : Double
   max_angular_error_rad : Double
+  max_motor_angle_delta_rad : Double
+  max_motor_velocity_delta_rad_s : Double
   linear_impulse_ns : Double
   angular_impulse_nms : Double
   assessment_status : String
   world_status : String
+  motor_status : String
+  motor_world_status : String
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -545,11 +551,15 @@ pub(all) struct NoetixJointControlReport {
   hinge_joint_frame_count : Int
   hinge_review_frame_count : Int
   hinge_joint_count_per_frame : Int
+  hinge_motor_driven_frame_count : Int
+  hinge_motor_driven_joint_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
   max_abs_mechanical_power_w : Double
   max_hinge_position_error_m : Double
   max_hinge_angular_error_rad : Double
+  max_hinge_motor_angle_delta_rad : Double
+  max_hinge_motor_velocity_delta_rad_s : Double
   hinge_linear_impulse_ns : Double
   hinge_angular_impulse_nms : Double
   net_work_j : Double

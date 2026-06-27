@@ -307,12 +307,17 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.note.contains("joint-frame motor integration"))
   assert_true(report.note.contains("hinge-joint frame assessment"))
   assert_true(report.note.contains("world hinge constraint replay"))
+  assert_true(report.note.contains("world hinge motor replay"))
   assert_true(report.note.contains("servo gains"))
   assert_eq(report.hinge_joint_frame_count, 12)
   assert_eq(report.hinge_joint_count_per_frame, 24)
+  assert_eq(report.hinge_motor_driven_frame_count, 12)
+  assert_true(report.hinge_motor_driven_joint_count > 0)
   assert_true(report.hinge_review_frame_count >= 0)
   assert_true(report.max_hinge_position_error_m >= 0.0)
   assert_true(report.max_hinge_angular_error_rad >= 0.0)
+  assert_true(report.max_hinge_motor_angle_delta_rad >= 0.0)
+  assert_true(report.max_hinge_motor_velocity_delta_rad_s >= 0.0)
   assert_true(report.hinge_linear_impulse_ns >= 0.0)
   assert_true(report.hinge_angular_impulse_nms >= 0.0)
   assert_true(report.max_abs_velocity_rad_s >= 0.0)
@@ -325,6 +330,14 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.frames[0].hinge_joint_frame.projected_body_count, 25)
   assert_true(
     report.frames[0].hinge_joint_frame.resolved_hinge_constraint_count >= 0,
+  )
+  assert_true(report.frames[0].hinge_joint_frame.motor_driven_joint_count > 0)
+  assert_true(report.frames[0].hinge_joint_frame.motor_review_count >= 0)
+  assert_true(
+    report.frames[0].hinge_joint_frame.max_motor_angle_delta_rad >= 0.0,
+  )
+  assert_true(
+    report.frames[0].hinge_joint_frame.max_motor_velocity_delta_rad_s >= 0.0,
   )
   assert_true(
     report.frames[0].hinge_joint_frame.world_status.contains(
@@ -340,9 +353,25 @@ test "noetix joint control report replays gait phases through moonphys" {
     report.frames[0].hinge_joint_frame.status.contains("noetix-hinge-world"),
   )
   assert_true(
+    report.frames[0].hinge_joint_frame.motor_status.contains(
+      "world-hinge-motor",
+    ),
+  )
+  assert_true(
+    report.frames[0].hinge_joint_frame.motor_world_status.contains(
+      "world-hinge-constraint",
+    ),
+  )
+  assert_true(
     report.frames.any(fn(frame) {
       frame.hinge_joint_frame.resolved_hinge_constraint_count > 0 &&
       frame.hinge_joint_frame.world_status == "world-hinge-constraint-resolved"
+    }),
+  )
+  assert_true(
+    report.frames.any(fn(frame) {
+      frame.hinge_joint_frame.motor_driven_joint_count > 0 &&
+      frame.hinge_joint_frame.motor_status == "world-hinge-motor-driven"
     }),
   )
   assert_true(

@@ -39,11 +39,15 @@ pub(all) struct NoetixJointControlReport {
   hinge_joint_frame_count : Int
   hinge_review_frame_count : Int
   hinge_joint_count_per_frame : Int
+  hinge_motor_driven_frame_count : Int
+  hinge_motor_driven_joint_count : Int
   max_abs_position_error_rad : Double
   max_abs_velocity_rad_s : Double
   max_abs_mechanical_power_w : Double
   max_hinge_position_error_m : Double
   max_hinge_angular_error_rad : Double
+  max_hinge_motor_angle_delta_rad : Double
+  max_hinge_motor_velocity_delta_rad_s : Double
   hinge_linear_impulse_ns : Double
   hinge_angular_impulse_nms : Double
   net_work_j : Double
@@ -214,7 +218,7 @@ pub fn noetix_joint_control_frame(
   let frame = trace.frames[frame_index]
   let motor_frame = noetix_joint_motor_frame(trace, frame_index, profile)
   let hinge_joint_frame = noetix_hinge_joint_frame_evidence(
-    trace, frame_index, profile,
+    trace, frame_index, profile, motor_frame,
   )
   let steps : Array[NoetixJointControlStep] = []
   for step in motor_frame.steps {
@@ -254,8 +258,12 @@ pub fn noetix_joint_control_report(
   let mut max_power = 0.0
   let mut max_hinge_position_error = 0.0
   let mut max_hinge_angular_error = 0.0
+  let mut max_hinge_motor_angle_delta = 0.0
+  let mut max_hinge_motor_velocity_delta = 0.0
   let mut hinge_linear_impulse = 0.0
   let mut hinge_angular_impulse = 0.0
+  let mut hinge_motor_driven_frame_count = 0
+  let mut hinge_motor_driven_joint_count = 0
   let mut net_work = 0.0
   let mut total_abs_work = 0.0
   let mut joint_count_per_frame = 0
@@ -271,6 +279,10 @@ pub fn noetix_joint_control_report(
     if control_frame.hinge_joint_frame.review_count > 0 ||
       control_frame.hinge_joint_frame.status.contains("review") {
       hinge_review_frame_count += 1
+    }
+    if control_frame.hinge_joint_frame.motor_driven_joint_count > 0 {
+      hinge_motor_driven_frame_count += 1
+      hinge_motor_driven_joint_count += control_frame.hinge_joint_frame.motor_driven_joint_count
     }
     if control_frame.max_abs_position_error_rad > max_position_error {
       max_position_error = control_frame.max_abs_position_error_rad
@@ -288,6 +300,14 @@ pub fn noetix_joint_control_report(
     if control_frame.hinge_joint_frame.max_angular_error_rad >
       max_hinge_angular_error {
       max_hinge_angular_error = control_frame.hinge_joint_frame.max_angular_error_rad
+    }
+    if control_frame.hinge_joint_frame.max_motor_angle_delta_rad >
+      max_hinge_motor_angle_delta {
+      max_hinge_motor_angle_delta = control_frame.hinge_joint_frame.max_motor_angle_delta_rad
+    }
+    if control_frame.hinge_joint_frame.max_motor_velocity_delta_rad_s >
+      max_hinge_motor_velocity_delta {
+      max_hinge_motor_velocity_delta = control_frame.hinge_joint_frame.max_motor_velocity_delta_rad_s
     }
     hinge_linear_impulse += control_frame.hinge_joint_frame.linear_impulse_ns
     hinge_angular_impulse += control_frame.hinge_joint_frame.angular_impulse_nms
@@ -310,11 +330,15 @@ pub fn noetix_joint_control_report(
     hinge_joint_frame_count: frames.length(),
     hinge_review_frame_count,
     hinge_joint_count_per_frame,
+    hinge_motor_driven_frame_count,
+    hinge_motor_driven_joint_count,
     max_abs_position_error_rad: max_position_error,
     max_abs_velocity_rad_s: max_velocity,
     max_abs_mechanical_power_w: max_power,
     max_hinge_position_error_m: max_hinge_position_error,
     max_hinge_angular_error_rad: max_hinge_angular_error,
+    max_hinge_motor_angle_delta_rad: max_hinge_motor_angle_delta,
+    max_hinge_motor_velocity_delta_rad_s: max_hinge_motor_velocity_delta,
     hinge_linear_impulse_ns: hinge_linear_impulse,
     hinge_angular_impulse_nms: hinge_angular_impulse,
     net_work_j: net_work,
@@ -328,7 +352,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment and world hinge constraint replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, and world hinge motor replay for generic body/joint constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
   }
 }
 
@@ -357,11 +381,15 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge-joint frames: \{report.hinge_joint_frame_count}\n"
   text += "- hinge joints per frame: \{report.hinge_joint_count_per_frame}\n"
   text += "- hinge-review frames: \{report.hinge_review_frame_count}\n"
+  text += "- hinge motor-driven frames: \{report.hinge_motor_driven_frame_count}\n"
+  text += "- hinge motor-driven joints: \{report.hinge_motor_driven_joint_count}\n"
   text += "- max position error: \{report.max_abs_position_error_rad} rad\n"
   text += "- max target velocity: \{report.max_abs_velocity_rad_s} rad/s\n"
   text += "- max mechanical power: \{report.max_abs_mechanical_power_w} W\n"
   text += "- max hinge position error: \{report.max_hinge_position_error_m} m\n"
   text += "- max hinge angular error: \{report.max_hinge_angular_error_rad} rad\n"
+  text += "- max hinge motor angle delta: \{report.max_hinge_motor_angle_delta_rad} rad\n"
+  text += "- max hinge motor velocity delta: \{report.max_hinge_motor_velocity_delta_rad_s} rad/s\n"
   text += "- hinge linear impulse: \{report.hinge_linear_impulse_ns} Ns\n"
   text += "- hinge angular impulse: \{report.hinge_angular_impulse_nms} Nms\n"
   text += "- net joint work: \{report.net_work_j} J\n"
@@ -371,7 +399,7 @@ pub fn render_noetix_joint_control_markdown(
   text += "- note: \{report.note}\n\n"
   text += "## Frame Joint Control\n\n"
   for frame in report.frames {
-    text += "- frame \{frame.frame_index} t=\{frame.time_s}s joints=\{frame.joint_count} saturated=\{frame.saturated_joint_count} limit_review=\{frame.limit_review_count} hinge_joints=\{frame.hinge_joint_frame.joint_count} hinge_status=\{frame.hinge_joint_frame.status} max_power=\{frame.max_abs_mechanical_power_w}W abs_work=\{frame.total_absolute_work_j}J status=\{frame.status}\n"
+    text += "- frame \{frame.frame_index} t=\{frame.time_s}s joints=\{frame.joint_count} saturated=\{frame.saturated_joint_count} limit_review=\{frame.limit_review_count} hinge_joints=\{frame.hinge_joint_frame.joint_count} hinge_motor_driven=\{frame.hinge_joint_frame.motor_driven_joint_count} hinge_status=\{frame.hinge_joint_frame.status} hinge_motor_status=\{frame.hinge_joint_frame.motor_status} max_power=\{frame.max_abs_mechanical_power_w}W abs_work=\{frame.total_absolute_work_j}J status=\{frame.status}\n"
   }
   text[:text.length() - 1].to_owned()
 }
