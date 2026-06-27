@@ -8307,6 +8307,43 @@
             "stable": false,
             "status": "outside-support"
           },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0,
+              "y": 0,
+              "z": 337.752
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.08544003745317531,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 1.8525,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
+          },
           "contact_patches": [
             {
               "patch_id": "left-foot",
@@ -8559,13 +8596,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -8620,6 +8657,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.012,
+              "y": 0,
+              "z": 337.7458326
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.09035485598461214,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 2.5934999999999997,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -8873,13 +8947,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -8934,6 +9008,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.024,
+              "y": 0,
+              "z": 337.7396652
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.09651942809610922,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 3.3345,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -9187,13 +9298,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -9248,6 +9359,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.036,
+              "y": 0,
+              "z": 337.7334978
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.10371113729971339,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 4.0755,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -9501,13 +9649,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -9562,6 +9710,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.048,
+              "y": 0,
+              "z": 337.7273304
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.11173182178770738,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 4.8165,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -9815,13 +10000,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -9876,6 +10061,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.06,
+              "y": 0,
+              "z": 337.721163
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.12041594578792295,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 5.5575,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -10129,13 +10351,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -10190,6 +10412,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.072,
+              "y": 0,
+              "z": 337.7149956
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.12963024338479043,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 6.2985,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -10443,13 +10702,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -10504,6 +10763,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.084,
+              "y": 0,
+              "z": 337.7088282
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.13926952286842947,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 7.0395,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -10757,13 +11053,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -10818,6 +11114,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.096,
+              "y": 0,
+              "z": 337.7026608
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.14925146565444508,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 7.7805,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -11071,13 +11404,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -11132,6 +11465,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.10800000000000001,
+              "y": 0,
+              "z": 337.6964934
+            },
+            "center_of_pressure": {
+              "x": -0.03,
+              "y": 0.08,
+              "z": 336.97107363000003
+            },
+            "center_of_pressure_error_m": 0.1595117550527233,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": -0.03,
+                  "y": 0.08,
+                  "z": 336.97107363000003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 8.521500000000001,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -11385,13 +11755,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -11446,6 +11816,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.12,
+              "y": 0,
+              "z": 337.690326
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.08544003745317531,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 1.8525,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -11684,13 +12091,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -11760,6 +12167,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.13199999999999998,
+              "y": 0,
+              "z": 337.6841586
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.09035485598461214,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 2.593499999999999,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -11998,13 +12442,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -12074,6 +12518,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.144,
+              "y": 0,
+              "z": 337.6779912
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.09651942809610922,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 3.3344999999999994,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -12312,13 +12793,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -12388,6 +12869,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.15600000000000003,
+              "y": 0,
+              "z": 337.6718238
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.1037111372997134,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 4.075500000000002,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -12626,13 +13144,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -12702,6 +13220,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.168,
+              "y": 0,
+              "z": 337.6656564
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.11173182178770738,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 4.8165000000000004,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -12940,13 +13495,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -13016,6 +13571,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.18,
+              "y": 0,
+              "z": 337.659489
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.12041594578792295,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 5.5575,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -13254,13 +13846,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -13330,6 +13922,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.192,
+              "y": 0,
+              "z": 337.6533216
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.12963024338479043,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 6.298500000000001,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -13568,13 +14197,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -13644,6 +14273,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.20400000000000001,
+              "y": 0,
+              "z": 337.6471542
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.13926952286842947,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 7.039500000000001,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -13882,13 +14548,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -13958,6 +14624,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.21600000000000003,
+              "y": 0,
+              "z": 337.6409868
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.1492514656544451,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 7.780500000000002,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -14196,13 +14899,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -14272,6 +14975,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.22799999999999998,
+              "y": 0,
+              "z": 337.6348194
+            },
+            "center_of_pressure": {
+              "x": 0.09,
+              "y": -0.08,
+              "z": 336.99677290200003
+            },
+            "center_of_pressure_error_m": 0.1595117550527233,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.09,
+                  "y": -0.08,
+                  "z": 336.99677290200003
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 8.5215,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -14510,13 +15250,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -14586,6 +15326,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.24,
+              "y": 0,
+              "z": 337.628652
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.08544003745317531,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 1.8525,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -14839,13 +15616,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -14900,6 +15677,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.252,
+              "y": 0,
+              "z": 337.6224846
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.09035485598461214,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 2.5935000000000006,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -15153,13 +15967,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -15214,6 +16028,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.26399999999999996,
+              "y": 0,
+              "z": 337.6163172
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.09651942809610921,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 3.334499999999998,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -15467,13 +16318,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -15528,6 +16379,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.27599999999999997,
+              "y": 0,
+              "z": 337.6101498
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.10371113729971337,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 4.075499999999998,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -15781,13 +16669,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -15842,6 +16730,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.288,
+              "y": 0,
+              "z": 337.6039824
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.11173182178770737,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 4.8165,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -16095,13 +17020,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -16156,6 +17081,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.30000000000000004,
+              "y": 0,
+              "z": 337.597815
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.12041594578792299,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 5.557500000000004,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -16409,13 +17371,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -16470,6 +17432,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.31200000000000006,
+              "y": 0,
+              "z": 337.5916476
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.12963024338479048,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 6.298500000000004,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -16723,13 +17722,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -16784,6 +17783,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.324,
+              "y": 0,
+              "z": 337.5854802
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.13926952286842947,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 7.039500000000001,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -17037,13 +18073,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -17098,6 +18134,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.336,
+              "y": 0,
+              "z": 337.5793128
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.1492514656544451,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 7.780500000000002,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -17351,13 +18424,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -17412,6 +18485,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.34800000000000003,
+              "y": 0,
+              "z": 337.5731454
+            },
+            "center_of_pressure": {
+              "x": 0.21,
+              "y": 0.08,
+              "z": 336.903867006
+            },
+            "center_of_pressure_error_m": 0.15951175505272336,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "left-foot",
+                "contact_point": {
+                  "x": 0.21,
+                  "y": 0.08,
+                  "z": 336.903867006
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": 4.94,
+                  "y": 8.521500000000003,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -17665,13 +18775,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             }
           ],
           "traction_status": "traction-ok",
@@ -17726,6 +18836,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.36,
+              "y": 0,
+              "z": 337.566978
+            },
+            "center_of_pressure": {
+              "x": 0.32999999999999996,
+              "y": -0.08,
+              "z": 336.87345797399996
+            },
+            "center_of_pressure_error_m": 0.08544003745317533,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.32999999999999996,
+                  "y": -0.08,
+                  "z": 336.87345797399996
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 1.8525000000000016,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -17964,13 +19111,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",
@@ -18040,6 +19187,43 @@
             "support_polygon_vertex_count": 4,
             "stable": false,
             "status": "outside-support"
+          },
+          "support_load_assessment": {
+            "load_count": 1,
+            "center_of_mass": {
+              "x": 0.372,
+              "y": 0,
+              "z": 337.5608106
+            },
+            "center_of_pressure": {
+              "x": 0.32999999999999996,
+              "y": -0.08,
+              "z": 336.87345797399996
+            },
+            "center_of_pressure_error_m": 0.09035485598461215,
+            "total_normal_force_n": 61.75,
+            "min_load_fraction": 1,
+            "max_load_fraction": 1,
+            "loads": [
+              {
+                "footprint_id": "right-foot",
+                "contact_point": {
+                  "x": 0.32999999999999996,
+                  "y": -0.08,
+                  "z": 336.87345797399996
+                },
+                "load_fraction": 1,
+                "normal_force_n": 61.75,
+                "contact_torque_nm": {
+                  "x": -4.94,
+                  "y": 2.5935000000000024,
+                  "z": 0
+                },
+                "status": "loaded"
+              }
+            ],
+            "balanced": false,
+            "status": "outside-support-load-review"
           },
           "contact_patches": [
             {
@@ -18278,13 +19462,13 @@
                 "friction_coefficient": 0.62,
                 "restitution_coefficient": 0.04
               },
-              "normal_force_n": 61.75,
+              "normal_force_n": 0,
               "tangential_force_n": 0,
-              "friction_limit_n": 38.285,
+              "friction_limit_n": 0,
               "utilization": 0,
-              "margin_n": 38.285,
+              "margin_n": 0,
               "slipping": false,
-              "status": "traction-ok"
+              "status": "no-load"
             },
             {
               "contact_id": "right-foot",

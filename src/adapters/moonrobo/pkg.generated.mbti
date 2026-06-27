@@ -783,6 +783,7 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  support_load_assessment : @moonphys.SupportLoadAssessment
   contact_patches : Array[@moonphys.HeightfieldContactPatch]
   contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]

@@ -59,6 +59,7 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  support_load_assessment : @moonphys.SupportLoadAssessment
   contact_patches : Array[@moonphys.HeightfieldContactPatch]
   contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]
@@ -368,7 +369,7 @@ fn noetix_lateral_speed(config : NoetixMoonWalkConfig) -> Double {
 }
 
 ///|
-fn noetix_review_tangential_force(
+fn noetix_review_total_tangential_force(
   config : NoetixMoonWalkConfig,
   profile : NoetixPhysicsProfile,
   support_count : Int,
@@ -380,10 +381,7 @@ fn noetix_review_tangential_force(
     noetix_lateral_speed(config) * noetix_lateral_speed(config)).sqrt()
     let cycle_s = config.dt_s * config.cycle_frames.to_double()
     if cycle_s > 0.0 {
-      profile.mass_model.mass_kg *
-      horizontal_speed /
-      cycle_s /
-      support_count.to_double()
+      profile.mass_model.mass_kg * horizontal_speed / cycle_s
     } else {
       0.0
     }
@@ -420,32 +418,57 @@ fn traction_assessments_for_frame(
   profile : NoetixPhysicsProfile,
   left_geometry : NoetixFootGeometry,
   right_geometry : NoetixFootGeometry,
+  support_load : @moonphys.SupportLoadAssessment,
 ) -> Array[@moonphys.TractionAssessment] {
   let support_count = support_count_for_frame(frame)
-  let normal_force = if support_count > 0 {
-    profile.mass_model.mass_kg *
-    @moonphys.lunar_environment().gravity_mps2 /
-    support_count.to_double()
-  } else {
-    0.0
-  }
-  let tangential_force = noetix_review_tangential_force(
+  let tangential_force = noetix_review_total_tangential_force(
     config, profile, support_count,
+  )
+  let left_fraction = support_load_fraction(support_load, left_geometry.foot_id)
+  let right_fraction = support_load_fraction(
+    support_load,
+    right_geometry.foot_id,
   )
   [
     foot_traction_assessment(
       frame.left_foot,
       left_geometry,
-      normal_force,
-      tangential_force,
+      support_load_normal_force(support_load, left_geometry.foot_id),
+      tangential_force * left_fraction,
     ),
     foot_traction_assessment(
       frame.right_foot,
       right_geometry,
-      normal_force,
-      tangential_force,
+      support_load_normal_force(support_load, right_geometry.foot_id),
+      tangential_force * right_fraction,
     ),
   ]
+}
+
+///|
+fn support_load_normal_force(
+  assessment : @moonphys.SupportLoadAssessment,
+  foot_id : String,
+) -> Double {
+  for load in assessment.loads {
+    if load.footprint_id == foot_id {
+      return load.normal_force_n
+    }
+  }
+  0.0
+}
+
+///|
+fn support_load_fraction(
+  assessment : @moonphys.SupportLoadAssessment,
+  foot_id : String,
+) -> Double {
+  for load in assessment.loads {
+    if load.footprint_id == foot_id {
+      return load.load_fraction
+    }
+  }
+  0.0
 }
 
 ///|
@@ -476,13 +499,21 @@ pub fn noetix_walk_stability_frame(
     contact_footprint(frame.left_foot, left_geometry),
     contact_footprint(frame.right_foot, right_geometry),
   ])
+  let support_load = @moonphys.support_load_assessment(
+    com_projection,
+    [
+      contact_footprint(frame.left_foot, left_geometry),
+      contact_footprint(frame.right_foot, right_geometry),
+    ],
+    profile.mass_model.mass_kg * @moonphys.lunar_environment().gravity_mps2,
+  )
   let patches = [
     contact_patch(field, frame.left_foot, left_geometry),
     contact_patch(field, frame.right_foot, right_geometry),
   ]
   let contact_patch_status = contact_patch_status(patches)
   let traction = traction_assessments_for_frame(
-    frame, config, profile, left_geometry, right_geometry,
+    frame, config, profile, left_geometry, right_geometry, support_load,
   )
   let traction_status = traction_status(traction)
   let terrain_status = contact_terrain_status(frame)
@@ -492,6 +523,7 @@ pub fn noetix_walk_stability_frame(
     support_phase: frame.support_phase,
     com_projection,
     support_assessment: assessment,
+    support_load_assessment: support_load,
     contact_patches: patches,
     contact_patch_status,
     traction_assessments: traction,
@@ -514,6 +546,7 @@ pub fn noetix_walk_stability_report(
   let mut traction_review_count = 0
   let mut worst_margin = 0.0
   let mut worst_traction_margin = 0.0
+  let mut has_loaded_traction = false
   for index, frame in trace.frames {
     let stability_frame = noetix_walk_stability_frame(
       frame,
@@ -526,8 +559,10 @@ pub fn noetix_walk_stability_report(
       worst_margin = stability_frame.support_assessment.planar_margin_m
     }
     for traction in stability_frame.traction_assessments {
-      if index == 0 || traction.margin_n < worst_traction_margin {
+      if traction.normal_force_n > 0.0 &&
+        (!has_loaded_traction || traction.margin_n < worst_traction_margin) {
         worst_traction_margin = traction.margin_n
+        has_loaded_traction = true
       }
     }
     if stability_frame.status == "static-margin-ok" {

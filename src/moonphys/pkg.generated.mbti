@@ -103,6 +103,8 @@ pub fn support_assessment(Vec3, Array[SupportFootprint]) -> SupportAssessment
 
 pub fn support_footprint(String, Vec3, Double, Double, active? : Bool) -> SupportFootprint
 
+pub fn support_load_assessment(Vec3, Array[SupportFootprint], Double) -> SupportLoadAssessment
+
 pub fn traction_assessment(String, MaterialContactModel, Double, Double) -> TractionAssessment
 
 pub fn transform3(Basis3, Vec3) -> Transform3
@@ -464,6 +466,28 @@ pub(all) struct SupportFootprint {
   half_length_m : Double
   half_width_m : Double
   active : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SupportLoad {
+  footprint_id : String
+  contact_point : Vec3
+  load_fraction : Double
+  normal_force_n : Double
+  contact_torque_nm : Vec3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SupportLoadAssessment {
+  load_count : Int
+  center_of_mass : Vec3
+  center_of_pressure : Vec3
+  center_of_pressure_error_m : Double
+  total_normal_force_n : Double
+  min_load_fraction : Double
+  max_load_fraction : Double
+  loads : Array[SupportLoad]
+  balanced : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct TractionAssessment {

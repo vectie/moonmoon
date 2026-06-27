@@ -25,6 +25,30 @@ pub(all) struct SupportAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SupportLoad {
+  footprint_id : String
+  contact_point : Vec3
+  load_fraction : Double
+  normal_force_n : Double
+  contact_torque_nm : Vec3
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SupportLoadAssessment {
+  load_count : Int
+  center_of_mass : Vec3
+  center_of_pressure : Vec3
+  center_of_pressure_error_m : Double
+  total_normal_force_n : Double
+  min_load_fraction : Double
+  max_load_fraction : Double
+  loads : Array[SupportLoad]
+  balanced : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct TractionAssessment {
   contact_id : String
   material : MaterialContactModel
@@ -52,6 +76,17 @@ pub fn support_footprint(
 fn nonnegative_double(value : Double) -> Double {
   if value < 0.0 {
     0.0
+  } else {
+    value
+  }
+}
+
+///|
+fn clamp_unit(value : Double) -> Double {
+  if value < 0.0 {
+    0.0
+  } else if value > 1.0 {
+    1.0
   } else {
     value
   }
@@ -117,6 +152,19 @@ fn max_double(a : Double, b : Double) -> Double {
   } else {
     b
   }
+}
+
+///|
+fn active_support_footprints(
+  footprints : Array[SupportFootprint],
+) -> Array[SupportFootprint] {
+  let active : Array[SupportFootprint] = []
+  for footprint in footprints {
+    if footprint.active {
+      active.push(footprint)
+    }
+  }
+  active
 }
 
 ///|
@@ -247,16 +295,270 @@ fn support_polygon_margin(point : Vec3, polygon : Array[Vec3]) -> Double {
 }
 
 ///|
+fn support_segment_parameter(point : Vec3, a : Vec3, b : Vec3) -> Double {
+  let dx = b.x - a.x
+  let dy = b.y - a.y
+  let length_squared = dx * dx + dy * dy
+  if length_squared > 0.0 {
+    clamp_unit(((point.x - a.x) * dx + (point.y - a.y) * dy) / length_squared)
+  } else {
+    0.0
+  }
+}
+
+///|
+fn support_lerp(a : Vec3, b : Vec3, t : Double) -> Vec3 {
+  vec3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t)
+}
+
+///|
+fn support_planar_distance(a : Vec3, b : Vec3) -> Double {
+  support_point_distance_squared(a, b).sqrt()
+}
+
+///|
+fn support_empty_fractions(count : Int) -> Array[Double] {
+  let fractions : Array[Double] = []
+  for _ in 0..<count {
+    fractions.push(0.0)
+  }
+  fractions
+}
+
+///|
+fn support_normalized_triangle_fractions(
+  u : Double,
+  v : Double,
+  w : Double,
+) -> Array[Double] {
+  let clamped_u = nonnegative_double(u)
+  let clamped_v = nonnegative_double(v)
+  let clamped_w = nonnegative_double(w)
+  let total = clamped_u + clamped_v + clamped_w
+  if total > 0.0 {
+    [clamped_u / total, clamped_v / total, clamped_w / total]
+  } else {
+    [0.0, 0.0, 0.0]
+  }
+}
+
+///|
+fn support_try_triangle_fractions(
+  point : Vec3,
+  a : Vec3,
+  b : Vec3,
+  c : Vec3,
+) -> Array[Double] {
+  let v0_x = b.x - a.x
+  let v0_y = b.y - a.y
+  let v1_x = c.x - a.x
+  let v1_y = c.y - a.y
+  let v2_x = point.x - a.x
+  let v2_y = point.y - a.y
+  let d00 = v0_x * v0_x + v0_y * v0_y
+  let d01 = v0_x * v1_x + v0_y * v1_y
+  let d11 = v1_x * v1_x + v1_y * v1_y
+  let d20 = v2_x * v0_x + v2_y * v0_y
+  let d21 = v2_x * v1_x + v2_y * v1_y
+  let denom = d00 * d11 - d01 * d01
+  if denom == 0.0 {
+    []
+  } else {
+    let v = (d11 * d20 - d01 * d21) / denom
+    let w = (d00 * d21 - d01 * d20) / denom
+    let u = 1.0 - v - w
+    if u >= 0.0 - 0.0000001 && v >= 0.0 - 0.0000001 && w >= 0.0 - 0.0000001 {
+      support_normalized_triangle_fractions(u, v, w)
+    } else {
+      []
+    }
+  }
+}
+
+///|
+fn support_load_fractions(
+  point : Vec3,
+  active : Array[SupportFootprint],
+) -> Array[Double] {
+  if active.is_empty() {
+    []
+  } else if active.length() == 1 {
+    [1.0]
+  } else {
+    if active.length() >= 3 {
+      for i in 0..<active.length() {
+        for j in (i + 1)..<active.length() {
+          for k in (j + 1)..<active.length() {
+            let triangle = support_try_triangle_fractions(
+              point,
+              active[i].center,
+              active[j].center,
+              active[k].center,
+            )
+            if !triangle.is_empty() {
+              let fractions = support_empty_fractions(active.length())
+              fractions[i] = triangle[0]
+              fractions[j] = triangle[1]
+              fractions[k] = triangle[2]
+              return fractions
+            }
+          }
+        }
+      }
+    }
+    let fractions = support_empty_fractions(active.length())
+    let mut first_index = 0
+    let mut second_index = 1
+    let mut best_t = support_segment_parameter(
+      point,
+      active[0].center,
+      active[1].center,
+    )
+    let mut best_error = support_planar_distance(
+      point,
+      support_lerp(active[0].center, active[1].center, best_t),
+    )
+    for i in 0..<active.length() {
+      for j in (i + 1)..<active.length() {
+        let t = support_segment_parameter(
+          point,
+          active[i].center,
+          active[j].center,
+        )
+        let error = support_planar_distance(
+          point,
+          support_lerp(active[i].center, active[j].center, t),
+        )
+        if error < best_error {
+          first_index = i
+          second_index = j
+          best_t = t
+          best_error = error
+        }
+      }
+    }
+    fractions[first_index] = 1.0 - best_t
+    fractions[second_index] = best_t
+    fractions
+  }
+}
+
+///|
+fn support_weighted_center(
+  active : Array[SupportFootprint],
+  fractions : Array[Double],
+) -> Vec3 {
+  let mut center = vec3(0.0, 0.0, 0.0)
+  for index, footprint in active {
+    center = center.add(footprint.center.scale(fractions[index]))
+  }
+  center
+}
+
+///|
+fn support_load_status(
+  support : SupportAssessment,
+  active_count : Int,
+  total_normal_force_n : Double,
+  center_error_m : Double,
+) -> String {
+  if active_count <= 0 {
+    "no-support-load"
+  } else if total_normal_force_n <= 0.0 {
+    "no-normal-load"
+  } else if !support.stable {
+    "outside-support-load-review"
+  } else if active_count == 1 {
+    "single-support-load"
+  } else if center_error_m <= 0.000001 {
+    "center-load-balanced"
+  } else {
+    "footprint-area-load-review"
+  }
+}
+
+///|
+pub fn support_load_assessment(
+  center_of_mass : Vec3,
+  footprints : Array[SupportFootprint],
+  total_normal_force_n : Double,
+) -> SupportLoadAssessment {
+  let total_force = nonnegative_double(total_normal_force_n)
+  let active = active_support_footprints(footprints)
+  let support = support_assessment(center_of_mass, footprints)
+  if active.is_empty() {
+    {
+      load_count: 0,
+      center_of_mass,
+      center_of_pressure: center_of_mass,
+      center_of_pressure_error_m: 0.0,
+      total_normal_force_n: total_force,
+      min_load_fraction: 0.0,
+      max_load_fraction: 0.0,
+      loads: [],
+      balanced: false,
+      status: "no-support-load",
+    }
+  } else {
+    let fractions = support_load_fractions(center_of_mass, active)
+    let center_of_pressure = support_weighted_center(active, fractions)
+    let center_error = support_planar_distance(
+      center_of_mass, center_of_pressure,
+    )
+    let loads : Array[SupportLoad] = []
+    let mut min_fraction = fractions[0]
+    let mut max_fraction = fractions[0]
+    for index, footprint in active {
+      let fraction = fractions[index]
+      min_fraction = min_double(min_fraction, fraction)
+      max_fraction = max_double(max_fraction, fraction)
+      let normal_force = total_force * fraction
+      let force = vec3(0.0, 0.0, normal_force)
+      loads.push({
+        footprint_id: footprint.footprint_id,
+        contact_point: footprint.center,
+        load_fraction: fraction,
+        normal_force_n: normal_force,
+        contact_torque_nm: contact_torque(
+          center_of_mass,
+          footprint.center,
+          force,
+        ),
+        status: if normal_force > 0.0 {
+          "loaded"
+        } else {
+          "unloaded"
+        },
+      })
+    }
+    let status = support_load_status(
+      support,
+      active.length(),
+      total_force,
+      center_error,
+    )
+    {
+      load_count: loads.length(),
+      center_of_mass,
+      center_of_pressure,
+      center_of_pressure_error_m: center_error,
+      total_normal_force_n: total_force,
+      min_load_fraction: min_fraction,
+      max_load_fraction: max_fraction,
+      loads,
+      balanced: status == "single-support-load" ||
+      status == "center-load-balanced",
+      status,
+    }
+  }
+}
+
+///|
 pub fn support_assessment(
   com_projection : Vec3,
   footprints : Array[SupportFootprint],
 ) -> SupportAssessment {
-  let active : Array[SupportFootprint] = []
-  for footprint in footprints {
-    if footprint.active {
-      active.push(footprint)
-    }
-  }
+  let active = active_support_footprints(footprints)
   if active.is_empty() {
     {
       support_count: 0,

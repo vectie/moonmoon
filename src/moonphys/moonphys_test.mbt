@@ -731,6 +731,72 @@ test "support assessment handles no active support" {
 }
 
 ///|
+test "support load assessment splits two-foot normal force" {
+  let assessment = support_load_assessment(
+    vec3(0.5, 0.0, 1.0),
+    [
+      support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+      support_footprint("right", vec3(1.0, 0.0, 0.0), 0.2, 0.1),
+    ],
+    120.0,
+  )
+  assert_eq(assessment.load_count, 2)
+  assert_true(assessment.balanced)
+  assert_eq(assessment.status, "center-load-balanced")
+  assert_true(nearly_equal(assessment.loads[0].load_fraction, 0.5))
+  assert_true(nearly_equal(assessment.loads[1].load_fraction, 0.5))
+  assert_true(nearly_equal(assessment.loads[0].normal_force_n, 60.0))
+  assert_true(nearly_equal(assessment.loads[1].normal_force_n, 60.0))
+  assert_true(nearly_equal(assessment.center_of_pressure_error_m, 0.0))
+}
+
+///|
+test "support load assessment reports off-segment center-load error" {
+  let assessment = support_load_assessment(
+    vec3(0.5, 0.2, 1.0),
+    [
+      support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+      support_footprint("right", vec3(1.0, 0.0, 0.0), 0.2, 0.1),
+    ],
+    120.0,
+  )
+  assert_true(!assessment.balanced)
+  assert_eq(assessment.status, "outside-support-load-review")
+  assert_true(nearly_equal(assessment.center_of_pressure_error_m, 0.2))
+}
+
+///|
+test "support load assessment uses triangle barycentric fractions" {
+  let assessment = support_load_assessment(
+    vec3(0.25, 0.25, 1.0),
+    [
+      support_footprint("a", vec3(0.0, 0.0, 0.0), 0.05, 0.05),
+      support_footprint("b", vec3(1.0, 0.0, 0.0), 0.05, 0.05),
+      support_footprint("c", vec3(0.0, 1.0, 0.0), 0.05, 0.05),
+    ],
+    100.0,
+  )
+  assert_true(assessment.balanced)
+  assert_eq(assessment.status, "center-load-balanced")
+  assert_true(nearly_equal(assessment.loads[0].load_fraction, 0.5))
+  assert_true(nearly_equal(assessment.loads[1].load_fraction, 0.25))
+  assert_true(nearly_equal(assessment.loads[2].load_fraction, 0.25))
+  assert_true(nearly_equal(assessment.center_of_pressure_error_m, 0.0))
+}
+
+///|
+test "support load assessment handles no active support" {
+  let assessment = support_load_assessment(
+    vec3(0.0, 0.0, 1.0),
+    [support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1, active=false)],
+    120.0,
+  )
+  assert_true(!assessment.balanced)
+  assert_eq(assessment.load_count, 0)
+  assert_eq(assessment.status, "no-support-load")
+}
+
+///|
 test "traction assessment reports friction margin and slip" {
   let material = material_contact_model("test", 0.5, 0.0)
   let ok = traction_assessment("foot", material, 100.0, 20.0)

@@ -176,30 +176,19 @@ fn support_contact_torque(
   profile : NoetixPhysicsProfile,
   center_of_mass : @moonphys.Vec3,
 ) -> @moonphys.Vec3 {
-  let mut support_count = 0
-  if frame.left_foot.in_contact {
-    support_count += 1
-  }
-  if frame.right_foot.in_contact {
-    support_count += 1
-  }
-  if support_count == 0 {
-    return @moonphys.vec3(0.0, 0.0, 0.0)
-  }
-  let normal_force = profile.mass_model.mass_kg *
-    @moonphys.lunar_environment().gravity_mps2 /
-    support_count.to_double()
-  let force = @moonphys.vec3(0.0, 0.0, normal_force)
+  let left_geometry = foot_geometry(profile, "left-foot")
+  let right_geometry = foot_geometry(profile, "right-foot")
+  let load = @moonphys.support_load_assessment(
+    center_of_mass,
+    [
+      contact_footprint(frame.left_foot, left_geometry),
+      contact_footprint(frame.right_foot, right_geometry),
+    ],
+    profile.mass_model.mass_kg * @moonphys.lunar_environment().gravity_mps2,
+  )
   let mut torque = @moonphys.vec3(0.0, 0.0, 0.0)
-  if frame.left_foot.in_contact {
-    torque = torque.add(
-      @moonphys.contact_torque(center_of_mass, frame.left_foot.position, force),
-    )
-  }
-  if frame.right_foot.in_contact {
-    torque = torque.add(
-      @moonphys.contact_torque(center_of_mass, frame.right_foot.position, force),
-    )
+  for contact_load in load.loads {
+    torque = torque.add(contact_load.contact_torque_nm)
   }
   torque
 }

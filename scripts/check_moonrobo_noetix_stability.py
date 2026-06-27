@@ -102,6 +102,13 @@ def main() -> None:
         fail("support assessment must expose a convex support polygon")
     if first_support.get("support_polygon_vertex_count") != len(polygon_vertices):
         fail("support polygon vertex count must match vertices")
+    support_load = first.get("support_load_assessment", {})
+    if support_load.get("load_count") != first_support.get("support_count"):
+        fail("support load count must match active support count")
+    if support_load.get("total_normal_force_n", 0) <= 0:
+        fail("support load assessment must carry lunar normal force")
+    if not any(load.get("normal_force_n", 0) > 0 for load in support_load.get("loads", [])):
+        fail("support load assessment must identify a loaded contact")
     patches = first.get("contact_patches", [])
     if len(patches) != 2:
         fail("expected per-foot contact patches")
