@@ -70,6 +70,13 @@ def main() -> None:
         fail("joint control worst capture support margin should remain a blocker")
     if task.get("joint_control_world_replay_blocker_count", 0) <= 0:
         fail("joint control world replay blockers should be explicit")
+    replay_blockers = task.get("joint_control_world_replay_blockers")
+    if not isinstance(replay_blockers, list):
+        fail("joint control world replay blocker ids must be listed")
+    if len(replay_blockers) != task.get("joint_control_world_replay_blocker_count"):
+        fail("joint control world replay blocker count must match listed ids")
+    if "world-dynamic-support-review" not in replay_blockers:
+        fail("joint control world replay blockers must name dynamic support review")
     if task.get("inertial_collision_review_frame_count", 0) <= 0:
         fail("inertial collision review blocker should be explicit")
     if not task.get("source_walk_command_plan_id", "").startswith(

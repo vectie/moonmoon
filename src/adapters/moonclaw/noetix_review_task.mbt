@@ -30,6 +30,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   joint_control_world_capture_review_frame_count : Int
   joint_control_worst_capture_support_margin_m : Double
   joint_control_world_replay_blocker_count : Int
+  joint_control_world_replay_blockers : Array[String]
   inertial_collision_review_frame_count : Int
   link_pose_count_per_frame : Int
   walk_command_segment_count : Int
@@ -311,6 +312,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     joint_control_world_capture_review_frame_count: control.hinge_motor_world_trace.capture_support_review_frame_count,
     joint_control_worst_capture_support_margin_m: control.hinge_motor_world_trace.worst_capture_support_margin_m,
     joint_control_world_replay_blocker_count: control.hinge_motor_world_trace.world_review_blocker_count,
+    joint_control_world_replay_blockers: control.hinge_motor_world_trace.world_review_blockers,
     inertial_collision_review_frame_count: collision.self_contact_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
     walk_command_segment_count: command.segment_count,
@@ -477,6 +479,10 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - joint-control world-capture review frames: \{task.joint_control_world_capture_review_frame_count}\n"
     text += "  - joint-control worst capture support margin: \{task.joint_control_worst_capture_support_margin_m} m\n"
     text += "  - joint-control world replay blockers: \{task.joint_control_world_replay_blocker_count}\n"
+    text += "  - joint-control world replay blocker ids:\n"
+    for blocker in task.joint_control_world_replay_blockers {
+      text += "    - \{blocker}\n"
+    }
     text += "  - inertial-collision review frames: \{task.inertial_collision_review_frame_count}\n"
     text += "  - hardware state: \{@moonrobo.execution_state_label(task.hardware_state)}\n"
     text += "  - hardware authority: \{task.hardware_authority}\n"
