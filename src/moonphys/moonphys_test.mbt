@@ -242,6 +242,61 @@ test "angular momentum and contact torque are deterministic" {
 }
 
 ///|
+test "collision shapes expose conservative bounding radii" {
+  assert_eq(collision_shape_kind_label(SphereShape), "sphere")
+  assert_true(
+    nearly_equal(collision_bounding_radius(collision_sphere("s", 0.5)), 0.5),
+  )
+  assert_true(
+    nearly_equal(
+      collision_bounding_radius(collision_capsule("c", 0.2, 1.0)),
+      1.2,
+    ),
+  )
+  assert_true(
+    nearly_equal(
+      collision_bounding_radius(collision_box("b", vec3(1.0, 2.0, 2.0))),
+      3.0,
+    ),
+  )
+}
+
+///|
+test "collision world bounds follow transform translation" {
+  let bounds = collision_world_bounds(
+    collision_sphere("s", 0.5),
+    transform3(identity_basis3(), vec3(1.0, 2.0, 3.0)),
+  )
+  assert_true(bounds.center == vec3(1.0, 2.0, 3.0))
+  assert_true(bounds.min == vec3(0.5, 1.5, 2.5))
+  assert_true(bounds.max == vec3(1.5, 2.5, 3.5))
+  assert_eq(bounds.status, "conservative-bounds")
+}
+
+///|
+test "collision pair probe reports broadphase overlap and clear" {
+  let shape = collision_sphere("a", 0.5)
+  let overlap = collision_pair_probe(
+    shape,
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("b", 0.5),
+    transform3(identity_basis3(), vec3(0.75, 0.0, 0.0)),
+  )
+  let clear = collision_pair_probe(
+    shape,
+    transform3(identity_basis3(), vec3(0.0, 0.0, 0.0)),
+    collision_sphere("b", 0.5),
+    transform3(identity_basis3(), vec3(2.0, 0.0, 0.0)),
+  )
+  assert_true(overlap.overlapping)
+  assert_true(nearly_equal(overlap.separation_m, -0.25))
+  assert_eq(overlap.status, "broadphase-overlap")
+  assert_true(!clear.overlapping)
+  assert_true(nearly_equal(clear.separation_m, 1.0))
+  assert_eq(clear.status, "broadphase-clear")
+}
+
+///|
 test "transform translates local point" {
   let transform = transform3(identity_basis3(), vec3(1.0, 2.0, 3.0))
   assert_true(

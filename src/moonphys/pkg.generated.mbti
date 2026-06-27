@@ -15,6 +15,20 @@ pub fn axis_angle_basis3(Vec3, Double) -> Basis3
 
 pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
 
+pub fn collision_bounding_radius(CollisionShape) -> Double
+
+pub fn collision_box(String, Vec3) -> CollisionShape
+
+pub fn collision_capsule(String, Double, Double) -> CollisionShape
+
+pub fn collision_pair_probe(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionPairProbe
+
+pub fn collision_shape_kind_label(CollisionShapeKind) -> String
+
+pub fn collision_sphere(String, Double) -> CollisionShape
+
+pub fn collision_world_bounds(CollisionShape, Transform3) -> CollisionBounds
+
 pub fn contact_torque(Vec3, Vec3, Vec3) -> Vec3
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
@@ -94,6 +108,39 @@ pub(all) struct CapturePointAssessment {
   capture_margin_m : Double
   stable : Bool
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionBounds {
+  shape_id : String
+  kind : CollisionShapeKind
+  center : Vec3
+  bounding_radius_m : Double
+  min : Vec3
+  max : Vec3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionPairProbe {
+  shape_a_id : String
+  shape_b_id : String
+  center_distance_m : Double
+  separation_m : Double
+  overlapping : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CollisionShape {
+  shape_id : String
+  kind : CollisionShapeKind
+  radius_m : Double
+  half_height_m : Double
+  half_extents_m : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum CollisionShapeKind {
+  SphereShape
+  CapsuleShape
+  BoxShape
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct ContactProbe {

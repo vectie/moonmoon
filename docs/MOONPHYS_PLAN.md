@@ -380,17 +380,18 @@ Moonrobo simulation packet:
 Status: generic support-margin, capture-point, rigid-body gravity integration,
 material contact, heightfield collision, single-body heightfield contact
 resolution, deterministic rigid-body heightfield replay, and diagonal-inertia
-angular dynamics helpers implemented; Noetix static support and
-dynamic-stability review reports implemented; multi-contact simulation remains
-future work.
+angular dynamics helpers, and conservative sphere/capsule/box collision shape
+bounds implemented; Noetix static support and dynamic-stability review reports
+implemented; multi-contact simulation remains future work.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
 Next `moonphys` capabilities:
 
 - multi-contact manifold resolution
-- collision shape primitives beyond heightfield sphere probes
+- narrow-phase contact generation for shape pairs
 - actuator/controller interfaces for robot-specific layers
+- conservative sphere/capsule/box collision shape bounds (implemented)
 - diagonal inertia and angular velocity integration (implemented)
 - support polygon / center of mass helper (implemented)
 - capture point / linear inverted-pendulum review helper (implemented)
