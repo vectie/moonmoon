@@ -183,9 +183,9 @@ pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
 
 pub fn noetix_walk_command_plan(NoetixMoonWalkTrace, limits? : NoetixHighControlLimits) -> NoetixWalkCommandPlan
 
-pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile, config? : NoetixMoonWalkConfig) -> NoetixWalkStabilityFrame
+pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile, field? : @moonphys.Heightfield, config? : NoetixMoonWalkConfig) -> NoetixWalkStabilityFrame
 
-pub fn noetix_walk_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixWalkStabilityReport
+pub fn noetix_walk_stability_report(NoetixMoonWalkTrace, field? : @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixWalkStabilityReport
 
 pub fn precondition_status_label(RobotPrecondition) -> String
 
@@ -783,6 +783,8 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  contact_patches : Array[@moonphys.HeightfieldContactPatch]
+  contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]
   traction_status : String
   terrain_contact_status : String

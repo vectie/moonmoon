@@ -48,6 +48,44 @@ test "contact probe detects clearance" {
   let probe = heightfield_contact_probe(field, "foot", vec3(0.0, 0.0, 2.5))
   assert_true(!probe.in_contact)
   inspect(probe.clearance_m, content="0.5")
+  assert_true(probe.surface_normal == vec3(0.0, 0.0, 1.0))
+}
+
+///|
+test "heightfield contact patch samples rectangular sole" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  assert_eq(patch.sample_count, 5)
+  assert_eq(patch.contact_count, 5)
+  assert_eq(patch.status, "patch-contact")
+  assert_true(nearly_equal(patch.min_clearance_m, 0.0))
+  assert_true(nearly_equal(patch.max_clearance_m, 0.0))
+  assert_true(patch.average_surface_normal == vec3(0.0, 0.0, 1.0))
+}
+
+///|
+test "heightfield contact patch exposes partial sole penetration" {
+  let field = heightfield("slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "sole",
+    vec3(0.5, -0.5, 0.5),
+    0.25,
+    0.1,
+  )
+  assert_eq(patch.sample_count, 5)
+  assert_true(patch.contact_count > 0)
+  assert_true(patch.contact_count < patch.sample_count)
+  assert_true(patch.min_clearance_m < 0.0)
+  assert_true(patch.max_clearance_m > 0.0)
+  assert_eq(patch.status, "patch-penetration-review")
+  assert_true(patch.average_surface_normal.x < 0.0)
 }
 
 ///|

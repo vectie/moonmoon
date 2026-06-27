@@ -45,6 +45,8 @@ pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
 
 pub fn heightfield_collision(Heightfield, RigidBodyState) -> HeightfieldCollision
 
+pub fn heightfield_contact_patch(Heightfield, String, Vec3, Double, Double, contact_tolerance_m? : Double) -> HeightfieldContactPatch
+
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
 
 pub fn identity_basis3() -> Basis3
@@ -244,6 +246,7 @@ pub(all) struct ContactProbe {
   probe_id : String
   position : Vec3
   surface_elevation_m : Double
+  surface_normal : Vec3
   clearance_m : Double
   in_contact : Bool
   local_grade : Double
@@ -276,6 +279,21 @@ pub(all) struct HeightfieldCollision {
   normal_velocity_mps : Double
   tangent_speed_mps : Double
   in_contact : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct HeightfieldContactPatch {
+  patch_id : String
+  center : Vec3
+  half_length_m : Double
+  half_width_m : Double
+  sample_count : Int
+  contact_count : Int
+  min_clearance_m : Double
+  max_clearance_m : Double
+  average_surface_elevation_m : Double
+  average_surface_normal : Vec3
+  samples : Array[ContactProbe]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

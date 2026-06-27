@@ -59,6 +59,8 @@ pub(all) struct NoetixWalkStabilityFrame {
   support_phase : String
   com_projection : @moonphys.Vec3
   support_assessment : @moonphys.SupportAssessment
+  contact_patches : Array[@moonphys.HeightfieldContactPatch]
+  contact_patch_status : String
   traction_assessments : Array[@moonphys.TractionAssessment]
   traction_status : String
   terrain_contact_status : String
@@ -284,11 +286,14 @@ fn contact_terrain_status(frame : NoetixMoonWalkFrame) -> String {
 ///|
 fn stability_status(
   assessment : @moonphys.SupportAssessment,
+  contact_patch_status : String,
   traction_status : String,
   terrain_status : String,
 ) -> String {
   if traction_status == "traction-review" {
     "traction-review"
+  } else if contact_patch_status == "contact-patch-review" {
+    "contact-patch-review"
   } else if assessment.stable && terrain_status == "terrain-contact-ok" {
     "static-margin-ok"
   } else if assessment.stable {
@@ -310,6 +315,34 @@ fn contact_footprint(
     geometry.half_width_m,
     active=foot.in_contact,
   )
+}
+
+///|
+fn contact_patch(
+  field : @moonphys.Heightfield,
+  foot : NoetixFootContactProbe,
+  geometry : NoetixFootGeometry,
+) -> @moonphys.HeightfieldContactPatch {
+  @moonphys.heightfield_contact_patch(
+    field,
+    geometry.foot_id,
+    foot.position,
+    geometry.half_length_m,
+    geometry.half_width_m,
+  )
+}
+
+///|
+fn contact_patch_status(
+  patches : Array[@moonphys.HeightfieldContactPatch],
+) -> String {
+  for patch in patches {
+    if patch.status == "patch-penetration-review" ||
+      patch.status == "patch-partial-contact-review" {
+      return "contact-patch-review"
+    }
+  }
+  "contact-patch-ok"
 }
 
 ///|
@@ -429,6 +462,7 @@ fn traction_status(assessments : Array[@moonphys.TractionAssessment]) -> String 
 pub fn noetix_walk_stability_frame(
   frame : NoetixMoonWalkFrame,
   profile : NoetixPhysicsProfile,
+  field? : @moonphys.Heightfield = first_trusted_square_noetix_heightfield(),
   config? : NoetixMoonWalkConfig = default_noetix_moon_walk_config(),
 ) -> NoetixWalkStabilityFrame {
   let com_projection = @moonphys.vec3(
@@ -442,6 +476,11 @@ pub fn noetix_walk_stability_frame(
     contact_footprint(frame.left_foot, left_geometry),
     contact_footprint(frame.right_foot, right_geometry),
   ])
+  let patches = [
+    contact_patch(field, frame.left_foot, left_geometry),
+    contact_patch(field, frame.right_foot, right_geometry),
+  ]
+  let contact_patch_status = contact_patch_status(patches)
   let traction = traction_assessments_for_frame(
     frame, config, profile, left_geometry, right_geometry,
   )
@@ -453,16 +492,21 @@ pub fn noetix_walk_stability_frame(
     support_phase: frame.support_phase,
     com_projection,
     support_assessment: assessment,
+    contact_patches: patches,
+    contact_patch_status,
     traction_assessments: traction,
     traction_status,
     terrain_contact_status: terrain_status,
-    status: stability_status(assessment, traction_status, terrain_status),
+    status: stability_status(
+      assessment, contact_patch_status, traction_status, terrain_status,
+    ),
   }
 }
 
 ///|
 pub fn noetix_walk_stability_report(
   trace : NoetixMoonWalkTrace,
+  field? : @moonphys.Heightfield = first_trusted_square_noetix_heightfield(),
   profile? : NoetixPhysicsProfile = default_noetix_physics_profile(),
 ) -> NoetixWalkStabilityReport {
   let frames : Array[NoetixWalkStabilityFrame] = []
@@ -474,6 +518,7 @@ pub fn noetix_walk_stability_report(
     let stability_frame = noetix_walk_stability_frame(
       frame,
       profile,
+      field~,
       config=trace.config,
     )
     if index == 0 ||
@@ -510,13 +555,14 @@ pub fn noetix_walk_stability_report(
     } else {
       "static-support-review"
     },
-    note: "Static support and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Traction margins use Moonphys friction-cone review over assumed foot friction.",
+    note: "Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling over assumed foot soles, and traction margins use Moonphys friction-cone review over assumed foot friction.",
   }
 }
 
 ///|
 pub fn first_trusted_square_noetix_stability_report() -> NoetixWalkStabilityReport {
-  noetix_walk_stability_report(first_trusted_square_noetix_walk_trace())
+  let field = first_trusted_square_noetix_heightfield()
+  noetix_walk_stability_report(first_trusted_square_noetix_walk_trace(), field~)
 }
 
 ///|
@@ -546,7 +592,7 @@ pub fn render_noetix_stability_markdown(
   text += "- note: \{report.note}\n\n"
   text += "## Frame Margins\n\n"
   for frame in report.frames {
-    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} margin=\{frame.support_assessment.planar_margin_m}m traction=\{frame.traction_status} status=\{frame.status}\n"
+    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} margin=\{frame.support_assessment.planar_margin_m}m patch=\{frame.contact_patch_status} traction=\{frame.traction_status} status=\{frame.status}\n"
   }
   text
 }

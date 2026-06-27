@@ -89,10 +89,29 @@ def main() -> None:
     if report.get("worst_traction_margin_n", -1) < 0:
         fail("expected nonnegative traction margin")
     if not any(frame.get("status") == "static-margin-review" for frame in frames):
-        fail("expected static-margin-review frame")
+        if not any(frame.get("status") == "contact-patch-review" for frame in frames):
+            fail("expected static-margin or contact-patch review frame")
+    if not any(frame.get("contact_patch_status") == "contact-patch-review" for frame in frames):
+        fail("expected contact patch review evidence")
     first = frames[0]
     if first.get("support_assessment", {}).get("support_count") != 1:
         fail("first frame should have one active support foot")
+    patches = first.get("contact_patches", [])
+    if len(patches) != 2:
+        fail("expected per-foot contact patches")
+    if not all(patch.get("sample_count") == 5 for patch in patches):
+        fail("contact patches should sample center and four sole corners")
+    if not all("average_surface_normal" in patch for patch in patches):
+        fail("contact patches must carry averaged terrain normals")
+    if not any(
+        patch.get("status") in {
+            "patch-contact",
+            "patch-partial-contact-review",
+            "patch-penetration-review",
+        }
+        for patch in patches
+    ):
+        fail("contact patches should carry contact/review status")
     if first.get("terrain_contact_status") != "terrain-contact-review":
         fail("terrain contact review must carry through")
     traction = first.get("traction_assessments", [])
@@ -115,6 +134,8 @@ def main() -> None:
         fail("traction material must cite review foot friction")
     if "dynamic walking can be valid" not in report.get("note", ""):
         fail("report note must distinguish static evidence from dynamics")
+    if "Contact patches use Moonphys heightfield patch sampling" not in report.get("note", ""):
+        fail("report note must mention Moonphys contact-patch evidence")
     if "friction-cone" not in report.get("note", ""):
         fail("report note must mention friction-cone review")
 
