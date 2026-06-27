@@ -229,7 +229,7 @@ def assert_noetix_walk_panel(
     "phase": frames[0]["support_phase"],
     "time": "0.00 s",
     "body x": "0.000 m",
-    "joints": "24 kinematic phases",
+    "joints": "24 phases, URDF leg IK",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
     "visuals": f"{expected_visuals} source visual geometries",
     "pose status": "review-only-urdf-fk",

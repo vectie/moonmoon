@@ -256,29 +256,166 @@ fn joint_phase(
   side : String,
   position_rad : Double,
 ) -> NoetixJointPhase {
-  { joint_name, role, side, position_rad, status: "kinematic-phase" }
+  joint_phase_with_status(
+    joint_name, role, side, position_rad, "kinematic-phase",
+  )
 }
 
 ///|
-fn leg_phases(
+fn joint_phase_with_status(
+  joint_name : String,
+  role : String,
+  side : String,
+  position_rad : Double,
+  status : String,
+) -> NoetixJointPhase {
+  { joint_name, role, side, position_rad, status }
+}
+
+///|
+fn clamp_double(
+  value : Double,
+  min_value : Double,
+  max_value : Double,
+) -> Double {
+  if value < min_value {
+    min_value
+  } else if value > max_value {
+    max_value
+  } else {
+    value
+  }
+}
+
+///|
+fn source_joint_limit_for(joint_name : String) -> NoetixSourceJointLimit {
+  for limit in noetix_source_joint_limits() {
+    if limit.joint_name == joint_name {
+      return limit
+    }
+  }
+  {
+    joint_name,
+    joint_index: -1,
+    lower_rad: -3.141592653589793,
+    upper_rad: 3.141592653589793,
+    effort_nm: 0.0,
+    velocity_rad_s: 0.0,
+    source_status: "missing-source-limit",
+  }
+}
+
+///|
+fn bounded_joint_phase(
+  joint_name : String,
+  role : String,
+  side : String,
+  position_rad : Double,
+  status : String,
+) -> NoetixJointPhase {
+  let limit = source_joint_limit_for(joint_name)
+  joint_phase_with_status(
+    joint_name,
+    role,
+    side,
+    clamp_double(position_rad, limit.lower_rad, limit.upper_rad),
+    status,
+  )
+}
+
+///|
+fn noetix_leg_ik_phases(
+  config : NoetixMoonWalkConfig,
+  body_position : @moonphys.Vec3,
+  foot : NoetixFootContactProbe,
   side : String,
   prefix : String,
-  swinging : Bool,
-  progress : Double,
 ) -> Array[NoetixJointPhase] {
-  let lift = if swinging {
-    @math.sin(progress * 3.141592653589793)
-  } else {
-    0.0
-  }
-  let direction = if side == "left" { 1.0 } else { 0.0 - 1.0 }
+  let side_sign = if side == "left" { 1.0 } else { 0.0 - 1.0 }
+  let forward = noetix_heading_forward(config)
+  let lateral = noetix_heading_lateral(config)
+  let hip_world = body_position
+    .add(lateral.scale(side_sign * config.lateral_foot_offset_m))
+    .add(@moonphys.vec3(0.0, 0.0, -0.08))
+  let ankle_target = foot.position
+    .sub(forward.scale(0.04))
+    .add(@moonphys.vec3(0.0, 0.0, 0.08))
+  let relative = ankle_target.sub(hip_world)
+  let sagittal_x = relative.dot(forward)
+  let lateral_error = relative.dot(lateral)
+  let down = 0.0 - relative.z
+  let upper_leg_m = 0.32
+  let lower_leg_m = 0.34
+  let distance = clamp_double(
+    (sagittal_x * sagittal_x + down * down).sqrt(),
+    0.08,
+    upper_leg_m + lower_leg_m - 0.001,
+  )
+  let knee_cos = clamp_double(
+    (
+      upper_leg_m * upper_leg_m +
+      lower_leg_m * lower_leg_m -
+      distance * distance
+    ) /
+    (2.0 * upper_leg_m * lower_leg_m),
+    -1.0,
+    1.0,
+  )
+  let knee_flex = 3.141592653589793 - @math.acos(knee_cos)
+  let line_angle = @math.atan2(sagittal_x, down)
+  let bend_angle = @math.atan2(
+    lower_leg_m * @math.sin(knee_flex),
+    upper_leg_m + lower_leg_m * @math.cos(knee_flex),
+  )
+  let hip_pitch = line_angle - bend_angle
+  let hip_roll = clamp_double(lateral_error * 2.5, -0.35, 0.35)
+  let knee_upper = knee_flex * 0.55
+  let knee_lower = 0.0 - knee_flex * 0.45
+  let ankle_roll = 0.0 - hip_roll * 0.45
+  let ankle_pitch = 0.0 - (hip_pitch + knee_upper + knee_lower)
   [
-    joint_phase("\{prefix}1_joint", "hip-pitch", side, 0.22 * lift),
-    joint_phase("\{prefix}2_joint", "hip-roll", side, direction * 0.06 * lift),
-    joint_phase("\{prefix}3_joint", "knee-upper", side, 0.42 * lift),
-    joint_phase("\{prefix}4_joint", "knee-lower", side, 0.0 - 0.32 * lift),
-    joint_phase("\{prefix}5_joint", "ankle-roll", side, direction * 0.04 * lift),
-    joint_phase("\{prefix}6_joint", "ankle-pitch", side, 0.0 - 0.16 * lift),
+    bounded_joint_phase(
+      "\{prefix}1_joint",
+      "hip-pitch",
+      side,
+      hip_pitch,
+      "urdf-leg-ik",
+    ),
+    bounded_joint_phase(
+      "\{prefix}2_joint",
+      "hip-roll",
+      side,
+      hip_roll,
+      "urdf-leg-ik",
+    ),
+    bounded_joint_phase(
+      "\{prefix}3_joint",
+      "knee-upper",
+      side,
+      knee_upper,
+      "urdf-leg-ik",
+    ),
+    bounded_joint_phase(
+      "\{prefix}4_joint",
+      "knee-lower",
+      side,
+      knee_lower,
+      "urdf-leg-ik",
+    ),
+    bounded_joint_phase(
+      "\{prefix}5_joint",
+      "ankle-roll",
+      side,
+      ankle_roll,
+      "urdf-leg-ik",
+    ),
+    bounded_joint_phase(
+      "\{prefix}6_joint",
+      "ankle-pitch",
+      side,
+      ankle_pitch,
+      "urdf-leg-ik",
+    ),
   ]
 }
 
@@ -306,16 +443,26 @@ fn arm_phases(
 
 ///|
 fn noetix_joint_phases(
+  config : NoetixMoonWalkConfig,
+  body_position : @moonphys.Vec3,
+  left_foot : NoetixFootContactProbe,
+  right_foot : NoetixFootContactProbe,
   left_support : Bool,
   progress : Double,
 ) -> Array[NoetixJointPhase] {
   let phases : Array[NoetixJointPhase] = []
   phases.push(joint_phase("waist_1_joint", "waist-yaw", "center", 0.0))
   phases.push(joint_phase("waist_2_joint", "waist-pitch", "center", 0.0))
-  for phase in leg_phases("left", "leg_l", !left_support, progress) {
+  for
+    phase in noetix_leg_ik_phases(
+      config, body_position, left_foot, "left", "leg_l",
+    ) {
     phases.push(phase)
   }
-  for phase in leg_phases("right", "leg_r", left_support, progress) {
+  for
+    phase in noetix_leg_ik_phases(
+      config, body_position, right_foot, "right", "leg_r",
+    ) {
     phases.push(phase)
   }
   for phase in arm_phases(left_support, progress) {
@@ -405,7 +552,14 @@ pub fn noetix_moon_walk_frame(
     },
     left_foot: left,
     right_foot: right,
-    joint_phases: noetix_joint_phases(left_support, progress),
+    joint_phases: noetix_joint_phases(
+      config,
+      @moonphys.vec3(body_xy.x, body_xy.y, body_z),
+      left,
+      right,
+      left_support,
+      progress,
+    ),
     status: frame_status(left, right),
   }
 }
@@ -467,7 +621,7 @@ pub fn render_noetix_moon_walk_markdown(trace : NoetixMoonWalkTrace) -> String {
     text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} body_x=\{frame.body_position.x} status=\{frame.status}\n"
     text += "  - left: x=\{frame.left_foot.position.x} z=\{frame.left_foot.position.z} contact=\{frame.left_foot.in_contact} clearance=\{frame.left_foot.clearance_m} status=\{frame.left_foot.status}\n"
     text += "  - right: x=\{frame.right_foot.position.x} z=\{frame.right_foot.position.z} contact=\{frame.right_foot.in_contact} clearance=\{frame.right_foot.clearance_m} status=\{frame.right_foot.status}\n"
-    text += "  - joints: \{frame.joint_phases.length()} kinematic phases\n"
+    text += "  - joints: \{frame.joint_phases.length()} phases with URDF leg IK\n"
   }
   text
 }

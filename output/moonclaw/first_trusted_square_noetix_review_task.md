@@ -18,7 +18,7 @@
   - next action: Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
   - inputs:
     - noetix-source-model: output/moonrobo/first_trusted_square_noetix_source_model.json - Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.
-    - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain.
+    - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
     - noetix-static-support: output/moonrobo/first_trusted_square_noetix_stability.json - Static COM/support report that explicitly remains review-only for dynamic walking.
     - noetix-dynamic-stability: output/moonrobo/first_trusted_square_noetix_dynamics.json - Capture-point dynamic stability report that remains review-only without controller and inertia evidence.
@@ -32,7 +32,7 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - noetix-endless-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json
-      - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints
+      - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded leg IK
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
@@ -52,7 +52,7 @@
       - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; max power 19.39254212656542 W; absolute work 101.13118838556709 J; status joint-control-assumption-review
+      - current: 32 frames; 24 joints per frame; saturated frames 4; limit-review frames 4; max power 270 W; absolute work 211.7677564009256 J; status joint-control-limit-review
       - ready: false
       - blocking: joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json

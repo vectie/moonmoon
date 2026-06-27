@@ -64,17 +64,22 @@ test "noetix endless moon walk alternates contact feet" {
 }
 
 ///|
-test "noetix endless moon walk carries animation joint phases" {
+test "noetix endless moon walk carries urdf leg ik phases" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
   assert_eq(trace.frames[0].joint_phases.length(), 24)
   assert_true(
     trace.frames[0].joint_phases.any(fn(phase) {
-      phase.joint_name == "leg_r3_joint" && phase.position_rad == 0.0
+      phase.joint_name == "leg_r3_joint" &&
+      phase.status == "urdf-leg-ik" &&
+      phase.position_rad > 0.0
     }),
   )
   assert_true(
     trace.frames[5].joint_phases.any(fn(phase) {
-      phase.joint_name == "leg_r3_joint" && phase.position_rad > 0.0
+      phase.joint_name == "leg_r1_joint" &&
+      phase.status == "urdf-leg-ik" &&
+      phase.position_rad >= -1.2 &&
+      phase.position_rad <= 1.2
     }),
   )
 }
@@ -262,7 +267,8 @@ test "noetix joint control report preserves urdf limits" {
       step.motor_step.limit.max_velocity_rad_s == 2.0
     }),
   )
-  assert_true(report.frames.all(fn(frame) { frame.limit_review_count == 0 }))
+  assert_true(report.limit_review_frame_count > 0)
+  assert_eq(report.status, "joint-control-limit-review")
 }
 
 ///|

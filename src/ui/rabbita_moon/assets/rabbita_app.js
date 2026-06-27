@@ -524,7 +524,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['body x', `${frame.body_position.x.toFixed(3)} m`],
     ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
-    ['joints', `${jointCount} kinematic phases`],
+    ['joints', `${jointCount} phases, URDF leg IK`],
     ['links', `${linkCount} URDF-reference poses`],
     ['visuals', `${visualCount} source visual geometries`],
     ['pose status', poseFrame.status || noetixLinkPoseTrace.status],

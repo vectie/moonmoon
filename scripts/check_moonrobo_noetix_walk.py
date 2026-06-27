@@ -71,9 +71,17 @@ def main() -> None:
         fail("frame should carry 24 Noetix joint phases")
     if not any(
         phase.get("joint_name") == "leg_r3_joint"
+        and phase.get("status") == "urdf-leg-ik"
         for phase in frames[5].get("joint_phases", [])
     ):
-        fail("joint phases should include Noetix leg joints")
+        fail("joint phases should include Noetix URDF leg IK joints")
+    if not all(
+        -1.2 <= phase.get("position_rad", 99) <= 1.2
+        for frame in frames
+        for phase in frame.get("joint_phases", [])
+        if phase.get("joint_name") in {"leg_l1_joint", "leg_r1_joint"}
+    ):
+        fail("hip pitch IK phases should be bounded by source joint limits")
 
 
 if __name__ == "__main__":

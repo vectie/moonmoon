@@ -12,7 +12,8 @@ evidence.
 - Moonrobo adapts Moonmoon terrain into a generic `moonphys` heightfield.
 - The Noetix endless walk trace consumes `moonphys` heightfield/contact APIs
   instead of owning terrain math.
-- Every walk frame includes 24 Noetix joint phases for animation/replay.
+- Every walk frame includes 24 Noetix joint phases for animation/replay; leg
+  phases are derived from URDF-reference IK and clamped by source joint limits.
 - The trace is exported as Markdown and JSON under `output/moonrobo`.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
@@ -265,8 +266,8 @@ In this repo, initially avoid copying full URDF parsing. Instead:
 - encode the compact Noetix URDF link tree in the Moonrobo adapter
 - bind feet to Moonphys contact probes from the walking trace
 - compute body/limb poses with the compact URDF link tree, joint origins, joint
-  axes, and gait joint phases until Moonrobo supplies full mesh/inertial/
-  collision metadata
+  axes, and URDF-reference leg IK phases until Moonrobo supplies full mesh/
+  inertial/collision metadata
 
 Implemented contract:
 

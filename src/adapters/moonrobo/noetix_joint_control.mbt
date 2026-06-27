@@ -308,7 +308,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays kinematic Noetix joint phases through Moonphys servo, torque, velocity, and position limits. It remains review evidence only because servo gains and joint inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys servo, torque, velocity, and position limits. It remains review evidence only because servo gains and joint inertias are assumptions.",
   }
 }
 

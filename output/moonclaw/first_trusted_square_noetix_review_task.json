@@ -35,7 +35,7 @@
         "input_id": "noetix-walk-trace",
         "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
         "claim_kind": "Simulated",
-        "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain."
+        "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases."
       },
       {
         "input_id": "noetix-link-poses",
@@ -89,8 +89,8 @@
         "artifact_id": "noetix-endless-walk-trace",
         "path": "output/moonrobo/first_trusted_square_noetix_walk.json",
         "producer": "moon run cmd/main -- moonrobo noetix walk json",
-        "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and joint phases",
-        "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints",
+        "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and URDF leg IK joint phases",
+        "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded leg IK",
         "ready": true,
         "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json"
@@ -130,7 +130,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_control.json",
         "producer": "moon run cmd/main -- moonrobo noetix control json",
         "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-        "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; max power 19.39254212656542 W; absolute work 101.13118838556709 J; status joint-control-assumption-review",
+        "current_state": "32 frames; 24 joints per frame; saturated frames 4; limit-review frames 4; max power 270 W; absolute work 211.7677564009256 J; status joint-control-limit-review",
         "ready": false,
         "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
