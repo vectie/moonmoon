@@ -13,17 +13,31 @@ pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFoo
 
 pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
 
+pub fn heightfield_collision(Heightfield, RigidBodyState) -> HeightfieldCollision
+
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
 
 pub fn identity_basis3() -> Basis3
 
 pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
 
+pub fn integrate_rigid_body(RigidBodyState, Double, Vec3) -> RigidBodyState
+
+pub fn integrate_rigid_body_gravity(RigidBodyState, PhysicsEnvironment, Double) -> RigidBodyState
+
 pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
 
 pub fn lunar_environment() -> PhysicsEnvironment
 
 pub fn lunar_gravity_acceleration() -> Vec3
+
+pub fn lunar_regolith_contact_model() -> MaterialContactModel
+
+pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
+
+pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
+
+pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
@@ -76,12 +90,32 @@ pub(all) struct ContactProbe {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct ContactResolution {
+  before : RigidBodyState
+  after : RigidBodyState
+  collision : HeightfieldCollision
+  material : MaterialContactModel
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct Heightfield {
   field_id : String
   rows : Int
   cols : Int
   cell_size_m : Double
   elevations_m : Array[Double]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct HeightfieldCollision {
+  body_id : String
+  sample : HeightfieldSample
+  contact_point : Vec3
+  clearance_m : Double
+  penetration_depth_m : Double
+  normal_velocity_mps : Double
+  tangent_speed_mps : Double
+  in_contact : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct HeightfieldSample {
@@ -105,6 +139,12 @@ pub(all) struct KinematicStep {
   acceleration : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct MaterialContactModel {
+  material_id : String
+  friction_coefficient : Double
+  restitution_coefficient : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct PhysicsEnvironment {
   environment_id : String
   gravity_mps2 : Double
@@ -123,6 +163,14 @@ pub(all) struct PhysicsTrace {
   environment : PhysicsEnvironment
   frames : Array[PhysicsFrame]
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyState {
+  body_id : String
+  mass_kg : Double
+  collision_radius_m : Double
+  position : Vec3
+  velocity : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SupportAssessment {

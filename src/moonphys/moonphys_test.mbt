@@ -9,6 +9,13 @@ test "vec3 math is deterministic" {
 }
 
 ///|
+fn nearly_equal(a : Double, b : Double) -> Bool {
+  let delta = a - b
+  let absolute = if delta < 0.0 { 0.0 - delta } else { delta }
+  absolute < 0.0000001
+}
+
+///|
 test "heightfield sample wraps along x" {
   let field = heightfield("test-field", 1, 2, 10.0, [1.0, 4.0])
   let sample = sample_heightfield(field, 21.0, 0.0)
@@ -38,6 +45,77 @@ test "kinematic integration applies acceleration" {
   })
   assert_true(stepped.position == vec3(0.5, 0.0, 0.5))
   assert_true(stepped.velocity == vec3(1.0, 0.0, -1.0))
+}
+
+///|
+test "rigid body gravity integration uses semi implicit step" {
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.25,
+    vec3(0.0, 0.0, 2.0),
+    vec3(1.0, 0.0, 0.0),
+  )
+  let stepped = integrate_rigid_body_gravity(state, lunar_environment(), 0.5)
+  assert_true(stepped.position == vec3(0.5, 0.0, 1.59375))
+  assert_true(stepped.velocity == vec3(1.0, 0.0, -0.8125))
+}
+
+///|
+test "heightfield collision reports penetration and tangent speed" {
+  let field = heightfield("test-field", 1, 1, 10.0, [1.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 1.1),
+    vec3(3.0, 4.0, -2.0),
+  )
+  let collision = heightfield_collision(field, state)
+  assert_true(collision.in_contact)
+  assert_true(nearly_equal(collision.clearance_m, -0.1))
+  assert_true(nearly_equal(collision.penetration_depth_m, 0.1))
+  assert_true(nearly_equal(collision.tangent_speed_mps, 5.0))
+  assert_eq(collision.status, "heightfield-contact")
+}
+
+///|
+test "heightfield contact response clamps and damps velocity" {
+  let field = heightfield("test-field", 1, 1, 10.0, [1.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 1.1),
+    vec3(2.0, 0.0, -3.0),
+  )
+  let material = material_contact_model("test-regolith", 0.25, 0.1)
+  let resolved = resolve_heightfield_contact(field, state, material)
+  assert_eq(resolved.status, "contact-resolved")
+  assert_true(resolved.after.position == vec3(0.0, 0.0, 1.2))
+  assert_true(nearly_equal(resolved.after.velocity.x, 1.5))
+  assert_true(nearly_equal(resolved.after.velocity.y, 0.0))
+  assert_true(nearly_equal(resolved.after.velocity.z, 0.3))
+}
+
+///|
+test "heightfield contact response leaves clear body unchanged" {
+  let field = heightfield("test-field", 1, 1, 10.0, [1.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 2.0),
+    vec3(2.0, 0.0, -3.0),
+  )
+  let resolved = resolve_heightfield_contact(
+    field,
+    state,
+    lunar_regolith_contact_model(),
+  )
+  assert_eq(resolved.status, "clear")
+  assert_true(resolved.after == state)
+  assert_true(!resolved.collision.in_contact)
 }
 
 ///|
