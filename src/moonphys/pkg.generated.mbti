@@ -129,7 +129,9 @@ pub fn rigid_body_motion_state(String, Double, Double, Vec3, Vec3, Basis3, Vec3)
 
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
 
-pub fn rigid_body_world_body(RigidBodyState, external_force_n? : Vec3) -> RigidBodyWorldBody
+pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, external_force_n? : Vec3) -> RigidBodyWorldBody
+
+pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
 
 pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
@@ -568,6 +570,10 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   after : RigidBodyHeightfieldWorld
   body_count : Int
   contact_count : Int
+  body_pair_count : Int
+  body_pair_overlap_count : Int
+  body_pair_contact_count : Int
+  body_contact_schedule : RigidBodyWorldContactSchedule
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -608,6 +614,7 @@ pub(all) struct RigidBodyState {
 
 pub(all) struct RigidBodyWorldBody {
   state : RigidBodyState
+  collision_shape : CollisionShape
   external_force_n : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -622,6 +629,24 @@ pub(all) struct RigidBodyWorldBodyFrame {
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
   kinetic_energy_delta_j : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldContactSchedule {
+  world_id : String
+  pair_count : Int
+  broadphase_overlap_count : Int
+  contact_count : Int
+  pairs : Array[RigidBodyWorldPairContact]
+  manifold : CollisionContactManifold
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldPairContact {
+  body_a_id : String
+  body_b_id : String
+  broadphase : CollisionPairProbe
+  contact : CollisionContact
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -372,6 +372,8 @@ test "rigid body heightfield world trace steps multiple bodies" {
   assert_eq(step.status, "world-step-contact")
   assert_eq(step.body_count, 2)
   assert_eq(step.contact_count, 1)
+  assert_eq(step.body_pair_count, 1)
+  assert_eq(step.body_pair_contact_count, 0)
   assert_eq(step.review_count, 0)
   assert_true(step.body_frames[0].status == "world-body-contact-resolved")
   assert_true(step.body_frames[1].status == "world-body-clear")
@@ -379,6 +381,91 @@ test "rigid body heightfield world trace steps multiple bodies" {
   assert_true(step.body_frames[1].after.position.x > 1.0)
   assert_true(step.kinetic_energy_after_j > step.kinetic_energy_before_j)
   assert_true(step.after.bodies[0].state == step.body_frames[0].after)
+}
+
+///|
+test "rigid body world contact schedule skips broadphase clear pairs" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "left",
+          1.0,
+          0.25,
+          vec3(0.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "right",
+          1.0,
+          0.25,
+          vec3(2.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  let schedule = rigid_body_world_contact_schedule(world)
+  assert_eq(schedule.status, "world-contact-clear")
+  assert_eq(schedule.pair_count, 1)
+  assert_eq(schedule.broadphase_overlap_count, 0)
+  assert_eq(schedule.contact_count, 0)
+  assert_eq(schedule.pairs[0].status, "world-pair-broadphase-clear")
+  assert_eq(schedule.pairs[0].contact.status, "broadphase-clear")
+  assert_true(nearly_equal(schedule.pairs[0].contact.normal.length(), 1.0))
+}
+
+///|
+test "rigid body world contact schedule records body contacts" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "box-a",
+          1.0,
+          0.0,
+          vec3(0.0, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+        collision_shape=collision_box("box-a-shape", vec3(0.5, 0.5, 0.5)),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "box-b",
+          1.0,
+          0.0,
+          vec3(0.9, 0.0, 2.0),
+          vec3(0.0, 0.0, 0.0),
+        ),
+        collision_shape=collision_box("box-b-shape", vec3(0.5, 0.5, 0.5)),
+      ),
+    ],
+  )
+  let schedule = rigid_body_world_contact_schedule(world)
+  assert_eq(schedule.status, "world-contact-scheduled")
+  assert_eq(schedule.pair_count, 1)
+  assert_eq(schedule.broadphase_overlap_count, 1)
+  assert_eq(schedule.contact_count, 1)
+  assert_eq(schedule.manifold.status, "single-contact")
+  assert_eq(schedule.pairs[0].status, "world-pair-contact")
+  assert_eq(schedule.pairs[0].contact.status, "box-box-contact")
+  let step = rigid_body_heightfield_world_step(world, field, 0.1)
+  assert_eq(step.status, "world-step-body-contact")
+  assert_eq(step.contact_count, 0)
+  assert_eq(step.body_pair_contact_count, 1)
+  assert_eq(step.body_contact_schedule.manifold.status, "single-contact")
 }
 
 ///|

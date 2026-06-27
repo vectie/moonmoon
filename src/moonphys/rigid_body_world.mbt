@@ -1,7 +1,28 @@
 ///|
 pub(all) struct RigidBodyWorldBody {
   state : RigidBodyState
+  collision_shape : CollisionShape
   external_force_n : Vec3
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyWorldPairContact {
+  body_a_id : String
+  body_b_id : String
+  broadphase : CollisionPairProbe
+  contact : CollisionContact
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyWorldContactSchedule {
+  world_id : String
+  pair_count : Int
+  broadphase_overlap_count : Int
+  contact_count : Int
+  pairs : Array[RigidBodyWorldPairContact]
+  manifold : CollisionContactManifold
+  status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -38,6 +59,10 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   after : RigidBodyHeightfieldWorld
   body_count : Int
   contact_count : Int
+  body_pair_count : Int
+  body_pair_overlap_count : Int
+  body_pair_contact_count : Int
+  body_contact_schedule : RigidBodyWorldContactSchedule
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -61,9 +86,13 @@ pub(all) struct RigidBodyHeightfieldWorldTrace {
 ///|
 pub fn rigid_body_world_body(
   state : RigidBodyState,
+  collision_shape? : CollisionShape = collision_sphere(
+    "\{state.body_id}/sphere",
+    state.collision_radius_m,
+  ),
   external_force_n? : Vec3 = vec3(0.0, 0.0, 0.0),
 ) -> RigidBodyWorldBody {
-  { state, external_force_n }
+  { state, collision_shape, external_force_n }
 }
 
 ///|
@@ -75,6 +104,132 @@ pub fn rigid_body_heightfield_world(
   bodies : Array[RigidBodyWorldBody],
 ) -> RigidBodyHeightfieldWorld {
   { world_id, environment, material, heightfield_id: field.field_id, bodies }
+}
+
+///|
+fn rigid_body_world_transform(body : RigidBodyWorldBody) -> Transform3 {
+  transform3(identity_basis3(), body.state.position)
+}
+
+///|
+fn rigid_body_world_pair_status(
+  broadphase : CollisionPairProbe,
+  contact : CollisionContact,
+) -> String {
+  if !broadphase.overlapping {
+    "world-pair-broadphase-clear"
+  } else if contact.in_contact {
+    "world-pair-contact"
+  } else {
+    "world-pair-narrowphase-clear"
+  }
+}
+
+///|
+fn rigid_body_world_pair_normal(
+  body_a : RigidBodyWorldBody,
+  body_b : RigidBodyWorldBody,
+) -> Vec3 {
+  let delta = body_b.state.position.sub(body_a.state.position)
+  let length = delta.length()
+  if length > 0.0 {
+    delta.scale(1.0 / length)
+  } else {
+    vec3(1.0, 0.0, 0.0)
+  }
+}
+
+///|
+fn rigid_body_world_pair_contact(
+  body_a : RigidBodyWorldBody,
+  body_b : RigidBodyWorldBody,
+) -> RigidBodyWorldPairContact {
+  let transform_a = rigid_body_world_transform(body_a)
+  let transform_b = rigid_body_world_transform(body_b)
+  let broadphase = collision_pair_probe(
+    body_a.collision_shape,
+    transform_a,
+    body_b.collision_shape,
+    transform_b,
+  )
+  let contact = if broadphase.overlapping {
+    collision_pair_contact(
+      body_a.collision_shape,
+      transform_a,
+      body_b.collision_shape,
+      transform_b,
+    )
+  } else {
+    {
+      shape_a_id: body_a.collision_shape.shape_id,
+      shape_b_id: body_b.collision_shape.shape_id,
+      point: body_a.state.position,
+      normal: rigid_body_world_pair_normal(body_a, body_b),
+      separation_m: broadphase.separation_m,
+      penetration_depth_m: 0.0,
+      in_contact: false,
+      status: "broadphase-clear",
+    }
+  }
+  {
+    body_a_id: body_a.state.body_id,
+    body_b_id: body_b.state.body_id,
+    broadphase,
+    contact,
+    status: rigid_body_world_pair_status(broadphase, contact),
+  }
+}
+
+///|
+fn rigid_body_world_contact_schedule_status(
+  overlap_count : Int,
+  contact_count : Int,
+) -> String {
+  if contact_count > 0 {
+    "world-contact-scheduled"
+  } else if overlap_count > 0 {
+    "world-contact-narrowphase-clear"
+  } else {
+    "world-contact-clear"
+  }
+}
+
+///|
+pub fn rigid_body_world_contact_schedule(
+  world : RigidBodyHeightfieldWorld,
+) -> RigidBodyWorldContactSchedule {
+  let pairs : Array[RigidBodyWorldPairContact] = []
+  let contacts : Array[CollisionContact] = []
+  let mut overlap_count = 0
+  let mut contact_count = 0
+  for i in 0..<world.bodies.length() {
+    for j in (i + 1)..<world.bodies.length() {
+      let pair = rigid_body_world_pair_contact(world.bodies[i], world.bodies[j])
+      if pair.broadphase.overlapping {
+        overlap_count += 1
+      }
+      if pair.contact.in_contact {
+        contact_count += 1
+      }
+      pairs.push(pair)
+      contacts.push(pair.contact)
+    }
+  }
+  let manifold = collision_contact_manifold(
+    "\{world.world_id}/body-pairs",
+    contacts,
+  )
+  {
+    world_id: world.world_id,
+    pair_count: pairs.length(),
+    broadphase_overlap_count: overlap_count,
+    contact_count,
+    pairs,
+    manifold,
+    status: rigid_body_world_contact_schedule_status(
+      overlap_count, contact_count,
+    ),
+  }
 }
 
 ///|
@@ -148,11 +303,14 @@ fn rigid_body_heightfield_world_step_status(
   field_matches : Bool,
   contact_count : Int,
   review_count : Int,
+  body_pair_contact_count : Int,
 ) -> String {
   if !field_matches {
     "world-heightfield-mismatch-review"
   } else if review_count > 0 {
     "world-step-review"
+  } else if body_pair_contact_count > 0 {
+    "world-step-body-contact"
   } else if contact_count > 0 {
     "world-step-contact"
   } else {
@@ -193,6 +351,7 @@ pub fn rigid_body_heightfield_world_step(
     body_frames.push(frame)
     next_bodies.push({
       state: frame.after,
+      collision_shape: body.collision_shape,
       external_force_n: body.external_force_n,
     })
   }
@@ -203,6 +362,7 @@ pub fn rigid_body_heightfield_world_step(
     heightfield_id: world.heightfield_id,
     bodies: next_bodies,
   }
+  let contact_schedule = rigid_body_world_contact_schedule(after)
   let field_matches = world.heightfield_id == field.field_id
   {
     frame_index,
@@ -213,12 +373,19 @@ pub fn rigid_body_heightfield_world_step(
     after,
     body_count: next_bodies.length(),
     contact_count,
+    body_pair_count: contact_schedule.pair_count,
+    body_pair_overlap_count: contact_schedule.broadphase_overlap_count,
+    body_pair_contact_count: contact_schedule.contact_count,
+    body_contact_schedule: contact_schedule,
     review_count,
     kinetic_energy_before_j: energy_before,
     kinetic_energy_after_j: energy_after,
     kinetic_energy_delta_j: energy_after - energy_before,
     status: rigid_body_heightfield_world_step_status(
-      field_matches, contact_count, review_count,
+      field_matches,
+      contact_count,
+      review_count,
+      contact_schedule.contact_count,
     ),
   }
 }
