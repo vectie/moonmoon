@@ -60,8 +60,12 @@ def main(argv: list[str]) -> int:
   require(visuals["base_link"]["kind"] == "SourceMeshGeometry", "base mesh")
   require(visuals["base_link"]["mesh_path"].endswith("base.obj"), "base mesh path")
   require(visuals["base_link"]["size_m"] == {"x": 0.24, "y": 0.2, "z": 0.04}, "base mesh bounds")
+  require(visuals["base_link"]["origin_xyz_m"] == {"x": 0, "y": 0, "z": 0}, "base mesh origin")
   require(visuals["chest_link"]["kind"] == "SourceBoxGeometry", "chest box")
+  require(visuals["chest_link"]["origin_xyz_m"] == {"x": 0, "y": 0, "z": 0.08}, "chest origin")
   require(visuals["left_leg_1"]["kind"] == "SourceCylinderGeometry", "leg cylinder")
+  require(visuals["left_leg_1"]["radius_m"] == 0.045, "leg cylinder radius")
+  require(visuals["left_leg_1"]["length_m"] == 0.14, "leg cylinder length")
 
   limits = {item["joint_name"]: item for item in report["joint_limits"]}
   require(len(limits) == 24, f"unexpected joint limits: {sorted(limits)}")

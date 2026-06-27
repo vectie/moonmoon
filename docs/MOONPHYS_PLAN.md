@@ -34,6 +34,8 @@ evidence.
 - A source-sync verifier parses sibling Moonrobo `robot.json` and
   `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
   collision tags, and high-control limits cannot silently drift from the source.
+  It also verifies visual geometry kind, origin, dimensions, mesh path, and
+  placeholder mesh bounds from the referenced OBJ vertices.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
@@ -359,7 +361,8 @@ dry-run command plan, physics-profile, static-support, dynamic-stability,
 joint-control, inertial/collision, link-pose, and MoonClaw review-task exports
 and verifiers implemented. The dossier build also enforces sibling Moonrobo
 source sync for robot.json, URDF joint limits, visual links, missing
-inertial/collision tags, and high-control limits.
+inertial/collision tags, URDF visual geometry details, placeholder mesh
+bounds, and high-control limits.
 
 Add generated outputs to the dossier build.
 

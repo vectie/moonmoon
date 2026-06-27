@@ -37,6 +37,63 @@ def float_attr(element: ET.Element, name: str) -> float:
   return float(text)
 
 
+def parse_vec3(
+  text: str | None,
+  context: str,
+  default: tuple[float, float, float] | None = None,
+) -> tuple[float, float, float]:
+  if text is None:
+    if default is not None:
+      return default
+    fail(f"missing vector for {context}")
+  parts = text.split()
+  if len(parts) != 3:
+    fail(f"expected 3-vector for {context}: {text!r}")
+  return (float(parts[0]), float(parts[1]), float(parts[2]))
+
+
+def report_vec3(value: dict[str, Any]) -> tuple[float, float, float]:
+  return (
+    float(value.get("x", 0.0)),
+    float(value.get("y", 0.0)),
+    float(value.get("z", 0.0)),
+  )
+
+
+def close_vec3(
+  actual: tuple[float, float, float],
+  expected: tuple[float, float, float],
+) -> bool:
+  return all(close(a, e) for a, e in zip(actual, expected))
+
+
+def scaled_mesh_bounds(
+  path: Path,
+  scale: tuple[float, float, float],
+) -> tuple[float, float, float]:
+  vertices: list[tuple[float, float, float]] = []
+  with path.open("r", encoding="utf-8") as handle:
+    for line in handle:
+      if not line.startswith("v "):
+        continue
+      parts = line.split()
+      if len(parts) < 4:
+        fail(f"malformed OBJ vertex in {path}: {line.strip()!r}")
+      vertices.append(
+        (
+          float(parts[1]) * scale[0],
+          float(parts[2]) * scale[1],
+          float(parts[3]) * scale[2],
+        )
+      )
+  if not vertices:
+    fail(f"mesh has no vertices: {path}")
+  xs = [vertex[0] for vertex in vertices]
+  ys = [vertex[1] for vertex in vertices]
+  zs = [vertex[2] for vertex in vertices]
+  return (max(xs) - min(xs), max(ys) - min(ys), max(zs) - min(zs))
+
+
 def urdf_facts(path: Path) -> dict[str, Any]:
   tree = ET.parse(path)
   robot = tree.getroot()
@@ -59,12 +116,77 @@ def urdf_facts(path: Path) -> dict[str, Any]:
     for link in links
     if link.find("visual") is not None
   }
+  visuals: dict[str, dict[str, Any]] = {}
+  for link in links:
+    link_name = link.attrib.get("name", "")
+    visual = link.find("visual")
+    if visual is None:
+      continue
+    origin = visual.find("origin")
+    origin_xyz = (0.0, 0.0, 0.0)
+    if origin is not None:
+      origin_xyz = parse_vec3(
+        origin.attrib.get("xyz"),
+        f"{link_name} visual origin xyz",
+      )
+      rpy = parse_vec3(
+        origin.attrib.get("rpy"),
+        f"{link_name} visual origin rpy",
+        default=(0.0, 0.0, 0.0),
+      )
+      if not close_vec3(rpy, (0.0, 0.0, 0.0)):
+        fail(f"{link_name} visual rpy is no longer representable by source audit")
+    geometry = visual.find("geometry")
+    if geometry is None:
+      fail(f"{link_name} visual has no geometry")
+    mesh = geometry.find("mesh")
+    box = geometry.find("box")
+    cylinder = geometry.find("cylinder")
+    if mesh is not None:
+      filename = mesh.attrib.get("filename")
+      if filename is None:
+        fail(f"{link_name} mesh visual has no filename")
+      mesh_path = (path.parent / filename).resolve()
+      scale = parse_vec3(
+        mesh.attrib.get("scale"),
+        f"{link_name} mesh scale",
+        default=(1.0, 1.0, 1.0),
+      )
+      visuals[link_name] = {
+        "kind": "SourceMeshGeometry",
+        "origin_xyz_m": origin_xyz,
+        "mesh_path": mesh_path,
+        "size_m": scaled_mesh_bounds(mesh_path, scale),
+        "radius_m": 0.0,
+        "length_m": 0.0,
+      }
+    elif box is not None:
+      visuals[link_name] = {
+        "kind": "SourceBoxGeometry",
+        "origin_xyz_m": origin_xyz,
+        "mesh_path": None,
+        "size_m": parse_vec3(box.attrib.get("size"), f"{link_name} box size"),
+        "radius_m": 0.0,
+        "length_m": 0.0,
+      }
+    elif cylinder is not None:
+      visuals[link_name] = {
+        "kind": "SourceCylinderGeometry",
+        "origin_xyz_m": origin_xyz,
+        "mesh_path": None,
+        "size_m": (0.0, 0.0, 0.0),
+        "radius_m": float_attr(cylinder, "radius"),
+        "length_m": float_attr(cylinder, "length"),
+      }
+    else:
+      fail(f"{link_name} visual geometry kind is unsupported")
   return {
     "robot_name": robot.attrib.get("name", ""),
     "link_count": len(links),
     "joint_count": len(joints),
     "visual_count": len(robot.findall(".//visual")),
     "visual_links": visual_links,
+    "visuals": visuals,
     "collision_count": len(robot.findall(".//collision")),
     "inertial_count": len(robot.findall(".//inertial")),
     "limits": limits,
@@ -148,6 +270,7 @@ def check_urdf(report: dict[str, Any], facts: dict[str, Any]) -> None:
     )
   if report.get("visual_geometry_count") != facts["visual_count"]:
     fail("URDF visual count does not match source-model report")
+  check_visual_geometries(report, facts["visuals"])
   report_limits = {
     item.get("joint_name"): item
     for item in report.get("joint_limits", [])
@@ -159,6 +282,44 @@ def check_urdf(report: dict[str, Any], facts: dict[str, Any]) -> None:
     for key in ["lower_rad", "upper_rad", "effort_nm", "velocity_rad_s"]:
       if not close(float(reported.get(key, 0.0)), source_limit[key]):
         fail(f"{name} {key} drifted")
+
+
+def check_visual_geometries(
+  report: dict[str, Any],
+  visuals: dict[str, dict[str, Any]],
+) -> None:
+  reported_visuals = {
+    item.get("link_name"): item
+    for item in report.get("visual_geometries", [])
+  }
+  if set(reported_visuals) != set(visuals):
+    fail("URDF visual geometry names drifted")
+  for link_name, source_visual in visuals.items():
+    reported = reported_visuals[link_name]
+    if reported.get("kind") != source_visual["kind"]:
+      fail(f"{link_name} visual kind drifted")
+    if not close_vec3(
+      report_vec3(reported.get("origin_xyz_m", {})),
+      source_visual["origin_xyz_m"],
+    ):
+      fail(f"{link_name} visual origin drifted")
+    if not close_vec3(
+      report_vec3(reported.get("size_m", {})),
+      source_visual["size_m"],
+    ):
+      fail(f"{link_name} visual size drifted")
+    if not close(float(reported.get("radius_m", 0.0)), source_visual["radius_m"]):
+      fail(f"{link_name} visual radius drifted")
+    if not close(float(reported.get("length_m", 0.0)), source_visual["length_m"]):
+      fail(f"{link_name} visual length drifted")
+    mesh_path = source_visual["mesh_path"]
+    if mesh_path is None:
+      if reported.get("mesh_path") != "":
+        fail(f"{link_name} should not carry a mesh path")
+    else:
+      reported_path = (ROOT / reported.get("mesh_path", "")).resolve()
+      if reported_path != mesh_path:
+        fail(f"{link_name} mesh path drifted")
 
 
 def check_command_plan(
