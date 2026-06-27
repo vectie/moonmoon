@@ -763,6 +763,76 @@ test "angular acceleration uses diagonal inertia" {
 }
 
 ///|
+test "hinge axis assessment accepts aligned and reversed axes" {
+  let constraint = rigid_body_hinge_axis_constraint(
+    "knee-hinge",
+    "upper",
+    "lower",
+    local_axis_a=vec3(0.0, 1.0, 0.0),
+    local_axis_b=vec3(0.0, -1.0, 0.0),
+  )
+  let upper = rigid_body_angular_state(
+    "upper",
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let lower = rigid_body_angular_state(
+    "lower",
+    identity_basis3(),
+    vec3(0.0, 2.0, 0.0),
+  )
+  let assessment = rigid_body_hinge_axis_assessment(constraint, upper, lower)
+  assert_eq(assessment.status, "hinge-axis-spinning")
+  assert_true(nearly_equal(assessment.angular_error_rad, 0.0))
+  assert_true(nearly_equal(assessment.alignment_dot, 1.0))
+  assert_true(nearly_equal(assessment.relative_axis_velocity_rad_s, 2.0))
+  assert_true(assessment.world_axis_a == vec3(0.0, 1.0, 0.0))
+  assert_true(assessment.world_axis_b == vec3(0.0, 1.0, 0.0))
+}
+
+///|
+test "hinge axis assessment reports angular misalignment" {
+  let constraint = rigid_body_hinge_axis_constraint(
+    "hip-hinge",
+    "pelvis",
+    "thigh",
+    local_axis_a=vec3(0.0, 1.0, 0.0),
+    local_axis_b=vec3(0.0, 1.0, 0.0),
+    stiffness=0.5,
+  )
+  let pelvis = rigid_body_angular_state(
+    "pelvis",
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let thigh = rigid_body_angular_state(
+    "thigh",
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let assessment = rigid_body_hinge_axis_assessment(constraint, pelvis, thigh)
+  assert_eq(assessment.status, "hinge-axis-misaligned")
+  assert_true(nearly_equal(assessment.alignment_dot, 0.0))
+  assert_true(
+    nearly_equal(assessment.angular_error_rad, 3.141592653589793 / 2.0),
+  )
+  assert_true(
+    nearly_equal(assessment.correction_angle_rad, 3.141592653589793 / 4.0),
+  )
+  assert_true(nearly_equal(assessment.correction_axis.length(), 1.0))
+  assert_true(
+    nearly_equal(
+      if assessment.correction_axis.z < 0.0 {
+        0.0 - assessment.correction_axis.z
+      } else {
+        assessment.correction_axis.z
+      },
+      1.0,
+    ),
+  )
+}
+
+///|
 test "primitive diagonal inertia uses solid shape formulas" {
   let sphere = sphere_diagonal_inertia("sphere", 10.0, 2.0)
   assert_true(nearly_equal(sphere.diagonal_kg_m2.x, 16.0))

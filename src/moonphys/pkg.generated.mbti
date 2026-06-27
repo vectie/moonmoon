@@ -121,6 +121,10 @@ pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield,
 
 pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
 
+pub fn rigid_body_hinge_axis_assessment(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyAngularState) -> RigidBodyHingeAxisAssessment
+
+pub fn rigid_body_hinge_axis_constraint(String, String, String, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeAxisConstraint
+
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 
 pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
@@ -602,6 +606,31 @@ pub(all) struct RigidBodyHeightfieldWorldTrace {
   final_world : RigidBodyHeightfieldWorld
   status : String
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHingeAxisAssessment {
+  constraint_id : String
+  body_a_id : String
+  body_b_id : String
+  local_axis_a : Vec3
+  local_axis_b : Vec3
+  world_axis_a : Vec3
+  world_axis_b : Vec3
+  alignment_dot : Double
+  angular_error_rad : Double
+  relative_axis_velocity_rad_s : Double
+  correction_axis : Vec3
+  correction_angle_rad : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyHingeAxisConstraint {
+  constraint_id : String
+  body_a_id : String
+  body_b_id : String
+  local_axis_a : Vec3
+  local_axis_b : Vec3
+  stiffness : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyInertia {
