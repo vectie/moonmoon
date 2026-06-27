@@ -498,6 +498,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   max_position : @moonphys.Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  max_body_linear_momentum_kg_mps : Double
+  max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
   envelope_status : String
   status : String

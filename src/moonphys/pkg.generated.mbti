@@ -151,6 +151,8 @@ pub fn rigid_body_joint_frame_body(RigidBodyMotionState, RigidBodyInertia) -> Ri
 
 pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
 
+pub fn rigid_body_linear_momentum(RigidBodyState) -> Vec3
+
 pub fn rigid_body_motion_state(String, Double, Double, Vec3, Vec3, Basis3, Vec3) -> RigidBodyMotionState
 
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
@@ -166,6 +168,8 @@ pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceCon
 pub fn rigid_body_world_integrate_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Array[JointMotorFrame], note? : String) -> RigidBodyWorldHingeMotorTrace
 
 pub fn rigid_body_world_integrate_hinge_motors(RigidBodyHeightfieldWorld, JointMotorFrame) -> RigidBodyWorldHingeMotorFrame
+
+pub fn rigid_body_world_linear_momentum(RigidBodyHeightfieldWorld) -> Vec3
 
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
@@ -810,6 +814,7 @@ pub(all) struct RigidBodyWorldBodyEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  max_linear_momentum_kg_mps : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -1002,6 +1007,8 @@ pub(all) struct RigidBodyWorldTraceEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  max_body_linear_momentum_kg_mps : Double
+  max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
   body_envelopes : Array[RigidBodyWorldBodyEnvelope]
   status : String

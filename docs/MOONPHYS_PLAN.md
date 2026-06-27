@@ -71,6 +71,9 @@ evidence.
   correction, and impulse accounting.
   Moonphys also exposes generic hinge-axis alignment and
   inverse-inertia weighted correction estimates over angular body states.
+  Generic world-trace envelopes include per-body and whole-world linear
+  momentum bounds alongside position, speed, contact, hinge, and energy
+  summaries.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
@@ -84,8 +87,8 @@ evidence.
   error, impulse review, Moonphys world hinge constraint replay status, and
   motor-driven heightfield world replay contact/hinge-resolution summaries.
   The same report also carries a generic Moonphys world-trace envelope for
-  body sample count, position bounds, max speed, max kinetic energy, and max
-  per-frame kinetic-energy delta.
+  body sample count, position bounds, max speed, max kinetic energy, max
+  body/world linear momentum, and max per-frame kinetic-energy delta.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -606,8 +609,8 @@ Next `moonphys` capabilities:
 - generic motor-driven heightfield world trace replay that composes hinge motor
   drive with fixed-step world contact/constraint resolution (implemented)
 - generic world-trace envelope summaries for body bounds, max speed, max
-  kinetic energy, frame energy delta, contacts, hinge resolutions, and review
-  counts (implemented)
+  kinetic energy, linear momentum, frame energy delta, contacts, hinge
+  resolutions, and review counts (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

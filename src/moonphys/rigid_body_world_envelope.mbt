@@ -6,6 +6,7 @@ pub(all) struct RigidBodyWorldBodyEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  max_linear_momentum_kg_mps : Double
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -22,6 +23,8 @@ pub(all) struct RigidBodyWorldTraceEnvelope {
   max_position : Vec3
   max_speed_mps : Double
   max_kinetic_energy_j : Double
+  max_body_linear_momentum_kg_mps : Double
+  max_world_linear_momentum_kg_mps : Double
   max_frame_kinetic_energy_delta_j : Double
   body_envelopes : Array[RigidBodyWorldBodyEnvelope]
   status : String
@@ -100,6 +103,7 @@ fn body_envelope_find_index(
 fn body_envelope_from_state(
   state : RigidBodyState,
 ) -> RigidBodyWorldBodyEnvelope {
+  let momentum = rigid_body_linear_momentum(state).length()
   {
     body_id: state.body_id,
     sample_count: 1,
@@ -107,6 +111,7 @@ fn body_envelope_from_state(
     max_position: state.position,
     max_speed_mps: state.velocity.length(),
     max_kinetic_energy_j: rigid_body_linear_kinetic_energy(state),
+    max_linear_momentum_kg_mps: momentum,
     status: body_envelope_status(1),
   }
 }
@@ -129,6 +134,10 @@ fn body_envelope_with_state(
     max_kinetic_energy_j: envelope_max_double(
       envelope.max_kinetic_energy_j,
       rigid_body_linear_kinetic_energy(state),
+    ),
+    max_linear_momentum_kg_mps: envelope_max_double(
+      envelope.max_linear_momentum_kg_mps,
+      rigid_body_linear_momentum(state).length(),
     ),
     status: body_envelope_status(sample_count),
   }
@@ -167,6 +176,7 @@ fn trace_envelope_bounds(
   let mut sample_count = 0
   let mut max_speed = 0.0
   let mut max_energy = 0.0
+  let mut max_body_momentum = 0.0
   let mut min_position = vec3(0.0, 0.0, 0.0)
   let mut max_position = vec3(0.0, 0.0, 0.0)
   let mut has_position = false
@@ -174,6 +184,10 @@ fn trace_envelope_bounds(
     sample_count += envelope.sample_count
     max_speed = envelope_max_double(max_speed, envelope.max_speed_mps)
     max_energy = envelope_max_double(max_energy, envelope.max_kinetic_energy_j)
+    max_body_momentum = envelope_max_double(
+      max_body_momentum,
+      envelope.max_linear_momentum_kg_mps,
+    )
     if has_position {
       min_position = envelope_min_vec3(min_position, envelope.min_position)
       max_position = envelope_max_vec3(max_position, envelope.max_position)
@@ -195,10 +209,23 @@ fn trace_envelope_bounds(
     max_position,
     max_speed_mps: max_speed,
     max_kinetic_energy_j: max_energy,
+    max_body_linear_momentum_kg_mps: max_body_momentum,
+    max_world_linear_momentum_kg_mps: 0.0,
     max_frame_kinetic_energy_delta_j: 0.0,
     body_envelopes,
     status: trace_envelope_status(sample_count, 0),
   }
+}
+
+///|
+pub fn rigid_body_world_linear_momentum(
+  world : RigidBodyHeightfieldWorld,
+) -> Vec3 {
+  let mut momentum = vec3(0.0, 0.0, 0.0)
+  for body in world.bodies {
+    momentum = momentum.add(rigid_body_linear_momentum(body.state))
+  }
+  momentum
 }
 
 ///|
@@ -207,12 +234,19 @@ pub fn rigid_body_heightfield_world_trace_envelope(
 ) -> RigidBodyWorldTraceEnvelope {
   let body_envelopes : Array[RigidBodyWorldBodyEnvelope] = []
   trace_envelope_add_world(body_envelopes, trace.initial_world)
+  let mut max_world_momentum = rigid_body_world_linear_momentum(
+    trace.initial_world,
+  ).length()
   let mut max_energy_delta = 0.0
   let mut contact_count = 0
   let mut hinge_count = 0
   let mut review_count = 0
   for frame in trace.frames {
     trace_envelope_add_world(body_envelopes, frame.after)
+    max_world_momentum = envelope_max_double(
+      max_world_momentum,
+      rigid_body_world_linear_momentum(frame.after).length(),
+    )
     contact_count += frame.contact_count
     hinge_count += frame.resolved_hinge_constraint_count
     review_count += frame.review_count
@@ -234,6 +268,8 @@ pub fn rigid_body_heightfield_world_trace_envelope(
     max_position: bounds.max_position,
     max_speed_mps: bounds.max_speed_mps,
     max_kinetic_energy_j: bounds.max_kinetic_energy_j,
+    max_body_linear_momentum_kg_mps: bounds.max_body_linear_momentum_kg_mps,
+    max_world_linear_momentum_kg_mps: max_world_momentum,
     max_frame_kinetic_energy_delta_j: max_energy_delta,
     body_envelopes,
     status: trace_envelope_status(bounds.body_sample_count, review_count),
@@ -246,9 +282,16 @@ pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(
 ) -> RigidBodyWorldTraceEnvelope {
   let body_envelopes : Array[RigidBodyWorldBodyEnvelope] = []
   trace_envelope_add_world(body_envelopes, trace.initial_world)
+  let mut max_world_momentum = rigid_body_world_linear_momentum(
+    trace.initial_world,
+  ).length()
   let mut max_energy_delta = 0.0
   for frame in trace.frames {
     trace_envelope_add_world(body_envelopes, frame.after)
+    max_world_momentum = envelope_max_double(
+      max_world_momentum,
+      rigid_body_world_linear_momentum(frame.after).length(),
+    )
     max_energy_delta = envelope_max_double(
       max_energy_delta,
       abs_double(frame.world_step.kinetic_energy_delta_j),
@@ -267,6 +310,8 @@ pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(
     max_position: bounds.max_position,
     max_speed_mps: bounds.max_speed_mps,
     max_kinetic_energy_j: bounds.max_kinetic_energy_j,
+    max_body_linear_momentum_kg_mps: bounds.max_body_linear_momentum_kg_mps,
+    max_world_linear_momentum_kg_mps: max_world_momentum,
     max_frame_kinetic_energy_delta_j: max_energy_delta,
     body_envelopes,
     status: trace_envelope_status(bounds.body_sample_count, trace.review_count),

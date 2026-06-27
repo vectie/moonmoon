@@ -687,6 +687,8 @@
       },
       "max_speed_mps": 1.2074667066611866,
       "max_kinetic_energy_j": 1.1080616442483613,
+      "max_body_linear_momentum_kg_mps": 1.8353493941250039,
+      "max_world_linear_momentum_kg_mps": 23.795797235028104,
       "max_frame_kinetic_energy_delta_j": 2.050170526416192,
       "envelope_status": "world-trace-envelope-review",
       "status": "world-heightfield-hinge-motor-trace-review"

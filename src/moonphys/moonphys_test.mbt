@@ -1170,6 +1170,8 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   )
   assert_true(envelope.max_speed_mps >= 0.0)
   assert_true(envelope.max_kinetic_energy_j >= 0.0)
+  assert_true(envelope.max_body_linear_momentum_kg_mps >= 0.0)
+  assert_true(envelope.max_world_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
   assert_true(envelope.min_position.z >= 0.0)
   assert_true(envelope.max_position.x >= 2.0)
@@ -1216,7 +1218,21 @@ test "rigid body heightfield world trace is deterministic" {
   assert_true(envelope.contact_count >= trace.frames[0].contact_count)
   assert_true(envelope.max_speed_mps >= 0.0)
   assert_true(envelope.max_kinetic_energy_j >= 0.0)
+  assert_true(envelope.max_body_linear_momentum_kg_mps >= 0.0)
+  assert_true(envelope.max_world_linear_momentum_kg_mps >= 0.0)
   assert_true(envelope.max_frame_kinetic_energy_delta_j >= 0.0)
+}
+
+///|
+test "rigid body linear momentum follows mass and velocity" {
+  let state = rigid_body_state(
+    "body",
+    3.0,
+    0.2,
+    vec3(0.0, 0.0, 1.0),
+    vec3(2.0, -1.0, 0.5),
+  )
+  assert_true(rigid_body_linear_momentum(state) == vec3(6.0, -3.0, 1.5))
 }
 
 ///|

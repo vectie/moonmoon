@@ -84,6 +84,11 @@ pub fn rigid_body_linear_kinetic_energy(state : RigidBodyState) -> Double {
 }
 
 ///|
+pub fn rigid_body_linear_momentum(state : RigidBodyState) -> Vec3 {
+  state.velocity.scale(state.mass_kg)
+}
+
+///|
 pub fn integrate_rigid_body_gravity(
   state : RigidBodyState,
   environment : PhysicsEnvironment,

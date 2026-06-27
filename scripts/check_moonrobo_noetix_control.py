@@ -106,6 +106,10 @@ def main() -> None:
         fail("hinge motor world trace envelope should expose max speed")
     if hinge_motor_world_trace.get("max_kinetic_energy_j", -1) < 0:
         fail("hinge motor world trace envelope should expose max kinetic energy")
+    if hinge_motor_world_trace.get("max_body_linear_momentum_kg_mps", -1) < 0:
+        fail("hinge motor world trace envelope should expose max body momentum")
+    if hinge_motor_world_trace.get("max_world_linear_momentum_kg_mps", -1) < 0:
+        fail("hinge motor world trace envelope should expose max world momentum")
     if hinge_motor_world_trace.get("max_frame_kinetic_energy_delta_j", -1) < 0:
         fail("hinge motor world trace envelope should expose max energy delta")
     if "world-trace-envelope" not in hinge_motor_world_trace.get(
