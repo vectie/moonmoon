@@ -321,6 +321,8 @@ pub fn rigid_body_world_resolve_constraints(
     heightfield_id: world.heightfield_id,
     bodies,
     constraints: world.constraints,
+    motion_bodies: world.motion_bodies,
+    hinge_constraints: world.hinge_constraints,
   }
   {
     world_id: world.world_id,

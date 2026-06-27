@@ -64,13 +64,15 @@ evidence.
   response with split penetration correction plus normal/friction impulse
   accounting. World replay also supports generic distance constraints between
   anchored points on named bodies with inverse-mass weighted correction and
-  constraint-axis impulse accounting, plus generic hinge-axis alignment and
+  constraint-axis impulse accounting, plus generic hinge constraints over
+  motion bodies with position/axis projection, inverse-inertia weighted angular
+  correction, and impulse accounting.
+  Moonphys also exposes generic hinge-axis alignment and
   inverse-inertia weighted correction estimates over angular body states.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
-  constraint solving inside world replay and actuated articulated coupled
-  dynamics remain future work.
+  integration with actuated articulated coupled dynamics remains future work.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -520,12 +522,12 @@ Mass, inertia, and authoritative collision tags are still absent from the
 referenced model, so the evidence remains review-only.
 Moonphys multi-body heightfield world replay currently composes rigid bodies
 with shared terrain contact, scheduled body-pair contacts, pairwise contact
-response, and anchored-point distance constraints; rotational joints and
-actuated articulated dynamics remain future work. Moonphys can now assess
-hinge-axis alignment and estimate inverse-inertia weighted corrections from
-angular body states, and can compose hinge-joint position/axis evidence from
-rigid body motion states into multi-joint frame evidence, but it does not yet
-solve angular constraints inside world replay.
+response, anchored-point distance constraints, and generic hinge constraints
+over motion bodies; actuated articulated dynamics remain future work.
+Moonphys can now assess hinge-axis alignment, estimate inverse-inertia weighted
+corrections from angular body states, compose hinge-joint position/axis
+evidence from rigid body motion states into multi-joint frame evidence, and
+project hinge position/orientation corrections inside world replay.
 
 Only after the kinematic trace is useful, expand `moonphys`.
 
@@ -566,6 +568,8 @@ Next `moonphys` capabilities:
 - generic hinge-joint assessment that composes anchored position and hinge-axis
   correction evidence from rigid body motion states (implemented)
 - generic hinge-joint frame assessment over multi-body joint sets
+  (implemented)
+- generic hinge constraints inside heightfield world replay over motion bodies
   (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)

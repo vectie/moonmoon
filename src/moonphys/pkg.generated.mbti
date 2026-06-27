@@ -113,7 +113,7 @@ pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactMod
 
 pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
 
-pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody], constraints? : Array[RigidBodyWorldDistanceConstraint]) -> RigidBodyHeightfieldWorld
+pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody], constraints? : Array[RigidBodyWorldDistanceConstraint], motion_bodies? : Array[RigidBodyJointFrameBody], hinge_constraints? : Array[RigidBodyHingeJointConstraint]) -> RigidBodyHeightfieldWorld
 
 pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
 
@@ -154,6 +154,8 @@ pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceCon
 pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
 
 pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
+
+pub fn rigid_body_world_resolve_hinge_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldHingeConstraintFrame
 
 pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
@@ -582,6 +584,8 @@ pub(all) struct RigidBodyHeightfieldWorld {
   heightfield_id : String
   bodies : Array[RigidBodyWorldBody]
   constraints : Array[RigidBodyWorldDistanceConstraint]
+  motion_bodies : Array[RigidBodyJointFrameBody]
+  hinge_constraints : Array[RigidBodyHingeJointConstraint]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyHeightfieldWorldStep {
@@ -601,6 +605,9 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   constraint_count : Int
   resolved_constraint_count : Int
   constraint_resolution : RigidBodyWorldConstraintFrame
+  hinge_constraint_count : Int
+  resolved_hinge_constraint_count : Int
+  hinge_constraint_resolution : RigidBodyWorldHingeConstraintFrame
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -800,6 +807,35 @@ pub(all) struct RigidBodyWorldDistanceConstraint {
   anchor_b_m : Vec3
   rest_length_m : Double
   stiffness : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldHingeConstraintFrame {
+  world_id : String
+  hinge_constraint_count : Int
+  resolved_hinge_constraint_count : Int
+  review_count : Int
+  max_position_error_m : Double
+  max_angular_error_rad : Double
+  linear_impulse_ns : Double
+  angular_impulse_nms : Double
+  resolutions : Array[RigidBodyWorldHingeJointResolution]
+  before : RigidBodyHeightfieldWorld
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldHingeJointResolution {
+  joint_id : String
+  before_a : RigidBodyMotionState
+  before_b : RigidBodyMotionState
+  assessment : RigidBodyHingeJointAssessment
+  after_a : RigidBodyMotionState
+  after_b : RigidBodyMotionState
+  correction_a_rad : Vec3
+  correction_b_rad : Vec3
+  velocity_delta_a_rad_s : Vec3
+  velocity_delta_b_rad_s : Vec3
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RigidBodyWorldPairContact {

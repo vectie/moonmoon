@@ -692,6 +692,148 @@ test "rigid body heightfield world step applies constraints" {
 }
 
 ///|
+test "rigid body world resolves hinge constraints on motion bodies" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let root_state = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper_state = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(3.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(root_state.linear),
+      rigid_body_world_body(upper_state.linear),
+    ],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        root_state,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper_state,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    hinge_constraints=[
+      rigid_body_hinge_joint_constraint(
+        "shoulder",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  let resolution = rigid_body_world_resolve_hinge_constraints(world)
+  assert_eq(resolution.status, "world-hinge-constraint-resolved")
+  assert_eq(resolution.hinge_constraint_count, 1)
+  assert_eq(resolution.resolved_hinge_constraint_count, 1)
+  assert_true(nearly_equal(resolution.max_position_error_m, 1.0))
+  assert_true(
+    nearly_equal(resolution.max_angular_error_rad, 3.141592653589793 / 2.0),
+  )
+  assert_true(nearly_equal(resolution.after.bodies[0].state.position.x, 0.5))
+  assert_true(nearly_equal(resolution.after.bodies[1].state.position.x, 2.5))
+  let root_x = resolution.after.motion_bodies[0].state.angular.orientation.mul_vec3(
+    vec3(1.0, 0.0, 0.0),
+  )
+  assert_true(nearly_equal(root_x.x, @math.cos(3.141592653589793 / 4.0)))
+  assert_true(nearly_equal(root_x.y, @math.sin(3.141592653589793 / 4.0)))
+  assert_eq(resolution.resolutions[0].status, "world-hinge-resolved")
+}
+
+///|
+test "rigid body heightfield world step applies hinge constraints" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let root_state = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper_state = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(3.0, 0.0, 2.0),
+    vec3(0.0, 0.0, 0.0),
+    axis_angle_basis3(vec3(0.0, 0.0, 1.0), 3.141592653589793 / 2.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(root_state.linear),
+      rigid_body_world_body(upper_state.linear),
+    ],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        root_state,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper_state,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    hinge_constraints=[
+      rigid_body_hinge_joint_constraint(
+        "shoulder",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  let step = rigid_body_heightfield_world_step(world, field, 0.0)
+  assert_eq(step.status, "world-step-hinge-constrained")
+  assert_eq(step.hinge_constraint_count, 1)
+  assert_eq(step.resolved_hinge_constraint_count, 1)
+  assert_eq(
+    step.hinge_constraint_resolution.status,
+    "world-hinge-constraint-resolved",
+  )
+  assert_true(nearly_equal(step.after.bodies[0].state.position.x, 0.5))
+  assert_true(nearly_equal(step.after.bodies[1].state.position.x, 2.5))
+  assert_true(
+    nearly_equal(
+      step.after.motion_bodies[0].state.angular.orientation.mul_vec3(
+        vec3(1.0, 0.0, 0.0),
+      ).y,
+      @math.sin(3.141592653589793 / 4.0),
+    ),
+  )
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(
