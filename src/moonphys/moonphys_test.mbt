@@ -469,6 +469,87 @@ test "rigid body world contact schedule records body contacts" {
 }
 
 ///|
+test "rigid body world contact resolution separates overlapping bodies" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    material_contact_model("test-material", 0.0, 0.0),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "sphere-a",
+          1.0,
+          0.5,
+          vec3(0.0, 0.0, 2.0),
+          vec3(1.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "sphere-b",
+          1.0,
+          0.5,
+          vec3(0.9, 0.0, 2.0),
+          vec3(0.0 - 1.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  let schedule = rigid_body_world_contact_schedule(world)
+  let resolution = rigid_body_world_resolve_contacts(world, schedule)
+  assert_eq(resolution.status, "world-contact-resolved")
+  assert_eq(resolution.resolved_contact_count, 1)
+  assert_true(nearly_equal(resolution.normal_impulse_ns, 1.0))
+  assert_true(resolution.resolutions[0].status == "world-pair-resolved")
+  assert_true(nearly_equal(resolution.after.bodies[0].state.position.x, -0.05))
+  assert_true(nearly_equal(resolution.after.bodies[1].state.position.x, 0.95))
+  assert_true(nearly_equal(resolution.after.bodies[0].state.velocity.x, 0.0))
+  assert_true(nearly_equal(resolution.after.bodies[1].state.velocity.x, 0.0))
+}
+
+///|
+test "rigid body heightfield world step applies body contact response" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    material_contact_model("test-material", 0.0, 0.0),
+    lunar_environment(),
+    [
+      rigid_body_world_body(
+        rigid_body_state(
+          "sphere-a",
+          1.0,
+          0.5,
+          vec3(0.0, 0.0, 2.0),
+          vec3(1.0, 0.0, 0.0),
+        ),
+      ),
+      rigid_body_world_body(
+        rigid_body_state(
+          "sphere-b",
+          1.0,
+          0.5,
+          vec3(0.9, 0.0, 2.0),
+          vec3(0.0 - 1.0, 0.0, 0.0),
+        ),
+      ),
+    ],
+  )
+  let step = rigid_body_heightfield_world_step(world, field, 0.0)
+  assert_eq(step.status, "world-step-body-contact")
+  assert_eq(step.body_contact_resolution.status, "world-contact-resolved")
+  assert_eq(step.body_contact_resolution.resolved_contact_count, 1)
+  assert_true(step.kinetic_energy_after_j < step.kinetic_energy_before_j)
+  assert_true(nearly_equal(step.after.bodies[0].state.position.x, -0.05))
+  assert_true(nearly_equal(step.after.bodies[1].state.position.x, 0.95))
+  assert_true(nearly_equal(step.after.bodies[0].state.velocity.x, 0.0))
+  assert_true(nearly_equal(step.after.bodies[1].state.velocity.x, 0.0))
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

@@ -59,8 +59,9 @@ evidence.
   carry per-body external forces, resolve terrain contact, and report world
   contact counts plus kinetic-energy deltas. World bodies also carry generic
   collision shapes, broad-phase pair probes, scheduled narrow-phase body
-  contacts, and a body-pair contact manifold. Coupled inter-body response
-  remains future work.
+  contacts, a body-pair contact manifold, and deterministic pair contact
+  response with split penetration correction plus normal/friction impulse
+  accounting. Constraints and articulated coupled dynamics remain future work.
 - Moonphys heightfield collision now samples interpolated terrain elevation and
   surface normals, so Noetix joint-control evidence exposes one right-leg
   velocity-limit review frame instead of hiding slope-induced motion.
@@ -480,7 +481,8 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   primitive-shape diagonal inertia, composite mass properties, rigid-body
   wrench integration with impulse and kinetic-energy accounting, fixed-step
   multi-body heightfield world replay, world broad-phase/narrow-phase body
-  contact scheduling, and joint mechanical power/work accounting implemented;
+  contact scheduling, world body-pair contact response, and joint mechanical
+  power/work accounting implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
@@ -499,8 +501,8 @@ and traction margin review.
 Mass, inertia, and authoritative collision tags are still absent from the
 referenced model, so the evidence remains review-only.
 Moonphys multi-body heightfield world replay currently composes independent
-rigid bodies with shared terrain contact and scheduled body-pair contacts;
-coupled contact response, constraints, and actuated articulated dynamics remain
+rigid bodies with shared terrain contact, scheduled body-pair contacts, and
+pairwise contact response; constraints and actuated articulated dynamics remain
 future work.
 
 Only after the kinematic trace is useful, expand `moonphys`.
@@ -530,6 +532,8 @@ Next `moonphys` capabilities:
   terrain-contact counts, and kinetic-energy accounting (implemented)
 - world body collision shapes, broad-phase pair scheduling, narrow-phase body
   contact scheduling, and body-pair manifold summaries (implemented)
+- world body-pair penetration correction plus normal/friction impulse response
+  (implemented)
 - convex support polygon / center of mass margin helper (implemented)
 - quasistatic support-load distribution for normal force review (implemented)
 - terrain-normal traction force projection (implemented)

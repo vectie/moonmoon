@@ -133,6 +133,8 @@ pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, 
 
 pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
 
+pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
+
 pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
@@ -574,6 +576,7 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   body_pair_overlap_count : Int
   body_pair_contact_count : Int
   body_contact_schedule : RigidBodyWorldContactSchedule
+  body_contact_resolution : RigidBodyWorldContactResolution
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -632,6 +635,18 @@ pub(all) struct RigidBodyWorldBodyFrame {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyWorldContactResolution {
+  world_id : String
+  schedule : RigidBodyWorldContactSchedule
+  resolutions : Array[RigidBodyWorldPairResolution]
+  resolved_contact_count : Int
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  before : RigidBodyHeightfieldWorld
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyWorldContactSchedule {
   world_id : String
   pair_count : Int
@@ -647,6 +662,23 @@ pub(all) struct RigidBodyWorldPairContact {
   body_b_id : String
   broadphase : CollisionPairProbe
   contact : CollisionContact
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWorldPairResolution {
+  body_a_id : String
+  body_b_id : String
+  contact : CollisionContact
+  before_a : RigidBodyState
+  before_b : RigidBodyState
+  after_a : RigidBodyState
+  after_b : RigidBodyState
+  correction_a : Vec3
+  correction_b : Vec3
+  velocity_delta_a : Vec3
+  velocity_delta_b : Vec3
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

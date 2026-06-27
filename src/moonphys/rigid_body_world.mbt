@@ -26,6 +26,37 @@ pub(all) struct RigidBodyWorldContactSchedule {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RigidBodyWorldPairResolution {
+  body_a_id : String
+  body_b_id : String
+  contact : CollisionContact
+  before_a : RigidBodyState
+  before_b : RigidBodyState
+  after_a : RigidBodyState
+  after_b : RigidBodyState
+  correction_a : Vec3
+  correction_b : Vec3
+  velocity_delta_a : Vec3
+  velocity_delta_b : Vec3
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RigidBodyWorldContactResolution {
+  world_id : String
+  schedule : RigidBodyWorldContactSchedule
+  resolutions : Array[RigidBodyWorldPairResolution]
+  resolved_contact_count : Int
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  before : RigidBodyHeightfieldWorld
+  after : RigidBodyHeightfieldWorld
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RigidBodyHeightfieldWorld {
   world_id : String
   environment : PhysicsEnvironment
@@ -63,6 +94,7 @@ pub(all) struct RigidBodyHeightfieldWorldStep {
   body_pair_overlap_count : Int
   body_pair_contact_count : Int
   body_contact_schedule : RigidBodyWorldContactSchedule
+  body_contact_resolution : RigidBodyWorldContactResolution
   review_count : Int
   kinetic_energy_before_j : Double
   kinetic_energy_after_j : Double
@@ -233,6 +265,244 @@ pub fn rigid_body_world_contact_schedule(
 }
 
 ///|
+fn rigid_body_world_body_array_index(
+  bodies : Array[RigidBodyWorldBody],
+  body_id : String,
+) -> Int {
+  for index, body in bodies {
+    if body.state.body_id == body_id {
+      return index
+    }
+  }
+  0
+}
+
+///|
+fn rigid_body_world_inverse_mass(state : RigidBodyState) -> Double {
+  if state.mass_kg > 0.0 {
+    1.0 / state.mass_kg
+  } else {
+    0.0
+  }
+}
+
+///|
+fn rigid_body_world_resolution_status(
+  contact : CollisionContact,
+  inverse_mass_sum : Double,
+) -> String {
+  if !contact.in_contact {
+    "world-pair-no-contact"
+  } else if inverse_mass_sum <= 0.0 {
+    "world-pair-static-review"
+  } else {
+    "world-pair-resolved"
+  }
+}
+
+///|
+fn resolved_pair_tangent_velocity(
+  velocity : Vec3,
+  normal : Vec3,
+  material : MaterialContactModel,
+) -> Vec3 {
+  let normal_velocity = normal.scale(velocity.dot(normal))
+  let tangent_velocity = velocity.sub(normal_velocity)
+  normal_velocity.add(
+    tangent_velocity.scale(collision_friction_scale(material)),
+  )
+}
+
+///|
+fn rigid_body_world_pair_resolution(
+  body_a : RigidBodyWorldBody,
+  body_b : RigidBodyWorldBody,
+  contact : CollisionContact,
+  material : MaterialContactModel,
+) -> RigidBodyWorldPairResolution {
+  let inverse_mass_a = rigid_body_world_inverse_mass(body_a.state)
+  let inverse_mass_b = rigid_body_world_inverse_mass(body_b.state)
+  let inverse_mass_sum = inverse_mass_a + inverse_mass_b
+  let status = rigid_body_world_resolution_status(contact, inverse_mass_sum)
+  if status != "world-pair-resolved" {
+    {
+      body_a_id: body_a.state.body_id,
+      body_b_id: body_b.state.body_id,
+      contact,
+      before_a: body_a.state,
+      before_b: body_b.state,
+      after_a: body_a.state,
+      after_b: body_b.state,
+      correction_a: vec3(0.0, 0.0, 0.0),
+      correction_b: vec3(0.0, 0.0, 0.0),
+      velocity_delta_a: vec3(0.0, 0.0, 0.0),
+      velocity_delta_b: vec3(0.0, 0.0, 0.0),
+      normal_impulse_ns: 0.0,
+      friction_impulse_ns: 0.0,
+      status,
+    }
+  } else {
+    let normal = contact.normal
+    let correction_mag_a = contact.penetration_depth_m *
+      inverse_mass_a /
+      inverse_mass_sum
+    let correction_mag_b = contact.penetration_depth_m *
+      inverse_mass_b /
+      inverse_mass_sum
+    let correction_a = normal.scale(0.0 - correction_mag_a)
+    let correction_b = normal.scale(correction_mag_b)
+    let relative_velocity = body_b.state.velocity.sub(body_a.state.velocity)
+    let normal_speed = relative_velocity.dot(normal)
+    let impulse_mag = if normal_speed < 0.0 {
+      (0.0 - (1.0 + material.restitution_coefficient) * normal_speed) /
+      inverse_mass_sum
+    } else {
+      0.0
+    }
+    let impulse = normal.scale(impulse_mag)
+    let pre_tangent_speed = relative_velocity
+      .sub(normal.scale(normal_speed))
+      .length()
+    let velocity_a = resolved_pair_tangent_velocity(
+      body_a.state.velocity.sub(impulse.scale(inverse_mass_a)),
+      normal,
+      material,
+    )
+    let velocity_b = resolved_pair_tangent_velocity(
+      body_b.state.velocity.add(impulse.scale(inverse_mass_b)),
+      normal,
+      material,
+    )
+    let after_a = {
+      body_id: body_a.state.body_id,
+      mass_kg: body_a.state.mass_kg,
+      collision_radius_m: body_a.state.collision_radius_m,
+      position: body_a.state.position.add(correction_a),
+      velocity: velocity_a,
+    }
+    let after_b = {
+      body_id: body_b.state.body_id,
+      mass_kg: body_b.state.mass_kg,
+      collision_radius_m: body_b.state.collision_radius_m,
+      position: body_b.state.position.add(correction_b),
+      velocity: velocity_b,
+    }
+    let velocity_delta_a = after_a.velocity.sub(body_a.state.velocity)
+    let velocity_delta_b = after_b.velocity.sub(body_b.state.velocity)
+    let post_relative = after_b.velocity.sub(after_a.velocity)
+    let post_normal_speed = post_relative.dot(normal)
+    let post_tangent_speed = post_relative
+      .sub(normal.scale(post_normal_speed))
+      .length()
+    {
+      body_a_id: body_a.state.body_id,
+      body_b_id: body_b.state.body_id,
+      contact,
+      before_a: body_a.state,
+      before_b: body_b.state,
+      after_a,
+      after_b,
+      correction_a,
+      correction_b,
+      velocity_delta_a,
+      velocity_delta_b,
+      normal_impulse_ns: impulse_mag,
+      friction_impulse_ns: (pre_tangent_speed - post_tangent_speed) *
+      (body_a.state.mass_kg * body_b.state.mass_kg) /
+      (body_a.state.mass_kg + body_b.state.mass_kg),
+      status,
+    }
+  }
+}
+
+///|
+fn rigid_body_world_replace_body(
+  bodies : Array[RigidBodyWorldBody],
+  index : Int,
+  state : RigidBodyState,
+) -> Unit {
+  let body = bodies[index]
+  bodies[index] = {
+    state,
+    collision_shape: body.collision_shape,
+    external_force_n: body.external_force_n,
+  }
+}
+
+///|
+fn rigid_body_world_contact_resolution_status(
+  resolved_contact_count : Int,
+) -> String {
+  if resolved_contact_count > 0 {
+    "world-contact-resolved"
+  } else {
+    "world-contact-no-resolution"
+  }
+}
+
+///|
+pub fn rigid_body_world_resolve_contacts(
+  world : RigidBodyHeightfieldWorld,
+  schedule : RigidBodyWorldContactSchedule,
+) -> RigidBodyWorldContactResolution {
+  let bodies : Array[RigidBodyWorldBody] = []
+  for body in world.bodies {
+    bodies.push(body)
+  }
+  let resolutions : Array[RigidBodyWorldPairResolution] = []
+  let mut resolved_count = 0
+  let mut normal_impulse = 0.0
+  let mut friction_impulse = 0.0
+  for pair in schedule.pairs {
+    let index_a = rigid_body_world_body_array_index(bodies, pair.body_a_id)
+    let index_b = rigid_body_world_body_array_index(bodies, pair.body_b_id)
+    let resolution = rigid_body_world_pair_resolution(
+      bodies[index_a],
+      bodies[index_b],
+      pair.contact,
+      world.material,
+    )
+    if resolution.status == "world-pair-resolved" {
+      resolved_count += 1
+      normal_impulse += resolution.normal_impulse_ns
+      friction_impulse += resolution.friction_impulse_ns
+      rigid_body_world_replace_body(bodies, index_a, resolution.after_a)
+      rigid_body_world_replace_body(bodies, index_b, resolution.after_b)
+    }
+    resolutions.push(resolution)
+  }
+  let after = {
+    world_id: world.world_id,
+    environment: world.environment,
+    material: world.material,
+    heightfield_id: world.heightfield_id,
+    bodies,
+  }
+  {
+    world_id: world.world_id,
+    schedule,
+    resolutions,
+    resolved_contact_count: resolved_count,
+    normal_impulse_ns: normal_impulse,
+    friction_impulse_ns: friction_impulse,
+    before: world,
+    after,
+    status: rigid_body_world_contact_resolution_status(resolved_count),
+  }
+}
+
+///|
+fn rigid_body_world_linear_kinetic_energy(
+  world : RigidBodyHeightfieldWorld,
+) -> Double {
+  let mut energy = 0.0
+  for body in world.bodies {
+    energy += rigid_body_linear_kinetic_energy(body.state)
+  }
+  energy
+}
+
+///|
 fn rigid_body_world_force_acceleration(body : RigidBodyWorldBody) -> Vec3 {
   if body.state.mass_kg > 0.0 {
     body.external_force_n.scale(1.0 / body.state.mass_kg)
@@ -355,14 +625,19 @@ pub fn rigid_body_heightfield_world_step(
       external_force_n: body.external_force_n,
     })
   }
-  let after = {
+  let integrated_world = {
     world_id: world.world_id,
     environment: world.environment,
     material: world.material,
     heightfield_id: world.heightfield_id,
     bodies: next_bodies,
   }
-  let contact_schedule = rigid_body_world_contact_schedule(after)
+  let contact_schedule = rigid_body_world_contact_schedule(integrated_world)
+  let contact_resolution = rigid_body_world_resolve_contacts(
+    integrated_world, contact_schedule,
+  )
+  let after = contact_resolution.after
+  energy_after = rigid_body_world_linear_kinetic_energy(after)
   let field_matches = world.heightfield_id == field.field_id
   {
     frame_index,
@@ -377,6 +652,7 @@ pub fn rigid_body_heightfield_world_step(
     body_pair_overlap_count: contact_schedule.broadphase_overlap_count,
     body_pair_contact_count: contact_schedule.contact_count,
     body_contact_schedule: contact_schedule,
+    body_contact_resolution: contact_resolution,
     review_count,
     kinetic_energy_before_j: energy_before,
     kinetic_energy_after_j: energy_after,
