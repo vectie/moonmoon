@@ -611,6 +611,7 @@
     "terrain_review_frame_count": 0,
     "max_self_penetration_m": 0.045,
     "max_self_contact_correction_m": 0.045,
+    "max_self_contact_world_correction_m": 0.033737200784712755,
     "max_self_contact_normal_impulse_ns": 0,
     "max_self_contact_friction_impulse_ns": 1.8848000000000003,
     "max_support_contact_torque_nm": 32.14876990603994,
@@ -1413,7 +1414,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-0",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -2730,7 +2775,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-1",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -4047,7 +4136,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-2",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -5364,7 +5497,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-3",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -6681,7 +6858,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-4",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -7998,7 +8219,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-5",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -9315,7 +9580,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-6",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -10632,7 +10941,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-7",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -11949,7 +12302,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-8",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -13266,7 +13663,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-9",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -14583,7 +15024,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-10",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -15900,7 +16385,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-11",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -17217,7 +17746,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-12",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -18534,7 +19107,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-13",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -19851,7 +20468,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-14",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -21168,7 +21829,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-15",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -22485,7 +23190,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-16",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -23802,7 +24551,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-17",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -25119,7 +25912,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-18",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -26436,7 +27273,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-19",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -27753,7 +28634,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-20",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -29070,7 +29995,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-21",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -30387,7 +31356,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-22",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -31704,7 +32717,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-23",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -33021,7 +34078,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-24",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -34338,7 +35439,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-25",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -35655,7 +36800,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-26",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -36972,7 +38161,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-27",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -38289,7 +39522,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-28",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -39606,7 +40883,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-29",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -40923,7 +42244,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-30",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -42240,7 +43605,51 @@
           "friction_impulse_ns": 1.8848000000000003,
           "status": "multi-contact-resolved"
         },
+        "self_contact_world_response": {
+          "world_id": "noetix-e1-lab-01/self-contact-world/frame-31",
+          "pair_count": 28,
+          "broadphase_overlap_count": 6,
+          "contact_count": 3,
+          "resolved_contact_count": 3,
+          "max_pair_correction_m": 0.033737200784712755,
+          "normal_impulse_ns": 0,
+          "friction_impulse_ns": 0.025001811155500233,
+          "resolved_pairs": [
+            {
+              "body_a_id": "noetix-e1-lab-01/base_link/base_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_leg_1/left_leg_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.017935256267290603,
+              "correction_b_m": 0.027064743732709395,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/left_arm_1/left_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0,
+              "status": "world-pair-resolved"
+            },
+            {
+              "body_a_id": "noetix-e1-lab-01/chest_link/chest_link/urdf-visual-bounds",
+              "body_b_id": "noetix-e1-lab-01/right_arm_1/right_arm_1/urdf-visual-cylinder",
+              "contact_status": "box-capsule-contact",
+              "correction_a_m": 0.0012627992152872448,
+              "correction_b_m": 0.033737200784712755,
+              "normal_impulse_ns": 0,
+              "friction_impulse_ns": 0.025001811155500233,
+              "status": "world-pair-resolved"
+            }
+          ],
+          "status": "world-contact-resolved"
+        },
         "self_contact_correction_m": 0.045,
+        "self_contact_world_correction_m": 0.033737200784712755,
         "shapes": [
           {
             "link_name": "base_link",
@@ -42762,7 +44171,7 @@
     ],
     "hardware_authority": "moonmoon-safety-gate-only",
     "status": "inertial-collision-self-review",
-    "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+    "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, Moonphys world body-pair contact response, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

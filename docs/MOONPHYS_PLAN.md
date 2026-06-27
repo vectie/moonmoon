@@ -52,8 +52,9 @@ evidence.
   Moonphys composite primitive-shape mass properties, collision bounds,
   terrain collision probes, per-foot patch-load contact wrenches, narrow-phase
   self-collision manifolds, support-wrench motion preview with impulse and
-  kinetic-energy accounting, and generic multi-contact manifold resolution
-  with impulse accounting.
+  kinetic-energy accounting, generic multi-contact manifold resolution with
+  impulse accounting, and Moonphys world body-pair contact response for
+  self-contact correction evidence.
 - Moonphys exports generic fixed-step multi-body heightfield world replay:
   multiple independent rigid bodies share one heightfield/material/environment,
   carry per-body external forces, resolve terrain contact, and report world
@@ -496,8 +497,8 @@ Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys composite primitive-shape mass properties, collision bounds, terrain
 collision probes, per-foot patch-load contact wrenches, narrow-phase
 self-collision manifolds, support-wrench motion preview with impulse and
-kinetic-energy accounting, generic manifold resolution, impulse accounting,
-and traction margin review.
+kinetic-energy accounting, generic manifold resolution, Moonphys world
+body-pair contact response, impulse accounting, and traction margin review.
 Mass, inertia, and authoritative collision tags are still absent from the
 referenced model, so the evidence remains review-only.
 Moonphys multi-body heightfield world replay currently composes independent

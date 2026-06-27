@@ -352,6 +352,7 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_true(report.shapes_per_frame >= 6)
   assert_true(report.max_support_contact_torque_nm > 0.0)
   assert_true(report.max_self_contact_correction_m >= 0.0)
+  assert_true(report.max_self_contact_world_correction_m > 0.0)
   assert_true(report.max_self_contact_normal_impulse_ns >= 0.0)
   assert_true(report.max_self_contact_friction_impulse_ns > 0.0)
   assert_eq(report.frames[0].support_contact_wrenches.length(), 2)
@@ -395,8 +396,25 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_true(
     report.frames[0].support_wrench_motion_step.kinetic_energy_delta_j > 0.0,
   )
+  assert_eq(
+    report.frames[0].self_contact_world_response.status,
+    "world-contact-resolved",
+  )
+  assert_eq(
+    report.frames[0].self_contact_world_response.contact_count,
+    report.frames[0].self_contact_world_response.resolved_contact_count,
+  )
+  assert_true(report.frames[0].self_contact_world_correction_m > 0.0)
+  assert_true(
+    report.frames[0].self_contact_world_response.resolved_pairs.any(fn(pair) {
+      pair.status == "world-pair-resolved" &&
+      pair.correction_a_m > 0.0 &&
+      pair.correction_b_m > 0.0
+    }),
+  )
   assert_true(report.note.contains("patch-load contact wrench torque"))
   assert_true(report.note.contains("support-wrench motion preview"))
+  assert_true(report.note.contains("world body-pair contact response"))
   assert_true(report.note.contains("kinetic-energy accounting"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))

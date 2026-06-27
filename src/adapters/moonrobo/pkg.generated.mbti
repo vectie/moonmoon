@@ -462,7 +462,9 @@ pub(all) struct NoetixInertialCollisionFrame {
   terrain_review_count : Int
   self_contact_manifold : @moonphys.CollisionContactManifold
   self_contact_resolution : @moonphys.CollisionManifoldResolution
+  self_contact_world_response : NoetixSelfContactWorldResponse
   self_contact_correction_m : Double
+  self_contact_world_correction_m : Double
   shapes : Array[NoetixCollisionShapeEvidence]
   terrain_collisions : Array[NoetixTerrainCollisionEvidence]
   status : String
@@ -478,6 +480,7 @@ pub(all) struct NoetixInertialCollisionReport {
   terrain_review_frame_count : Int
   max_self_penetration_m : Double
   max_self_contact_correction_m : Double
+  max_self_contact_world_correction_m : Double
   max_self_contact_normal_impulse_ns : Double
   max_self_contact_friction_impulse_ns : Double
   max_support_contact_torque_nm : Double
@@ -684,6 +687,30 @@ pub(all) struct NoetixReferenceLink {
   nominal_parent_offset_m : @moonphys.Vec3
   joint_axis : @moonphys.Vec3
   source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixSelfContactWorldPairResponse {
+  body_a_id : String
+  body_b_id : String
+  contact_status : String
+  correction_a_m : Double
+  correction_b_m : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixSelfContactWorldResponse {
+  world_id : String
+  pair_count : Int
+  broadphase_overlap_count : Int
+  contact_count : Int
+  resolved_contact_count : Int
+  max_pair_correction_m : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  resolved_pairs : Array[NoetixSelfContactWorldPairResponse]
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) enum NoetixSourceGeometryKind {

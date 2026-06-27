@@ -17,6 +17,32 @@ pub(all) struct NoetixTerrainCollisionEvidence {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixSelfContactWorldPairResponse {
+  body_a_id : String
+  body_b_id : String
+  contact_status : String
+  correction_a_m : Double
+  correction_b_m : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct NoetixSelfContactWorldResponse {
+  world_id : String
+  pair_count : Int
+  broadphase_overlap_count : Int
+  contact_count : Int
+  resolved_contact_count : Int
+  max_pair_correction_m : Double
+  normal_impulse_ns : Double
+  friction_impulse_ns : Double
+  resolved_pairs : Array[NoetixSelfContactWorldPairResponse]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixInertialCollisionFrame {
   frame_index : Int
   time_s : Double
@@ -32,7 +58,9 @@ pub(all) struct NoetixInertialCollisionFrame {
   terrain_review_count : Int
   self_contact_manifold : @moonphys.CollisionContactManifold
   self_contact_resolution : @moonphys.CollisionManifoldResolution
+  self_contact_world_response : NoetixSelfContactWorldResponse
   self_contact_correction_m : Double
+  self_contact_world_correction_m : Double
   shapes : Array[NoetixCollisionShapeEvidence]
   terrain_collisions : Array[NoetixTerrainCollisionEvidence]
   status : String
@@ -49,6 +77,7 @@ pub(all) struct NoetixInertialCollisionReport {
   terrain_review_frame_count : Int
   max_self_penetration_m : Double
   max_self_contact_correction_m : Double
+  max_self_contact_world_correction_m : Double
   max_self_contact_normal_impulse_ns : Double
   max_self_contact_friction_impulse_ns : Double
   max_support_contact_torque_nm : Double
@@ -338,6 +367,107 @@ fn self_contact_resolution(
 }
 
 ///|
+fn noetix_self_contact_world_body(
+  profile : NoetixPhysicsProfile,
+  shape : NoetixCollisionShapeEvidence,
+  shape_count : Int,
+  volume_sum : Double,
+  body_velocity : @moonphys.Vec3,
+) -> @moonphys.RigidBodyWorldBody {
+  @moonphys.rigid_body_world_body(
+    @moonphys.rigid_body_state(
+      "\{profile.robot_id}/\{shape.link_name}/\{shape.shape.shape_id}",
+      noetix_assumed_shape_mass(
+        profile.mass_model.mass_kg,
+        shape,
+        shape_count,
+        volume_sum,
+      ),
+      @moonphys.collision_bounding_radius(shape.shape),
+      shape.transform.translation,
+      body_velocity,
+    ),
+    collision_shape=shape.shape,
+  )
+}
+
+///|
+fn self_contact_world_resolution(
+  field : @moonphys.Heightfield,
+  frame_index : Int,
+  profile : NoetixPhysicsProfile,
+  shapes : Array[NoetixCollisionShapeEvidence],
+  body_velocity : @moonphys.Vec3,
+) -> @moonphys.RigidBodyWorldContactResolution {
+  let volume_sum = collision_shape_volume_sum(shapes)
+  let bodies : Array[@moonphys.RigidBodyWorldBody] = []
+  for shape in shapes {
+    bodies.push(
+      noetix_self_contact_world_body(
+        profile,
+        shape,
+        shapes.length(),
+        volume_sum,
+        body_velocity,
+      ),
+    )
+  }
+  let world = @moonphys.rigid_body_heightfield_world(
+    "\{profile.robot_id}/self-contact-world/frame-\{frame_index}",
+    field,
+    @moonphys.lunar_regolith_contact_model(),
+    @moonphys.lunar_environment(),
+    bodies,
+  )
+  @moonphys.rigid_body_world_resolve_contacts(
+    world,
+    @moonphys.rigid_body_world_contact_schedule(world),
+  )
+}
+
+///|
+fn noetix_self_contact_world_response(
+  resolution : @moonphys.RigidBodyWorldContactResolution,
+) -> NoetixSelfContactWorldResponse {
+  let resolved_pairs : Array[NoetixSelfContactWorldPairResponse] = []
+  let mut max_correction = 0.0
+  for pair in resolution.resolutions {
+    if pair.status == "world-pair-resolved" {
+      let correction_a = pair.correction_a.length()
+      let correction_b = pair.correction_b.length()
+      if correction_a > max_correction {
+        max_correction = correction_a
+      }
+      if correction_b > max_correction {
+        max_correction = correction_b
+      }
+      resolved_pairs.push({
+        body_a_id: pair.body_a_id,
+        body_b_id: pair.body_b_id,
+        contact_status: pair.contact.status,
+        correction_a_m: correction_a,
+        correction_b_m: correction_b,
+        normal_impulse_ns: pair.normal_impulse_ns,
+        friction_impulse_ns: pair.friction_impulse_ns,
+        status: pair.status,
+      })
+    }
+  }
+  {
+    world_id: resolution.world_id,
+    pair_count: resolution.schedule.pair_count,
+    broadphase_overlap_count: resolution.schedule.broadphase_overlap_count,
+    contact_count: resolution.schedule.contact_count,
+    resolved_contact_count: resolution.resolved_contact_count,
+    max_pair_correction_m: max_correction,
+    normal_impulse_ns: resolution.normal_impulse_ns,
+    friction_impulse_ns: resolution.friction_impulse_ns,
+    resolved_pairs,
+    status: resolution.status,
+  }
+}
+
+///|
 fn noetix_review_body_velocity(
   config : NoetixMoonWalkConfig,
   frame : NoetixMoonWalkFrame,
@@ -413,6 +543,15 @@ pub fn noetix_inertial_collision_frame(
   let resolution = self_contact_resolution(
     profile, center_of_mass, body_velocity, manifold,
   )
+  let world_resolution = self_contact_world_resolution(
+    field,
+    walk_frame.frame_index,
+    profile,
+    shapes,
+    body_velocity,
+  )
+  let world_response = noetix_self_contact_world_response(world_resolution)
+  let world_correction = world_response.max_pair_correction_m
   let support_wrenches = support_contact_wrenches(
     field, walk_frame, profile, center_of_mass,
   )
@@ -434,7 +573,9 @@ pub fn noetix_inertial_collision_frame(
     terrain_review_count,
     self_contact_manifold: manifold,
     self_contact_resolution: resolution,
+    self_contact_world_response: world_response,
     self_contact_correction_m: vec_length(resolution.correction),
+    self_contact_world_correction_m: world_correction,
     shapes,
     terrain_collisions,
     status: inertial_collision_frame_status(
@@ -456,6 +597,7 @@ pub fn noetix_inertial_collision_report(
   let mut terrain_review_frame_count = 0
   let mut max_self_penetration = 0.0
   let mut max_self_contact_correction = 0.0
+  let mut max_self_contact_world_correction = 0.0
   let mut max_self_contact_normal_impulse = 0.0
   let mut max_self_contact_friction_impulse = 0.0
   let mut max_torque = 0.0
@@ -480,6 +622,10 @@ pub fn noetix_inertial_collision_report(
     }
     if evidence.self_contact_correction_m > max_self_contact_correction {
       max_self_contact_correction = evidence.self_contact_correction_m
+    }
+    if evidence.self_contact_world_correction_m >
+      max_self_contact_world_correction {
+      max_self_contact_world_correction = evidence.self_contact_world_correction_m
     }
     if evidence.self_contact_resolution.normal_impulse_ns >
       max_self_contact_normal_impulse {
@@ -508,6 +654,7 @@ pub fn noetix_inertial_collision_report(
     terrain_review_frame_count,
     max_self_penetration_m: max_self_penetration,
     max_self_contact_correction_m: max_self_contact_correction,
+    max_self_contact_world_correction_m: max_self_contact_world_correction,
     max_self_contact_normal_impulse_ns: max_self_contact_normal_impulse,
     max_self_contact_friction_impulse_ns: max_self_contact_friction_impulse,
     max_support_contact_torque_nm: max_torque,
@@ -520,7 +667,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, Moonphys world body-pair contact response, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 
@@ -550,6 +697,7 @@ pub fn render_noetix_inertial_collision_markdown(
   text += "- terrain-review frames: \{report.terrain_review_frame_count}\n"
   text += "- max self penetration: \{report.max_self_penetration_m} m\n"
   text += "- max self-contact correction: \{report.max_self_contact_correction_m} m\n"
+  text += "- max self-contact world correction: \{report.max_self_contact_world_correction_m} m\n"
   text += "- max self-contact normal impulse: \{report.max_self_contact_normal_impulse_ns} Ns\n"
   text += "- max self-contact friction impulse: \{report.max_self_contact_friction_impulse_ns} Ns\n"
   text += "- max support contact torque: \{report.max_support_contact_torque_nm} Nm\n"

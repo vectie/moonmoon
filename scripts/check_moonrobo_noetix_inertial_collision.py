@@ -60,6 +60,10 @@ def main(argv: list[str]) -> int:
   require("patch-load contact wrench torque" in report["note"], "missing patch-wrench torque note")
   require("support-wrench motion preview" in report["note"], "missing wrench motion note")
   require(
+    "world body-pair contact response" in report["note"],
+    "missing world body contact response note",
+  )
+  require(
     "kinetic-energy accounting" in report["note"],
     "missing wrench energy note",
   )
@@ -68,6 +72,10 @@ def main(argv: list[str]) -> int:
   require(
     report["max_self_contact_correction_m"] >= 0,
     "bad self-contact correction",
+  )
+  require(
+    report["max_self_contact_world_correction_m"] > 0,
+    "missing self-contact world correction",
   )
   require(
     report["max_self_contact_normal_impulse_ns"] >= 0,
@@ -230,6 +238,31 @@ def main(argv: list[str]) -> int:
     first["self_contact_resolution"]["status"]
     in {"single-contact-resolved", "multi-contact-resolved", "no-contact"},
     "bad self-contact resolution status",
+  )
+  world_resolution = first.get("self_contact_world_response", {})
+  require(
+    world_resolution.get("status") == "world-contact-resolved",
+    "missing self-contact world response",
+  )
+  require(
+    world_resolution.get("contact_count", 0)
+    == world_resolution.get("resolved_contact_count", -1),
+    "self-contact world response count mismatch",
+  )
+  require(
+    first.get("self_contact_world_correction_m", 0) > 0,
+    "missing frame self-contact world correction",
+  )
+  require(
+    any(
+      pair.get("status") == "world-pair-resolved"
+      and (
+        pair.get("correction_a_m", 0) > 0
+        or pair.get("correction_b_m", 0) > 0
+      )
+      for pair in world_resolution.get("resolved_pairs", [])
+    ),
+    "missing resolved world-pair correction",
   )
   require(
     any(
