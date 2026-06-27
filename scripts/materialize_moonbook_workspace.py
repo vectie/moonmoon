@@ -142,6 +142,9 @@ MOONROBO_NOETIX_WALK_JSON = (
 MOONROBO_NOETIX_STABILITY_JSON = (
   ROOT / "output/moonrobo/first_trusted_square_noetix_stability.json"
 )
+MOONROBO_NOETIX_LINK_POSES_JSON = (
+  ROOT / "output/moonrobo/first_trusted_square_noetix_link_poses.json"
+)
 MISSION_HORIZON_JSON = (
   ROOT / "output/mission/first_trusted_square_northeast_stepout_horizon.json"
 )
@@ -401,6 +404,7 @@ def payload_for_entry(
   moonrobo_simulation_blocker_reduction: dict[str, Any],
   moonrobo_noetix_walk: dict[str, Any],
   moonrobo_noetix_stability: dict[str, Any],
+  moonrobo_noetix_link_poses: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
   lookups: dict[str, dict[str, dict[str, Any]]],
 ) -> Any:
@@ -517,6 +521,8 @@ def payload_for_entry(
     return moonrobo_noetix_walk
   if kind == "MoonroboNoetixPhysics":
     return moonrobo_noetix_stability
+  if kind == "MoonroboNoetixLinkPoses":
+    return moonrobo_noetix_link_poses
   if kind == "MoonClawProposal":
     return {
       "primary_proposal": moonclaw[0],
@@ -729,6 +735,7 @@ def workspace_files(
   moonrobo_simulation_blocker_reduction: dict[str, Any],
   moonrobo_noetix_walk: dict[str, Any],
   moonrobo_noetix_stability: dict[str, Any],
+  moonrobo_noetix_link_poses: dict[str, Any],
   mission_horizon: dict[str, Any],
   mission_terrain_remediation: dict[str, Any],
   mission_energy_remediation: dict[str, Any],
@@ -784,6 +791,7 @@ def workspace_files(
     "output/moonrobo/first_trusted_square_handoffs.json",
     "output/moonrobo/first_trusted_square_noetix_walk.json",
     "output/moonrobo/first_trusted_square_noetix_stability.json",
+    "output/moonrobo/first_trusted_square_noetix_link_poses.json",
   ]
   if moonclaw_gap_tasks:
     source_files.append(
@@ -904,6 +912,7 @@ def workspace_files(
       moonrobo_simulation_blocker_reduction,
       moonrobo_noetix_walk,
       moonrobo_noetix_stability,
+      moonrobo_noetix_link_poses,
       mission_energy_remediation,
       lookups,
     )
@@ -971,6 +980,7 @@ def workspace_files(
     "- Source MoonClaw corridor receipts: `output/moonclaw/first_trusted_square_corridor_receipts.json`\n"
     "- Source MoonRobo Noetix walk: `output/moonrobo/first_trusted_square_noetix_walk.json`\n"
     "- Source MoonRobo Noetix static support: `output/moonrobo/first_trusted_square_noetix_stability.json`\n"
+    "- Source MoonRobo Noetix link poses: `output/moonrobo/first_trusted_square_noetix_link_poses.json`\n"
   )
   if moonclaw_gap_tasks:
     readme += "- Source imported MoonClaw gap task: `output/moonclaw/first_trusted_square_moonrobo_gap_task.json`\n"
@@ -1188,6 +1198,7 @@ def main() -> int:
   )
   moonrobo_noetix_walk = load_json(MOONROBO_NOETIX_WALK_JSON)
   moonrobo_noetix_stability = load_json(MOONROBO_NOETIX_STABILITY_JSON)
+  moonrobo_noetix_link_poses = load_json(MOONROBO_NOETIX_LINK_POSES_JSON)
   mission_horizon = load_json(MISSION_HORIZON_JSON)
   mission_terrain_remediation = load_json(MISSION_TERRAIN_REMEDIATION_JSON)
   mission_energy_remediation = load_json(MISSION_ENERGY_REMEDIATION_JSON)
@@ -1233,6 +1244,7 @@ def main() -> int:
     moonrobo_simulation_blocker_reduction,
     moonrobo_noetix_walk,
     moonrobo_noetix_stability,
+    moonrobo_noetix_link_poses,
     mission_horizon,
     mission_terrain_remediation,
     mission_energy_remediation,

@@ -390,6 +390,11 @@
   - claim: simulated
   - confidence: 0.54
   - path: moonrobo/first-trusted-square/noetix-physics.json
+- moonrobo/first-trusted-square/noetix-link-poses: Moonrobo Noetix URDF-reference link poses for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonrobo-noetix-link-poses
+  - claim: simulated
+  - confidence: 0.56
+  - path: moonrobo/first-trusted-square/noetix-link-poses.json
 
 ## Review Queue
 

@@ -20,6 +20,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonroboNoetixWalk
   MoonroboNoetixPhysics
+  MoonroboNoetixLinkPoses
   MoonroboGapModeling
   MoonroboRemediationMarginModeling
   MoonroboRemediationMarginProjection
@@ -147,6 +148,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
+    MoonroboNoetixLinkPoses => "moonrobo-noetix-link-poses"
     MoonroboGapModeling => "moonrobo-gap-modeling"
     MoonroboRemediationMarginModeling => "moonrobo-remediation-margin-modeling"
     MoonroboRemediationMarginProjection =>
@@ -985,6 +987,20 @@ fn moonrobo_noetix_physics_entry(dossier : @site.SiteDossier) -> BookEntry {
     confidence: 0.54,
     path: "moonrobo/\{dossier.site.site_id}/noetix-physics.json",
     summary: "\{report.profile.robot_id} \{report.profile.status} profile uses explicit mass/sole/friction assumptions; \{report.review_frame_count}/\{report.frame_count} frames need static-support review, worst margin \{report.worst_planar_margin_m} m, hardware authority \{report.profile.hardware_authority}",
+  }
+}
+
+///|
+fn moonrobo_noetix_link_poses_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let trace = @moonrobo.first_trusted_square_noetix_link_pose_trace()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-link-poses",
+    title: "Moonrobo Noetix URDF-reference link poses for \{dossier.site.name}",
+    kind: MoonroboNoetixLinkPoses,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.56,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-link-poses.json",
+    summary: "\{trace.robot_id} review-only link pose trace has \{trace.frame_count} frames and \{trace.links_per_frame} URDF-reference links per frame; feet are contact-bound and non-foot links are gait proxies, not hardware authority",
   }
 }
 
@@ -1890,6 +1906,7 @@ fn book_entries(
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))
+  entries.push(moonrobo_noetix_link_poses_entry(dossier))
   entries
 }
 
