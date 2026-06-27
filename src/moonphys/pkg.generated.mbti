@@ -79,6 +79,8 @@ pub fn integrate_rigid_body(RigidBodyState, Double, Vec3) -> RigidBodyState
 
 pub fn integrate_rigid_body_gravity(RigidBodyState, PhysicsEnvironment, Double) -> RigidBodyState
 
+pub fn integrate_rigid_body_wrench(RigidBodyMotionState, RigidBodyInertia, RigidBodyWrench, Double) -> RigidBodyWrenchStep
+
 pub fn joint_limit(String, Double, Double, Double, Double) -> JointLimit
 
 pub fn joint_motor_command(String, Double, Double, Double) -> JointMotorCommand
@@ -113,7 +115,11 @@ pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, P
 
 pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
 
+pub fn rigid_body_motion_state(String, Double, Double, Vec3, Vec3, Basis3, Vec3) -> RigidBodyMotionState
+
 pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
+
+pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
 
 pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
 
@@ -538,12 +544,33 @@ pub(all) struct RigidBodyInertia {
   diagonal_kg_m2 : Vec3
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RigidBodyMotionState {
+  body_id : String
+  linear : RigidBodyState
+  angular : RigidBodyAngularState
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RigidBodyState {
   body_id : String
   mass_kg : Double
   collision_radius_m : Double
   position : Vec3
   velocity : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWrench {
+  force_n : Vec3
+  torque_nm : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RigidBodyWrenchStep {
+  before : RigidBodyMotionState
+  wrench : RigidBodyWrench
+  dt_s : Double
+  linear_acceleration_mps2 : Vec3
+  angular_acceleration_rad_s2 : Vec3
+  after : RigidBodyMotionState
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SupportAssessment {

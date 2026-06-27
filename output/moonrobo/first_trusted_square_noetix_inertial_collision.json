@@ -710,6 +710,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": -0.0029599728837414836,
+              "y": 0.003522359494843653,
+              "z": 338.1153441489785
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.778262117806012,
+            "y": 22.458555914048436,
+            "z": 1.9067401076524841
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.237461943908702,
+          "y": 6.803173224809811,
+          "z": 3.664205936093088
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.002819988839498273,
+              "y": 0.015210663300882176,
+              "z": 338.1298964697168
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9970166887863341,
+              "xy": -0.034808591010289866,
+              "xz": 0.06889183023706492,
+              "yx": 0.03836914040018388,
+              "yy": 0.9979586124057777,
+              "yz": -0.0510530801233952,
+              "zx": -0.0669741095236449,
+              "zy": 0.05354409320376245,
+              "zz": 0.9963169670022195
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5237461943908702,
+              "y": 0.6803173224809811,
+              "z": 0.3664205936093088
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -1914,6 +2014,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.009083878566388016,
+              "y": 0.003522359494843653,
+              "z": 338.10997337608427
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.702987757798496,
+            "y": 22.99762230379288,
+            "z": 1.7379388517095582
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.3305544301079735,
+          "y": 7.129451121853591,
+          "z": 3.353127242136269
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.014863840289627773,
+              "y": 0.015210663300882176,
+              "z": 338.12452569682256
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9968987128387613,
+              "xy": -0.03158196210076999,
+              "xz": 0.07208006666399795,
+              "yx": 0.035379489962420636,
+              "yy": 0.9980185811456328,
+              "yz": -0.052030792594933005,
+              "zx": -0.07029401134107967,
+              "zy": 0.05441958616089878,
+              "zz": 0.9960407926443859
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5330554430107973,
+              "y": 0.7129451121853592,
+              "z": 0.3353127242136269
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -3118,6 +3318,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.021127730016517517,
+              "y": 0.003522359494843653,
+              "z": 338.1046026031898
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.627713397787794,
+            "y": 23.536688693531953,
+            "z": 1.5691375957666325
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.424125439445685,
+          "y": 7.46500688702172,
+          "z": 3.0369200467949216
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.026907691739757274,
+              "y": 0.015210663300882176,
+              "z": 338.1191549239281
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9967550925036013,
+              "xy": -0.028298492096522097,
+              "xz": 0.07535569595724209,
+              "yx": 0.0323444221721996,
+              "yy": 0.9980693180350937,
+              "yz": -0.05302334157057196,
+              "zx": -0.07370972746173846,
+              "zy": 0.05528862217514647,
+              "zz": 0.9957459737982826
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5424125439445685,
+              "y": 0.746500688702172,
+              "z": 0.3036920046794922
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -4322,6 +4622,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.033171581466647004,
+              "y": 0.003522359494843653,
+              "z": 338.099346465822
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.554045718244943,
+            "y": 24.078464625254025,
+            "z": 1.400336339823707
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.535428393870267,
+          "y": 7.835202876943654,
+          "z": 2.716361689730509
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.038951543189886764,
+              "y": 0.015210663300882176,
+              "z": 338.1138987865603
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9965643962787694,
+              "xy": -0.02495186933179254,
+              "xz": 0.0789734657108392,
+              "yx": 0.029285398027247812,
+              "yy": 0.9981005948645126,
+              "yz": -0.05419933572924677,
+              "zx": -0.07747108836151466,
+              "zy": 0.056325897666660275,
+              "zz": 0.995402242171539
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5535428393870266,
+              "y": 0.7835202876943654,
+              "z": 0.27163616897305093
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -5526,6 +5926,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.045215432916776516,
+              "y": 0.003522359494843653,
+              "z": 338.09406359106083
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.48000329930872,
+            "y": 24.61960858805675,
+            "z": 1.231535083880781
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.6428222527991485,
+          "y": 8.20949773628634,
+          "z": 2.3922606733174425
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.050995394640016276,
+              "y": 0.015210663300882176,
+              "z": 338.1086159117991
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9963472584044679,
+              "xy": -0.02156656839887366,
+              "xz": 0.08262580588047085,
+              "yx": 0.02619499158900491,
+              "yy": 0.9981234245377125,
+              "yz": -0.05534845801611113,
+              "zx": -0.08127707601502719,
+              "zy": 0.057310666691340786,
+              "zz": 0.9950424736652409
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5642822252799149,
+              "y": 0.820949773628634,
+              "z": 0.23922606733174426
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -6730,6 +7230,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.05725928436690602,
+              "y": 0.003522359494843653,
+              "z": 338.0886928181664
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.404728939298817,
+            "y": 25.158674977797162,
+            "z": 1.0627338279378553
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.736731731376482,
+          "y": 8.572488100449503,
+          "z": 2.0654499663864474
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.06303924609014577,
+              "y": 0.015210663300882176,
+              "z": 338.1032451389047
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9961159020992462,
+              "xy": -0.018159789205420763,
+              "xz": 0.0861587583535161,
+              "yx": 0.02307306213838622,
+              "yy": 0.9981429048308996,
+              "yz": -0.05637708168477571,
+              "zx": -0.08497495742018978,
+              "zy": 0.05814605396541014,
+              "zz": 0.9946850220143503
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5736731731376482,
+              "y": 0.8572488100449503,
+              "z": 0.20654499663864476
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -7934,6 +8534,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.06930313581703551,
+              "y": 0.003522359494843653,
+              "z": 338.08292698308975
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.32391756375754,
+            "y": 25.688403620335798,
+            "z": 0.8939325719949296
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.770475478363362,
+          "y": 8.848159221010281,
+          "z": 1.7367799143981237
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.07508309754027527,
+              "y": 0.015210663300882176,
+              "z": 338.09747930382804
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9959385647502891,
+              "xy": -0.014784177189485243,
+              "xz": 0.0888133061425147,
+              "yx": 0.01988511138551747,
+              "yy": 0.9981859938544311,
+              "yz": -0.05682696558876929,
+              "zx": -0.08781205833095873,
+              "zy": 0.05836222903275294,
+              "zz": 0.9944259110833792
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5770475478363362,
+              "y": 0.8848159221010281,
+              "z": 0.17367799143981238
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -9138,6 +9838,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.08134698726716501,
+              "y": 0.003522359494843653,
+              "z": 338.0766224705378
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.23555632472356,
+            "y": 26.205400003717248,
+            "z": 0.7251313160520039
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.722319455706773,
+          "y": 8.993862629887367,
+          "z": 1.4071108818240112
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.08712694899040477,
+              "y": 0.015210663300882176,
+              "z": 338.0911747912761
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9958605142082375,
+              "xy": -0.011473201292132156,
+              "xz": 0.09016763218037246,
+              "yx": 0.016614820225381917,
+              "yy": 0.9982654270981596,
+              "yz": -0.05648083577114684,
+              "zx": -0.08936321385101906,
+              "zy": 0.05774515315279056,
+              "zz": 0.9943237467231575
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5722319455706774,
+              "y": 0.8993862629887368,
+              "z": 0.14071108818240113
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -10342,6 +11142,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.09339083871729452,
+              "y": 0.003522359494843653,
+              "z": 338.07043259351246
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.148801766155838,
+            "y": 26.725105929079017,
+            "z": 0.5563300601090779
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.691350075848859,
+          "y": 9.165240600990971,
+          "z": 1.0773057599915383
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.09917080044053428,
+              "y": 0.015210663300882176,
+              "z": 338.08498491425075
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9957460585227091,
+              "xy": -0.008146387444825655,
+              "xz": 0.09177920956343154,
+              "yx": 0.013357538804674175,
+              "yy": 0.9983240400900384,
+              "yz": -0.05630885485769567,
+              "zx": -0.09116667753939002,
+              "zy": 0.05729526463768363,
+              "zz": 0.9941860437345349
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.5691350075848859,
+              "y": 0.9165240600990971,
+              "z": 0.10773057599915384
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -11546,6 +12446,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.10543469016742402,
+              "y": 0.003522359494843653,
+              "z": 338.0642427164869
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -23.636145451688925,
+            "y": 14.015554462946382,
+            "z": 55.29881880549339
+          },
+          "torque_nm": {
+            "x": 17.06204720758493,
+            "y": 27.244811854435408,
+            "z": 0.38752880416615226
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.6220038276760244,
+          "y": 0.36883038060385215,
+          "z": 1.4552320738287734
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 5.66018184504693,
+          "y": 9.334543579853326,
+          "z": 0.7482224770079441
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.11121465189066378,
+              "y": 0.015210663300882176,
+              "z": 338.0787950372252
+            },
+            "velocity": {
+              "x": 0.05779961723239756,
+              "y": 0.11688303806038522,
+              "z": 0.14552320738287736
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9956196960737186,
+              "xy": -0.004828176863213243,
+              "xz": 0.0933708171660389,
+              "yx": 0.010106428690674265,
+              "yy": 0.9983717508052412,
+              "yz": -0.05614006851792742,
+              "zx": -0.09294773202825687,
+              "zy": 0.05683780346085519,
+              "zz": 0.9940473747304747
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.566018184504693,
+              "y": 0.9334543579853327,
+              "z": 0.07482224770079442
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -12750,6 +13750,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.11704002711625848,
+              "y": 0.003522359494843653,
+              "z": 338.05827815356207
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.9493478937568782,
+            "y": 12.469255003065584,
+            "z": -1.5328701866297387
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9840967221429148,
+          "y": 4.29418105021527,
+          "z": -2.9457355066726794
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.12802289926105997,
+              "y": -0.002262024395012526,
+              "z": 338.0743442357285
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.998644449880382,
+              "xy": 0.0296548131420413,
+              "xz": 0.042776801897989866,
+              "yx": -0.029232323089423192,
+              "yy": 0.9995178226669401,
+              "yz": -0.010468689408651541,
+              "zx": -0.043066622921989484,
+              "zy": 0.009204033281657116,
+              "zz": 0.9990298052417882
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09840967221429148,
+              "y": 0.42941810502152705,
+              "z": -0.2945735506672679
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -13954,6 +15054,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.12908387856638795,
+              "y": 0.003522359494843653,
+              "z": 338.05290737391454
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.904129467294656,
+            "y": 13.183787005240607,
+            "z": -1.6342714815738648
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9897541710728365,
+          "y": 4.644020785582506,
+          "z": -3.1531145186847604
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.14006675071118946,
+              "y": -0.002262024395012526,
+              "z": 338.068973456081
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9984249734790556,
+              "xy": 0.031743834274195984,
+              "xz": 0.04625906742379887,
+              "yx": -0.03128431480991574,
+              "yy": 0.9994540606067146,
+              "yz": -0.010624141547617792,
+              "zx": -0.04657106376518874,
+              "zy": 0.009160225014818814,
+              "zz": 0.9988729780595011
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09897541710728365,
+              "y": 0.4644020785582506,
+              "z": -0.3153114518684761
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -15158,6 +16358,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.14112773001651746,
+              "y": 0.003522359494843653,
+              "z": 338.04682001482627
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.8528779140106963,
+            "y": 13.89554936635903,
+            "z": -1.7356727765179918
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.974435468673111,
+          "y": 4.908721713681073,
+          "z": -3.359233418346843
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.15211060216131897,
+              "y": -0.002262024395012526,
+              "z": 338.0628860969927
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9982315355917649,
+              "xy": 0.03381108721754967,
+              "xz": 0.04889388235019095,
+              "yx": -0.03333290875611077,
+              "yy": 0.99938848648484,
+              "yz": -0.010562683153329679,
+              "zx": -0.049221118881673735,
+              "zy": 0.00891422810500666,
+              "zz": 0.998748125401659
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.0974435468673111,
+              "y": 0.49087217136810735,
+              "z": -0.3359233418346843
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -16362,6 +17662,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.153171581466647,
+              "y": 0.003522359494843653,
+              "z": 338.040744922773
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.8017296410801737,
+            "y": 14.607359140620861,
+            "z": -1.8370740714621188
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9593792443127445,
+          "y": 5.175780124137168,
+          "z": -3.5635421912604044
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.1641544536114485,
+              "y": -0.002262024395012526,
+              "z": 338.05681100493945
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9980262881058055,
+              "xy": 0.035859620736460325,
+              "xz": 0.0515520693123458,
+              "yx": -0.03536323431742524,
+              "yy": 0.9993192671972476,
+              "yz": -0.010509227705535825,
+              "zx": -0.051893833047468745,
+              "zy": 0.008665437611173962,
+              "zz": 0.9986150110441202
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09593792443127445,
+              "y": 0.5175780124137168,
+              "z": -0.3563542191260405
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -17566,6 +18966,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.16521543291677646,
+              "y": 0.003522359494843653,
+              "z": 338.0346430933264
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.750356256911817,
+            "y": 15.319065572562025,
+            "z": -1.9384753664062446
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9434848006008597,
+          "y": 5.43946736893082,
+          "z": -3.7654943378756367
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.17619830506157796,
+              "y": -0.002262024395012526,
+              "z": 338.05070917549284
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9978124766055676,
+              "xy": 0.0378834310026292,
+              "xz": 0.054176629516173636,
+              "yx": -0.03737041648039187,
+              "yy": 0.9992468247910711,
+              "yz": -0.010451560507625942,
+              "zx": -0.05453176599327918,
+              "zy": 0.008404094265983915,
+              "zz": 0.9984766685793027
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09434848006008598,
+              "y": 0.543946736893082,
+              "z": -0.37654943378756367
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -18770,6 +20270,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.17725928436690594,
+              "y": 0.003522359494843653,
+              "z": 338.02845336574677
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.6982428283691138,
+            "y": 16.030432270673046,
+            "z": -2.0398766613503714
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9250894149401078,
+          "y": 5.689305472203136,
+          "z": -3.9645516787529975
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.18824215651170745,
+              "y": -0.002262024395012526,
+              "z": 338.0445194479132
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9975966870857351,
+              "xy": 0.03987623458229992,
+              "xz": 0.05666335527572666,
+              "yx": -0.039350137574908454,
+              "yy": 0.9991716648948363,
+              "yz": -0.010370667486554928,
+              "zx": -0.057029962198844306,
+              "zy": 0.008116032701899197,
+              "zz": 0.9983394780458099
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09250894149401079,
+              "y": 0.5689305472203137,
+              "z": -0.3964551678752998
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -19974,6 +21574,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.18930313581703548,
+              "y": 0.003522359494843653,
+              "z": 338.02217574003373
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.645389355448713,
+            "y": 16.741459234952387,
+            "z": -2.141277956294498
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.9042807060867073,
+          "y": 5.923054233931384,
+          "z": -4.160189103901274
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.200286007961837,
+              "y": -0.002262024395012526,
+              "z": 338.0382418222002
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9973816740211473,
+              "xy": 0.041832695124733886,
+              "xz": 0.0589900156414182,
+              "yx": -0.041297322203396526,
+              "yy": 0.9990941569049103,
+              "yz": -0.010266295207872703,
+              "zx": -0.05936604674056166,
+              "zy": 0.007803285017696272,
+              "zz": 0.9982057810077689
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.09042807060867074,
+              "y": 0.5923054233931384,
+              "z": -0.41601891039012745
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -21178,6 +22878,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.20134698726716496,
+              "y": 0.003522359494843653,
+              "z": 338.0158713769276
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.592310771292393,
+            "y": 17.452382856911946,
+            "z": -2.2426792512386244
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.882798858738891,
+          "y": 6.149149226753151,
+          "z": -4.351899178813673
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.21232985941196647,
+              "y": -0.002262024395012526,
+              "z": 338.031937459094
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9971638069850183,
+              "xy": 0.04374856903729243,
+              "xz": 0.06124054822039463,
+              "yx": -0.04320598304673593,
+              "yy": 0.9990145545637747,
+              "yz": -0.01015690891501108,
+              "zx": -0.06162454923251277,
+              "zy": 0.007482143872709378,
+              "zz": 0.9980713563944001
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.0882798858738891,
+              "y": 0.6149149226753151,
+              "z": -0.4351899178813673
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -22382,6 +24182,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2133908387172945,
+              "y": 0.003522359494843653,
+              "z": 338.0096816493478
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.540197342748254,
+            "y": 18.16374955502231,
+            "z": -2.3440805461827514
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.8644326019118955,
+          "y": 6.392631090712479,
+          "z": -4.53919652263921
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.224373710862096,
+              "y": -0.002262024395012526,
+              "z": 338.02574773151423
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9969280913439754,
+              "xy": 0.045621067166697504,
+              "xz": 0.06366395306474354,
+              "yx": -0.04506875374511693,
+              "yy": 0.9989329759602129,
+              "yz": -0.01008548338627141,
+              "zx": -0.06405613261132928,
+              "zy": 0.0071852466794413,
+              "zz": 0.9979204297462976
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.08644326019118956,
+              "y": 0.639263109071248,
+              "z": -0.453919652263921
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -23586,6 +25486,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.22543469016742396,
+              "y": 0.003522359494843653,
+              "z": 338.003491921768
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": -3.8650858497543106,
+            "y": 8.41934121854652,
+            "z": 61.05111223245416
+          },
+          "torque_nm": {
+            "x": 2.488083914204115,
+            "y": 18.875116253132674,
+            "z": -2.445481841126878
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": -0.10171278551985027,
+          "y": 0.2215616110143821,
+          "z": 1.6066082166435305
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 0.8460585949950833,
+          "y": 6.634246507455215,
+          "z": -4.721621879392977
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.23641756231222547,
+              "y": -0.002262024395012526,
+              "z": 338.01955800393443
+            },
+            "velocity": {
+              "x": 0.10982872144801496,
+              "y": -0.05784383889856179,
+              "z": 0.16066082166435305
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9966865042890937,
+              "xy": 0.04744398513204933,
+              "xz": 0.06606875542021781,
+              "yx": -0.046883002430898844,
+              "yy": 0.998850166008047,
+              "yz": -0.010016483852193787,
+              "zx": -0.06646800923038851,
+              "zy": 0.006885792654938695,
+              "zz": 0.9977647967374186
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.08460585949950833,
+              "y": 0.6634246507455215,
+              "z": -0.4721621879392977
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -24790,6 +26790,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2370400271162585,
+              "y": 0.003522359494843653,
+              "z": 337.9975273588432
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 18.415350187506597,
+            "y": -22.752674523895646,
+            "z": -3.7097126885884877
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.28817846723246,
+          "y": -8.024749407851887,
+          "z": -7.1290005387578645
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2562821119184009,
+              "y": 0.015084276114034649,
+              "z": 338.0116315233954
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9942464633238185,
+              "xy": 0.06858646581929767,
+              "xz": -0.08227920074050961,
+              "yx": -0.07362606700592814,
+              "yy": 0.995487632117013,
+              "yz": -0.05986298154369887,
+              "zx": 0.0778021363801621,
+              "zy": 0.06557645163075662,
+              "zz": 0.9948098092430541
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.628817846723246,
+              "y": -0.8024749407851888,
+              "z": -0.7129000538757865
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -25994,6 +28094,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.24908387856638795,
+              "y": 0.003522359494843653,
+              "z": 337.9913374818177
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 18.331568449285164,
+            "y": -21.936829431187235,
+            "z": -3.8727296282177655
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.257964488711052,
+          "y": -7.74059248849007,
+          "z": -7.471928718914108
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2683259633685304,
+              "y": 0.015084276114034649,
+              "z": 338.00544164636995
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9942201424874046,
+              "xy": 0.07210763287128936,
+              "xz": -0.079541168925432,
+              "yx": -0.07694541820096405,
+              "yy": 0.9952565361911582,
+              "yz": -0.059530074640106,
+              "zx": 0.07487129550237198,
+              "zy": 0.06530632779813295,
+              "zz": 0.995052447190257
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6257964488711053,
+              "y": -0.774059248849007,
+              "z": -0.7471928718914108
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -27198,6 +29398,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2611277300165174,
+              "y": 0.003522359494843653,
+              "z": 337.98514760479225
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 18.247786711063736,
+            "y": -21.12098433847882,
+            "z": -4.035746567847044
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.227514271585723,
+          "y": -7.454679520101844,
+          "z": -7.810812569110911
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.2803698148186598,
+              "y": 0.015084276114034649,
+              "z": 337.9992517693445
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9941784909296569,
+              "xy": 0.07558782843533335,
+              "xz": -0.07678286504983253,
+              "yx": -0.08022423336580062,
+              "yy": 0.9950169202159032,
+              "yz": -0.05920642587531025,
+              "zx": 0.07192496474590548,
+              "zy": 0.06502160161430705,
+              "zz": 0.9952883957777316
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6227514271585723,
+              "y": -0.7454679520101845,
+              "z": -0.7810812569110911
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -28402,6 +30702,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.27317158146664694,
+              "y": 0.003522359494843653,
+              "z": 337.9790723632931
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 18.165556597150186,
+            "y": -20.308294006541104,
+            "z": -4.198763507476323
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.215611404865055,
+          "y": -7.1901371643730165,
+          "z": -8.144729242249788
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.29241366626878934,
+              "y": 0.015084276114034649,
+              "z": 337.9931765278453
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9941059667664994,
+              "xy": 0.07900314943777426,
+              "xz": -0.07424169460725104,
+              "yx": -0.08346642760020442,
+              "yy": 0.9947583267619721,
+              "yz": -0.05906967751208331,
+              "zx": 0.06918585334375411,
+              "zy": 0.06491820789758754,
+              "zz": 0.9954892987774716
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6215611404865056,
+              "y": -0.7190137164373017,
+              "z": -0.8144729242249789
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -29606,6 +32006,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.28521543291677637,
+              "y": 0.003522359494843653,
+              "z": 337.9729703844009
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 18.082964585051606,
+            "y": -19.494867863626908,
+            "z": -4.3617804471056
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.19916108907364,
+          "y": -6.91754216932213,
+          "z": -8.472771881069539
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.30445751771891877,
+              "y": 0.015084276114034649,
+              "z": 337.98707454895316
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9940258629974075,
+              "xy": 0.08236335517301593,
+              "xz": -0.07161606954380367,
+              "yx": -0.08664600522095106,
+              "yy": 0.9944963822890983,
+              "yz": -0.0589017435492909,
+              "zx": 0.06637057685081707,
+              "zy": 0.06475510279923229,
+              "zz": 0.9956915803550569
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.619916108907364,
+              "y": -0.6917542169322131,
+              "z": -0.847277188106954
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -30810,6 +33310,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.297259284366906,
+              "y": 0.003522359494843653,
+              "z": 337.9667805073754
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 17.999182846829402,
+            "y": -18.679022770916923,
+            "z": -4.52479738673488
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.168093170060166,
+          "y": -6.626076336100326,
+          "z": -8.794057707254566
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.3165013691690484,
+              "y": 0.015084276114034649,
+              "z": 337.98088467192764
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9939460254060176,
+              "xy": 0.08566649991732957,
+              "xz": -0.068793527104621,
+              "yx": -0.08974810337636945,
+              "yy": 0.9942386124349305,
+              "yz": -0.058607674274010625,
+              "zx": 0.06337646660965374,
+              "zy": 0.064426953485154,
+              "zz": 0.9959079230253655
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6168093170060166,
+              "y": -0.6626076336100326,
+              "z": -0.8794057707254567
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -32014,6 +34614,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.30930313581703556,
+              "y": 0.003522359494843653,
+              "z": 337.9605027322166
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 17.914211382484353,
+            "y": -17.860758728412723,
+            "z": -4.68781432636416
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.1223219728114735,
+          "y": -6.317624079484977,
+          "z": -9.107735884696261
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.32854522061917796,
+              "y": 0.015084276114034649,
+              "z": 337.9746068967688
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9938650428634223,
+              "xy": 0.08890281199054001,
+              "xz": -0.06579184291583914,
+              "yx": -0.09276549933272296,
+              "yy": 0.9939863580135428,
+              "yz": -0.058186615441383996,
+              "zx": 0.06022324059396284,
+              "zy": 0.06393285620983646,
+              "zz": 0.9961354080591724
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6122321972811474,
+              "y": -0.6317624079484978,
+              "z": -0.9107735884696262
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -33218,6 +35918,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.32134698726716493,
+              "y": 0.003522359494843653,
+              "z": 337.95419821966476
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 17.82887801995427,
+            "y": -17.04175887493205,
+            "z": -4.8508312659934365
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.071857923822553,
+          "y": -6.004797943618018,
+          "z": -9.412995010936745
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.34058907206930733,
+              "y": 0.015084276114034649,
+              "z": 337.968302384217
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.993775282065405,
+              "xy": 0.09205618052101681,
+              "xz": -0.0627403250207279,
+              "yx": -0.09569730331698174,
+              "yy": 0.9937348435277099,
+              "yz": -0.057732892676666994,
+              "zx": 0.057032577477106945,
+              "zy": 0.06337760161792112,
+              "zz": 0.9963586526544936
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6071857923822553,
+              "y": -0.6004797943618019,
+              "z": -0.9412995010936746
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -34422,6 +37222,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.3333908387172944,
+              "y": 0.003522359494843653,
+              "z": 337.9480083426392
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 17.745096281731303,
+            "y": -16.22591378222051,
+            "z": -5.013848205622715
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.040073946191774,
+          "y": -5.711983518759326,
+          "z": -9.709070098749551
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.3526329235194368,
+              "y": 0.015084276114034649,
+              "z": 337.9621125071914
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9936639933804664,
+              "xy": 0.09510385365656013,
+              "xz": -0.05989261456019421,
+              "yx": -0.09854923934815721,
+              "yy": 0.993471468831495,
+              "yz": -0.057467278008372216,
+              "zx": 0.05403624416152564,
+              "zy": 0.06300553656198409,
+              "zz": 0.9965492394655934
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6040073946191775,
+              "y": -0.5711983518759326,
+              "z": -0.9709070098749552
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -35626,6 +38526,106 @@
           "status": "patch-wrench-no-load"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.345434690167424,
+              "y": 0.003522359494843653,
+              "z": 337.9418184656138
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": 0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 27.51992224814115,
+            "y": 13.535283152925782,
+            "z": 53.5958252984912
+          },
+          "torque_nm": {
+            "x": 17.661314543510642,
+            "y": -15.410068689513652,
+            "z": -5.176865145251995
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7242084802142408,
+          "y": 0.3561916619190995,
+          "z": 1.4104164552234526
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 6.008082059751133,
+          "y": -5.418635329762337,
+          "z": -9.99524892207962
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.3646767749695664,
+              "y": 0.015084276114034649,
+              "z": 337.955922630166
+            },
+            "velocity": {
+              "x": 0.19242084802142406,
+              "y": 0.11561916619190996,
+              "z": 0.14104164552234527
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9935455712659663,
+              "xy": 0.098051703350982,
+              "xz": -0.057035614205122216,
+              "yx": -0.10130278013268319,
+              "yy": 0.9932092630324163,
+              "yz": -0.057211070292328234,
+              "zx": 0.05103865745857509,
+              "zy": 0.06261967180188266,
+              "zz": 0.9967315747723912
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.6008082059751133,
+              "y": -0.5418635329762337,
+              "z": -0.999524892207962
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -36830,6 +39830,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.3570400271162583,
+              "y": 0.003522359494843653,
+              "z": 337.9358539026889
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 28.009641072435077,
+            "y": 7.537479420926594,
+            "z": 54.51338286120635
+          },
+          "torque_nm": {
+            "x": 3.185015003247548,
+            "y": -22.286813173894934,
+            "z": 1.445062927126535
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7370958176956599,
+          "y": 0.19835472160333142,
+          "z": 1.4345627068738513
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 1.0889437295936506,
+          "y": -7.8707142867561295,
+          "z": 2.7769952152127035
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.37641098529321493,
+              "y": -0.002494093289123033,
+              "z": 337.95019952975764
+            },
+            "velocity": {
+              "x": 0.19370958176956599,
+              "y": -0.06016452783966686,
+              "z": 0.14345627068738515
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.996519063514284,
+              "xy": -0.02816545940367746,
+              "xz": -0.07846313114574464,
+              "yx": 0.02730888878833909,
+              "yy": 0.999555387539899,
+              "yz": -0.011968785782539633,
+              "zx": 0.07876535181004814,
+              "zy": 0.009784382276975485,
+              "zz": 0.9968451661204449
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.10889437295936506,
+              "y": -0.787071428675613,
+              "z": 0.27769952152127036
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -38034,6 +41134,106 @@
           "status": "patch-wrench-resolved"
         }
       ],
+      "support_wrench_motion_step": {
+        "before": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.36908387856638786,
+              "y": 0.003522359494843653,
+              "z": 337.9296641751092
+            },
+            "velocity": {
+              "x": 0.12,
+              "y": -0.08,
+              "z": 0
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 1,
+              "xy": 0,
+              "xz": 0,
+              "yx": 0,
+              "yy": 1,
+              "yz": 0,
+              "zx": 0,
+              "zy": 0,
+              "zz": 1
+            },
+            "angular_velocity_rad_s": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            }
+          }
+        },
+        "wrench": {
+          "force_n": {
+            "x": 28.009641072435077,
+            "y": 7.537479420926594,
+            "z": 54.51338286120635
+          },
+          "torque_nm": {
+            "x": 3.1383600589945604,
+            "y": -21.45689004082751,
+            "z": 1.3542826446724865
+          }
+        },
+        "dt_s": 0.1,
+        "linear_acceleration_mps2": {
+          "x": 0.7370958176956599,
+          "y": 0.19835472160333142,
+          "z": 1.4345627068738513
+        },
+        "angular_acceleration_rad_s2": {
+          "x": 1.0725250709038214,
+          "y": -7.579738005594453,
+          "z": 2.6129124306857765
+        },
+        "after": {
+          "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+          "linear": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "mass_kg": 38,
+            "collision_radius_m": 0,
+            "position": {
+              "x": 0.38845483674334447,
+              "y": -0.002494093289123033,
+              "z": 337.94400980217796
+            },
+            "velocity": {
+              "x": 0.19370958176956599,
+              "y": -0.06016452783966686,
+              "z": 0.14345627068738515
+            }
+          },
+          "angular": {
+            "body_id": "noetix-e1-lab-01/support-wrench-review-body",
+            "orientation": {
+              "xx": 0.9967877650653759,
+              "xy": -0.026506891166380008,
+              "xz": -0.07557470566708646,
+              "yx": 0.02569438842461866,
+              "yy": 0.9996013363727317,
+              "yz": -0.01170327840109498,
+              "zx": 0.07585479430766315,
+              "zy": 0.009723838878879018,
+              "zz": 0.9970714603968964
+            },
+            "angular_velocity_rad_s": {
+              "x": 0.10725250709038214,
+              "y": -0.7579738005594453,
+              "z": 0.26129124306857765
+            }
+          }
+        },
+        "status": "wrench-integrated"
+      },
       "shape_count": 8,
       "terrain_contact_count": 1,
       "terrain_review_count": 0,
@@ -39136,5 +42336,5 @@
   ],
   "hardware_authority": "moonmoon-safety-gate-only",
   "status": "inertial-collision-self-review",
-  "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
+  "note": "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet."
 }

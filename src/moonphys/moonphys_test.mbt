@@ -457,6 +457,53 @@ test "angular rigid body integration applies torque semi implicitly" {
 }
 
 ///|
+test "rigid body wrench integration combines force and torque" {
+  let state = rigid_body_motion_state(
+    "body",
+    2.0,
+    0.0,
+    vec3(0.0, 0.0, 0.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let step = integrate_rigid_body_wrench(
+    state,
+    rigid_body_inertia("body", vec3(1.0, 2.0, 4.0)),
+    rigid_body_wrench(vec3(4.0, 0.0, 0.0), vec3(0.0, 4.0, 8.0)),
+    0.5,
+  )
+  assert_eq(step.status, "wrench-integrated")
+  assert_true(step.linear_acceleration_mps2 == vec3(2.0, 0.0, 0.0))
+  assert_true(step.angular_acceleration_rad_s2 == vec3(0.0, 2.0, 2.0))
+  assert_true(step.after.linear.velocity == vec3(1.0, 0.0, 0.0))
+  assert_true(step.after.linear.position == vec3(0.5, 0.0, 0.0))
+  assert_true(step.after.angular.angular_velocity_rad_s == vec3(0.0, 1.0, 1.0))
+}
+
+///|
+test "rigid body wrench integration flags zero mass review" {
+  let state = rigid_body_motion_state(
+    "body",
+    0.0,
+    0.0,
+    vec3(0.0, 0.0, 0.0),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let step = integrate_rigid_body_wrench(
+    state,
+    rigid_body_inertia("body", vec3(1.0, 1.0, 1.0)),
+    rigid_body_wrench(vec3(4.0, 0.0, 0.0), vec3(0.0, 0.0, 0.0)),
+    0.5,
+  )
+  assert_eq(step.status, "wrench-zero-mass-review")
+  assert_true(step.linear_acceleration_mps2 == vec3(0.0, 0.0, 0.0))
+  assert_true(step.after.linear.position == vec3(0.0, 0.0, 0.0))
+}
+
+///|
 test "angular momentum and contact torque are deterministic" {
   let inertia = rigid_body_inertia("body", vec3(2.0, 4.0, 8.0))
   let state = rigid_body_angular_state(

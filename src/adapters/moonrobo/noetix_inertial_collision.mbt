@@ -26,6 +26,7 @@ pub(all) struct NoetixInertialCollisionFrame {
   mass_properties : @moonphys.CompositeMassProperties
   support_contact_torque_nm : @moonphys.Vec3
   support_contact_wrenches : Array[@moonphys.ContactPatchWrenchAssessment]
+  support_wrench_motion_step : @moonphys.RigidBodyWrenchStep
   shape_count : Int
   terrain_contact_count : Int
   terrain_review_count : Int
@@ -254,6 +255,45 @@ fn support_contact_torque(
 }
 
 ///|
+fn support_contact_force(
+  wrenches : Array[@moonphys.ContactPatchWrenchAssessment],
+) -> @moonphys.Vec3 {
+  let mut force = @moonphys.vec3(0.0, 0.0, 0.0)
+  for wrench in wrenches {
+    force = force.add(wrench.total_force_n)
+  }
+  force
+}
+
+///|
+fn support_wrench_motion_step(
+  profile : NoetixPhysicsProfile,
+  center_of_mass : @moonphys.Vec3,
+  body_velocity : @moonphys.Vec3,
+  inertia : @moonphys.RigidBodyInertia,
+  support_wrenches : Array[@moonphys.ContactPatchWrenchAssessment],
+  dt_s : Double,
+) -> @moonphys.RigidBodyWrenchStep {
+  @moonphys.integrate_rigid_body_wrench(
+    @moonphys.rigid_body_motion_state(
+      "\{profile.robot_id}/support-wrench-review-body",
+      profile.mass_model.mass_kg,
+      0.0,
+      center_of_mass,
+      body_velocity,
+      @moonphys.identity_basis3(),
+      @moonphys.vec3(0.0, 0.0, 0.0),
+    ),
+    inertia,
+    @moonphys.rigid_body_wrench(
+      support_contact_force(support_wrenches),
+      support_contact_torque(support_wrenches),
+    ),
+    dt_s,
+  )
+}
+
+///|
 fn self_contact_manifold(
   frame_index : Int,
   shapes : Array[NoetixCollisionShapeEvidence],
@@ -343,6 +383,7 @@ pub fn noetix_inertial_collision_frame(
     0.0,
     0.0,
   ),
+  dt_s? : Double = default_noetix_moon_walk_config().dt_s,
 ) -> NoetixInertialCollisionFrame {
   let shapes : Array[NoetixCollisionShapeEvidence] = []
   for collision in profile.collision_shapes {
@@ -375,6 +416,9 @@ pub fn noetix_inertial_collision_frame(
   let support_wrenches = support_contact_wrenches(
     field, walk_frame, profile, center_of_mass,
   )
+  let motion_step = support_wrench_motion_step(
+    profile, center_of_mass, body_velocity, inertia, support_wrenches, dt_s,
+  )
   {
     frame_index: walk_frame.frame_index,
     time_s: walk_frame.time_s,
@@ -384,6 +428,7 @@ pub fn noetix_inertial_collision_frame(
     mass_properties,
     support_contact_torque_nm: support_contact_torque(support_wrenches),
     support_contact_wrenches: support_wrenches,
+    support_wrench_motion_step: motion_step,
     shape_count: shapes.length(),
     terrain_contact_count,
     terrain_review_count,
@@ -422,6 +467,7 @@ pub fn noetix_inertial_collision_report(
       pose_trace.frames[index],
       profile,
       body_velocity=noetix_review_body_velocity(trace.config, frame),
+      dt_s=trace.config.dt_s,
     )
     if evidence.self_contact_manifold.contact_count > 0 {
       self_contact_frame_count += 1
@@ -474,7 +520,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview, narrow-phase self-collision manifolds, generic manifold resolution, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 

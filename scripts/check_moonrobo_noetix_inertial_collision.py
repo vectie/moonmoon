@@ -58,6 +58,7 @@ def main(argv: list[str]) -> int:
     "missing inertia note",
   )
   require("patch-load contact wrench torque" in report["note"], "missing patch-wrench torque note")
+  require("support-wrench motion preview" in report["note"], "missing wrench motion note")
   require(report["max_support_contact_torque_nm"] > 0, "missing support torque")
   require(report["max_self_penetration_m"] >= 0, "bad self penetration")
   require(
@@ -119,6 +120,18 @@ def main(argv: list[str]) -> int:
       for wrench in support_wrenches
     ),
     "incomplete support wrench evidence",
+  )
+  motion_step = first.get("support_wrench_motion_step", {})
+  require(motion_step.get("status") == "wrench-integrated", "missing support wrench motion step")
+  require(
+    motion_step.get("wrench", {}).get("force_n", {}).get("z", 0) > 0,
+    "support wrench motion force missing",
+  )
+  require(
+    motion_step.get("angular_acceleration_rad_s2", {}).get("x", 0) != 0
+    or motion_step.get("angular_acceleration_rad_s2", {}).get("y", 0) != 0
+    or motion_step.get("angular_acceleration_rad_s2", {}).get("z", 0) != 0,
+    "support wrench angular acceleration missing",
   )
   require(len(first["terrain_collisions"]) == 2, "terrain foot probes")
   require(

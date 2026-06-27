@@ -153,7 +153,7 @@ pub fn noetix_endless_gait_evidence(@moonphys.Heightfield, reference_frame_index
 
 pub fn noetix_high_control_limits() -> NoetixHighControlLimits
 
-pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3) -> NoetixInertialCollisionFrame
+pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3, dt_s? : Double) -> NoetixInertialCollisionFrame
 
 pub fn noetix_inertial_collision_report(NoetixMoonWalkTrace, @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixInertialCollisionReport
 
@@ -456,6 +456,7 @@ pub(all) struct NoetixInertialCollisionFrame {
   mass_properties : @moonphys.CompositeMassProperties
   support_contact_torque_nm : @moonphys.Vec3
   support_contact_wrenches : Array[@moonphys.ContactPatchWrenchAssessment]
+  support_wrench_motion_step : @moonphys.RigidBodyWrenchStep
   shape_count : Int
   terrain_contact_count : Int
   terrain_review_count : Int

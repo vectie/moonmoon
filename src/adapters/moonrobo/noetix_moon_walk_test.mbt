@@ -374,7 +374,19 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
       report.profile.mass_model.mass_kg,
     ),
   )
+  assert_eq(
+    report.frames[0].support_wrench_motion_step.status,
+    "wrench-integrated",
+  )
+  assert_true(
+    report.frames[0].support_wrench_motion_step.wrench.force_n.z > 0.0,
+  )
+  assert_true(
+    report.frames[0].support_wrench_motion_step.angular_acceleration_rad_s2.length() >
+    0.0,
+  )
   assert_true(report.note.contains("patch-load contact wrench torque"))
+  assert_true(report.note.contains("support-wrench motion preview"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))
   assert_true(
