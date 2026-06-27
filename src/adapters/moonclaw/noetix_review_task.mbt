@@ -8,6 +8,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   objective : String
   source_model_report_id : String
   source_walk_trace_id : String
+  source_walk_command_plan_id : String
   source_static_support_report_id : String
   source_dynamic_stability_report_id : String
   source_joint_control_report_id : String
@@ -21,6 +22,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   joint_control_review_frame_count : Int
   inertial_collision_review_frame_count : Int
   link_pose_count_per_frame : Int
+  walk_command_segment_count : Int
   hardware_state : @moonrobo.MoonroboExecutionState
   hardware_authority : String
   hardware_denied : Bool
@@ -50,6 +52,29 @@ fn noetix_walk_artifact(
       "walk trace must advance in +x with at least one generated frame"
     },
     "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+  )
+}
+
+///|
+fn noetix_walk_command_artifact(
+  plan : @moonrobo.NoetixWalkCommandPlan,
+) -> MoonClawTaskArtifact {
+  let ready = plan.segment_count > 0 &&
+    plan.status == "walk-command-dry-run-review" &&
+    !plan.executable_on_hardware
+  task_artifact(
+    "noetix-high-control-walk-command-plan",
+    "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+    "moon run cmd/main -- moonrobo noetix command json",
+    "Moonrobo high-control walk command plan segments the Noetix trace into dry-run approval windows",
+    "\{plan.segment_count} dry-run segments; max x \{plan.max_command_x_abs_mps} m/s; duration limit \{plan.high_control_limits.max_duration_ms} ms; executable \{plan.executable_on_hardware}; status \{plan.status}",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "walk command plan must remain dry-run review evidence within Moonrobo high-control limits"
+    },
+    "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
   )
 }
 
@@ -188,6 +213,7 @@ pub fn noetix_review_task_blocked_artifact_count(
 pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
   let source_model = @moonrobo.first_trusted_square_noetix_source_model_report()
   let walk = @moonrobo.first_trusted_square_noetix_walk_trace()
+  let command = @moonrobo.first_trusted_square_noetix_walk_command_plan()
   let support = @moonrobo.first_trusted_square_noetix_stability_report()
   let dynamic = @moonrobo.first_trusted_square_noetix_dynamic_stability_report()
   let control = @moonrobo.first_trusted_square_noetix_joint_control_report()
@@ -202,6 +228,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     objective: "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
     source_model_report_id: source_model.report_id,
     source_walk_trace_id: walk.trace_id,
+    source_walk_command_plan_id: command.plan_id,
     source_static_support_report_id: support.report_id,
     source_dynamic_stability_report_id: dynamic.report_id,
     source_joint_control_report_id: control.report_id,
@@ -215,6 +242,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     joint_control_review_frame_count: control.frame_count,
     inertial_collision_review_frame_count: collision.self_contact_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
+    walk_command_segment_count: command.segment_count,
     hardware_state: @moonrobo.MoonroboExecutionState::HardwareDenied,
     hardware_authority: "moonmoon-safety-gate-only",
     hardware_denied: true,
@@ -230,6 +258,12 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "output/moonrobo/first_trusted_square_noetix_walk.json",
         @core.ClaimKind::Simulated,
         "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases.",
+      ),
+      input(
+        "noetix-walk-command-plan",
+        "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        @core.ClaimKind::Simulated,
+        "Moonrobo high-control dry-run command plan for the Noetix walk trace.",
       ),
       input(
         "noetix-link-poses",
@@ -271,6 +305,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     artifacts: [
       noetix_source_model_artifact(source_model),
       noetix_walk_artifact(walk),
+      noetix_walk_command_artifact(command),
       noetix_link_pose_artifact(poses),
       noetix_static_support_artifact(support),
       noetix_dynamic_stability_artifact(dynamic),
@@ -281,6 +316,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     commands: [
       "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+      "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
       "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
@@ -303,6 +339,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "review-only-joint-control-preserved", "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.",
       ),
       criterion(
+        "dry-run-walk-command-preserved", "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.",
+      ),
+      criterion(
         "review-only-inertial-collision-preserved", "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.",
       ),
       criterion(
@@ -312,8 +351,8 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "next-physics-step-clear", "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims.",
       ),
     ],
-    safety_gate: "Do not convert the Noetix source-model audit, walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.",
-    next_action: "Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.",
+    safety_gate: "Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+    next_action: "Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.",
   }
 }
 
@@ -338,6 +377,7 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - source collision tags: \{task.source_model_collision_tag_count}\n"
     text += "  - source inertial tags: \{task.source_model_inertial_tag_count}\n"
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
+    text += "  - walk command segments: \{task.walk_command_segment_count}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"
     text += "  - dynamic-stability review frames: \{task.dynamic_stability_review_frame_count}\n"
     text += "  - joint-control review frames: \{task.joint_control_review_frame_count}\n"

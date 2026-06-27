@@ -37,6 +37,12 @@ def main() -> None:
         fail("joint control review blocker should be explicit")
     if task.get("inertial_collision_review_frame_count", 0) <= 0:
         fail("inertial collision review blocker should be explicit")
+    if not task.get("source_walk_command_plan_id", "").startswith(
+        "moonrobo/noetix-e1/high-control-walk-plan/"
+    ):
+        fail("unexpected walk command plan id")
+    if task.get("walk_command_segment_count", 0) <= 0:
+        fail("walk command segment count should be explicit")
     if task.get("hardware_state") != "HardwareDenied":
         fail("hardware state must remain denied")
     if task.get("hardware_authority") != "moonmoon-safety-gate-only":
@@ -46,6 +52,8 @@ def main() -> None:
     safety_gate = task.get("safety_gate", "")
     if "joint-control" not in safety_gate:
         fail("safety gate must name joint-control evidence")
+    if "command plan" not in safety_gate:
+        fail("safety gate must name high-control command-plan evidence")
     if "inertial/collision" not in safety_gate:
         fail("safety gate must name inertial/collision evidence")
 
@@ -53,6 +61,7 @@ def main() -> None:
     expected_inputs = {
         "noetix-source-model",
         "noetix-walk-trace",
+        "noetix-walk-command-plan",
         "noetix-link-poses",
         "noetix-static-support",
         "noetix-dynamic-stability",
@@ -67,6 +76,7 @@ def main() -> None:
     expected_artifacts = {
         "noetix-source-model-audit",
         "noetix-endless-walk-trace",
+        "noetix-high-control-walk-command-plan",
         "noetix-urdf-reference-link-poses",
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
@@ -80,6 +90,12 @@ def main() -> None:
         fail("source model audit should be ready evidence")
     if "check_moonrobo_noetix_source_model" not in artifacts["noetix-source-model-audit"].get("validation_gate", ""):
         fail("source model audit must have validator")
+    if not artifacts["noetix-high-control-walk-command-plan"].get("ready"):
+        fail("walk command plan should be ready dry-run evidence")
+    if artifacts["noetix-high-control-walk-command-plan"].get("blocking_reason") != "none":
+        fail("walk command plan should not be blocked")
+    if "check_moonrobo_noetix_walk_command" not in artifacts["noetix-high-control-walk-command-plan"].get("validation_gate", ""):
+        fail("walk command plan must have validator")
     if artifacts["noetix-static-support-review"].get("ready"):
         fail("static support artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-static-support-review"].get("blocking_reason", ""):
@@ -101,6 +117,7 @@ def main() -> None:
     for expected in [
         "check_moonrobo_noetix_source_model.py",
         "check_moonrobo_noetix_walk.py",
+        "check_moonrobo_noetix_walk_command.py",
         "check_moonrobo_noetix_link_poses.py",
         "check_moonrobo_noetix_stability.py",
         "check_moonrobo_noetix_dynamics.py",

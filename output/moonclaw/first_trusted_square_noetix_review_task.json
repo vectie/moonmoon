@@ -8,6 +8,7 @@
     "objective": "Review the Noetix endless moon-walk simulation evidence as one MoonClaw work packet before any stronger dynamics or hardware-authority claim.",
     "source_model_report_id": "moonrobo/noetix-e1/source-model/audit-v0",
     "source_walk_trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",
+    "source_walk_command_plan_id": "moonrobo/noetix-e1/high-control-walk-plan/first-trusted-square-northeast-stepout-lola",
     "source_static_support_report_id": "moonrobo/noetix-e1/static-support/first-trusted-square-northeast-stepout-lola",
     "source_dynamic_stability_report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
     "source_joint_control_report_id": "moonrobo/noetix-e1/joint-control/first-trusted-square-northeast-stepout-lola",
@@ -21,6 +22,7 @@
     "joint_control_review_frame_count": 32,
     "inertial_collision_review_frame_count": 32,
     "link_pose_count_per_frame": 25,
+    "walk_command_segment_count": 3,
     "hardware_state": "HardwareDenied",
     "hardware_authority": "moonmoon-safety-gate-only",
     "hardware_denied": true,
@@ -36,6 +38,12 @@
         "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
         "claim_kind": "Simulated",
         "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases."
+      },
+      {
+        "input_id": "noetix-walk-command-plan",
+        "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "claim_kind": "Simulated",
+        "summary": "Moonrobo high-control dry-run command plan for the Noetix walk trace."
       },
       {
         "input_id": "noetix-link-poses",
@@ -94,6 +102,16 @@
         "ready": true,
         "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json"
+      },
+      {
+        "artifact_id": "noetix-high-control-walk-command-plan",
+        "path": "output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "producer": "moon run cmd/main -- moonrobo noetix command json",
+        "required_state": "Moonrobo high-control walk command plan segments the Noetix trace into dry-run approval windows",
+        "current_state": "3 dry-run segments; max x 0.12 m/s; duration limit 1500 ms; executable false; status walk-command-dry-run-review",
+        "ready": true,
+        "blocking_reason": "none",
+        "validation_gate": "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json"
       },
       {
         "artifact_id": "noetix-urdf-reference-link-poses",
@@ -159,6 +177,7 @@
     "commands": [
       "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json",
       "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json",
+      "python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json",
       "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
       "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
@@ -186,6 +205,10 @@
         "description": "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated."
       },
       {
+        "criterion_id": "dry-run-walk-command-preserved",
+        "description": "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority."
+      },
+      {
         "criterion_id": "review-only-inertial-collision-preserved",
         "description": "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available."
       },
@@ -198,7 +221,7 @@
         "description": "Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims."
       }
     ],
-    "safety_gate": "Do not convert the Noetix source-model audit, walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.",
-    "next_action": "Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
+    "safety_gate": "Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.",
+    "next_action": "Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied."
   }
 ]

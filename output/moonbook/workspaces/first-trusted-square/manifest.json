@@ -2,7 +2,7 @@
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
   "generated_by": "scripts/materialize_moonbook_workspace.py",
-  "entry_count": 83,
+  "entry_count": 84,
   "review_queue_count": 29,
   "review_transition_count": 29,
   "entry_paths": [
@@ -83,6 +83,7 @@
     "moonclaw/first-trusted-square/corridor-receipts.json",
     "moonrobo/first-trusted-square/noetix-source-model.json",
     "moonrobo/first-trusted-square/noetix-walk.json",
+    "moonrobo/first-trusted-square/noetix-walk-command.json",
     "moonrobo/first-trusted-square/noetix-physics.json",
     "moonrobo/first-trusted-square/noetix-dynamics.json",
     "moonrobo/first-trusted-square/noetix-joint-control.json",

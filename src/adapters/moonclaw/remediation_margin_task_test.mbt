@@ -1514,16 +1514,24 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.dynamic_stability_review_frame_count > 0)
   assert_true(task.joint_control_review_frame_count > 0)
   assert_true(task.inertial_collision_review_frame_count > 0)
+  assert_true(task.walk_command_segment_count > 0)
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
-  assert_eq(task.inputs.length(), 8)
-  assert_eq(task.artifacts.length(), 8)
+  assert_eq(task.inputs.length(), 9)
+  assert_eq(task.artifacts.length(), 9)
   assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 4)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-source-model-audit" &&
       artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_source_model")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-high-control-walk-command-plan" &&
+      artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_walk_command")
     }),
   )
   assert_true(
@@ -1558,6 +1566,11 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   )
   assert_true(
     task.commands.any(fn(command) {
+      command.contains("check_moonrobo_noetix_walk_command")
+    }),
+  )
+  assert_true(
+    task.commands.any(fn(command) {
       command.contains("check_moonrobo_noetix_link_poses")
     }),
   )
@@ -1569,6 +1582,7 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(markdown.contains("MoonClaw Noetix Review Tasks"))
   assert_true(markdown.contains("noetix-review-task"))
   assert_true(markdown.contains("source collision tags: 0"))
+  assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
   assert_true(markdown.contains("inertial-collision review frames"))
   let json = @moonclaw.first_trusted_square_noetix_review_tasks_json().stringify(

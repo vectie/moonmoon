@@ -15,6 +15,9 @@ evidence.
 - Every walk frame includes 24 Noetix joint phases for animation/replay; leg
   phases are derived from URDF-reference IK and clamped by source joint limits.
 - The trace is exported as Markdown and JSON under `output/moonrobo`.
+- Moonrobo exports a high-control Noetix walk command plan that segments the
+  finite trace prefix into dry-run approval windows from the sibling robot
+  profile limits; it is review evidence only and never hardware authority.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile and static COM/support
   report backed by generic Moonphys support assessment.
@@ -34,10 +37,12 @@ evidence.
   contact torque, narrow-phase self-collision manifolds, and generic
   multi-contact manifold resolution with impulse accounting.
 - MoonClaw exports a Noetix simulation review task that ties the walk trace,
-  URDF-reference link poses, static support report, dynamic-stability report,
-  joint-control report, inertial/collision report, and Rabbita playback into a
-  hardware-denied review packet.
+  high-control dry-run command plan, URDF-reference link poses, static support
+  report, dynamic-stability report, joint-control report, inertial/collision
+  report, and Rabbita playback into a hardware-denied review packet.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
+- `scripts/check_moonrobo_noetix_walk_command.py` verifies high-control
+  dry-run command-plan invariants.
 - `scripts/check_moonrobo_noetix_source_model.py` verifies source-model audit
   invariants.
 - `scripts/check_moonrobo_noetix_stability.py` verifies profile/stability
@@ -328,9 +333,10 @@ Do not connect this to hardware controls.
 
 ## Phase 6: Evidence Export
 
-Status: first source-model audit, walk, physics-profile, static-support,
-dynamic-stability, joint-control, inertial/collision, link-pose, and MoonClaw
-review-task exports and verifiers implemented.
+Status: first source-model audit, walk, high-control dry-run command plan,
+physics-profile, static-support, dynamic-stability, joint-control,
+inertial/collision, link-pose, and MoonClaw review-task exports and verifiers
+implemented.
 
 Add generated outputs to the dossier build.
 
@@ -339,13 +345,17 @@ Candidate files:
 ```text
 output/moonrobo/first_trusted_square_noetix_walk.json
 output/moonrobo/first_trusted_square_noetix_walk.md
+output/moonrobo/first_trusted_square_noetix_walk_command.json
+output/moonrobo/first_trusted_square_noetix_walk_command.md
 output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/noetix-walk.json
+output/moonbook/workspaces/first-trusted-square/moonrobo/first-trusted-square/noetix-walk-command.json
 ```
 
 Add verifier:
 
 ```text
 scripts/check_moonrobo_noetix_walk.py
+scripts/check_moonrobo_noetix_walk_command.py
 ```
 
 Check invariants:
@@ -362,9 +372,9 @@ Check invariants:
 ## Phase 7: MoonBook / MoonClaw Integration
 
 Status: MoonBook entries and workspace payloads implemented for the Noetix
-source-model audit, walk trace, physics assumptions, dynamic-stability report,
-joint-control report, inertial/collision report, link poses, and MoonClaw
-review task.
+source-model audit, walk trace, high-control dry-run command plan, physics
+assumptions, dynamic-stability report, joint-control report,
+inertial/collision report, link poses, and MoonClaw review task.
 
 After the trace is stable, make it durable evidence.
 

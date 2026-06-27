@@ -8,17 +8,19 @@
   - source collision tags: 0
   - source inertial tags: 0
   - link poses per frame: 25
+  - walk command segments: 3
   - static-support review frames: 32
   - dynamic-stability review frames: 32
   - joint-control review frames: 32
   - inertial-collision review frames: 32
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
-  - safety gate: Do not convert the Noetix source-model audit, walk trace, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, and collision tags must replace assumptions before any claim beyond simulation review.
-  - next action: Use this task to review source-model, contact, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
+  - safety gate: Do not convert the Noetix source-model audit, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.
+  - next action: Use this task to review source-model, contact, walk-command, link-pose, static-support, dynamic-stability, joint-control, and inertial/collision evidence; then replace assumed mass/collision metadata or keep hardware denied.
   - inputs:
     - noetix-source-model: output/moonrobo/first_trusted_square_noetix_source_model.json - Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.
     - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases.
+    - noetix-walk-command-plan: output/moonrobo/first_trusted_square_noetix_walk_command.json - Moonrobo high-control dry-run command plan for the Noetix walk trace.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
     - noetix-static-support: output/moonrobo/first_trusted_square_noetix_stability.json - Static COM/support report that explicitly remains review-only for dynamic walking.
     - noetix-dynamic-stability: output/moonrobo/first_trusted_square_noetix_dynamics.json - Capture-point dynamic stability report that remains review-only without controller and inertia evidence.
@@ -36,6 +38,11 @@
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
+    - noetix-high-control-walk-command-plan: output/moonrobo/first_trusted_square_noetix_walk_command.json
+      - current: 3 dry-run segments; max x 0.12 m/s; duration limit 1500 ms; executable false; status walk-command-dry-run-review
+      - ready: true
+      - blocking: none
+      - gate: python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json
     - noetix-urdf-reference-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json
       - current: 32 frames; 25 links per frame; status review-only
       - ready: true
@@ -69,6 +76,7 @@
   - commands:
     - python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json
     - python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
+    - python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json
     - python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
     - python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
     - python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
@@ -82,6 +90,7 @@
     - source-model-gaps-preserved: Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.
     - review-only-static-support-preserved: Static support review frames remain explicit blockers for dynamic walking evidence.
     - review-only-joint-control-preserved: Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.
+    - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
     - review-only-inertial-collision-preserved: Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.
     - hardware-denial-preserved: MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.
     - next-physics-step-clear: Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims.

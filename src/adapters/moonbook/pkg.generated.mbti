@@ -66,6 +66,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonroboNoetixSourceModel
   MoonroboNoetixWalk
+  MoonroboNoetixWalkCommand
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
   MoonroboNoetixJointControl

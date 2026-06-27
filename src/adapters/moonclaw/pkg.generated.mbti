@@ -467,6 +467,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   objective : String
   source_model_report_id : String
   source_walk_trace_id : String
+  source_walk_command_plan_id : String
   source_static_support_report_id : String
   source_dynamic_stability_report_id : String
   source_joint_control_report_id : String
@@ -480,6 +481,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   joint_control_review_frame_count : Int
   inertial_collision_review_frame_count : Int
   link_pose_count_per_frame : Int
+  walk_command_segment_count : Int
   hardware_state : @moonrobo.MoonroboExecutionState
   hardware_authority : String
   hardware_denied : Bool

@@ -20,6 +20,7 @@ pub(all) enum BookEntryKind {
   MoonroboHandoff
   MoonroboNoetixSourceModel
   MoonroboNoetixWalk
+  MoonroboNoetixWalkCommand
   MoonroboNoetixPhysics
   MoonroboNoetixDynamics
   MoonroboNoetixJointControl
@@ -153,6 +154,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonroboHandoff => "moonrobo-handoff"
     MoonroboNoetixSourceModel => "moonrobo-noetix-source-model"
     MoonroboNoetixWalk => "moonrobo-noetix-walk"
+    MoonroboNoetixWalkCommand => "moonrobo-noetix-walk-command"
     MoonroboNoetixPhysics => "moonrobo-noetix-physics"
     MoonroboNoetixDynamics => "moonrobo-noetix-dynamics"
     MoonroboNoetixJointControl => "moonrobo-noetix-joint-control"
@@ -983,6 +985,20 @@ fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
     confidence: 0.62,
     path: "moonrobo/\{dossier.site.site_id}/noetix-walk.json",
     summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame using URDF leg IK, and hardware authority denied",
+  }
+}
+
+///|
+fn moonrobo_noetix_walk_command_entry(dossier : @site.SiteDossier) -> BookEntry {
+  let plan = @moonrobo.first_trusted_square_noetix_walk_command_plan()
+  {
+    entry_id: "moonrobo/\{dossier.site.site_id}/noetix-walk-command",
+    title: "Moonrobo Noetix high-control walk command plan for \{dossier.site.name}",
+    kind: MoonroboNoetixWalkCommand,
+    claim_kind: @core.ClaimKind::Simulated,
+    confidence: 0.52,
+    path: "moonrobo/\{dossier.site.site_id}/noetix-walk-command.json",
+    summary: "\{plan.robot_id} high-control walk command plan has \{plan.segment_count} dry-run segments, max x \{plan.max_command_x_abs_mps} m/s within \{plan.high_control_limits.max_x_abs_mps} m/s limit, approval \{plan.high_control_limits.requires_approval}, hardware authority \{plan.hardware_authority}",
   }
 }
 
@@ -1990,6 +2006,7 @@ fn book_entries(
   entries.push(moonclaw_corridor_receipt_entry(dossier))
   entries.push(moonrobo_noetix_source_model_entry(dossier))
   entries.push(moonrobo_noetix_walk_entry(dossier))
+  entries.push(moonrobo_noetix_walk_command_entry(dossier))
   entries.push(moonrobo_noetix_physics_entry(dossier))
   entries.push(moonrobo_noetix_dynamics_entry(dossier))
   entries.push(moonrobo_noetix_joint_control_entry(dossier))

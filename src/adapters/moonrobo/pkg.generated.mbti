@@ -61,6 +61,12 @@ pub fn first_trusted_square_noetix_stability_markdown() -> String
 
 pub fn first_trusted_square_noetix_stability_report() -> NoetixWalkStabilityReport
 
+pub fn first_trusted_square_noetix_walk_command_json() -> Json
+
+pub fn first_trusted_square_noetix_walk_command_markdown() -> String
+
+pub fn first_trusted_square_noetix_walk_command_plan() -> NoetixWalkCommandPlan
+
 pub fn first_trusted_square_noetix_walk_json() -> Json
 
 pub fn first_trusted_square_noetix_walk_markdown() -> String
@@ -137,6 +143,8 @@ pub fn noetix_dynamic_stability_frame(NoetixMoonWalkTrace, Int, NoetixPhysicsPro
 
 pub fn noetix_dynamic_stability_report(NoetixMoonWalkTrace, profile? : NoetixPhysicsProfile) -> NoetixDynamicStabilityReport
 
+pub fn noetix_high_control_limits() -> NoetixHighControlLimits
+
 pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3) -> NoetixInertialCollisionFrame
 
 pub fn noetix_inertial_collision_report(NoetixMoonWalkTrace, @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixInertialCollisionReport
@@ -164,6 +172,8 @@ pub fn noetix_source_joint_limits() -> Array[NoetixSourceJointLimit]
 pub fn noetix_source_model_report() -> NoetixSourceModelReport
 
 pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
+
+pub fn noetix_walk_command_plan(NoetixMoonWalkTrace, limits? : NoetixHighControlLimits) -> NoetixWalkCommandPlan
 
 pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile, config? : NoetixMoonWalkConfig) -> NoetixWalkStabilityFrame
 
@@ -240,6 +250,8 @@ pub fn render_noetix_moon_walk_markdown(NoetixMoonWalkTrace) -> String
 pub fn render_noetix_source_model_markdown(NoetixSourceModelReport) -> String
 
 pub fn render_noetix_stability_markdown(NoetixWalkStabilityReport) -> String
+
+pub fn render_noetix_walk_command_markdown(NoetixWalkCommandPlan) -> String
 
 pub fn render_regenerated_receipt_readiness_action_receipt_closeout_json(RegeneratedReceiptReadinessActionReceiptCloseout) -> Json
 
@@ -384,6 +396,22 @@ pub(all) struct NoetixFootGeometry {
   half_width_m : Double
   sole_radius_m : Double
   friction_coefficient : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixHighControlLimits {
+  source_profile_path : String
+  capability_id : String
+  command_class : String
+  max_x_abs_mps : Double
+  max_yaw_abs_rad_s : Double
+  max_duration_ms : Int
+  telemetry_freshness_ms : Int
+  heartbeat_ms : Int
+  default_mode : String
+  requires_approval : Bool
+  requires_dry_run : Bool
+  hardware_authority : String
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -676,6 +704,44 @@ pub(all) struct NoetixTerrainCollisionEvidence {
   link_name : String
   expected_contact : Bool
   collision : @moonphys.HeightfieldCollision
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkCommandPlan {
+  plan_id : String
+  trace_id : String
+  robot_id : String
+  capability_id : String
+  command_class : String
+  frame_count : Int
+  segment_count : Int
+  total_duration_s : Double
+  total_expected_distance_m : Double
+  max_command_x_abs_mps : Double
+  max_command_yaw_abs_rad_s : Double
+  high_control_limits : NoetixHighControlLimits
+  segments : Array[NoetixWalkCommandSegment]
+  hardware_authority : String
+  executable_on_hardware : Bool
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkCommandSegment {
+  segment_id : String
+  start_frame_index : Int
+  end_frame_index : Int
+  start_time_s : Double
+  duration_s : Double
+  command_x_mps : Double
+  command_yaw_rad_s : Double
+  expected_distance_m : Double
+  within_x_limit : Bool
+  within_yaw_limit : Bool
+  within_duration_limit : Bool
+  requires_approval : Bool
+  requires_dry_run : Bool
+  executable_on_hardware : Bool
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
