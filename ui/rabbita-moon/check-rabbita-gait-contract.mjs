@@ -1,7 +1,10 @@
+import { spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
+const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
 
 const sceneContracts = [
   'walkPipeline',
@@ -226,6 +229,29 @@ if (maxPatchRange <= 0) {
   throw new Error('sampled contact patches did not report terrain height range')
 }
 
+const compiledMoonphysGate = spawnSync(
+  process.env.MOON_BIN ?? 'moon',
+  ['test', 'src/suite_adapter_preview', '--target', 'js'],
+  {
+    cwd: repoRoot,
+    encoding: 'utf8',
+  },
+)
+
+if (compiledMoonphysGate.error) {
+  throw compiledMoonphysGate.error
+}
+
+if (compiledMoonphysGate.status !== 0) {
+  throw new Error(
+    [
+      'compiled Moonphys gate failed',
+      compiledMoonphysGate.stdout,
+      compiledMoonphysGate.stderr,
+    ].filter(Boolean).join('\n'),
+  )
+}
+
 console.log(
-  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples`,
+  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples, compiled Moonphys gate`,
 )

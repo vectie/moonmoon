@@ -335,6 +335,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    motion-frame trace. The hinge replay table now cites the Moonrobo Noetix
    profile and URDF sources, uses URDF joint ids such as `leg_l1_joint`,
    `leg_l4_joint`, `leg_l6_joint`, `arm_l1_joint`, and `arm_l4_joint`, and
-   verifies velocity and effort against those URDF limits. The remaining Phase F
-   suite work is to feed this suite trace through the compiled Moonphys combined
-   review instead of only the Rabbita JSON-side mirror.
+   verifies velocity and effort against those URDF limits. `src/suite_adapter_preview`
+   now runs the Rabbita/Moonrobo Noetix evidence fixture through compiled
+   Moonphys using `motion_hinge_replay_review_with_replay`, and
+   `npm run check:gait` invokes that compiled gate after the Rabbita runtime
+   diagnostics. The remaining Phase F suite work is to replace the compiled
+   fixture mirror with live adapter payloads exported from Moonrobo and Rabbita.

@@ -244,6 +244,10 @@ Acceptance:
 - physics does not silently rewrite the gait asset
 - Moonphys remains robot-agnostic
 
+Status: active in `src/suite_adapter_preview` as a suite-side compiled
+Moonphys review of the Rabbita/Moonrobo Noetix evidence fixture. The remaining
+work is to replace the fixture mirror with live suite adapter payloads.
+
 ## Phase 10: Durable Suite Evidence
 
 Only after the adapter produces stable motion evidence should MoonBook or

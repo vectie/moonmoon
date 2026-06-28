@@ -1,0 +1,14 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/suite_adapter_preview"
+
+// Values
+pub fn compiled_moonphys_bridge_environment_id() -> String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
