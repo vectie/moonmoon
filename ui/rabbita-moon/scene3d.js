@@ -15,6 +15,8 @@ import {
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
+const ROBOT_QUALITY_REFRESH_MS = 1000
+const ROBOT_DATASET_REFRESH_MS = 250
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -1574,7 +1576,7 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
   const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
   const frames = Array.from({ length: sampleCount }, (_, index) => {
     const time_s = index * cycleSeconds / sampleCount
-    const diagnostics = robotGeometry(time_s).diagnostics
+    const diagnostics = robotGeometry(time_s, { quality: false }).diagnostics
     return {
       time_s: Number(time_s.toFixed(4)),
       phase_label: diagnostics.phaseLabel,
@@ -1721,7 +1723,7 @@ function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
     const time_s = index * dt_s
     return {
       time_s: Number(time_s.toFixed(4)),
-      diagnostics: robotGeometry(time_s).diagnostics,
+      diagnostics: robotGeometry(time_s, { quality: false }).diagnostics,
     }
   })
   const frames = Array.from({ length: sampleCount }, (_, index) => (
@@ -1760,6 +1762,10 @@ function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
 function moonphysMotionHingeReviewEvidence(sampleCount = 24) {
   const motionTrace = moonphysReviewTraceEvidence(sampleCount)
   const hingeTrace = moonphysHingeMotorReplayEvidence(sampleCount)
+  return moonphysMotionHingeReviewEvidenceFromTraces(motionTrace, hingeTrace)
+}
+
+function moonphysMotionHingeReviewEvidenceFromTraces(motionTrace, hingeTrace) {
   const blockers = []
   if (motionTrace.frame_count !== hingeTrace.frame_count) {
     blockers.push('frame-count-mismatch')
@@ -2017,13 +2023,14 @@ function updateRobotDebug(debug, diagnostics) {
     .filter(foot => foot.locked)
     .map(foot => foot.name)
     .join('+') || 'none'
-  const maxDelta = diagnostics.quality.maxTargetFkDelta
+  const quality = diagnostics.quality
+  const maxDelta = quality?.maxTargetFkDelta ?? 0
   while (debug.children.length < 3) {
     debug.appendChild(document.createElement('span'))
   }
   debug.children[0].textContent = `phase ${diagnostics.gaitPhaseLabel}`
   debug.children[1].textContent = `support ${diagnostics.supportFoot} swing ${diagnostics.swingFoot} lock ${locked}`
-  debug.children[2].textContent = `quality ${diagnostics.quality.status} IK ${diagnostics.ik.pelvisCorrectionM.toFixed(3)}m target/FK ${maxDelta.toFixed(3)}m`
+  debug.children[2].textContent = `quality ${quality?.status ?? 'sampling'} IK ${diagnostics.ik.pelvisCorrectionM.toFixed(3)}m target/FK ${maxDelta.toFixed(3)}m`
 }
 
 function initRobot(canvas) {
@@ -2037,14 +2044,29 @@ function initRobot(canvas) {
   const buffers = createBuffers(gl)
   const moonphysReviewTrace = moonphysReviewTraceEvidence()
   const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
-  const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidence()
+  const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidenceFromTraces(
+    moonphysReviewTrace,
+    moonphysHingeMotorTrace,
+  )
+  let cachedQuality = null
+  let lastQualityRefreshMs = -Infinity
+  let lastDiagnosticDatasetMs = -Infinity
   function draw(now) {
     resizeCanvas(canvas, gl)
     gl.clearColor(0.035, 0.055, 0.052, 1)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     gl.enable(gl.DEPTH_TEST)
     const aspect = canvas.width / Math.max(1, canvas.height)
-    const geometry = robotGeometry(now * 0.001)
+    const time = now * 0.001
+    const geometry = robotGeometry(time, { quality: false })
+    if (!cachedQuality || now - lastQualityRefreshMs >= ROBOT_QUALITY_REFRESH_MS) {
+      cachedQuality = gaitQuality(time, geometry.diagnostics)
+      lastQualityRefreshMs = now
+      canvas.dataset.gaitQualityRefreshCount = String(
+        Number(canvas.dataset.gaitQualityRefreshCount || 0) + 1,
+      )
+    }
+    geometry.diagnostics = { ...geometry.diagnostics, quality: cachedQuality }
     const follow = mat4Translate(mat4Identity(), 0, 0, -geometry.diagnostics.visualRootWorldZ)
     const camera = mat4Translate(mat4Identity(), 0, -0.68, -3.25)
     const scene = mat4RotateX(mat4Identity(), -0.08)
@@ -2067,6 +2089,13 @@ function initRobot(canvas) {
     canvas.dataset.visualRootWorldZ = geometry.diagnostics.visualRootWorldZ.toFixed(2)
     canvas.dataset.visualLocomotionStatus = 'world-root-camera-follow'
     canvas.dataset.walkPipeline = 'clip-targets-to-rigid-fk'
+    const shouldUpdateDiagnosticDataset = now - lastDiagnosticDatasetMs >= ROBOT_DATASET_REFRESH_MS ||
+      !canvas.dataset.gaitQualityStatus
+    if (shouldUpdateDiagnosticDataset) {
+      lastDiagnosticDatasetMs = now
+      canvas.dataset.diagnosticDatasetRefreshCount = String(
+        Number(canvas.dataset.diagnosticDatasetRefreshCount || 0) + 1,
+      )
     canvas.dataset.footPhaseChannels = JSON.stringify({
       left: {
         phase: Number(geometry.diagnostics.footChannels.left.phase.toFixed(4)),
@@ -2279,6 +2308,7 @@ function initRobot(canvas) {
     })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
+    }
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
     updateRobotDebug(debug, geometry.diagnostics)
