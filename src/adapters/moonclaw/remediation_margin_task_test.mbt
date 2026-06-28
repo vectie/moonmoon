@@ -1518,10 +1518,28 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     "noetix-e1-source-model",
   )
   assert_eq(task.source_model_metadata_inventory.blocker_count, 50)
+  assert_eq(
+    task.source_model_metadata_blocker_ids.length(),
+    task.source_model_metadata_blocker_count,
+  )
+  assert_eq(
+    task.source_model_metadata_inventory.blocker_ids.length(),
+    task.source_model_metadata_blocker_count,
+  )
   assert_true(!task.source_model_metadata_inventory.ready)
   assert_eq(
     task.source_model_metadata_inventory.status,
     "model-metadata-blocked",
+  )
+  assert_true(
+    task.source_model_metadata_blocker_ids.contains(
+      "missing-collision-shape:left_foot",
+    ),
+  )
+  assert_true(
+    task.source_model_metadata_blocker_ids.contains(
+      "missing-inertial:right_foot",
+    ),
   )
   assert_eq(task.physical_model_blocker_count, 9)
   assert_eq(
@@ -1658,6 +1676,9 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(
     markdown.contains("source metadata inventory: model-metadata-blocked"),
   )
+  assert_true(markdown.contains("source metadata blocker ids"))
+  assert_true(markdown.contains("missing-collision-shape:left_foot"))
+  assert_true(markdown.contains("missing-inertial:right_foot"))
   assert_true(markdown.contains("physical model blockers"))
   assert_true(markdown.contains("assumed:mass"))
   assert_true(markdown.contains("missing:joint-damping"))
@@ -1704,9 +1725,23 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_eq(decision.ready_artifact_count, 7)
   assert_eq(decision.blocked_artifact_count, 4)
   assert_eq(decision.metadata_blocker_count, 50)
+  assert_eq(
+    decision.metadata_blocker_ids.length(),
+    decision.metadata_blocker_count,
+  )
   assert_true(!decision.source_metadata_ready)
   assert_eq(decision.source_metadata_inventory.blocker_count, 50)
+  assert_eq(
+    decision.source_metadata_inventory.blocker_ids.length(),
+    decision.metadata_blocker_count,
+  )
   assert_eq(decision.source_metadata_inventory.status, "model-metadata-blocked")
+  assert_true(
+    decision.metadata_blocker_ids.contains("missing-collision-shape:left_foot"),
+  )
+  assert_true(
+    decision.metadata_blocker_ids.contains("missing-inertial:right_foot"),
+  )
   assert_true(!decision.physical_model_ready)
   assert_eq(decision.physical_model_blocker_count, 9)
   assert_eq(
@@ -1768,6 +1803,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(markdown.contains("noetix-simulation-blocked"))
   assert_true(markdown.contains("source metadata ready: false"))
   assert_true(markdown.contains("model-metadata-blocked"))
+  assert_true(markdown.contains("source metadata blocker ids"))
+  assert_true(markdown.contains("missing-collision-shape:left_foot"))
+  assert_true(markdown.contains("missing-inertial:right_foot"))
   assert_true(markdown.contains("physical model ready: false"))
   assert_true(markdown.contains("physical model blockers"))
   assert_true(markdown.contains("assumed:mass"))

@@ -15,6 +15,7 @@ pub(all) struct NoetixSimulationReadinessDecision {
   ready_artifact_count : Int
   blocked_artifact_count : Int
   metadata_blocker_count : Int
+  metadata_blocker_ids : Array[String]
   source_metadata_ready : Bool
   source_metadata_inventory : @moonphys.ModelMetadataInventory
   physical_model_ready : Bool
@@ -141,6 +142,7 @@ pub fn noetix_simulation_readiness_decision(
     ready_artifact_count: ready_artifacts.length(),
     blocked_artifact_count: blocked_artifacts.length(),
     metadata_blocker_count: metadata_blockers,
+    metadata_blocker_ids: metadata_inventory.blocker_ids,
     source_metadata_ready: metadata_inventory.ready,
     source_metadata_inventory: metadata_inventory,
     physical_model_ready: physical_readiness.ready,
@@ -192,6 +194,10 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- ready artifacts: \{decision.ready_artifact_count}\n"
   text += "- blocked artifacts: \{decision.blocked_artifact_count}\n"
   text += "- source metadata blockers: \{decision.metadata_blocker_count}\n"
+  text += "- source metadata blocker ids:\n"
+  for blocker in decision.metadata_blocker_ids {
+    text += "  - \{blocker}\n"
+  }
   text += "- source metadata ready: \{decision.source_metadata_ready}\n"
   text += "- source metadata inventory: \{decision.source_metadata_inventory.status}\n"
   text += "- physical model ready: \{decision.physical_model_ready}\n"

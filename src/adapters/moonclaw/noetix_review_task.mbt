@@ -22,6 +22,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_collision_link_count : Int
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
+  source_model_metadata_blocker_ids : Array[String]
   source_model_metadata_inventory : @moonphys.ModelMetadataInventory
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
@@ -308,6 +309,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_model_missing_collision_link_count: source_model.missing_collision_link_count,
     source_model_missing_inertial_link_count: source_model.missing_inertial_link_count,
     source_model_metadata_blocker_count: source_model.source_metadata_blocker_count,
+    source_model_metadata_blocker_ids: source_model.source_metadata_blocker_ids,
     source_model_metadata_inventory: source_model.source_metadata_inventory,
     physical_model_readiness: physical_readiness,
     physical_model_blocker_count: physical_readiness.blocker_count,
@@ -476,6 +478,10 @@ pub fn render_noetix_review_tasks_markdown(
     text += "  - missing collision links: \{task.source_model_missing_collision_link_count}\n"
     text += "  - missing inertial links: \{task.source_model_missing_inertial_link_count}\n"
     text += "  - source metadata blockers: \{task.source_model_metadata_blocker_count}\n"
+    text += "  - source metadata blocker ids:\n"
+    for blocker in task.source_model_metadata_blocker_ids {
+      text += "    - \{blocker}\n"
+    }
     text += "  - source metadata inventory: \{task.source_model_metadata_inventory.status}\n"
     text += "  - physical model blockers: \{task.physical_model_blocker_count}\n"
     text += "  - physical model blocker ids:\n"

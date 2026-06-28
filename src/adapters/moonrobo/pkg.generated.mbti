@@ -834,6 +834,7 @@ pub(all) struct NoetixSourceModelReport {
   missing_collision_link_count : Int
   missing_inertial_link_count : Int
   source_metadata_blocker_count : Int
+  source_metadata_blocker_ids : Array[String]
   source_metadata_inventory : @moonphys.ModelMetadataInventory
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool

@@ -145,11 +145,15 @@ test "model metadata inventory reports missing collision and inertial links" {
   assert_eq(inventory.collision_shape_link_count, 1)
   assert_eq(inventory.inertial_link_count, 0)
   assert_eq(inventory.blocker_count, 3)
+  assert_eq(inventory.blocker_ids.length(), inventory.blocker_count)
   assert_true(!inventory.ready)
   assert_eq(inventory.status, "model-metadata-blocked")
   assert_true(inventory.missing_collision_shape_links.contains("foot"))
   assert_true(inventory.missing_inertial_links.contains("base"))
   assert_true(inventory.missing_inertial_links.contains("foot"))
+  assert_true(inventory.blocker_ids.contains("missing-collision-shape:foot"))
+  assert_true(inventory.blocker_ids.contains("missing-inertial:base"))
+  assert_true(inventory.blocker_ids.contains("missing-inertial:foot"))
 }
 
 ///|
@@ -161,6 +165,7 @@ test "model metadata inventory is ready when required metadata is present" {
     ["base", "foot"],
   )
   assert_eq(inventory.blocker_count, 0)
+  assert_eq(inventory.blocker_ids.length(), 0)
   assert_true(inventory.ready)
   assert_eq(inventory.status, "model-metadata-ready")
 }

@@ -215,10 +215,26 @@ test "noetix source model audit records moonrobo urdf metadata gaps" {
   assert_eq(report.missing_collision_link_count, 25)
   assert_eq(report.missing_inertial_link_count, 25)
   assert_eq(report.source_metadata_blocker_count, 50)
+  assert_eq(
+    report.source_metadata_blocker_ids.length(),
+    report.source_metadata_blocker_count,
+  )
+  assert_eq(
+    report.source_metadata_inventory.blocker_ids.length(),
+    report.source_metadata_blocker_count,
+  )
   assert_eq(report.missing_collision_links.length(), 25)
   assert_eq(report.missing_inertial_links.length(), 25)
   assert_true(report.missing_collision_links.contains("left_foot"))
   assert_true(report.missing_inertial_links.contains("right_foot"))
+  assert_true(
+    report.source_metadata_blocker_ids.contains(
+      "missing-collision-shape:left_foot",
+    ),
+  )
+  assert_true(
+    report.source_metadata_blocker_ids.contains("missing-inertial:right_foot"),
+  )
   assert_eq(report.status, "source-model-metadata-blocked")
   assert_true(!report.low_level_joint_control_enabled)
   assert_true(report.high_level_walk_requires_approval)

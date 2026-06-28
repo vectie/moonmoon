@@ -35,6 +35,11 @@ def main() -> None:
         fail("source model should report missing inertial metadata for every link")
     if task.get("source_model_metadata_blocker_count") != 50:
         fail("source metadata blocker count should be explicit")
+    metadata_blockers = task.get("source_model_metadata_blocker_ids")
+    if not isinstance(metadata_blockers, list):
+        fail("source metadata blocker ids must be listed")
+    if len(metadata_blockers) != task.get("source_model_metadata_blocker_count"):
+        fail("source metadata blocker count must match listed ids")
     inventory = task.get("source_model_metadata_inventory", {})
     if inventory.get("model_id") != "noetix-e1-source-model":
         fail("source metadata inventory must identify the model")
@@ -46,6 +51,8 @@ def main() -> None:
         fail("source metadata inventory should not report inertial links yet")
     if inventory.get("blocker_count") != 50:
         fail("source metadata inventory blocker count should match audit")
+    if inventory.get("blocker_ids") != metadata_blockers:
+        fail("source metadata blocker ids must match inventory")
     if inventory.get("ready"):
         fail("source metadata inventory must remain blocked")
     if inventory.get("status") != "model-metadata-blocked":
@@ -54,6 +61,10 @@ def main() -> None:
         fail("source metadata inventory must list missing collision links")
     if len(inventory.get("missing_inertial_links", [])) != 25:
         fail("source metadata inventory must list missing inertial links")
+    if "missing-collision-shape:left_foot" not in metadata_blockers:
+        fail("source metadata blockers must name left foot collision metadata")
+    if "missing-inertial:right_foot" not in metadata_blockers:
+        fail("source metadata blockers must name right foot inertial metadata")
     physical = task.get("physical_model_readiness", {})
     if physical.get("readiness_id") != "moonrobo/noetix-e1/physical-model-readiness-v0":
         fail("physical readiness must identify the Noetix model")

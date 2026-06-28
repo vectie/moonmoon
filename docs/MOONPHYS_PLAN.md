@@ -39,7 +39,8 @@ evidence.
   geometries, one placeholder mesh asset, zero authoritative collision or
   inertial tags, and explicit per-link collision/inertial metadata blockers.
   The blocker count is now backed by a generic Moonphys model-metadata
-  inventory contract, keeping readiness semantics reusable and robot-agnostic.
+  inventory contract with stable blocker IDs, keeping readiness semantics
+  reusable and robot-agnostic.
 - A source-sync verifier parses sibling Moonrobo `robot.json` and
   `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
   collision tags, and high-control limits cannot silently drift from the source.
@@ -113,8 +114,8 @@ evidence.
   link poses, static support report, dynamic-stability report, joint-control
   report, inertial/collision report, and Rabbita playback into a
   hardware-denied review packet. The review task carries the generic Moonphys
-  metadata inventory, physical-model blocker IDs, and world-replay blocker IDs
-  through to MoonClaw.
+  metadata inventory, source-metadata blocker IDs, physical-model blocker IDs,
+  and world-replay blocker IDs through to MoonClaw.
 - MoonClaw exports a Noetix simulation readiness decision that blocks MoonRobo
   simulation consumption until all review artifacts are ready, the generic
   Moonphys metadata inventory and physical-model readiness are ready, named
@@ -656,7 +657,7 @@ Next `moonphys` capabilities:
   (implemented)
 - deterministic rigid-body heightfield replay (implemented)
 - generic source-model metadata inventory/readiness for collision and inertial
-  blockers (implemented)
+  blockers with stable blocker IDs (implemented)
 - generic physical-model readiness for authoritative, assumed, and missing
   mass/inertia/collision/contact/friction/actuator inputs with stable blocker
   IDs (implemented)

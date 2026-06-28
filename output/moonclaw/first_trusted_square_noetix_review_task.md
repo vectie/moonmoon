@@ -11,6 +11,57 @@
   - missing collision links: 25
   - missing inertial links: 25
   - source metadata blockers: 50
+  - source metadata blocker ids:
+    - missing-collision-shape:base_link
+    - missing-collision-shape:torso_link
+    - missing-collision-shape:chest_link
+    - missing-collision-shape:left_arm_1
+    - missing-collision-shape:left_arm_2
+    - missing-collision-shape:left_arm_3
+    - missing-collision-shape:left_arm_4
+    - missing-collision-shape:left_hand
+    - missing-collision-shape:right_arm_1
+    - missing-collision-shape:right_arm_2
+    - missing-collision-shape:right_arm_3
+    - missing-collision-shape:right_arm_4
+    - missing-collision-shape:right_hand
+    - missing-collision-shape:left_leg_1
+    - missing-collision-shape:left_leg_2
+    - missing-collision-shape:left_leg_3
+    - missing-collision-shape:left_leg_4
+    - missing-collision-shape:left_leg_5
+    - missing-collision-shape:left_foot
+    - missing-collision-shape:right_leg_1
+    - missing-collision-shape:right_leg_2
+    - missing-collision-shape:right_leg_3
+    - missing-collision-shape:right_leg_4
+    - missing-collision-shape:right_leg_5
+    - missing-collision-shape:right_foot
+    - missing-inertial:base_link
+    - missing-inertial:torso_link
+    - missing-inertial:chest_link
+    - missing-inertial:left_arm_1
+    - missing-inertial:left_arm_2
+    - missing-inertial:left_arm_3
+    - missing-inertial:left_arm_4
+    - missing-inertial:left_hand
+    - missing-inertial:right_arm_1
+    - missing-inertial:right_arm_2
+    - missing-inertial:right_arm_3
+    - missing-inertial:right_arm_4
+    - missing-inertial:right_hand
+    - missing-inertial:left_leg_1
+    - missing-inertial:left_leg_2
+    - missing-inertial:left_leg_3
+    - missing-inertial:left_leg_4
+    - missing-inertial:left_leg_5
+    - missing-inertial:left_foot
+    - missing-inertial:right_leg_1
+    - missing-inertial:right_leg_2
+    - missing-inertial:right_leg_3
+    - missing-inertial:right_leg_4
+    - missing-inertial:right_leg_5
+    - missing-inertial:right_foot
   - source metadata inventory: model-metadata-blocked
   - physical model blockers: 9
   - physical model blocker ids:

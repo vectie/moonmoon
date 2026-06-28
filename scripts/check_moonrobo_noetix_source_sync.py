@@ -266,6 +266,14 @@ def check_urdf(report: dict[str, Any], facts: dict[str, Any]) -> None:
     fail("missing inertial link count must cover every URDF link")
   if report.get("source_metadata_blocker_count") != facts["link_count"] * 2:
     fail("source metadata blocker count must include collision and inertial blockers")
+  expected_blocker_ids = {
+    f"missing-collision-shape:{name}" for name in facts["link_names"]
+  } | {f"missing-inertial:{name}" for name in facts["link_names"]}
+  if set(report.get("source_metadata_blocker_ids", [])) != expected_blocker_ids:
+    fail("source metadata blocker ids drifted from URDF links")
+  inventory = report.get("source_metadata_inventory", {})
+  if set(inventory.get("blocker_ids", [])) != expected_blocker_ids:
+    fail("source metadata inventory blocker ids drifted from URDF links")
   if set(report.get("missing_collision_links", [])) != facts["link_names"]:
     fail("missing collision link set drifted from URDF links")
   if set(report.get("missing_inertial_links", [])) != facts["link_names"]:

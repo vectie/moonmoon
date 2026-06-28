@@ -494,6 +494,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_collision_link_count : Int
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
+  source_model_metadata_blocker_ids : Array[String]
   source_model_metadata_inventory : @moonphys.ModelMetadataInventory
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
@@ -1220,6 +1221,7 @@ pub(all) struct NoetixSimulationReadinessDecision {
   ready_artifact_count : Int
   blocked_artifact_count : Int
   metadata_blocker_count : Int
+  metadata_blocker_ids : Array[String]
   source_metadata_ready : Bool
   source_metadata_inventory : @moonphys.ModelMetadataInventory
   physical_model_ready : Bool

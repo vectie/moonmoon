@@ -43,6 +43,7 @@ pub(all) struct NoetixSourceModelReport {
   missing_collision_link_count : Int
   missing_inertial_link_count : Int
   source_metadata_blocker_count : Int
+  source_metadata_blocker_ids : Array[String]
   source_metadata_inventory : @moonphys.ModelMetadataInventory
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
@@ -235,6 +236,7 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     missing_collision_link_count: missing_collision_links.length(),
     missing_inertial_link_count: missing_inertial_links.length(),
     source_metadata_blocker_count: metadata_inventory.blocker_count,
+    source_metadata_blocker_ids: metadata_inventory.blocker_ids,
     source_metadata_inventory: metadata_inventory,
     joint_limit_count: joint_limits.length(),
     low_level_joint_control_enabled: false,
@@ -288,6 +290,7 @@ pub fn render_noetix_source_model_markdown(
     text += "- \{geometry.link_name}: \{geometry.source_status}\n"
   }
   text += "\n## Metadata Blockers\n\n"
+  text += "- blocker ids: \{report.source_metadata_blocker_ids.join(", ")}\n"
   text += "- missing collision links: \{report.missing_collision_links.join(", ")}\n"
   text += "- missing inertial links: \{report.missing_inertial_links.join(", ")}\n"
   text += "\n## Joint Limits\n\n"

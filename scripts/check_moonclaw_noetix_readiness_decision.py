@@ -40,6 +40,11 @@ def main() -> None:
         fail("unexpected blocked artifact count")
     if decision.get("metadata_blocker_count") != 50:
         fail("unexpected metadata blocker count")
+    metadata_blockers = decision.get("metadata_blocker_ids")
+    if not isinstance(metadata_blockers, list):
+        fail("source metadata blocker ids must be listed")
+    if len(metadata_blockers) != decision.get("metadata_blocker_count"):
+        fail("source metadata blocker count must match listed ids")
     if decision.get("source_metadata_ready"):
         fail("source metadata must not be ready yet")
     inventory = decision.get("source_metadata_inventory", {})
@@ -49,10 +54,16 @@ def main() -> None:
         fail("source metadata inventory must preserve link count")
     if inventory.get("blocker_count") != 50:
         fail("source metadata inventory blocker count should match decision")
+    if inventory.get("blocker_ids") != metadata_blockers:
+        fail("source metadata blocker ids must match inventory")
     if inventory.get("ready"):
         fail("source metadata inventory must remain blocked")
     if inventory.get("status") != "model-metadata-blocked":
         fail("source metadata inventory must expose blocked status")
+    if "missing-collision-shape:left_foot" not in metadata_blockers:
+        fail("source metadata blockers must name left foot collision metadata")
+    if "missing-inertial:right_foot" not in metadata_blockers:
+        fail("source metadata blockers must name right foot inertial metadata")
     if decision.get("physical_model_ready"):
         fail("physical model readiness must remain blocked")
     physical = decision.get("physical_model_readiness", {})

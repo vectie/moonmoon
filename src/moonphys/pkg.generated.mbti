@@ -575,6 +575,7 @@ pub(all) struct ModelMetadataInventory {
   missing_collision_shape_links : Array[String]
   missing_inertial_links : Array[String]
   blocker_count : Int
+  blocker_ids : Array[String]
   ready : Bool
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

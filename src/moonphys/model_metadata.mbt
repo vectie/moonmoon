@@ -7,6 +7,7 @@ pub(all) struct ModelMetadataInventory {
   missing_collision_shape_links : Array[String]
   missing_inertial_links : Array[String]
   blocker_count : Int
+  blocker_ids : Array[String]
   ready : Bool
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -43,6 +44,21 @@ fn missing_metadata_links(
 }
 
 ///|
+fn metadata_blocker_ids(
+  missing_collision_shape_links : Array[String],
+  missing_inertial_links : Array[String],
+) -> Array[String] {
+  let blockers : Array[String] = []
+  for link in missing_collision_shape_links {
+    blockers.push("missing-collision-shape:\{link}")
+  }
+  for link in missing_inertial_links {
+    blockers.push("missing-inertial:\{link}")
+  }
+  blockers
+}
+
+///|
 pub fn model_metadata_inventory(
   model_id : String,
   link_names : Array[String],
@@ -55,8 +71,10 @@ pub fn model_metadata_inventory(
   let missing_inertial_links = missing_metadata_links(
     link_names, inertial_links,
   )
-  let blocker_count = missing_collision_shape_links.length() +
-    missing_inertial_links.length()
+  let blocker_ids = metadata_blocker_ids(
+    missing_collision_shape_links, missing_inertial_links,
+  )
+  let blocker_count = blocker_ids.length()
   {
     model_id,
     link_count: link_names.length(),
@@ -65,6 +83,7 @@ pub fn model_metadata_inventory(
     missing_collision_shape_links,
     missing_inertial_links,
     blocker_count,
+    blocker_ids,
     ready: blocker_count == 0,
     status: if blocker_count == 0 {
       "model-metadata-ready"
