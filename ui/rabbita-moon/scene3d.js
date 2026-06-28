@@ -439,6 +439,18 @@ function vec3Length(v) {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
 
+function vec3Sub(a, b) {
+  return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z }
+}
+
+function vec3Cross(a, b) {
+  return {
+    x: a.y * b.z - a.z * b.y,
+    y: a.z * b.x - a.x * b.z,
+    z: a.x * b.y - a.y * b.x,
+  }
+}
+
 function normalizeVec3(v) {
   const len = Math.max(0.000001, vec3Length(v))
   return { x: v.x / len, y: v.y / len, z: v.z / len }
@@ -939,6 +951,79 @@ function moonphysReviewFrameEvidence(diagnostics) {
   }
 }
 
+function moonphysContactEnvelope(contact, centerOfMass) {
+  const normalForceN = Math.max(0, contact.applied_force_n.z)
+  const tangentialForceN = Math.sqrt(
+    contact.applied_force_n.x * contact.applied_force_n.x +
+    contact.applied_force_n.y * contact.applied_force_n.y,
+  )
+  const forceN = vec3Length(contact.applied_force_n)
+  const leverM = vec3Sub(contact.patch.center, centerOfMass)
+  const torqueNm = vec3Length(vec3Cross(leverM, contact.applied_force_n))
+  const frictionLimitN = normalForceN * 0.62
+  const frictionUtilization = frictionLimitN > 0 ? tangentialForceN / frictionLimitN : 0
+  const areaM2 = contact.patch.half_length_m * 2 * contact.patch.half_width_m * 2
+  const pressurePa = areaM2 > 0 ? normalForceN / areaM2 : 0
+  return {
+    normal_force_n: normalForceN,
+    tangential_force_n: Number(tangentialForceN.toFixed(4)),
+    force_n: Number(forceN.toFixed(4)),
+    torque_nm: Number(torqueNm.toFixed(4)),
+    friction_utilization: Number(frictionUtilization.toFixed(4)),
+    pressure_pa: Number(pressurePa.toFixed(4)),
+  }
+}
+
+function moonphysReviewTraceEvidence(sampleCount = 24) {
+  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
+  const frames = Array.from({ length: sampleCount }, (_, index) => {
+    const time_s = index * cycleSeconds / sampleCount
+    const diagnostics = robotGeometry(time_s).diagnostics
+    return {
+      time_s: Number(time_s.toFixed(4)),
+      phase_label: diagnostics.phaseLabel,
+      support_foot: diagnostics.supportFoot,
+      review: moonphysReviewFrameEvidence(diagnostics),
+    }
+  })
+  let maxTotalNormalForceN = 0
+  let maxContactNormalForceN = 0
+  let maxContactTangentialForceN = 0
+  let maxContactForceN = 0
+  let maxContactTorqueNm = 0
+  let maxFrictionUtilization = 0
+  let maxPressurePa = 0
+  for (const frame of frames) {
+    maxTotalNormalForceN = Math.max(maxTotalNormalForceN, frame.review.total_normal_force_n)
+    for (const contact of frame.review.contacts) {
+      const envelope = moonphysContactEnvelope(contact, frame.review.center_of_mass)
+      maxContactNormalForceN = Math.max(maxContactNormalForceN, envelope.normal_force_n)
+      maxContactTangentialForceN = Math.max(maxContactTangentialForceN, envelope.tangential_force_n)
+      maxContactForceN = Math.max(maxContactForceN, envelope.force_n)
+      maxContactTorqueNm = Math.max(maxContactTorqueNm, envelope.torque_nm)
+      maxFrictionUtilization = Math.max(maxFrictionUtilization, envelope.friction_utilization)
+      maxPressurePa = Math.max(maxPressurePa, envelope.pressure_pa)
+    }
+  }
+  return {
+    trace_id: `${NOETIX_VISUAL_RIG.robotId}/walk-cycle/moonphys-evidence`,
+    source: NOETIX_VISUAL_RIG.source,
+    environment_id: 'moon/lunar-surface',
+    frame_count: frames.length,
+    cycle_seconds: Number(cycleSeconds.toFixed(4)),
+    frames,
+    envelope: {
+      max_total_normal_force_n: Number(maxTotalNormalForceN.toFixed(4)),
+      max_contact_normal_force_n: Number(maxContactNormalForceN.toFixed(4)),
+      max_contact_tangential_force_n: Number(maxContactTangentialForceN.toFixed(4)),
+      max_contact_force_n: Number(maxContactForceN.toFixed(4)),
+      max_contact_torque_nm: Number(maxContactTorqueNm.toFixed(4)),
+      max_friction_utilization: Number(maxFrictionUtilization.toFixed(4)),
+      max_pressure_pa: Number(maxPressurePa.toFixed(4)),
+    },
+  }
+}
+
 function terrainProfileReport(clip) {
   const samples = []
   for (let i = -4; i <= 4; i += 1) {
@@ -1067,6 +1152,7 @@ function initRobot(canvas) {
   const debug = document.getElementById('moonmoon-robot-debug')
   const shader = createProgram(gl)
   const buffers = createBuffers(gl)
+  const moonphysReviewTrace = moonphysReviewTraceEvidence()
   function draw(now) {
     resizeCanvas(canvas, gl)
     gl.clearColor(0.035, 0.055, 0.052, 1)
@@ -1139,6 +1225,7 @@ function initRobot(canvas) {
       })),
     })
     canvas.dataset.moonphysReviewFrame = JSON.stringify(moonphysReviewFrameEvidence(geometry.diagnostics))
+    canvas.dataset.moonphysReviewTrace = JSON.stringify(moonphysReviewTrace)
     canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
@@ -1212,4 +1299,5 @@ globalThis.__moonmoonGaitDiagnostics = {
   rig: NOETIX_VISUAL_RIG,
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
+  moonphysReviewTraceEvidence,
 }

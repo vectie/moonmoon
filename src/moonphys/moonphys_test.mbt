@@ -2689,3 +2689,99 @@ test "motion frame review blocks traction and capture failures" {
     review.blockers.contains("contact:left-contact:motion-contact-review"),
   )
 }
+
+///|
+test "motion frame trace review envelopes contact force and torque" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let material = material_contact_model("test", 0.8, 0.0)
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.1, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let frame_0 = motion_frame_review(
+    "frame-0",
+    lunar_environment(),
+    material,
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.0, 0.0, 0.0),
+    [
+      motion_contact_evidence(
+        "left-contact",
+        support_footprint("left", vec3(0.1, 0.0, 0.0), 0.2, 0.1),
+        patch,
+        vec3(0.0, 0.0, 80.0),
+      ),
+    ],
+  )
+  let frame_1 = motion_frame_review(
+    "frame-1",
+    lunar_environment(),
+    material,
+    vec3(0.05, 0.0, 0.7),
+    vec3(0.0, 0.0, 0.0),
+    [
+      motion_contact_evidence(
+        "left-contact",
+        support_footprint("left", vec3(0.1, 0.0, 0.0), 0.2, 0.1),
+        patch,
+        vec3(8.0, 0.0, 120.0),
+      ),
+    ],
+  )
+  let trace = motion_frame_trace_review("walk-trace", [frame_0, frame_1])
+  assert_true(trace.ready)
+  assert_eq(trace.status, "motion-frame-trace-review-ready")
+  assert_eq(trace.frame_count, 2)
+  assert_eq(trace.ready_frame_count, 2)
+  assert_eq(trace.blocked_frame_count, 0)
+  assert_eq(trace.contact_count, 2)
+  assert_eq(trace.contact_review_count, 2)
+  assert_true(nearly_equal(trace.max_total_normal_force_n, 120.0))
+  assert_true(nearly_equal(trace.max_contact_normal_force_n, 120.0))
+  assert_true(nearly_equal(trace.max_contact_tangential_force_n, 8.0))
+  assert_true(nearly_equal(trace.max_contact_force_n, 120.0))
+  assert_true(trace.max_contact_torque_nm > 0.0)
+  assert_true(trace.max_friction_utilization > 0.0)
+  assert_true(trace.max_pressure_pa > 0.0)
+}
+
+///|
+test "motion frame trace review reports blocked frames" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let blocked = motion_frame_review(
+    "frame-slip",
+    lunar_environment(),
+    material_contact_model("low-friction", 0.25, 0.0),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.8, 0.0, 0.0),
+    [
+      motion_contact_evidence(
+        "left-contact",
+        support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+        patch,
+        vec3(100.0, 0.0, 20.0),
+      ),
+    ],
+  )
+  let trace = motion_frame_trace_review("blocked-trace", [blocked])
+  assert_true(!trace.ready)
+  assert_eq(trace.status, "motion-frame-trace-review-blocked")
+  assert_eq(trace.frame_count, 1)
+  assert_eq(trace.ready_frame_count, 0)
+  assert_eq(trace.blocked_frame_count, 1)
+  assert_eq(trace.traction_review_count, 1)
+  assert_true(trace.blocker_count >= 2)
+  assert_true(
+    trace.blockers.contains("frame:0:capture:capture-point-outside-support"),
+  )
+}

@@ -14,6 +14,7 @@ const sceneContracts = [
   'contactPatches',
   'terrainProfileReport',
   'moonphysReviewFrame',
+  'moonphysReviewTrace',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -58,8 +59,37 @@ if (!diagnostics?.moonphysReviewFrameEvidence) {
   throw new Error('scene3d.js did not expose the Moonphys review evidence bridge')
 }
 
+if (!diagnostics?.moonphysReviewTraceEvidence) {
+  throw new Error('scene3d.js did not expose the Moonphys review trace evidence bridge')
+}
+
 const cycleSeconds = 1 / diagnostics.rig.cycleHz
 const sampleTimes = Array.from({ length: 24 }, (_, i) => i * cycleSeconds / 24)
+const moonphysTrace = diagnostics.moonphysReviewTraceEvidence(sampleTimes.length)
+if (moonphysTrace.environment_id !== 'moon/lunar-surface') {
+  throw new Error('Moonphys review trace used an unexpected environment')
+}
+if (moonphysTrace.frame_count !== sampleTimes.length) {
+  throw new Error('Moonphys review trace frame count did not match runtime sampling')
+}
+if (moonphysTrace.frames.length !== sampleTimes.length) {
+  throw new Error('Moonphys review trace frame list did not match runtime sampling')
+}
+if (moonphysTrace.frames.some(frame => frame.review.contact_count !== diagnostics.sampleRobotGeometry(frame.time_s).diagnostics.feet.length)) {
+  throw new Error('Moonphys review trace contains a frame with mismatched contact count')
+}
+if (moonphysTrace.envelope.max_total_normal_force_n <= 0) {
+  throw new Error('Moonphys review trace did not report a positive normal-force envelope')
+}
+if (moonphysTrace.envelope.max_contact_torque_nm <= 0) {
+  throw new Error('Moonphys review trace did not report a contact torque envelope')
+}
+if (moonphysTrace.envelope.max_pressure_pa <= 0) {
+  throw new Error('Moonphys review trace did not report a pressure envelope')
+}
+if (moonphysTrace.envelope.max_friction_utilization <= 0 || moonphysTrace.envelope.max_friction_utilization >= 1) {
+  throw new Error('Moonphys review trace friction utilization envelope is outside the expected walking range')
+}
 let maxSupportJointCorrection = 0
 let maxTerrainRange = 0
 let maxPatchRange = 0

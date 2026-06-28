@@ -111,6 +111,8 @@ pub fn motion_contact_evidence(String, SupportFootprint, HeightfieldContactPatch
 
 pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec3, Vec3, Array[MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double) -> MotionFrameReview
 
+pub fn motion_frame_trace_review(String, Array[MotionFrameReview]) -> MotionFrameTraceReview
+
 pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
@@ -669,6 +671,33 @@ pub(all) struct MotionFrameReview {
   support : SupportAssessment
   support_load : SupportLoadAssessment
   capture : CapturePointAssessment
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MotionFrameTraceReview {
+  trace_id : String
+  frame_count : Int
+  ready_frame_count : Int
+  blocked_frame_count : Int
+  contact_count : Int
+  contact_review_count : Int
+  patch_review_count : Int
+  load_review_count : Int
+  wrench_review_count : Int
+  traction_review_count : Int
+  max_total_normal_force_n : Double
+  max_contact_normal_force_n : Double
+  max_contact_tangential_force_n : Double
+  max_contact_force_n : Double
+  max_contact_torque_nm : Double
+  max_friction_utilization : Double
+  max_pressure_pa : Double
+  min_support_margin_m : Double
+  worst_capture_margin_m : Double
+  max_center_of_pressure_error_m : Double
   blocker_count : Int
   blockers : Array[String]
   ready : Bool

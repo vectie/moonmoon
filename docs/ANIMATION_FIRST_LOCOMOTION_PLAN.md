@@ -290,6 +290,7 @@ Deliverables:
 - contact/traction evidence
 - force/torque envelopes
 - generic Moonphys motion-frame review types
+- generic Moonphys motion-frame trace review types
 - Rabbita evidence export that can be consumed by those generic types
 
 ### Phase G: Future Asset System
@@ -319,5 +320,8 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    generic motion contact/frame review types that compose support, load,
    traction, contact-patch, wrench, and capture checks. Rabbita now exports a
    `moonphysReviewFrame` evidence payload from its FK/contact diagnostics.
-   Hinge motor replay, full force/torque envelopes, and suite-level ingestion
-   remain the next Phase F steps.
+   `src/moonphys` also has a generic motion-frame trace review that envelopes
+   support, capture, normal/tangential force, contact torque, pressure, and
+   friction utilization across sampled frame reviews. Rabbita exports a
+   `moonphysReviewTrace` evidence payload over one walk cycle. Hinge motor
+   replay and suite-level ingestion remain the next Phase F steps.
