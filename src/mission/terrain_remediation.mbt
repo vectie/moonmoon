@@ -113,7 +113,7 @@ fn proxy_terrain_remediation_evidence(
     reasons: [
       "terrain remediation proxy mirrors current terrain metrics until a bounded selected-route model is generated",
     ],
-    next_action: "generate bounded terrain remediation evidence before MoonRobo simulation",
+    next_action: "generate bounded terrain remediation evidence before Simulation",
   }
 }
 

@@ -337,9 +337,9 @@ pub fn first_trusted_square_energy_remediation() -> EnergyRemediationEvidence {
   energy_remediation_for_selected_route(
     first_trusted_square_energy_assessment(),
     "northeast-stepout",
-    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
-    "output/mission/first_trusted_square_northeast_stepout_horizon.json",
-    "output/mission/first_trusted_square_energy_remediation.json",
+    "artifact/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+    "artifact/mission/first_trusted_square_northeast_stepout_horizon.json",
+    "artifact/mission/first_trusted_square_energy_remediation.json",
   )
 }
 
@@ -935,7 +935,7 @@ pub fn energy_remediation_for_selected_route(
       Review =>
         "review route blockers and bounded energy margin before simulation"
       Block =>
-        "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of MoonRobo simulation"
+        "reduce reserve or dark-survival demand, increase verified power-window energy, or keep northeast-stepout out of Simulation"
     },
   }
 }

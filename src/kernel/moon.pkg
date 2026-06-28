@@ -1,5 +1,6 @@
 import {
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/terrain",
   "moonbitlang/core/json",
 }

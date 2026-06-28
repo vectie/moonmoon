@@ -88,7 +88,7 @@ fn inspector_facts(
       label: "Source datasets",
       value: "\{dossier.datasets.length()} checked datasets",
       status: "ready",
-      evidence_path: "output/moonbook/workspaces/first-trusted-square/index.json",
+      evidence_path: "artifact/operator-review-index.json",
     },
     {
       fact_id: "best-corridor-window",

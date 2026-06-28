@@ -3,7 +3,7 @@ pub(all) enum MissionClearanceKind {
   TerrainGradeClearance
   IlluminationConfidenceClearance
   EnergyMarginClearance
-  MoonBookReviewClearance
+  OperatorReviewClearance
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -66,7 +66,7 @@ pub fn mission_clearance_kind_label(kind : MissionClearanceKind) -> String {
     TerrainGradeClearance => "terrain-grade"
     IlluminationConfidenceClearance => "illumination-confidence"
     EnergyMarginClearance => "energy-margin"
-    MoonBookReviewClearance => "moonbook-review"
+    OperatorReviewClearance => "operator-review"
   }
 }
 
@@ -386,7 +386,7 @@ fn illumination_clearance_item(
     ),
     "illumination confidence \{route.illumination.confidence}, relief-shadow risk \{route.illumination.relief_shadow_risk}, terrain-shadow margin \{route.illumination.terrain_shadow_margin_deg} deg",
     "confidence >= \{route.illumination.constraint.min_confidence}, relief-shadow risk < \{route.illumination.constraint.max_relief_shadow_risk}, terrain-shadow margin <= 0 deg",
-    "accept local-horizon and terrain-shadow evidence for \{route.route_id} before any MoonRobo simulation packet is consumable",
+    "accept local-horizon and terrain-shadow evidence for \{route.route_id} before any Simulation packet is consumable",
   )
 }
 
@@ -408,7 +408,7 @@ fn energy_clearance_item(
     route.terrain_remediation.output_path,
     horizon_path,
     check_evidence_path(
-      readiness, check_id, "output/mission/first_trusted_square_energy_remediation.json",
+      readiness, check_id, "artifact/mission/first_trusted_square_energy_remediation.json",
     ),
   )
   clearance_item(
@@ -425,24 +425,24 @@ fn energy_clearance_item(
 }
 
 ///|
-fn moonbook_clearance_item(
+fn operator_clearance_item(
   route : RouteCandidate,
   readiness : MissionSimulationReadiness,
 ) -> MissionClearanceItem {
-  let check_id = "moonbook-review"
+  let check_id = "operator-review"
   let decision = check_decision(readiness, check_id, TraverseDecision::Block)
   clearance_item(
-    "clear-moonbook-review-\{route.route_id}",
-    MoonBookReviewClearance,
-    "MoonBook accepted review clearance",
+    "clear-operator-review-\{route.route_id}",
+    OperatorReviewClearance,
+    "Operator accepted review clearance",
     decision,
     check_id,
     check_evidence_path(
-      readiness, check_id, "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
+      readiness, check_id, "artifact/operator-review-transitions.json",
     ),
-    "MoonBook review status is \{traverse_decision_label(decision)} for selected route \{route.route_id}",
-    "accepted review transitions cover terrain, illumination, energy, and MoonRobo handoff evidence",
-    "record accepted MoonBook review transitions for the selected route evidence bundle before simulation",
+    "Operator review status is \{traverse_decision_label(decision)} for selected route \{route.route_id}",
+    "accepted review transitions cover terrain, illumination, energy, and Simulation handoff evidence",
+    "record accepted operator review transitions for the selected route evidence bundle before simulation",
   )
 }
 
@@ -450,11 +450,11 @@ fn moonbook_clearance_item(
 fn clearance_next_action(decision : TraverseDecision) -> String {
   match decision {
     Allow =>
-      "selected-route blockers are cleared; simulation packet can advance to MoonRobo review"
+      "selected-route blockers are cleared; simulation packet can advance to Simulation review"
     Review =>
-      "resolve review clearance items before MoonRobo consumes the selected-route simulation packet"
+      "resolve review clearance items before Simulation consumes the selected-route simulation packet"
     Block =>
-      "clear required terrain grade, illumination confidence, energy margin, and MoonBook review actions before simulation"
+      "clear required terrain grade, illumination confidence, energy margin, and operator review actions before simulation"
   }
 }
 
@@ -486,7 +486,7 @@ pub fn selected_route_clearance_plan_with_transitions(
     terrain_clearance_item(route, readiness),
     illumination_clearance_item(route, readiness),
     energy_clearance_item(energy, route, readiness),
-    moonbook_clearance_item(route, readiness),
+    operator_clearance_item(route, readiness),
   ]
   let items = apply_clearance_transitions(base_items, transitions)
   let decision = clearance_decision(items)

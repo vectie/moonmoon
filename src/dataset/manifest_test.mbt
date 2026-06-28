@@ -13,7 +13,7 @@ test "first trusted square manifest marks LOLA evidence clearly" {
     manifest.source_sha256,
     "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
   )
-  assert_true(manifest.extractor.contains("extract_lola_trusted_square.py"))
+  assert_true(manifest.extractor.contains("MoonBit source extraction"))
   assert_eq(
     @dataset.checksum_kind_label(manifest.checksum_kind),
     "inline-fixture-fingerprint",
@@ -176,7 +176,7 @@ test "first trusted square tracks LOLA extraction candidates" {
     "extract-ldem-875s-20m-first-trusted-square-v1",
   )
   assert_eq(extraction.selection_id, "select-ldem-875s-20m-float-v1")
-  assert_eq(extraction.generated_by, "scripts/extract_lola_trusted_square.py")
+  assert_eq(extraction.generated_by, "MoonBit source extraction")
   assert_eq(
     extraction.output_path,
     "data/sources/lro_lola/first_trusted_square_dem.csv",

@@ -18,17 +18,15 @@ test "root facade exposes promoted corridor route state" {
 }
 
 ///|
-test "root facade renders durable suite boundaries" {
+test "root facade renders standalone evidence" {
   let site_json = @moonmoon.trusted_square_json().stringify(indent=2)
-  let book_json = @moonmoon.trusted_square_book_json().stringify(indent=2)
-  let robot_json = @moonmoon.trusted_square_moonrobo_json().stringify(indent=2)
   assert_true(site_json.contains("northeast-stepout"))
-  assert_true(book_json.contains("power-window-evidence"))
-  assert_true(robot_json.contains("simulation-preconditions"))
+  assert_true(site_json.contains("power_window_evidence"))
+  assert_true(site_json.contains("route_candidates"))
 }
 
 ///|
-test "root facade exposes operator view model" {
+test "root facade exposes operator view model and page" {
   let view = @moonmoon.trusted_square_view_model()
   assert_eq(view.selected_route_id, "northeast-stepout")
   assert_eq(view.terrain_cells.length(), 16)
@@ -37,4 +35,5 @@ test "root facade exposes operator view model" {
     .stringify(indent=2)
     .contains("terrain_cells"),
   )
+  assert_true(@moonmoon.trusted_square_html().contains("moonmoon-view-model"))
 }

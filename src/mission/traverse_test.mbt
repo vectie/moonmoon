@@ -71,7 +71,7 @@ test "first trusted square route candidates use measured adjacent windows" {
   )
   assert_eq(
     routes[5].terrain_remediation.output_path,
-    "output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
+    "artifact/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
   )
   assert_true(routes[5].terrain_remediation.decision == Block)
   assert_true(routes[5].terrain_remediation.blocking_edge_count > 0)
@@ -165,7 +165,7 @@ test "first trusted square illumination gate uses computed time window evidence"
   )
   assert_eq(
     horizon.output_path,
-    "output/mission/first_trusted_square_northeast_stepout_horizon.json",
+    "artifact/mission/first_trusted_square_northeast_stepout_horizon.json",
   )
   assert_true(horizon.max_horizon_angle_deg > horizon.max_sun_altitude_deg)
   assert_true(horizon.terrain_shadow_margin_deg > 0.0)
@@ -212,7 +212,7 @@ test "first trusted square energy window blocks insufficient computed power" {
   assert_eq(remediation.route_id, "northeast-stepout")
   assert_eq(
     remediation.output_path,
-    "output/mission/first_trusted_square_energy_remediation.json",
+    "artifact/mission/first_trusted_square_energy_remediation.json",
   )
   assert_true(remediation.decision == Block)
   assert_eq(remediation.selected_route_count, 1)
@@ -269,12 +269,12 @@ test "mission simulation readiness aggregates named gates" {
       energy.next_action,
     ),
     @mission.readiness_check(
-      "moonbook-review",
-      @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
-      "MoonBook accepted-review gate",
+      "operator-review",
+      @mission.MissionReadinessCheckKind::OperatorReviewReadiness,
+      "Operator accepted-review gate",
       @mission.TraverseDecision::Block,
-      "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
-      "MoonBook review has unresolved blockers",
+      "artifact/operator-review-transitions.json",
+      "Operator review has unresolved blockers",
     ),
   ]
   let readiness = @mission.simulation_readiness(
@@ -289,16 +289,16 @@ test "mission simulation readiness aggregates named gates" {
   assert_eq(readiness.checks[1].check_id, "corridor-scan-best-window")
   assert_eq(readiness.checks[2].check_id, "illumination-northeast-stepout")
   assert_eq(readiness.checks[3].check_id, "energy-window")
-  assert_eq(readiness.checks[4].check_id, "moonbook-review")
+  assert_eq(readiness.checks[4].check_id, "operator-review")
   assert_eq(readiness.checks[5].check_id, "robot-simulation")
   assert_eq(readiness.robot_simulation_status, "simulation-blocked")
-  assert_true(readiness.blocking_checks.contains("moonbook-review"))
+  assert_true(readiness.blocking_checks.contains("operator-review"))
   assert_true(readiness.blocking_checks.contains("robot-simulation"))
   assert_eq(
     @mission.mission_readiness_check_kind_label(
-      @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
+      @mission.MissionReadinessCheckKind::OperatorReviewReadiness,
     ),
-    "moonbook-review",
+    "operator-review",
   )
   assert_eq(@mission.mission_simulation_readiness_label(readiness), "block")
 }
@@ -336,12 +336,12 @@ test "selected route clearance plan names blocker actions" {
         energy.next_action,
       ),
       @mission.readiness_check(
-        "moonbook-review",
-        @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
-        "MoonBook accepted-review gate",
+        "operator-review",
+        @mission.MissionReadinessCheckKind::OperatorReviewReadiness,
+        "Operator accepted-review gate",
         @mission.TraverseDecision::Block,
-        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
-        "MoonBook review has unresolved blockers",
+        "artifact/operator-review-transitions.json",
+        "Operator review has unresolved blockers",
       ),
     ],
   )
@@ -377,10 +377,12 @@ test "selected route clearance plan names blocker actions" {
   assert_true(plan.items[2].required.contains("accepted power"))
   assert_eq(
     plan.items[3].clearance_id,
-    "clear-moonbook-review-northeast-stepout",
+    "clear-operator-review-northeast-stepout",
   )
-  assert_true(plan.items[3].evidence_path.contains("review_transitions.json"))
-  assert_true(plan.items[3].clearance_action.contains("accepted MoonBook"))
+  assert_true(
+    plan.items[3].evidence_path.contains("operator-review-transitions.json"),
+  )
+  assert_true(plan.items[3].clearance_action.contains("accepted operator"))
   assert_true(
     plan.blocking_items.contains("clear-terrain-grade-northeast-stepout"),
   )
@@ -432,12 +434,12 @@ test "selected route clearance plan consumes operator transitions" {
         energy.next_action,
       ),
       @mission.readiness_check(
-        "moonbook-review",
-        @mission.MissionReadinessCheckKind::MoonBookReviewReadiness,
-        "MoonBook accepted-review gate",
+        "operator-review",
+        @mission.MissionReadinessCheckKind::OperatorReviewReadiness,
+        "Operator accepted-review gate",
         @mission.TraverseDecision::Block,
-        "output/moonbook/workspaces/first-trusted-square/review_transitions.json",
-        "MoonBook review has unresolved blockers",
+        "artifact/operator-review-transitions.json",
+        "Operator review has unresolved blockers",
       ),
     ],
   )
@@ -446,27 +448,27 @@ test "selected route clearance plan consumes operator transitions" {
       "review-clear-terrain-grade-northeast-stepout-accept",
       "clear-terrain-grade-northeast-stepout",
       @mission.MissionClearanceReviewDecision::ClearanceAccept,
-      "operator/moonbook-policy-v2",
+      "operator/review-policy-v2",
       "2026-06-25T00:00:00Z",
-      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/routes/northeast-stepout.json",
+      "moonmoon://first-trusted-square/mission/routes/northeast-stepout",
       "accepted measured route fixture for simulation rehearsal",
     ),
     @mission.clearance_transition(
       "review-clear-illumination-confidence-northeast-stepout-reject",
       "clear-illumination-confidence-northeast-stepout",
       @mission.MissionClearanceReviewDecision::ClearanceReject,
-      "operator/moonbook-policy-v2",
+      "operator/review-policy-v2",
       "2026-06-25T00:00:00Z",
-      "moonbook://moonmoon/first-trusted-square/output/mission/first_trusted_square_northeast_stepout_horizon.json",
+      "moonmoon://first-trusted-square/mission/horizon/northeast-stepout",
       "local horizon confidence remains too weak",
     ),
     @mission.clearance_transition(
       "review-clear-energy-margin-request-evidence",
       "clear-energy-margin",
       @mission.MissionClearanceReviewDecision::ClearanceRequestEvidence,
-      "operator/moonbook-policy-v2",
+      "operator/review-policy-v2",
       "2026-06-25T00:00:00Z",
-      "moonbook://moonmoon/first-trusted-square/mission/first-trusted-square/energy-window.json",
+      "moonmoon://first-trusted-square/mission/energy-window",
       "energy margin needs stronger thermal assumptions",
     ),
   ]
@@ -500,9 +502,7 @@ test "selected route clearance plan consumes operator transitions" {
   assert_true(
     plan.items[2].status is @mission.MissionClearanceStatus::NeedsEvidence,
   )
-  assert_true(
-    plan.items[0].accepted_evidence_id.contains("northeast-stepout.json"),
-  )
+  assert_true(plan.items[0].accepted_evidence_id.contains("northeast-stepout"))
   assert_true(plan.items[1].clearance_action.contains("reject by"))
   assert_eq(
     @mission.mission_clearance_review_decision_label(

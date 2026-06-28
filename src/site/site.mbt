@@ -118,7 +118,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     next_questions: [
       "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
       "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
-      "Review the materialized MoonBook workspace entries and close accepted or rejected queue items.",
+      "Review the materialized Operator review workspace entries and close accepted or rejected queue items.",
     ],
   }
 }

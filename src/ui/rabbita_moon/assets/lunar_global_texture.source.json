@@ -1,8 +1,0 @@
-{
-  "asset": "lunar_global_texture.jpg",
-  "kind": "global_lunar_texture",
-  "source_family": "Clementine UVVIS Basemap Mosaic",
-  "credit": "NASA/SDIO, courtesy USGS Astrogeology Research Program",
-  "use": "Rabbita browser globe texture for operator context; not mission evidence",
-  "trust_boundary": "visual-context-only"
-}

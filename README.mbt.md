@@ -1,204 +1,61 @@
 # Moonmoon
 
-> MoonBit-native lunar world model for the Moon suite.
+Moonmoon is a MoonBit-native lunar terrain and mission model.
 
-`MoonBit` `Lunar Digital Twin` `Terrain Modeling` `Mission Planning` `Rabbita` `Lepusa` `MoonClaw` `Moonrobo`
+The project is intentionally small: source data lives under `data/`, domain
+logic lives under `src/`, and the root package is only a facade. Generated
+Markdown, JSON, HTML, screenshots, and future build products should not be
+committed as source.
 
-Moonmoon is the hard-world modeling layer for the Moon agent suite. It is the
-place where lunar data, terrain assumptions, uncertainty, illumination,
-resources, hazards, and robot-operational constraints become typed, testable,
-and reviewable artifacts.
+## Shape
 
-The wider suite already has the social and operational pieces:
+- `src/core`: common lunar coordinates, provenance, uncertainty, and source
+  claim types.
+- `src/dataset`: source manifests, acquisition notes, product selections, and
+  extraction candidates.
+- `src/terrain`: checked DEM fixtures, grid analysis, slope, roughness, and
+  hazard classification.
+- `src/mission`: traverse scoring, corridor ranking, horizon evidence, terrain
+  remediation, energy assessment, and route clearance.
+- `src/site`: the assembled first trusted square dossier.
+- `src/ui`: renderer-neutral view models plus a standalone MoonBit-rendered
+  HTML inspection page.
+- `src/kernel`: the compact product kernel, evidence gates, and near-term build
+  queue.
+- `cmd/main`: the native CLI.
 
-- Moontown coordinates standing goals, schedules, resident agents, and mayor
-  supervision.
-- MoonClaw runs bounded agent jobs and produces evidence-backed artifacts.
-- MoonBook stores durable knowledge, source material, datasets, and review
-  queues.
-- Moondesk gives humans a desktop surface for books, runs, inboxes, and tools.
-- Moonrobo owns the physical robot gateway, safety boundary, telemetry, replay,
-  and execution proof.
-
-Moonmoon should become the lunar world those systems can reason against before a
-Moonrobo ever touches real regolith.
-
-```text
-NASA / LROC / LOLA / PDS / mission data
-  -> Moonmoon data + terrain + uncertainty model
-  -> Rabbita/Lepusa live lunar operator viewer
-  -> MoonBook lunar evidence library
-  -> MoonClaw modeling jobs
-  -> Moontown long-running mission planning
-  -> Moonrobo simulation, route, mining, construction, and safety gates
-```
-
-## Current Status
-
-Moonmoon now has its first executable proof slice: one tiny trusted-square
-terrain fixture with typed provenance, uncertainty, terrain metrics, hazard
-classification, mission traverse readiness, a site dossier, and reproducible
-Markdown/JSON CLI output.
-
-Run it with:
+## Run
 
 ```bash
 moon run cmd/main
-moon run cmd/main -- kernel
-moon run cmd/main -- kernel json
-moon run cmd/main -- site summary
 moon run cmd/main -- json
-moon run cmd/main -- terrain fixture
-moon run cmd/main -- terrain fixture json
-moon run cmd/main -- ui view
-moon run cmd/main -- ui view json
-moon run cmd/main -- ui rabbita
-moon run cmd/main -- moonbook dossier
-moon run cmd/main -- moonbook dossier json
-moon run cmd/main -- moonclaw proposals
-moon run cmd/main -- moonclaw proposals json
-moon run cmd/main -- moonclaw ephemeris tasks
-moon run cmd/main -- moonclaw ephemeris tasks json
-moon run cmd/main -- moonclaw corridor tasks
-moon run cmd/main -- moonclaw corridor tasks json
-moon run cmd/main -- moonclaw receipts
-moon run cmd/main -- moonclaw receipts json
-moon run cmd/main -- moonclaw ephemeris receipts
-moon run cmd/main -- moonclaw ephemeris receipts json
-moon run cmd/main -- moonclaw corridor receipts
-moon run cmd/main -- moonclaw corridor receipts json
-moon run cmd/main -- moonrobo handoff
-moon run cmd/main -- moonrobo handoff json
-python3 scripts/generate_moonmoon_fixture.py --check
-python3 scripts/materialize_moonbook_workspace.py --check
-bash scripts/build_rabbita_ui.sh
-bash scripts/build_moonmoon_dossier.sh
+moon run cmd/main -- kernel
+moon run cmd/main -- terrain
+moon run cmd/main -- mission horizon
+moon run cmd/main -- mission terrain
+moon run cmd/main -- mission energy
+moon run cmd/main -- ui
+moon run cmd/main -- ui json
+moon run cmd/main -- ui html
 ```
 
-Reproducible site, terrain, Rabbita, MoonBook, MoonClaw, and Moonrobo handoff
-deliverables are written to `output/site/`, `output/terrain/`,
-`output/ui/rabbita/`, `output/moonbook/`, `output/moonclaw/`, and
-`output/moonrobo/`. The materialized MoonBook workspace lives at
-`output/moonbook/workspaces/first-trusted-square/` and includes per-entry
-payloads, review status, and review transitions.
+## Develop
 
-`scripts/build_rabbita_ui.sh` is the focused product build for the standalone
-Rabbita Moon operator page. It writes `output/ui/rabbita/first_trusted_square.html`,
-syncs every local browser asset from `src/ui/rabbita_moon/assets/`, and runs
-bundle, runtime, and Mission Evidence Queue checks so missing, stale,
-non-booting, or unmaterialized evidence rows fail before the page is handed to
-an operator.
+```bash
+moon check
+moon test
+moon info
+moon fmt
+```
 
-MoonBook and MoonClaw verification are now suite-level checks instead of
-per-entry Python files. `scripts/check_moonbook_workspace.py` verifies the
-complete materialized workspace, and `scripts/check_moonclaw_packets.py`
-verifies the generated MoonClaw packet suite.
+`moon info` updates generated `.mbti` interfaces. Review those diffs as the
+public API signal.
 
-MoonClaw outputs currently include bounded modeling proposals, concrete
-ephemeris and corridor acquisition tasks, a deterministic route-scoring receipt, a
-deterministic corridor-expansion receipt, and a needs-review ephemeris receipt.
-The tasks name source artifacts, generator commands, validation gates,
-machine-readable artifact readiness, blocker reasons, and Moonrobo safety
-condition required to move the power-window evidence from computed review to
-robot-facing input and to move the corridor search from the current
-5x5 proof to a planned 9x9 extraction. The receipts validate the current route
-set, selected route, measured corridor windows, source checksums, proposal
-blockers, energy blocker, and Moonrobo handoff compatibility. They record
-accepted terrain and route results while the ephemeris receipt keeps the power
-gate in review until a real time-windowed solar source is attached.
+## Product Rule
 
-Moonmoon now also records the solar source boundary as a typed acquisition
-contract. The first trusted square has a `SPICE kernels` source candidate and a
-MoonBook-visible ephemeris acquisition plan with pinned source metadata,
-checksummed inputs, generated JSON power-window evidence, and a computed
-MoonBit power-window module.
+Moonmoon owns lunar world claims. It may later export evidence to other Moon
+suite products, but those adapters should be explicit boundary packages or
+separate tools. The core repository should stay MoonBit-first and should not
+grow around Python check scripts, committed `output/` trees, or stale browser
+asset bundles.
 
-The current terrain fixture is sourced from the checked LOLA byte-range CSV at
-`data/sources/lro_lola/first_trusted_square_dem.csv`, verified by
-`scripts/verify_moonmoon_sources.sh`, and regenerated into MoonBit by
-`scripts/generate_moonmoon_fixture.py`.
-
-The current fixture is measured LOLA DEM evidence accepted for Moonmoon software
-proof. It is still not mission-grade lunar planning data; the current
-illumination and energy gates intentionally block until time-windowed
-ephemeris-backed power evidence exists.
-
-The current power-window evidence is checked at
-`data/sources/lunar_ephemeris/first_trusted_square_power_window.json` and
-computed by `scripts/compute_power_window.py` and mirrored into MoonBit by
-`scripts/generate_power_window.py`. That source is a deliberate computed
-fixture: it makes the pinned ephemeris inputs, hourly sunlit/dark window, and
-low available Wh reproducible while keeping the energy gate blocked. The
-same evidence is indexed as a standalone MoonBook `power-window-evidence` entry,
-so operators can inspect the source status separately from the derived energy
-budget. MoonBook records that entry as accepted evidence while keeping the
-energy-window and local-horizon blockers separate from route calculations.
-Moonrobo handoff packets consume the same evidence as an allowed precondition,
-so robot simulation stays blocked on energy margin, horizon, and route gates
-instead of on missing power evidence.
-
-The first target is not a decorative Moon viewer. The first target is one
-trusted lunar site model that can answer operational questions with source
-provenance and uncertainty:
-
-- What terrain data was used?
-- What does this tile claim about elevation, slope, roughness, light, and risk?
-- Which claims are measured, derived, or speculative?
-- What would block a rover traverse, mining task, construction pad, or solar
-  ridge plan?
-- What evidence should be written back to MoonBook?
-
-Rabbita now opens with a live Moon-scale operator view for that evidence. The
-first viewport is an operable 3D Moon with a local real-data texture,
-drag/zoom controls, home and fly-to-site controls, coordinate readout, compass,
-scale bar, graticule, site footprint, selected route, 81 measured LOLA corridor
-windows, and hardware-authority status. The measured south-pole landscape and
-LOLA corridor map remain the local detail layer and fallback context. The
-model and decisions stay MoonBit-owned; the browser globe only projects and
-navigates the evidence.
-
-## Rebuild Direction
-
-MoonMoon is now treated as a standalone product with a small kernel before any
-viewer or robot integration grows around it. The kernel is the product spine:
-it names the model layers, evidence gates, MoonSuite boundaries, and highest
-priority build queue from the current executable site dossier.
-
-The current top priority remains deliberately large rather than cosmetic:
-turn the live Rabbita Moonviewer into the primary operator workflow instead of
-piling more panels onto the page. Terrain, power, renderer-neutral UI evidence,
-MoonBook review state, robot-facing simulation/replay/hardware packet
-semantics, and movable lunar context now exist; the next product gap is a
-cleaner operator flow that lets a human move from Moon scale to trusted-square
-evidence and blocker clearance without reading generated artifacts.
-
-## Documents
-
-- [Vision](docs/VISION.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Roadmap](docs/ROADMAP.md)
-
-## Reference Direction
-
-Moonmoon should rebuild the useful lessons from the old `../tl-2022` terrain
-work rather than porting it directly. The transferable ideas are DEM-centered
-workflows, terrain exaggeration, ridge/gully/trench style analysis, queryable
-terrain regions, and exportable visual evidence. The implementation should be
-MoonBit-first and suite-native.
-
-Rabbita should implement a small Moonmoon-native live globe around the first
-trusted square: texture layer, geodata overlays, continuous zoom, compass,
-scale bar, coordinate grid, and layer settings.
-
-Private product and UI references are reference-only. Public docs, generated
-assets, and operator copy should describe Moonmoon-native behavior and should
-name only auditable sources: data products, standards, tools, generated
-artifacts, and suite contracts.
-
-Relevant public data/tooling references include:
-
-- [NASA Lunar Reconnaissance Orbiter](https://science.nasa.gov/mission/lro/)
-- [PDS Geosciences LRO LOLA archive](https://pds-geosciences.wustl.edu/missions/lro/lola.htm)
-- [LROC data and mapping tools](https://www.lroc.asu.edu/)
-- [Ames Stereo Pipeline](https://stereopipeline.readthedocs.io/en/latest/introduction.html)
-- [MoonAnything lunar vision benchmark](https://github.com/clementinegrethen/MoonAnything)

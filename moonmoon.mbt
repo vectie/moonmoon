@@ -29,36 +29,6 @@ pub fn trusted_square_json() -> Json {
 }
 
 ///|
-pub fn trusted_square_book_json() -> Json {
-  @moonbook.first_trusted_square_book_json()
-}
-
-///|
-pub fn trusted_square_moonclaw_json() -> Json {
-  @moonclaw.first_trusted_square_json()
-}
-
-///|
-pub fn trusted_square_moonrobo_json() -> Json {
-  @moonrobo.first_trusted_square_json()
-}
-
-///|
-pub fn trusted_square_noetix_walk_trace() -> @moonrobo.NoetixMoonWalkTrace {
-  @moonrobo.first_trusted_square_noetix_walk_trace()
-}
-
-///|
-pub fn trusted_square_noetix_walk_markdown() -> String {
-  @moonrobo.first_trusted_square_noetix_walk_markdown()
-}
-
-///|
-pub fn trusted_square_noetix_walk_json() -> Json {
-  @moonrobo.first_trusted_square_noetix_walk_json()
-}
-
-///|
 pub fn trusted_square_view_model() -> @ui.TrustedSquareViewModel {
   @ui.first_trusted_square_view_model()
 }
@@ -71,4 +41,9 @@ pub fn trusted_square_view_markdown() -> String {
 ///|
 pub fn trusted_square_view_json() -> Json {
   @ui.first_trusted_square_json()
+}
+
+///|
+pub fn trusted_square_html() -> String {
+  @ui.first_trusted_square_html()
 }

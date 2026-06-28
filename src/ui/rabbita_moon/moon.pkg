@@ -1,5 +1,0 @@
-import {
-  "vectie/moonmoon/src/adapters/moonbook",
-  "vectie/moonmoon/src/adapters/moonrobo",
-  "vectie/moonmoon/src/ui",
-}

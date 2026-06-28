@@ -59,7 +59,7 @@
   ],
   "computation": {
     "method_id": "south-pole-power-window-v1",
-    "generated_by": "scripts/compute_power_window.py",
+    "generated_by": "MoonBit power computation",
     "time_step_minutes": 60,
     "horizon_model": "iau-moon-spherical-zero-horizon-v1",
     "rover_power_model": "conservative-south-pole-energy-v1",

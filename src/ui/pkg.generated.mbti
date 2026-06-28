@@ -8,6 +8,8 @@ import {
 }
 
 // Values
+pub fn first_trusted_square_html() -> String
+
 pub fn first_trusted_square_json() -> Json
 
 pub fn first_trusted_square_markdown() -> String
@@ -19,6 +21,8 @@ pub fn first_trusted_square_view_model_at(Int, Int) -> TrustedSquareViewModel
 pub fn from_site_dossier(@site.SiteDossier) -> TrustedSquareViewModel
 
 pub fn from_site_dossier_with_selection(@site.SiteDossier, Int, Int) -> TrustedSquareViewModel
+
+pub fn render_html(TrustedSquareViewModel) -> String
 
 pub fn render_json(TrustedSquareViewModel) -> Json
 

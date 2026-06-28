@@ -4,7 +4,7 @@ pub(all) enum MissionReadinessCheckKind {
   CorridorReadiness
   IlluminationReadiness
   EnergyReadiness
-  MoonBookReviewReadiness
+  OperatorReviewReadiness
   RobotSimulationReadiness
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -39,7 +39,7 @@ pub fn mission_readiness_check_kind_label(
     CorridorReadiness => "corridor"
     IlluminationReadiness => "illumination"
     EnergyReadiness => "energy"
-    MoonBookReviewReadiness => "moonbook-review"
+    OperatorReviewReadiness => "operator-review"
     RobotSimulationReadiness => "robot-simulation"
   }
 }
@@ -118,13 +118,12 @@ fn robot_simulation_check(decision : TraverseDecision) -> MissionReadinessCheck 
     RobotSimulationReadiness,
     "Robot simulation gate",
     decision,
-    "output/moonrobo/first_trusted_square_handoffs.json",
+    "artifact/simulation-preconditions.json",
     match decision {
-      Allow => "MoonRobo simulation may consume the selected-route packet"
+      Allow => "Simulation may consume the selected-route packet"
       Review =>
-        "MoonRobo simulation needs operator review before the packet can be consumed"
-      Block =>
-        "MoonRobo simulation stays blocked until mission readiness checks clear"
+        "Simulation needs operator review before the packet can be consumed"
+      Block => "Simulation stays blocked until mission readiness checks clear"
     },
   )
 }
@@ -133,11 +132,11 @@ fn robot_simulation_check(decision : TraverseDecision) -> MissionReadinessCheck 
 fn simulation_next_action(decision : TraverseDecision) -> String {
   match decision {
     Allow =>
-      "selected route may advance to MoonRobo simulation; hardware remains outside MoonMoon authority"
+      "selected route may advance to Simulation; hardware remains outside MoonMoon authority"
     Review =>
-      "resolve review checks before MoonRobo simulation consumes the selected-route packet"
+      "resolve review checks before Simulation consumes the selected-route packet"
     Block =>
-      "keep MoonRobo simulation blocked until terrain, corridor, illumination, energy, and MoonBook review checks clear"
+      "keep Simulation blocked until terrain, corridor, illumination, energy, and operator review checks clear"
   }
 }
 

@@ -250,7 +250,7 @@ pub(all) enum MissionClearanceKind {
   TerrainGradeClearance
   IlluminationConfidenceClearance
   EnergyMarginClearance
-  MoonBookReviewClearance
+  OperatorReviewClearance
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MissionClearancePlan {
@@ -302,7 +302,7 @@ pub(all) enum MissionReadinessCheckKind {
   CorridorReadiness
   IlluminationReadiness
   EnergyReadiness
-  MoonBookReviewReadiness
+  OperatorReviewReadiness
   RobotSimulationReadiness
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -30,9 +30,7 @@ pub(all) enum BuildLane {
   DataLane
   TerrainLane
   MissionLane
-  RobotLane
   ViewerLane
-  SuiteLane
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct BuildTask {
@@ -74,7 +72,6 @@ pub(all) struct MoonMoonKernel {
   operating_rule : String
   layers : Array[KernelLayer]
   evidence_gates : Array[EvidenceGate]
-  suite_boundaries : Array[SuiteBoundary]
   build_queue : Array[BuildTask]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -83,14 +80,6 @@ pub(all) enum ReadinessState {
   NeedsEvidence
   Blocked
   Planned
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SuiteBoundary {
-  product_id : String
-  role : String
-  consumes : String
-  emits : String
-  boundary_rule : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases
