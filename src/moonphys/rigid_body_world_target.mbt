@@ -258,10 +258,10 @@ pub fn rigid_body_heightfield_world_targeted_hinge_motor_trace(
   let mut resolved_hinge_count = 0
   let mut review_count = 0
   for index, motor_frame in motor_frames {
-    let target_frame = rigid_body_world_apply_body_targets(
-      world,
-      rigid_body_world_target_frame_targets(body_target_frames, index),
+    let targets = rigid_body_world_target_frame_targets(
+      body_target_frames, index,
     )
+    let target_frame = rigid_body_world_apply_body_targets(world, targets)
     let frame = rigid_body_heightfield_world_hinge_motor_step(
       target_frame.after,
       field,
@@ -269,12 +269,66 @@ pub fn rigid_body_heightfield_world_targeted_hinge_motor_trace(
       frame_index=index,
       time_s~,
     )
-    frames.push(frame)
-    driven_count += frame.driven_joint_count
-    contact_count += frame.contact_count
-    resolved_hinge_count += frame.resolved_hinge_constraint_count
-    review_count += target_frame.review_count + frame.review_count
-    world = frame.after
+    let post_target_frame = rigid_body_world_apply_body_targets(
+      frame.after,
+      targets,
+    )
+    let post_world_step = {
+      frame_index: frame.world_step.frame_index,
+      time_s: frame.world_step.time_s,
+      dt_s: frame.world_step.dt_s,
+      before: frame.world_step.before,
+      body_frames: frame.world_step.body_frames,
+      after: post_target_frame.after,
+      body_count: frame.world_step.body_count,
+      contact_count: frame.world_step.contact_count,
+      body_pair_count: frame.world_step.body_pair_count,
+      body_pair_overlap_count: frame.world_step.body_pair_overlap_count,
+      body_pair_contact_count: frame.world_step.body_pair_contact_count,
+      body_contact_schedule: frame.world_step.body_contact_schedule,
+      body_contact_resolution: frame.world_step.body_contact_resolution,
+      constraint_count: frame.world_step.constraint_count,
+      resolved_constraint_count: frame.world_step.resolved_constraint_count,
+      constraint_resolution: frame.world_step.constraint_resolution,
+      hinge_constraint_count: frame.world_step.hinge_constraint_count,
+      resolved_hinge_constraint_count: frame.world_step.resolved_hinge_constraint_count,
+      hinge_constraint_resolution: frame.world_step.hinge_constraint_resolution,
+      review_count: frame.world_step.review_count +
+      post_target_frame.review_count,
+      kinetic_energy_before_j: frame.world_step.kinetic_energy_before_j,
+      kinetic_energy_after_j: frame.world_step.kinetic_energy_after_j,
+      kinetic_energy_delta_j: frame.world_step.kinetic_energy_delta_j,
+      status: frame.world_step.status,
+    }
+    let post_frame = {
+      frame_index: frame.frame_index,
+      time_s: frame.time_s,
+      dt_s: frame.dt_s,
+      before: frame.before,
+      motor_frame: frame.motor_frame,
+      motor_drive: frame.motor_drive,
+      world_step: post_world_step,
+      after: post_target_frame.after,
+      driven_joint_count: frame.driven_joint_count,
+      contact_count: frame.contact_count,
+      resolved_hinge_constraint_count: frame.resolved_hinge_constraint_count,
+      review_count: target_frame.review_count +
+      frame.review_count +
+      post_target_frame.review_count,
+      status: rigid_body_heightfield_world_hinge_motor_step_status(
+        frame.motor_drive,
+        post_world_step,
+        target_frame.review_count +
+        frame.review_count +
+        post_target_frame.review_count,
+      ),
+    }
+    frames.push(post_frame)
+    driven_count += post_frame.driven_joint_count
+    contact_count += post_frame.contact_count
+    resolved_hinge_count += post_frame.resolved_hinge_constraint_count
+    review_count += post_frame.review_count
+    world = post_frame.after
     time_s += motor_frame.dt_s
   }
   {

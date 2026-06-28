@@ -54,7 +54,20 @@ fn rigid_body_world_dynamic_support_trace_status(
 pub fn rigid_body_world_dynamic_support_frame(
   step : RigidBodyHeightfieldWorldStep,
 ) -> RigidBodyWorldDynamicSupportFrame {
-  let support_frame = rigid_body_world_support_frame(step)
+  rigid_body_world_dynamic_support_frame_with_footprints(
+    step,
+    rigid_body_world_support_frame(step).footprints,
+  )
+}
+
+///|
+pub fn rigid_body_world_dynamic_support_frame_with_footprints(
+  step : RigidBodyHeightfieldWorldStep,
+  footprints : Array[SupportFootprint],
+) -> RigidBodyWorldDynamicSupportFrame {
+  let support_frame = rigid_body_world_support_frame_with_footprints(
+    step, footprints,
+  )
   let center = rigid_body_world_center_of_mass(step.after)
   let velocity = rigid_body_world_center_of_mass_velocity(step.after)
   let assessment = capture_point_assessment(
@@ -127,6 +140,74 @@ fn rigid_body_world_dynamic_support_trace_from_frames(
 }
 
 ///|
+fn rigid_body_world_dynamic_support_trace_target_footprints(
+  footprint_frames : Array[Array[SupportFootprint]],
+  index : Int,
+) -> Array[SupportFootprint] {
+  if index < footprint_frames.length() {
+    footprint_frames[index]
+  } else {
+    []
+  }
+}
+
+///|
+fn rigid_body_world_dynamic_support_trace_from_footprint_frames(
+  trace_id : String,
+  body_count : Int,
+  steps : Array[RigidBodyHeightfieldWorldStep],
+  footprint_frames : Array[Array[SupportFootprint]],
+) -> RigidBodyWorldDynamicSupportTrace {
+  let frames : Array[RigidBodyWorldDynamicSupportFrame] = []
+  let mut contact_count = 0
+  let mut stable_count = 0
+  let mut review_count = 0
+  let mut worst_margin = 0.0
+  let mut max_recovery_shift = 0.0
+  for index, step in steps {
+    let target_footprints = rigid_body_world_dynamic_support_trace_target_footprints(
+      footprint_frames, index,
+    )
+    let frame = if target_footprints.is_empty() {
+      rigid_body_world_dynamic_support_frame(step)
+    } else {
+      rigid_body_world_dynamic_support_frame_with_footprints(
+        step, target_footprints,
+      )
+    }
+    contact_count += frame.contact_count
+    if frame.capture_point_assessment.stable {
+      stable_count += 1
+    } else {
+      review_count += 1
+    }
+    if index == 0 ||
+      frame.capture_point_assessment.capture_margin_m < worst_margin {
+      worst_margin = frame.capture_point_assessment.capture_margin_m
+    }
+    if frame.capture_support_recovery.required_shift_m > max_recovery_shift {
+      max_recovery_shift = frame.capture_support_recovery.required_shift_m
+    }
+    frames.push(frame)
+  }
+  {
+    trace_id,
+    frame_count: steps.length(),
+    body_count,
+    contact_count,
+    capture_stable_frame_count: stable_count,
+    review_frame_count: review_count,
+    worst_capture_margin_m: worst_margin,
+    max_capture_recovery_shift_m: max_recovery_shift,
+    frames,
+    status: rigid_body_world_dynamic_support_trace_status(
+      frames.length(),
+      review_count,
+    ),
+  }
+}
+
+///|
 pub fn rigid_body_heightfield_world_dynamic_support_trace(
   trace : RigidBodyHeightfieldWorldTrace,
 ) -> RigidBodyWorldDynamicSupportTrace {
@@ -134,6 +215,19 @@ pub fn rigid_body_heightfield_world_dynamic_support_trace(
     trace.trace_id,
     trace.final_world.bodies.length(),
     trace.frames,
+  )
+}
+
+///|
+pub fn rigid_body_heightfield_world_dynamic_support_trace_with_footprints(
+  trace : RigidBodyHeightfieldWorldTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+) -> RigidBodyWorldDynamicSupportTrace {
+  rigid_body_world_dynamic_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    trace.frames,
+    footprint_frames,
   )
 }
 
@@ -149,5 +243,22 @@ pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(
     trace.trace_id,
     trace.final_world.bodies.length(),
     steps,
+  )
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_footprints(
+  trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+) -> RigidBodyWorldDynamicSupportTrace {
+  let steps : Array[RigidBodyHeightfieldWorldStep] = []
+  for frame in trace.frames {
+    steps.push(frame.world_step)
+  }
+  rigid_body_world_dynamic_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    steps,
+    footprint_frames,
   )
 }

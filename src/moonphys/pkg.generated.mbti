@@ -125,13 +125,21 @@ pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel
 
 pub fn rigid_body_heightfield_world_dynamic_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldDynamicSupportTrace
 
+pub fn rigid_body_heightfield_world_dynamic_support_trace_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldDynamicSupportTrace
+
 pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldDynamicSupportTrace
 
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldDynamicSupportTrace
+
 pub fn rigid_body_heightfield_world_hinge_motor_replay_review(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldReplayReview
+
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldReplayReview
 
 pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
 
 pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldSupportTrace
+
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldSupportTrace
 
 pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
 
@@ -139,9 +147,13 @@ pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(RigidBodyHeightfi
 
 pub fn rigid_body_heightfield_world_replay_review(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldReplayReview
 
+pub fn rigid_body_heightfield_world_replay_review_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldReplayReview
+
 pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
 
 pub fn rigid_body_heightfield_world_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldSupportTrace
+
+pub fn rigid_body_heightfield_world_support_trace_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldSupportTrace
 
 pub fn rigid_body_heightfield_world_targeted_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], Array[Array[RigidBodyWorldBodyTarget]], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
 
@@ -191,6 +203,8 @@ pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceCon
 
 pub fn rigid_body_world_dynamic_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldDynamicSupportFrame
 
+pub fn rigid_body_world_dynamic_support_frame_with_footprints(RigidBodyHeightfieldWorldStep, Array[SupportFootprint]) -> RigidBodyWorldDynamicSupportFrame
+
 pub fn rigid_body_world_integrate_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Array[JointMotorFrame], note? : String) -> RigidBodyWorldHingeMotorTrace
 
 pub fn rigid_body_world_integrate_hinge_motors(RigidBodyHeightfieldWorld, JointMotorFrame) -> RigidBodyWorldHingeMotorFrame
@@ -206,6 +220,8 @@ pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWor
 pub fn rigid_body_world_resolve_hinge_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldHingeConstraintFrame
 
 pub fn rigid_body_world_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldSupportFrame
+
+pub fn rigid_body_world_support_frame_with_footprints(RigidBodyHeightfieldWorldStep, Array[SupportFootprint]) -> RigidBodyWorldSupportFrame
 
 pub fn rigid_body_world_total_mass(RigidBodyHeightfieldWorld) -> Double
 

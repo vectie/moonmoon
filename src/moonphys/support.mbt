@@ -628,6 +628,8 @@ fn support_load_status(
     "single-support-load"
   } else if center_error_m <= 0.000001 {
     "center-load-balanced"
+  } else if support.stable {
+    "footprint-area-load"
   } else {
     "footprint-area-load-review"
   }
@@ -703,7 +705,8 @@ pub fn support_load_assessment(
       max_load_fraction: max_fraction,
       loads,
       balanced: status == "single-support-load" ||
-      status == "center-load-balanced",
+      status == "center-load-balanced" ||
+      status == "footprint-area-load",
       status,
     }
   }

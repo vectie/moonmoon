@@ -489,6 +489,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   motor_frame_count : Int
   body_target_frame_count : Int
   body_target_count : Int
+  support_target_frame_count : Int
+  support_target_count : Int
   driven_joint_count : Int
   contact_count : Int
   support_contact_count : Int

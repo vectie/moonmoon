@@ -1312,6 +1312,47 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
 }
 
 ///|
+test "hinge motor replay review can use explicit support footprints" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let body = rigid_body_state(
+    "body",
+    1.0,
+    0.05,
+    vec3(0.0, 0.0, 0.1),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "support-target-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [rigid_body_world_body(body)],
+  )
+  let motor = integrate_joint_motor_frame("idle", [], [], [], [], [], 0.1)
+  let trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "support-target-trace",
+    world,
+    field,
+    [motor],
+  )
+  let footprints = [
+    [support_footprint("left-foot", vec3(0.0, 0.0, 0.0), 0.2, 0.1)],
+  ]
+  let support_trace = rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(
+    trace, footprints,
+  )
+  assert_eq(support_trace.contact_count, 1)
+  assert_eq(support_trace.review_frame_count, 0)
+  assert_eq(support_trace.status, "world-support-trace-stable")
+  let review = rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(
+    trace, footprints,
+  )
+  assert_true(!review.blockers.contains("world-support-review"))
+  assert_eq(review.support_contact_count, 1)
+  assert_eq(review.support_review_frame_count, 0)
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(
@@ -2450,6 +2491,21 @@ test "support load assessment reports off-segment center-load error" {
   assert_true(!assessment.balanced)
   assert_eq(assessment.status, "outside-support-load-review")
   assert_true(nearly_equal(assessment.center_of_pressure_error_m, 0.2))
+}
+
+///|
+test "support load assessment accepts area-supported center" {
+  let assessment = support_load_assessment(
+    vec3(0.0, -0.04, 1.0),
+    [
+      support_footprint("left", vec3(0.08, 0.08, 0.0), 0.11, 0.045),
+      support_footprint("right", vec3(-0.04, -0.08, 0.0), 0.11, 0.045),
+    ],
+    120.0,
+  )
+  assert_true(assessment.balanced)
+  assert_eq(assessment.status, "footprint-area-load")
+  assert_true(assessment.center_of_pressure_error_m > 0.0)
 }
 
 ///|

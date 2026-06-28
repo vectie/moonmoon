@@ -46,6 +46,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   motor_frame_count : Int
   body_target_frame_count : Int
   body_target_count : Int
+  support_target_frame_count : Int
+  support_target_count : Int
   driven_joint_count : Int
   contact_count : Int
   support_contact_count : Int
@@ -286,6 +288,48 @@ fn noetix_body_target_count(
 }
 
 ///|
+fn noetix_support_footprints_for_frame(
+  trace : NoetixMoonWalkTrace,
+  frame_index : Int,
+  profile : NoetixPhysicsProfile,
+) -> Array[@moonphys.SupportFootprint] {
+  let frame = trace.frames[frame_index]
+  let left_geometry = foot_geometry(profile, "left-foot")
+  let right_geometry = foot_geometry(profile, "right-foot")
+  [
+    contact_footprint(frame.left_foot, left_geometry),
+    contact_footprint(frame.right_foot, right_geometry),
+  ]
+}
+
+///|
+fn noetix_support_footprint_frames(
+  trace : NoetixMoonWalkTrace,
+  profile : NoetixPhysicsProfile,
+) -> Array[Array[@moonphys.SupportFootprint]] {
+  let frames : Array[Array[@moonphys.SupportFootprint]] = []
+  for index, _frame in trace.frames {
+    frames.push(noetix_support_footprints_for_frame(trace, index, profile))
+  }
+  frames
+}
+
+///|
+fn noetix_support_target_count(
+  frames : Array[Array[@moonphys.SupportFootprint]],
+) -> Int {
+  let mut count = 0
+  for frame in frames {
+    for footprint in frame {
+      if footprint.active {
+        count += 1
+      }
+    }
+  }
+  count
+}
+
+///|
 fn noetix_joint_step_status(step : @moonphys.JointMotorFrameStep) -> String {
   if !step.position_within_limits || !step.velocity_within_limits {
     "joint-limit-review"
@@ -346,6 +390,7 @@ fn noetix_hinge_motor_world_trace_evidence(
 ) -> NoetixHingeMotorWorldTraceEvidence {
   let motor_frames = noetix_joint_motor_frames(trace, profile)
   let body_target_frames = noetix_world_body_target_frames(trace, profile)
+  let support_target_frames = noetix_support_footprint_frames(trace, profile)
   let initial = noetix_hinge_projection_frame(trace, 0, profile)
   let world_trace = @moonphys.rigid_body_heightfield_world_targeted_hinge_motor_trace(
     "noetix-e1/world-heightfield-hinge-motor-trace/\{trace.terrain_tile_id}",
@@ -355,8 +400,8 @@ fn noetix_hinge_motor_world_trace_evidence(
     body_target_frames,
     note="Noetix gait phases replayed through Moonphys target-driven hinge motor heightfield world replay",
   )
-  let review = @moonphys.rigid_body_heightfield_world_hinge_motor_replay_review(
-    world_trace,
+  let review = @moonphys.rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(
+    world_trace, support_target_frames,
   )
   {
     trace_id: world_trace.trace_id,
@@ -364,6 +409,8 @@ fn noetix_hinge_motor_world_trace_evidence(
     motor_frame_count: world_trace.motor_frame_count,
     body_target_frame_count: body_target_frames.length(),
     body_target_count: noetix_body_target_count(body_target_frames),
+    support_target_frame_count: support_target_frames.length(),
+    support_target_count: noetix_support_target_count(support_target_frames),
     driven_joint_count: world_trace.driven_joint_count,
     contact_count: world_trace.contact_count,
     support_contact_count: review.support_contact_count,
@@ -603,6 +650,8 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace frames: \{report.hinge_motor_world_trace.frame_count}\n"
   text += "- hinge motor world trace body-target frames: \{report.hinge_motor_world_trace.body_target_frame_count}\n"
   text += "- hinge motor world trace body targets: \{report.hinge_motor_world_trace.body_target_count}\n"
+  text += "- hinge motor world trace support-target frames: \{report.hinge_motor_world_trace.support_target_frame_count}\n"
+  text += "- hinge motor world trace support targets: \{report.hinge_motor_world_trace.support_target_count}\n"
   text += "- hinge motor world trace contacts: \{report.hinge_motor_world_trace.contact_count}\n"
   text += "- hinge motor world trace support contacts: \{report.hinge_motor_world_trace.support_contact_count}\n"
   text += "- hinge motor world trace stable support frames: \{report.hinge_motor_world_trace.stable_support_frame_count}\n"

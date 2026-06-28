@@ -265,11 +265,11 @@
       "static_support_review_frame_count": 32,
       "dynamic_stability_review_frame_count": 32,
       "joint_control_review_frame_count": 32,
-      "joint_control_world_support_review_frame_count": 32,
-      "joint_control_world_capture_review_frame_count": 30,
-      "joint_control_max_support_recovery_shift_m": 0.07340840229791806,
-      "joint_control_worst_capture_support_margin_m": -1.5180092740208426,
-      "joint_control_max_capture_recovery_shift_m": 1.9009654311808473,
+      "joint_control_world_support_review_frame_count": 12,
+      "joint_control_world_capture_review_frame_count": 31,
+      "joint_control_max_support_recovery_shift_m": 0.006668399545292702,
+      "joint_control_worst_capture_support_margin_m": -3.19693415142415,
+      "joint_control_max_capture_recovery_shift_m": 3.625660454440404,
       "joint_control_world_replay_blocker_count": 2,
       "joint_control_world_replay_blockers": [
         "world-support-review",
@@ -429,7 +429,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield motor contacts 24; support-review frames 32; capture-review frames 30; max support recovery shift 0.07340840229791806 m; worst capture support margin -1.5180092740208426 m; max capture recovery shift 1.9009654311808473 m; world replay blockers 2; resolved world hinges 1463; body samples 825; max world speed 0.8806459254917214 m/s; max world energy 0.5894083070247296 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; heightfield motor contacts 24; support-review frames 12; capture-review frames 31; max support recovery shift 0.006668399545292702 m; worst capture support margin -3.19693415142415 m; max capture recovery shift 3.625660454440404 m; world replay blockers 2; resolved world hinges 1463; body samples 825; max world speed 1.4838116787271107 m/s; max world energy 1.6732897944244947 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -772,11 +772,11 @@
         "static_support_review_frame_count": 32,
         "dynamic_stability_review_frame_count": 32,
         "joint_control_review_frame_count": 32,
-        "joint_control_world_support_review_frame_count": 32,
-        "joint_control_world_capture_review_frame_count": 30,
-        "joint_control_max_support_recovery_shift_m": 0.07340840229791806,
-        "joint_control_worst_capture_support_margin_m": -1.5180092740208426,
-        "joint_control_max_capture_recovery_shift_m": 1.9009654311808473,
+        "joint_control_world_support_review_frame_count": 12,
+        "joint_control_world_capture_review_frame_count": 31,
+        "joint_control_max_support_recovery_shift_m": 0.006668399545292702,
+        "joint_control_worst_capture_support_margin_m": -3.19693415142415,
+        "joint_control_max_capture_recovery_shift_m": 3.625660454440404,
         "joint_control_world_replay_blocker_count": 2,
         "joint_control_world_replay_blockers": [
           "world-support-review",
@@ -936,7 +936,7 @@
             "path": "output/moonrobo/first_trusted_square_noetix_control.json",
             "producer": "moon run cmd/main -- moonrobo noetix control json",
             "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield motor contacts 24; support-review frames 32; capture-review frames 30; max support recovery shift 0.07340840229791806 m; worst capture support margin -1.5180092740208426 m; max capture recovery shift 1.9009654311808473 m; world replay blockers 2; resolved world hinges 1463; body samples 825; max world speed 0.8806459254917214 m/s; max world energy 0.5894083070247296 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review",
+            "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; heightfield motor contacts 24; support-review frames 12; capture-review frames 31; max support recovery shift 0.006668399545292702 m; worst capture support margin -3.19693415142415 m; max capture recovery shift 3.625660454440404 m; world replay blockers 2; resolved world hinges 1463; body samples 825; max world speed 1.4838116787271107 m/s; max world energy 1.6732897944244947 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review",
             "ready": false,
             "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
             "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
@@ -9131,8 +9131,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -9688,8 +9688,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -10245,8 +10245,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -10802,8 +10802,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -11359,8 +11359,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -11916,8 +11916,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -14597,8 +14597,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -15154,8 +15154,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -15711,8 +15711,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -16268,8 +16268,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -16825,8 +16825,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -17382,8 +17382,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -20063,8 +20063,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -20620,8 +20620,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -21177,8 +21177,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -21734,8 +21734,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -22291,8 +22291,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -22848,8 +22848,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -25529,8 +25529,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -26086,8 +26086,8 @@
                 "status": "loaded"
               }
             ],
-            "balanced": false,
-            "status": "footprint-area-load-review"
+            "balanced": true,
+            "status": "footprint-area-load"
           },
           "contact_patches": [
             {
@@ -30598,30 +30598,32 @@
         "motor_frame_count": 32,
         "body_target_frame_count": 32,
         "body_target_count": 800,
+        "support_target_frame_count": 32,
+        "support_target_count": 52,
         "driven_joint_count": 768,
         "contact_count": 24,
-        "support_contact_count": 24,
-        "stable_support_frame_count": 0,
-        "support_review_frame_count": 32,
-        "capture_stable_support_frame_count": 2,
-        "capture_support_review_frame_count": 30,
+        "support_contact_count": 52,
+        "stable_support_frame_count": 20,
+        "support_review_frame_count": 12,
+        "capture_stable_support_frame_count": 1,
+        "capture_support_review_frame_count": 31,
         "resolved_hinge_constraint_count": 1463,
         "review_count": 0,
         "final_body_count": 25,
         "final_projected_body_count": 25,
         "body_sample_count": 825,
         "min_position": {
-          "x": -0.020698699972724555,
-          "y": -0.3233231827672638,
-          "z": 336.78758643218595
+          "x": -0.008402021614087717,
+          "y": -0.31895340211215634,
+          "z": 336.7980438576956
         },
         "max_position": {
-          "x": 0.865692892617442,
-          "y": 0.3140407061359754,
+          "x": 0.8688024480367392,
+          "y": 0.30000000000000004,
           "z": 338.37750800000003
         },
-        "max_speed_mps": 0.8806459254917214,
-        "max_kinetic_energy_j": 0.5894083070247296,
+        "max_speed_mps": 1.4838116787271107,
+        "max_kinetic_energy_j": 1.6732897944244947,
         "total_mass_kg": 38.00000000000001,
         "initial_center_of_mass": {
           "x": 0.05646021640336979,
@@ -30629,28 +30631,28 @@
           "z": 337.71859087380545
         },
         "final_center_of_mass": {
-          "x": 0.47424662592412786,
-          "y": 0.016602410818788816,
-          "z": 337.5118271514224
+          "x": 0.45737180877201283,
+          "y": 0.022488302629850333,
+          "z": 337.5297345131236
         },
         "min_center_of_mass": {
           "x": 0.05646021640336979,
-          "y": -0.03660759617769302,
-          "z": 337.5117606935992
+          "y": -0.02860559417344979,
+          "z": 337.5297345131236
         },
         "max_center_of_mass": {
-          "x": 0.47424662592412786,
-          "y": 0.036744145757991356,
+          "x": 0.45737180877201283,
+          "y": 0.028716287196732384,
           "z": 337.71859087380545
         },
-        "max_center_of_mass_speed_mps": 0.2749262411962059,
-        "min_support_margin_m": -1,
-        "max_support_recovery_shift_m": 0.07340840229791806,
-        "worst_capture_support_margin_m": -1.5180092740208426,
-        "max_capture_recovery_shift_m": 1.9009654311808473,
-        "max_center_of_pressure_error_m": 0.17387879416761737,
-        "max_body_linear_momentum_kg_mps": 1.3385818067474164,
-        "max_world_linear_momentum_kg_mps": 10.447197165455826,
+        "max_center_of_mass_speed_mps": 0.2689052811794542,
+        "min_support_margin_m": -0.006668399545292702,
+        "max_support_recovery_shift_m": 0.006668399545292702,
+        "worst_capture_support_margin_m": -3.19693415142415,
+        "max_capture_recovery_shift_m": 3.625660454440404,
+        "max_center_of_pressure_error_m": 0.12237483789135715,
+        "max_body_linear_momentum_kg_mps": 2.2553937516652085,
+        "max_world_linear_momentum_kg_mps": 10.218400684819263,
         "max_frame_kinetic_energy_delta_j": 4.1865838105950015,
         "envelope_status": "world-trace-envelope-bounded",
         "world_review_status": "world-replay-review-blocked",

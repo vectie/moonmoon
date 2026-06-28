@@ -88,6 +88,10 @@ def main() -> None:
         fail("hinge motor world trace must consume every body-target frame")
     if hinge_motor_world_trace.get("body_target_count") != 25 * len(frames):
         fail("hinge motor world trace must target every Noetix body per frame")
+    if hinge_motor_world_trace.get("support_target_frame_count") != len(frames):
+        fail("hinge motor world trace must consume every support-target frame")
+    if hinge_motor_world_trace.get("support_target_count", 0) <= 0:
+        fail("hinge motor world trace must expose active support targets")
     if hinge_motor_world_trace.get("driven_joint_count") != report.get(
         "hinge_motor_driven_joint_count"
     ):

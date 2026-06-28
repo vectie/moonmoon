@@ -762,8 +762,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -1319,8 +1319,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -1876,8 +1876,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -2433,8 +2433,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -2990,8 +2990,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -3547,8 +3547,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -6228,8 +6228,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -6785,8 +6785,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -7342,8 +7342,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -7899,8 +7899,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -8456,8 +8456,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -9013,8 +9013,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -11694,8 +11694,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -12251,8 +12251,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -12808,8 +12808,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -13365,8 +13365,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -13922,8 +13922,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -14479,8 +14479,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -17160,8 +17160,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {
@@ -17717,8 +17717,8 @@
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "footprint-area-load-review"
+        "balanced": true,
+        "status": "footprint-area-load"
       },
       "contact_patches": [
         {

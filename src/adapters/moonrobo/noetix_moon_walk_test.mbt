@@ -413,6 +413,8 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.hinge_motor_world_trace.motor_frame_count, 12)
   assert_eq(report.hinge_motor_world_trace.body_target_frame_count, 12)
   assert_eq(report.hinge_motor_world_trace.body_target_count, 25 * 12)
+  assert_eq(report.hinge_motor_world_trace.support_target_frame_count, 12)
+  assert_true(report.hinge_motor_world_trace.support_target_count > 0)
   assert_eq(
     report.hinge_motor_world_trace.driven_joint_count,
     report.hinge_motor_driven_joint_count,
