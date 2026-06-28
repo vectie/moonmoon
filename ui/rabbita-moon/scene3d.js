@@ -724,6 +724,7 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
   const pose = legPose(root, side, joints)
   const { hip, knee, ankle, sole } = pose
   addCube(vertices, colors, hip, [0, -upperLen * 0.5, 0], [0.065, upperLen, 0.075], sideColor)
+  addCube(vertices, colors, knee, [0, 0.006, 0.055], [0.076, 0.034, 0.040], [0.96, 0.84, 0.42])
   addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
   addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
   let toe = mat4Translate(ankle, 0, -0.035, 0.172)
@@ -769,6 +770,7 @@ function addArm(vertices, colors, root, side, joints) {
   addCube(vertices, colors, shoulder, [0, -upperLen * 0.5, 0], [0.045, upperLen, 0.055], [0.56, 0.72, 0.76])
   let elbow = mat4Translate(shoulder, 0, -upperLen, 0)
   elbow = mat4RotateX(elbow, -angles.elbow)
+  addCube(vertices, colors, elbow, [0, 0.004, 0.042], [0.052, 0.030, 0.034], [0.70, 0.86, 0.90])
   addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
   addCube(vertices, colors, elbow, [0, -lowerLen - 0.030, 0.040], [0.050, 0.060, 0.055], [0.40, 0.54, 0.58])
 }
@@ -799,8 +801,11 @@ function robotGeometry(time) {
   let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
   torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
   addCube(vertices, colors, torsoRoot, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
+  addCube(vertices, colors, torsoRoot, [0, 0.205, 0.098], [0.125, 0.050, 0.018], [0.12, 0.20, 0.22])
   addCube(vertices, colors, mat4Translate(torsoRoot, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
-  addCube(vertices, colors, mat4Translate(torsoRoot, 0, 0.52, 0.005), [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
+  const headRoot = mat4Translate(torsoRoot, 0, 0.52, 0.005)
+  addCube(vertices, colors, headRoot, [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
+  addCube(vertices, colors, headRoot, [0, 0.012, 0.068], [0.080, 0.030, 0.016], [0.08, 0.14, 0.16])
   for (const side of [-1, 1]) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
     addArm(vertices, colors, torsoRoot, side, joints)
