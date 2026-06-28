@@ -13,7 +13,8 @@
     "export:gait-evidence": "npm run prepare:live-moonrobo && node export-rabbita-gait-evidence.mjs",
     "check:live-suite-payload": "node check-live-suite-payload.mjs",
     "check:live-moonrobo-suite": "npm run prepare:live-moonrobo && node check-live-moonrobo-suite.mjs",
-    "check:gait": "npm run prepare:live-moonrobo && npm run prepare:e1-asm && node check-rabbita-gait-contract.mjs",
+    "check:gait": "npm run prepare:e1-asm && node check-rabbita-gait-contract.mjs",
+    "check:gait:heavy": "npm run prepare:live-moonrobo && npm run prepare:e1-asm && node check-rabbita-gait-contract.mjs --heavy",
     "preview": "vite preview --host 127.0.0.1 --port 8766"
   },
   "dependencies": {

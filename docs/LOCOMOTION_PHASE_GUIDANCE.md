@@ -318,7 +318,8 @@ Acceptance:
 Status: active in `src/suite_adapter_preview` as a suite-side compiled
 Moonphys review of typed Moonrobo Noetix contact and motor evidence, with the
 Rabbita generated artifact retained as a browser/UI freshness gate. `npm run
-check:gait` verifies both generated paths are fresh. The current generated walk
+check:gait` is the fast viewport/runtime gate; `npm run check:gait:heavy`
+verifies generated freshness and live integration paths. The current generated walk
 now clears the compiled Moonphys motion, hinge, replay, support, capture,
 contact, torque, pressure, velocity, effort, motion-side momentum, and
 motion-side kinetic-energy review gate. The preview now also exposes a typed
@@ -330,17 +331,23 @@ references regenerated from `../moonrobo/src/moonmoon_adapter`, including
 `ui/rabbita-moon/prepare-e1-asm-assets.mjs`, which extracts the local E1
 archive into ignored `.generated` storage and renders a second 3D character
 from all 25 URDF link visuals using Three.js scene-graph groups while keeping
-the boxed walker as the diagnostic body. The viewport renders bounded sampled
-STL geometry for the animated walk, then progressively loads each original full
-STL through Three's `STLLoader` as source-readiness evidence. Full-detail mesh
-inspection should remain a separate mode so the endless walking preview stays
-responsive.
-`npm run check:gait` now runs the Rabbita UI evidence freshness gate, the
-Moonrobo typed-contract freshness gate, the live Moonrobo suite-evidence gate,
-and the compiled Moonphys bridge over Moonrobo-authored contact and motor
-frames. The next work is visual walk-cycle polish, better terrain IK, and using
-live Moonrobo adapter output as the runtime data path instead of generated
-snapshots.
+the boxed walker as the diagnostic body. The viewport renders bounded
+viewport-reduced STL geometry for the animated walk:
+`viewport-voxel-area-silhouette-v1` buckets source triangles in mesh space,
+keeps large-area representatives, and preserves axis-extreme silhouette
+triangles for the small preview. Full STL source evidence is owned by the
+generated asset bridge and `check:gait:heavy`; the live browser viewport only
+reports indexed source-triangle metadata and must not parse full STL geometry
+while walking. Full-detail mesh inspection should remain a separate mode so the
+endless walking preview stays responsive.
+`npm run check:gait` now stays fast for Rabbita viewport contracts, runtime
+authored-sample consumption, gait phases, foot lock, terrain IK, motion
+continuity, and mesh-reduction metadata. `npm run check:gait:heavy` runs the
+Rabbita UI evidence freshness gate, the Moonrobo typed-contract freshness gate,
+the live Moonrobo suite-evidence gate, the live suite payload command, and the
+compiled Moonphys bridge over Moonrobo-authored contact and motor frames. The
+next work is visual walk-cycle polish, better terrain IK, and using live
+Moonrobo adapter output as the runtime data path instead of generated snapshots.
 
 ## Phase 10: Durable Suite Evidence
 
@@ -371,7 +378,7 @@ live runtime bridge generated at
 artifact remains a visual/browser evidence gate.
 `../moonrobo/cmd/moonmoon_suite_evidence` now provides a live typed adapter
 summary with sample counts, contact load counts, motor drive counts, review
-counts, blockers, readiness, and regeneration mode. `npm run check:gait`
+counts, blockers, readiness, and regeneration mode. `npm run check:gait:heavy`
 invokes `ui/rabbita-moon/check-live-moonrobo-suite.mjs`, which runs that command
 and compares the live authority with the live runtime bridge and generated
 Moonmoon suite-preview bridge. The MoonBit suite-preview payload now ingests the
@@ -385,10 +392,10 @@ motor tables. `cmd/suite_preview` is the current native command path for that
 ingestion: it reads live `../moonrobo/cmd/moonmoon_contract` JSON and emits the
 Moonmoon suite-preview payload without using Rabbita-generated evidence.
 `ui/rabbita-moon/check-live-suite-payload.mjs` gates that command path, and
-`npm run check:gait` now requires it alongside the live Moonrobo suite evidence
-gate and compiled Moonphys gate. Plain MoonBit tests now keep only compact
-fixture coverage for live JSON parsing and compiled Moonphys review; full
-Moonrobo integration coverage belongs to the native command gate.
+`npm run check:gait:heavy` now requires it alongside the live Moonrobo suite
+evidence gate and compiled Moonphys gate. Plain MoonBit tests now keep only
+compact fixture coverage for live JSON parsing and compiled Moonphys review;
+full Moonrobo integration coverage belongs to the native command gate.
 
 Acceptance:
 

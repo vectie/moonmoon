@@ -12,6 +12,7 @@ const generatedDir = fileURLToPath(new URL('./.generated/', import.meta.url))
 const assetRoot = path.join(generatedDir, 'e1-asm-assets')
 const targetPath = path.join(generatedDir, 'e1-asm-assembly.js')
 const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 240)
+const reductionAlgorithm = 'viewport-voxel-area-silhouette-v1'
 
 function writeUnavailable(status, detail) {
   mkdirSync(generatedDir, { recursive: true })
@@ -154,7 +155,156 @@ function validateAssembly(links, joints) {
   }
 }
 
-function parseBinaryStlSample(filePath, maxTriangles) {
+function compactPoint(view, offset) {
+  return [
+    Number(view.getFloat32(offset, true).toFixed(5)),
+    Number(view.getFloat32(offset + 4, true).toFixed(5)),
+    Number(view.getFloat32(offset + 8, true).toFixed(5)),
+  ]
+}
+
+function triangleCentroid(points) {
+  return [
+    (points[0][0] + points[1][0] + points[2][0]) / 3,
+    (points[0][1] + points[1][1] + points[2][1]) / 3,
+    (points[0][2] + points[1][2] + points[2][2]) / 3,
+  ]
+}
+
+function triangleArea(points) {
+  const ax = points[1][0] - points[0][0]
+  const ay = points[1][1] - points[0][1]
+  const az = points[1][2] - points[0][2]
+  const bx = points[2][0] - points[0][0]
+  const by = points[2][1] - points[0][1]
+  const bz = points[2][2] - points[0][2]
+  const cx = ay * bz - az * by
+  const cy = az * bx - ax * bz
+  const cz = ax * by - ay * bx
+  return Math.hypot(cx, cy, cz) * 0.5
+}
+
+function emptyBounds() {
+  return {
+    min: [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
+    max: [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
+  }
+}
+
+function addPointToBounds(bounds, point) {
+  for (let axis = 0; axis < 3; axis += 1) {
+    bounds.min[axis] = Math.min(bounds.min[axis], point[axis])
+    bounds.max[axis] = Math.max(bounds.max[axis], point[axis])
+  }
+}
+
+function triangleBounds(triangles) {
+  const bounds = emptyBounds()
+  for (const triangle of triangles) {
+    for (const point of triangle.points) {
+      addPointToBounds(bounds, point)
+    }
+  }
+  return {
+    min: bounds.min.map(value => Number(value.toFixed(5))),
+    max: bounds.max.map(value => Number(value.toFixed(5))),
+  }
+}
+
+function chooseVoxelBins(bounds, targetTriangles) {
+  const span = bounds.max.map((max, axis) => Math.max(0.000001, max - bounds.min[axis]))
+  const volume = span[0] * span[1] * span[2]
+  const cell = Math.cbrt(volume / Math.max(1, targetTriangles * 0.86))
+  return span.map(axisSpan => Math.max(1, Math.ceil(axisSpan / cell)))
+}
+
+function voxelKey(centroid, bounds, bins) {
+  return centroid.map((value, axis) => {
+    const span = Math.max(0.000001, bounds.max[axis] - bounds.min[axis])
+    const bucket = Math.floor(((value - bounds.min[axis]) / span) * bins[axis])
+    return Math.max(0, Math.min(bins[axis] - 1, bucket))
+  }).join(':')
+}
+
+function selectSilhouetteTriangles(triangles) {
+  const selected = new Map()
+  for (let axis = 0; axis < 3; axis += 1) {
+    let min = null
+    let max = null
+    for (const triangle of triangles) {
+      const value = triangle.centroid[axis]
+      if (!min || value < min.centroid[axis] ||
+        (value === min.centroid[axis] && triangle.area > min.area)) {
+        min = triangle
+      }
+      if (!max || value > max.centroid[axis] ||
+        (value === max.centroid[axis] && triangle.area > max.area)) {
+        max = triangle
+      }
+    }
+    if (min) selected.set(min.index, min)
+    if (max) selected.set(max.index, max)
+  }
+  return selected
+}
+
+function reduceTrianglesForViewport(triangles, targetTriangles) {
+  if (triangles.length <= targetTriangles) {
+    return {
+      triangles,
+      bounds: triangleBounds(triangles),
+      reduced_bounds: triangleBounds(triangles),
+      voxel_bins: [1, 1, 1],
+    }
+  }
+
+  const bounds = triangleBounds(triangles)
+  const bins = chooseVoxelBins(bounds, targetTriangles)
+  const selected = selectSilhouetteTriangles(triangles)
+  const buckets = new Map()
+  for (const triangle of triangles) {
+    const key = voxelKey(triangle.centroid, bounds, bins)
+    const current = buckets.get(key)
+    if (!current || triangle.area > current.area) {
+      buckets.set(key, triangle)
+    }
+  }
+  for (const triangle of buckets.values()) {
+    selected.set(triangle.index, triangle)
+  }
+
+  const maxCount = targetTriangles + 6
+  if (selected.size > maxCount) {
+    const keep = selectSilhouetteTriangles([...selected.values()])
+    const ranked = [...selected.values()].sort((a, b) => b.area - a.area)
+    for (const triangle of ranked) {
+      if (keep.size >= maxCount) break
+      keep.set(triangle.index, triangle)
+    }
+    selected.clear()
+    for (const [index, triangle] of keep) {
+      selected.set(index, triangle)
+    }
+  }
+
+  if (selected.size < targetTriangles) {
+    const ranked = [...triangles].sort((a, b) => b.area - a.area)
+    for (const triangle of ranked) {
+      if (selected.size >= targetTriangles) break
+      selected.set(triangle.index, triangle)
+    }
+  }
+
+  const reduced = [...selected.values()].sort((a, b) => a.index - b.index)
+  return {
+    triangles: reduced,
+    bounds,
+    reduced_bounds: triangleBounds(reduced),
+    voxel_bins: bins,
+  }
+}
+
+function parseBinaryStlReduced(filePath, maxTriangles) {
   const buffer = readFileSync(filePath)
   if (buffer.byteLength < 84) {
     throw new Error(`STL file is too small: ${filePath}`)
@@ -165,25 +315,34 @@ function parseBinaryStlSample(filePath, maxTriangles) {
   if (expectedBytes > buffer.byteLength) {
     throw new Error(`STL file is truncated: ${filePath}`)
   }
-  const stride = Math.max(1, Math.ceil(sourceTriangleCount / maxTriangles))
-  const triangles = []
-  for (let tri = 0; tri < sourceTriangleCount; tri += stride) {
+  const sourceTriangles = []
+  for (let tri = 0; tri < sourceTriangleCount; tri += 1) {
     const base = 84 + tri * 50
     const points = []
     for (let point = 0; point < 3; point += 1) {
       const offset = base + 12 + point * 12
-      points.push([
-        Number(view.getFloat32(offset, true).toFixed(5)),
-        Number(view.getFloat32(offset + 4, true).toFixed(5)),
-        Number(view.getFloat32(offset + 8, true).toFixed(5)),
-      ])
+      points.push(compactPoint(view, offset))
     }
-    triangles.push(points)
+    const area = triangleArea(points)
+    if (area > 0 && points.every(point => point.every(Number.isFinite))) {
+      sourceTriangles.push({
+        index: tri,
+        points,
+        area,
+        centroid: triangleCentroid(points),
+      })
+    }
   }
+  const reduced = reduceTrianglesForViewport(sourceTriangles, maxTriangles)
+  const triangles = reduced.triangles.map(triangle => triangle.points)
   return {
     source_triangle_count: sourceTriangleCount,
     triangle_count: triangles.length,
-    decimation_stride: stride,
+    reduction_algorithm: reductionAlgorithm,
+    reduction_target_triangles: maxTriangles,
+    reduction_voxel_bins: reduced.voxel_bins,
+    source_bounds_m: reduced.bounds,
+    reduced_bounds_m: reduced.reduced_bounds,
     sampled_triangles: triangles,
   }
 }
@@ -213,11 +372,15 @@ const visuals = links
   .map(link => {
     const meshPath = path.join(assetRoot, packageRoot, 'meshes', link.visual.mesh_name)
     const meshSample = existsSync(meshPath)
-      ? parseBinaryStlSample(meshPath, targetTrianglesPerMesh)
+      ? parseBinaryStlReduced(meshPath, targetTrianglesPerMesh)
       : {
         source_triangle_count: 0,
         triangle_count: 0,
-        decimation_stride: 0,
+        reduction_algorithm: reductionAlgorithm,
+        reduction_target_triangles: targetTrianglesPerMesh,
+        reduction_voxel_bins: [0, 0, 0],
+        source_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
+        reduced_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
         sampled_triangles: [],
       }
     return {
@@ -245,6 +408,7 @@ const assembly = {
   joint_count: joints.length,
   mesh_count: visuals.length,
   target_triangles_per_mesh: targetTrianglesPerMesh,
+  reduction_algorithm: reductionAlgorithm,
   links,
   joints,
   visuals,

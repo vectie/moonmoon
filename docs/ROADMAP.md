@@ -54,8 +54,12 @@
   coverage, and the live command gate owns full Moonrobo integration coverage.
   Rabbita now generates an ignored local E1 assembly asset bridge from the
   downloaded package and renders a second Three.js 3D character from all 25 URDF
-  STL link visuals, with bounded sampled geometry for realtime walking and
-  progressive full-STL source loading for readiness evidence. The next
+  STL link visuals, with bounded `viewport-voxel-area-silhouette-v1` reduced
+  geometry for realtime walking. Full-STL source readiness is validated by the
+  generated bridge and contract checks, not by browser-side parsing during the
+  animation loop. `npm run check:gait` is now the fast viewport/runtime gate;
+  `npm run check:gait:heavy` runs the full Moonrobo/Moonphys integration chain.
+  The next
   implementation targets are visual gait polish, terrain IK completion, and
   durable evidence consumers.
 

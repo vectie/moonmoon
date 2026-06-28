@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
 import {
   FOOT_PHASE_SEQUENCE,
   NOETIX_URDF_LIMIT_SOURCE,
@@ -24,9 +23,8 @@ const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
-const E1_STL_LOADER = new STLLoader()
-const E1_FULL_STL_CACHE = new Map()
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
+const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -504,68 +502,6 @@ function e1ThreeGeometry(visual) {
   return geometry
 }
 
-function finiteTriangleAttribute(attribute, itemSize) {
-  if (!attribute?.array) return null
-  const source = attribute.array
-  const clean = []
-  const stride = itemSize * 3
-  let removed = 0
-  for (let index = 0; index + stride - 1 < source.length; index += stride) {
-    let valid = true
-    for (let offset = 0; offset < stride; offset += 1) {
-      if (!Number.isFinite(source[index + offset])) {
-        valid = false
-        break
-      }
-    }
-    if (valid) {
-      for (let offset = 0; offset < stride; offset += 1) {
-        clean.push(source[index + offset])
-      }
-    } else {
-      removed += 1
-    }
-  }
-  return { array: new Float32Array(clean), removed }
-}
-
-function sanitizeStlGeometry(geometry) {
-  const position = finiteTriangleAttribute(geometry.getAttribute('position'), 3)
-  if (!position || position.array.length === 0) {
-    geometry.dispose()
-    throw new Error('STL contains no finite triangles')
-  }
-  const normal = finiteTriangleAttribute(geometry.getAttribute('normal'), 3)
-  const clean = new THREE.BufferGeometry()
-  clean.setAttribute('position', new THREE.Float32BufferAttribute(position.array, 3))
-  if (normal && normal.array.length === position.array.length) {
-    clean.setAttribute('normal', new THREE.Float32BufferAttribute(normal.array, 3))
-  } else {
-    clean.computeVertexNormals()
-  }
-  clean.computeBoundingBox()
-  clean.computeBoundingSphere()
-  geometry.dispose()
-  clean.userData.removedTriangles = position.removed
-  return clean
-}
-
-async function loadFullE1StlGeometry(visual) {
-  if (E1_FULL_STL_CACHE.has(visual.link_id)) {
-    return await E1_FULL_STL_CACHE.get(visual.link_id)
-  }
-  const pending = fetch(visual.asset_url, { cache: 'no-store' })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`STL fetch failed ${response.status}: ${visual.mesh_name}`)
-      }
-      return response.arrayBuffer()
-    })
-    .then(buffer => sanitizeStlGeometry(E1_STL_LOADER.parse(buffer)))
-  E1_FULL_STL_CACHE.set(visual.link_id, pending)
-  return await pending
-}
-
 function e1ThreeMaterial(visual) {
   const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
   return new THREE.MeshStandardMaterial({
@@ -583,6 +519,7 @@ function createE1ThreeVisuals() {
   for (const visual of E1_ASM_ASSEMBLY.visuals) {
     const mesh = new THREE.Mesh(e1ThreeGeometry(visual), e1ThreeMaterial(visual))
     mesh.userData.detailMode = 'sampled-stl'
+    mesh.userData.reductionAlgorithm = visual.reduction_algorithm
     const linkGroup = new THREE.Group()
     linkGroup.matrixAutoUpdate = false
     linkGroup.add(mesh)
@@ -593,36 +530,19 @@ function createE1ThreeVisuals() {
   return { group, visuals }
 }
 
-async function cacheFullE1StlAssets(visuals, canvas) {
+function reportE1SourceReadiness(visuals, canvas) {
   if (!E1_ASM_ASSEMBLY.ready) return
-  let loaded = 0
-  let failed = 0
-  let removedTriangles = 0
   let sourceTriangles = 0
-  canvas.dataset.e1FullStlStatus = 'loading'
-  canvas.dataset.e1FullStlLoaded = '0'
-  canvas.dataset.e1FullStlTotal = String(visuals.size)
-  canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
   for (const entry of visuals.values()) {
-    try {
-      const geometry = await loadFullE1StlGeometry(entry.visual)
-      entry.fullGeometryReady = true
-      entry.fullTriangleCount = geometry.getAttribute('position').count / 3
-      loaded += 1
-      sourceTriangles += entry.fullTriangleCount
-      removedTriangles += geometry.userData.removedTriangles || 0
-    } catch (error) {
-      failed += 1
-      canvas.dataset.e1FullStlError = error instanceof Error ? error.message : String(error)
-    }
-    canvas.dataset.e1FullStlLoaded = String(loaded)
-    canvas.dataset.e1FullStlFailed = String(failed)
-    canvas.dataset.e1FullStlRepairedTriangles = String(removedTriangles)
-    canvas.dataset.e1FullStlSourceTriangles = String(sourceTriangles)
-    await new Promise(resolve => requestAnimationFrame(resolve))
+    sourceTriangles += entry.visual.source_triangle_count || 0
   }
-  canvas.dataset.e1FullStlStatus = failed === 0 ? 'full-stl-ready' : 'full-stl-partial'
+  canvas.dataset.e1FullStlStatus = 'full-stl-source-indexed'
+  canvas.dataset.e1FullStlLoaded = '0'
+  canvas.dataset.e1FullStlFailed = '0'
+  canvas.dataset.e1FullStlTotal = String(visuals.size)
+  canvas.dataset.e1FullStlSourceTriangles = String(sourceTriangles)
   canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
+  canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
 }
 
 function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
@@ -1234,8 +1154,11 @@ function bodyCenterOfMassReference(time, options) {
   }
 }
 
-function gaitQuality(time, diagnostics) {
+function gaitQuality(time, diagnostics, options = {}) {
   const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
+  const footLockSamples = options.footLockSamples ?? 48
+  const cycleSamples = options.cycleSamples ?? 96
+  const swingSamples = options.swingSamples ?? 96
   const now = walkClipSample(time)
   const repeated = walkClipSample(time + cycleSeconds)
   const expectedStride = NOETIX_VISUAL_RIG.rootSpeedMps * cycleSeconds
@@ -1247,12 +1170,12 @@ function gaitQuality(time, diagnostics) {
   const maxLockedTargetFkDelta = lockedDeltas.length > 0 ? Math.max(...lockedDeltas) : 0
   const supportFoot = diagnostics.feet.find(foot => foot.name === diagnostics.supportFoot)
   const cycle = cycleJointQuality(time, cycleSeconds)
-  const footLockDrift = cycleFootLockWorldDrift(time, cycleSeconds)
-  const footWorldMotionContinuity = cycleFootWorldMotionContinuity(time, cycleSeconds)
-  const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds)
-  const flatTerrainPreservation = cycleFlatTerrainPreservation(time, cycleSeconds)
+  const footLockDrift = cycleFootLockWorldDrift(time, cycleSeconds, footLockSamples)
+  const footWorldMotionContinuity = cycleFootWorldMotionContinuity(time, cycleSeconds, cycleSamples)
+  const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds, cycleSamples)
+  const flatTerrainPreservation = cycleFlatTerrainPreservation(time, cycleSeconds, cycleSamples)
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
-  const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
+  const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds, swingSamples)
   const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
   const e1AssemblyVisualAttachments = e1AssemblyVisualAttachmentReport(diagnostics.e1AssemblyVisualLinks)
   const supportSoleAlignment = diagnostics.ik.supportSoleAlignment
@@ -1384,12 +1307,12 @@ function linkAttachmentReport(visualLinks, expectedCount) {
   }
 }
 
-function cycleSwingFootClearance(time, cycleSeconds) {
+function cycleSwingFootClearance(time, cycleSeconds, steps = 96) {
   let minClearanceM = Infinity
   let minFrame = null
   let sampleCount = 0
-  for (let i = 0; i <= 96; i += 1) {
-    const sampleTime = time + (i / 96) * cycleSeconds
+  for (let i = 0; i <= steps; i += 1) {
+    const sampleTime = time + (i / steps) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
     for (const foot of diagnostics.feet) {
       const channel = diagnostics.footChannels[foot.name]
@@ -1415,7 +1338,7 @@ function cycleSwingFootClearance(time, cycleSeconds) {
   return { minClearanceM, minFrame, sampleCount }
 }
 
-function cycleFootLockWorldDrift(time, cycleSeconds) {
+function cycleFootLockWorldDrift(time, cycleSeconds, steps = 48) {
   const previous = {}
   const perFoot = {
     left: { maxStepM: 0, sampleCount: 0 },
@@ -1423,8 +1346,8 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
   }
   let maxStepM = 0
   let maxFrame = null
-  for (let i = 0; i <= 48; i += 1) {
-    const sampleTime = time + (i / 48) * cycleSeconds
+  for (let i = 0; i <= steps; i += 1) {
+    const sampleTime = time + (i / steps) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
     for (const foot of diagnostics.feet) {
       if (!foot.locked) {
@@ -1465,7 +1388,7 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
   }
 }
 
-function cycleFootWorldMotionContinuity(time, cycleSeconds) {
+function cycleFootWorldMotionContinuity(time, cycleSeconds, steps = 96) {
   const previous = {}
   const perFoot = {
     left: { maxStepM: 0, sampleCount: 0 },
@@ -1473,8 +1396,8 @@ function cycleFootWorldMotionContinuity(time, cycleSeconds) {
   }
   let maxStepM = 0
   let maxFrame = null
-  for (let i = 0; i <= 96; i += 1) {
-    const sampleTime = time + (i / 96) * cycleSeconds
+  for (let i = 0; i <= steps; i += 1) {
+    const sampleTime = time + (i / steps) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
     for (const foot of diagnostics.feet) {
       const world = {
@@ -1511,12 +1434,12 @@ function cycleFootWorldMotionContinuity(time, cycleSeconds) {
   }
 }
 
-function cycleRootCorrectionContinuity(time, cycleSeconds) {
+function cycleRootCorrectionContinuity(time, cycleSeconds, steps = 96) {
   let previous = null
   let maxStepM = 0
   let maxFrame = null
-  for (let i = 0; i <= 96; i += 1) {
-    const sampleTime = time + (i / 96) * cycleSeconds
+  for (let i = 0; i <= steps; i += 1) {
+    const sampleTime = time + (i / steps) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
     const correction = {
       x: diagnostics.footLock.visibleX ?? diagnostics.footLock.x,
@@ -1543,10 +1466,10 @@ function cycleRootCorrectionContinuity(time, cycleSeconds) {
       supportFoot: diagnostics.supportFoot,
     }
   }
-  return { maxStepM, maxFrame, sampleCount: 97 }
+  return { maxStepM, maxFrame, sampleCount: steps + 1 }
 }
 
-function cycleFlatTerrainPreservation(time, cycleSeconds) {
+function cycleFlatTerrainPreservation(time, cycleSeconds, steps = 96) {
   const previous = {}
   let maxTerrainHeightRangeM = 0
   let maxContactPatchRangeM = 0
@@ -1554,8 +1477,8 @@ function cycleFlatTerrainPreservation(time, cycleSeconds) {
   let maxSupportClearanceErrorM = 0
   let maxFootWorldStepM = 0
   let maxFrame = null
-  for (let i = 0; i <= 96; i += 1) {
-    const sampleTime = time + (i / 96) * cycleSeconds
+  for (let i = 0; i <= steps; i += 1) {
+    const sampleTime = time + (i / steps) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, {
       quality: false,
       terrainReliefScale: 0,
@@ -1604,7 +1527,7 @@ function cycleFlatTerrainPreservation(time, cycleSeconds) {
     maxSupportClearanceErrorM,
     maxFootWorldStepM,
     maxFrame,
-    sampleCount: 97,
+    sampleCount: steps + 1,
   }
 }
 
@@ -2410,13 +2333,7 @@ function initRobot(canvas) {
   scene.add(debugMesh)
   const e1Visuals = createE1ThreeVisuals()
   scene.add(e1Visuals.group)
-  cacheFullE1StlAssets(e1Visuals.visuals, canvas)
-  const moonphysReviewTrace = moonphysReviewTraceEvidence()
-  const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
-  const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidenceFromTraces(
-    moonphysReviewTrace,
-    moonphysHingeMotorTrace,
-  )
+  reportE1SourceReadiness(e1Visuals.visuals, canvas)
   let cachedQuality = null
   let lastQualityRefreshMs = -Infinity
   let lastDiagnosticDatasetMs = -Infinity
@@ -2433,7 +2350,11 @@ function initRobot(canvas) {
     const time = now * 0.001
     const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
     if (!cachedQuality || now - lastQualityRefreshMs >= ROBOT_QUALITY_REFRESH_MS) {
-      cachedQuality = gaitQuality(time, geometry.diagnostics)
+      cachedQuality = gaitQuality(time, geometry.diagnostics, {
+        footLockSamples: 8,
+        cycleSamples: 12,
+        swingSamples: 12,
+      })
       lastQualityRefreshMs = now
       canvas.dataset.gaitQualityRefreshCount = String(
         Number(canvas.dataset.gaitQualityRefreshCount || 0) + 1,
@@ -2458,6 +2379,7 @@ function initRobot(canvas) {
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
     canvas.dataset.e1MeshDetailMode = E1_RENDER_DETAIL_MODE
+    canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.motionStatus = 'endless-rigid-fk-gait'
     canvas.dataset.robotSource = NOETIX_VISUAL_RIG.source
     canvas.dataset.robotId = NOETIX_VISUAL_RIG.robotId
@@ -2544,10 +2466,10 @@ function initRobot(canvas) {
         normal: sample.normal,
       })),
     })
-    canvas.dataset.moonphysReviewFrame = JSON.stringify(moonphysReviewFrameEvidence(geometry.diagnostics))
-    canvas.dataset.moonphysReviewTrace = JSON.stringify(moonphysReviewTrace)
-    canvas.dataset.moonphysHingeMotorTrace = JSON.stringify(moonphysHingeMotorTrace)
-    canvas.dataset.moonphysMotionHingeReview = JSON.stringify(moonphysMotionHingeReview)
+    canvas.dataset.moonphysReviewFrame = 'deferred-diagnostic-api'
+    canvas.dataset.moonphysReviewTrace = 'deferred-diagnostic-api'
+    canvas.dataset.moonphysHingeMotorTrace = 'deferred-diagnostic-api'
+    canvas.dataset.moonphysMotionHingeReview = 'deferred-diagnostic-api'
     canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
@@ -2683,13 +2605,14 @@ function initRobot(canvas) {
     })
     canvas.dataset.visualAttachmentStatus = geometry.diagnostics.quality.statuses.visualLinkAttachments
     canvas.dataset.visualMeshAssetStatus = NOETIX_VISUAL_RIG.meshAssetStatus
-    canvas.dataset.visualMeshAssets = JSON.stringify(NOETIX_VISUAL_RIG.visualMeshAssets.map(asset => ({
-      linkId: asset.link_id,
-      path: asset.local_path,
-      source: asset.source,
-      status: asset.status,
-      bytes: asset.byte_length,
-    })))
+    canvas.dataset.visualMeshAssets = JSON.stringify({
+      count: NOETIX_VISUAL_RIG.visualMeshAssets.length,
+      status: NOETIX_VISUAL_RIG.meshAssetStatus,
+      totalBytes: NOETIX_VISUAL_RIG.visualMeshAssets.reduce(
+        (sum, asset) => sum + (asset.byte_length || 0),
+        0,
+      ),
+    })
     canvas.dataset.visualLinkAttachments = JSON.stringify({
       expectedCount: geometry.diagnostics.quality.visualLinkAttachments.expectedCount,
       attachedCount: geometry.diagnostics.quality.visualLinkAttachments.attachedCount,
@@ -2704,11 +2627,25 @@ function initRobot(canvas) {
       expectedCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.expectedCount,
       attachedCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.attachedCount,
       missingCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.missingCount,
-      duplicateIds: geometry.diagnostics.quality.e1AssemblyVisualAttachments.duplicateIds,
-      links: geometry.diagnostics.quality.e1AssemblyVisualAttachments.links,
+      duplicateCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.duplicateIds.length,
+      renderTriangleCount: E1_ASM_ASSEMBLY.visuals.reduce(
+        (sum, visual) => sum + (visual.triangle_count || 0),
+        0,
+      ),
+      sourceTriangleCount: E1_ASM_ASSEMBLY.visuals.reduce(
+        (sum, visual) => sum + (visual.source_triangle_count || 0),
+        0,
+      ),
     })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
-    canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
+    canvas.dataset.gaitQualityReport = JSON.stringify({
+      status: geometry.diagnostics.quality.status,
+      statuses: geometry.diagnostics.quality.statuses,
+      maxTargetFkDelta: Number(geometry.diagnostics.quality.maxTargetFkDelta.toFixed(4)),
+      supportClearanceError: Number(geometry.diagnostics.quality.supportClearanceError.toFixed(4)),
+      toeRoll: Number(geometry.diagnostics.quality.toeRoll.toFixed(4)),
+      torsoCounterRotation: Number(geometry.diagnostics.quality.torsoCounterRotation.toFixed(4)),
+    })
     }
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)

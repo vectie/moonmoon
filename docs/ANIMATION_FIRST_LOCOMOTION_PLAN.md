@@ -368,7 +368,7 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    now consumes a generated MoonBit evidence artifact emitted from
    `ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics`, then runs that live
    Rabbita/Moonrobo Noetix payload through compiled Moonphys using
-   `motion_hinge_replay_review_with_replay`. `npm run check:gait` now verifies
+   `motion_hinge_replay_review_with_replay`. `npm run check:gait:heavy` verifies
    the generated artifact is fresh before invoking the compiled gate. The
    Rabbita preview now emits an explicit load-bearing support channel, wider
    rendered-sole support patches, and a small support-phase mass-transfer COM
@@ -420,9 +420,12 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `gait-clip.js` and `scene3d.js`. The compiled Moonphys bridge now consumes
    Moonrobo-authored contact frames and Moonrobo-authored motor frames directly;
    Rabbita-generated evidence remains a browser/UI freshness gate. `npm run
-   check:gait` verifies the contract bridge freshness, runtime authored-sample
-   consumption, Moonrobo-authored contact and hinge motor trace consumption,
-   live Moonrobo typed adapter evidence, and Rabbita UI evidence freshness. The
+   check:gait` is the fast viewport/runtime gate for authored-sample
+   consumption, mesh-reduction metadata, gait phases, foot lock, terrain IK,
+   and motion continuity. `npm run check:gait:heavy` adds contract bridge
+   freshness, Moonrobo-authored contact and hinge motor trace consumption, live
+   Moonrobo typed adapter evidence, Rabbita UI evidence freshness, the live
+   suite payload command, and the compiled Moonphys review. The
    first live regeneration gate is `../moonrobo/cmd/moonmoon_suite_evidence`,
    checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`.
    `ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` now writes the live runtime
@@ -443,10 +446,15 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `~/Downloads/e1_asm_251028.tar.gz`, extracts the ignored 25 STL mesh assets
    under `ui/rabbita-moon/.generated`, and renders a second 3D character with
    Three.js by applying URDF forward kinematics to one scene-graph group per
-   link visual. The browser renders bounded sampled STL geometry for realtime
-   walking while progressively loading the original full STL assets through
-   Three's `STLLoader` as source-readiness evidence. Full-detail inspection can
-   be added as a separate mode; the endless walking viewport must stay smooth.
+   link visual. The browser renders bounded viewport-reduced STL geometry for
+   realtime walking: `prepare-e1-asm-assets.mjs` uses
+   `viewport-voxel-area-silhouette-v1`, a deterministic mesh-space voxel
+   clustering pass that keeps the largest-area triangle per visible-detail
+   bucket and preserves axis-extreme silhouette triangles. The full STL source
+   evidence is owned by the generated asset bridge and `check:gait:heavy`; the
+   live browser viewport only reports indexed source-triangle metadata and must
+   not parse full STL geometry while walking. Full-detail inspection can be added as
+   a separate mode; the endless walking viewport must stay smooth.
    The boxed walker remains the gait diagnostic body; the duplicate mesh body is
    the Noetix E1 visual authority. The next target returns to motion quality:
    richer animation layers, terrain IK completion, and durable evidence
