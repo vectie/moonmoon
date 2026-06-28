@@ -645,6 +645,7 @@ pub fn noetix_walk_stability_report(
 ) -> NoetixWalkStabilityReport {
   let frames : Array[NoetixWalkStabilityFrame] = []
   let mut stable_count = 0
+  let mut review_count = 0
   let mut traction_review_count = 0
   let mut worst_margin = 0.0
   let mut worst_traction_margin = 0.0
@@ -667,15 +668,17 @@ pub fn noetix_walk_stability_report(
         has_loaded_traction = true
       }
     }
-    if stability_frame.status == "static-margin-ok" {
+    if stability_frame.support_assessment.stable {
       stable_count += 1
+    }
+    if stability_frame.status != "static-margin-ok" {
+      review_count += 1
     }
     if stability_frame.traction_status == "traction-review" {
       traction_review_count += 1
     }
     frames.push(stability_frame)
   }
-  let review_count = frames.length() - stable_count
   {
     report_id: "moonrobo/noetix-e1/static-support/\{trace.terrain_tile_id}",
     trace_id: trace.trace_id,

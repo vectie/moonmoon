@@ -647,7 +647,7 @@
     "note": "URDF joint limits and visual geometry are represented as Moonphys review data. Mass, center of mass, servo gains, inertia, foot sole geometry, friction, and collision tags remain explicit simulation assumptions until Moonrobo provides inertial/collision metadata."
   },
   "frame_count": 32,
-  "stable_frame_count": 0,
+  "stable_frame_count": 32,
   "review_frame_count": 32,
   "traction_review_frame_count": 0,
   "worst_planar_margin_m": 0.004999999999999998,

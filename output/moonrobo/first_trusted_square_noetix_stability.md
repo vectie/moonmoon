@@ -7,7 +7,7 @@
 - actuator profiles: 24 URDF joint limits
 - collision profiles: 8 review shapes
 - frames: 32
-- stable frames: 0
+- stable frames: 32
 - review frames: 32
 - traction-review frames: 0
 - worst planar margin: 0.004999999999999998 m

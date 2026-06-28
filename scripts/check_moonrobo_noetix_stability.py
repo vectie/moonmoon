@@ -112,8 +112,10 @@ def main() -> None:
         fail("expected review frames")
     if report.get("traction_review_frame_count", -1) != 0:
         fail("expected traction to remain within assumed friction margin")
-    if report.get("stable_frame_count", -1) + report.get("review_frame_count", -1) != len(frames):
-        fail("stable/review counts do not sum to frame count")
+    if report.get("stable_frame_count") != len(frames):
+        fail("expected every frame to remain inside the support polygon")
+    if report.get("review_frame_count") != len(frames):
+        fail("review count should continue tracking terrain/contact/model review frames")
     if report.get("worst_planar_margin_m", -1) < 0:
         fail("support-aware gait should clear negative static support margin")
     if report.get("worst_traction_margin_n", -1) < 0:

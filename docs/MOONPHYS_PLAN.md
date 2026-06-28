@@ -114,7 +114,10 @@ evidence.
   contact-patch sampling plus patch-load pressure review; Moonrobo Noetix
   static-support evidence records terrain-aligned per-foot sole patch samples,
   clearance ranges, averaged terrain normals, and sample-level pressure from
-  assumed foot geometry.
+  assumed foot geometry. The Noetix static-support report now separates
+  support-polygon stability from review-only terrain/contact/model status:
+  all current gait frames are support-stable while the artifact still remains
+  review-only.
 - MoonClaw exports a Noetix simulation review task that ties endless-gait
   evidence, the walk trace, high-control dry-run command plan, URDF-reference
   link poses, static support report, dynamic-stability report, joint-control
