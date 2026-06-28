@@ -345,5 +345,13 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    rendered-sole support patches, and a small support-phase mass-transfer COM
    channel; the generated evidence now clears compiled Moonphys motion, hinge,
    replay, support, capture, contact, torque, pressure, velocity, and effort
-   review for the sampled endless walk. The next Phase D/E target is visual
-   polish of the same walk cycle, not another fixture mirror.
+   review for the sampled endless walk. Phase D visual polish is now being
+   implemented in the Rabbita 3D preview itself: the endless walk clip has a
+   toe-off/contact foot-roll channel rendered through separate toe/heel blocks,
+   lagged arm counter-swing with visible hands, and torso/waist
+   counter-rotation above the pelvis while the legs remain rigid FK from the
+   Moonrobo Noetix proportions. The browser contract exposes `toeRollStatus`,
+   `toeRollRad`, `torsoCounterRotationStatus`, and
+   `torsoCounterRotationRad`, so this slice is measured as live motion, not as
+   a separate fixture mirror. The next Phase D/E target is still visual
+   readability of the same walk cycle before adding another fixture mirror.

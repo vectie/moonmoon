@@ -399,6 +399,8 @@ const NOETIX_VISUAL_RIG = {
   lockedTargetFkMaxM: 0.010,
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
+  toeRollMinRad: 0.22,
+  torsoCounterRotationMinRad: 0.10,
   supportTargetClearanceM: 0.006,
   jointClearanceToleranceM: 0.0025,
   pelvisCorrectionMaxM: 0.18,
@@ -521,6 +523,26 @@ function supportMassTransferX(clip) {
   return clip.supportFoot === 'left' ? -0.04 : -0.17
 }
 
+function torsoCounterRotation(phase) {
+  return -0.16 * Math.sin(phase * Math.PI * 2)
+}
+
+function footRollPitch(footPhase) {
+  if (footPhase < 0.08) {
+    return mix(-0.20, 0.0, smoothstep(footPhase / 0.08))
+  }
+  if (footPhase >= 0.42 && footPhase < 0.64) {
+    return 0.34 * smoothstep((footPhase - 0.42) / 0.22)
+  }
+  if (footPhase >= 0.64 && footPhase < 0.78) {
+    return mix(0.34, 0.10, smoothstep((footPhase - 0.64) / 0.14))
+  }
+  if (footPhase >= 0.78) {
+    return mix(-0.18, 0.0, smoothstep((footPhase - 0.78) / 0.14))
+  }
+  return 0.0
+}
+
 function walkClipSample(time) {
   const phase = cycle01(time * NOETIX_VISUAL_RIG.cycleHz)
   const leftStance = phase < 0.5
@@ -537,18 +559,21 @@ function walkClipSample(time) {
     strideM: 0.38,
     bob: Math.cos(phase * Math.PI * 4) * 0.016,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
+    torsoCounterRotation: torsoCounterRotation(phase),
     footChannels: {
       left: {
         phase: leftPhase,
         role: footRole(leftPhase),
         locked: footLock(leftPhase),
         supporting: footSupport(leftPhase),
+        rollPitch: footRollPitch(leftPhase),
       },
       right: {
         phase: rightPhase,
         role: footRole(rightPhase),
         locked: footLock(rightPhase),
         supporting: footSupport(rightPhase),
+        rollPitch: footRollPitch(rightPhase),
       },
     },
   }
@@ -581,10 +606,12 @@ function legAngles(legPhase) {
 }
 
 function armAngles(legPhase) {
-  const a = legAngles(cycle01(legPhase + 0.5))
+  const laggedOppositePhase = cycle01(legPhase + 0.44)
+  const a = legAngles(laggedOppositePhase)
+  const lagWave = Math.sin(laggedOppositePhase * Math.PI * 2)
   return {
-    shoulder: -a.hip * 0.72,
-    elbow: 0.18 + Math.max(0, -a.hip) * 0.24,
+    shoulder: -a.hip * 0.76 + lagWave * 0.035,
+    elbow: 0.18 + Math.max(0, -a.hip) * 0.24 + Math.max(0, lagWave) * 0.045,
   }
 }
 
@@ -658,6 +685,12 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
   addCube(vertices, colors, hip, [0, -upperLen * 0.5, 0], [0.065, upperLen, 0.075], sideColor)
   addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
   addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
+  let toe = mat4Translate(ankle, 0, -0.035, 0.172)
+  toe = mat4RotateX(toe, foot.rollPitch)
+  addCube(vertices, colors, toe, [0, -0.002, 0.042], [0.105, 0.030, 0.095], [0.62, 0.64, 0.54])
+  let heel = mat4Translate(ankle, 0, -0.037, -0.026)
+  heel = mat4RotateX(heel, Math.min(0, foot.rollPitch) * 0.45)
+  addCube(vertices, colors, heel, [0, 0, 0], [0.100, 0.030, 0.060], [0.44, 0.49, 0.46])
   const authoredTarget = authoredTargets[name]
   const correctedTarget = footTargetForPose(sole, foot, clip)
   addCube(vertices, colors, mat4Identity(), authoredTarget, [0.030, 0.016, 0.030], [0.18, 0.38, 0.76])
@@ -671,6 +704,7 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
     role: foot.role,
     locked: foot.locked,
     supporting: foot.supporting,
+    rollPitch: foot.rollPitch,
     authoredTarget: pointRecord(authoredTarget),
     correctedTarget: pointRecord(correctedTarget),
     fkEndpoint: pointRecord(sole),
@@ -695,6 +729,7 @@ function addArm(vertices, colors, root, side, joints) {
   let elbow = mat4Translate(shoulder, 0, -upperLen, 0)
   elbow = mat4RotateX(elbow, angles.elbow)
   addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
+  addCube(vertices, colors, elbow, [0, -lowerLen - 0.030, 0.040], [0.050, 0.060, 0.055], [0.40, 0.54, 0.58])
 }
 
 function robotGeometry(time) {
@@ -720,12 +755,14 @@ function robotGeometry(time) {
   ]))
   diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: NOETIX_VISUAL_RIG.rootSpeedMps }
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
-  addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
-  addCube(vertices, colors, mat4Translate(root, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
-  addCube(vertices, colors, mat4Translate(root, 0, 0.52, 0.005), [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
+  let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
+  torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
+  addCube(vertices, colors, torsoRoot, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
+  addCube(vertices, colors, mat4Translate(torsoRoot, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
+  addCube(vertices, colors, mat4Translate(torsoRoot, 0, 0.52, 0.005), [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
   for (const side of [-1, 1]) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
-    addArm(vertices, colors, root, side, joints)
+    addArm(vertices, colors, torsoRoot, side, joints)
   }
   addGround(vertices, colors, clip)
   const gait = { ...diagnostics, ...clip }
@@ -763,6 +800,8 @@ function gaitQuality(time, diagnostics) {
     jointIkCorrection: Math.abs(diagnostics.ik.jointIk.finalErrorM) <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
+    toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
+    torsoCounterRotation: cycle.torsoCounterRotation >= NOETIX_VISUAL_RIG.torsoCounterRotationMinRad ? 'pass' : 'fail',
     linkLengthInvariant: 'pass',
   }
   const status = Object.values(statuses).every(value => value === 'pass') ? 'pass' : 'fail'
@@ -781,6 +820,8 @@ function gaitQuality(time, diagnostics) {
     ik: diagnostics.ik,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
+    toeRoll: cycle.toeRoll,
+    torsoCounterRotation: cycle.torsoCounterRotation,
     authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
   }
@@ -789,6 +830,8 @@ function gaitQuality(time, diagnostics) {
 function cycleJointQuality(time, cycleSeconds) {
   let kneeRoleContrast = 0
   let armCounterSwing = 0
+  let toeRoll = 0
+  let torsoCounterRotationAmount = 0
   for (let i = 0; i < 12; i += 1) {
     const clip = walkClipSample(time + (i / 12) * cycleSeconds)
     const joints = jointSamples(clip)
@@ -803,8 +846,17 @@ function cycleJointQuality(time, cycleSeconds) {
       Math.abs(joints.left.hip + joints.left.shoulder),
       Math.abs(joints.right.hip + joints.right.shoulder),
     )
+    toeRoll = Math.max(
+      toeRoll,
+      Math.abs(clip.footChannels.left.rollPitch),
+      Math.abs(clip.footChannels.right.rollPitch),
+    )
+    torsoCounterRotationAmount = Math.max(
+      torsoCounterRotationAmount,
+      Math.abs(clip.torsoCounterRotation),
+    )
   }
-  return { kneeRoleContrast, armCounterSwing }
+  return { kneeRoleContrast, armCounterSwing, toeRoll, torsoCounterRotation: torsoCounterRotationAmount }
 }
 
 function compactJointSample(sample) {
@@ -1393,12 +1445,14 @@ function initRobot(canvas) {
       name: foot.name,
       role: foot.role,
       locked: foot.locked,
+      rollPitch: Number(foot.rollPitch.toFixed(4)),
       target: foot.authoredTarget,
     })))
     canvas.dataset.correctedFootTargets = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       role: foot.role,
       locked: foot.locked,
+      rollPitch: Number(foot.rollPitch.toFixed(4)),
       target: foot.correctedTarget,
       correctionDeltaM: Number(foot.ikCorrectionDeltaM.toFixed(4)),
     })))
@@ -1481,6 +1535,10 @@ function initRobot(canvas) {
     canvas.dataset.jointIkStatus = geometry.diagnostics.quality.statuses.jointIkCorrection
     canvas.dataset.kneeRoleContrastStatus = geometry.diagnostics.quality.statuses.kneeRoleContrast
     canvas.dataset.armCounterSwingStatus = geometry.diagnostics.quality.statuses.armCounterSwing
+    canvas.dataset.toeRollStatus = geometry.diagnostics.quality.statuses.toeRoll
+    canvas.dataset.torsoCounterRotationStatus = geometry.diagnostics.quality.statuses.torsoCounterRotation
+    canvas.dataset.toeRollRad = geometry.diagnostics.quality.toeRoll.toFixed(4)
+    canvas.dataset.torsoCounterRotationRad = geometry.diagnostics.quality.torsoCounterRotation.toFixed(4)
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)

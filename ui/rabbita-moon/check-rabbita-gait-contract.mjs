@@ -31,6 +31,10 @@ const sceneContracts = [
   'jointIkStatus',
   'kneeRoleContrastStatus',
   'armCounterSwingStatus',
+  'toeRollStatus',
+  'torsoCounterRotationStatus',
+  'rollPitch',
+  'torsoCounterRotation',
 ]
 
 const planContracts = [
@@ -40,6 +44,9 @@ const planContracts = [
   'FK endpoint',
   'hip/knee/ankle correction',
   'foot lock',
+  'toe-off/contact ankle curve',
+  'arm lag and counter-swing',
+  'torso/waist counter-rotation',
 ]
 
 function requireText(source, token, label) {
@@ -168,6 +175,8 @@ if (motionHingeReview.driven_joint_count !== hingeTrace.driven_joint_count) {
 let maxSupportJointCorrection = 0
 let maxTerrainRange = 0
 let maxPatchRange = 0
+let maxToeRoll = 0
+let maxTorsoCounterRotation = 0
 for (const time of sampleTimes) {
   const frame = diagnostics.sampleRobotGeometry(time).diagnostics
   const moonphysFrame = diagnostics.moonphysReviewFrameEvidence(frame)
@@ -192,6 +201,12 @@ for (const time of sampleTimes) {
   if (frame.quality.statuses.jointIkCorrection !== 'pass') {
     throw new Error(`joint IK correction failed at ${time}s`)
   }
+  if (frame.quality.statuses.toeRoll !== 'pass') {
+    throw new Error(`toe roll failed at ${time}s`)
+  }
+  if (frame.quality.statuses.torsoCounterRotation !== 'pass') {
+    throw new Error(`torso counter-rotation failed at ${time}s`)
+  }
   if (moonphysFrame.environment.environment_id !== 'moon/lunar-surface') {
     throw new Error(`Moonphys review frame used unexpected environment at ${time}s`)
   }
@@ -209,6 +224,8 @@ for (const time of sampleTimes) {
   }
   maxTerrainRange = Math.max(maxTerrainRange, frame.terrain.heightRangeM)
   maxPatchRange = Math.max(maxPatchRange, frame.quality.maxContactPatchRange)
+  maxToeRoll = Math.max(maxToeRoll, frame.quality.toeRoll)
+  maxTorsoCounterRotation = Math.max(maxTorsoCounterRotation, frame.quality.torsoCounterRotation)
   if (frame.quality.supportClearanceError > diagnostics.rig.supportClearanceMaxM) {
     throw new Error(`support clearance error exceeded bound at ${time}s`)
   }
@@ -227,6 +244,14 @@ if (maxTerrainRange <= 0.010) {
 
 if (maxPatchRange <= 0) {
   throw new Error('sampled contact patches did not report terrain height range')
+}
+
+if (maxToeRoll < diagnostics.rig.toeRollMinRad) {
+  throw new Error('sampled gait never produced a visible toe-off/contact foot roll')
+}
+
+if (maxTorsoCounterRotation < diagnostics.rig.torsoCounterRotationMinRad) {
+  throw new Error('sampled gait never produced visible torso counter-rotation')
 }
 
 const generatedEvidenceGate = spawnSync(
