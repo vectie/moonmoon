@@ -857,6 +857,13 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_eq(poses.frame_count, walk.frame_count)
   assert_eq(poses.links_per_frame, 25)
   assert_eq(poses.robot_id, walk.robot.robot_id)
+  assert_eq(poses.visual_geometry_link_count, 6)
+  assert_eq(poses.mesh_visual_geometry_link_count, 1)
+  assert_eq(poses.primitive_visual_geometry_link_count, 5)
+  assert_eq(
+    poses.rig_render_contract_status,
+    "urdf-rigid-visual-contract-ready",
+  )
   assert_eq(poses.collision_metadata_link_count, 0)
   assert_eq(poses.inertial_metadata_link_count, 0)
   assert_eq(poses.missing_collision_link_count, 25)
@@ -881,6 +888,7 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("hardware authority"))
   assert_true(poses.note.contains("not full dynamics"))
   assert_true(poses.note.contains("missing collision/inertial metadata"))
+  assert_true(poses.note.contains("debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
   assert_eq(first.links.length(), 25)
   assert_true(
@@ -899,6 +907,7 @@ test "noetix link pose trace binds feet to walk contact probes" {
       link.visual_geometry.has_visual_geometry &&
       link.visual_geometry.kind == SourceMeshGeometry &&
       link.visual_geometry.mesh_path.contains("base.obj") &&
+      link.visual_geometry.source_status.contains("urdf-visual-mesh") &&
       link.visual_geometry.size_m == @moonphys.vec3(0.24, 0.20, 0.04)
     }),
   )
@@ -908,6 +917,13 @@ test "noetix link pose trace binds feet to walk contact probes" {
       link.visual_geometry.has_visual_geometry &&
       link.visual_geometry.kind == SourceBoxGeometry &&
       link.visual_geometry.world_origin_xyz_m.z > link.world_position.z
+    }),
+  )
+  assert_true(
+    first.links.any(fn(link) {
+      link.link_name == "left_arm_1" &&
+      link.visual_geometry.has_visual_geometry &&
+      link.visual_geometry.kind == SourceCylinderGeometry
     }),
   )
   assert_true(

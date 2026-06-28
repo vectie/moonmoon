@@ -132,7 +132,7 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_walk_command.py output/moonrobo/first_trusted_square_noetix_walk_command.json
     - noetix-urdf-reference-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json
-      - current: 32 frames; 25 links per frame; collision metadata links 0; inertial metadata links 0; missing collision links 25; missing inertial links 25; status review-only
+      - current: 32 frames; 25 links per frame; 6 rigid visuals (1 mesh, 5 primitives); rig contract urdf-rigid-visual-contract-ready; collision metadata links 0; inertial metadata links 0; missing collision links 25; missing inertial links 25; status review-only
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json

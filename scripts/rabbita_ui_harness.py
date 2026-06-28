@@ -77,11 +77,18 @@ return {
   authority,
   viewer_children: viewer.children.length,
   stage_class: viewer.children[0].attributes.class,
-  link_visual_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-visual')).length,
-  mesh_visual_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-mesh')).length,
-  link_segment_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-segment')).length,
-  link_joint_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-link-joint')).length,
-  left_foot_joint_count: svgNodes.filter(node => node.attributes['data-link-name'] === 'left_foot').length,
+  rig_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-visuals').length,
+  debug_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'debug-link-tree').length,
+  annotation_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'review-annotations').length,
+  rig_visual_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual').length,
+  rig_mesh_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-geometry-kind'] === 'SourceMeshGeometry').length,
+  rig_box_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-primitive-kind'] === 'box').length,
+  rig_cylinder_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-primitive-kind'] === 'cylinder').length,
+  obj_mesh_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-mesh-extension'] === 'obj').length,
+  base_mesh_paths: svgNodes.filter(node => node.attributes['data-link-name'] === 'base_link' && node.attributes['data-rig-role'] === 'primary-rigid-visual').map(node => node.attributes['data-mesh-path'] || ''),
+  debug_segment_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-debug-segment')).length,
+  debug_joint_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-debug-joint')).length,
+  left_foot_annotation_count: svgNodes.filter(node => node.attributes['data-link-name'] === 'left_foot' && node.attributes['data-rig-role'] === 'review-contact-annotation').length,
   control_count: controls.children.length,
   playback_pressed: controls.children[0].attributes['aria-pressed'],
   scrubber_max: controls.children[2].attributes.max,
@@ -228,20 +235,34 @@ def assert_noetix_walk_panel(
     raise AssertionError(rendered)
   if rendered["stage_class"] != "noetix-stage":
     raise AssertionError(rendered)
-  if rendered["link_segment_count"] < noetix_link_poses["links_per_frame"] - 1:
+  if rendered["rig_layer_count"] != 1:
     raise AssertionError(rendered)
-  if rendered["link_joint_count"] < noetix_link_poses["links_per_frame"]:
+  if rendered["debug_layer_count"] != 1:
+    raise AssertionError(rendered)
+  if rendered["annotation_layer_count"] != 1:
+    raise AssertionError(rendered)
+  if rendered["debug_segment_count"] < noetix_link_poses["links_per_frame"] - 1:
+    raise AssertionError(rendered)
+  if rendered["debug_joint_count"] < noetix_link_poses["links_per_frame"]:
     raise AssertionError(rendered)
   expected_visuals = sum(
     1
     for link in pose_frames[0]["links"]
     if link.get("visual_geometry", {}).get("has_visual_geometry")
   )
-  if rendered["link_visual_count"] < expected_visuals:
+  if rendered["rig_visual_count"] != expected_visuals:
     raise AssertionError({"rendered": rendered, "expected_visuals": expected_visuals})
-  if rendered["mesh_visual_count"] < 1:
+  if rendered["rig_mesh_count"] != noetix_link_poses["mesh_visual_geometry_link_count"]:
     raise AssertionError(rendered)
-  if rendered["left_foot_joint_count"] < 1:
+  if rendered["rig_box_count"] < 2:
+    raise AssertionError(rendered)
+  if rendered["rig_cylinder_count"] < 3:
+    raise AssertionError(rendered)
+  if rendered["obj_mesh_count"] != 1:
+    raise AssertionError(rendered)
+  if not rendered["base_mesh_paths"] or not rendered["base_mesh_paths"][0].endswith("base.obj"):
+    raise AssertionError(rendered)
+  if rendered["left_foot_annotation_count"] != 1:
     raise AssertionError(rendered)
   if rendered["control_count"] != 4:
     raise AssertionError(rendered)
@@ -273,7 +294,12 @@ def assert_noetix_walk_panel(
     ),
     "joints": "24 phases, URDF leg IK",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
-    "visuals": f"{expected_visuals} source visual geometries",
+    "visuals": (
+      f"{expected_visuals} rigid URDF visuals "
+      f"({noetix_link_poses['mesh_visual_geometry_link_count']} mesh, "
+      f"{noetix_link_poses['primitive_visual_geometry_link_count']} primitives)"
+    ),
+    "rig contract": "urdf-rigid-visual-contract-ready",
     "pose status": "review-only-urdf-fk",
   }
   for key, value in expected.items():

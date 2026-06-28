@@ -33,6 +33,14 @@ def main() -> None:
         fail("unexpected robot id")
     if trace.get("links_per_frame") != 25:
         fail("expected 25 URDF-reference links per frame")
+    if trace.get("visual_geometry_link_count") != 6:
+        fail("expected six URDF visual geometry links")
+    if trace.get("mesh_visual_geometry_link_count") != 1:
+        fail("expected one mesh visual geometry link")
+    if trace.get("primitive_visual_geometry_link_count") != 5:
+        fail("expected five primitive visual geometry links")
+    if trace.get("rig_render_contract_status") != "urdf-rigid-visual-contract-ready":
+        fail("rig render contract should be ready for current URDF visuals")
     if trace.get("collision_metadata_link_count") != 0:
         fail("link pose trace should not claim authoritative collision metadata")
     if trace.get("inertial_metadata_link_count") != 0:
@@ -53,6 +61,8 @@ def main() -> None:
         fail("trace note must preserve Moonphys articulated-tree provenance")
     if "missing collision/inertial metadata" not in trace.get("note", ""):
         fail("trace note must preserve missing collision/inertial metadata")
+    if "debug sticks are only a link-tree overlay" not in trace.get("note", ""):
+        fail("trace note must keep sticks as debug overlay only")
     physical_metadata = {
         item.get("link_name"): item for item in trace.get("physical_metadata", [])
     }
@@ -104,10 +114,14 @@ def main() -> None:
         fail("base link visual geometry should come from mesh")
     if not first["base_link"]["visual_geometry"].get("mesh_path", "").endswith("base.obj"):
         fail("base link mesh path should be preserved")
+    if first["base_link"]["visual_geometry"].get("source_status", "").startswith("urdf-visual-mesh") is False:
+        fail("base link mesh should preserve source mesh status")
     if first["chest_link"]["visual_geometry"].get("kind") != "SourceBoxGeometry":
         fail("chest link visual geometry should come from URDF box")
     if first["chest_link"]["visual_geometry"]["world_origin_xyz_m"]["z"] <= first["chest_link"]["world_position"]["z"]:
         fail("chest visual origin should be transformed above link joint origin")
+    if first["left_arm_1"]["visual_geometry"].get("kind") != "SourceCylinderGeometry":
+        fail("left_arm_1 visual geometry should come from URDF cylinder")
     if fifth["right_leg_3"]["fk_world_position"]["x"] == first["right_leg_3"]["fk_world_position"]["x"]:
         fail("right leg FK should move during swing")
     if fifth["right_arm_1"]["world_position"]["x"] == first["right_arm_1"]["world_position"]["x"]:

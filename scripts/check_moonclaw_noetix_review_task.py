@@ -232,6 +232,12 @@ def main() -> None:
     link_pose_state = artifacts["noetix-urdf-reference-link-poses"].get(
         "current_state", ""
     )
+    if "6 rigid visuals" not in link_pose_state:
+        fail("link pose artifact must expose rigid visual count")
+    if "1 mesh, 5 primitives" not in link_pose_state:
+        fail("link pose artifact must expose mesh and primitive visual counts")
+    if "rig contract urdf-rigid-visual-contract-ready" not in link_pose_state:
+        fail("link pose artifact must expose ready rigid visual contract")
     if "collision metadata links 0" not in link_pose_state:
         fail("link pose artifact must expose missing collision metadata")
     if "inertial metadata links 0" not in link_pose_state:

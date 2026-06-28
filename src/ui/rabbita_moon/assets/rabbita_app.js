@@ -358,7 +358,7 @@ function noetixLinkRoleClass(role) {
   return 'body';
 }
 
-function noetixLinkSegments(poseFrame, project) {
+function noetixDebugLinkSegments(poseFrame, project) {
   const links = noetixLinkMap(poseFrame);
   return (poseFrame.links || [])
     .filter(link => link.parent_link && links.has(link.parent_link))
@@ -368,26 +368,28 @@ function noetixLinkSegments(poseFrame, project) {
       const b = project(link.world_position);
       const role = noetixLinkRoleClass(link.role);
       return svgEl('line', {
-        class: `noetix-link-segment noetix-link-${role}`,
+        class: `noetix-debug-segment noetix-link-${role}`,
         x1: a.x.toFixed(2),
         y1: a.y.toFixed(2),
         x2: b.x.toFixed(2),
         y2: b.y.toFixed(2),
+        'data-rig-role': 'debug-link-tree',
         'data-link-name': link.link_name,
         'data-parent-link': link.parent_link
       });
     });
 }
 
-function noetixLinkJoints(poseFrame, project) {
+function noetixDebugLinkJoints(poseFrame, project) {
   return (poseFrame.links || []).map(link => {
     const point = project(link.world_position);
     const role = noetixLinkRoleClass(link.role);
     return svgEl('circle', {
-      class: `noetix-link-joint noetix-link-${role}`,
+      class: `noetix-debug-joint noetix-link-${role}`,
       cx: point.x.toFixed(2),
       cy: point.y.toFixed(2),
       r: link.role === 'foot' ? '4.6' : '3.2',
+      'data-rig-role': 'debug-link-tree',
       'data-link-name': link.link_name
     });
   });
@@ -404,36 +406,53 @@ function noetixProjectedSpan(origin, xMeters, zMeters, project) {
   };
 }
 
-function noetixLinkVisuals(poseFrame, project) {
+function noetixMeshExtension(path) {
+  const clean = String(path || '').toLowerCase().split(/[?#]/)[0];
+  const index = clean.lastIndexOf('.');
+  return index >= 0 ? clean.slice(index + 1) : '';
+}
+
+function noetixRigVisualAttributes(link, geometry, role, kindClass) {
+  const meshPath = geometry.mesh_path || '';
+  return {
+    class: `noetix-rig-visual noetix-rig-${kindClass} noetix-link-${role}`,
+    'data-rig-role': 'primary-rigid-visual',
+    'data-link-name': link.link_name,
+    'data-parent-link': link.parent_link || '',
+    'data-geometry-kind': geometry.kind,
+    'data-source-status': geometry.source_status || '',
+    'data-mesh-path': meshPath,
+    'data-mesh-extension': noetixMeshExtension(meshPath),
+    'data-primitive-kind': geometry.kind === 'SourceBoxGeometry' ? 'box' : geometry.kind === 'SourceCylinderGeometry' ? 'cylinder' : ''
+  };
+}
+
+function noetixRigVisuals(poseFrame, project) {
   return (poseFrame.links || [])
     .filter(link => link.visual_geometry && link.visual_geometry.has_visual_geometry)
     .map(link => {
       const geometry = link.visual_geometry;
       const origin = geometry.world_origin_xyz_m || link.world_position;
       const role = noetixLinkRoleClass(link.role);
-      const shapeClass = `noetix-link-visual noetix-link-${role}`;
       if (geometry.kind === 'SourceCylinderGeometry') {
         const span = noetixProjectedSpan(origin, geometry.radius_m * 2, geometry.length_m, project);
         return svgEl('ellipse', {
-          class: shapeClass,
+          ...noetixRigVisualAttributes(link, geometry, role, 'cylinder'),
           cx: span.center.x.toFixed(2),
           cy: span.center.y.toFixed(2),
           rx: (span.width * 0.5).toFixed(2),
-          ry: (span.height * 0.5).toFixed(2),
-          'data-link-name': link.link_name,
-          'data-geometry-kind': geometry.kind
+          ry: (span.height * 0.5).toFixed(2)
         });
       }
       const span = noetixProjectedSpan(origin, geometry.size_m.x, geometry.size_m.z, project);
+      const kindClass = geometry.kind === 'SourceMeshGeometry' ? 'mesh' : 'box';
       return svgEl('rect', {
-        class: `${shapeClass} ${geometry.kind === 'SourceMeshGeometry' ? 'noetix-link-mesh' : 'noetix-link-box'}`,
+        ...noetixRigVisualAttributes(link, geometry, role, kindClass),
         x: (span.center.x - span.width * 0.5).toFixed(2),
         y: (span.center.y - span.height * 0.5).toFixed(2),
         width: span.width.toFixed(2),
         height: span.height.toFixed(2),
-        rx: '2',
-        'data-link-name': link.link_name,
-        'data-geometry-kind': geometry.kind
+        rx: '2'
       });
     });
 }
@@ -443,9 +462,9 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   const left = project(frame.left_foot.position);
   const right = project(frame.right_foot.position);
   const supportFoot = frame.support_phase === 'left-support' ? left : right;
-  const linkVisuals = noetixLinkVisuals(poseFrame, project);
-  const linkSegments = noetixLinkSegments(poseFrame, project);
-  const linkJoints = noetixLinkJoints(poseFrame, project);
+  const rigVisuals = noetixRigVisuals(poseFrame, project);
+  const debugSegments = noetixDebugLinkSegments(poseFrame, project);
+  const debugJoints = noetixDebugLinkJoints(poseFrame, project);
   const svg = svgEl('svg', {
     class: 'noetix-stage',
     viewBox: '0 0 420 170',
@@ -466,34 +485,45 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
       class: 'noetix-foot-path noetix-right-path',
       points: noetixPath(frames, item => item.right_foot.position, project)
     }),
-    svgEl('g', { class: 'noetix-link-visuals' }, linkVisuals),
-    svgEl('g', { class: 'noetix-link-segments' }, linkSegments),
-    svgEl('g', { class: 'noetix-link-joints' }, linkJoints),
-    svgEl('circle', {
-      class: `noetix-foot noetix-foot-left noetix-status-${noetixStatusClass(frame.left_foot.status)}`,
-      cx: left.x.toFixed(2),
-      cy: left.y.toFixed(2),
-      r: frame.left_foot.in_contact ? '7' : '5'
-    }),
-    svgEl('circle', {
-      class: `noetix-foot noetix-foot-right noetix-status-${noetixStatusClass(frame.right_foot.status)}`,
-      cx: right.x.toFixed(2),
-      cy: right.y.toFixed(2),
-      r: frame.right_foot.in_contact ? '7' : '5'
-    }),
-    svgEl('circle', {
-      class: `noetix-body noetix-status-${noetixStatusClass(frame.status)}`,
-      cx: body.x.toFixed(2),
-      cy: body.y.toFixed(2),
-      r: '9'
-    }),
-    svgEl('line', {
-      class: 'noetix-support-line',
-      x1: supportFoot.x.toFixed(2),
-      y1: supportFoot.y.toFixed(2),
-      x2: body.x.toFixed(2),
-      y2: body.y.toFixed(2)
-    }),
+    svgEl('g', { class: 'noetix-rig-visuals', 'data-rig-layer': 'primary-rigid-visuals' }, rigVisuals),
+    svgEl('g', { class: 'noetix-debug-skeleton', 'data-rig-layer': 'debug-link-tree' }, [
+      ...debugSegments,
+      ...debugJoints
+    ]),
+    svgEl('g', { class: 'noetix-contact-annotations', 'data-rig-layer': 'review-annotations' }, [
+      svgEl('circle', {
+        class: `noetix-foot noetix-foot-left noetix-status-${noetixStatusClass(frame.left_foot.status)}`,
+        cx: left.x.toFixed(2),
+        cy: left.y.toFixed(2),
+        r: frame.left_foot.in_contact ? '7' : '5',
+        'data-rig-role': 'review-contact-annotation',
+        'data-link-name': 'left_foot'
+      }),
+      svgEl('circle', {
+        class: `noetix-foot noetix-foot-right noetix-status-${noetixStatusClass(frame.right_foot.status)}`,
+        cx: right.x.toFixed(2),
+        cy: right.y.toFixed(2),
+        r: frame.right_foot.in_contact ? '7' : '5',
+        'data-rig-role': 'review-contact-annotation',
+        'data-link-name': 'right_foot'
+      }),
+      svgEl('circle', {
+        class: `noetix-body noetix-status-${noetixStatusClass(frame.status)}`,
+        cx: body.x.toFixed(2),
+        cy: body.y.toFixed(2),
+        r: '9',
+        'data-rig-role': 'review-body-annotation',
+        'data-link-name': 'base_link'
+      }),
+      svgEl('line', {
+        class: 'noetix-support-line',
+        x1: supportFoot.x.toFixed(2),
+        y1: supportFoot.y.toFixed(2),
+        x2: body.x.toFixed(2),
+        y2: body.y.toFixed(2),
+        'data-rig-role': 'review-support-annotation'
+      })
+    ]),
     svgEl('text', { class: 'noetix-axis-label', x: '28', y: '158', text: noetixTrace.endless_axis }),
     svgEl('text', { class: 'noetix-frame-label', x: '318', y: '24', text: `frame ${frame.frame_index}` })
   ]);
@@ -559,6 +589,10 @@ function renderNoetixWalkFacts(frame, poseFrame) {
   const visualCount = (poseFrame.links || []).filter(link =>
     link.visual_geometry && link.visual_geometry.has_visual_geometry
   ).length;
+  const meshCount = noetixLinkPoseTrace.mesh_visual_geometry_link_count ?? (poseFrame.links || []).filter(link =>
+    link.visual_geometry && link.visual_geometry.kind === 'SourceMeshGeometry'
+  ).length;
+  const primitiveCount = noetixLinkPoseTrace.primitive_visual_geometry_link_count ?? Math.max(0, visualCount - meshCount);
   const facts = [
     ['phase', frame.support_phase],
     ['time', `${frame.time_s.toFixed(2)} s`],
@@ -568,7 +602,8 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
     ['joints', `${jointCount} phases, URDF leg IK`],
     ['links', `${linkCount} URDF-reference poses`],
-    ['visuals', `${visualCount} source visual geometries`],
+    ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
+    ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
     ['pose status', poseFrame.status || noetixLinkPoseTrace.status],
   ];
   document.getElementById('noetix-walk-facts').replaceChildren(...facts.map(([label, value]) =>

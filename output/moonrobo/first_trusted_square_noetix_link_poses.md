@@ -6,12 +6,16 @@
 - source model: ../moonrobo/examples/noetix-e1/model/robot.urdf
 - frames: 32
 - links per frame: 25
+- visual geometry links: 6
+- mesh visual geometry links: 1
+- primitive visual geometry links: 5
+- rig render contract: urdf-rigid-visual-contract-ready
 - collision metadata links: 0
 - inertial metadata links: 0
 - missing collision links: 25
 - missing inertial links: 25
 - status: review-only
-- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
+- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
 
 ## Frame Prefix
 

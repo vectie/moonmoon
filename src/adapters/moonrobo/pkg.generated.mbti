@@ -713,12 +713,16 @@ pub(all) struct NoetixLinkPoseTrace {
   source_model_path : String
   frame_count : Int
   links_per_frame : Int
+  visual_geometry_link_count : Int
+  mesh_visual_geometry_link_count : Int
+  primitive_visual_geometry_link_count : Int
   collision_metadata_link_count : Int
   inertial_metadata_link_count : Int
   missing_collision_link_count : Int
   missing_inertial_link_count : Int
   physical_metadata : Array[NoetixLinkPhysicalMetadataEvidence]
   frames : Array[NoetixLinkPoseFrame]
+  rig_render_contract_status : String
   status : String
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

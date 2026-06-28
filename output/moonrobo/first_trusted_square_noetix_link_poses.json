@@ -5,6 +5,9 @@
   "source_model_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
   "frame_count": 32,
   "links_per_frame": 25,
+  "visual_geometry_link_count": 6,
+  "mesh_visual_geometry_link_count": 1,
+  "primitive_visual_geometry_link_count": 5,
   "collision_metadata_link_count": 0,
   "inertial_metadata_link_count": 0,
   "missing_collision_link_count": 25,
@@ -43854,6 +43857,7 @@
       "status": "review-only-urdf-fk"
     }
   ],
+  "rig_render_contract_status": "urdf-rigid-visual-contract-ready",
   "status": "review-only",
-  "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
+  "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
 }

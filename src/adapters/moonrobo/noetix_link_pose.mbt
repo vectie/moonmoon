@@ -70,12 +70,16 @@ pub(all) struct NoetixLinkPoseTrace {
   source_model_path : String
   frame_count : Int
   links_per_frame : Int
+  visual_geometry_link_count : Int
+  mesh_visual_geometry_link_count : Int
+  primitive_visual_geometry_link_count : Int
   collision_metadata_link_count : Int
   inertial_metadata_link_count : Int
   missing_collision_link_count : Int
   missing_inertial_link_count : Int
   physical_metadata : Array[NoetixLinkPhysicalMetadataEvidence]
   frames : Array[NoetixLinkPoseFrame]
+  rig_render_contract_status : String
   status : String
   note : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -337,6 +341,17 @@ fn source_physical_metadata_evidence(
 }
 
 ///|
+fn visual_geometry_count_by_kind(kind : NoetixSourceGeometryKind) -> Int {
+  let mut count = 0
+  for geometry in noetix_source_visual_geometries() {
+    if geometry.kind == kind {
+      count += 1
+    }
+  }
+  count
+}
+
+///|
 fn link_visual_geometry_evidence(
   link : NoetixReferenceLink,
   transform : @moonphys.Transform3,
@@ -453,6 +468,9 @@ pub fn noetix_link_pose_trace(
   let frames : Array[NoetixLinkPoseFrame] = []
   let source_model = noetix_source_model_report()
   let reference_links = noetix_reference_links()
+  let mesh_visuals = visual_geometry_count_by_kind(SourceMeshGeometry)
+  let box_visuals = visual_geometry_count_by_kind(SourceBoxGeometry)
+  let cylinder_visuals = visual_geometry_count_by_kind(SourceCylinderGeometry)
   for frame in trace.frames {
     frames.push(noetix_link_pose_frame(frame))
   }
@@ -463,6 +481,9 @@ pub fn noetix_link_pose_trace(
     source_model_path: trace.robot.source_model_path,
     frame_count: frames.length(),
     links_per_frame: reference_links.length(),
+    visual_geometry_link_count: source_model.visual_geometry_count,
+    mesh_visual_geometry_link_count: mesh_visuals,
+    primitive_visual_geometry_link_count: box_visuals + cylinder_visuals,
     collision_metadata_link_count: source_model.source_metadata_inventory.collision_shape_link_count,
     inertial_metadata_link_count: source_model.source_metadata_inventory.inertial_link_count,
     missing_collision_link_count: source_model.missing_collision_link_count,
@@ -471,8 +492,16 @@ pub fn noetix_link_pose_trace(
       reference_links, source_model,
     ),
     frames,
+    rig_render_contract_status: if source_model.visual_geometry_count > 0 &&
+      mesh_visuals > 0 &&
+      box_visuals > 0 &&
+      cylinder_visuals > 0 {
+      "urdf-rigid-visual-contract-ready"
+    } else {
+      "urdf-rigid-visual-contract-incomplete"
+    },
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 
@@ -495,6 +524,10 @@ pub fn render_noetix_link_pose_markdown(trace : NoetixLinkPoseTrace) -> String {
   text += "- source model: \{trace.source_model_path}\n"
   text += "- frames: \{trace.frame_count}\n"
   text += "- links per frame: \{trace.links_per_frame}\n"
+  text += "- visual geometry links: \{trace.visual_geometry_link_count}\n"
+  text += "- mesh visual geometry links: \{trace.mesh_visual_geometry_link_count}\n"
+  text += "- primitive visual geometry links: \{trace.primitive_visual_geometry_link_count}\n"
+  text += "- rig render contract: \{trace.rig_render_contract_status}\n"
   text += "- collision metadata links: \{trace.collision_metadata_link_count}\n"
   text += "- inertial metadata links: \{trace.inertial_metadata_link_count}\n"
   text += "- missing collision links: \{trace.missing_collision_link_count}\n"
