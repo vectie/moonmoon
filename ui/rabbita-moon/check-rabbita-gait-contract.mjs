@@ -13,6 +13,7 @@ const sceneContracts = [
   'terrainContactProbes',
   'contactPatches',
   'terrainProfileReport',
+  'moonphysReviewFrame',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -53,13 +54,18 @@ if (!diagnostics?.sampleRobotGeometry) {
   throw new Error('scene3d.js did not expose the gait diagnostic sampler')
 }
 
+if (!diagnostics?.moonphysReviewFrameEvidence) {
+  throw new Error('scene3d.js did not expose the Moonphys review evidence bridge')
+}
+
 const cycleSeconds = 1 / diagnostics.rig.cycleHz
-const sampleTimes = Array.from({ length: 12 }, (_, i) => i * cycleSeconds / 12)
+const sampleTimes = Array.from({ length: 24 }, (_, i) => i * cycleSeconds / 24)
 let maxSupportJointCorrection = 0
 let maxTerrainRange = 0
 let maxPatchRange = 0
 for (const time of sampleTimes) {
   const frame = diagnostics.sampleRobotGeometry(time).diagnostics
+  const moonphysFrame = diagnostics.moonphysReviewFrameEvidence(frame)
   const supportCorrections = frame.ik.jointCorrections[frame.supportFoot]
   const correctionMagnitude =
     Math.abs(supportCorrections.hip) +
@@ -80,6 +86,21 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.jointIkCorrection !== 'pass') {
     throw new Error(`joint IK correction failed at ${time}s`)
+  }
+  if (moonphysFrame.environment.environment_id !== 'moon/lunar-surface') {
+    throw new Error(`Moonphys review frame used unexpected environment at ${time}s`)
+  }
+  if (moonphysFrame.contact_count !== frame.feet.length) {
+    throw new Error(`Moonphys review frame contact count mismatch at ${time}s`)
+  }
+  if (moonphysFrame.active_footprint_count <= 0) {
+    throw new Error(`Moonphys review frame has no active support footprint at ${time}s`)
+  }
+  if (moonphysFrame.contacts.some(contact => contact.patch.sample_count < 4)) {
+    throw new Error(`Moonphys review frame has an undersampled contact patch at ${time}s`)
+  }
+  if (!moonphysFrame.contacts.some(contact => contact.footprint.active && contact.applied_force_n.z > 0)) {
+    throw new Error(`Moonphys review frame has no loaded active contact at ${time}s`)
   }
   maxTerrainRange = Math.max(maxTerrainRange, frame.terrain.heightRangeM)
   maxPatchRange = Math.max(maxPatchRange, frame.quality.maxContactPatchRange)

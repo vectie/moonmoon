@@ -289,6 +289,8 @@ Deliverables:
 - hinge motor replay checks
 - contact/traction evidence
 - force/torque envelopes
+- generic Moonphys motion-frame review types
+- Rabbita evidence export that can be consumed by those generic types
 
 ### Phase G: Future Asset System
 
@@ -313,6 +315,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    terrain-corrected foot targets, authored/corrected joint samples, and
    browser-facing IK/contact status datasets. Non-flat terrain height/normal
    response and per-foot contact patches are active in the preview.
-5. Feed corrected FK poses into Moonphys review once the terrain/contact evidence
-   is moved behind durable Moonphys review types instead of only Rabbita preview
-   datasets.
+5. Feed corrected FK poses into Moonphys review. Status: `src/moonphys` now has
+   generic motion contact/frame review types that compose support, load,
+   traction, contact-patch, wrench, and capture checks. Rabbita now exports a
+   `moonphysReviewFrame` evidence payload from its FK/contact diagnostics.
+   Hinge motor replay, full force/torque envelopes, and suite-level ingestion
+   remain the next Phase F steps.

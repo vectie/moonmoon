@@ -107,6 +107,10 @@ pub fn mass_property_element(String, Double, Vec3, RigidBodyInertia) -> MassProp
 
 pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
+pub fn motion_contact_evidence(String, SupportFootprint, HeightfieldContactPatch, Vec3) -> MotionContactEvidence
+
+pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec3, Vec3, Array[MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double) -> MotionFrameReview
+
 pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
@@ -618,6 +622,57 @@ pub(all) struct MaterialContactModel {
   material_id : String
   friction_coefficient : Double
   restitution_coefficient : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MotionContactEvidence {
+  contact_id : String
+  footprint : SupportFootprint
+  patch : HeightfieldContactPatch
+  applied_force_n : Vec3
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MotionContactReview {
+  contact_id : String
+  footprint_id : String
+  patch_status : String
+  load_status : String
+  wrench_status : String
+  traction_status : String
+  normal_force_n : Double
+  tangential_force_n : Double
+  friction_utilization : Double
+  max_pressure_pa : Double
+  center_of_pressure : Vec3
+  patch_load : ContactPatchLoadAssessment
+  patch_wrench : ContactPatchWrenchAssessment
+  traction : TractionAssessment
+  ready : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MotionFrameReview {
+  review_id : String
+  contact_count : Int
+  active_footprint_count : Int
+  total_normal_force_n : Double
+  patch_review_count : Int
+  load_review_count : Int
+  wrench_review_count : Int
+  traction_review_count : Int
+  support_status : String
+  support_load_status : String
+  capture_status : String
+  min_support_margin_m : Double
+  center_of_pressure_error_m : Double
+  capture_margin_m : Double
+  contact_reviews : Array[MotionContactReview]
+  support : SupportAssessment
+  support_load : SupportLoadAssessment
+  capture : CapturePointAssessment
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct PhysicsEnvironment {

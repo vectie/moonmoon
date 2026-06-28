@@ -2614,3 +2614,78 @@ test "capture point assessment flags fast COM outside support" {
   assert_eq(assessment.status, "capture-point-outside-support")
   assert_true(assessment.capture_margin_m < 0.0)
 }
+
+///|
+test "motion frame review accepts stable contact evidence" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let contact = motion_contact_evidence(
+    "left-contact",
+    support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+    patch,
+    vec3(0.0, 0.0, 120.0),
+  )
+  let review = motion_frame_review(
+    "frame-0",
+    lunar_environment(),
+    material_contact_model("test", 0.8, 0.0),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.0, 0.0, 0.0),
+    [contact],
+  )
+  assert_true(review.ready)
+  assert_eq(review.status, "motion-frame-review-ready")
+  assert_eq(review.blocker_count, 0)
+  assert_eq(review.contact_count, 1)
+  assert_eq(review.active_footprint_count, 1)
+  assert_eq(review.support_status, "inside-support")
+  assert_eq(review.support_load_status, "single-support-load")
+  assert_eq(review.capture_status, "capture-point-inside-support")
+  assert_eq(review.contact_reviews[0].traction_status, "traction-ok")
+  assert_true(nearly_equal(review.total_normal_force_n, 120.0))
+}
+
+///|
+test "motion frame review blocks traction and capture failures" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let contact = motion_contact_evidence(
+    "left-contact",
+    support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+    patch,
+    vec3(100.0, 0.0, 20.0),
+  )
+  let review = motion_frame_review(
+    "frame-slip",
+    lunar_environment(),
+    material_contact_model("low-friction", 0.25, 0.0),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.8, 0.0, 0.0),
+    [contact],
+  )
+  assert_true(!review.ready)
+  assert_eq(review.status, "motion-frame-review-blocked")
+  assert_true(review.blocker_count >= 2)
+  assert_eq(review.traction_review_count, 1)
+  assert_eq(
+    review.contact_reviews[0].traction_status,
+    "friction-limit-exceeded",
+  )
+  assert_eq(review.capture_status, "capture-point-outside-support")
+  assert_true(review.blockers.contains("capture:capture-point-outside-support"))
+  assert_true(
+    review.blockers.contains("contact:left-contact:motion-contact-review"),
+  )
+}

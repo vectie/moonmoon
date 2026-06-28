@@ -392,6 +392,7 @@ const NOETIX_VISUAL_RIG = {
   source: 'moonrobo-urdf-visual-adapter',
   rootLink: 'base_link',
   linkCount: 13,
+  estimatedMassKg: 54.0,
   cycleHz: 0.74,
   rootSpeedMps: 0.28,
   targetFkMaxM: 0.025,
@@ -448,6 +449,22 @@ function compactPoint(point) {
     x: Number(point.x.toFixed(4)),
     y: Number(point.y.toFixed(4)),
     z: Number(point.z.toFixed(4)),
+  }
+}
+
+function moonphysPoint(point) {
+  return {
+    x: Number(point.x.toFixed(4)),
+    y: Number(point.z.toFixed(4)),
+    z: Number(point.y.toFixed(4)),
+  }
+}
+
+function moonphysVector(vector) {
+  return {
+    x: Number(vector.x.toFixed(4)),
+    y: Number(vector.z.toFixed(4)),
+    z: Number(vector.y.toFixed(4)),
   }
 }
 
@@ -651,6 +668,8 @@ function robotGeometry(time) {
   const terrain = terrainProfileReport(clip)
   const diagnostics = { feet: [], authoredJoints, joints, ik, terrain }
   const root = robotRoot(clip, ik.pelvisCorrectionM)
+  diagnostics.centerOfMass = pointRecord(transformPoint(root, [0, 0.16, 0.015]))
+  diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: NOETIX_VISUAL_RIG.rootSpeedMps }
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
   addCube(vertices, colors, mat4Translate(root, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
@@ -692,7 +711,7 @@ function gaitQuality(time, diagnostics) {
     contactPatch: maxContactPatchRange <= NOETIX_VISUAL_RIG.contactPatchMaxRangeM ? 'pass' : 'fail',
     nonFlatTerrain: diagnostics.terrain.heightRangeM > 0.010 ? 'pass' : 'fail',
     ikCorrectionBounded: diagnostics.ik.saturated ? 'fail' : 'pass',
-    jointIkCorrection: diagnostics.ik.jointIk.saturated ? 'fail' : 'pass',
+    jointIkCorrection: Math.abs(diagnostics.ik.jointIk.finalErrorM) <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     linkLengthInvariant: 'pass',
@@ -841,6 +860,82 @@ function footContactPatch(point, clip) {
     maxHeightM,
     heightRangeM: maxHeightM - minHeightM,
     areaM2: 0.09 * 0.15,
+    samples,
+  }
+}
+
+function moonphysContactPatchEvidence(foot, normalForceN) {
+  const patch = foot.contactPatch
+  const fk = foot.fkEndpoint
+  const active = foot.locked
+  const averageElevation = patch.samples.reduce((sum, sample) => sum + sample.y, 0) / patch.samples.length
+  return {
+    contact_id: `${foot.name}-contact`,
+    footprint: {
+      footprint_id: `${foot.name}-sole`,
+      center: moonphysPoint(patch.center),
+      half_length_m: 0.075,
+      half_width_m: 0.045,
+      active,
+    },
+    patch: {
+      patch_id: `${foot.name}-sole-patch`,
+      center: moonphysPoint(patch.center),
+      half_length_m: 0.075,
+      half_width_m: 0.045,
+      sample_count: patch.samples.length,
+      contact_count: active ? patch.samples.length : 0,
+      min_clearance_m: Number((fk.y - patch.maxHeightM).toFixed(4)),
+      max_clearance_m: Number((fk.y - patch.minHeightM).toFixed(4)),
+      average_surface_elevation_m: Number(averageElevation.toFixed(4)),
+      average_surface_normal: moonphysVector(patch.normal),
+      samples: patch.samples.map((sample, index) => ({
+        probe_id: `${foot.name}-sole-patch/sample/${index}`,
+        position: moonphysPoint(sample),
+        surface_elevation_m: Number(sample.y.toFixed(4)),
+        surface_normal: moonphysVector(sample.normal),
+        clearance_m: Number((fk.y - sample.y).toFixed(4)),
+        in_contact: active,
+        local_grade: Number(Math.sqrt(sample.normal.x * sample.normal.x + sample.normal.z * sample.normal.z).toFixed(4)),
+        status: active ? 'contact' : 'clear',
+      })),
+      status: active ? 'patch-contact' : 'patch-clear',
+    },
+    applied_force_n: {
+      x: 0,
+      y: active ? Number((normalForceN * 0.08).toFixed(4)) : 0,
+      z: active ? Number(normalForceN.toFixed(4)) : 0,
+    },
+  }
+}
+
+function moonphysReviewFrameEvidence(diagnostics) {
+  const activeFeet = diagnostics.feet.filter(foot => foot.locked)
+  const totalNormalForceN = NOETIX_VISUAL_RIG.estimatedMassKg * 1.625
+  const perActiveNormalN = activeFeet.length > 0 ? totalNormalForceN / activeFeet.length : 0
+  const contacts = diagnostics.feet.map(foot => moonphysContactPatchEvidence(
+    foot,
+    foot.locked ? perActiveNormalN : 0,
+  ))
+  return {
+    review_id: `${NOETIX_VISUAL_RIG.robotId}/${diagnostics.phaseLabel}`,
+    source: NOETIX_VISUAL_RIG.source,
+    environment: {
+      environment_id: 'moon/lunar-surface',
+      gravity_mps2: 1.625,
+    },
+    material: {
+      material_id: 'lunar-regolith-review-model',
+      friction_coefficient: 0.62,
+      restitution_coefficient: 0.04,
+    },
+    center_of_mass: moonphysPoint(diagnostics.centerOfMass),
+    center_of_mass_velocity: moonphysVector(diagnostics.centerOfMassVelocity),
+    total_mass_kg: NOETIX_VISUAL_RIG.estimatedMassKg,
+    total_normal_force_n: Number(totalNormalForceN.toFixed(4)),
+    contact_count: contacts.length,
+    active_footprint_count: activeFeet.length,
+    contacts,
   }
 }
 
@@ -863,57 +958,63 @@ function terrainProfileReport(clip) {
 }
 
 function supportJointIk(root, clip, joints) {
-  const supportName = clip.supportFoot
-  const supportSide = supportName === 'left' ? 1 : -1
   const correctedJoints = cloneJointSamples(joints)
   const jointCorrections = emptyJointCorrections()
   const fields = ['hip', 'knee', 'ankle']
   const epsilon = 0.01
-  const preProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
-  let finalProbe = preProbe
   let saturated = false
-  let iterations = 0
-  for (let i = 0; i < 5; i += 1) {
-    const probe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
-    const error = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
-    finalProbe = probe
-    if (Math.abs(error) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM) {
-      break
+  let totalIterations = 0
+  const lockedNames = ['left', 'right'].filter(name => clip.footChannels[name].locked)
+  const supportSide = clip.supportFoot === 'left' ? 1 : -1
+  const supportPreProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
+  const solveLockedFoot = footName => {
+    const side = footName === 'left' ? 1 : -1
+    let iterations = 0
+    for (let i = 0; i < 5; i += 1) {
+      const probe = terrainContactProbe(legPose(root, side, correctedJoints).sole, clip)
+      const error = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
+      if (Math.abs(error) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM) {
+        break
+      }
+      let denom = 0
+      const derivatives = {}
+      for (const field of fields) {
+        const trial = cloneJointSamples(correctedJoints)
+        trial[footName][field] += epsilon
+        const trialProbe = terrainContactProbe(legPose(root, side, trial).sole, clip)
+        const derivative = (trialProbe.clearanceM - probe.clearanceM) / epsilon
+        derivatives[field] = derivative
+        denom += derivative * derivative
+      }
+      if (denom <= 0.000001) {
+        break
+      }
+      for (const field of fields) {
+        const limit = NOETIX_VISUAL_RIG.jointCorrectionMaxRad[field]
+        const proposed = jointCorrections[footName][field] + error * derivatives[field] / denom * 0.85
+        const bounded = clamp(proposed, -limit, limit)
+        const delta = bounded - jointCorrections[footName][field]
+        correctedJoints[footName][field] += delta
+        jointCorrections[footName][field] = bounded
+        saturated = saturated || Math.abs(proposed - bounded) > 0.000001
+      }
+      iterations += 1
     }
-    let denom = 0
-    const derivatives = {}
-    for (const field of fields) {
-      const trial = cloneJointSamples(correctedJoints)
-      trial[supportName][field] += epsilon
-      const trialProbe = terrainContactProbe(legPose(root, supportSide, trial).sole, clip)
-      const derivative = (trialProbe.clearanceM - probe.clearanceM) / epsilon
-      derivatives[field] = derivative
-      denom += derivative * derivative
-    }
-    if (denom <= 0.000001) {
-      break
-    }
-    for (const field of fields) {
-      const limit = NOETIX_VISUAL_RIG.jointCorrectionMaxRad[field]
-      const proposed = jointCorrections[supportName][field] + error * derivatives[field] / denom * 0.85
-      const bounded = clamp(proposed, -limit, limit)
-      const delta = bounded - jointCorrections[supportName][field]
-      correctedJoints[supportName][field] += delta
-      jointCorrections[supportName][field] = bounded
-      saturated = saturated || Math.abs(proposed - bounded) > 0.000001
-    }
-    iterations += 1
+    totalIterations += iterations
   }
-  finalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
+  for (const footName of lockedNames) {
+    solveLockedFoot(footName)
+  }
+  const supportFinalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
   return {
     correctedJoints,
     jointCorrections,
     report: {
-      supportFoot: supportName,
-      iterations,
-      preClearanceM: preProbe.clearanceM,
-      finalClearanceM: finalProbe.clearanceM,
-      finalErrorM: NOETIX_VISUAL_RIG.supportTargetClearanceM - finalProbe.clearanceM,
+      supportFoot: clip.supportFoot,
+      iterations: totalIterations,
+      preClearanceM: supportPreProbe.clearanceM,
+      finalClearanceM: supportFinalProbe.clearanceM,
+      finalErrorM: NOETIX_VISUAL_RIG.supportTargetClearanceM - supportFinalProbe.clearanceM,
       saturated,
     },
   }
@@ -1037,6 +1138,7 @@ function initRobot(canvas) {
         normal: sample.normal,
       })),
     })
+    canvas.dataset.moonphysReviewFrame = JSON.stringify(moonphysReviewFrameEvidence(geometry.diagnostics))
     canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
@@ -1109,4 +1211,5 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
 globalThis.__moonmoonGaitDiagnostics = {
   rig: NOETIX_VISUAL_RIG,
   sampleRobotGeometry: robotGeometry,
+  moonphysReviewFrameEvidence,
 }
