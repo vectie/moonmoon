@@ -328,6 +328,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    now also has a generic motion/hinge replay combined review that accepts a
    motion-frame trace review plus a heightfield hinge motor trace or explicit
    replay review, checks frame alignment, driven joints, replay blockers, and
-   exposes one ingestion-ready validation result. The remaining Phase F suite
-   work is to have the adapter generate real robot hinge motor traces from the
-   corrected FK/joint samples and feed them through that combined review.
+   exposes one ingestion-ready validation result. Rabbita now exports a
+   `moonphysHingeMotorTrace` from corrected FK joint samples and a
+   `moonphysMotionHingeReview` that checks frame alignment, driven joints,
+   motor limit status, torque, velocity, and work envelopes against the
+   motion-frame trace. The remaining Phase F suite work is to replace the
+   preview joint table with authoritative Moonrobo/URDF actuator limits and
+   feed the resulting trace through the compiled Moonphys combined review.

@@ -418,6 +418,19 @@ const NOETIX_VISUAL_RIG = {
   },
 }
 
+const NOETIX_HINGE_MOTOR_JOINTS = [
+  { joint_id: 'left_hip_pitch', side: 'left', field: 'hip', parent_link: 'base_link', child_link: 'left_upper_leg', min: -0.9, max: 0.8, max_velocity: 5.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'left_knee_pitch', side: 'left', field: 'knee', parent_link: 'left_upper_leg', child_link: 'left_lower_leg', min: -0.1, max: 1.1, max_velocity: 8.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'left_ankle_pitch', side: 'left', field: 'ankle', parent_link: 'left_lower_leg', child_link: 'left_foot', min: -0.6, max: 0.55, max_velocity: 5.0, max_torque: 55.0, stiffness: 14.0, damping: 0.6 },
+  { joint_id: 'right_hip_pitch', side: 'right', field: 'hip', parent_link: 'base_link', child_link: 'right_upper_leg', min: -0.9, max: 0.8, max_velocity: 5.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'right_knee_pitch', side: 'right', field: 'knee', parent_link: 'right_upper_leg', child_link: 'right_lower_leg', min: -0.1, max: 1.1, max_velocity: 8.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'right_ankle_pitch', side: 'right', field: 'ankle', parent_link: 'right_lower_leg', child_link: 'right_foot', min: -0.6, max: 0.55, max_velocity: 5.0, max_torque: 55.0, stiffness: 14.0, damping: 0.6 },
+  { joint_id: 'left_shoulder_pitch', side: 'left', field: 'shoulder', parent_link: 'torso_link', child_link: 'left_upper_arm', min: -0.7, max: 0.7, max_velocity: 4.0, max_torque: 35.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'left_elbow_pitch', side: 'left', field: 'elbow', parent_link: 'left_upper_arm', child_link: 'left_lower_arm', min: 0.0, max: 0.8, max_velocity: 4.0, max_torque: 25.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'right_shoulder_pitch', side: 'right', field: 'shoulder', parent_link: 'torso_link', child_link: 'right_upper_arm', min: -0.7, max: 0.7, max_velocity: 4.0, max_torque: 35.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'right_elbow_pitch', side: 'right', field: 'elbow', parent_link: 'right_upper_arm', child_link: 'right_lower_arm', min: 0.0, max: 0.8, max_velocity: 4.0, max_torque: 25.0, stiffness: 8.0, damping: 0.4 },
+]
+
 function cycle01(value) {
   return value - Math.floor(value)
 }
@@ -1024,6 +1037,171 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
   }
 }
 
+function hingeJointPosition(joints, spec) {
+  return joints[spec.side][spec.field]
+}
+
+function moonphysJointMotorStep(spec, before, after, dt_s) {
+  const beforePosition = hingeJointPosition(before.diagnostics.joints, spec)
+  const afterPosition = hingeJointPosition(after.diagnostics.joints, spec)
+  const angleDelta = afterPosition - beforePosition
+  const targetVelocity = dt_s > 0 ? angleDelta / dt_s : 0
+  const boundedVelocity = clamp(targetVelocity, -spec.max_velocity, spec.max_velocity)
+  const rawTorque = spec.stiffness * angleDelta + spec.damping * boundedVelocity
+  const commandedTorque = clamp(rawTorque, -spec.max_torque, spec.max_torque)
+  const positionWithinLimits = afterPosition >= spec.min && afterPosition <= spec.max
+  const velocityWithinLimits = Math.abs(targetVelocity) <= spec.max_velocity + 0.000001
+  const torqueSaturated = Math.abs(rawTorque - commandedTorque) > 0.000001
+  const workJ = commandedTorque * angleDelta
+  const status = !positionWithinLimits || !velocityWithinLimits
+    ? 'joint-limit-review'
+    : torqueSaturated
+      ? 'joint-torque-review'
+      : 'joint-commanded'
+  return {
+    joint_id: spec.joint_id,
+    parent_link: spec.parent_link,
+    child_link: spec.child_link,
+    axis: { x: 1, y: 0, z: 0 },
+    before_position_rad: Number(beforePosition.toFixed(4)),
+    target_position_rad: Number(afterPosition.toFixed(4)),
+    target_velocity_rad_s: Number(targetVelocity.toFixed(4)),
+    bounded_velocity_rad_s: Number(boundedVelocity.toFixed(4)),
+    angle_delta_rad: Number(angleDelta.toFixed(4)),
+    commanded_torque_nm: Number(commandedTorque.toFixed(4)),
+    work_j: Number(workJ.toFixed(4)),
+    limit: {
+      min_position_rad: spec.min,
+      max_position_rad: spec.max,
+      max_velocity_rad_s: spec.max_velocity,
+      max_torque_nm: spec.max_torque,
+    },
+    position_within_limits: positionWithinLimits,
+    velocity_within_limits: velocityWithinLimits,
+    torque_saturated: torqueSaturated,
+    status,
+  }
+}
+
+function moonphysHingeMotorFrameEvidence(before, after, frameIndex, dt_s) {
+  const steps = NOETIX_HINGE_MOTOR_JOINTS.map(spec => moonphysJointMotorStep(spec, before, after, dt_s))
+  const drivenSteps = steps.filter(step => Math.abs(step.angle_delta_rad) > 0.0001)
+  const reviewSteps = steps.filter(step => step.status !== 'joint-commanded')
+  const totalAbsoluteWorkJ = steps.reduce((sum, step) => sum + Math.abs(step.work_j), 0)
+  const maxAbsTorque = Math.max(...steps.map(step => Math.abs(step.commanded_torque_nm)))
+  const maxAbsVelocity = Math.max(...steps.map(step => Math.abs(step.target_velocity_rad_s)))
+  const maxAbsAngleDelta = Math.max(...steps.map(step => Math.abs(step.angle_delta_rad)))
+  return {
+    frame_index: frameIndex,
+    time_s: before.time_s,
+    dt_s: Number(dt_s.toFixed(4)),
+    source: 'corrected-fk-joint-samples',
+    phase_label: before.diagnostics.phaseLabel,
+    support_foot: before.diagnostics.supportFoot,
+    joint_count: steps.length,
+    driven_joint_count: drivenSteps.length,
+    review_count: reviewSteps.length,
+    max_abs_angle_delta_rad: Number(maxAbsAngleDelta.toFixed(4)),
+    max_abs_velocity_rad_s: Number(maxAbsVelocity.toFixed(4)),
+    max_abs_commanded_torque_nm: Number(maxAbsTorque.toFixed(4)),
+    total_absolute_work_j: Number(totalAbsoluteWorkJ.toFixed(4)),
+    steps,
+    status: reviewSteps.length > 0
+      ? 'world-heightfield-hinge-motor-review'
+      : drivenSteps.length > 0
+        ? 'world-heightfield-hinge-motor-driven'
+        : 'world-heightfield-hinge-motor-idle',
+  }
+}
+
+function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
+  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
+  const dt_s = cycleSeconds / sampleCount
+  const samples = Array.from({ length: sampleCount + 1 }, (_, index) => {
+    const time_s = index * dt_s
+    return {
+      time_s: Number(time_s.toFixed(4)),
+      diagnostics: robotGeometry(time_s).diagnostics,
+    }
+  })
+  const frames = Array.from({ length: sampleCount }, (_, index) => (
+    moonphysHingeMotorFrameEvidence(samples[index], samples[index + 1], index, dt_s)
+  ))
+  const drivenJointCount = frames.reduce((sum, frame) => sum + frame.driven_joint_count, 0)
+  const reviewCount = frames.reduce((sum, frame) => sum + frame.review_count, 0)
+  const maxAbsAngleDelta = Math.max(...frames.map(frame => frame.max_abs_angle_delta_rad))
+  const maxAbsVelocity = Math.max(...frames.map(frame => frame.max_abs_velocity_rad_s))
+  const maxAbsTorque = Math.max(...frames.map(frame => frame.max_abs_commanded_torque_nm))
+  const totalAbsoluteWorkJ = frames.reduce((sum, frame) => sum + frame.total_absolute_work_j, 0)
+  return {
+    trace_id: `${NOETIX_VISUAL_RIG.robotId}/walk-cycle/hinge-motor-replay`,
+    source: NOETIX_VISUAL_RIG.source,
+    environment_id: 'moon/lunar-surface',
+    sample_source: 'corrected-fk-joint-samples',
+    frame_count: frames.length,
+    motor_frame_count: frames.length,
+    joint_count: NOETIX_HINGE_MOTOR_JOINTS.length,
+    driven_joint_count: drivenJointCount,
+    review_count: reviewCount,
+    max_abs_angle_delta_rad: Number(maxAbsAngleDelta.toFixed(4)),
+    max_abs_velocity_delta_rad_s: Number(maxAbsVelocity.toFixed(4)),
+    max_abs_commanded_torque_nm: Number(maxAbsTorque.toFixed(4)),
+    total_absolute_work_j: Number(totalAbsoluteWorkJ.toFixed(4)),
+    frames,
+    status: reviewCount > 0
+      ? 'world-heightfield-hinge-motor-trace-review'
+      : drivenJointCount > 0
+        ? 'world-heightfield-hinge-motor-trace-driven'
+        : 'world-heightfield-hinge-motor-trace-idle',
+  }
+}
+
+function moonphysMotionHingeReviewEvidence(sampleCount = 24) {
+  const motionTrace = moonphysReviewTraceEvidence(sampleCount)
+  const hingeTrace = moonphysHingeMotorReplayEvidence(sampleCount)
+  const blockers = []
+  if (motionTrace.frame_count !== hingeTrace.frame_count) {
+    blockers.push('frame-count-mismatch')
+  }
+  if (hingeTrace.driven_joint_count <= 0) {
+    blockers.push('hinge-trace:no-driven-joints')
+  }
+  if (hingeTrace.review_count > 0 || hingeTrace.status.includes('review')) {
+    blockers.push(`hinge-trace:${hingeTrace.status}`)
+  }
+  if (motionTrace.envelope.max_total_normal_force_n <= 0) {
+    blockers.push('motion-trace:no-normal-force')
+  }
+  return {
+    review_id: `${NOETIX_VISUAL_RIG.robotId}/walk-cycle/motion-hinge-review`,
+    source: NOETIX_VISUAL_RIG.source,
+    motion_trace_id: motionTrace.trace_id,
+    hinge_trace_id: hingeTrace.trace_id,
+    motion_frame_count: motionTrace.frame_count,
+    hinge_frame_count: hingeTrace.frame_count,
+    frame_count_delta: motionTrace.frame_count - hingeTrace.frame_count,
+    motion_contact_count: motionTrace.frames.reduce((sum, frame) => sum + frame.review.contact_count, 0),
+    hinge_contact_count: motionTrace.frames.reduce((sum, frame) => sum + frame.review.active_footprint_count, 0),
+    driven_joint_count: hingeTrace.driven_joint_count,
+    resolved_hinge_constraint_count: hingeTrace.driven_joint_count,
+    hinge_review_count: hingeTrace.review_count,
+    max_motion_total_normal_force_n: motionTrace.envelope.max_total_normal_force_n,
+    max_motion_contact_torque_nm: motionTrace.envelope.max_contact_torque_nm,
+    max_motion_pressure_pa: motionTrace.envelope.max_pressure_pa,
+    max_hinge_commanded_torque_nm: hingeTrace.max_abs_commanded_torque_nm,
+    max_hinge_velocity_rad_s: hingeTrace.max_abs_velocity_delta_rad_s,
+    total_hinge_absolute_work_j: hingeTrace.total_absolute_work_j,
+    motion_trace_status: 'motion-frame-trace-review-ready',
+    hinge_trace_status: hingeTrace.status,
+    blocker_count: blockers.length,
+    blockers,
+    ready: blockers.length === 0,
+    status: blockers.length === 0
+      ? 'motion-hinge-replay-review-ready'
+      : 'motion-hinge-replay-review-blocked',
+  }
+}
+
 function terrainProfileReport(clip) {
   const samples = []
   for (let i = -4; i <= 4; i += 1) {
@@ -1153,6 +1331,8 @@ function initRobot(canvas) {
   const shader = createProgram(gl)
   const buffers = createBuffers(gl)
   const moonphysReviewTrace = moonphysReviewTraceEvidence()
+  const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
+  const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidence()
   function draw(now) {
     resizeCanvas(canvas, gl)
     gl.clearColor(0.035, 0.055, 0.052, 1)
@@ -1226,6 +1406,8 @@ function initRobot(canvas) {
     })
     canvas.dataset.moonphysReviewFrame = JSON.stringify(moonphysReviewFrameEvidence(geometry.diagnostics))
     canvas.dataset.moonphysReviewTrace = JSON.stringify(moonphysReviewTrace)
+    canvas.dataset.moonphysHingeMotorTrace = JSON.stringify(moonphysHingeMotorTrace)
+    canvas.dataset.moonphysMotionHingeReview = JSON.stringify(moonphysMotionHingeReview)
     canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
@@ -1300,4 +1482,6 @@ globalThis.__moonmoonGaitDiagnostics = {
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,
+  moonphysHingeMotorReplayEvidence,
+  moonphysMotionHingeReviewEvidence,
 }

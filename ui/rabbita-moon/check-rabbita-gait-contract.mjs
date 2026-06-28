@@ -15,6 +15,8 @@ const sceneContracts = [
   'terrainProfileReport',
   'moonphysReviewFrame',
   'moonphysReviewTrace',
+  'moonphysHingeMotorTrace',
+  'moonphysMotionHingeReview',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -63,9 +65,19 @@ if (!diagnostics?.moonphysReviewTraceEvidence) {
   throw new Error('scene3d.js did not expose the Moonphys review trace evidence bridge')
 }
 
+if (!diagnostics?.moonphysHingeMotorReplayEvidence) {
+  throw new Error('scene3d.js did not expose the Moonphys hinge motor replay evidence bridge')
+}
+
+if (!diagnostics?.moonphysMotionHingeReviewEvidence) {
+  throw new Error('scene3d.js did not expose the Moonphys motion hinge review evidence bridge')
+}
+
 const cycleSeconds = 1 / diagnostics.rig.cycleHz
 const sampleTimes = Array.from({ length: 24 }, (_, i) => i * cycleSeconds / 24)
 const moonphysTrace = diagnostics.moonphysReviewTraceEvidence(sampleTimes.length)
+const hingeTrace = diagnostics.moonphysHingeMotorReplayEvidence(sampleTimes.length)
+const motionHingeReview = diagnostics.moonphysMotionHingeReviewEvidence(sampleTimes.length)
 if (moonphysTrace.environment_id !== 'moon/lunar-surface') {
   throw new Error('Moonphys review trace used an unexpected environment')
 }
@@ -89,6 +101,45 @@ if (moonphysTrace.envelope.max_pressure_pa <= 0) {
 }
 if (moonphysTrace.envelope.max_friction_utilization <= 0 || moonphysTrace.envelope.max_friction_utilization >= 1) {
   throw new Error('Moonphys review trace friction utilization envelope is outside the expected walking range')
+}
+if (hingeTrace.environment_id !== 'moon/lunar-surface') {
+  throw new Error('Moonphys hinge motor trace used an unexpected environment')
+}
+if (hingeTrace.sample_source !== 'corrected-fk-joint-samples') {
+  throw new Error('Moonphys hinge motor trace did not use corrected FK joint samples')
+}
+if (hingeTrace.frame_count !== sampleTimes.length || hingeTrace.motor_frame_count !== sampleTimes.length) {
+  throw new Error('Moonphys hinge motor trace frame count did not match runtime sampling')
+}
+if (hingeTrace.frames.length !== sampleTimes.length) {
+  throw new Error('Moonphys hinge motor trace frame list did not match runtime sampling')
+}
+if (hingeTrace.joint_count < 10) {
+  throw new Error('Moonphys hinge motor trace did not include the expected biped joints')
+}
+if (hingeTrace.driven_joint_count <= hingeTrace.frame_count) {
+  throw new Error('Moonphys hinge motor trace did not drive enough joints across the sampled walk')
+}
+if (hingeTrace.review_count !== 0 || hingeTrace.status !== 'world-heightfield-hinge-motor-trace-driven') {
+  throw new Error(`Moonphys hinge motor trace reported review status: ${hingeTrace.status}`)
+}
+if (hingeTrace.max_abs_angle_delta_rad <= 0 || hingeTrace.max_abs_velocity_delta_rad_s <= 0) {
+  throw new Error('Moonphys hinge motor trace did not report joint motion envelopes')
+}
+if (hingeTrace.max_abs_commanded_torque_nm <= 0 || hingeTrace.total_absolute_work_j <= 0) {
+  throw new Error('Moonphys hinge motor trace did not report motor torque/work envelopes')
+}
+if (hingeTrace.frames.some(frame => frame.steps.some(step => step.status !== 'joint-commanded'))) {
+  throw new Error('Moonphys hinge motor trace contains a joint command review')
+}
+if (motionHingeReview.status !== 'motion-hinge-replay-review-ready' || !motionHingeReview.ready) {
+  throw new Error(`Moonphys motion hinge review was not ready: ${motionHingeReview.status}`)
+}
+if (motionHingeReview.motion_frame_count !== moonphysTrace.frame_count || motionHingeReview.hinge_frame_count !== hingeTrace.frame_count) {
+  throw new Error('Moonphys motion hinge review did not align frame counts')
+}
+if (motionHingeReview.driven_joint_count !== hingeTrace.driven_joint_count) {
+  throw new Error('Moonphys motion hinge review did not carry hinge driven joint evidence')
 }
 let maxSupportJointCorrection = 0
 let maxTerrainRange = 0
