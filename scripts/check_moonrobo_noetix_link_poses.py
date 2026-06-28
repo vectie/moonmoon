@@ -94,10 +94,10 @@ def main() -> None:
         "note", ""
     ):
         fail("trace note must preserve Moonphys articulated-tree provenance")
-    if "all link world positions stay FK-authored" not in trace.get("note", ""):
-        fail("trace note must keep FK as the primary pose authority")
-    if "contact-probe error" not in trace.get("note", ""):
-        fail("trace note must keep contact probes separate from FK pose")
+    if "non-foot link world positions stay FK-authored" not in trace.get("note", ""):
+        fail("trace note must keep FK as the primary non-foot pose authority")
+    if "foot link endpoints are attached" not in trace.get("note", ""):
+        fail("trace note must say foot link endpoints attach to contact probes")
     if "missing collision/inertial metadata" not in trace.get("note", ""):
         fail("trace note must preserve missing collision/inertial metadata")
     if "RobotRig plus RobotMotionFrame" not in trace.get("note", ""):
@@ -188,12 +188,12 @@ def main() -> None:
         fail("link pose schema should not expose stale FK aliases")
     if "has_contact_probe" in first["left_foot"]:
         fail("link pose schema should keep contact probes out of link poses")
-    if first["left_foot"].get("source_status") != "urdf-forward-kinematics":
-        fail("left foot world position must stay FK-authored")
+    if first["left_foot"].get("source_status") != "walk-contact-probe-attached":
+        fail("left foot world position must attach to the walk contact probe")
     if first["left_foot"].get("visual_geometry", {}).get("source_status") != "urdf-visual-geometry-missing":
         fail("left foot should record missing visual geometry")
-    if first["right_foot"].get("source_status") != "urdf-forward-kinematics":
-        fail("right foot world position must stay FK-authored")
+    if first["right_foot"].get("source_status") != "walk-contact-probe-attached":
+        fail("right foot world position must attach to the walk contact probe")
     if first["left_foot"].get("joint_name") != "leg_l6_joint":
         fail("left foot joint name should come from URDF")
     if first["right_foot"].get("joint_name") != "leg_r6_joint":
@@ -203,14 +203,14 @@ def main() -> None:
     left_probe = contact_by_link.get("left_foot", {})
     if left_probe.get("source_status") != "walk-contact-probe-review-annotation":
         fail("left foot contact probe should name its review source")
-    if left_probe.get("position_error_m", -1) < 0:
-        fail("contact probe should report nonnegative FK-vs-probe error")
+    if left_probe.get("position_error_m", -1) != 0:
+        fail("attached contact probe should report zero display position error")
     if first["left_foot"].get("world_position") != left_probe.get("link_world_position"):
-        fail("left foot contact probe should reference the FK link position")
-    if first["left_foot"].get("world_position") == left_probe.get("contact_probe_position"):
-        fail("left foot FK world position should not be overwritten by contact probe")
-    if not any(probe.get("position_error_m", 0) > 0 for probe in contact_probes):
-        fail("at least one foot should report FK-vs-contact-probe error")
+        fail("left foot contact probe should reference the displayed link position")
+    if first["left_foot"].get("world_position") != left_probe.get("contact_probe_position"):
+        fail("left foot displayed world position should attach to the contact probe")
+    if any(probe.get("position_error_m", -1) != 0 for probe in contact_probes):
+        fail("foot contact probes should align with displayed foot link endpoints")
     if "pitch_proxy_rad" in first["right_leg_3"]:
         fail("link pose schema should not expose stale proxy angles")
     if not first["chest_link"]["world_position"]["z"] > first["base_link"]["world_position"]["z"]:
