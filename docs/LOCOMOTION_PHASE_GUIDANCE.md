@@ -133,6 +133,12 @@ Acceptance:
 The first real walking adapter should begin with a motion asset, not raw
 physics.
 
+Status: active in the Rabbita standalone preview. The local adapter-style
+contract lives in `ui/rabbita-moon/gait-clip.js`, which owns phase labels,
+root-motion stride, foot lock/support channels, bounded joint target samples,
+and URDF joint limit metadata. Rendering and generated evidence consume this
+contract instead of defining gait authority inline.
+
 Deliverables:
 
 - walk-cycle phase labels

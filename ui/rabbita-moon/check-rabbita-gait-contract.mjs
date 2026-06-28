@@ -3,8 +3,10 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
+const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
+const gaitRuntimeSource = `${gaitClip}\n${scene}`
 
 const sceneContracts = [
   'walkPipeline',
@@ -61,7 +63,7 @@ function requireText(source, token, label) {
 }
 
 for (const token of sceneContracts) {
-  requireText(scene, token, 'scene3d.js')
+  requireText(gaitRuntimeSource, token, 'gait runtime source')
 }
 
 for (const token of planContracts) {

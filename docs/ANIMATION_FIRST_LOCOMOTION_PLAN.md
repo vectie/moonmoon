@@ -229,8 +229,12 @@ Deliverables:
 - no inline gait authority hidden inside render code
 - generated output includes these fields
 
-Current status: partial. Rabbita now samples a local preview clip, but the next
-adapter package should own this data.
+Current status: active preview. `ui/rabbita-moon/gait-clip.js` owns the local
+adapter-style clip contract for root motion, phase labels, foot lock/support
+channels, joint target samples, and URDF limit metadata. `scene3d.js` renders
+and reviews that contract instead of owning hidden gait authority. The future
+Moonrobo adapter should move the same contract shape into a typed adapter
+package.
 
 ### Phase C: Rabbita Locomotion Overlay
 
