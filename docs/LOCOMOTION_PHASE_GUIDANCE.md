@@ -344,26 +344,21 @@ Deliverables:
 - review status
 - blocker and next-action records
 
-Status: started. `src/suite_adapter_preview/noetix_suite_payload.mbt` defines
-the first durable suite evidence entry for the Rabbita/Moonrobo Noetix walk
+Status: active. `src/suite_adapter_preview/noetix_suite_payload.mbt` defines
+the typed durable suite evidence entry for the Rabbita/Moonrobo Noetix walk
 cycle. It records robot id, platform, Moonrobo profile path, URDF path, mesh
-refs, generated motion/hinge/review ids, driven joint ids, compiled review
-status, blockers, and readiness. The Moonrobo source-side package
-`../moonrobo/src/moonmoon_adapter` now exposes a typed
+refs, motion/hinge/review ids, driven joint ids, compiled review status,
+blockers, and readiness. The Moonrobo source-side package
+`../moonrobo/src/moonmoon_adapter` exposes a typed
 `MoonmoonNoetixLocomotionContract` with Noetix profile, URDF, mesh, required
 motion-joint, blocker, readiness, and typed walk-clip fields for Moonmoon
-consumption.
-`../moonrobo/cmd/moonmoon_contract` exports that typed contract as JSON. The
-default Moonmoon suite payload now routes through
-`src/suite_adapter_preview/moonrobo_live_ingestion.mbt`, carries authored
-contact frames as payload data, and can run compiled Moonphys review from its
-own parsed joint, motion, contact, and motor tables. The committed
-`src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` remains only
-as the current plain-`moon test` fixture until the suite-preview command/build
-path can supply live Moonrobo JSON before compilation. Rabbita runtime consumes
-the live runtime bridge generated at
+consumption. `../moonrobo/cmd/moonmoon_contract` exports that typed contract as
+JSON. Moonmoon no longer commits the generated MoonBit table snapshot for that
+contract; full Moonrobo source authority now enters through the native
+`cmd/suite_preview` live JSON ingestion command. Rabbita runtime consumes the
+live runtime bridge generated at
 `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, while the Rabbita
-artifact is checked as the visual/browser evidence gate.
+artifact remains a visual/browser evidence gate.
 `../moonrobo/cmd/moonmoon_suite_evidence` now provides a live typed adapter
 summary with sample counts, contact load counts, motor drive counts, review
 counts, blockers, readiness, and regeneration mode. `npm run check:gait`
@@ -381,9 +376,9 @@ ingestion: it reads live `../moonrobo/cmd/moonmoon_contract` JSON and emits the
 Moonmoon suite-preview payload without using Rabbita-generated evidence.
 `ui/rabbita-moon/check-live-suite-payload.mjs` gates that command path, and
 `npm run check:gait` now requires it alongside the live Moonrobo suite evidence
-gate and compiled Moonphys gate. The remaining Phase 10 feature is to move the
-plain build/test fixture behind this live suite-preview command/build step and
-then remove the committed generated MoonBit table snapshot.
+gate and compiled Moonphys gate. Plain MoonBit tests now keep only compact
+fixture coverage for live JSON parsing and compiled Moonphys review; full
+Moonrobo integration coverage belongs to the native command gate.
 
 Acceptance:
 

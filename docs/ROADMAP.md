@@ -49,10 +49,11 @@
   JSON, carries authored contact frames in the default suite payload, and
   reviews the parsed motion/contact/motor tables through Moonphys. The
   `cmd/suite_preview` command and Rabbita `check:live-suite-payload` gate now
-  exercise that path from live Moonrobo JSON. The next implementation target is
-  moving the plain build/test fixture behind that live suite-preview
-  command/build step and deleting the committed generated MoonBit table
-  snapshot.
+  exercise that path from live Moonrobo JSON. The committed generated MoonBit
+  table snapshot has been removed; plain MoonBit tests use compact fixture
+  coverage, and the live command gate owns full Moonrobo integration coverage.
+  The next implementation targets are visual gait polish, URDF/mesh-derived
+  attachment authority, terrain IK completion, and durable evidence consumers.
 
 ## Non-Goals
 

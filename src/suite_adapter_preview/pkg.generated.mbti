@@ -11,21 +11,9 @@ pub fn compiled_moonphys_bridge_environment_id() -> String
 
 pub fn compiled_moonphys_bridge_status() -> String
 
-pub fn compiled_moonphys_default_payload_bridge_status() -> String
-
-pub fn moonrobo_noetix_generated_suite_adapter_payload() -> NoetixSuiteAdapterPayload
-
-pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload
-
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload
-
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json() -> NoetixSuiteAdapterPayload raise
-
 pub fn moonrobo_noetix_suite_adapter_payload_from_live_json(Json) -> NoetixSuiteAdapterPayload raise
 
 pub fn moonrobo_noetix_suite_adapter_payload_from_live_json_text(String) -> NoetixSuiteAdapterPayload raise
-
-pub fn moonrobo_noetix_suite_source_refs() -> Array[SuiteAdapterSourceRef]
 
 // Errors
 

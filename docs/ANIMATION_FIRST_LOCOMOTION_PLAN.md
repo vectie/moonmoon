@@ -405,13 +405,11 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    profile, URDF, mesh, required motion joints, blockers, readiness fields, and
    a typed `noetix_walk_clip` authority for the endless forward walk cycle.
    Moonrobo also exposes `cmd/moonmoon_contract`, and
-   `ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
-   `src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
-   `ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from that typed source
-   package. The default suite payload now routes through the live contract
-   ingestion path, carries authored contact frames as payload data, and can run
-   compiled Moonphys review from its own parsed joint, motion, contact, and
-   motor tables. Rabbita runtime imports the live/generated JS clip for cycle
+   `ui/rabbita-moon/export-moonrobo-contract.mjs` keeps the Rabbita JS clip
+   bridge fresh from that typed source package. The committed MoonBit table
+   snapshot has been removed; Moonmoon suite-preview ingestion now consumes
+   live Moonrobo contract JSON through `cmd/suite_preview`. Rabbita runtime
+   imports the live/generated JS clip for cycle
    rate, root speed, stride, foot phase sequence, foot roles, support windows,
    curve metadata, the typed Moonrobo-authored joint sample table, typed
    authored motion samples for root bob/sway, torso counter-rotation, foot roll,
@@ -439,6 +437,8 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    that ingestion as a native command, and
    `ui/rabbita-moon/check-live-suite-payload.mjs` runs Moonrobo's live contract
    exporter through that command before validating the emitted suite payload.
-   The next Phase 10 target is to move the plain build/test fixture behind this
-   live suite-preview command/build step and remove the committed generated
-   MoonBit motion/contact/motor table snapshot.
+   Plain MoonBit tests now use compact fixture data for parser and review
+   coverage, while full Moonrobo integration coverage is owned by the live
+   command gate. The next target returns to motion quality and robot-definition
+   authority: visual gait polish, full URDF/mesh-derived attachment, terrain IK
+   completion, and durable evidence consumers.

@@ -1,5 +1,291 @@
 ///|
-test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
+fn fixture_vec3(
+  x : Double,
+  y : Double,
+  z : Double,
+) -> SuiteAdapterLiveNoetixVec3 {
+  { x, y, z }
+}
+
+///|
+fn fixture_joint_sample(phase : Double) -> SuiteAdapterAuthoredJointSample {
+  {
+    phase,
+    left_hip_rad: -0.12,
+    left_knee_rad: -0.22,
+    left_ankle_rad: 0.04,
+    left_shoulder_rad: 0.08,
+    left_elbow_rad: 0.18,
+    right_hip_rad: 0.12,
+    right_knee_rad: -0.22,
+    right_ankle_rad: -0.04,
+    right_shoulder_rad: -0.08,
+    right_elbow_rad: 0.18,
+  }
+}
+
+///|
+fn fixture_motion_sample(phase : Double) -> SuiteAdapterAuthoredMotionSample {
+  {
+    phase,
+    root_cycle_forward_m: phase * 0.38,
+    root_sway_m: 0.0,
+    root_bob_m: -0.01,
+    torso_counter_rotation_rad: 0.04,
+    left_foot_x_m: 0.12,
+    left_foot_y_m: 0.0,
+    left_foot_z_m: 0.0,
+    left_foot_roll_pitch_rad: 0.02,
+    right_foot_x_m: -0.12,
+    right_foot_y_m: 0.0,
+    right_foot_z_m: 0.0,
+    right_foot_roll_pitch_rad: -0.02,
+  }
+}
+
+///|
+fn fixture_contact_frame(
+  frame_index : Int,
+  phase : Double,
+  time_s : Double,
+) -> SuiteAdapterLiveNoetixContactFrame {
+  let foot = if frame_index == 0 { "left" } else { "right" }
+  {
+    frame_index,
+    time_s,
+    phase,
+    phase_label: "\{foot}-stance-fixture",
+    support_foot: foot,
+    review_id: "fixture-motion-frame/\{frame_index}",
+    center_of_mass: fixture_vec3(0.0, 0.0, 0.42),
+    center_of_mass_velocity: fixture_vec3(0.02, 0.0, 0.0),
+    total_mass_kg: 12.0,
+    contact_count: 1,
+    active_footprint_count: 1,
+    contacts: [
+      {
+        contact_id: "\{foot}-fixture-contact",
+        footprint: {
+          footprint_id: "\{foot}-fixture-footprint",
+          center: fixture_vec3(0.0, 0.0, 0.0),
+          half_length_m: 0.18,
+          half_width_m: 0.09,
+          active: true,
+        },
+        patch: {
+          patch_id: "\{foot}-fixture-patch",
+          center: fixture_vec3(0.0, 0.0, 0.0),
+          half_length_m: 0.18,
+          half_width_m: 0.09,
+          sample_count: 4,
+          contact_count: 4,
+          min_clearance_m: 0.0,
+          max_clearance_m: 0.0,
+          average_surface_elevation_m: 0.0,
+          average_surface_normal: fixture_vec3(0.0, 0.0, 1.0),
+          samples: [
+            {
+              probe_id: "\{foot}-fixture-probe/0",
+              position: fixture_vec3(-0.05, -0.03, 0.0),
+              surface_elevation_m: 0.0,
+              surface_normal: fixture_vec3(0.0, 0.0, 1.0),
+              clearance_m: 0.0,
+              in_contact: true,
+              local_grade: 0.0,
+              status: "contact",
+            },
+            {
+              probe_id: "\{foot}-fixture-probe/1",
+              position: fixture_vec3(0.05, -0.03, 0.0),
+              surface_elevation_m: 0.0,
+              surface_normal: fixture_vec3(0.0, 0.0, 1.0),
+              clearance_m: 0.0,
+              in_contact: true,
+              local_grade: 0.0,
+              status: "contact",
+            },
+            {
+              probe_id: "\{foot}-fixture-probe/2",
+              position: fixture_vec3(0.05, 0.03, 0.0),
+              surface_elevation_m: 0.0,
+              surface_normal: fixture_vec3(0.0, 0.0, 1.0),
+              clearance_m: 0.0,
+              in_contact: true,
+              local_grade: 0.0,
+              status: "contact",
+            },
+            {
+              probe_id: "\{foot}-fixture-probe/3",
+              position: fixture_vec3(-0.05, 0.03, 0.0),
+              surface_elevation_m: 0.0,
+              surface_normal: fixture_vec3(0.0, 0.0, 1.0),
+              clearance_m: 0.0,
+              in_contact: true,
+              local_grade: 0.0,
+              status: "contact",
+            },
+          ],
+          status: "patch-contact",
+        },
+        applied_force_n: fixture_vec3(0.0, 0.0, 60.0),
+      },
+    ],
+    status: "motion-contact-frame-ready",
+  }
+}
+
+///|
+fn fixture_motor_frame(
+  frame_index : Int,
+  phase_start : Double,
+  phase_end : Double,
+  time_s : Double,
+) -> SuiteAdapterMotorFrameSample {
+  {
+    frame_index,
+    time_s,
+    dt_s: 0.1,
+    phase_start,
+    phase_end,
+    phase_label: "fixture-phase",
+    support_foot: if frame_index == 0 {
+      "left"
+    } else {
+      "right"
+    },
+    joint_count: 1,
+    driven_joint_count: 1,
+    review_count: 0,
+    max_abs_angle_delta_rad: 0.05,
+    max_abs_velocity_rad_s: 0.5,
+    max_abs_commanded_torque_nm: 0.4,
+    total_absolute_work_j: 0.02,
+    steps: [
+      {
+        joint_id: "fixture_joint",
+        parent_link: "fixture_parent",
+        child_link: "fixture_child",
+        side: "left",
+        field: "hip",
+        before_position_rad: 0.0,
+        target_position_rad: 0.05,
+        target_velocity_rad_s: 0.5,
+        bounded_velocity_rad_s: 0.5,
+        angle_delta_rad: 0.05,
+        commanded_torque_nm: 0.4,
+        work_j: 0.02,
+        min_position_rad: -1.0,
+        max_position_rad: 1.0,
+        max_velocity_rad_s: 2.0,
+        max_torque_nm: 10.0,
+        stiffness_nm_per_rad: 8.0,
+        damping_nm_s_per_rad: 0.4,
+        position_within_limits: true,
+        velocity_within_limits: true,
+        torque_saturated: false,
+        status: "joint-commanded",
+      },
+    ],
+    status: "world-heightfield-hinge-motor-driven",
+  }
+}
+
+///|
+fn fixture_live_contract() -> SuiteAdapterLiveNoetixContract {
+  {
+    contract_id: "fixture-noetix/moonmoon-locomotion-source-contract",
+    target_payload_type: "vectie/moonmoon/src/suite_adapter_preview.NoetixSuiteAdapterPayload",
+    robot_id: "fixture-noetix",
+    robot_label: "Fixture Noetix",
+    platform: "noetix-fixture",
+    profile_path: "examples/noetix-fixture/robot.json",
+    urdf_path: "examples/noetix-fixture/model/robot.urdf",
+    mesh_paths: ["examples/noetix-fixture/model/meshes/base.obj"],
+    expected_profile_joint_count: 1,
+    profile_joint_ids: ["fixture_joint"],
+    required_motion_joint_ids: ["fixture_joint"],
+    walk_clip: {
+      clip_id: "fixture-noetix/endless-forward-walk",
+      source: "vectie/moonrobo/src/moonmoon_adapter#fixture_walk_clip",
+      cycle_hz: 0.5,
+      root_speed_mps: 0.1,
+      stride_m: 0.2,
+      sample_count: 2,
+      foot_phase_sequence: ["stance", "swing"],
+      phase_labels: ["left-stance-fixture", "right-stance-fixture"],
+      foot_phase_specs: [
+        {
+          role: "stance",
+          phase_start: 0.0,
+          phase_end: 0.5,
+          support: true,
+          lock_window: true,
+        },
+        {
+          role: "swing",
+          phase_start: 0.5,
+          phase_end: 1.0,
+          support: false,
+          lock_window: false,
+        },
+      ],
+      required_joint_ids: ["fixture_joint"],
+      joint_anchors: [
+        {
+          joint_id: "fixture_joint",
+          side: "left",
+          field: "hip",
+          phase: 0.0,
+          position_rad: 0.0,
+        },
+      ],
+      joint_curve_params: [{ name: "fixture_curve", value: 1.0 }],
+      authored_joint_samples: [
+        fixture_joint_sample(0.0),
+        fixture_joint_sample(0.5),
+      ],
+      authored_motion_samples: [
+        fixture_motion_sample(0.0),
+        fixture_motion_sample(0.5),
+      ],
+      authored_contact_frames: [
+        fixture_contact_frame(0, 0.0, 0.0),
+        fixture_contact_frame(1, 0.5, 0.1),
+      ],
+      authored_motor_frames: [
+        fixture_motor_frame(0, 0.0, 0.5, 0.0),
+        fixture_motor_frame(1, 0.5, 1.0, 0.1),
+      ],
+      blocker_count: 0,
+      blockers: [],
+      ready: true,
+      status: "moonmoon-noetix-walk-clip-ready",
+    },
+    source_refs: [
+      {
+        source_id: "fixture-profile",
+        source_family: "moonrobo.robot-profile",
+        local_path: "examples/noetix-fixture/robot.json",
+        role: "fixture robot profile",
+        status: "typed-source",
+      },
+      {
+        source_id: "fixture-urdf",
+        source_family: "moonrobo.urdf",
+        local_path: "examples/noetix-fixture/model/robot.urdf",
+        role: "fixture URDF",
+        status: "typed-source",
+      },
+    ],
+    blocker_count: 0,
+    blockers: [],
+    ready: true,
+    status: "moonmoon-noetix-locomotion-contract-ready",
+  }
+}
+
+///|
+test "Rabbita Noetix evidence feeds compiled Moonphys review" {
   let motion = rabbita_noetix_generated_motion_trace_review()
   let field = @moonphys.heightfield(
     "rabbita-noetix-generated-flat-field",
@@ -21,23 +307,10 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
     "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics",
   )
   assert_eq(generated_rabbita_noetix_motion_frames().length(), 24)
-  assert_eq(generated_moonrobo_noetix_contact_frames().length(), 24)
   assert_eq(generated_rabbita_noetix_hinge_frames().length(), 24)
-  assert_eq(generated_moonrobo_noetix_authored_motor_frames().length(), 24)
-  let first_motion_frame = generated_moonrobo_noetix_contact_frames()[0]
-  let final_motion_frame = generated_moonrobo_noetix_contact_frames()[23]
-  let first_hinge_frame = generated_moonrobo_noetix_authored_motor_frames()[0]
-  assert_eq(first_motion_frame.phase_label, "left-stance-right-swing")
-  assert_eq(first_motion_frame.support_foot, "left")
-  assert_true(final_motion_frame.time_s > first_motion_frame.time_s)
-  assert_eq(first_hinge_frame.time_s, 0.0)
   assert_eq(
     compiled_moonphys_bridge_status(),
-    "moonrobo-noetix-generated-review-ready",
-  )
-  assert_eq(
-    compiled_moonphys_default_payload_bridge_status(),
-    "moonrobo-noetix-default-payload-review-ready",
+    "rabbita-noetix-generated-review-ready",
   )
   assert_true(motion.ready)
   assert_eq(motion.status, "motion-frame-trace-review-ready")
@@ -70,263 +343,17 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
 }
 
 ///|
-test "Moonrobo Noetix generated suite payload records durable source refs" {
-  let payload = moonrobo_noetix_generated_suite_adapter_payload()
-  assert_true(payload.ready)
-  assert_eq(payload.status, "moonrobo-noetix-suite-payload-ready")
-  assert_eq(payload.source_refs.length(), 7)
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonmoon.rabbita.generated-evidence" &&
-      source.status == "generated-ui-gate"
-    }),
-  )
-}
-
-///|
-test "Moonrobo Noetix suite payload records live source refs by default" {
-  let payload = moonrobo_noetix_suite_adapter_payload()
-  assert_true(payload.ready)
-  assert_eq(payload.status, "moonrobo-noetix-live-suite-payload-ready")
-  assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
-  assert_eq(payload.robot_id, "noetix-e1-lab-01")
-  assert_eq(payload.platform, "noetix-e1")
-  assert_eq(payload.expected_profile_joint_count, 24)
-  assert_eq(
-    generated_moonrobo_noetix_contract_id(),
-    "noetix-e1-lab-01/moonmoon-locomotion-source-contract",
-  )
-  assert_eq(
-    generated_moonrobo_noetix_target_payload_type(),
-    "vectie/moonmoon/src/suite_adapter_preview.NoetixSuiteAdapterPayload",
-  )
-  assert_eq(generated_moonrobo_noetix_profile_joint_ids().length(), 24)
-  assert_true(generated_moonrobo_noetix_source_ready())
-  assert_eq(
-    generated_moonrobo_noetix_source_status(),
-    "moonmoon-noetix-locomotion-contract-ready",
-  )
-  assert_true(generated_moonrobo_noetix_walk_clip_ready())
-  assert_eq(
-    generated_moonrobo_noetix_walk_clip_status(),
-    "moonmoon-noetix-walk-clip-ready",
-  )
-  assert_eq(payload.walk_clip_id, "noetix-e1-lab-01/endless-forward-walk")
-  assert_eq(
-    payload.walk_clip_source,
-    "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract",
-  )
-  assert_eq(payload.walk_cycle_hz, 0.46)
-  assert_eq(payload.root_speed_mps, 0.18)
-  assert_eq(payload.stride_m, 0.38)
-  assert_eq(payload.walk_sample_count, 24)
-  assert_eq(payload.foot_phase_sequence.length(), 6)
-  assert_true(payload.foot_phase_sequence.contains("contact"))
-  assert_true(payload.foot_phase_sequence.contains("swing"))
-  assert_true(payload.walk_phase_labels.contains("left-stance-right-swing"))
-  assert_true(payload.walk_phase_labels.contains("right-stance-left-swing"))
-  assert_eq(payload.foot_phase_specs.length(), 6)
-  assert_true(
-    payload.foot_phase_specs.any(fn(spec) {
-      spec.role == "stance" && spec.support && spec.lock_window
-    }),
-  )
-  assert_true(
-    payload.foot_phase_specs.any(fn(spec) {
-      spec.role == "swing" && !spec.support && !spec.lock_window
-    }),
-  )
-  assert_true(
-    payload.joint_anchors.any(fn(anchor) {
-      anchor.joint_id == "leg_l4_joint" &&
-      anchor.side == "left" &&
-      anchor.field == "knee" &&
-      anchor.position_rad < -0.5
-    }),
-  )
-  assert_true(
-    payload.joint_anchors.any(fn(anchor) {
-      anchor.joint_id == "arm_r4_joint" && anchor.field == "elbow"
-    }),
-  )
-  assert_true(
-    payload.joint_curve_params.any(fn(param) {
-      param.name == "knee_swing_lift_rad" && param.value > 0.7
-    }),
-  )
-  assert_true(
-    payload.joint_curve_params.any(fn(param) {
-      param.name == "arm_phase_lag" && param.value == 0.44
-    }),
-  )
-  assert_true(
-    payload.joint_curve_params.any(fn(param) {
-      param.name == "shoulder_hip_scale" && param.value == 0.76
-    }),
-  )
-  assert_eq(payload.authored_joint_samples.length(), payload.walk_sample_count)
-  assert_eq(payload.authored_joint_samples[0].phase, 0.0)
-  assert_true(
-    payload.authored_joint_samples.any(fn(sample) {
-      sample.left_knee_rad < -0.75 || sample.right_knee_rad < -0.75
-    }),
-  )
-  for sample in payload.authored_joint_samples {
-    assert_true(sample.left_knee_rad <= 0.0)
-    assert_true(sample.right_knee_rad <= 0.0)
-  }
-  assert_eq(payload.authored_motion_samples.length(), payload.walk_sample_count)
-  assert_eq(payload.authored_motion_samples[0].phase, 0.0)
-  assert_true(
-    payload.authored_motion_samples.any(fn(sample) {
-      sample.root_bob_m < -0.03 && sample.root_cycle_forward_m > 0.08
-    }),
-  )
-  assert_true(
-    payload.authored_motion_samples.any(fn(sample) {
-      sample.torso_counter_rotation_rad > 0.12 ||
-      sample.torso_counter_rotation_rad < -0.12
-    }),
-  )
-  for sample in payload.authored_motion_samples {
-    assert_true(sample.left_foot_x_m > 0.0)
-    assert_true(sample.right_foot_x_m < 0.0)
-  }
-  assert_eq(payload.authored_contact_frames.length(), payload.walk_sample_count)
-  assert_eq(
-    payload.authored_contact_frames[0].phase_label,
-    "left-stance-right-swing",
-  )
-  assert_eq(payload.authored_contact_frames[0].support_foot, "left")
-  assert_true(
-    payload.authored_contact_frames.any(fn(frame) {
-      frame.active_footprint_count > 0 && frame.contact_count == 2
-    }),
-  )
-  assert_eq(payload.authored_motor_frames.length(), payload.walk_sample_count)
-  assert_true(
-    payload.authored_motor_frames.any(fn(frame) {
-      frame.driven_joint_count > 0 &&
-      frame.status == "world-heightfield-hinge-motor-driven"
-    }),
-  )
-  for frame in payload.authored_motor_frames {
-    assert_eq(frame.joint_count, payload.driven_joint_ids.length())
-    assert_eq(frame.review_count, 0)
-    assert_true(frame.max_abs_velocity_rad_s <= 3.0)
-  }
-  assert_true(payload.live_suite_evidence.ready)
-  assert_eq(
-    payload.live_suite_evidence.status,
-    "moonmoon-noetix-live-suite-evidence-ready",
-  )
-  assert_eq(
-    payload.live_suite_evidence.regeneration_mode,
-    "live-moonrobo-typed-adapter",
-  )
-  assert_eq(
-    payload.live_suite_evidence.contract_id,
-    generated_moonrobo_noetix_contract_id(),
-  )
-  assert_eq(payload.live_suite_evidence.walk_clip_id, payload.walk_clip_id)
-  assert_eq(payload.live_suite_evidence.sample_count, payload.walk_sample_count)
-  assert_eq(
-    payload.live_suite_evidence.profile_joint_count,
-    payload.expected_profile_joint_count,
-  )
-  assert_eq(
-    payload.live_suite_evidence.required_motion_joint_count,
-    payload.driven_joint_ids.length(),
-  )
-  assert_eq(
-    payload.live_suite_evidence.authored_joint_sample_count,
-    payload.authored_joint_samples.length(),
-  )
-  assert_eq(
-    payload.live_suite_evidence.authored_motion_sample_count,
-    payload.authored_motion_samples.length(),
-  )
-  assert_eq(
-    payload.live_suite_evidence.authored_motor_frame_count,
-    payload.authored_motor_frames.length(),
-  )
-  assert_eq(payload.live_suite_evidence.motor_review_count, 0)
-  assert_eq(payload.live_suite_evidence.contact_review_count, 0)
-  assert_eq(payload.live_suite_evidence.blocker_count, 0)
-  assert_eq(payload.frame_count, 24)
-  assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
-  assert_eq(
-    payload.evidence_source,
-    "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract#authored_contact_frames",
-  )
-  assert_eq(payload.profile_path, "../moonrobo/examples/noetix-e1/robot.json")
-  assert_eq(
-    payload.urdf_path,
-    "../moonrobo/examples/noetix-e1/model/robot.urdf",
-  )
-  assert_true(
-    payload.mesh_paths.contains(
-      "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
-    ),
-  )
-  assert_true(payload.driven_joint_ids.contains("leg_l1_joint"))
-  assert_true(payload.driven_joint_ids.contains("leg_r4_joint"))
-  assert_true(payload.driven_joint_ids.contains("arm_l1_joint"))
-  assert_true(payload.driven_joint_ids.contains("arm_r4_joint"))
-  assert_eq(payload.source_refs.length(), 6)
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonrobo.moonmoon-adapter-contract" &&
-      source.local_path ==
-      "../moonrobo/src/moonmoon_adapter/noetix_contract.mbt#noetix_e1_moonmoon_locomotion_contract" &&
-      source.status == "live-typed-source"
-    }),
-  )
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonrobo.robot-profile" &&
-      source.local_path == "../moonrobo/examples/noetix-e1/robot.json" &&
-      source.status == "typed-source"
-    }),
-  )
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonrobo.urdf" &&
-      source.local_path == "../moonrobo/examples/noetix-e1/model/robot.urdf" &&
-      source.status == "typed-source"
-    }),
-  )
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonrobo.moonmoon-adapter-contact-evidence" &&
-      source.local_path ==
-      "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract#authored_contact_frames" &&
-      source.status == "live-typed-source"
-    }),
-  )
-  assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonrobo.moonmoon-live-suite-evidence" &&
-      source.local_path ==
-      "../moonrobo/src/moonmoon_adapter/noetix_live_suite_evidence.mbt#noetix_e1_moonmoon_live_suite_evidence" &&
-      source.status == "live-typed-source"
-    }),
-  )
-  assert_true(
-    !payload.source_refs.any(fn(source) {
-      source.source_family == "moonmoon.rabbita.generated-evidence"
-    }),
-  )
-}
-
-///|
-test "Moonrobo live contract JSON ingests full suite payload" {
+test "Moonrobo live contract JSON ingestion builds suite payload explicitly" {
   let payload = try
-    moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json()
+    moonrobo_noetix_suite_adapter_payload_from_live_json(
+      fixture_live_contract().to_json(),
+    )
   catch {
     _ => {
       assert_true(false)
-      moonrobo_noetix_suite_adapter_payload()
+      moonrobo_noetix_suite_adapter_payload_from_live_contract(
+        fixture_live_contract(),
+      )
     }
   } noraise {
     payload => payload
@@ -334,39 +361,20 @@ test "Moonrobo live contract JSON ingests full suite payload" {
   assert_true(payload.ready)
   assert_eq(payload.status, "moonrobo-noetix-live-suite-payload-ready")
   assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
-  assert_eq(payload.walk_clip_id, "noetix-e1-lab-01/endless-forward-walk")
-  assert_eq(payload.motion_trace_id, "noetix-e1-lab-01/live-motion-trace")
-  assert_eq(payload.hinge_trace_id, "noetix-e1-lab-01/live-hinge-trace")
-  assert_eq(
-    payload.combined_review_id,
-    "noetix-e1-lab-01/live-motion-hinge-review",
-  )
-  assert_eq(payload.walk_sample_count, 24)
-  assert_eq(payload.frame_count, 24)
-  assert_eq(payload.authored_joint_samples.length(), 24)
-  assert_eq(payload.authored_motion_samples.length(), 24)
-  assert_eq(payload.authored_contact_frames.length(), 24)
-  assert_true(
-    payload.authored_contact_frames.any(fn(frame) {
-      frame.active_footprint_count > 0 && frame.contact_count == 2
-    }),
-  )
-  assert_eq(payload.authored_motor_frames.length(), 24)
-  assert_true(payload.live_suite_evidence.ready)
-  assert_eq(
-    payload.live_suite_evidence.regeneration_mode,
-    "live-moonrobo-typed-adapter",
-  )
-  assert_eq(payload.live_suite_evidence.sample_count, payload.walk_sample_count)
-  assert_eq(payload.live_suite_evidence.authored_contact_frame_count, 24)
-  assert_eq(payload.live_suite_evidence.authored_motor_frame_count, 24)
-  assert_eq(payload.live_suite_evidence.active_contact_frame_count, 24)
-  assert_eq(payload.live_suite_evidence.loaded_contact_count, 38)
-  assert_eq(payload.live_suite_evidence.driven_motor_frame_count, 24)
-  assert_eq(payload.live_suite_evidence.motor_review_count, 0)
-  assert_eq(payload.live_suite_evidence.contact_review_count, 0)
+  assert_eq(payload.robot_id, "fixture-noetix")
+  assert_eq(payload.walk_sample_count, 2)
+  assert_eq(payload.frame_count, 2)
+  assert_eq(payload.authored_joint_samples.length(), 2)
+  assert_eq(payload.authored_motion_samples.length(), 2)
+  assert_eq(payload.authored_contact_frames.length(), 2)
+  assert_eq(payload.authored_motor_frames.length(), 2)
+  assert_eq(payload.live_suite_evidence.sample_count, 2)
+  assert_eq(payload.live_suite_evidence.authored_contact_frame_count, 2)
+  assert_eq(payload.live_suite_evidence.authored_motor_frame_count, 2)
+  assert_eq(payload.live_suite_evidence.loaded_contact_count, 2)
+  assert_eq(payload.live_suite_evidence.driven_motor_frame_count, 2)
   assert_eq(payload.live_suite_evidence.blocker_count, 0)
-  assert_eq(payload.source_refs.length(), 6)
+  assert_eq(payload.source_refs.length(), 5)
   assert_true(
     payload.source_refs.any(fn(source) {
       source.source_family == "moonrobo.moonmoon-adapter-contract" &&
@@ -383,5 +391,28 @@ test "Moonrobo live contract JSON ingests full suite payload" {
     !payload.source_refs.any(fn(source) {
       source.source_family == "moonmoon.rabbita.generated-evidence"
     }),
+  )
+}
+
+///|
+test "Moonrobo live contract JSON text ingestion reports blockers" {
+  let blocked = fixture_live_contract()
+  let blocked = { ..blocked, target_payload_type: "wrong.Payload" }
+  let payload = try
+    moonrobo_noetix_suite_adapter_payload_from_live_json_text(
+      blocked.to_json().stringify(),
+    )
+  catch {
+    _ => {
+      assert_true(false)
+      moonrobo_noetix_suite_adapter_payload_from_live_contract(blocked)
+    }
+  } noraise {
+    payload => payload
+  }
+  assert_true(!payload.ready)
+  assert_eq(payload.status, "moonrobo-noetix-live-suite-payload-blocked")
+  assert_true(
+    payload.blockers.contains("moonrobo-live-contract-target:wrong.Payload"),
   )
 }

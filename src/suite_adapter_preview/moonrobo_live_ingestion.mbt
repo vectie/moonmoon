@@ -129,32 +129,12 @@ fn live_vec3_to_generated(
 }
 
 ///|
-fn generated_vec3_to_live(
-  value : RabbitaNoetixGeneratedVec3,
-) -> SuiteAdapterLiveNoetixVec3 {
-  { x: value.x, y: value.y, z: value.z }
-}
-
-///|
 fn live_footprint_to_generated(
   value : SuiteAdapterLiveNoetixFootprint,
 ) -> RabbitaNoetixGeneratedFootprint {
   {
     footprint_id: value.footprint_id,
     center: live_vec3_to_generated(value.center),
-    half_length_m: value.half_length_m,
-    half_width_m: value.half_width_m,
-    active: value.active,
-  }
-}
-
-///|
-fn generated_footprint_to_live(
-  value : RabbitaNoetixGeneratedFootprint,
-) -> SuiteAdapterLiveNoetixFootprint {
-  {
-    footprint_id: value.footprint_id,
-    center: generated_vec3_to_live(value.center),
     half_length_m: value.half_length_m,
     half_width_m: value.half_width_m,
     active: value.active,
@@ -170,22 +150,6 @@ fn live_contact_probe_to_generated(
     position: live_vec3_to_generated(value.position),
     surface_elevation_m: value.surface_elevation_m,
     surface_normal: live_vec3_to_generated(value.surface_normal),
-    clearance_m: value.clearance_m,
-    in_contact: value.in_contact,
-    local_grade: value.local_grade,
-    status: value.status,
-  }
-}
-
-///|
-fn generated_contact_probe_to_live(
-  value : RabbitaNoetixGeneratedContactProbe,
-) -> SuiteAdapterLiveNoetixContactProbe {
-  {
-    probe_id: value.probe_id,
-    position: generated_vec3_to_live(value.position),
-    surface_elevation_m: value.surface_elevation_m,
-    surface_normal: generated_vec3_to_live(value.surface_normal),
     clearance_m: value.clearance_m,
     in_contact: value.in_contact,
     local_grade: value.local_grade,
@@ -214,26 +178,6 @@ fn live_contact_patch_to_generated(
 }
 
 ///|
-fn generated_contact_patch_to_live(
-  value : RabbitaNoetixGeneratedContactPatch,
-) -> SuiteAdapterLiveNoetixContactPatch {
-  {
-    patch_id: value.patch_id,
-    center: generated_vec3_to_live(value.center),
-    half_length_m: value.half_length_m,
-    half_width_m: value.half_width_m,
-    sample_count: value.sample_count,
-    contact_count: value.contact_count,
-    min_clearance_m: value.min_clearance_m,
-    max_clearance_m: value.max_clearance_m,
-    average_surface_elevation_m: value.average_surface_elevation_m,
-    average_surface_normal: generated_vec3_to_live(value.average_surface_normal),
-    samples: value.samples.map(generated_contact_probe_to_live),
-    status: value.status,
-  }
-}
-
-///|
 fn live_contact_to_generated(
   value : SuiteAdapterLiveNoetixContact,
 ) -> RabbitaNoetixGeneratedContact {
@@ -242,18 +186,6 @@ fn live_contact_to_generated(
     footprint: live_footprint_to_generated(value.footprint),
     patch: live_contact_patch_to_generated(value.patch),
     applied_force_n: live_vec3_to_generated(value.applied_force_n),
-  }
-}
-
-///|
-fn generated_contact_to_live(
-  value : RabbitaNoetixGeneratedContact,
-) -> SuiteAdapterLiveNoetixContact {
-  {
-    contact_id: value.contact_id,
-    footprint: generated_footprint_to_live(value.footprint),
-    patch: generated_contact_patch_to_live(value.patch),
-    applied_force_n: generated_vec3_to_live(value.applied_force_n),
   }
 }
 
@@ -365,38 +297,6 @@ fn live_contact_frame_to_suite_sample(
     active_footprint_count: value.active_footprint_count,
     contacts: value.contacts.map(live_contact_to_suite_sample),
     status: value.status,
-  }
-}
-
-///|
-fn generated_contact_frame_to_live(
-  frame_index : Int,
-  sample_count : Int,
-  value : RabbitaNoetixGeneratedMotionFrame,
-) -> SuiteAdapterLiveNoetixContactFrame {
-  let active_footprint_count = value.contacts.fold(init=0, fn(count, contact) {
-    if contact.footprint.active {
-      count + 1
-    } else {
-      count
-    }
-  })
-  {
-    frame_index,
-    time_s: value.time_s,
-    phase: frame_index.to_double() / sample_count.to_double(),
-    phase_label: value.phase_label,
-    support_foot: value.support_foot,
-    review_id: value.review_id,
-    center_of_mass: generated_vec3_to_live(value.center_of_mass),
-    center_of_mass_velocity: generated_vec3_to_live(
-      value.center_of_mass_velocity,
-    ),
-    total_mass_kg: value.total_mass_kg,
-    contact_count: value.contacts.length(),
-    active_footprint_count,
-    contacts: value.contacts.map(generated_contact_to_live),
-    status: "moonrobo-live-contact-frame-ready",
   }
 }
 
@@ -748,71 +648,3 @@ pub fn moonrobo_noetix_suite_adapter_payload_from_live_json_text(
 }
 
 ///|
-fn generated_live_contract_contact_frames() -> Array[
-  SuiteAdapterLiveNoetixContactFrame,
-] {
-  let frames : Array[SuiteAdapterLiveNoetixContactFrame] = []
-  let source = generated_moonrobo_noetix_contact_frames()
-  let sample_count = generated_moonrobo_noetix_walk_sample_count()
-  for index, frame in source {
-    frames.push(generated_contact_frame_to_live(index, sample_count, frame))
-  }
-  frames
-}
-
-///|
-fn moonrobo_noetix_generated_live_contract_fixture() -> SuiteAdapterLiveNoetixContract {
-  {
-    contract_id: generated_moonrobo_noetix_contract_id(),
-    target_payload_type: generated_moonrobo_noetix_target_payload_type(),
-    robot_id: generated_moonrobo_noetix_robot_id(),
-    robot_label: generated_moonrobo_noetix_robot_label(),
-    platform: generated_moonrobo_noetix_platform(),
-    profile_path: generated_moonrobo_noetix_profile_path(),
-    urdf_path: generated_moonrobo_noetix_urdf_path(),
-    mesh_paths: generated_moonrobo_noetix_mesh_paths(),
-    expected_profile_joint_count: generated_moonrobo_noetix_expected_profile_joint_count(),
-    profile_joint_ids: generated_moonrobo_noetix_profile_joint_ids(),
-    required_motion_joint_ids: generated_moonrobo_noetix_required_motion_joint_ids(),
-    walk_clip: {
-      clip_id: generated_moonrobo_noetix_walk_clip_id(),
-      source: generated_moonrobo_noetix_walk_clip_source(),
-      cycle_hz: generated_moonrobo_noetix_walk_cycle_hz(),
-      root_speed_mps: generated_moonrobo_noetix_root_speed_mps(),
-      stride_m: generated_moonrobo_noetix_stride_m(),
-      sample_count: generated_moonrobo_noetix_walk_sample_count(),
-      foot_phase_sequence: generated_moonrobo_noetix_foot_phase_sequence(),
-      phase_labels: generated_moonrobo_noetix_walk_phase_labels(),
-      foot_phase_specs: generated_moonrobo_noetix_foot_phase_specs(),
-      required_joint_ids: generated_moonrobo_noetix_required_motion_joint_ids(),
-      joint_anchors: generated_moonrobo_noetix_joint_anchors(),
-      joint_curve_params: generated_moonrobo_noetix_joint_curve_params(),
-      authored_joint_samples: generated_moonrobo_noetix_authored_joint_samples(),
-      authored_motion_samples: generated_moonrobo_noetix_authored_motion_samples(),
-      authored_contact_frames: generated_live_contract_contact_frames(),
-      authored_motor_frames: generated_moonrobo_noetix_authored_motor_frames(),
-      blocker_count: generated_moonrobo_noetix_walk_clip_blockers().length(),
-      blockers: generated_moonrobo_noetix_walk_clip_blockers(),
-      ready: generated_moonrobo_noetix_walk_clip_ready(),
-      status: generated_moonrobo_noetix_walk_clip_status(),
-    },
-    source_refs: generated_moonrobo_noetix_source_refs(),
-    blocker_count: generated_moonrobo_noetix_source_blockers().length(),
-    blockers: generated_moonrobo_noetix_source_blockers(),
-    ready: generated_moonrobo_noetix_source_ready(),
-    status: generated_moonrobo_noetix_source_status(),
-  }
-}
-
-///|
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload {
-  moonrobo_noetix_suite_adapter_payload_from_live_contract(
-    moonrobo_noetix_generated_live_contract_fixture(),
-  )
-}
-
-///|
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json() -> NoetixSuiteAdapterPayload raise {
-  let json = moonrobo_noetix_generated_live_contract_fixture().to_json()
-  moonrobo_noetix_suite_adapter_payload_from_live_json(json)
-}
