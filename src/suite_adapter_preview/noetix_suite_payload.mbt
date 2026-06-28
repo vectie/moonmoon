@@ -64,6 +64,75 @@ pub(all) struct SuiteAdapterAuthoredMotionSample {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterVec3Sample {
+  x : Double
+  y : Double
+  z : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterFootprintSample {
+  footprint_id : String
+  center : SuiteAdapterVec3Sample
+  half_length_m : Double
+  half_width_m : Double
+  active : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterContactProbeSample {
+  probe_id : String
+  position : SuiteAdapterVec3Sample
+  surface_elevation_m : Double
+  surface_normal : SuiteAdapterVec3Sample
+  clearance_m : Double
+  in_contact : Bool
+  local_grade : Double
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterContactPatchSample {
+  patch_id : String
+  center : SuiteAdapterVec3Sample
+  half_length_m : Double
+  half_width_m : Double
+  sample_count : Int
+  contact_count : Int
+  min_clearance_m : Double
+  max_clearance_m : Double
+  average_surface_elevation_m : Double
+  average_surface_normal : SuiteAdapterVec3Sample
+  samples : Array[SuiteAdapterContactProbeSample]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterContactEvidenceSample {
+  contact_id : String
+  footprint : SuiteAdapterFootprintSample
+  patch : SuiteAdapterContactPatchSample
+  applied_force_n : SuiteAdapterVec3Sample
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterContactFrameSample {
+  frame_index : Int
+  time_s : Double
+  phase : Double
+  phase_label : String
+  support_foot : String
+  review_id : String
+  center_of_mass : SuiteAdapterVec3Sample
+  center_of_mass_velocity : SuiteAdapterVec3Sample
+  total_mass_kg : Double
+  contact_count : Int
+  active_footprint_count : Int
+  contacts : Array[SuiteAdapterContactEvidenceSample]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct SuiteAdapterMotorTargetStep {
   joint_id : String
   parent_link : String
@@ -161,6 +230,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   joint_curve_params : Array[SuiteAdapterJointCurveParam]
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
+  authored_contact_frames : Array[SuiteAdapterContactFrameSample]
   authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
   live_suite_evidence : SuiteAdapterLiveSuiteEvidence
   expected_profile_joint_count : Int
@@ -686,6 +756,11 @@ fn moonrobo_noetix_suite_payload_blockers(
 
 ///|
 pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
+  moonrobo_noetix_suite_adapter_payload_from_generated_live_contract()
+}
+
+///|
+pub fn moonrobo_noetix_generated_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
   let driven_joint_ids = noetix_generated_driven_joint_ids()
   let frame_count = generated_moonrobo_noetix_contact_frames().length()
   let review_status = compiled_moonphys_bridge_status()
@@ -717,6 +792,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     joint_curve_params: generated_moonrobo_noetix_joint_curve_params(),
     authored_joint_samples: generated_moonrobo_noetix_authored_joint_samples(),
     authored_motion_samples: generated_moonrobo_noetix_authored_motion_samples(),
+    authored_contact_frames: generated_moonrobo_noetix_suite_contact_frames(),
     authored_motor_frames: generated_moonrobo_noetix_authored_motor_frames(),
     live_suite_evidence: generated_moonrobo_noetix_live_suite_evidence(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),

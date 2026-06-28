@@ -276,6 +276,99 @@ fn live_contact_frame_to_generated(
 }
 
 ///|
+fn live_vec3_to_suite_sample(
+  value : SuiteAdapterLiveNoetixVec3,
+) -> SuiteAdapterVec3Sample {
+  { x: value.x, y: value.y, z: value.z }
+}
+
+///|
+fn live_footprint_to_suite_sample(
+  value : SuiteAdapterLiveNoetixFootprint,
+) -> SuiteAdapterFootprintSample {
+  {
+    footprint_id: value.footprint_id,
+    center: live_vec3_to_suite_sample(value.center),
+    half_length_m: value.half_length_m,
+    half_width_m: value.half_width_m,
+    active: value.active,
+  }
+}
+
+///|
+fn live_contact_probe_to_suite_sample(
+  value : SuiteAdapterLiveNoetixContactProbe,
+) -> SuiteAdapterContactProbeSample {
+  {
+    probe_id: value.probe_id,
+    position: live_vec3_to_suite_sample(value.position),
+    surface_elevation_m: value.surface_elevation_m,
+    surface_normal: live_vec3_to_suite_sample(value.surface_normal),
+    clearance_m: value.clearance_m,
+    in_contact: value.in_contact,
+    local_grade: value.local_grade,
+    status: value.status,
+  }
+}
+
+///|
+fn live_contact_patch_to_suite_sample(
+  value : SuiteAdapterLiveNoetixContactPatch,
+) -> SuiteAdapterContactPatchSample {
+  {
+    patch_id: value.patch_id,
+    center: live_vec3_to_suite_sample(value.center),
+    half_length_m: value.half_length_m,
+    half_width_m: value.half_width_m,
+    sample_count: value.sample_count,
+    contact_count: value.contact_count,
+    min_clearance_m: value.min_clearance_m,
+    max_clearance_m: value.max_clearance_m,
+    average_surface_elevation_m: value.average_surface_elevation_m,
+    average_surface_normal: live_vec3_to_suite_sample(
+      value.average_surface_normal,
+    ),
+    samples: value.samples.map(live_contact_probe_to_suite_sample),
+    status: value.status,
+  }
+}
+
+///|
+fn live_contact_to_suite_sample(
+  value : SuiteAdapterLiveNoetixContact,
+) -> SuiteAdapterContactEvidenceSample {
+  {
+    contact_id: value.contact_id,
+    footprint: live_footprint_to_suite_sample(value.footprint),
+    patch: live_contact_patch_to_suite_sample(value.patch),
+    applied_force_n: live_vec3_to_suite_sample(value.applied_force_n),
+  }
+}
+
+///|
+fn live_contact_frame_to_suite_sample(
+  value : SuiteAdapterLiveNoetixContactFrame,
+) -> SuiteAdapterContactFrameSample {
+  {
+    frame_index: value.frame_index,
+    time_s: value.time_s,
+    phase: value.phase,
+    phase_label: value.phase_label,
+    support_foot: value.support_foot,
+    review_id: value.review_id,
+    center_of_mass: live_vec3_to_suite_sample(value.center_of_mass),
+    center_of_mass_velocity: live_vec3_to_suite_sample(
+      value.center_of_mass_velocity,
+    ),
+    total_mass_kg: value.total_mass_kg,
+    contact_count: value.contact_count,
+    active_footprint_count: value.active_footprint_count,
+    contacts: value.contacts.map(live_contact_to_suite_sample),
+    status: value.status,
+  }
+}
+
+///|
 fn generated_contact_frame_to_live(
   frame_index : Int,
   sample_count : Int,
@@ -618,6 +711,9 @@ fn moonrobo_noetix_suite_adapter_payload_from_live_contract(
     joint_curve_params: clip.joint_curve_params,
     authored_joint_samples: clip.authored_joint_samples,
     authored_motion_samples: clip.authored_motion_samples,
+    authored_contact_frames: clip.authored_contact_frames.map(
+      live_contact_frame_to_suite_sample,
+    ),
     authored_motor_frames: clip.authored_motor_frames,
     live_suite_evidence: evidence,
     expected_profile_joint_count: contract.expected_profile_joint_count,
@@ -709,8 +805,14 @@ fn moonrobo_noetix_generated_live_contract_fixture() -> SuiteAdapterLiveNoetixCo
 }
 
 ///|
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload raise {
-  moonrobo_noetix_suite_adapter_payload_from_live_json(
-    moonrobo_noetix_generated_live_contract_fixture().to_json(),
+pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload {
+  moonrobo_noetix_suite_adapter_payload_from_live_contract(
+    moonrobo_noetix_generated_live_contract_fixture(),
   )
+}
+
+///|
+pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json() -> NoetixSuiteAdapterPayload raise {
+  let json = moonrobo_noetix_generated_live_contract_fixture().to_json()
+  moonrobo_noetix_suite_adapter_payload_from_live_json(json)
 }

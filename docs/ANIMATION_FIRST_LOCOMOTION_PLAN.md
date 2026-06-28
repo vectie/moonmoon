@@ -408,13 +408,15 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
    `src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
    `ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from that typed source
-   package. The suite payload now consumes those generated Moonrobo contract and
-   walk-clip fields, the Rabbita runtime imports the generated JS clip for
-   cycle rate, root speed, stride, foot phase sequence, foot roles, support
-   windows, curve metadata, the typed Moonrobo-authored joint sample table, and
-   typed authored motion samples for root bob/sway, torso counter-rotation,
-   foot roll, root-local foot targets, typed authored FK/contact frames, and
-   typed authored motor frames for Moonphys review. Rabbita interpolates those
+   package. The default suite payload now routes through the live contract
+   ingestion path, carries authored contact frames as payload data, and can run
+   compiled Moonphys review from its own parsed joint, motion, contact, and
+   motor tables. Rabbita runtime imports the live/generated JS clip for cycle
+   rate, root speed, stride, foot phase sequence, foot roles, support windows,
+   curve metadata, the typed Moonrobo-authored joint sample table, typed
+   authored motion samples for root bob/sway, torso counter-rotation, foot roll,
+   root-local foot targets, typed authored FK/contact frames, and typed authored
+   motor frames for Moonphys review. Rabbita interpolates those
    generated samples instead of owning the leg/arm, root, torso, foot-roll,
    authored foot-target, FK/contact, or hinge motor target formulas in
    `gait-clip.js` and `scene3d.js`. The compiled Moonphys bridge now consumes
@@ -434,6 +436,6 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    now accepts a full live Moonrobo contract JSON value, decodes the authored
    joint, motion, contact, and motor tables, and runs the compiled Moonphys
    review from the parsed contact/motor frames. The next Phase 10 target is to
-   wire that live ingestion path as the default suite-preview command/build path
-   and remove the committed generated MoonBit motion/contact/motor table
+   move the plain build/test fixture behind a live suite-preview command/build
+   step and remove the committed generated MoonBit motion/contact/motor table
    snapshot.

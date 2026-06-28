@@ -57,3 +57,52 @@ pub fn compiled_moonphys_bridge_status() -> String {
     "moonrobo-noetix-generated-review-mismatch"
   }
 }
+
+///|
+pub fn compiled_moonphys_default_payload_bridge_status() -> String {
+  let payload = moonrobo_noetix_suite_adapter_payload()
+  let field = @moonphys.heightfield(
+    "rabbita-noetix-default-payload-flat-field",
+    1,
+    1,
+    1.0,
+    [0.0],
+  )
+  let motion = rabbita_noetix_motion_trace_review_from_suite_contact_frames(
+    payload.motion_trace_id,
+    payload.authored_contact_frames,
+  )
+  let hinge = rabbita_noetix_hinge_trace_from_motor_frames(
+    payload.hinge_trace_id,
+    field,
+    payload.authored_motor_frames,
+    payload.evidence_source,
+  )
+  let replay = rabbita_noetix_replay_review_from_suite_contact_frames(
+    hinge,
+    payload.authored_contact_frames,
+  )
+  let review = @moonphys.motion_hinge_replay_review_with_replay(
+    payload.combined_review_id,
+    motion,
+    hinge,
+    replay,
+  )
+  if payload.ready &&
+    payload.status == "moonrobo-noetix-live-suite-payload-ready" &&
+    payload.authored_contact_frames.length() == payload.walk_sample_count &&
+    payload.authored_motor_frames.length() == payload.walk_sample_count &&
+    hinge.status == "world-heightfield-hinge-motor-trace-driven" &&
+    hinge.review_count == 0 &&
+    motion.ready &&
+    replay.ready &&
+    review.ready &&
+    review.status == "motion-hinge-replay-review-ready" {
+    "moonrobo-noetix-default-payload-review-ready"
+  } else if !review.ready &&
+    review.status == "motion-hinge-replay-review-blocked" {
+    "moonrobo-noetix-default-payload-review-blocked"
+  } else {
+    "moonrobo-noetix-default-payload-review-mismatch"
+  }
+}

@@ -353,16 +353,17 @@ status, blockers, and readiness. The Moonrobo source-side package
 `MoonmoonNoetixLocomotionContract` with Noetix profile, URDF, mesh, required
 motion-joint, blocker, readiness, and typed walk-clip fields for Moonmoon
 consumption.
-`../moonrobo/cmd/moonmoon_contract` exports that typed contract as JSON, and
-`ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
-`src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
-`ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it as committed
-suite-preview snapshots. The Moonmoon payload consumes those generated
-source-contract and walk-clip fields, while Rabbita runtime consumes the live
-runtime bridge generated at `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`.
-The compiled Moonphys bridge uses the Moonrobo contact and motor frames
-directly, while the Rabbita artifact is checked as the visual/browser evidence
-gate.
+`../moonrobo/cmd/moonmoon_contract` exports that typed contract as JSON. The
+default Moonmoon suite payload now routes through
+`src/suite_adapter_preview/moonrobo_live_ingestion.mbt`, carries authored
+contact frames as payload data, and can run compiled Moonphys review from its
+own parsed joint, motion, contact, and motor tables. The committed
+`src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` remains only
+as the current plain-`moon test` fixture until the suite-preview command/build
+path can supply live Moonrobo JSON before compilation. Rabbita runtime consumes
+the live runtime bridge generated at
+`ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, while the Rabbita
+artifact is checked as the visual/browser evidence gate.
 `../moonrobo/cmd/moonmoon_suite_evidence` now provides a live typed adapter
 summary with sample counts, contact load counts, motor drive counts, review
 counts, blockers, readiness, and regeneration mode. `npm run check:gait`
@@ -377,8 +378,8 @@ contract JSON, converts parsed contact frames into the compiled Moonphys review
 shape, and builds a live suite payload from parsed joint, motion, contact, and
 motor tables. `npm run check:gait` covers this path through the
 `src/suite_adapter_preview` MoonBit gate. The remaining Phase 10 feature is to
-make that live contract ingestion path the default command/build path and then
-remove the committed generated MoonBit table snapshot.
+move the plain build/test fixture behind a live suite-preview command/build
+step and then remove the committed generated MoonBit table snapshot.
 
 Acceptance:
 

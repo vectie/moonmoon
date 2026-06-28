@@ -35,6 +35,10 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
     compiled_moonphys_bridge_status(),
     "moonrobo-noetix-generated-review-ready",
   )
+  assert_eq(
+    compiled_moonphys_default_payload_bridge_status(),
+    "moonrobo-noetix-default-payload-review-ready",
+  )
   assert_true(motion.ready)
   assert_eq(motion.status, "motion-frame-trace-review-ready")
   assert_eq(motion.blocker_count, 0)
@@ -66,10 +70,25 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
 }
 
 ///|
-test "Moonrobo Noetix suite payload records durable source refs" {
-  let payload = moonrobo_noetix_suite_adapter_payload()
+test "Moonrobo Noetix generated suite payload records durable source refs" {
+  let payload = moonrobo_noetix_generated_suite_adapter_payload()
   assert_true(payload.ready)
   assert_eq(payload.status, "moonrobo-noetix-suite-payload-ready")
+  assert_eq(payload.source_refs.length(), 7)
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonmoon.rabbita.generated-evidence" &&
+      source.status == "generated-ui-gate"
+    }),
+  )
+}
+
+///|
+test "Moonrobo Noetix suite payload records live source refs by default" {
+  let payload = moonrobo_noetix_suite_adapter_payload()
+  assert_true(payload.ready)
+  assert_eq(payload.status, "moonrobo-noetix-live-suite-payload-ready")
+  assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
   assert_eq(payload.robot_id, "noetix-e1-lab-01")
   assert_eq(payload.platform, "noetix-e1")
   assert_eq(payload.expected_profile_joint_count, 24)
@@ -173,6 +192,17 @@ test "Moonrobo Noetix suite payload records durable source refs" {
     assert_true(sample.left_foot_x_m > 0.0)
     assert_true(sample.right_foot_x_m < 0.0)
   }
+  assert_eq(payload.authored_contact_frames.length(), payload.walk_sample_count)
+  assert_eq(
+    payload.authored_contact_frames[0].phase_label,
+    "left-stance-right-swing",
+  )
+  assert_eq(payload.authored_contact_frames[0].support_foot, "left")
+  assert_true(
+    payload.authored_contact_frames.any(fn(frame) {
+      frame.active_footprint_count > 0 && frame.contact_count == 2
+    }),
+  )
   assert_eq(payload.authored_motor_frames.length(), payload.walk_sample_count)
   assert_true(
     payload.authored_motor_frames.any(fn(frame) {
@@ -224,7 +254,7 @@ test "Moonrobo Noetix suite payload records durable source refs" {
   assert_eq(payload.live_suite_evidence.contact_review_count, 0)
   assert_eq(payload.live_suite_evidence.blocker_count, 0)
   assert_eq(payload.frame_count, 24)
-  assert_eq(payload.review_status, "moonrobo-noetix-generated-review-ready")
+  assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
   assert_eq(
     payload.evidence_source,
     "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract#authored_contact_frames",
@@ -243,13 +273,13 @@ test "Moonrobo Noetix suite payload records durable source refs" {
   assert_true(payload.driven_joint_ids.contains("leg_r4_joint"))
   assert_true(payload.driven_joint_ids.contains("arm_l1_joint"))
   assert_true(payload.driven_joint_ids.contains("arm_r4_joint"))
-  assert_eq(payload.source_refs.length(), 7)
+  assert_eq(payload.source_refs.length(), 6)
   assert_true(
     payload.source_refs.any(fn(source) {
       source.source_family == "moonrobo.moonmoon-adapter-contract" &&
       source.local_path ==
       "../moonrobo/src/moonmoon_adapter/noetix_contract.mbt#noetix_e1_moonmoon_locomotion_contract" &&
-      source.status == "generated-from-typed-source"
+      source.status == "live-typed-source"
     }),
   )
   assert_true(
@@ -271,7 +301,7 @@ test "Moonrobo Noetix suite payload records durable source refs" {
       source.source_family == "moonrobo.moonmoon-adapter-contact-evidence" &&
       source.local_path ==
       "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract#authored_contact_frames" &&
-      source.status == "generated-from-typed-source"
+      source.status == "live-typed-source"
     }),
   )
   assert_true(
@@ -283,11 +313,8 @@ test "Moonrobo Noetix suite payload records durable source refs" {
     }),
   )
   assert_true(
-    payload.source_refs.any(fn(source) {
-      source.source_family == "moonmoon.rabbita.generated-evidence" &&
-      source.local_path ==
-      "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics" &&
-      source.status == "generated-ui-gate"
+    !payload.source_refs.any(fn(source) {
+      source.source_family == "moonmoon.rabbita.generated-evidence"
     }),
   )
 }
@@ -295,7 +322,7 @@ test "Moonrobo Noetix suite payload records durable source refs" {
 ///|
 test "Moonrobo live contract JSON ingests full suite payload" {
   let payload = try
-    moonrobo_noetix_suite_adapter_payload_from_generated_live_contract()
+    moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json()
   catch {
     _ => {
       assert_true(false)
@@ -318,6 +345,12 @@ test "Moonrobo live contract JSON ingests full suite payload" {
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.authored_joint_samples.length(), 24)
   assert_eq(payload.authored_motion_samples.length(), 24)
+  assert_eq(payload.authored_contact_frames.length(), 24)
+  assert_true(
+    payload.authored_contact_frames.any(fn(frame) {
+      frame.active_footprint_count > 0 && frame.contact_count == 2
+    }),
+  )
   assert_eq(payload.authored_motor_frames.length(), 24)
   assert_true(payload.live_suite_evidence.ready)
   assert_eq(

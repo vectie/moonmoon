@@ -11,9 +11,15 @@ pub fn compiled_moonphys_bridge_environment_id() -> String
 
 pub fn compiled_moonphys_bridge_status() -> String
 
+pub fn compiled_moonphys_default_payload_bridge_status() -> String
+
+pub fn moonrobo_noetix_generated_suite_adapter_payload() -> NoetixSuiteAdapterPayload
+
 pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload
 
-pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload raise
+pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract() -> NoetixSuiteAdapterPayload
+
+pub fn moonrobo_noetix_suite_adapter_payload_from_generated_live_contract_json() -> NoetixSuiteAdapterPayload raise
 
 pub fn moonrobo_noetix_suite_adapter_payload_from_live_json(Json) -> NoetixSuiteAdapterPayload raise
 
@@ -49,6 +55,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   joint_curve_params : Array[SuiteAdapterJointCurveParam]
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
+  authored_contact_frames : Array[SuiteAdapterContactFrameSample]
   authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
   live_suite_evidence : SuiteAdapterLiveSuiteEvidence
   expected_profile_joint_count : Int
@@ -92,12 +99,69 @@ pub(all) struct SuiteAdapterAuthoredMotionSample {
   right_foot_roll_pitch_rad : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct SuiteAdapterContactEvidenceSample {
+  contact_id : String
+  footprint : SuiteAdapterFootprintSample
+  patch : SuiteAdapterContactPatchSample
+  applied_force_n : SuiteAdapterVec3Sample
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterContactFrameSample {
+  frame_index : Int
+  time_s : Double
+  phase : Double
+  phase_label : String
+  support_foot : String
+  review_id : String
+  center_of_mass : SuiteAdapterVec3Sample
+  center_of_mass_velocity : SuiteAdapterVec3Sample
+  total_mass_kg : Double
+  contact_count : Int
+  active_footprint_count : Int
+  contacts : Array[SuiteAdapterContactEvidenceSample]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterContactPatchSample {
+  patch_id : String
+  center : SuiteAdapterVec3Sample
+  half_length_m : Double
+  half_width_m : Double
+  sample_count : Int
+  contact_count : Int
+  min_clearance_m : Double
+  max_clearance_m : Double
+  average_surface_elevation_m : Double
+  average_surface_normal : SuiteAdapterVec3Sample
+  samples : Array[SuiteAdapterContactProbeSample]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterContactProbeSample {
+  probe_id : String
+  position : SuiteAdapterVec3Sample
+  surface_elevation_m : Double
+  surface_normal : SuiteAdapterVec3Sample
+  clearance_m : Double
+  in_contact : Bool
+  local_grade : Double
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct SuiteAdapterFootPhaseSpec {
   role : String
   phase_start : Double
   phase_end : Double
   support : Bool
   lock_window : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterFootprintSample {
+  footprint_id : String
+  center : SuiteAdapterVec3Sample
+  half_length_m : Double
+  half_width_m : Double
+  active : Bool
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SuiteAdapterJointAnchor {
@@ -188,6 +252,12 @@ pub(all) struct SuiteAdapterSourceRef {
   local_path : String
   role : String
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterVec3Sample {
+  x : Double
+  y : Double
+  z : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

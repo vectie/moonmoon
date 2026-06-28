@@ -233,6 +233,17 @@ fn rabbita_noetix_motion_trace_review_from_contact_frames(
 }
 
 ///|
+fn rabbita_noetix_motion_trace_review_from_suite_contact_frames(
+  trace_id : String,
+  contact_frames : Array[SuiteAdapterContactFrameSample],
+) -> @moonphys.MotionFrameTraceReview {
+  rabbita_noetix_motion_trace_review_from_contact_frames(
+    trace_id,
+    suite_contact_frames_for_review(contact_frames),
+  )
+}
+
+///|
 fn generated_motion_body(
   body_id : String,
   position : @moonphys.Vec3,
@@ -417,5 +428,16 @@ fn rabbita_noetix_replay_review_from_contact_frames(
   }
   @moonphys.rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(
     trace, footprint_frames, targets,
+  )
+}
+
+///|
+fn rabbita_noetix_replay_review_from_suite_contact_frames(
+  trace : @moonphys.RigidBodyHeightfieldWorldHingeMotorTrace,
+  contact_frames : Array[SuiteAdapterContactFrameSample],
+) -> @moonphys.RigidBodyWorldReplayReview {
+  rabbita_noetix_replay_review_from_contact_frames(
+    trace,
+    suite_contact_frames_for_review(contact_frames),
   )
 }
