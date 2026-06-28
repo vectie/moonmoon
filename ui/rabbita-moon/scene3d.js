@@ -768,7 +768,7 @@ function addArm(vertices, colors, root, side, joints) {
   shoulder = mat4RotateZ(shoulder, side * 0.07)
   addCube(vertices, colors, shoulder, [0, -upperLen * 0.5, 0], [0.045, upperLen, 0.055], [0.56, 0.72, 0.76])
   let elbow = mat4Translate(shoulder, 0, -upperLen, 0)
-  elbow = mat4RotateX(elbow, angles.elbow)
+  elbow = mat4RotateX(elbow, -angles.elbow)
   addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
   addCube(vertices, colors, elbow, [0, -lowerLen - 0.030, 0.040], [0.050, 0.060, 0.055], [0.40, 0.54, 0.58])
 }
