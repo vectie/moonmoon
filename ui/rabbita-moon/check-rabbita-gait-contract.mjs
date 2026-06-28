@@ -29,6 +29,9 @@ const sceneContracts = [
   'gaitPhaseLabel',
   'footPhaseChannels',
   'footPhaseCoverageStatus',
+  'stanceFootWorldLockStatus',
+  'stanceFootWorldDrift',
+  'footLockRootCorrection',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -51,6 +54,7 @@ const planContracts = [
   'hip/knee/ankle correction',
   'phase labels: `contact`, `loading`, `stance`, `passing`, `swing`, `release`',
   'foot lock',
+  'stance foot world-position delta stays near zero',
   'toe-off/contact ankle curve',
   'arm lag and counter-swing',
   'torso/waist counter-rotation',
@@ -217,6 +221,9 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.footPhaseCoverage !== 'pass') {
     throw new Error(`foot phase coverage failed at ${time}s: ${JSON.stringify(frame.quality.footPhaseCoverage.missing)}`)
+  }
+  if (frame.quality.statuses.stanceFootWorldLock !== 'pass') {
+    throw new Error(`stance foot world lock failed at ${time}s: ${JSON.stringify(frame.quality.footLockDrift)}`)
   }
   if (!frame.gaitPhaseLabel.includes(frame.supportFoot) || !frame.gaitPhaseLabel.includes(frame.swingFoot)) {
     throw new Error(`gait phase label did not cite support/swing feet at ${time}s`)

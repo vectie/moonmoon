@@ -187,8 +187,9 @@ attributes for robot source, root link, phase label, support foot, swing foot,
 FK foot endpoints, root distance, and link-length status so browser checks can
 separate gait timing issues from rendering or FK issues. The Rabbita 3D scene
 also exposes semantic `footPhaseChannels`, `gaitPhaseLabel`, and
-`footPhaseCoverageStatus`, and renders root/phase timing rails beside the robot
-so clip timing is visible without replacing the rigid FK pose.
+`footPhaseCoverageStatus`, root-space foot-lock correction evidence, and
+stance-foot world drift. It renders root/phase timing rails beside the robot so
+clip timing is visible without replacing the rigid FK pose.
 
 Deliverables:
 
@@ -210,6 +211,10 @@ Acceptance:
 ## Phase 8: Terrain IK
 
 Terrain adaptation comes after the flat-ground gait reads correctly.
+
+Status: active preview. Terrain IK now runs after root-space stance-foot
+locking, so support soles are corrected to terrain while their world drift
+stays bounded by the gait contract.
 
 Deliverables:
 

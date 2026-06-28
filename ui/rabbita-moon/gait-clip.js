@@ -8,6 +8,8 @@ export const NOETIX_VISUAL_RIG = {
   rootSpeedMps: 0.28,
   targetFkMaxM: 0.025,
   lockedTargetFkMaxM: 0.010,
+  stanceFootWorldStepMaxM: 0.010,
+  footLockRootCorrectionMaxM: 0.22,
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
   toeRollMinRad: 0.22,

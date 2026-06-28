@@ -135,6 +135,10 @@ Acceptance:
 
 Foot locking is the first guard against skating.
 
+Current status: active in the Rabbita preview. Support feet now get a
+root-space correction against their stance-start world anchor, and
+`check:gait` requires `stanceFootWorldLock` to pass across the cycle.
+
 Required behavior:
 
 - each foot has an explicit `locked` channel
