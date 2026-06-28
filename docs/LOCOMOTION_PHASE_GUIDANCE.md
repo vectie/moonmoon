@@ -159,7 +159,12 @@ torso, foot-roll, authored foot-target, or hinge motor target formulas. The
 compiled Moonphys review now consumes Moonrobo-authored contact frames and
 Moonrobo-authored motor frames directly; Rabbita's generated evidence remains a
 browser/UI freshness gate. The remaining Phase 5 feature is live adapter
-regeneration instead of generated snapshots.
+regeneration as the runtime data path instead of generated snapshots. The first
+live gate now exists:
+`../moonrobo/cmd/moonmoon_suite_evidence` exports
+`noetix_e1_moonmoon_live_suite_evidence()` directly from Moonrobo's typed
+adapter, and `ui/rabbita-moon/check-live-moonrobo-suite.mjs` compares that live
+authority against the generated Moonmoon bridge.
 
 Deliverables:
 
@@ -315,10 +320,10 @@ references regenerated from `../moonrobo/src/moonmoon_adapter`, including
 `../moonrobo/examples/noetix-e1/robot.json`,
 `../moonrobo/examples/noetix-e1/model/robot.urdf`, and the base mesh.
 `npm run check:gait` now runs the Rabbita UI evidence freshness gate, the
-Moonrobo typed-contract freshness gate, and the compiled Moonphys bridge over
-Moonrobo-authored contact and motor frames. The next work is visual walk-cycle
-polish and replacing generated snapshots with live Moonrobo adapter
-regeneration.
+Moonrobo typed-contract freshness gate, the live Moonrobo suite-evidence gate,
+and the compiled Moonphys bridge over Moonrobo-authored contact and motor
+frames. The next work is visual walk-cycle polish and using live Moonrobo
+adapter output as the runtime data path instead of generated snapshots.
 
 ## Phase 10: Durable Suite Evidence
 
@@ -349,8 +354,14 @@ payload consumes those generated source-contract and walk-clip fields, the
 Rabbita runtime consumes the generated JS clip bridge including authored joint,
 motion, contact-frame, and motor-frame samples. The compiled Moonphys bridge
 uses the Moonrobo contact and motor frames directly, while the Rabbita artifact
-is checked as the visual/browser evidence gate. The remaining Phase 10 feature
-is to replace generated snapshots with live Moonrobo adapter regeneration.
+is checked as the visual/browser evidence gate.
+`../moonrobo/cmd/moonmoon_suite_evidence` now provides a live typed adapter
+summary with sample counts, contact load counts, motor drive counts, review
+counts, blockers, readiness, and regeneration mode. `npm run check:gait`
+invokes `ui/rabbita-moon/check-live-moonrobo-suite.mjs`, which runs that command
+and compares the live authority with the generated Moonmoon bridge. The
+remaining Phase 10 feature is to make Rabbita/Moonmoon consume this live output
+directly at runtime rather than through generated snapshots.
 
 Acceptance:
 

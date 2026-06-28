@@ -422,5 +422,8 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    Rabbita-generated evidence remains a browser/UI freshness gate. `npm run
    check:gait` verifies the contract bridge freshness, runtime authored-sample
    consumption, Moonrobo-authored contact and hinge motor trace consumption,
-   and Rabbita UI evidence freshness. The next Phase 10 target is replacing
-   generated snapshots with live Moonrobo adapter regeneration.
+   live Moonrobo typed adapter evidence, and Rabbita UI evidence freshness. The
+   first live regeneration gate is `../moonrobo/cmd/moonmoon_suite_evidence`,
+   checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`; the next Phase
+   10 target is making Rabbita/Moonmoon consume that live output directly at
+   runtime instead of through generated snapshots.

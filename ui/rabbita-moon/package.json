@@ -9,6 +9,7 @@
     "build": "vite build",
     "export:moonrobo-contract": "node export-moonrobo-contract.mjs",
     "export:gait-evidence": "node export-rabbita-gait-evidence.mjs",
+    "check:live-moonrobo-suite": "node check-live-moonrobo-suite.mjs",
     "check:gait": "node check-rabbita-gait-contract.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 8766"
   },

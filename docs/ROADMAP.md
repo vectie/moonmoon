@@ -36,8 +36,12 @@
   typed authored joint, motion, contact-frame, and motor-frame samples generated
   by Moonrobo. The compiled Moonphys suite-preview path consumes Moonrobo
   contact and motor frames directly; Rabbita's generated artifact remains a
-  visual/browser freshness gate. The next implementation target is live
-  Moonrobo adapter regeneration instead of generated snapshots.
+  visual/browser freshness gate. Moonrobo now exposes
+  `cmd/moonmoon_suite_evidence` as a live typed adapter evidence command, and
+  Moonmoon's gait check runs it through
+  `ui/rabbita-moon/check-live-moonrobo-suite.mjs`. The next implementation
+  target is direct runtime consumption of live Moonrobo adapter output instead
+  of generated snapshots.
 
 ## Non-Goals
 
