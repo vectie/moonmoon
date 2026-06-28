@@ -63,8 +63,8 @@ fn noetix_walk_artifact(
     "noetix-endless-walk-trace",
     "output/moonrobo/first_trusted_square_noetix_walk.json",
     "moon run cmd/main -- moonrobo noetix walk json",
-    "endless +x Noetix trace with lunar gravity, contact probes, and URDF leg IK joint phases",
-    "\{trace.frame_count} frames over \{trace.terrain_tile_id}; axis \{trace.endless_axis}; \{trace.robot.joint_count} referenced joints with bounded leg IK",
+    "endless +x Noetix trace with lunar gravity, contact probes, and URDF gait clip joint phases",
+    "\{trace.frame_count} frames over \{trace.terrain_tile_id}; axis \{trace.endless_axis}; \{trace.robot.joint_count} referenced joints with bounded URDF gait clip",
     ready,
     if ready {
       "none"
@@ -394,7 +394,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "noetix-walk-trace",
         "output/moonrobo/first_trusted_square_noetix_walk.json",
         @core.ClaimKind::Simulated,
-        "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases.",
+        "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF gait clip phases.",
       ),
       input(
         "noetix-walk-command-plan",

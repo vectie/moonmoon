@@ -139,31 +139,6 @@ fn noetix_urdf_base_to_foot_height_m() -> Double {
 }
 
 ///|
-fn noetix_urdf_hip_drop_m() -> Double {
-  0.08
-}
-
-///|
-fn noetix_urdf_foot_forward_offset_m() -> Double {
-  0.04
-}
-
-///|
-fn noetix_urdf_foot_drop_m() -> Double {
-  0.08
-}
-
-///|
-fn noetix_urdf_upper_leg_m() -> Double {
-  0.32
-}
-
-///|
-fn noetix_urdf_lower_leg_m() -> Double {
-  0.34
-}
-
-///|
 pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
   {
     config_id: "moonrobo/noetix-e1/endless-forward-moon-walk-v1",
@@ -287,6 +262,12 @@ fn support_transfer_progress(
 }
 
 ///|
+fn smoothstep_double(progress : Double) -> Double {
+  let t = clamp_double(progress, 0.0, 1.0)
+  t * t * (3.0 - 2.0 * t)
+}
+
+///|
 fn swing_progress_after_transfer(
   local_phase : Int,
   half_cycle : Int,
@@ -310,6 +291,26 @@ fn swing_progress_after_transfer(
 ///|
 fn swing_lift(config : NoetixMoonWalkConfig, progress : Double) -> Double {
   config.step_height_m * @math.sin(progress * 3.141592653589793)
+}
+
+///|
+fn gait_lift_blend(progress : Double) -> Double {
+  clamp_double(
+    @math.sin(clamp_double(progress, 0.0, 1.0) * 3.141592653589793),
+    0.0,
+    1.0,
+  )
+}
+
+///|
+fn gait_toe_pitch(progress : Double, lift_blend : Double) -> Double {
+  let p = clamp_double(progress, 0.0, 1.0)
+  let toe_clear = if p < 0.5 {
+    0.16 * (1.0 - p * 2.0)
+  } else {
+    -0.10 * ((p - 0.5) * 2.0)
+  }
+  toe_clear * lift_blend
 }
 
 ///|
@@ -518,97 +519,103 @@ fn bounded_joint_phase(
 }
 
 ///|
-fn noetix_leg_ik_phases(
-  config : NoetixMoonWalkConfig,
-  body_position : @moonphys.Vec3,
+fn noetix_leg_gait_clip_phases(
   foot : NoetixFootContactProbe,
   side : String,
   prefix : String,
+  gait_progress : Double,
+  swing_progress : Double,
 ) -> Array[NoetixJointPhase] {
   let side_sign = if side == "left" { 1.0 } else { 0.0 - 1.0 }
-  let forward = noetix_heading_forward(config)
-  let lateral = noetix_heading_lateral(config)
-  let hip_world = body_position
-    .add(lateral.scale(side_sign * config.lateral_foot_offset_m))
-    .add(@moonphys.vec3(0.0, 0.0, 0.0 - noetix_urdf_hip_drop_m()))
-  let ankle_target = foot.position
-    .sub(forward.scale(noetix_urdf_foot_forward_offset_m()))
-    .add(@moonphys.vec3(0.0, 0.0, noetix_urdf_foot_drop_m()))
-  let relative = ankle_target.sub(hip_world)
-  let sagittal_x = relative.dot(forward)
-  let lateral_error = relative.dot(lateral)
-  let down = 0.0 - relative.z
-  let upper_leg_m = noetix_urdf_upper_leg_m()
-  let lower_leg_m = noetix_urdf_lower_leg_m()
-  let distance = clamp_double(
-    (sagittal_x * sagittal_x + down * down).sqrt(),
+  let leg_cycle = if side == "left" {
+    gait_progress
+  } else if gait_progress >= 0.5 {
+    gait_progress - 0.5
+  } else {
+    gait_progress + 0.5
+  }
+  let support_progress = smoothstep_double(leg_cycle * 2.0)
+  let swing_blend = if foot.in_contact {
+    0.0
+  } else {
+    gait_lift_blend(swing_progress)
+  }
+  let swing_drive = if foot.in_contact {
+    0.0
+  } else {
+    smoothstep_double(swing_progress)
+  }
+  let support_hip_pitch = -0.20 + 0.34 * support_progress
+  let swing_hip_pitch = 0.16 - 0.46 * swing_drive
+  let hip_pitch = if foot.in_contact {
+    support_hip_pitch
+  } else {
+    swing_hip_pitch
+  }
+  let support_knee = 0.10 +
+    0.06 * @math.sin(support_progress * 3.141592653589793)
+  let shaped_knee_flex = clamp_double(
+    if foot.in_contact {
+      support_knee
+    } else {
+      0.18 + swing_blend * 0.78 + swing_drive * 0.08
+    },
     0.08,
-    upper_leg_m + lower_leg_m - 0.001,
+    1.35,
   )
-  let knee_cos = clamp_double(
-    (
-      upper_leg_m * upper_leg_m +
-      lower_leg_m * lower_leg_m -
-      distance * distance
-    ) /
-    (2.0 * upper_leg_m * lower_leg_m),
-    -1.0,
-    1.0,
-  )
-  let knee_flex = 3.141592653589793 - @math.acos(knee_cos)
-  let line_angle = @math.atan2(sagittal_x, down)
-  let bend_angle = @math.atan2(
-    lower_leg_m * @math.sin(knee_flex),
-    upper_leg_m + lower_leg_m * @math.cos(knee_flex),
-  )
-  let hip_pitch = line_angle - bend_angle
-  let hip_roll = clamp_double(lateral_error * 2.5, -0.35, 0.35)
-  let knee_upper = knee_flex * 0.55
-  let knee_lower = 0.0 - knee_flex * 0.45
+  let hip_roll = if foot.in_contact {
+    side_sign * 0.04
+  } else {
+    0.0 - side_sign * 0.10 * swing_blend
+  }
+  let knee_upper = shaped_knee_flex * 0.58
+  let knee_lower = shaped_knee_flex * 0.42
   let ankle_roll = 0.0 - hip_roll * 0.45
-  let ankle_pitch = 0.0 - (hip_pitch + knee_upper + knee_lower)
+  let ankle_pitch = 0.0 -
+    (hip_pitch + knee_upper + knee_lower) +
+    gait_toe_pitch(swing_progress, swing_blend)
   [
     bounded_joint_phase(
       "\{prefix}1_joint",
       "hip-pitch",
       side,
       hip_pitch,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
     bounded_joint_phase(
       "\{prefix}2_joint",
       "hip-roll",
       side,
       hip_roll,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
     bounded_joint_phase(
       "\{prefix}3_joint",
       "knee-upper",
       side,
       knee_upper,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
     bounded_joint_phase(
       "\{prefix}4_joint",
       "knee-lower",
       side,
       knee_lower,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
     bounded_joint_phase(
       "\{prefix}5_joint",
       "ankle-roll",
       side,
       ankle_roll,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
     bounded_joint_phase(
       "\{prefix}6_joint",
       "ankle-pitch",
       side,
       ankle_pitch,
-      "urdf-leg-ik",
+      "urdf-gait-clip",
     ),
   ]
 }
@@ -694,11 +701,11 @@ fn arm_phases(gait_progress : Double) -> Array[NoetixJointPhase] {
 
 ///|
 fn noetix_joint_phases(
-  config : NoetixMoonWalkConfig,
-  body_position : @moonphys.Vec3,
   left_foot : NoetixFootContactProbe,
   right_foot : NoetixFootContactProbe,
   gait_progress : Double,
+  left_swing_progress : Double,
+  right_swing_progress : Double,
 ) -> Array[NoetixJointPhase] {
   let phases : Array[NoetixJointPhase] = []
   let cycle_angle = gait_progress * 2.0 * 3.141592653589793
@@ -721,14 +728,14 @@ fn noetix_joint_phases(
     ),
   )
   for
-    phase in noetix_leg_ik_phases(
-      config, body_position, left_foot, "left", "leg_l",
+    phase in noetix_leg_gait_clip_phases(
+      left_foot, "left", "leg_l", gait_progress, left_swing_progress,
     ) {
     phases.push(phase)
   }
   for
-    phase in noetix_leg_ik_phases(
-      config, body_position, right_foot, "right", "leg_r",
+    phase in noetix_leg_gait_clip_phases(
+      right_foot, "right", "leg_r", gait_progress, right_swing_progress,
     ) {
     phases.push(phase)
   }
@@ -758,6 +765,17 @@ pub fn noetix_moon_walk_frame(
   let progress = swing_progress_after_transfer(
     local_phase, half_cycle, transfer_frames,
   )
+  let in_double_support = local_phase < transfer_frames
+  let left_swing_progress = if left_support || in_double_support {
+    0.0
+  } else {
+    progress
+  }
+  let right_swing_progress = if !left_support || in_double_support {
+    0.0
+  } else {
+    progress
+  }
   let block = half_cycle_block(frame_index, half_cycle)
   let body_forward = frame_index.to_double() * config.speed_mps * config.dt_s
   let body_lateral = noetix_support_body_lateral_m(
@@ -769,7 +787,6 @@ pub fn noetix_moon_walk_frame(
     config.body_height_m +
     config.start_position.z +
     noetix_body_bob_m(config, local_phase, half_cycle)
-  let in_double_support = local_phase < transfer_frames
   let left = if left_support {
     let foot_xy = noetix_walk_xy(
       config,
@@ -842,11 +859,7 @@ pub fn noetix_moon_walk_frame(
     left_foot: left,
     right_foot: right,
     joint_phases: noetix_joint_phases(
-      config,
-      @moonphys.vec3(body_xy.x, body_xy.y, body_z),
-      left,
-      right,
-      gait_progress,
+      left, right, gait_progress, left_swing_progress, right_swing_progress,
     ),
     status: frame_status(left, right),
   }
@@ -1094,7 +1107,7 @@ pub fn render_noetix_moon_walk_markdown(trace : NoetixMoonWalkTrace) -> String {
     text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} body_x=\{frame.body_position.x} status=\{frame.status}\n"
     text += "  - left: x=\{frame.left_foot.position.x} z=\{frame.left_foot.position.z} contact=\{frame.left_foot.in_contact} clearance=\{frame.left_foot.clearance_m} status=\{frame.left_foot.status}\n"
     text += "  - right: x=\{frame.right_foot.position.x} z=\{frame.right_foot.position.z} contact=\{frame.right_foot.in_contact} clearance=\{frame.right_foot.clearance_m} status=\{frame.right_foot.status}\n"
-    text += "  - joints: \{frame.joint_phases.length()} phases with URDF leg IK\n"
+    text += "  - joints: \{frame.joint_phases.length()} phases with URDF gait clip\n"
   }
   text
 }

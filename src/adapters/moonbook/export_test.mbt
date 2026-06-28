@@ -1291,7 +1291,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
   assert_true(dossier.entries[77].summary.contains("noetix-e1-lab-01"))
   assert_true(dossier.entries[77].summary.contains("32 frames"))
   assert_true(dossier.entries[77].summary.contains("24 joint phases"))
-  assert_true(dossier.entries[77].summary.contains("URDF leg IK"))
+  assert_true(dossier.entries[77].summary.contains("URDF gait clip"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[78].kind),
     "moonrobo-noetix-walk-command",

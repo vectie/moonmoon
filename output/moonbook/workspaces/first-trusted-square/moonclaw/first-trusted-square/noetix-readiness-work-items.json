@@ -1291,7 +1291,7 @@
           "input_id": "noetix-walk-trace",
           "evidence_path": "output/moonrobo/first_trusted_square_noetix_walk.json",
           "claim_kind": "Simulated",
-          "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF leg IK phases."
+          "summary": "Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF gait clip phases."
         },
         {
           "input_id": "noetix-walk-command-plan",
@@ -1371,8 +1371,8 @@
           "artifact_id": "noetix-endless-walk-trace",
           "path": "output/moonrobo/first_trusted_square_noetix_walk.json",
           "producer": "moon run cmd/main -- moonrobo noetix walk json",
-          "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and URDF leg IK joint phases",
-          "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded leg IK",
+          "required_state": "endless +x Noetix trace with lunar gravity, contact probes, and URDF gait clip joint phases",
+          "current_state": "32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded URDF gait clip",
           "ready": true,
           "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json"
@@ -1422,7 +1422,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 58; support-review frames 0; capture-review frames 2; max support recovery shift 0 m; worst capture support margin -0.0032435425030045146 m; max capture recovery shift 0.003243542503004515 m; world replay blockers 1; resolved world hinges 1512; body samples 825; max world speed 2.1346289639943006 m/s; max world energy 3.4630470185817694 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 40.50000000000002 W; absolute work 118.62994874361048 J; status joint-control-assumption-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 100; support-review frames 0; capture-review frames 2; max support recovery shift 0 m; worst capture support margin -0.0032435425030045146 m; max capture recovery shift 0.003243542503004515 m; world replay blockers 1; resolved world hinges 1511; body samples 825; max world speed 2.0453097897419426 m/s; max world energy 3.179302023370815 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 36.54985249851048 W; absolute work 100.06795528124788 J; status joint-control-assumption-review",
           "ready": false,
           "blocking_reason": "joint-control replay must clear limit, saturation, support, capture, and Moonphys world replay blockers",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"

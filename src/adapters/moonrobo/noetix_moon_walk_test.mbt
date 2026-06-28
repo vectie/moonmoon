@@ -6,6 +6,19 @@ fn nearly_equal_double(a : Double, b : Double) -> Bool {
 }
 
 ///|
+fn joint_phase_position(
+  frame : NoetixMoonWalkFrame,
+  joint_name : String,
+) -> Double {
+  for phase in frame.joint_phases {
+    if phase.joint_name == joint_name {
+      return phase.position_rad
+    }
+  }
+  999.0
+}
+
+///|
 test "noetix endless moon walk advances in one direction" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=32)
   assert_eq(trace.frame_count, 32)
@@ -158,14 +171,14 @@ test "noetix endless moon walk carries urdf leg ik phases" {
   assert_true(
     trace.frames[0].joint_phases.any(fn(phase) {
       phase.joint_name == "leg_r3_joint" &&
-      phase.status == "urdf-leg-ik" &&
+      phase.status == "urdf-gait-clip" &&
       phase.position_rad > 0.0
     }),
   )
   assert_true(
     trace.frames[5].joint_phases.any(fn(phase) {
       phase.joint_name == "leg_r1_joint" &&
-      phase.status == "urdf-leg-ik" &&
+      phase.status == "urdf-gait-clip" &&
       phase.position_rad >= -1.2 &&
       phase.position_rad <= 1.2
     }),
@@ -203,6 +216,31 @@ test "noetix endless moon walk carries visible gait motion" {
       phase.position_rad < 0.0
     }),
   )
+}
+
+///|
+test "noetix planned gait bends swing knees coherently" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=32)
+  let right_swing = trace.frames[13]
+  let right_planted = trace.frames[21]
+  assert_true(!right_swing.right_foot.in_contact)
+  assert_true(right_planted.right_foot.in_contact)
+  let right_swing_upper = joint_phase_position(right_swing, "leg_r3_joint")
+  let right_swing_lower = joint_phase_position(right_swing, "leg_r4_joint")
+  let right_planted_upper = joint_phase_position(right_planted, "leg_r3_joint")
+  assert_true(right_swing_upper > right_planted_upper)
+  assert_true(right_swing_upper > 0.0)
+  assert_true(right_swing_lower > 0.0)
+  assert_true(right_swing_lower < right_swing_upper)
+  let left_swing = trace.frames[29]
+  let left_planted = trace.frames[5]
+  assert_true(!left_swing.left_foot.in_contact)
+  assert_true(left_planted.left_foot.in_contact)
+  assert_true(
+    joint_phase_position(left_swing, "leg_l3_joint") >
+    joint_phase_position(left_planted, "leg_l3_joint"),
+  )
+  assert_true(joint_phase_position(left_swing, "leg_l4_joint") > 0.0)
 }
 
 ///|

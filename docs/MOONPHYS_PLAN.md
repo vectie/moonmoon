@@ -437,7 +437,7 @@ In this repo, initially avoid copying full URDF parsing. Instead:
 - encode the compact Noetix URDF link tree in the Moonrobo adapter
 - bind feet to Moonphys contact probes from the walking trace
 - compute body/limb poses with the compact URDF link tree, joint origins, joint
-  axes, and URDF-reference leg IK phases until Moonrobo supplies full mesh/
+  axes, and URDF-reference gait clip phases until Moonrobo supplies full mesh/
   inertial/collision metadata
 
 Implemented contract:

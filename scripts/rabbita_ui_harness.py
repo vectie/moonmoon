@@ -342,7 +342,7 @@ def assert_noetix_walk_panel(
       f"{noetix_endless_gait['expected_forward_offset_m']:.3f} m/cycle, "
       "phase/contact"
     ),
-    "joints": "24 phases, URDF leg IK",
+    "joints": "24 phases, URDF gait clip",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
     "pose authority": "FK link transforms, contact annotations",
     "visuals": (
