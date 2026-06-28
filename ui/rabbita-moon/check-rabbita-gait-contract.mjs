@@ -11,8 +11,12 @@ const sceneContracts = [
   'jointCorrectionReport',
   'correctedFootTargets',
   'terrainContactProbes',
+  'contactPatches',
+  'terrainProfileReport',
   'ikCorrectionReport',
   'terrainContactStatus',
+  'contactPatchStatus',
+  'nonFlatTerrainStatus',
   'ikCorrectionStatus',
   'jointIkStatus',
   'kneeRoleContrastStatus',
@@ -21,6 +25,7 @@ const sceneContracts = [
 
 const planContracts = [
   'terrain contact probe',
+  'contact patches',
   'terrain-corrected target',
   'FK endpoint',
   'hip/knee/ankle correction',
@@ -51,6 +56,8 @@ if (!diagnostics?.sampleRobotGeometry) {
 const cycleSeconds = 1 / diagnostics.rig.cycleHz
 const sampleTimes = Array.from({ length: 12 }, (_, i) => i * cycleSeconds / 12)
 let maxSupportJointCorrection = 0
+let maxTerrainRange = 0
+let maxPatchRange = 0
 for (const time of sampleTimes) {
   const frame = diagnostics.sampleRobotGeometry(time).diagnostics
   const supportCorrections = frame.ik.jointCorrections[frame.supportFoot]
@@ -65,9 +72,17 @@ for (const time of sampleTimes) {
   if (frame.quality.statuses.terrainContact !== 'pass') {
     throw new Error(`terrain contact failed at ${time}s`)
   }
+  if (frame.quality.statuses.contactPatch !== 'pass') {
+    throw new Error(`contact patch failed at ${time}s`)
+  }
+  if (frame.quality.statuses.nonFlatTerrain !== 'pass') {
+    throw new Error(`non-flat terrain evidence failed at ${time}s`)
+  }
   if (frame.quality.statuses.jointIkCorrection !== 'pass') {
     throw new Error(`joint IK correction failed at ${time}s`)
   }
+  maxTerrainRange = Math.max(maxTerrainRange, frame.terrain.heightRangeM)
+  maxPatchRange = Math.max(maxPatchRange, frame.quality.maxContactPatchRange)
   if (frame.quality.supportClearanceError > diagnostics.rig.supportClearanceMaxM) {
     throw new Error(`support clearance error exceeded bound at ${time}s`)
   }
@@ -78,6 +93,14 @@ for (const time of sampleTimes) {
 
 if (maxSupportJointCorrection <= 0.001) {
   throw new Error('sampled gait never applied a meaningful support-leg joint correction')
+}
+
+if (maxTerrainRange <= 0.010) {
+  throw new Error('sampled terrain never produced meaningful non-flat height variation')
+}
+
+if (maxPatchRange <= 0) {
+  throw new Error('sampled contact patches did not report terrain height range')
 }
 
 console.log(

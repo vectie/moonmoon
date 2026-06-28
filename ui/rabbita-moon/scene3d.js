@@ -402,6 +402,8 @@ const NOETIX_VISUAL_RIG = {
   jointClearanceToleranceM: 0.0025,
   pelvisCorrectionMaxM: 0.18,
   supportClearanceMaxM: 0.014,
+  terrainReliefMaxM: 0.032,
+  contactPatchMaxRangeM: 0.014,
   jointCorrectionMaxRad: {
     hip: 0.20,
     knee: 0.22,
@@ -430,6 +432,23 @@ function mix(a, b, t) {
 
 function near(a, b, tolerance) {
   return Math.abs(a - b) <= tolerance
+}
+
+function vec3Length(v) {
+  return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
+}
+
+function normalizeVec3(v) {
+  const len = Math.max(0.000001, vec3Length(v))
+  return { x: v.x / len, y: v.y / len, z: v.z / len }
+}
+
+function compactPoint(point) {
+  return {
+    x: Number(point.x.toFixed(4)),
+    y: Number(point.y.toFixed(4)),
+    z: Number(point.z.toFixed(4)),
+  }
 }
 
 function footRole(footPhase) {
@@ -538,11 +557,19 @@ function addGround(vertices, colors, clip) {
   const offset = clip.rootDistanceM % 0.24
   for (let i = -8; i <= 8; i += 1) {
     const z = i * 0.24 - offset
-    addQuad(vertices, colors, [-1.6, 0, z], [1.6, 0, z], [1.6, -0.012, z + 0.018], [-1.6, -0.012, z + 0.018], [0.18, 0.24, 0.21])
+    const a = terrainSampleAt(-1.6, z, clip).heightM
+    const b = terrainSampleAt(1.6, z, clip).heightM
+    const c = terrainSampleAt(1.6, z + 0.018, clip).heightM
+    const d = terrainSampleAt(-1.6, z + 0.018, clip).heightM
+    addQuad(vertices, colors, [-1.6, a, z], [1.6, b, z], [1.6, c - 0.012, z + 0.018], [-1.6, d - 0.012, z + 0.018], [0.18, 0.24, 0.21])
   }
   for (let i = -4; i <= 4; i += 1) {
     const x = i * 0.32
-    addQuad(vertices, colors, [x, 0, -1.4], [x + 0.014, 0, -1.4], [x + 0.014, -0.012, 1.4], [x, -0.012, 1.4], [0.14, 0.20, 0.18])
+    const a = terrainSampleAt(x, -1.4, clip).heightM
+    const b = terrainSampleAt(x + 0.014, -1.4, clip).heightM
+    const c = terrainSampleAt(x + 0.014, 1.4, clip).heightM
+    const d = terrainSampleAt(x, 1.4, clip).heightM
+    addQuad(vertices, colors, [x, a, -1.4], [x + 0.014, b, -1.4], [x + 0.014, c - 0.012, 1.4], [x, d - 0.012, 1.4], [0.14, 0.20, 0.18])
   }
 }
 
@@ -550,10 +577,11 @@ function pointRecord(point) {
   return { x: point[0], y: point[1], z: point[2] }
 }
 
-function footTargetForPose(sole, foot) {
+function footTargetForPose(sole, foot, clip) {
+  const probe = terrainContactProbe(sole, clip)
   return [
     sole[0],
-    sole[1] + (foot.locked ? NOETIX_VISUAL_RIG.supportTargetClearanceM : 0.018),
+    foot.locked ? probe.heightM + NOETIX_VISUAL_RIG.supportTargetClearanceM : sole[1] + 0.018,
     sole[2],
   ]
 }
@@ -571,12 +599,13 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
   addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
   addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
   const authoredTarget = authoredTargets[name]
-  const correctedTarget = footTargetForPose(sole, foot)
+  const correctedTarget = footTargetForPose(sole, foot, clip)
   addCube(vertices, colors, mat4Identity(), authoredTarget, [0.030, 0.016, 0.030], [0.18, 0.38, 0.76])
   addCube(vertices, colors, mat4Identity(), correctedTarget, [0.038, 0.020, 0.038], [0.34, 0.58, 0.96])
   const marker = name === clip.supportFoot ? [0.30, 0.92, 0.50] : [0.94, 0.80, 0.24]
   addCube(vertices, colors, mat4Identity(), sole, [0.055, 0.022, 0.055], marker)
-  const terrainProbe = terrainContactProbe(sole)
+  const terrainProbe = terrainContactProbe(sole, clip)
+  const contactPatch = footContactPatch(sole, clip)
   diagnostics.feet.push({
     name,
     role: foot.role,
@@ -585,6 +614,7 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
     correctedTarget: pointRecord(correctedTarget),
     fkEndpoint: pointRecord(sole),
     terrainProbe,
+    contactPatch,
     targetFkDeltaM: pointDistance(correctedTarget, sole),
     authoredTargetDeltaM: pointDistance(authoredTarget, sole),
     ikCorrectionDeltaM: pointDistance(authoredTarget, correctedTarget),
@@ -613,12 +643,13 @@ function robotGeometry(time) {
   const authoredJoints = jointSamples(clip)
   const baseRoot = robotRoot(clip, 0)
   const authoredTargets = {
-    left: footTargetForPose(legPose(baseRoot, 1, authoredJoints).sole, clip.footChannels.left),
-    right: footTargetForPose(legPose(baseRoot, -1, authoredJoints).sole, clip.footChannels.right),
+    left: footTargetForPose(legPose(baseRoot, 1, authoredJoints).sole, clip.footChannels.left, clip),
+    right: footTargetForPose(legPose(baseRoot, -1, authoredJoints).sole, clip.footChannels.right, clip),
   }
   const ik = terrainIkCorrection(baseRoot, clip, authoredJoints)
   const joints = ik.correctedJoints
-  const diagnostics = { feet: [], authoredJoints, joints, ik }
+  const terrain = terrainProfileReport(clip)
+  const diagnostics = { feet: [], authoredJoints, joints, ik, terrain }
   const root = robotRoot(clip, ik.pelvisCorrectionM)
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
@@ -649,6 +680,7 @@ function gaitQuality(time, diagnostics) {
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
+  const maxContactPatchRange = Math.max(...diagnostics.feet.map(foot => foot.contactPatch.heightRangeM))
   const statuses = {
     cycleRepeat: near(now.phase, repeated.phase, 0.000001) ? 'pass' : 'fail',
     rootMotion: near(rootAdvance, expectedStride, 0.003) ? 'pass' : 'fail',
@@ -657,6 +689,8 @@ function gaitQuality(time, diagnostics) {
     lockedFootAttachment: maxLockedTargetFkDelta <= NOETIX_VISUAL_RIG.lockedTargetFkMaxM ? 'pass' : 'fail',
     supportFootLocked: supportFoot?.locked ? 'pass' : 'fail',
     terrainContact: supportClearanceError <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
+    contactPatch: maxContactPatchRange <= NOETIX_VISUAL_RIG.contactPatchMaxRangeM ? 'pass' : 'fail',
+    nonFlatTerrain: diagnostics.terrain.heightRangeM > 0.010 ? 'pass' : 'fail',
     ikCorrectionBounded: diagnostics.ik.saturated ? 'fail' : 'pass',
     jointIkCorrection: diagnostics.ik.jointIk.saturated ? 'fail' : 'pass',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
@@ -674,6 +708,8 @@ function gaitQuality(time, diagnostics) {
     maxTargetFkDelta,
     maxLockedTargetFkDelta,
     supportClearanceError,
+    maxContactPatchRange,
+    terrain: diagnostics.terrain,
     ik: diagnostics.ik,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
@@ -741,12 +777,88 @@ function legPose(root, side, joints) {
   }
 }
 
-function terrainContactProbe(point) {
-  const heightM = 0
+function terrainSampleAt(x, z, clip) {
+  const travelZ = z + clip.rootDistanceM
+  const a = NOETIX_VISUAL_RIG.terrainReliefMaxM * 0.44
+  const b = NOETIX_VISUAL_RIG.terrainReliefMaxM * 0.22
+  const kxA = 0.9
+  const kzA = 3.1
+  const kxB = 2.4
+  const kzB = -1.7
+  const phaseA = kxA * x + kzA * travelZ
+  const phaseB = kxB * x + kzB * travelZ + 0.45
+  const heightM = a * Math.sin(phaseA) + b * Math.sin(phaseB)
+  const dhdx = a * kxA * Math.cos(phaseA) + b * kxB * Math.cos(phaseB)
+  const dhdz = a * kzA * Math.cos(phaseA) + b * kzB * Math.cos(phaseB)
   return {
     heightM,
-    normal: { x: 0, y: 1, z: 0 },
-    clearanceM: point[1] - heightM,
+    normal: normalizeVec3({ x: -dhdx, y: 1, z: -dhdz }),
+  }
+}
+
+function terrainContactProbe(point, clip) {
+  const sample = terrainSampleAt(point[0], point[2], clip)
+  return {
+    heightM: sample.heightM,
+    normal: sample.normal,
+    clearanceM: point[1] - sample.heightM,
+  }
+}
+
+function footContactPatch(point, clip) {
+  const offsets = [
+    [-0.045, -0.075],
+    [0.045, -0.075],
+    [0.045, 0.075],
+    [-0.045, 0.075],
+  ]
+  const samples = offsets.map(([x, z]) => {
+    const sample = terrainSampleAt(point[0] + x, point[2] + z, clip)
+    return {
+      x: point[0] + x,
+      y: sample.heightM,
+      z: point[2] + z,
+      normal: sample.normal,
+    }
+  })
+  const heights = samples.map(sample => sample.y)
+  const minHeightM = Math.min(...heights)
+  const maxHeightM = Math.max(...heights)
+  const center = {
+    x: samples.reduce((sum, sample) => sum + sample.x, 0) / samples.length,
+    y: samples.reduce((sum, sample) => sum + sample.y, 0) / samples.length,
+    z: samples.reduce((sum, sample) => sum + sample.z, 0) / samples.length,
+  }
+  const normal = normalizeVec3(samples.reduce((sum, sample) => ({
+    x: sum.x + sample.normal.x,
+    y: sum.y + sample.normal.y,
+    z: sum.z + sample.normal.z,
+  }), { x: 0, y: 0, z: 0 }))
+  return {
+    center,
+    normal,
+    minHeightM,
+    maxHeightM,
+    heightRangeM: maxHeightM - minHeightM,
+    areaM2: 0.09 * 0.15,
+  }
+}
+
+function terrainProfileReport(clip) {
+  const samples = []
+  for (let i = -4; i <= 4; i += 1) {
+    const z = i * 0.18
+    const sample = terrainSampleAt(0, z, clip)
+    samples.push({ x: 0, y: sample.heightM, z, normal: sample.normal })
+  }
+  const heights = samples.map(sample => sample.y)
+  const minHeightM = Math.min(...heights)
+  const maxHeightM = Math.max(...heights)
+  return {
+    minHeightM,
+    maxHeightM,
+    heightRangeM: maxHeightM - minHeightM,
+    samples,
   }
 }
 
@@ -757,12 +869,12 @@ function supportJointIk(root, clip, joints) {
   const jointCorrections = emptyJointCorrections()
   const fields = ['hip', 'knee', 'ankle']
   const epsilon = 0.01
-  const preProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+  const preProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
   let finalProbe = preProbe
   let saturated = false
   let iterations = 0
   for (let i = 0; i < 5; i += 1) {
-    const probe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+    const probe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
     const error = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
     finalProbe = probe
     if (Math.abs(error) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM) {
@@ -773,7 +885,7 @@ function supportJointIk(root, clip, joints) {
     for (const field of fields) {
       const trial = cloneJointSamples(correctedJoints)
       trial[supportName][field] += epsilon
-      const trialProbe = terrainContactProbe(legPose(root, supportSide, trial).sole)
+      const trialProbe = terrainContactProbe(legPose(root, supportSide, trial).sole, clip)
       const derivative = (trialProbe.clearanceM - probe.clearanceM) / epsilon
       derivatives[field] = derivative
       denom += derivative * derivative
@@ -792,7 +904,7 @@ function supportJointIk(root, clip, joints) {
     }
     iterations += 1
   }
-  finalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+  finalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
   return {
     correctedJoints,
     jointCorrections,
@@ -811,7 +923,7 @@ function terrainIkCorrection(root, clip, joints) {
   const supportSide = clip.supportFoot === 'left' ? 1 : -1
   const jointIk = supportJointIk(root, clip, joints)
   const supportPose = legPose(root, supportSide, jointIk.correctedJoints)
-  const probe = terrainContactProbe(supportPose.sole)
+  const probe = terrainContactProbe(supportPose.sole, clip)
   const rawPelvisCorrectionM = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
   const pelvisCorrectionM = clamp(
     rawPelvisCorrectionM,
@@ -905,6 +1017,26 @@ function initRobot(canvas) {
       heightM: Number(foot.terrainProbe.heightM.toFixed(4)),
       normal: foot.terrainProbe.normal,
     })))
+    canvas.dataset.contactPatches = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
+      name: foot.name,
+      center: compactPoint(foot.contactPatch.center),
+      normal: foot.contactPatch.normal,
+      minHeightM: Number(foot.contactPatch.minHeightM.toFixed(4)),
+      maxHeightM: Number(foot.contactPatch.maxHeightM.toFixed(4)),
+      heightRangeM: Number(foot.contactPatch.heightRangeM.toFixed(4)),
+      areaM2: Number(foot.contactPatch.areaM2.toFixed(4)),
+    })))
+    canvas.dataset.terrainProfileReport = JSON.stringify({
+      minHeightM: Number(geometry.diagnostics.terrain.minHeightM.toFixed(4)),
+      maxHeightM: Number(geometry.diagnostics.terrain.maxHeightM.toFixed(4)),
+      heightRangeM: Number(geometry.diagnostics.terrain.heightRangeM.toFixed(4)),
+      samples: geometry.diagnostics.terrain.samples.map(sample => ({
+        x: Number(sample.x.toFixed(4)),
+        y: Number(sample.y.toFixed(4)),
+        z: Number(sample.z.toFixed(4)),
+        normal: sample.normal,
+      })),
+    })
     canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
@@ -944,6 +1076,8 @@ function initRobot(canvas) {
     canvas.dataset.lockedFootAttachmentStatus = geometry.diagnostics.quality.statuses.lockedFootAttachment
     canvas.dataset.supportFootLockedStatus = geometry.diagnostics.quality.statuses.supportFootLocked
     canvas.dataset.terrainContactStatus = geometry.diagnostics.quality.statuses.terrainContact
+    canvas.dataset.contactPatchStatus = geometry.diagnostics.quality.statuses.contactPatch
+    canvas.dataset.nonFlatTerrainStatus = geometry.diagnostics.quality.statuses.nonFlatTerrain
     canvas.dataset.ikCorrectionStatus = geometry.diagnostics.quality.statuses.ikCorrectionBounded
     canvas.dataset.jointIkStatus = geometry.diagnostics.quality.statuses.jointIkCorrection
     canvas.dataset.kneeRoleContrastStatus = geometry.diagnostics.quality.statuses.kneeRoleContrast

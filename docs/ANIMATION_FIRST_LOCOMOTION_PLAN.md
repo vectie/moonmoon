@@ -278,6 +278,8 @@ Deliverables:
 - hip/knee/ankle correction
 - correction saturation evidence
 - flat-terrain preservation tests
+- non-flat terrain height and normal response
+- contact patch evidence for support review
 
 ### Phase F: Physics Review
 
@@ -309,7 +311,8 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    preview now has a flat-terrain contact probe, bounded support-leg
    hip/knee/ankle correction, bounded support-pelvis fallback correction,
    terrain-corrected foot targets, authored/corrected joint samples, and
-   browser-facing IK/contact status datasets. Non-flat terrain height and normal
-   response remain the next solver step.
-5. Feed corrected FK poses into Moonphys review once the terrain solver handles
-   non-flat terrain and publishes stable contact patches.
+   browser-facing IK/contact status datasets. Non-flat terrain height/normal
+   response and per-foot contact patches are active in the preview.
+5. Feed corrected FK poses into Moonphys review once the terrain/contact evidence
+   is moved behind durable Moonphys review types instead of only Rabbita preview
+   datasets.
