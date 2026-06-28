@@ -60,7 +60,7 @@
   - work item result:
     - 2. physical-model: NoetixReadinessWorkItemPendingEvidence
       - blockers: 9
-      - required evidence: authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs
+      - required evidence: authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs for every Noetix physical_model_gaps entry
       - target: output/moonrobo/first_trusted_square_noetix_stability.json
       - evidence: output/moonrobo/first_trusted_square_noetix_stability.json
       - command: moon run cmd/main -- moonrobo noetix stability json

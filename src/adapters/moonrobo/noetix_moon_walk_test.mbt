@@ -194,6 +194,48 @@ test "noetix physics profile keeps assumed dynamics explicit" {
       "missing:joint-damping",
     ),
   )
+  assert_eq(
+    profile.physical_model_gaps.length(),
+    profile.physical_model_readiness.blocker_count,
+  )
+  assert_true(
+    profile.physical_model_gaps.any(fn(gap) {
+      gap.blocker_id == "assumed:mass" &&
+      gap.required_item == "mass" &&
+      gap.current_status == "simulation-assumption" &&
+      gap.source_path == profile.source_model_path &&
+      gap.target_artifact_path.contains("noetix_stability") &&
+      gap.next_action.contains("per-link source mass")
+    }),
+  )
+  assert_true(
+    profile.physical_model_gaps.any(fn(gap) {
+      gap.blocker_id == "assumed:collision-shapes" &&
+      gap.required_evidence.contains("URDF collision geometry") &&
+      gap.target_artifact_path.contains("noetix_inertial_collision")
+    }),
+  )
+  assert_true(
+    profile.physical_model_gaps.any(fn(gap) {
+      gap.blocker_id == "assumed:joint-servo-gains" &&
+      gap.source_path == profile.source_profile_path &&
+      gap.target_artifact_path.contains("noetix_control")
+    }),
+  )
+  assert_true(
+    profile.physical_model_gaps.any(fn(gap) {
+      gap.blocker_id == "missing:joint-damping" &&
+      gap.current_status == "missing" &&
+      gap.required_evidence.contains("damping coefficients")
+    }),
+  )
+  assert_true(
+    profile.physical_model_gaps.any(fn(gap) {
+      gap.blocker_id == "missing:joint-stiffness" &&
+      gap.current_status == "missing" &&
+      gap.required_evidence.contains("stiffness")
+    }),
+  )
   assert_true(
     profile.mass_model.source_status.contains("simulation-assumption"),
   )

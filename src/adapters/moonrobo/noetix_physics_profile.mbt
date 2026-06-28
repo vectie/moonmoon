@@ -37,6 +37,18 @@ pub(all) struct NoetixCollisionShapeProfile {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixPhysicalModelGap {
+  blocker_id : String
+  required_item : String
+  current_status : String
+  source_path : String
+  required_evidence : String
+  target_artifact_path : String
+  acceptance_check : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixPhysicsProfile {
   profile_id : String
   robot_id : String
@@ -47,6 +59,7 @@ pub(all) struct NoetixPhysicsProfile {
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
   physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_gaps : Array[NoetixPhysicalModelGap]
   material_model : String
   hardware_authority : String
   status : String
@@ -238,6 +251,127 @@ fn noetix_physical_model_readiness() -> @moonphys.PhysicalModelReadiness {
 }
 
 ///|
+fn physical_model_gap(
+  blocker_id : String,
+  required_item : String,
+  current_status : String,
+  source_path : String,
+  required_evidence : String,
+  target_artifact_path : String,
+  acceptance_check : String,
+  next_action : String,
+) -> NoetixPhysicalModelGap {
+  {
+    blocker_id,
+    required_item,
+    current_status,
+    source_path,
+    required_evidence,
+    target_artifact_path,
+    acceptance_check,
+    next_action,
+  }
+}
+
+///|
+fn noetix_physical_model_gaps(
+  robot : NoetixMoonWalkRobotProfile,
+) -> Array[NoetixPhysicalModelGap] {
+  [
+    physical_model_gap(
+      "assumed:mass",
+      "mass",
+      "simulation-assumption",
+      robot.source_model_path,
+      "URDF inertial mass on every Noetix link, or an authoritative Moonrobo mass manifest that covers the full link set",
+      "output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "Replace the lumped 38 kg review mass with per-link source mass before allowing MoonRobo simulation consumption.",
+    ),
+    physical_model_gap(
+      "assumed:center-of-mass",
+      "center-of-mass",
+      "simulation-assumption",
+      robot.source_model_path,
+      "URDF inertial origin or authoritative center-of-mass manifest for every Noetix link",
+      "output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "Replace nominal COM height and offsets with source inertial origins before clearing support-model authority.",
+    ),
+    physical_model_gap(
+      "assumed:link-inertia",
+      "link-inertia",
+      "simulation-assumption",
+      robot.source_model_path,
+      "URDF inertia tensors or authoritative Moonrobo inertia manifest for every dynamic Noetix link",
+      "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+      "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+      "Replace composite primitive inertia assumptions with source inertia tensors before stronger dynamics claims.",
+    ),
+    physical_model_gap(
+      "assumed:collision-shapes",
+      "collision-shapes",
+      "simulation-assumption",
+      robot.source_model_path,
+      "URDF collision geometry or authoritative collision manifest for every Noetix link",
+      "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+      "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+      "Replace visual-proxy and assumed sole shapes with source collision geometry before clearing collision authority.",
+    ),
+    physical_model_gap(
+      "assumed:foot-sole-geometry",
+      "foot-sole-geometry",
+      "simulation-assumption",
+      robot.source_model_path,
+      "authoritative left_foot and right_foot sole contact dimensions, offsets, and contact radii",
+      "output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "Replace assumed rectangular sole patches with source foot sole geometry before clearing contact-patch authority.",
+    ),
+    physical_model_gap(
+      "assumed:joint-servo-gains",
+      "joint-servo-gains",
+      "simulation-assumption",
+      robot.source_profile_path,
+      "Moonrobo actuator control gains or bridge-reviewed servo parameters for all 24 Noetix joints",
+      "output/moonrobo/first_trusted_square_noetix_control.json",
+      "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+      "Replace effort-scaled review gains with Moonrobo actuator gains before clearing joint-control authority.",
+    ),
+    physical_model_gap(
+      "assumed:friction",
+      "friction",
+      "simulation-assumption",
+      robot.source_profile_path,
+      "surface/contact friction evidence for Noetix soles on the selected Moonmoon terrain material",
+      "output/moonrobo/first_trusted_square_noetix_stability.json",
+      "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+      "Replace dry-regolith review friction with source-backed contact material evidence before clearing traction authority.",
+    ),
+    physical_model_gap(
+      "missing:joint-damping",
+      "joint-damping",
+      "missing",
+      robot.source_profile_path,
+      "damping coefficients for all 24 Noetix joints from Moonrobo profile, URDF dynamics tags, or bridge metadata",
+      "output/moonrobo/first_trusted_square_noetix_control.json",
+      "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+      "Add joint damping source data before clearing the physical-model missing-input gate.",
+    ),
+    physical_model_gap(
+      "missing:joint-stiffness",
+      "joint-stiffness",
+      "missing",
+      robot.source_profile_path,
+      "stiffness or compliance model for all 24 Noetix joints from Moonrobo profile or actuator metadata",
+      "output/moonrobo/first_trusted_square_noetix_control.json",
+      "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+      "Add joint stiffness or compliance source data before clearing the physical-model missing-input gate.",
+    ),
+  ]
+}
+
+///|
 pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
   let robot = noetix_moon_walk_robot_profile()
   let left_foot : NoetixFootGeometry = {
@@ -275,6 +409,7 @@ pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
     actuator_profiles: noetix_joint_actuator_profiles(),
     collision_shapes: noetix_collision_shape_profiles(left_foot, right_foot),
     physical_model_readiness: noetix_physical_model_readiness(),
+    physical_model_gaps: noetix_physical_model_gaps(robot),
     material_model: "dry-regolith-review-assumption",
     hardware_authority: "moonmoon-safety-gate-only",
     status: "review-only",

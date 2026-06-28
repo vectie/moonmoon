@@ -88,11 +88,11 @@ pub fn noetix_readiness_work_items_from_decision(
         "physical-model",
         decision.physical_model_blocker_count,
         decision.physical_model_blocker_ids,
-        "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs",
+        "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs for every Noetix physical_model_gaps entry",
         "output/moonrobo/first_trusted_square_noetix_stability.json",
         "moon run cmd/main -- moonrobo noetix stability json",
         "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
-        "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied.",
+        "Replace each Noetix physical_model_gaps entry with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied.",
       ),
     )
   }

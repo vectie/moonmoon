@@ -32,8 +32,10 @@ evidence.
   Moonphys physical-model readiness inventory, plus a static COM/support report
   backed by generic Moonphys convex support-polygon and support-load assessment.
   The physical-model readiness inventory now exposes stable blocker IDs for
-  assumed and missing inputs so downstream review gates can target exact
-  metadata gaps.
+  assumed and missing inputs, and the Noetix profile now carries a
+  `physical_model_gaps` inventory that maps each blocker to required evidence,
+  source path, target artifact, acceptance check, and next action so downstream
+  review gates can target exact metadata gaps.
 - Moonrobo exports a Noetix source-model audit that records the sibling
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, zero authoritative collision or
@@ -136,7 +138,8 @@ evidence.
   physical-model, and review-artifact blockers into bounded follow-up evidence
   tasks while keeping MoonRobo simulation consumption and hardware authority
   denied. The previous world-replay work item is omitted after the Moonphys
-  replay blocker inventory clears.
+  replay blocker inventory clears. The physical-model work item now targets the
+  Moonrobo `physical_model_gaps` inventory instead of a flat blocker list.
 - MoonClaw review-task and readiness-decision evidence carries static
   support-stable frames and dynamic capture-stable frames separately from
   review-frame blockers, so downstream gates can distinguish passing Moonphys

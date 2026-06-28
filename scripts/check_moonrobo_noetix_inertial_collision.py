@@ -65,6 +65,27 @@ def main(argv: list[str]) -> int:
   require("joint-stiffness" in readiness.get("missing_items", []), "missing joint stiffness")
   require("assumed:mass" in blocker_ids, "assumed mass blocker")
   require("missing:joint-damping" in blocker_ids, "missing damping blocker")
+  gaps = report["profile"].get("physical_model_gaps")
+  require(isinstance(gaps, list), "physical model gap inventory")
+  require(len(gaps) == readiness.get("blocker_count"), "physical gap count")
+  gaps_by_id = {gap.get("blocker_id"): gap for gap in gaps}
+  for blocker_id in blocker_ids:
+    require(blocker_id in gaps_by_id, f"missing physical gap {blocker_id}")
+  require(
+    gaps_by_id.get("assumed:link-inertia", {}).get("target_artifact_path")
+    == "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+    "link inertia gap target",
+  )
+  require(
+    "URDF collision geometry"
+    in gaps_by_id.get("assumed:collision-shapes", {}).get("required_evidence", ""),
+    "collision gap evidence",
+  )
+  require(
+    gaps_by_id.get("missing:joint-stiffness", {}).get("current_status")
+    == "missing",
+    "stiffness gap status",
+  )
   require(
     report["hardware_authority"] == "moonmoon-safety-gate-only",
     "hardware authority",

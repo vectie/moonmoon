@@ -94,6 +94,11 @@ def main() -> None:
         "assumed:mass",
         "check_moonrobo_noetix_stability",
     )
+    physical = receipt_by_domain(receipts, "physical-model").get("work_item_result", {})
+    if "physical_model_gaps" not in physical.get("required_evidence", ""):
+        fail("physical-model receipt must target the physical_model_gaps inventory")
+    if "physical_model_gaps" not in physical.get("next_action", ""):
+        fail("physical-model receipt next action must name the gap inventory")
     if any(
         receipt.get("work_item_result", {}).get("blocker_domain") == "world-replay"
         for receipt in receipts

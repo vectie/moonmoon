@@ -197,14 +197,14 @@
             "missing:joint-damping",
             "missing:joint-stiffness"
           ],
-          "required_evidence": "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs",
+          "required_evidence": "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs for every Noetix physical_model_gaps entry",
           "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
           "command": "moon run cmd/main -- moonrobo noetix stability json",
           "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
           "status": "NoetixReadinessWorkItemPendingEvidence",
           "evidence_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
           "current_state": "Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.",
-          "next_action": "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
+          "next_action": "Replace each Noetix physical_model_gaps entry with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
         },
         "validation_checks": [
           {
@@ -345,7 +345,7 @@
           "missing:joint-damping",
           "missing:joint-stiffness"
         ],
-        "required_evidence": "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs",
+        "required_evidence": "authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs for every Noetix physical_model_gaps entry",
         "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
         "command": "moon run cmd/main -- moonrobo noetix stability json",
         "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
@@ -354,7 +354,7 @@
         "hardware_authority": "moonmoon-safety-gate-only",
         "hardware_denied": true,
         "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
-        "next_action": "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
+        "next_action": "Replace each Noetix physical_model_gaps entry with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
       }
     ],
     "source_decision": {

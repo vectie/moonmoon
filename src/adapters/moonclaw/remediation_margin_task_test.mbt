@@ -1892,6 +1892,8 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
       item.blocker_domain == "physical-model" &&
       item.blocker_count == 9 &&
       item.blocker_ids.contains("assumed:mass") &&
+      item.required_evidence.contains("physical_model_gaps") &&
+      item.next_action.contains("physical_model_gaps") &&
       item.acceptance_check.contains("check_moonrobo_noetix_stability")
     }),
   )

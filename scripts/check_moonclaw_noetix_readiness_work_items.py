@@ -78,6 +78,11 @@ def main() -> None:
         "assumed:mass",
         "check_moonrobo_noetix_stability",
     )
+    physical = item_by_domain(items, "physical-model")
+    if "physical_model_gaps" not in physical.get("required_evidence", ""):
+        fail("physical-model item must target the physical_model_gaps inventory")
+    if "physical_model_gaps" not in physical.get("next_action", ""):
+        fail("physical-model next action must name the gap inventory")
     if any(item.get("blocker_domain") == "world-replay" for item in items):
         fail("world replay item should be omitted after replay blockers clear")
     if any(item.get("blocker_domain") == "review-artifacts" for item in items):

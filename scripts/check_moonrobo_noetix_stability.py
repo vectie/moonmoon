@@ -65,6 +65,45 @@ def main() -> None:
         fail("physical model readiness must name assumed mass blocker")
     if "missing:joint-damping" not in blocker_ids:
         fail("physical model readiness must name missing damping blocker")
+    gaps = profile.get("physical_model_gaps")
+    if not isinstance(gaps, list) or len(gaps) != readiness.get("blocker_count"):
+        fail("physical model gap inventory must match blocker count")
+    gaps_by_id = {gap.get("blocker_id"): gap for gap in gaps}
+    for blocker_id in blocker_ids:
+        if blocker_id not in gaps_by_id:
+            fail(f"physical model gap inventory missing {blocker_id}")
+    mass_gap = gaps_by_id.get("assumed:mass", {})
+    if (
+        mass_gap.get("required_item") != "mass"
+        or mass_gap.get("current_status") != "simulation-assumption"
+        or mass_gap.get("source_path") != profile.get("source_model_path")
+        or "per-link source mass" not in mass_gap.get("next_action", "")
+    ):
+        fail("mass gap must target authoritative per-link source mass")
+    collision_gap = gaps_by_id.get("assumed:collision-shapes", {})
+    if (
+        "URDF collision geometry" not in collision_gap.get("required_evidence", "")
+        or "noetix_inertial_collision" not in collision_gap.get("target_artifact_path", "")
+    ):
+        fail("collision-shape gap must target inertial/collision evidence")
+    servo_gap = gaps_by_id.get("assumed:joint-servo-gains", {})
+    if (
+        servo_gap.get("source_path") != profile.get("source_profile_path")
+        or "noetix_control" not in servo_gap.get("target_artifact_path", "")
+    ):
+        fail("servo gain gap must target Noetix control evidence")
+    damping_gap = gaps_by_id.get("missing:joint-damping", {})
+    if (
+        damping_gap.get("current_status") != "missing"
+        or "damping coefficients" not in damping_gap.get("required_evidence", "")
+    ):
+        fail("joint damping gap must remain missing and explicit")
+    stiffness_gap = gaps_by_id.get("missing:joint-stiffness", {})
+    if (
+        stiffness_gap.get("current_status") != "missing"
+        or "stiffness" not in stiffness_gap.get("required_evidence", "")
+    ):
+        fail("joint stiffness gap must remain missing and explicit")
     if "simulation-assumption" not in mass_model.get("source_status", ""):
         fail("mass model must be marked as an assumption")
     if mass_model.get("mass_kg", 0) <= 0:

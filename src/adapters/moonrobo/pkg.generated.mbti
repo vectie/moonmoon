@@ -778,6 +778,17 @@ pub(all) struct NoetixMoonWalkTrace {
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixPhysicalModelGap {
+  blocker_id : String
+  required_item : String
+  current_status : String
+  source_path : String
+  required_evidence : String
+  target_artifact_path : String
+  acceptance_check : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixPhysicsProfile {
   profile_id : String
   robot_id : String
@@ -788,6 +799,7 @@ pub(all) struct NoetixPhysicsProfile {
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
   physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_gaps : Array[NoetixPhysicalModelGap]
   material_model : String
   hardware_authority : String
   status : String

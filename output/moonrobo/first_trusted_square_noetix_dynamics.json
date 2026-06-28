@@ -642,6 +642,98 @@
       ],
       "status": "physical-model-assumption-review"
     },
+    "physical_model_gaps": [
+      {
+        "blocker_id": "assumed:mass",
+        "required_item": "mass",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+        "required_evidence": "URDF inertial mass on every Noetix link, or an authoritative Moonrobo mass manifest that covers the full link set",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+        "next_action": "Replace the lumped 38 kg review mass with per-link source mass before allowing MoonRobo simulation consumption."
+      },
+      {
+        "blocker_id": "assumed:center-of-mass",
+        "required_item": "center-of-mass",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+        "required_evidence": "URDF inertial origin or authoritative center-of-mass manifest for every Noetix link",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+        "next_action": "Replace nominal COM height and offsets with source inertial origins before clearing support-model authority."
+      },
+      {
+        "blocker_id": "assumed:link-inertia",
+        "required_item": "link-inertia",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+        "required_evidence": "URDF inertia tensors or authoritative Moonrobo inertia manifest for every dynamic Noetix link",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        "next_action": "Replace composite primitive inertia assumptions with source inertia tensors before stronger dynamics claims."
+      },
+      {
+        "blocker_id": "assumed:collision-shapes",
+        "required_item": "collision-shapes",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+        "required_evidence": "URDF collision geometry or authoritative collision manifest for every Noetix link",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
+        "next_action": "Replace visual-proxy and assumed sole shapes with source collision geometry before clearing collision authority."
+      },
+      {
+        "blocker_id": "assumed:foot-sole-geometry",
+        "required_item": "foot-sole-geometry",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
+        "required_evidence": "authoritative left_foot and right_foot sole contact dimensions, offsets, and contact radii",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+        "next_action": "Replace assumed rectangular sole patches with source foot sole geometry before clearing contact-patch authority."
+      },
+      {
+        "blocker_id": "assumed:joint-servo-gains",
+        "required_item": "joint-servo-gains",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/robot.json",
+        "required_evidence": "Moonrobo actuator control gains or bridge-reviewed servo parameters for all 24 Noetix joints",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+        "next_action": "Replace effort-scaled review gains with Moonrobo actuator gains before clearing joint-control authority."
+      },
+      {
+        "blocker_id": "assumed:friction",
+        "required_item": "friction",
+        "current_status": "simulation-assumption",
+        "source_path": "../moonrobo/examples/noetix-e1/robot.json",
+        "required_evidence": "surface/contact friction evidence for Noetix soles on the selected Moonmoon terrain material",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_stability.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
+        "next_action": "Replace dry-regolith review friction with source-backed contact material evidence before clearing traction authority."
+      },
+      {
+        "blocker_id": "missing:joint-damping",
+        "required_item": "joint-damping",
+        "current_status": "missing",
+        "source_path": "../moonrobo/examples/noetix-e1/robot.json",
+        "required_evidence": "damping coefficients for all 24 Noetix joints from Moonrobo profile, URDF dynamics tags, or bridge metadata",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+        "next_action": "Add joint damping source data before clearing the physical-model missing-input gate."
+      },
+      {
+        "blocker_id": "missing:joint-stiffness",
+        "required_item": "joint-stiffness",
+        "current_status": "missing",
+        "source_path": "../moonrobo/examples/noetix-e1/robot.json",
+        "required_evidence": "stiffness or compliance model for all 24 Noetix joints from Moonrobo profile or actuator metadata",
+        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
+        "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
+        "next_action": "Add joint stiffness or compliance source data before clearing the physical-model missing-input gate."
+      }
+    ],
     "material_model": "dry-regolith-review-assumption",
     "hardware_authority": "moonmoon-safety-gate-only",
     "status": "review-only",

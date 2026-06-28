@@ -87,7 +87,7 @@
     - assumed:friction
     - missing:joint-damping
     - missing:joint-stiffness
-  - required evidence: authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs
+  - required evidence: authoritative mass, center-of-mass, inertia, collision, sole, servo, damping, stiffness, and friction inputs for every Noetix physical_model_gaps entry
   - target: output/moonrobo/first_trusted_square_noetix_stability.json
   - command: moon run cmd/main -- moonrobo noetix stability json
   - check: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json
@@ -95,4 +95,4 @@
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
   - safety gate: Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.
-  - next action: Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied.
+  - next action: Replace each Noetix physical_model_gaps entry with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied.
