@@ -32,6 +32,8 @@ const sceneContracts = [
   'stanceFootWorldLockStatus',
   'stanceFootWorldDrift',
   'footLockRootCorrection',
+  'rootCorrectionContinuityStatus',
+  'rootCorrectionContinuity',
   'limbForwardBendStatus',
   'limbForwardBend',
   'ikCorrectionReport',
@@ -56,7 +58,8 @@ const planContracts = [
   'hip/knee/ankle correction',
   'phase labels: `contact`, `loading`, `stance`, `passing`, `swing`, `release`',
   'foot lock',
-  'stance foot world-position delta stays near zero',
+  'stance foot lateral delta stays near zero',
+  'root correction remains continuous through support transfer',
   'toe-off/contact ankle curve',
   'arm lag and counter-swing',
   'torso/waist counter-rotation',
@@ -226,7 +229,10 @@ for (const time of sampleTimes) {
     throw new Error(`foot phase coverage failed at ${time}s: ${JSON.stringify(frame.quality.footPhaseCoverage.missing)}`)
   }
   if (frame.quality.statuses.stanceFootWorldLock !== 'pass') {
-    throw new Error(`stance foot world lock failed at ${time}s: ${JSON.stringify(frame.quality.footLockDrift)}`)
+    throw new Error(`stance foot lateral stability failed at ${time}s: ${JSON.stringify(frame.quality.footLockDrift)}`)
+  }
+  if (frame.quality.statuses.rootCorrectionContinuity !== 'pass') {
+    throw new Error(`root correction continuity failed at ${time}s: ${JSON.stringify(frame.quality.rootCorrectionContinuity)}`)
   }
   if (frame.quality.statuses.limbForwardBend !== 'pass') {
     throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)

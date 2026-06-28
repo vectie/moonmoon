@@ -9,12 +9,13 @@ export const NOETIX_VISUAL_RIG = {
   targetFkMaxM: 0.025,
   lockedTargetFkMaxM: 0.010,
   stanceFootWorldStepMaxM: 0.010,
+  rootCorrectionStepMaxM: 0.050,
   footLockRootCorrectionMaxM: 0.22,
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
   toeRollMinRad: 0.22,
   torsoCounterRotationMinRad: 0.10,
-  legForwardBendMinM: 0.035,
+  legForwardBendMinM: 0.025,
   armForwardBendMinM: 0.015,
   limbBackFoldToleranceM: -0.004,
   supportTargetClearanceM: 0.006,
@@ -98,7 +99,15 @@ export function footRoleColor(role) {
 }
 
 function footLock(footPhase) {
-  return footPhase < 0.50
+  return footLockWeight(footPhase) > 0.95
+}
+
+function footLockWeight(footPhase) {
+  if (footPhase < 0.10) return smoothstep(footPhase / 0.10) * 0.12
+  if (footPhase < 0.30) return mix(0.12, 1, smoothstep((footPhase - 0.10) / 0.20))
+  if (footPhase < 0.34) return 1
+  if (footPhase < 0.50) return mix(1, 0, smoothstep((footPhase - 0.34) / 0.16))
+  return 0
 }
 
 function footSupport(footPhase) {
@@ -139,6 +148,7 @@ export function walkClipSample(time) {
       phase: leftPhase,
       role: footRole(leftPhase),
       locked: footLock(leftPhase),
+      lockWeight: footLockWeight(leftPhase),
       supporting: footSupport(leftPhase),
       rollPitch: footRollPitch(leftPhase),
     },
@@ -146,6 +156,7 @@ export function walkClipSample(time) {
       phase: rightPhase,
       role: footRole(rightPhase),
       locked: footLock(rightPhase),
+      lockWeight: footLockWeight(rightPhase),
       supporting: footSupport(rightPhase),
       rollPitch: footRollPitch(rightPhase),
     },

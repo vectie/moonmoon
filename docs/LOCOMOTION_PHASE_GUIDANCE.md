@@ -188,10 +188,12 @@ FK foot endpoints, root distance, and link-length status so browser checks can
 separate gait timing issues from rendering or FK issues. The Rabbita 3D scene
 also exposes semantic `footPhaseChannels`, `gaitPhaseLabel`, and
 `footPhaseCoverageStatus`, root-space foot-lock correction evidence, and
-stance-foot world drift. It also exposes `limbForwardBendStatus` so knee and
-elbow sign mistakes are caught as FK convention failures instead of being hidden
-by a passing knee-contrast metric. It renders root/phase timing rails beside the
-robot so clip timing is visible without replacing the rigid FK pose.
+stance-foot world drift. It also exposes `limbForwardBendStatus` so knee sign
+mistakes are caught as FK convention failures instead of being hidden by a
+passing knee-contrast metric. It also exposes
+`rootCorrectionContinuityStatus` so support-transfer snaps are caught directly.
+It renders root/phase timing rails beside the robot so clip timing is visible
+without replacing the rigid FK pose.
 
 Deliverables:
 

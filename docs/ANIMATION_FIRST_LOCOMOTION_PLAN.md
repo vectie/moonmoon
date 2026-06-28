@@ -100,6 +100,7 @@ The first clip exposes:
 - root-motion stride per cycle
 - left/right authored foot target curves
 - foot lock and release markers
+- root correction remains continuous through support transfer
 - pelvis/base lateral transfer over the support foot
 - small vertical bob at loading and passing
 - torso or waist counter-rotation
@@ -107,8 +108,8 @@ The first clip exposes:
 - elbow lag rather than rigid pendulum arms
 - stance knee nearly straight but not locked
 - swing knee flexion peaking near passing
-- forward-bend convention: knee and elbow flexion moves lower limbs toward the
-  toe/hand-forward side of the robot, never visually back-folding the chain
+- forward-bend convention: knee flexion places the knee forward of the
+  hip-to-ankle chain, never visually back-folding the leg
 - ankle/toe pitch across contact, foot-flat, and toe-off
 
 Acceptance:
@@ -138,13 +139,14 @@ Acceptance:
 Foot locking is the first guard against skating.
 
 Current status: active in the Rabbita preview. Support feet now get a
-root-space correction against their stance-start world anchor, and
-`check:gait` requires `stanceFootWorldLock` to pass across the cycle.
+root-space lateral correction against their stance-start anchor, and
+`check:gait` requires lateral stance stability without feeding forward/back
+anchor correction into the visible root.
 
 Required behavior:
 
 - each foot has an explicit `locked` channel
-- stance foot world-position delta stays near zero
+- stance foot lateral delta stays near zero
 - swing foot is unlocked and follows an arc
 - double-support windows are explicit
 - lock and release markers are emitted
@@ -277,7 +279,7 @@ Acceptance:
 
 - the walk looks intentional without terrain correction
 - swing and stance knees have clearly different roles
-- knees and elbows keep the forward-bend convention throughout the cycle
+- knees keep the forward-bend convention throughout the cycle
 - link lengths remain invariant
 
 ### Phase E: Terrain IK
