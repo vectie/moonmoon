@@ -165,22 +165,67 @@ test "noetix endless gait evidence verifies periodic phase and forward offset" {
 }
 
 ///|
-test "noetix endless moon walk carries urdf leg ik phases" {
+test "noetix endless moon walk carries urdf walk clip phases" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
   assert_eq(trace.frames[0].joint_phases.length(), 24)
+  assert_eq(trace.frames[0].gait_phase, "contact")
+  assert_true(trace.frames[0].left_foot_locked)
+  assert_true(!trace.frames[0].right_foot_locked)
+  assert_true(trace.frames[0].root_motion_cycle_stride_m > 0.0)
   assert_true(
     trace.frames[0].joint_phases.any(fn(phase) {
       phase.joint_name == "leg_r3_joint" &&
-      phase.status == "urdf-gait-clip" &&
+      phase.status == "urdf-walk-clip" &&
       phase.position_rad > 0.0
     }),
   )
   assert_true(
     trace.frames[5].joint_phases.any(fn(phase) {
       phase.joint_name == "leg_r1_joint" &&
-      phase.status == "urdf-gait-clip" &&
+      phase.status == "urdf-walk-clip" &&
       phase.position_rad >= -1.2 &&
       phase.position_rad <= 1.2
+    }),
+  )
+}
+
+///|
+test "noetix walk clip exposes root motion and foot locks" {
+  let config = default_noetix_moon_walk_config()
+  let first = noetix_walk_clip_sample(config, 0)
+  let repeated = noetix_walk_clip_sample(config, config.cycle_frames)
+  assert_eq(first.clip_id, "moonrobo/noetix-e1/walk-cycle/root-motion-v1")
+  assert_eq(first.phase_label, "contact")
+  assert_eq(first.support_phase, "double-support-left-transfer")
+  assert_true(first.left_foot.locked)
+  assert_true(!first.right_foot.locked)
+  assert_true(first.left_foot.contact_expected)
+  assert_true(first.right_foot.contact_expected)
+  assert_true(first.root_motion_cycle_stride_m > 0.0)
+  assert_true(
+    nearly_equal_double(
+      repeated.root_motion_forward_m - first.root_motion_forward_m,
+      first.root_motion_cycle_stride_m,
+    ),
+  )
+  assert_eq(repeated.phase_index, first.phase_index)
+  assert_eq(repeated.phase_label, first.phase_label)
+}
+
+///|
+test "noetix walk clip swing phase is inspectable data" {
+  let config = default_noetix_moon_walk_config()
+  let right_swing = noetix_walk_clip_sample(config, 13)
+  assert_eq(right_swing.support_phase, "left-support")
+  assert_true(right_swing.left_foot.locked)
+  assert_true(!right_swing.right_foot.locked)
+  assert_true(right_swing.right_foot.swing_progress > 0.0)
+  assert_true(right_swing.right_foot.lift_m > 0.0)
+  assert_true(
+    right_swing.joint_phases.any(fn(phase) {
+      phase.joint_name == "leg_r4_joint" &&
+      phase.status == "urdf-walk-clip" &&
+      phase.position_rad > 0.0
     }),
   )
 }

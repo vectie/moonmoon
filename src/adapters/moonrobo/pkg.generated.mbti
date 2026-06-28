@@ -190,6 +190,8 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport
 
 pub fn noetix_source_visual_geometries() -> Array[NoetixSourceVisualGeometry]
 
+pub fn noetix_walk_clip_sample(NoetixMoonWalkConfig, Int) -> NoetixWalkClipSample
+
 pub fn noetix_walk_command_plan(NoetixMoonWalkTrace, limits? : NoetixHighControlLimits) -> NoetixWalkCommandPlan
 
 pub fn noetix_walk_stability_frame(NoetixMoonWalkFrame, NoetixPhysicsProfile, field? : @moonphys.Heightfield, config? : NoetixMoonWalkConfig) -> NoetixWalkStabilityFrame
@@ -807,6 +809,11 @@ pub(all) struct NoetixMoonWalkFrame {
   time_s : Double
   body_position : @moonphys.Vec3
   support_phase : String
+  gait_phase : String
+  root_motion_forward_m : Double
+  root_motion_cycle_stride_m : Double
+  left_foot_locked : Bool
+  right_foot_locked : Bool
   left_foot : NoetixFootContactProbe
   right_foot : NoetixFootContactProbe
   joint_phases : Array[NoetixJointPhase]
@@ -972,6 +979,48 @@ pub(all) struct NoetixTerrainCollisionEvidence {
   expected_contact : Bool
   collision : @moonphys.HeightfieldCollision
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkClipFootSample {
+  foot_id : String
+  side : String
+  phase : NoetixWalkClipPhase
+  phase_label : String
+  locked : Bool
+  contact_expected : Bool
+  swing_progress : Double
+  forward_m : Double
+  lateral_m : Double
+  lift_m : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum NoetixWalkClipPhase {
+  NoetixClipContact
+  NoetixClipLoading
+  NoetixClipStance
+  NoetixClipPassing
+  NoetixClipSwing
+  NoetixClipRelease
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixWalkClipSample {
+  clip_id : String
+  frame_index : Int
+  cycle_frames : Int
+  phase_index : Int
+  local_phase_index : Int
+  gait_progress : Double
+  support_side : String
+  support_phase : String
+  phase : NoetixWalkClipPhase
+  phase_label : String
+  root_motion_forward_m : Double
+  root_motion_cycle_stride_m : Double
+  body_lateral_m : Double
+  body_bob_m : Double
+  left_foot : NoetixWalkClipFootSample
+  right_foot : NoetixWalkClipFootSample
+  joint_phases : Array[NoetixJointPhase]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixWalkCommandPlan {

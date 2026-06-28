@@ -97,10 +97,10 @@ def main() -> None:
         fail("frame should carry 24 Noetix joint phases")
     if not any(
         phase.get("joint_name") == "leg_r3_joint"
-        and phase.get("status") == "urdf-gait-clip"
+        and phase.get("status") == "urdf-walk-clip"
         for phase in frames[5].get("joint_phases", [])
     ):
-        fail("joint phases should include Noetix URDF gait clip joints")
+        fail("joint phases should include Noetix URDF walk clip joints")
     if not all(
         -1.2 <= phase.get("position_rad", 99) <= 1.2
         for frame in frames

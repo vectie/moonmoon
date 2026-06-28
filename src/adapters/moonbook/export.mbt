@@ -993,7 +993,7 @@ fn moonrobo_noetix_walk_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Simulated,
     confidence: 0.62,
     path: "moonrobo/\{dossier.site.site_id}/noetix-walk.json",
-    summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame using a URDF gait clip, and hardware authority denied",
+    summary: "\{trace.robot.robot_id} kinematic endless walk over \{trace.terrain_tile_id} with \{trace.frame_count} frames, \{joint_count} joint phases per frame using a URDF walk clip, and hardware authority denied",
   }
 }
 

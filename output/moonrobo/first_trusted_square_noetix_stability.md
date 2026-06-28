@@ -24,7 +24,7 @@
 - frame 3 t=0.30000000000000004s phase=double-support-left-transfer margin=0.10299855674601857m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 - frame 4 t=0.4s phase=double-support-left-transfer margin=0.1049691655153561m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 - frame 5 t=0.5s phase=double-support-left-transfer margin=0.10245057997593535m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 6 t=0.6000000000000001s phase=double-support-left-transfer margin=0.10043781914736061m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 6 t=0.6000000000000001s phase=double-support-left-transfer margin=0.10043781914736062m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 - frame 7 t=0.7000000000000001s phase=double-support-left-transfer margin=0.09509602194787381m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 - frame 8 t=0.8s phase=double-support-left-transfer margin=0.0877434842249657m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 - frame 9 t=0.9s phase=double-support-left-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
@@ -40,7 +40,7 @@
 - frame 19 t=1.9000000000000001s phase=double-support-right-transfer margin=0.10299855674601856m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
 - frame 20 t=2s phase=double-support-right-transfer margin=0.10496916551535608m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
 - frame 21 t=2.1s phase=double-support-right-transfer margin=0.10245057997593535m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
-- frame 22 t=2.2s phase=double-support-right-transfer margin=0.10043781914736058m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
+- frame 22 t=2.2s phase=double-support-right-transfer margin=0.10043781914736061m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
 - frame 23 t=2.3000000000000003s phase=double-support-right-transfer margin=0.09509602194787381m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
 - frame 24 t=2.4000000000000004s phase=double-support-right-transfer margin=0.0877434842249657m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review
 - frame 25 t=2.5s phase=double-support-right-transfer margin=0.08499999999999998m patch=contact-patch-ok traction=traction-ok status=terrain-contact-review

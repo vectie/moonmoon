@@ -98,7 +98,7 @@
   - inputs:
     - noetix-source-model: output/moonrobo/first_trusted_square_noetix_source_model.json - Moonrobo source model audit for Noetix URDF/profile metadata and missing collision/inertial tags.
     - noetix-endless-gait: output/moonrobo/first_trusted_square_noetix_endless_gait.json - Moonrobo proof that the Noetix finite trace prefix is a window over an endless one-direction gait.
-    - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF gait clip phases.
+    - noetix-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json - Kinematic endless +x Noetix walk trace over Moonmoon terrain with URDF walk clip phases.
     - noetix-walk-command-plan: output/moonrobo/first_trusted_square_noetix_walk_command.json - Moonrobo high-control dry-run command plan for the Noetix walk trace.
     - noetix-link-poses: output/moonrobo/first_trusted_square_noetix_link_poses.json - URDF-reference link-pose trace bound to the walk frames and contact probes.
     - noetix-static-support: output/moonrobo/first_trusted_square_noetix_stability.json - Static COM/support report that explicitly remains review-only for dynamic walking.
@@ -123,7 +123,7 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json
     - noetix-endless-walk-trace: output/moonrobo/first_trusted_square_noetix_walk.json
-      - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded URDF gait clip
+      - current: 32 frames over first-trusted-square-northeast-stepout-lola; axis +x; 24 referenced joints with bounded URDF walk clip
       - ready: true
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_walk.py output/moonrobo/first_trusted_square_noetix_walk.json
@@ -148,7 +148,7 @@
       - blocking: capture-point margins must be stable in every frame before downstream review
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 100; support-review frames 0; capture-review frames 2; max support recovery shift 0 m; worst capture support margin -0.0032435425030045146 m; max capture recovery shift 0.003243542503004515 m; world replay blockers 1; resolved world hinges 1511; body samples 825; max world speed 2.0453097897419426 m/s; max world energy 3.179302023370815 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 36.54985249851048 W; absolute work 100.06795528124788 J; status joint-control-assumption-review
+      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 96; support-review frames 0; capture-review frames 2; max support recovery shift 0 m; worst capture support margin -0.0032435425030045146 m; max capture recovery shift 0.003243542503004515 m; world replay blockers 1; resolved world hinges 1511; body samples 825; max world speed 2.0453097897419426 m/s; max world energy 3.179302023370815 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 36.54985249851048 W; absolute work 98.63308459799894 J; status joint-control-assumption-review
       - ready: false
       - blocking: joint-control replay must clear limit, saturation, support, capture, and Moonphys world replay blockers
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json

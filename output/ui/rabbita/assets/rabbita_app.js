@@ -610,7 +610,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['endless loop', noetixLoopLabel()],
     ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
-    ['joints', `${jointCount} phases, URDF gait clip`],
+    ['joints', `${jointCount} phases, URDF walk clip`],
     ['links', `${linkCount} URDF-reference poses`],
     ['pose authority', 'FK link transforms, contact annotations'],
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],

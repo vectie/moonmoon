@@ -437,7 +437,7 @@ In this repo, initially avoid copying full URDF parsing. Instead:
 - encode the compact Noetix URDF link tree in the Moonrobo adapter
 - bind feet to Moonphys contact probes from the walking trace
 - compute body/limb poses with the compact URDF link tree, joint origins, joint
-  axes, and URDF-reference gait clip phases until Moonrobo supplies full mesh/
+  axes, and URDF-reference walk clip phases until Moonrobo supplies full mesh/
   inertial/collision metadata
 
 Implemented contract:
@@ -622,13 +622,18 @@ Immediate Phase 5A deliverables:
 
 ### Phase 5B: Animation-First Noetix Locomotion
 
-Status: planned. The current `urdf-gait-clip` is a useful correction over the
-previous IK-looking pose, but it is still a compact procedural clip embedded in
-the walk trace generator. The next step is to make Noetix locomotion follow the
-same layering used by credible game characters: animation intent first, URDF/FK
-rigidity second, terrain IK as a correction layer, and Moonphys as validation
-and constraint feedback. Physics must not be used to excuse motion that does
-not read as walking.
+Status: active. Moonrobo now has a first `NoetixWalkClipSample` contract. The
+walk clip owns phase markers, root motion, foot-lock state, foot targets, and
+URDF-bounded joint samples before terrain/contact projection. It is a useful
+correction over the previous IK-looking pose, but still a compact procedural
+clip rather than a full authored asset database. The goal is to make Noetix
+locomotion follow the same layering used by credible game characters:
+animation intent first, URDF/FK rigidity second, terrain IK as a correction
+layer, and Moonphys as validation and constraint feedback. Physics must not be
+used to excuse motion that does not read as walking.
+
+Detailed companion plan:
+[`docs/NOETIX_ANIMATION_FIRST_LOCOMOTION_PLAN.md`](NOETIX_ANIMATION_FIRST_LOCOMOTION_PLAN.md).
 
 Target mental model:
 

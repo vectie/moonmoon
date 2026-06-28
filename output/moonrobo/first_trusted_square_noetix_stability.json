@@ -2421,14 +2421,14 @@
       "time_s": 0.30000000000000004,
       "support_phase": "double-support-left-transfer",
       "com_projection": {
-        "x": 0.036,
+        "x": 0.036000000000000004,
         "y": -0.01925925925925926,
         "z": 337.84540861199025
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.036,
+          "x": 0.036000000000000004,
           "y": -0.01925925925925926,
           "z": 337.84540861199025
         },
@@ -2478,7 +2478,7 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.036,
+          "x": 0.036000000000000004,
           "y": -0.01925925925925926,
           "z": 337.84540861199025
         },
@@ -2487,7 +2487,7 @@
           "y": -0.017729204614450503,
           "z": 336.9673672907706
         },
-        "center_of_pressure_error_m": 0.001991684798956144,
+        "center_of_pressure_error_m": 0.0019916847989561487,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 0.38919247115968436,
         "max_load_fraction": 0.6108075288403156,
@@ -4092,14 +4092,14 @@
       "time_s": 0.6000000000000001,
       "support_phase": "double-support-left-transfer",
       "com_projection": {
-        "x": 0.072,
+        "x": 0.07200000000000001,
         "y": 0.019259259259259254,
         "z": 337.82509503586493
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.072,
+          "x": 0.07200000000000001,
           "y": 0.019259259259259254,
           "z": 337.82509503586493
         },
@@ -4109,7 +4109,7 @@
         "max_y_m": 0.125,
         "margin_x_m": 0.19,
         "margin_y_m": 0.10574074074074075,
-        "planar_margin_m": 0.10043781914736061,
+        "planar_margin_m": 0.10043781914736062,
         "support_polygon_vertices": [
           {
             "x": -0.14999999999999997,
@@ -4149,19 +4149,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.072,
+          "x": 0.07200000000000001,
           "y": 0.019259259259259254,
           "z": 337.82509503586493
         },
         "center_of_pressure": {
-          "x": 0.07491438979963569,
-          "y": 0.0157619914996964,
-          "z": 336.9558120166195
+          "x": 0.07491438979963572,
+          "y": 0.015761991499696412,
+          "z": 336.9558120166196
         },
-        "center_of_pressure_error_m": 0.004552422397614085,
+        "center_of_pressure_error_m": 0.0045524223976140836,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.4014875531268975,
-        "max_load_fraction": 0.5985124468731025,
+        "min_load_fraction": 0.40148755312689743,
+        "max_load_fraction": 0.5985124468731026,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -4170,10 +4170,10 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.5985124468731025,
-            "normal_force_n": 36.958143594414075,
+            "load_fraction": 0.5985124468731026,
+            "normal_force_n": 36.95814359441408,
             "contact_torque_nm": {
-              "x": 2.2448650183273737,
+              "x": 2.244865018327374,
               "y": -2.956651487553127,
               "z": 0
             },
@@ -4186,10 +4186,10 @@
               "y": -0.08,
               "z": 336.98885222399997
             },
-            "load_fraction": 0.4014875531268975,
-            "normal_force_n": 24.79185640558592,
+            "load_fraction": 0.40148755312689743,
+            "normal_force_n": 24.791856405585918,
             "contact_torque_nm": {
-              "x": -2.4608213024803804,
+              "x": -2.46082130248038,
               "y": 2.7766879174256225,
               "z": 0
             },
@@ -4433,7 +4433,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 36.958143594414075,
+          "total_normal_force_n": 36.95814359441408,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -4441,8 +4441,8 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 4666.432279421812,
-          "average_pressure_pa": 1866.572908808792,
+          "max_pressure_pa": 4666.432279421813,
+          "average_pressure_pa": 1866.5729088087921,
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
@@ -4468,8 +4468,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 18.479071767903697,
-              "pressure_pa": 4666.432264622146,
+              "normal_force_n": 18.4790717679037,
+              "pressure_pa": 4666.432264622147,
               "status": "sample-loaded"
             },
             {
@@ -4510,8 +4510,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 18.479071826510378,
-              "pressure_pa": 4666.432279421812,
+              "normal_force_n": 18.47907182651038,
+              "pressure_pa": 4666.432279421813,
               "status": "sample-loaded"
             }
           ],
@@ -4522,7 +4522,7 @@
           "sample_count": 5,
           "contact_count": 3,
           "loaded_sample_count": 1,
-          "total_normal_force_n": 24.79185640558592,
+          "total_normal_force_n": 24.791856405585918,
           "contact_area_m2": 0.01188,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -4530,8 +4530,8 @@
             "y": -0.1368870826768381,
             "z": 336.9036672245757
           },
-          "max_pressure_pa": 6260.569799390384,
-          "average_pressure_pa": 2086.856599796795,
+          "max_pressure_pa": 6260.569799390383,
+          "average_pressure_pa": 2086.8565997967944,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -4599,8 +4599,8 @@
               "clearance_m": -0.000007601050583616598,
               "in_contact": true,
               "load_fraction": 1,
-              "normal_force_n": 24.79185640558592,
-              "pressure_pa": 6260.569799390384,
+              "normal_force_n": 24.791856405585918,
+              "pressure_pa": 6260.569799390383,
               "status": "sample-loaded"
             }
           ],
@@ -4616,11 +4616,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 37.46301318153237,
+          "normal_force_n": 37.463013181532375,
           "tangential_force_n": 0.8920775612835277,
-          "friction_limit_n": 23.22706817255007,
-          "utilization": 0.03840680858455446,
-          "margin_n": 22.33499061126654,
+          "friction_limit_n": 23.227068172550073,
+          "utilization": 0.038406808584554454,
+          "margin_n": 22.334990611266544,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -4631,11 +4631,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 24.618809298530504,
+          "normal_force_n": 24.6188092985305,
           "tangential_force_n": 0.6654710606878204,
-          "friction_limit_n": 15.263661765088912,
-          "utilization": 0.04359838883549474,
-          "margin_n": 14.598190704401091,
+          "friction_limit_n": 15.26366176508891,
+          "utilization": 0.043598388835494745,
+          "margin_n": 14.59819070440109,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -5763,14 +5763,14 @@
       "time_s": 0.9,
       "support_phase": "double-support-left-transfer",
       "com_projection": {
-        "x": 0.10800000000000001,
+        "x": 0.108,
         "y": 0.04,
         "z": 337.8013463845316
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.10800000000000001,
+          "x": 0.108,
           "y": 0.04,
           "z": 337.8013463845316
         },
@@ -5778,7 +5778,7 @@
         "max_x_m": 0.262,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.154,
+        "margin_x_m": 0.15400000000000003,
         "margin_y_m": 0.08499999999999999,
         "planar_margin_m": 0.08499999999999998,
         "support_polygon_vertices": [
@@ -5820,19 +5820,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.10800000000000001,
+          "x": 0.108,
           "y": 0.04,
           "z": 337.8013463845316
         },
         "center_of_pressure": {
-          "x": 0.10636065573770492,
-          "y": 0.0419672131147541,
+          "x": 0.10636065573770491,
+          "y": 0.04196721311475408,
           "z": 336.94677058020983
         },
-        "center_of_pressure_error_m": 0.0025607375986579236,
+        "center_of_pressure_error_m": 0.0025607375986579075,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.23770491803278693,
-        "max_load_fraction": 0.7622950819672131,
+        "min_load_fraction": 0.23770491803278698,
+        "max_load_fraction": 0.762295081967213,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -5841,11 +5841,11 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.7622950819672131,
-            "normal_force_n": 47.07172131147541,
+            "load_fraction": 0.762295081967213,
+            "normal_force_n": 47.0717213114754,
             "contact_torque_nm": {
-              "x": 1.8828688524590163,
-              "y": -2.0711557377049186,
+              "x": 1.882868852459016,
+              "y": -2.071155737704919,
               "z": 0
             },
             "status": "loaded"
@@ -5857,10 +5857,10 @@
               "y": -0.08,
               "z": 336.98885222399997
             },
-            "load_fraction": 0.23770491803278693,
-            "normal_force_n": 14.678278688524593,
+            "load_fraction": 0.23770491803278698,
+            "normal_force_n": 14.678278688524596,
             "contact_torque_nm": {
-              "x": -1.761393442622951,
+              "x": -1.7613934426229514,
               "y": 2.1723852459016397,
               "z": 0
             },
@@ -6104,7 +6104,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 47.07172131147541,
+          "total_normal_force_n": 47.0717213114754,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -6112,7 +6112,7 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 5943.3991649141135,
+          "max_pressure_pa": 5943.399164914113,
           "average_pressure_pa": 2377.3596621957277,
           "samples": [
             {
@@ -6139,8 +6139,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 23.53586061841552,
-              "pressure_pa": 5943.399146064525,
+              "normal_force_n": 23.535860618415516,
+              "pressure_pa": 5943.399146064524,
               "status": "sample-loaded"
             },
             {
@@ -6181,8 +6181,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 23.535860693059888,
-              "pressure_pa": 5943.3991649141135,
+              "normal_force_n": 23.535860693059885,
+              "pressure_pa": 5943.399164914113,
               "status": "sample-loaded"
             }
           ],
@@ -6193,7 +6193,7 @@
           "sample_count": 5,
           "contact_count": 3,
           "loaded_sample_count": 1,
-          "total_normal_force_n": 14.678278688524593,
+          "total_normal_force_n": 14.678278688524596,
           "contact_area_m2": 0.01188,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -6201,8 +6201,8 @@
             "y": -0.1368870826768381,
             "z": 336.9036672245757
           },
-          "max_pressure_pa": 3706.6360324557054,
-          "average_pressure_pa": 1235.5453441519016,
+          "max_pressure_pa": 3706.6360324557063,
+          "average_pressure_pa": 1235.545344151902,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -6270,8 +6270,8 @@
               "clearance_m": -0.000007601050583616598,
               "in_contact": true,
               "load_fraction": 1,
-              "normal_force_n": 14.678278688524593,
-              "pressure_pa": 3706.6360324557054,
+              "normal_force_n": 14.678278688524596,
+              "pressure_pa": 3706.6360324557063,
               "status": "sample-loaded"
             }
           ],
@@ -6287,11 +6287,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 47.71474821142673,
-          "tangential_force_n": 1.1361941447542183,
-          "friction_limit_n": 29.58314389108457,
-          "utilization": 0.038406808584554517,
-          "margin_n": 28.446949746330354,
+          "normal_force_n": 47.71474821142672,
+          "tangential_force_n": 1.1361941447542219,
+          "friction_limit_n": 29.583143891084568,
+          "utilization": 0.03840680858455464,
+          "margin_n": 28.446949746330347,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -6302,11 +6302,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 14.575824333269855,
-          "tangential_force_n": 0.393999123265455,
-          "friction_limit_n": 9.03701108662731,
-          "utilization": 0.04359838883549482,
-          "margin_n": 8.643011963361854,
+          "normal_force_n": 14.575824333269857,
+          "tangential_force_n": 0.39399912326545583,
+          "friction_limit_n": 9.037011086627311,
+          "utilization": 0.043598388835494904,
+          "margin_n": 8.643011963361856,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -6851,14 +6851,14 @@
       "time_s": 1.1,
       "support_phase": "left-support",
       "com_projection": {
-        "x": 0.13199999999999998,
+        "x": 0.132,
         "y": 0.04,
         "z": 337.7857427186012
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
-          "x": 0.13199999999999998,
+          "x": 0.132,
           "y": 0.04,
           "z": 337.7857427186012
         },
@@ -6866,7 +6866,7 @@
         "max_x_m": 0.262,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
-        "margin_x_m": 0.08999999999999996,
+        "margin_x_m": 0.08999999999999998,
         "margin_y_m": 0.0049999999999999975,
         "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
@@ -6898,7 +6898,7 @@
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
-          "x": 0.13199999999999998,
+          "x": 0.132,
           "y": 0.04,
           "z": 337.7857427186012
         },
@@ -6907,7 +6907,7 @@
           "y": 0.08,
           "z": 336.9336483472
         },
-        "center_of_pressure_error_m": 0.044721359549995815,
+        "center_of_pressure_error_m": 0.0447213595499958,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -6923,7 +6923,7 @@
             "normal_force_n": 61.75,
             "contact_torque_nm": {
               "x": 2.47,
-              "y": -1.2350000000000028,
+              "y": -1.2350000000000012,
               "z": 0
             },
             "status": "loaded"
@@ -7049,111 +7049,111 @@
         {
           "patch_id": "right-foot",
           "center": {
-            "x": 0.03680000000000003,
+            "x": -0.0000639999999999738,
             "y": -0.08,
-            "z": 337.05610771103994
+            "z": 337.07492933795834
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.03199108606685286,
-          "max_clearance_m": 0.15104977544905296,
-          "average_surface_elevation_m": 336.9783582271431,
+          "min_clearance_m": 0.03199240004278181,
+          "max_clearance_m": 0.16020359661860084,
+          "average_surface_elevation_m": 336.99385577057205,
           "average_surface_normal": {
-            "x": -0.06259257037855002,
-            "y": 0.1362989922138555,
-            "z": 0.9886884012948131
+            "x": -0.3864111896544494,
+            "y": 0.12590611079969646,
+            "z": 0.9136925324052548
           },
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.03680000000000003,
+                "x": -0.0000639999999999738,
                 "y": -0.08,
-                "z": 337.05610771103994
+                "z": 337.07492933795834
               },
-              "surface_elevation_m": 337.02410771103996,
+              "surface_elevation_m": 337.04292933795836,
               "surface_normal": {
-                "x": 0.45362207030664736,
-                "y": 0.12162520328831898,
-                "z": 0.8828557794202777
+                "x": -0.8017400997439703,
+                "y": 0.08153029178420143,
+                "z": 0.5920858248464589
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
-              "local_grade": 0.5138121999999997,
+              "local_grade": 1.354094399999999,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.1323300528889901,
-                "y": -0.04214393448361023,
-                "z": 337.0018080245571
+                "x": 0.06863131133875897,
+                "y": -0.023119363848398244,
+                "z": 337.1601168036698
               },
-              "surface_elevation_m": 336.969801795322,
+              "surface_elevation_m": 336.9999132070512,
               "surface_normal": {
-                "x": 0.4536597709035915,
-                "y": 0.12176514500772513,
-                "z": 0.8828171168055977
+                "x": 0.45368809509896485,
+                "y": 0.12166811896030783,
+                "z": 0.8828159384572374
               },
-              "clearance_m": 0.032006229235094,
+              "clearance_m": 0.16020359661860084,
               "in_contact": false,
-              "local_grade": 0.5138774070728518,
+              "local_grade": 0.5139101768957709,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.1373326606462623,
-                "y": -0.13147578328566464,
-                "z": 337.01154428180683
+                "x": 0.06272871139786293,
+                "y": -0.11281974162533306,
+                "z": 337.1644758793302
               },
-              "surface_elevation_m": 336.97955319574,
+              "surface_elevation_m": 337.01530804739514,
               "surface_normal": {
-                "x": 0.453551455449289,
-                "y": 0.12178014339625216,
-                "z": 0.8828707005752429
+                "x": 0.4535802537137137,
+                "y": 0.12166680441674933,
+                "z": 0.8828715320724866
               },
-              "clearance_m": 0.03199108606685286,
+              "clearance_m": 0.149167831935074,
               "in_contact": false,
-              "local_grade": 0.5137235329632903,
+              "local_grade": 0.5137556679950501,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": -0.06373266064626226,
-                "y": -0.02852421671433536,
-                "z": 337.10067114027305
+                "x": -0.06285671139786286,
+                "y": -0.04718025837466694,
+                "z": 336.98538279658646
               },
-              "surface_elevation_m": 336.949621364824,
+              "surface_elevation_m": 336.9533787882516,
               "surface_normal": {
-                "x": -0.8017564792542872,
-                "y": 0.08159924684525931,
-                "z": 0.5920541452334039
+                "x": -0.801748871511193,
+                "y": 0.08159965036121551,
+                "z": 0.5920643918455626
               },
-              "clearance_m": 0.15104977544905296,
+              "clearance_m": 0.03200400833486583,
               "in_contact": false,
-              "local_grade": 1.3541945203984895,
+              "local_grade": 1.35415823439746,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": -0.05873005288899006,
-                "y": -0.11785606551638977,
-                "z": 337.1104073975228
+                "x": -0.0687593113387589,
+                "y": -0.13688063615160176,
+                "z": 336.9897418722469
               },
-              "surface_elevation_m": 336.96870706878946,
+              "surface_elevation_m": 336.9577494722041,
               "surface_normal": {
-                "x": -0.8017201079596661,
-                "y": 0.08160025441859621,
-                "z": 0.5921032570185388
+                "x": -0.8017115250209688,
+                "y": 0.08161316114548157,
+                "z": 0.5921130994804914
               },
-              "clearance_m": 0.14170032873335003,
+              "clearance_m": 0.03199240004278181,
               "in_contact": false,
-              "local_grade": 1.3540207699525695,
+              "local_grade": 1.353983767162684,
               "status": "clear"
             }
           ],
@@ -7259,9 +7259,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.03680000000000003,
+            "x": -0.0000639999999999738,
             "y": -0.08,
-            "z": 337.05610771103994
+            "z": 337.07492933795834
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -7269,9 +7269,9 @@
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.03680000000000003,
+                "x": -0.0000639999999999738,
                 "y": -0.08,
-                "z": 337.05610771103994
+                "z": 337.07492933795834
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -7283,11 +7283,11 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.1323300528889901,
-                "y": -0.04214393448361023,
-                "z": 337.0018080245571
+                "x": 0.06863131133875897,
+                "y": -0.023119363848398244,
+                "z": 337.1601168036698
               },
-              "clearance_m": 0.032006229235094,
+              "clearance_m": 0.16020359661860084,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7297,11 +7297,11 @@
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.1373326606462623,
-                "y": -0.13147578328566464,
-                "z": 337.01154428180683
+                "x": 0.06272871139786293,
+                "y": -0.11281974162533306,
+                "z": 337.1644758793302
               },
-              "clearance_m": 0.03199108606685286,
+              "clearance_m": 0.149167831935074,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7311,11 +7311,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": -0.06373266064626226,
-                "y": -0.02852421671433536,
-                "z": 337.10067114027305
+                "x": -0.06285671139786286,
+                "y": -0.04718025837466694,
+                "z": 336.98538279658646
               },
-              "clearance_m": 0.15104977544905296,
+              "clearance_m": 0.03200400833486583,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7325,11 +7325,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": -0.05873005288899006,
-                "y": -0.11785606551638977,
-                "z": 337.1104073975228
+                "x": -0.0687593113387589,
+                "y": -0.13688063615160176,
+                "z": 336.9897418722469
               },
-              "clearance_m": 0.14170032873335003,
+              "clearance_m": 0.03199240004278181,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7382,14 +7382,14 @@
       "time_s": 1.2000000000000002,
       "support_phase": "left-support",
       "com_projection": {
-        "x": 0.144,
+        "x": 0.14400000000000002,
         "y": 0.04,
         "z": 337.77713127692357
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
-          "x": 0.144,
+          "x": 0.14400000000000002,
           "y": 0.04,
           "z": 337.77713127692357
         },
@@ -7397,7 +7397,7 @@
         "max_x_m": 0.262,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
-        "margin_x_m": 0.10199999999999997,
+        "margin_x_m": 0.102,
         "margin_y_m": 0.0049999999999999975,
         "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
@@ -7429,7 +7429,7 @@
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
-          "x": 0.144,
+          "x": 0.14400000000000002,
           "y": 0.04,
           "z": 337.77713127692357
         },
@@ -7454,7 +7454,7 @@
             "normal_force_n": 61.75,
             "contact_torque_nm": {
               "x": 2.47,
-              "y": -0.49400000000000216,
+              "y": -0.49400000000000044,
               "z": 0
             },
             "status": "loaded"
@@ -7580,35 +7580,35 @@
         {
           "patch_id": "right-foot",
           "center": {
-            "x": 0.11360000000000003,
+            "x": 0.09516800000000006,
             "y": -0.08,
-            "z": 337.0274444773133
+            "z": 337.0369150637837
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.04278862807376527,
-          "max_clearance_m": 0.042803771193291595,
-          "average_surface_elevation_m": 336.9846480089598,
+          "min_clearance_m": 0.04278862836810049,
+          "max_clearance_m": 0.052814198245414445,
+          "average_surface_elevation_m": 336.9919788044098,
           "average_surface_normal": {
-            "x": 0.4536156226215868,
-            "y": 0.12174026300092651,
-            "z": 0.8828432336933297
+            "x": -0.06259868233835465,
+            "y": 0.13633231673036955,
+            "z": 0.9886834196973427
           },
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.11360000000000003,
+                "x": 0.09516800000000006,
                 "y": -0.08,
-                "z": 337.0274444773133
+                "z": 337.0369150637837
               },
-              "surface_elevation_m": 336.98464693408,
+              "surface_elevation_m": 336.9941175205504,
               "surface_normal": {
-                "x": 0.45361562375926157,
-                "y": 0.12174026440486525,
-                "z": 0.8828432329151815
+                "x": 0.4536171714698496,
+                "y": 0.12171265018431295,
+                "z": 0.8828462451258453
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -7618,73 +7618,73 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.2091280475222958,
-                "y": -0.04215088961065297,
-                "z": 336.97314177239105
+                "x": 0.19069652877149945,
+                "y": -0.04214922038322201,
+                "z": 336.9826130831394
               },
-              "surface_elevation_m": 336.93033800119775,
+              "surface_elevation_m": 336.93980931164015,
               "surface_normal": {
-                "x": 0.4536533084579563,
-                "y": 0.12188019468566763,
-                "z": 0.882804561535867
+                "x": 0.45365485998402505,
+                "y": 0.12185258321066107,
+                "z": 0.8828075758497792
               },
-              "clearance_m": 0.042803771193291595,
+              "clearance_m": 0.04280377149927972,
               "in_contact": false,
-              "local_grade": 0.5138773950926454,
+              "local_grade": 0.5138773979678898,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.2141353878976326,
-                "y": -0.1314814688933562,
-                "z": 336.98288724043425
+                "x": 0.1957027333369037,
+                "y": -0.13148010445675729,
+                "z": 336.992356340628
               },
-              "surface_elevation_m": 336.9400986123605,
+              "surface_elevation_m": 336.9495677122599,
               "surface_normal": {
-                "x": 0.45354499449238267,
-                "y": 0.12189520661350302,
-                "z": 0.8828581406860085
+                "x": 0.45354654566102537,
+                "y": 0.12186759188927984,
+                "z": 0.8828611561089655
               },
-              "clearance_m": 0.04278862807376527,
+              "clearance_m": 0.04278862836810049,
               "in_contact": false,
-              "local_grade": 0.513723523169831,
+              "local_grade": 0.513723525520073,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.013064612102367467,
-                "y": -0.02851853110664379,
-                "z": 337.0720017141923
+                "x": -0.005366733336903574,
+                "y": -0.028519895543242704,
+                "z": 337.08147378693934
               },
-              "surface_elevation_m": 337.0292130861185,
+              "surface_elevation_m": 337.0286595886939,
               "surface_normal": {
-                "x": 0.4536862373858644,
-                "y": 0.12158532387650871,
-                "z": 0.8828282998547915
+                "x": -0.801760876384294,
+                "y": 0.08153248248116948,
+                "z": 0.5920573886034584
               },
-              "clearance_m": 0.04278862807382211,
+              "clearance_m": 0.052814198245414445,
               "in_contact": false,
-              "local_grade": 0.5139008768301686,
+              "local_grade": 1.3541945288031674,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.01807195247770428,
-                "y": -0.11784911038934703,
-                "z": 337.0817471822355
+                "x": -0.0003605287714993346,
+                "y": -0.11785077961677799,
+                "z": 337.09121704442794
               },
-              "surface_elevation_m": 337.03894341104234,
+              "surface_elevation_m": 337.0477398889047,
               "surface_normal": {
-                "x": 0.45357792555378207,
-                "y": 0.12160031912830228,
-                "z": 0.8828818878186498
+                "x": -0.8017245059771222,
+                "y": 0.0815334803399707,
+                "z": 0.5921065006393623
               },
-              "clearance_m": 0.04280377119317791,
+              "clearance_m": 0.04347715552324871,
               "in_contact": false,
-              "local_grade": 0.5137470049073543,
+              "local_grade": 1.3540207802336444,
               "status": "clear"
             }
           ],
@@ -7790,9 +7790,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.11360000000000003,
+            "x": 0.09516800000000006,
             "y": -0.08,
-            "z": 337.0274444773133
+            "z": 337.0369150637837
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -7800,9 +7800,9 @@
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.11360000000000003,
+                "x": 0.09516800000000006,
                 "y": -0.08,
-                "z": 337.0274444773133
+                "z": 337.0369150637837
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -7814,11 +7814,11 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.2091280475222958,
-                "y": -0.04215088961065297,
-                "z": 336.97314177239105
+                "x": 0.19069652877149945,
+                "y": -0.04214922038322201,
+                "z": 336.9826130831394
               },
-              "clearance_m": 0.042803771193291595,
+              "clearance_m": 0.04280377149927972,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7828,11 +7828,11 @@
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.2141353878976326,
-                "y": -0.1314814688933562,
-                "z": 336.98288724043425
+                "x": 0.1957027333369037,
+                "y": -0.13148010445675729,
+                "z": 336.992356340628
               },
-              "clearance_m": 0.04278862807376527,
+              "clearance_m": 0.04278862836810049,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7842,11 +7842,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.013064612102367467,
-                "y": -0.02851853110664379,
-                "z": 337.0720017141923
+                "x": -0.005366733336903574,
+                "y": -0.028519895543242704,
+                "z": 337.08147378693934
               },
-              "clearance_m": 0.04278862807382211,
+              "clearance_m": 0.052814198245414445,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7856,11 +7856,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.01807195247770428,
-                "y": -0.11784911038934703,
-                "z": 337.0817471822355
+                "x": -0.0003605287714993346,
+                "y": -0.11785077961677799,
+                "z": 337.09121704442794
               },
-              "clearance_m": 0.04280377119317791,
+              "clearance_m": 0.04347715552324871,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -7913,14 +7913,14 @@
       "time_s": 1.3,
       "support_phase": "left-support",
       "com_projection": {
-        "x": 0.15600000000000003,
+        "x": 0.156,
         "y": 0.04,
         "z": 337.76811523292844
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
-          "x": 0.15600000000000003,
+          "x": 0.156,
           "y": 0.04,
           "z": 337.76811523292844
         },
@@ -7928,7 +7928,7 @@
         "max_x_m": 0.262,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
-        "margin_x_m": 0.10599999999999998,
+        "margin_x_m": 0.10600000000000001,
         "margin_y_m": 0.0049999999999999975,
         "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
@@ -7960,7 +7960,7 @@
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
-          "x": 0.15600000000000003,
+          "x": 0.156,
           "y": 0.04,
           "z": 337.76811523292844
         },
@@ -7969,7 +7969,7 @@
           "y": 0.08,
           "z": 336.9336483472
         },
-        "center_of_pressure_error_m": 0.04019950248448356,
+        "center_of_pressure_error_m": 0.040199502484483556,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -7985,7 +7985,7 @@
             "normal_force_n": 61.75,
             "contact_torque_nm": {
               "x": 2.47,
-              "y": 0.24700000000000022,
+              "y": 0.2469999999999985,
               "z": 0
             },
             "status": "loaded"
@@ -8111,35 +8111,35 @@
         {
           "patch_id": "right-foot",
           "center": {
-            "x": 0.1904,
+            "x": 0.20883200000000005,
             "y": -0.08,
-            "z": 336.9879837003533
+            "z": 336.9785131138829
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.042788626847539035,
-          "max_clearance_m": 0.04280376991812318,
-          "average_surface_elevation_m": 336.94518723300035,
+          "min_clearance_m": 0.042788626553260656,
+          "max_clearance_m": 0.042803769612135056,
+          "average_surface_elevation_m": 336.9357166467701,
           "average_surface_normal": {
-            "x": 0.45360917016251406,
-            "y": 0.12185531920846256,
-            "z": 0.8828306756819672
+            "x": 0.45360762069269756,
+            "y": 0.12188293196751977,
+            "z": 0.8828276600472544
           },
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.1904,
+                "x": 0.20883200000000005,
                 "y": -0.08,
-                "z": 336.9879837003533
+                "z": 336.9785131138829
               },
-              "surface_elevation_m": 336.94518615712,
+              "surface_elevation_m": 336.9357155706496,
               "surface_normal": {
-                "x": 0.4536091712997453,
-                "y": 0.12185532061370195,
-                "z": 0.8828306749036818
+                "x": 0.45360762182982217,
+                "y": 0.12188293337307125,
+                "z": 0.882827659268936
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -8149,73 +8149,73 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.28592604258108484,
-                "y": -0.04215784470390235,
-                "z": 336.93367797860856
+                "x": 0.3043575614585094,
+                "y": -0.04215951392118707,
+                "z": 336.92420666834136
               },
-              "surface_elevation_m": 336.89087420869043,
+              "surface_elevation_m": 336.8814028987292,
               "surface_normal": {
-                "x": 0.4536468401012789,
-                "y": 0.12199523945282172,
-                "z": 0.8827919947626245
+                "x": 0.45364528681619926,
+                "y": 0.12202284946572922,
+                "z": 0.8827889770254908
               },
-              "clearance_m": 0.04280376991812318,
+              "clearance_m": 0.042803769612135056,
               "in_contact": false,
-              "local_grade": 0.5138773831124973,
+              "local_grade": 0.5138773802372706,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.29093811537262554,
-                "y": -0.1314871533029779,
-                "z": 336.9434326570524
+                "x": 0.3093707699998823,
+                "y": -0.13148851738296446,
+                "z": 336.93396355722285
               },
-              "surface_elevation_m": 336.90064403020483,
+              "surface_elevation_m": 336.8911749306696,
               "surface_normal": {
-                "x": 0.45353852762587,
-                "y": 0.12201026491758077,
-                "z": 0.8828455692892726
+                "x": 0.45353697469864357,
+                "y": 0.1220378781789949,
+                "z": 0.8828425504419067
               },
-              "clearance_m": 0.04278862684759588,
+              "clearance_m": 0.042788626553260656,
               "in_contact": false,
-              "local_grade": 0.5137235133784354,
+              "local_grade": 0.5137235110288076,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.08986188462737443,
-                "y": -0.028512846697022115,
-                "z": 337.0325347436542
+                "x": 0.10829323000011781,
+                "y": -0.028511482617035525,
+                "z": 337.02306267054297
               },
-              "surface_elevation_m": 336.98974611680666,
+              "surface_elevation_m": 336.9802740439897,
               "surface_normal": {
-                "x": 0.4536797993341165,
-                "y": 0.12170037798191156,
-                "z": 0.882815755225979
+                "x": 0.45367825332168227,
+                "y": 0.12172799023726964,
+                "z": 0.8828127428032418
               },
-              "clearance_m": 0.042788626847539035,
+              "clearance_m": 0.042788626553260656,
               "in_contact": false,
-              "local_grade": 0.5139008866215643,
+              "local_grade": 0.513900888971192,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.09487395741891519,
-                "y": -0.11784215529609765,
-                "z": 337.04228942209807
+                "x": 0.11330643854149072,
+                "y": -0.11784048607881294,
+                "z": 337.03281955942447
               },
-              "surface_elevation_m": 336.99948565217994,
+              "surface_elevation_m": 336.9900157898124,
               "surface_normal": {
-                "x": 0.45357148899385763,
-                "y": 0.12171538677473595,
-                "z": 0.8828693385740446
+                "x": 0.4535699433396746,
+                "y": 0.12174300227958686,
+                "z": 0.8828663250429233
               },
-              "clearance_m": 0.04280376991812318,
+              "clearance_m": 0.04280376961207821,
               "in_contact": false,
-              "local_grade": 0.5137470168875022,
+              "local_grade": 0.513747019762729,
               "status": "clear"
             }
           ],
@@ -8321,9 +8321,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.1904,
+            "x": 0.20883200000000005,
             "y": -0.08,
-            "z": 336.9879837003533
+            "z": 336.9785131138829
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -8331,9 +8331,9 @@
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.1904,
+                "x": 0.20883200000000005,
                 "y": -0.08,
-                "z": 336.9879837003533
+                "z": 336.9785131138829
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -8345,11 +8345,11 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.28592604258108484,
-                "y": -0.04215784470390235,
-                "z": 336.93367797860856
+                "x": 0.3043575614585094,
+                "y": -0.04215951392118707,
+                "z": 336.92420666834136
               },
-              "clearance_m": 0.04280376991812318,
+              "clearance_m": 0.042803769612135056,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8359,11 +8359,11 @@
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.29093811537262554,
-                "y": -0.1314871533029779,
-                "z": 336.9434326570524
+                "x": 0.3093707699998823,
+                "y": -0.13148851738296446,
+                "z": 336.93396355722285
               },
-              "clearance_m": 0.04278862684759588,
+              "clearance_m": 0.042788626553260656,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8373,11 +8373,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.08986188462737443,
-                "y": -0.028512846697022115,
-                "z": 337.0325347436542
+                "x": 0.10829323000011781,
+                "y": -0.028511482617035525,
+                "z": 337.02306267054297
               },
-              "clearance_m": 0.042788626847539035,
+              "clearance_m": 0.042788626553260656,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8387,11 +8387,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.09487395741891519,
-                "y": -0.11784215529609765,
-                "z": 337.04228942209807
+                "x": 0.11330643854149072,
+                "y": -0.11784048607881294,
+                "z": 337.03281955942447
               },
-              "clearance_m": 0.04280376991812318,
+              "clearance_m": 0.04280376961207821,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8642,35 +8642,35 @@
         {
           "patch_id": "right-foot",
           "center": {
-            "x": 0.26720000000000005,
+            "x": 0.30406400000000006,
             "y": -0.08,
-            "z": 336.93772538016
+            "z": 336.9187842072191
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.03199108238806048,
-          "max_clearance_m": 0.03200622540975928,
-          "average_surface_elevation_m": 336.9057264570409,
+          "min_clearance_m": 0.03199108179950372,
+          "max_clearance_m": 0.03200622479772619,
+          "average_surface_elevation_m": 336.88678528458024,
           "average_surface_normal": {
-            "x": 0.4536027117920837,
-            "y": 0.12197037050393038,
-            "z": 0.8828181061657048
+            "x": 0.45359960967479,
+            "y": 0.1220255933797087,
+            "z": 0.8828120687118002
           },
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.26720000000000005,
+                "x": 0.30406400000000006,
                 "y": -0.08,
-                "z": 336.93772538016
+                "z": 336.9187842072191
               },
-              "surface_elevation_m": 336.90572538016,
+              "surface_elevation_m": 336.88678420721914,
               "surface_normal": {
-                "x": 0.4536027129288709,
-                "y": 0.12197037191047029,
-                "z": 0.8828181053872819
+                "x": 0.45359961081136385,
+                "y": 0.12202559478687278,
+                "z": 0.8828120679333112
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -8680,73 +8680,73 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.362724038065386,
-                "y": -0.042164799762758116,
-                "z": 336.88341664320944
+                "x": 0.39958707604900084,
+                "y": -0.042168138178616005,
+                "z": 336.86447402354406
               },
-              "surface_elevation_m": 336.85141041779974,
+              "surface_elevation_m": 336.83246779874645,
               "surface_normal": {
-                "x": 0.4536403658343333,
-                "y": 0.12211027930483015,
-                "z": 0.882779416487374
+                "x": 0.4536372560870996,
+                "y": 0.1221654966866553,
+                "z": 0.8827733748301827
               },
-              "clearance_m": 0.03200622540970244,
+              "clearance_m": 0.032006224797612504,
               "in_contact": false,
-              "local_grade": 0.5138773711324085,
+              "local_grade": 0.513877365381987,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.3677408430710907,
-                "y": -0.13149283651408147,
-                "z": 336.89318053166073
+                "x": 0.40460615244568704,
+                "y": -0.131495564029566,
+                "z": 336.87424233265915
               },
-              "surface_elevation_m": 336.8611894492727,
+              "surface_elevation_m": 336.84225125085965,
               "surface_normal": {
-                "x": 0.4535320548505251,
-                "y": 0.12212531830412628,
-                "z": 0.8828329863865395
+                "x": 0.45352894581976977,
+                "y": 0.122180542181681,
+                "z": 0.88282694250674
               },
-              "clearance_m": 0.03199108238806048,
+              "clearance_m": 0.03199108179950372,
               "in_contact": false,
-              "local_grade": 0.5137235035891043,
+              "local_grade": 0.5137234988909588,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.16665915692890937,
-                "y": -0.028507163485918537,
-                "z": 336.9822702286592
+                "x": 0.20352184755431307,
+                "y": -0.028504435970434006,
+                "z": 336.9633260817791
               },
-              "surface_elevation_m": 336.95027914627116,
+              "surface_elevation_m": 336.9313349999796,
               "surface_normal": {
-                "x": 0.4536733553684865,
-                "y": 0.12181542718070898,
-                "z": 0.8828031990933654
+                "x": 0.45367026016459994,
+                "y": 0.12187064905202595,
+                "z": 0.8827971680640021
               },
-              "clearance_m": 0.03199108238806048,
+              "clearance_m": 0.03199108179950372,
               "in_contact": false,
-              "local_grade": 0.5139008964108953,
+              "local_grade": 0.5139009011090407,
               "status": "clear"
             },
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.1716759619346141,
-                "y": -0.1178352002372419,
-                "z": 336.9920341171105
+                "x": 0.20854092395099927,
+                "y": -0.117831861821384,
+                "z": 336.9730943908942
               },
-              "surface_elevation_m": 336.96002789170075,
+              "surface_elevation_m": 336.94108816609645,
               "surface_normal": {
-                "x": 0.45356504652148644,
-                "y": 0.12183044951218096,
-                "z": 0.8828567778216475
+                "x": 0.45356195203487354,
+                "y": 0.12188567788120169,
+                "z": 0.8828507445733705
               },
-              "clearance_m": 0.03200622540975928,
+              "clearance_m": 0.03200622479772619,
               "in_contact": false,
-              "local_grade": 0.5137470288675912,
+              "local_grade": 0.5137470346180125,
               "status": "clear"
             }
           ],
@@ -8852,9 +8852,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.26720000000000005,
+            "x": 0.30406400000000006,
             "y": -0.08,
-            "z": 336.93772538016
+            "z": 336.9187842072191
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -8862,9 +8862,9 @@
             {
               "probe_id": "right-foot/sample/0/0",
               "position": {
-                "x": 0.26720000000000005,
+                "x": 0.30406400000000006,
                 "y": -0.08,
-                "z": 336.93772538016
+                "z": 336.9187842072191
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -8876,11 +8876,11 @@
             {
               "probe_id": "right-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.362724038065386,
-                "y": -0.042164799762758116,
-                "z": 336.88341664320944
+                "x": 0.39958707604900084,
+                "y": -0.042168138178616005,
+                "z": 336.86447402354406
               },
-              "clearance_m": 0.03200622540970244,
+              "clearance_m": 0.032006224797612504,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8890,11 +8890,11 @@
             {
               "probe_id": "right-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.3677408430710907,
-                "y": -0.13149283651408147,
-                "z": 336.89318053166073
+                "x": 0.40460615244568704,
+                "y": -0.131495564029566,
+                "z": 336.87424233265915
               },
-              "clearance_m": 0.03199108238806048,
+              "clearance_m": 0.03199108179950372,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8904,11 +8904,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.16665915692890937,
-                "y": -0.028507163485918537,
-                "z": 336.9822702286592
+                "x": 0.20352184755431307,
+                "y": -0.028504435970434006,
+                "z": 336.9633260817791
               },
-              "clearance_m": 0.03199108238806048,
+              "clearance_m": 0.03199108179950372,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -8918,11 +8918,11 @@
             {
               "probe_id": "right-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.1716759619346141,
-                "y": -0.1178352002372419,
-                "z": 336.9920341171105
+                "x": 0.20854092395099927,
+                "y": -0.117831861821384,
+                "z": 336.9730943908942
               },
-              "clearance_m": 0.03200622540975928,
+              "clearance_m": 0.03200622479772619,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -10620,14 +10620,14 @@
       "time_s": 1.8,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.21600000000000003,
+        "x": 0.216,
         "y": 0.029903978052126204,
         "z": 337.7398419150173
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.21600000000000003,
+          "x": 0.216,
           "y": 0.029903978052126204,
           "z": 337.7398419150173
         },
@@ -10677,18 +10677,18 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.21600000000000003,
+          "x": 0.216,
           "y": 0.029903978052126204,
           "z": 337.7398419150173
         },
         "center_of_pressure": {
-          "x": 0.21440787964649535,
-          "y": 0.027993433627920575,
-          "z": 336.91174586498295
+          "x": 0.21440787964649533,
+          "y": 0.02799343362792058,
+          "z": 336.9117458649829
         },
-        "center_of_pressure_error_m": 0.002486971494992868,
+        "center_of_pressure_error_m": 0.002486971494992863,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.3250410398254964,
+        "min_load_fraction": 0.3250410398254963,
         "max_load_fraction": 0.6749589601745036,
         "loads": [
           {
@@ -10702,7 +10702,7 @@
             "normal_force_n": 41.6787157907756,
             "contact_torque_nm": {
               "x": 2.087937861013889,
-              "y": 2.667437810609638,
+              "y": 2.6674378106096372,
               "z": 0
             },
             "status": "loaded"
@@ -10714,11 +10714,11 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.3250410398254964,
-            "normal_force_n": 20.071284209224405,
+            "load_fraction": 0.3250410398254963,
+            "normal_force_n": 20.071284209224398,
             "contact_torque_nm": {
-              "x": -2.2059139792085865,
-              "y": -2.569124378780724,
+              "x": -2.2059139792085856,
+              "y": -2.5691243787807236,
               "z": 0
             },
             "status": "loaded"
@@ -11050,7 +11050,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 20.071284209224405,
+          "total_normal_force_n": 20.071284209224398,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -11058,8 +11058,8 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 2534.2530647961717,
-          "average_pressure_pa": 1013.7012226881013,
+          "max_pressure_pa": 2534.2530647961707,
+          "average_pressure_pa": 1013.701222688101,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -11099,8 +11099,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 10.035642072631568,
-              "pressure_pa": 2534.253048644335,
+              "normal_force_n": 10.035642072631564,
+              "pressure_pa": 2534.2530486443343,
               "status": "sample-loaded"
             },
             {
@@ -11113,8 +11113,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 10.03564213659284,
-              "pressure_pa": 2534.2530647961717,
+              "normal_force_n": 10.035642136592836,
+              "pressure_pa": 2534.2530647961707,
               "status": "sample-loaded"
             },
             {
@@ -11159,11 +11159,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 20.243683866147315,
-          "tangential_force_n": 0.5293089221502276,
-          "friction_limit_n": 12.551083997011334,
-          "utilization": 0.0421723671259205,
-          "margin_n": 12.021775074861107,
+          "normal_force_n": 20.243683866147308,
+          "tangential_force_n": 0.5293089221502274,
+          "friction_limit_n": 12.55108399701133,
+          "utilization": 0.04217236712592049,
+          "margin_n": 12.021775074861104,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -11177,14 +11177,14 @@
       "time_s": 1.9000000000000001,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.22799999999999998,
+        "x": 0.228,
         "y": 0.01925925925925926,
         "z": 337.73921528754585
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.22799999999999998,
+          "x": 0.228,
           "y": 0.01925925925925926,
           "z": 337.73921528754585
         },
@@ -11192,7 +11192,7 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.18599999999999994,
+        "margin_x_m": 0.186,
         "margin_y_m": 0.10574074074074075,
         "planar_margin_m": 0.10299855674601856,
         "support_polygon_vertices": [
@@ -11234,18 +11234,18 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.22799999999999998,
+          "x": 0.228,
           "y": 0.01925925925925926,
           "z": 337.73921528754585
         },
         "center_of_pressure": {
-          "x": 0.22672495446265936,
-          "y": 0.017729204614450544,
-          "z": 336.90742310135664
+          "x": 0.2267249544626594,
+          "y": 0.017729204614450537,
+          "z": 336.9074231013567
         },
-        "center_of_pressure_error_m": 0.0019916847989561387,
+        "center_of_pressure_error_m": 0.001991684798956144,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.3891924711596841,
+        "min_load_fraction": 0.3891924711596842,
         "max_load_fraction": 0.6108075288403159,
         "loads": [
           {
@@ -11259,7 +11259,7 @@
             "normal_force_n": 37.717364905889504,
             "contact_torque_nm": {
               "x": 2.2909806831725477,
-              "y": 2.8665197328476006,
+              "y": 2.8665197328476015,
               "z": 0
             },
             "status": "loaded"
@@ -11271,10 +11271,10 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.3891924711596841,
-            "normal_force_n": 24.032635094110493,
+            "load_fraction": 0.3891924711596842,
+            "normal_force_n": 24.0326350941105,
             "contact_torque_nm": {
-              "x": -2.385461557489486,
+              "x": -2.385461557489487,
               "y": -2.7877856709168185,
               "z": 0
             },
@@ -11607,7 +11607,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 24.032635094110493,
+          "total_normal_force_n": 24.0326350941105,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -11615,8 +11615,8 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 3034.4236326635637,
-          "average_pressure_pa": 1213.7694491974999,
+          "max_pressure_pa": 3034.4236326635646,
+          "average_pressure_pa": 1213.7694491975,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -11656,8 +11656,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 12.016317508762782,
-              "pressure_pa": 3034.4236133239347,
+              "normal_force_n": 12.016317508762786,
+              "pressure_pa": 3034.4236133239356,
               "status": "sample-loaded"
             },
             {
@@ -11670,8 +11670,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 12.016317585347712,
-              "pressure_pa": 3034.4236326635637,
+              "normal_force_n": 12.016317585347716,
+              "pressure_pa": 3034.4236326635646,
               "status": "sample-loaded"
             },
             {
@@ -11716,11 +11716,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 24.239060253656284,
+          "normal_force_n": 24.23906025365629,
           "tangential_force_n": 0.6337754996387893,
-          "friction_limit_n": 15.028217357266897,
-          "utilization": 0.042172367125920436,
-          "margin_n": 14.394441857628108,
+          "friction_limit_n": 15.0282173572669,
+          "utilization": 0.04217236712592042,
+          "margin_n": 14.394441857628111,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -12848,14 +12848,14 @@
       "time_s": 2.2,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.26399999999999996,
+        "x": 0.264,
         "y": -0.019259259259259254,
         "z": 337.73395709808716
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.26399999999999996,
+          "x": 0.264,
           "y": -0.019259259259259254,
           "z": 337.73395709808716
         },
@@ -12863,9 +12863,9 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.19000000000000006,
+        "margin_x_m": 0.19,
         "margin_y_m": 0.10574074074074075,
-        "planar_margin_m": 0.10043781914736058,
+        "planar_margin_m": 0.10043781914736061,
         "support_polygon_vertices": [
           {
             "x": 0.04200000000000002,
@@ -12905,19 +12905,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.26399999999999996,
+          "x": 0.264,
           "y": -0.019259259259259254,
           "z": 337.73395709808716
         },
         "center_of_pressure": {
           "x": 0.26691438979963567,
-          "y": -0.01576199149969637,
+          "y": -0.0157619914996964,
           "z": 336.8933183376991
         },
-        "center_of_pressure_error_m": 0.004552422397614116,
+        "center_of_pressure_error_m": 0.004552422397614058,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.40148755312689766,
-        "max_load_fraction": 0.5985124468731023,
+        "min_load_fraction": 0.40148755312689755,
+        "max_load_fraction": 0.5985124468731025,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -12926,11 +12926,11 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.40148755312689766,
-            "normal_force_n": 24.79185640558593,
+            "load_fraction": 0.40148755312689755,
+            "normal_force_n": 24.791856405585925,
             "contact_torque_nm": {
-              "x": 2.460821302480381,
-              "y": 2.7766879174256225,
+              "x": 2.4608213024803804,
+              "y": 2.7766879174256234,
               "z": 0
             },
             "status": "loaded"
@@ -12942,11 +12942,11 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.5985124468731023,
-            "normal_force_n": 36.95814359441407,
+            "load_fraction": 0.5985124468731025,
+            "normal_force_n": 36.958143594414075,
             "contact_torque_nm": {
-              "x": -2.2448650183273733,
-              "y": -2.956651487553128,
+              "x": -2.2448650183273737,
+              "y": -2.9566514875531267,
               "z": 0
             },
             "status": "loaded"
@@ -13189,7 +13189,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 24.79185640558593,
+          "total_normal_force_n": 24.791856405585925,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -13197,8 +13197,8 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 3130.2849046590677,
-          "average_pressure_pa": 1252.1139598780774,
+          "max_pressure_pa": 3130.2849046590673,
+          "average_pressure_pa": 1252.1139598780771,
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
@@ -13224,8 +13224,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 12.39592818313602,
-              "pressure_pa": 3130.284894731318,
+              "normal_force_n": 12.395928183136018,
+              "pressure_pa": 3130.2848947313178,
               "status": "sample-loaded"
             },
             {
@@ -13266,8 +13266,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 12.395928222449909,
-              "pressure_pa": 3130.2849046590677,
+              "normal_force_n": 12.395928222449907,
+              "pressure_pa": 3130.2849046590673,
               "status": "sample-loaded"
             }
           ],
@@ -13278,7 +13278,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 36.95814359441407,
+          "total_normal_force_n": 36.958143594414075,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -13286,8 +13286,8 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 4666.432286892525,
-          "average_pressure_pa": 1866.5729088087915,
+          "max_pressure_pa": 4666.432286892526,
+          "average_pressure_pa": 1866.572908808792,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -13327,8 +13327,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 18.479071738319675,
-              "pressure_pa": 4666.432257151433,
+              "normal_force_n": 18.47907173831968,
+              "pressure_pa": 4666.432257151434,
               "status": "sample-loaded"
             },
             {
@@ -13341,8 +13341,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 18.479071856094397,
-              "pressure_pa": 4666.432286892525,
+              "normal_force_n": 18.4790718560944,
+              "pressure_pa": 4666.432286892526,
               "status": "sample-loaded"
             },
             {
@@ -13372,11 +13372,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 24.963101166605934,
+          "normal_force_n": 24.96310116660593,
           "tangential_force_n": 0.6659371334416088,
-          "friction_limit_n": 15.477122723295679,
-          "utilization": 0.04302719215628245,
-          "margin_n": 14.81118558985407,
+          "friction_limit_n": 15.477122723295677,
+          "utilization": 0.04302719215628246,
+          "margin_n": 14.811185589854068,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -13387,11 +13387,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 37.275590709893414,
-          "tangential_force_n": 0.9746399356769674,
-          "friction_limit_n": 23.110866240133916,
-          "utilization": 0.04217236712592041,
-          "margin_n": 22.136226304456947,
+          "normal_force_n": 37.27559070989342,
+          "tangential_force_n": 0.9746399356769699,
+          "friction_limit_n": 23.11086624013392,
+          "utilization": 0.04217236712592051,
+          "margin_n": 22.13622630445695,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -13405,14 +13405,14 @@
       "time_s": 2.3000000000000003,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.27599999999999997,
+        "x": 0.276,
         "y": -0.029903978052126197,
         "z": 337.72994551428
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.27599999999999997,
+          "x": 0.276,
           "y": -0.029903978052126197,
           "z": 337.72994551428
         },
@@ -13420,7 +13420,7 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.17800000000000005,
+        "margin_x_m": 0.178,
         "margin_y_m": 0.09509602194787381,
         "planar_margin_m": 0.09509602194787381,
         "support_polygon_vertices": [
@@ -13462,19 +13462,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.27599999999999997,
+          "x": 0.276,
           "y": -0.029903978052126197,
           "z": 337.72994551428
         },
         "center_of_pressure": {
           "x": 0.2792314646157998,
-          "y": -0.026026220513166456,
+          "y": -0.02602622051316647,
           "z": 336.88899557407285
         },
-        "center_of_pressure_error_m": 0.005047709093650838,
+        "center_of_pressure_error_m": 0.005047709093650792,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.33733612179270966,
-        "max_load_fraction": 0.6626638782072903,
+        "min_load_fraction": 0.33733612179270955,
+        "max_load_fraction": 0.6626638782072904,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -13483,11 +13483,11 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.33733612179270966,
-            "normal_force_n": 20.830505520699823,
+            "load_fraction": 0.33733612179270955,
+            "normal_force_n": 20.830505520699816,
             "contact_torque_nm": {
-              "x": 2.289355421561687,
-              "y": 2.582982684566777,
+              "x": 2.2893554215616865,
+              "y": 2.5829826845667774,
               "z": 0
             },
             "status": "loaded"
@@ -13499,11 +13499,11 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.6626638782072903,
-            "normal_force_n": 40.91949447930018,
+            "load_fraction": 0.6626638782072904,
+            "normal_force_n": 40.919494479300184,
             "contact_torque_nm": {
-              "x": -2.0499038935309226,
-              "y": -2.7825256245924144,
+              "x": -2.049903893530923,
+              "y": -2.7825256245924126,
               "z": 0
             },
             "status": "loaded"
@@ -13746,7 +13746,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 20.830505520699823,
+          "total_normal_force_n": 20.830505520699816,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -13754,8 +13754,8 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 2630.1143375924203,
-          "average_pressure_pa": 1052.045733368678,
+          "max_pressure_pa": 2630.1143375924194,
+          "average_pressure_pa": 1052.0457333686777,
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
@@ -13781,8 +13781,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 10.41525274383384,
-              "pressure_pa": 2630.1143292509696,
+              "normal_force_n": 10.415252743833836,
+              "pressure_pa": 2630.1143292509687,
               "status": "sample-loaded"
             },
             {
@@ -13823,8 +13823,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 10.415252776865984,
-              "pressure_pa": 2630.1143375924203,
+              "normal_force_n": 10.41525277686598,
+              "pressure_pa": 2630.1143375924194,
               "status": "sample-loaded"
             }
           ],
@@ -13835,7 +13835,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 40.91949447930018,
+          "total_normal_force_n": 40.919494479300184,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -13843,7 +13843,7 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 5166.602854759919,
+          "max_pressure_pa": 5166.60285475992,
           "average_pressure_pa": 2066.641135318191,
           "samples": [
             {
@@ -13884,8 +13884,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 20.4597471744509,
-              "pressure_pa": 5166.602821831036,
+              "normal_force_n": 20.459747174450904,
+              "pressure_pa": 5166.602821831037,
               "status": "sample-loaded"
             },
             {
@@ -13898,8 +13898,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 20.45974730484928,
-              "pressure_pa": 5166.602854759919,
+              "normal_force_n": 20.459747304849284,
+              "pressure_pa": 5166.60285475992,
               "status": "sample-loaded"
             },
             {
@@ -13929,11 +13929,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 20.974388047343307,
-          "tangential_force_n": 0.5595307954215549,
-          "friction_limit_n": 13.004120589352851,
-          "utilization": 0.043027192156282514,
-          "margin_n": 12.444589793931296,
+          "normal_force_n": 20.9743880473433,
+          "tangential_force_n": 0.5595307954215536,
+          "friction_limit_n": 13.004120589352846,
+          "utilization": 0.04302719215628243,
+          "margin_n": 12.444589793931293,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -13944,11 +13944,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 41.27096709740241,
+          "normal_force_n": 41.27096709740242,
           "tangential_force_n": 1.07910651316553,
-          "friction_limit_n": 25.587999600389495,
-          "utilization": 0.04217236712592039,
-          "margin_n": 24.508893087223964,
+          "friction_limit_n": 25.587999600389498,
+          "utilization": 0.04217236712592038,
+          "margin_n": 24.508893087223967,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -13962,14 +13962,14 @@
       "time_s": 2.4000000000000004,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.288,
+        "x": 0.28800000000000003,
         "y": -0.0372565157750343,
         "z": 337.7247948242866
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.288,
+          "x": 0.28800000000000003,
           "y": -0.0372565157750343,
           "z": 337.7247948242866
         },
@@ -13977,7 +13977,7 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.16600000000000004,
+        "margin_x_m": 0.16599999999999998,
         "margin_y_m": 0.0877434842249657,
         "planar_margin_m": 0.0877434842249657,
         "support_polygon_vertices": [
@@ -14019,19 +14019,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.288,
+          "x": 0.28800000000000003,
           "y": -0.0372565157750343,
           "z": 337.7247948242866
         },
         "center_of_pressure": {
-          "x": 0.28992943398772175,
-          "y": -0.03494119498976814,
+          "x": 0.2899294339877218,
+          "y": -0.034941194989768165,
           "z": 336.885241046836
         },
-        "center_of_pressure_error_m": 0.0030138722354574776,
+        "center_of_pressure_error_m": 0.0030138722354574564,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.2816175313139492,
-        "max_load_fraction": 0.7183824686860508,
+        "min_load_fraction": 0.28161753131394895,
+        "max_load_fraction": 0.718382468686051,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -14040,11 +14040,11 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.2816175313139492,
-            "normal_force_n": 17.389882558636362,
+            "load_fraction": 0.28161753131394895,
+            "normal_force_n": 17.389882558636348,
             "contact_torque_nm": {
-              "x": 2.039077038562738,
-              "y": 2.3650240279745445,
+              "x": 2.039077038562737,
+              "y": 2.3650240279745436,
               "z": 0
             },
             "status": "loaded"
@@ -14056,11 +14056,11 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.7183824686860508,
-            "normal_force_n": 44.36011744136364,
+            "load_fraction": 0.718382468686051,
+            "normal_force_n": 44.36011744136365,
             "contact_torque_nm": {
-              "x": -1.8961059800725528,
-              "y": -2.4841665767163663,
+              "x": -1.896105980072553,
+              "y": -2.484166576716364,
               "z": 0
             },
             "status": "loaded"
@@ -14303,7 +14303,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 17.389882558636362,
+          "total_normal_force_n": 17.389882558636348,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -14311,8 +14311,8 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 2195.692245733903,
-          "average_pressure_pa": 878.2768969008265,
+          "max_pressure_pa": 2195.692245733901,
+          "average_pressure_pa": 878.2768969008257,
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
@@ -14338,8 +14338,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 8.694941265530106,
-              "pressure_pa": 2195.692238770229,
+              "normal_force_n": 8.6949412655301,
+              "pressure_pa": 2195.692238770227,
               "status": "sample-loaded"
             },
             {
@@ -14380,8 +14380,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 8.694941293106256,
-              "pressure_pa": 2195.692245733903,
+              "normal_force_n": 8.694941293106249,
+              "pressure_pa": 2195.692245733901,
               "status": "sample-loaded"
             }
           ],
@@ -14392,7 +14392,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 44.36011744136364,
+          "total_normal_force_n": 44.36011744136365,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -14400,8 +14400,8 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 5601.024947313924,
-          "average_pressure_pa": 2240.4099717860427,
+          "max_pressure_pa": 5601.024947313925,
+          "average_pressure_pa": 2240.409971786043,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -14441,8 +14441,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 22.180058650000507,
-              "pressure_pa": 5601.0249116162895,
+              "normal_force_n": 22.18005865000051,
+              "pressure_pa": 5601.02491161629,
               "status": "sample-loaded"
             },
             {
@@ -14455,8 +14455,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 22.180058791363138,
-              "pressure_pa": 5601.024947313924,
+              "normal_force_n": 22.18005879136314,
+              "pressure_pa": 5601.024947313925,
               "status": "sample-loaded"
             },
             {
@@ -14486,11 +14486,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 17.509999674281186,
-          "tangential_force_n": 0.46711179479787823,
-          "friction_limit_n": 10.856199798054336,
-          "utilization": 0.043027192156282416,
-          "margin_n": 10.389088003256457,
+          "normal_force_n": 17.509999674281172,
+          "tangential_force_n": 0.46711179479787857,
+          "friction_limit_n": 10.856199798054327,
+          "utilization": 0.04302719215628248,
+          "margin_n": 10.389088003256449,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -14501,11 +14501,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 44.74114283805631,
+          "normal_force_n": 44.74114283805632,
           "tangential_force_n": 1.1698407388678467,
-          "friction_limit_n": 27.739508559594913,
-          "utilization": 0.04217236712592035,
-          "margin_n": 26.569667820727066,
+          "friction_limit_n": 27.739508559594917,
+          "utilization": 0.042172367125920346,
+          "margin_n": 26.56966782072707,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -14519,14 +14519,14 @@
       "time_s": 2.5,
       "support_phase": "double-support-right-transfer",
       "com_projection": {
-        "x": 0.30000000000000004,
+        "x": 0.3,
         "y": -0.04,
         "z": 337.7183228101316
       },
       "support_assessment": {
         "support_count": 2,
         "com_projection": {
-          "x": 0.30000000000000004,
+          "x": 0.3,
           "y": -0.04,
           "z": 337.7183228101316
         },
@@ -14534,7 +14534,7 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": 0.125,
-        "margin_x_m": 0.15399999999999997,
+        "margin_x_m": 0.15400000000000003,
         "margin_y_m": 0.08499999999999999,
         "planar_margin_m": 0.08499999999999998,
         "support_polygon_vertices": [
@@ -14576,19 +14576,19 @@
       "support_load_assessment": {
         "load_count": 2,
         "center_of_mass": {
-          "x": 0.30000000000000004,
+          "x": 0.3,
           "y": -0.04,
           "z": 337.7183228101316
         },
         "center_of_pressure": {
-          "x": 0.298360655737705,
-          "y": -0.04196721311475411,
+          "x": 0.2983606557377049,
+          "y": -0.04196721311475407,
           "z": 336.8822820505443
         },
-        "center_of_pressure_error_m": 0.0025607375986579166,
+        "center_of_pressure_error_m": 0.0025607375986578845,
         "total_normal_force_n": 61.75,
-        "min_load_fraction": 0.23770491803278682,
-        "max_load_fraction": 0.7622950819672132,
+        "min_load_fraction": 0.23770491803278704,
+        "max_load_fraction": 0.762295081967213,
         "loads": [
           {
             "footprint_id": "left-foot",
@@ -14597,11 +14597,11 @@
               "y": 0.08,
               "z": 336.9336483472
             },
-            "load_fraction": 0.23770491803278682,
-            "normal_force_n": 14.678278688524586,
+            "load_fraction": 0.23770491803278704,
+            "normal_force_n": 14.6782786885246,
             "contact_torque_nm": {
-              "x": 1.7613934426229503,
-              "y": 2.172385245901639,
+              "x": 1.7613934426229518,
+              "y": 2.17238524590164,
               "z": 0
             },
             "status": "loaded"
@@ -14613,11 +14613,11 @@
               "y": -0.08,
               "z": 336.8662646032
             },
-            "load_fraction": 0.7622950819672132,
-            "normal_force_n": 47.071721311475414,
+            "load_fraction": 0.762295081967213,
+            "normal_force_n": 47.0717213114754,
             "contact_torque_nm": {
-              "x": -1.8828688524590167,
-              "y": -2.0711557377049177,
+              "x": -1.882868852459016,
+              "y": -2.0711557377049195,
               "z": 0
             },
             "status": "loaded"
@@ -14860,7 +14860,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 14.678278688524586,
+          "total_normal_force_n": 14.6782786885246,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -14868,8 +14868,8 @@
             "y": 0.0799999999494391,
             "z": 336.9336483472893
           },
-          "max_pressure_pa": 1853.318019166766,
-          "average_pressure_pa": 741.3272064911407,
+          "max_pressure_pa": 1853.3180191667677,
+          "average_pressure_pa": 741.3272064911415,
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
@@ -14895,8 +14895,8 @@
               "clearance_m": -0.00001792310462178648,
               "in_contact": true,
               "load_fraction": 0.4999999992071209,
-              "normal_force_n": 7.3391393326241925,
-              "pressure_pa": 1853.3180132889374,
+              "normal_force_n": 7.3391393326242,
+              "pressure_pa": 1853.3180132889393,
               "status": "sample-loaded"
             },
             {
@@ -14937,8 +14937,8 @@
               "clearance_m": -0.000017923104678629898,
               "in_contact": true,
               "load_fraction": 0.5000000007928791,
-              "normal_force_n": 7.339139355900393,
-              "pressure_pa": 1853.318019166766,
+              "normal_force_n": 7.3391393559004,
+              "pressure_pa": 1853.3180191667677,
               "status": "sample-loaded"
             }
           ],
@@ -14949,7 +14949,7 @@
           "sample_count": 5,
           "contact_count": 5,
           "loaded_sample_count": 2,
-          "total_normal_force_n": 47.071721311475414,
+          "total_normal_force_n": 47.0717213114754,
           "contact_area_m2": 0.019799999999999998,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
@@ -14957,8 +14957,8 @@
             "y": -0.07999999983588939,
             "z": 336.86626460334196
           },
-          "max_pressure_pa": 5943.399174429183,
-          "average_pressure_pa": 2377.359662195728,
+          "max_pressure_pa": 5943.399174429182,
+          "average_pressure_pa": 2377.3596621957277,
           "samples": [
             {
               "probe_id": "right-foot/sample/0/0",
@@ -14998,8 +14998,8 @@
               "clearance_m": -0.000008918837863802764,
               "in_contact": true,
               "load_fraction": 0.4999999984066473,
-              "normal_force_n": 23.53586058073585,
-              "pressure_pa": 5943.399136549457,
+              "normal_force_n": 23.535860580735843,
+              "pressure_pa": 5943.399136549456,
               "status": "sample-loaded"
             },
             {
@@ -15012,8 +15012,8 @@
               "clearance_m": -0.000008918837920646183,
               "in_contact": true,
               "load_fraction": 0.5000000015933528,
-              "normal_force_n": 23.535860730739564,
-              "pressure_pa": 5943.399174429183,
+              "normal_force_n": 23.535860730739557,
+              "pressure_pa": 5943.399174429182,
               "status": "sample-loaded"
             },
             {
@@ -15043,11 +15043,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 14.779665945899756,
-          "tangential_force_n": 0.39427506652913324,
-          "friction_limit_n": 9.16339288645785,
-          "utilization": 0.043027192156282416,
-          "margin_n": 8.769117819928717,
+          "normal_force_n": 14.77966594589977,
+          "tangential_force_n": 0.3942750665291339,
+          "friction_limit_n": 9.163392886457858,
+          "utilization": 0.043027192156282444,
+          "margin_n": 8.769117819928724,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -15058,11 +15058,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 47.47603767311308,
-          "tangential_force_n": 1.2413496720694237,
-          "friction_limit_n": 29.435143357330112,
-          "utilization": 0.042172367125920436,
-          "margin_n": 28.193793685260687,
+          "normal_force_n": 47.47603767311306,
+          "tangential_force_n": 1.2413496720694257,
+          "friction_limit_n": 29.435143357330098,
+          "utilization": 0.042172367125920526,
+          "margin_n": 28.193793685260673,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -15076,14 +15076,14 @@
       "time_s": 2.6,
       "support_phase": "right-support",
       "com_projection": {
-        "x": 0.31200000000000006,
+        "x": 0.312,
         "y": -0.04,
         "z": 337.71081699690956
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
-          "x": 0.31200000000000006,
+          "x": 0.312,
           "y": -0.04,
           "z": 337.71081699690956
         },
@@ -15091,7 +15091,7 @@
         "max_x_m": 0.454,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
-        "margin_x_m": 0.07800000000000001,
+        "margin_x_m": 0.07799999999999996,
         "margin_y_m": 0.0049999999999999975,
         "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
@@ -15123,7 +15123,7 @@
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
-          "x": 0.31200000000000006,
+          "x": 0.312,
           "y": -0.04,
           "z": 337.71081699690956
         },
@@ -15132,7 +15132,7 @@
           "y": -0.08,
           "z": 336.8662646032
         },
-        "center_of_pressure_error_m": 0.05122499389946277,
+        "center_of_pressure_error_m": 0.05122499389946281,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -15148,7 +15148,7 @@
             "normal_force_n": 61.75,
             "contact_torque_nm": {
               "x": -2.47,
-              "y": -1.9759999999999984,
+              "y": -1.9760000000000018,
               "z": 0
             },
             "status": "loaded"
@@ -15692,35 +15692,35 @@
         {
           "patch_id": "left-foot",
           "center": {
-            "x": 0.22880000000000003,
+            "x": 0.19193600000000002,
             "y": 0.08,
-            "z": 336.92621374367997
+            "z": 336.9451423533696
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.03198206270656101,
-          "max_clearance_m": 0.03203444045004744,
-          "average_surface_elevation_m": 336.8942071424173,
+          "min_clearance_m": 0.03198206951788052,
+          "max_clearance_m": 0.032034446670877514,
+          "average_surface_elevation_m": 336.91313574689406,
           "average_surface_normal": {
-            "x": 0.4456762938998161,
-            "y": 0.21910195986295203,
-            "z": 0.8679671492861571
+            "x": 0.4456575949888906,
+            "y": 0.21928417960200886,
+            "z": 0.8679307326077306
           },
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.22880000000000003,
+                "x": 0.19193600000000002,
                 "y": 0.08,
-                "z": 336.92621374367997
+                "z": 336.9451423533696
               },
-              "surface_elevation_m": 336.89421374368,
+              "surface_elevation_m": 336.9131423533696,
               "surface_normal": {
-                "x": 0.4456763014471587,
-                "y": 0.21910198965039235,
-                "z": 0.8679671378915337
+                "x": 0.4456576025217733,
+                "y": 0.21928420941234034,
+                "z": 0.8679307212081792
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -15730,73 +15730,73 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.32276774629384847,
-                "y": 0.11190769214363974,
-                "z": 336.8699094962909
+                "x": 0.28590102478979806,
+                "y": 0.11189649962854684,
+                "z": 336.8888352943168
               },
-              "surface_elevation_m": 336.83792743358435,
+              "surface_elevation_m": 336.8568532247989,
               "surface_normal": {
-                "x": 0.445591105748315,
-                "y": 0.21865354759284078,
-                "z": 0.8681239500227252
+                "x": 0.44557249047884057,
+                "y": 0.21883584566797917,
+                "z": 0.8680875695338944
               },
-              "clearance_m": 0.03198206270656101,
+              "clearance_m": 0.03198206951788052,
               "in_contact": false,
-              "local_grade": 0.5132805122317505,
+              "local_grade": 0.513280579190972,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.3317749750783659,
-                "y": 0.02409451558759526,
-                "z": 336.88745132780195
+                "x": 0.29491574458381087,
+                "y": 0.024087007387847248,
+                "z": 336.9063917147796
               },
-              "surface_elevation_m": 336.8554168873519,
+              "surface_elevation_m": 336.8743572681087,
               "surface_normal": {
-                "x": 0.44596106396995655,
-                "y": 0.21856456868118435,
-                "z": 0.8679563691453575
+                "x": 0.4459424328484984,
+                "y": 0.21874680384868805,
+                "z": 0.8679200322559365
               },
-              "clearance_m": 0.03203444045004744,
+              "clearance_m": 0.032034446670877514,
               "in_contact": false,
-              "local_grade": 0.513805854560497,
+              "local_grade": 0.513805899478302,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.12582502492163417,
-                "y": 0.13590548441240474,
-                "z": 336.964976159558
+                "x": 0.08895625541618918,
+                "y": 0.13591299261215276,
+                "z": 336.9838929919596
               },
-              "surface_elevation_m": 336.932941719108,
+              "surface_elevation_m": 336.9518585452887,
               "surface_normal": {
-                "x": 0.4453913670452515,
-                "y": 0.21963934267985602,
-                "z": 0.8679775857179278
+                "x": 0.4453726003642605,
+                "y": 0.21982154686573277,
+                "z": 0.8679410892326351
               },
-              "clearance_m": 0.0320344404499906,
+              "clearance_m": 0.032034446670877514,
               "in_contact": false,
-              "local_grade": 0.5131369454395026,
+              "local_grade": 0.5131369005216976,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.1348322537061516,
-                "y": 0.04809230785636026,
-                "z": 336.982517991069
+                "x": 0.09797097521020198,
+                "y": 0.04810350037145317,
+                "z": 337.0014494124224
               },
-              "surface_elevation_m": 336.9505359283624,
+              "surface_elevation_m": 336.9694673429044,
               "surface_normal": {
-                "x": 0.44576136258996,
-                "y": 0.21955021861381632,
-                "z": 0.8678101803554553
+                "x": 0.4457425800674634,
+                "y": 0.21973236002036012,
+                "z": 0.8677737275780385
               },
-              "clearance_m": 0.03198206270661785,
+              "clearance_m": 0.031982069517994205,
               "in_contact": false,
-              "local_grade": 0.5136622877682491,
+              "local_grade": 0.5136622208090277,
               "status": "clear"
             }
           ],
@@ -15926,9 +15926,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.22880000000000003,
+            "x": 0.19193600000000002,
             "y": 0.08,
-            "z": 336.92621374367997
+            "z": 336.9451423533696
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -15936,9 +15936,9 @@
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.22880000000000003,
+                "x": 0.19193600000000002,
                 "y": 0.08,
-                "z": 336.92621374367997
+                "z": 336.9451423533696
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -15950,11 +15950,11 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.32276774629384847,
-                "y": 0.11190769214363974,
-                "z": 336.8699094962909
+                "x": 0.28590102478979806,
+                "y": 0.11189649962854684,
+                "z": 336.8888352943168
               },
-              "clearance_m": 0.03198206270656101,
+              "clearance_m": 0.03198206951788052,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -15964,11 +15964,11 @@
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.3317749750783659,
-                "y": 0.02409451558759526,
-                "z": 336.88745132780195
+                "x": 0.29491574458381087,
+                "y": 0.024087007387847248,
+                "z": 336.9063917147796
               },
-              "clearance_m": 0.03203444045004744,
+              "clearance_m": 0.032034446670877514,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -15978,11 +15978,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.12582502492163417,
-                "y": 0.13590548441240474,
-                "z": 336.964976159558
+                "x": 0.08895625541618918,
+                "y": 0.13591299261215276,
+                "z": 336.9838929919596
               },
-              "clearance_m": 0.0320344404499906,
+              "clearance_m": 0.032034446670877514,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -15992,11 +15992,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.1348322537061516,
-                "y": 0.04809230785636026,
-                "z": 336.982517991069
+                "x": 0.09797097521020198,
+                "y": 0.04810350037145317,
+                "z": 337.0014494124224
               },
-              "clearance_m": 0.03198206270661785,
+              "clearance_m": 0.031982069517994205,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -16223,35 +16223,35 @@
         {
           "patch_id": "left-foot",
           "center": {
-            "x": 0.30560000000000004,
+            "x": 0.2871680000000001,
             "y": 0.08,
-            "z": 336.8975766833933
+            "z": 336.9070409882381
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.04277959174527268,
-          "max_clearance_m": 0.04283197071686118,
-          "average_surface_elevation_m": 336.85477254976183,
+          "min_clearance_m": 0.04277959515252405,
+          "max_clearance_m": 0.042831973829606795,
+          "average_surface_elevation_m": 336.86423685199856,
           "average_surface_normal": {
-            "x": 0.44571520506137047,
-            "y": 0.2187222617818528,
-            "z": 0.868042929916563
+            "x": 0.4457058719185055,
+            "y": 0.21881339838987565,
+            "z": 0.8680247533466071
           },
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.30560000000000004,
+                "x": 0.2871680000000001,
                 "y": 0.08,
-                "z": 336.8975766833933
+                "z": 336.9070409882381
               },
-              "surface_elevation_m": 336.85477914016,
+              "surface_elevation_m": 336.86424344500483,
               "surface_normal": {
-                "x": 0.44571521263881153,
-                "y": 0.21872229152157707,
-                "z": 0.8680429185321942
+                "x": 0.4457058794887262,
+                "y": 0.218813428141055,
+                "z": 0.8680247419597789
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -16261,73 +16261,73 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.3995734198944327,
-                "y": 0.11193101429137987,
-                "z": 336.8412783064309
+                "x": 0.38114005776186966,
+                "y": 0.1119254164333818,
+                "z": 336.85074120079616
               },
-              "surface_elevation_m": 336.7984987146856,
+              "surface_elevation_m": 336.8079616056435,
               "surface_normal": {
-                "x": 0.44562984258890187,
-                "y": 0.21827368636586938,
-                "z": 0.8681996551683516
+                "x": 0.44562055129143735,
+                "y": 0.21836486212220152,
+                "z": 0.8681814967258098
               },
-              "clearance_m": 0.042779591745329526,
+              "clearance_m": 0.04277959515263774,
               "in_contact": false,
-              "local_grade": 0.5132803727070017,
+              "local_grade": 0.5132804061961871,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.4085650393824725,
-                "y": 0.024110170925743954,
-                "z": 336.85878973839783
+                "x": 0.39013542385387046,
+                "y": 0.02410641201128766,
+                "z": 336.86825992937963
               },
-              "surface_elevation_m": 336.81595776768097,
+              "surface_elevation_m": 336.82542795555,
               "surface_normal": {
-                "x": 0.44599983379148783,
-                "y": 0.21818483862535779,
-                "z": 0.8680319835420766
+                "x": 0.44599053458402244,
+                "y": 0.21827598288662356,
+                "z": 0.8680138468690095
               },
-              "clearance_m": 0.04283197071686118,
+              "clearance_m": 0.042831973829606795,
               "in_contact": false,
-              "local_grade": 0.5138057609024365,
+              "local_grade": 0.5138057833901423,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.2026349606175276,
-                "y": 0.13588982907425606,
-                "z": 336.9363636283888
+                "x": 0.18420057614612972,
+                "y": 0.13589358798871234,
+                "z": 336.9458220470966
               },
-              "surface_elevation_m": 336.893531657672,
+              "surface_elevation_m": 336.902990073267,
               "surface_normal": {
-                "x": 0.44543041950654283,
-                "y": 0.21925967683333086,
-                "z": 0.8680535326194857
+                "x": 0.4454210524379305,
+                "y": 0.21935080572574933,
+                "z": 0.8680353161436181
               },
-              "clearance_m": 0.042831970716804335,
+              "clearance_m": 0.042831973829606795,
               "in_contact": false,
-              "local_grade": 0.5131370390975631,
+              "local_grade": 0.5131370166098573,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.21162658010556737,
-                "y": 0.04806898570862013,
-                "z": 336.9538750603557
+                "x": 0.19319594223813052,
+                "y": 0.0480745835666182,
+                "z": 336.9633407756801
               },
-              "surface_elevation_m": 336.9110954686104,
+              "surface_elevation_m": 336.92056118052756,
               "surface_normal": {
-                "x": 0.4458004480102093,
-                "y": 0.2191706836713328,
-                "z": 0.8678860362818018
+                "x": 0.4457910730368921,
+                "y": 0.21926178113276584,
+                "z": 0.8678678416297629
               },
-              "clearance_m": 0.04277959174527268,
+              "clearance_m": 0.04277959515252405,
               "in_contact": false,
-              "local_grade": 0.513662427292998,
+              "local_grade": 0.5136623938038125,
               "status": "clear"
             }
           ],
@@ -16457,9 +16457,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.30560000000000004,
+            "x": 0.2871680000000001,
             "y": 0.08,
-            "z": 336.8975766833933
+            "z": 336.9070409882381
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -16467,9 +16467,9 @@
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.30560000000000004,
+                "x": 0.2871680000000001,
                 "y": 0.08,
-                "z": 336.8975766833933
+                "z": 336.9070409882381
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -16481,11 +16481,11 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.3995734198944327,
-                "y": 0.11193101429137987,
-                "z": 336.8412783064309
+                "x": 0.38114005776186966,
+                "y": 0.1119254164333818,
+                "z": 336.85074120079616
               },
-              "clearance_m": 0.042779591745329526,
+              "clearance_m": 0.04277959515263774,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -16495,11 +16495,11 @@
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.4085650393824725,
-                "y": 0.024110170925743954,
-                "z": 336.85878973839783
+                "x": 0.39013542385387046,
+                "y": 0.02410641201128766,
+                "z": 336.86825992937963
               },
-              "clearance_m": 0.04283197071686118,
+              "clearance_m": 0.042831973829606795,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -16509,11 +16509,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.2026349606175276,
-                "y": 0.13588982907425606,
-                "z": 336.9363636283888
+                "x": 0.18420057614612972,
+                "y": 0.13589358798871234,
+                "z": 336.9458220470966
               },
-              "clearance_m": 0.042831970716804335,
+              "clearance_m": 0.042831973829606795,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -16523,11 +16523,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.21162658010556737,
-                "y": 0.04806898570862013,
-                "z": 336.9538750603557
+                "x": 0.19319594223813052,
+                "y": 0.0480745835666182,
+                "z": 336.9633407756801
               },
-              "clearance_m": 0.04277959174527268,
+              "clearance_m": 0.04277959515252405,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -16754,35 +16754,35 @@
         {
           "patch_id": "left-foot",
           "center": {
-            "x": 0.3824,
+            "x": 0.4008320000000001,
             "y": 0.08,
-            "z": 336.85814207987323
+            "z": 336.8486777750285
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.04277957754464978,
-          "max_clearance_m": 0.042831957741384485,
-          "average_surface_elevation_m": 336.81533795711215,
+          "min_clearance_m": 0.04277957413569311,
+          "max_clearance_m": 0.04283195462602407,
+          "average_surface_elevation_m": 336.8058736548771,
           "average_surface_normal": {
-            "x": 0.44575405550100483,
-            "y": 0.2183424643217792,
-            "z": 0.8681185922892678
+            "x": 0.44576337056540605,
+            "y": 0.21825129815909483,
+            "z": 0.8681367336508913
           },
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.3824,
+                "x": 0.4008320000000001,
                 "y": 0.08,
-                "z": 336.85814207987323
+                "z": 336.8486777750285
               },
-              "surface_elevation_m": 336.81534453663994,
+              "surface_elevation_m": 336.8058802317952,
               "surface_normal": {
-                "x": 0.44575406310850835,
-                "y": 0.21834249401375197,
-                "z": 0.8681185809151367
+                "x": 0.44576337818011935,
+                "y": 0.21825132783960208,
+                "z": 0.8681367222792147
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -16792,73 +16792,73 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.4763790986316638,
-                "y": 0.11195434238022162,
-                "z": 336.80184959063666
+                "x": 0.494812462293048,
+                "y": 0.1119599420034798,
+                "z": 336.79238670142166
               },
-              "surface_elevation_m": 336.759070013092,
+              "surface_elevation_m": 336.7496071272859,
               "surface_normal": {
-                "x": 0.44566851861587087,
-                "y": 0.21789372583347738,
-                "z": 0.868275241934918
+                "x": 0.44567779180760414,
+                "y": 0.21780252054440555,
+                "z": 0.8682933651330071
               },
-              "clearance_m": 0.04277957754464978,
+              "clearance_m": 0.042779574135749954,
               "in_contact": false,
-              "local_grade": 0.5132802331467101,
+              "local_grade": 0.513280199646964,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.4853551047377794,
-                "y": 0.02412584416925581,
-                "z": 336.81933061510296
+                "x": 0.5037847205802173,
+                "y": 0.024129608411037916,
+                "z": 336.809860426905
               },
-              "surface_elevation_m": 336.77649865736157,
+              "surface_elevation_m": 336.767028472279,
               "surface_normal": {
-                "x": 0.446038542739906,
-                "y": 0.21780500941746886,
-                "z": 0.8681074796723718
+                "x": 0.4460478238239331,
+                "y": 0.21771383566908142,
+                "z": 0.8681255811345439
               },
-              "clearance_m": 0.042831957741384485,
+              "clearance_m": 0.04283195462602407,
               "in_contact": false,
-              "local_grade": 0.5138056671372573,
+              "local_grade": 0.5138056446176809,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.27944489526222066,
-                "y": 0.1358741558307442,
-                "z": 336.8969535446435
+                "x": 0.29787927941978287,
+                "y": 0.13587039158896208,
+                "z": 336.88749512315195
               },
-              "surface_elevation_m": 336.8541215869021,
+              "surface_elevation_m": 336.8446631685259,
               "surface_normal": {
-                "x": 0.44546941139728835,
-                "y": 0.21887991138089985,
-                "z": 0.8681293612724101
+                "x": 0.4454787604324659,
+                "y": 0.21878875286627425,
+                "z": 0.8681475425426107
               },
-              "clearance_m": 0.042831957741384485,
+              "clearance_m": 0.04283195462602407,
               "in_contact": false,
-              "local_grade": 0.5131371328627423,
+              "local_grade": 0.5131371553823189,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.28842090136833626,
-                "y": 0.04804565761977839,
-                "z": 336.9144345691098
+                "x": 0.30685153770695217,
+                "y": 0.04804005799652019,
+                "z": 336.9049688486353
               },
-              "surface_elevation_m": 336.8716549915651,
+              "surface_elevation_m": 336.8621892744996,
               "surface_normal": {
-                "x": 0.44583947280020536,
-                "y": 0.21879104927656187,
-                "z": 0.8679617740717019
+                "x": 0.44584882972231743,
+                "y": 0.21869992223861723,
+                "z": 0.8679799335514979
               },
-              "clearance_m": 0.042779577544706626,
+              "clearance_m": 0.04277957413569311,
               "in_contact": false,
-              "local_grade": 0.5136625668532895,
+              "local_grade": 0.5136626003530356,
               "status": "clear"
             }
           ],
@@ -16988,9 +16988,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.3824,
+            "x": 0.4008320000000001,
             "y": 0.08,
-            "z": 336.85814207987323
+            "z": 336.8486777750285
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -16998,9 +16998,9 @@
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.3824,
+                "x": 0.4008320000000001,
                 "y": 0.08,
-                "z": 336.85814207987323
+                "z": 336.8486777750285
               },
               "clearance_m": 0.042797543233291435,
               "in_contact": false,
@@ -17012,11 +17012,11 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.4763790986316638,
-                "y": 0.11195434238022162,
-                "z": 336.80184959063666
+                "x": 0.494812462293048,
+                "y": 0.1119599420034798,
+                "z": 336.79238670142166
               },
-              "clearance_m": 0.04277957754464978,
+              "clearance_m": 0.042779574135749954,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17026,11 +17026,11 @@
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.4853551047377794,
-                "y": 0.02412584416925581,
-                "z": 336.81933061510296
+                "x": 0.5037847205802173,
+                "y": 0.024129608411037916,
+                "z": 336.809860426905
               },
-              "clearance_m": 0.042831957741384485,
+              "clearance_m": 0.04283195462602407,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17040,11 +17040,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.27944489526222066,
-                "y": 0.1358741558307442,
-                "z": 336.8969535446435
+                "x": 0.29787927941978287,
+                "y": 0.13587039158896208,
+                "z": 336.88749512315195
               },
-              "clearance_m": 0.042831957741384485,
+              "clearance_m": 0.04283195462602407,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17054,11 +17054,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.28842090136833626,
-                "y": 0.04804565761977839,
-                "z": 336.9144345691098
+                "x": 0.30685153770695217,
+                "y": 0.04804005799652019,
+                "z": 336.9049688486353
               },
-              "clearance_m": 0.042779577544706626,
+              "clearance_m": 0.04277957413569311,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17285,35 +17285,35 @@
         {
           "patch_id": "left-foot",
           "center": {
-            "x": 0.45920000000000005,
+            "x": 0.49606400000000006,
             "y": 0.08,
-            "z": 336.80790993311996
+            "z": 336.78898132343033
           },
           "half_length_m": 0.11,
           "half_width_m": 0.045,
           "sample_count": 5,
           "contact_count": 0,
-          "min_clearance_m": 0.031982020104919684,
-          "max_clearance_m": 0.03203440152395842,
-          "average_surface_elevation_m": 336.7759033644684,
+          "min_clearance_m": 0.031982013283766264,
+          "max_clearance_m": 0.032034395288405904,
+          "average_surface_elevation_m": 336.75697476000147,
           "average_surface_normal": {
-            "x": 0.44579284516752404,
-            "y": 0.2179625676207029,
-            "z": 0.8681941363045679
+            "x": 0.44581144260582467,
+            "y": 0.21778018199434884,
+            "z": 0.8682303553621136
           },
           "samples": [
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.45920000000000005,
+                "x": 0.49606400000000006,
                 "y": 0.08,
-                "z": 336.80790993311996
+                "z": 336.78898132343033
               },
-              "surface_elevation_m": 336.77590993312,
+              "surface_elevation_m": 336.75698132343035,
               "surface_normal": {
-                "x": 0.44579285280505443,
-                "y": 0.21796259726488904,
-                "z": 0.8681941249406581
+                "x": 0.44581145025775515,
+                "y": 0.21778021161558486,
+                "z": 0.8682303440031038
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -17323,73 +17323,73 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.5531847825065808,
-                "y": 0.1119776763912603,
-                "z": 336.75162334892093
+                "x": 0.5900515125917499,
+                "y": 0.11198887881456429,
+                "z": 336.732697579802
               },
-              "surface_elevation_m": 336.71964132881595,
+              "surface_elevation_m": 336.70071556651817,
               "surface_normal": {
-                "x": 0.4457071337781723,
-                "y": 0.21751366613385295,
-                "z": 0.868350710222694
+                "x": 0.4457256474219713,
+                "y": 0.21733120229446243,
+                "z": 0.8683868928879038
               },
-              "clearance_m": 0.03198202010497653,
+              "clearance_m": 0.03198201328382311,
               "in_contact": false,
-              "local_grade": 0.5132800935509891,
+              "local_grade": 0.5132800265324917,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.5621451711509975,
-                "y": 0.02414153530931326,
-                "z": 336.76907395794103
+                "x": 0.599004403407083,
+                "y": 0.024149073410793975,
+                "z": 336.75013358658896
               },
-              "surface_elevation_m": 336.73703955641713,
+              "surface_elevation_m": 336.7180991913006,
               "surface_normal": {
-                "x": 0.4460771907641528,
-                "y": 0.21742508119556161,
-                "z": 0.8681828574367644
+                "x": 0.44609572016054766,
+                "y": 0.21724268051985465,
+                "z": 0.8682189966909217
               },
-              "clearance_m": 0.03203440152390158,
+              "clearance_m": 0.03203439528834906,
               "in_contact": false,
-              "local_grade": 0.5138055732650119,
+              "local_grade": 0.5138055281683197,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.3562548288490026,
-                "y": 0.13585846469068674,
-                "z": 336.8467459082989
+                "x": 0.3931235965929172,
+                "y": 0.13585092658920603,
+                "z": 336.8278290602717
               },
-              "surface_elevation_m": 336.8147115067749,
+              "surface_elevation_m": 336.7957946649833,
               "surface_normal": {
-                "x": 0.44550834266615713,
-                "y": 0.21850004646046176,
-                "z": 0.8682050715767734
+                "x": 0.44552700812726487,
+                "y": 0.21831767600816074,
+                "z": 0.8682413704561445
               },
-              "clearance_m": 0.03203440152395842,
+              "clearance_m": 0.032034395288405904,
               "in_contact": false,
-              "local_grade": 0.5131372267349879,
+              "local_grade": 0.5131372718316799,
               "status": "clear"
             },
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.36521521749341934,
-                "y": 0.0480223236087397,
-                "z": 336.864196517319
+                "x": 0.4020764874082502,
+                "y": 0.04801112118543571,
+                "z": 336.8452650670587
               },
-              "surface_elevation_m": 336.83221449721407,
+              "surface_elevation_m": 336.8132830537749,
               "surface_normal": {
-                "x": 0.4458784369086086,
-                "y": 0.21841131556725937,
-                "z": 0.8680373936254792
+                "x": 0.4458971181114798,
+                "y": 0.21822900815077578,
+                "z": 0.8680736489845811
               },
-              "clearance_m": 0.031982020104919684,
+              "clearance_m": 0.031982013283766264,
               "in_contact": false,
-              "local_grade": 0.5136627064490105,
+              "local_grade": 0.5136627734675079,
               "status": "clear"
             }
           ],
@@ -17519,9 +17519,9 @@
           "contact_area_m2": 0,
           "sample_area_m2": 0.00396,
           "center_of_pressure": {
-            "x": 0.45920000000000005,
+            "x": 0.49606400000000006,
             "y": 0.08,
-            "z": 336.80790993311996
+            "z": 336.78898132343033
           },
           "max_pressure_pa": 0,
           "average_pressure_pa": 0,
@@ -17529,9 +17529,9 @@
             {
               "probe_id": "left-foot/sample/0/0",
               "position": {
-                "x": 0.45920000000000005,
+                "x": 0.49606400000000006,
                 "y": 0.08,
-                "z": 336.80790993311996
+                "z": 336.78898132343033
               },
               "clearance_m": 0.031999999999982265,
               "in_contact": false,
@@ -17543,11 +17543,11 @@
             {
               "probe_id": "left-foot/sample/0.11/0.045",
               "position": {
-                "x": 0.5531847825065808,
-                "y": 0.1119776763912603,
-                "z": 336.75162334892093
+                "x": 0.5900515125917499,
+                "y": 0.11198887881456429,
+                "z": 336.732697579802
               },
-              "clearance_m": 0.03198202010497653,
+              "clearance_m": 0.03198201328382311,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17557,11 +17557,11 @@
             {
               "probe_id": "left-foot/sample/0.11/-0.045",
               "position": {
-                "x": 0.5621451711509975,
-                "y": 0.02414153530931326,
-                "z": 336.76907395794103
+                "x": 0.599004403407083,
+                "y": 0.024149073410793975,
+                "z": 336.75013358658896
               },
-              "clearance_m": 0.03203440152390158,
+              "clearance_m": 0.03203439528834906,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17571,11 +17571,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/0.045",
               "position": {
-                "x": 0.3562548288490026,
-                "y": 0.13585846469068674,
-                "z": 336.8467459082989
+                "x": 0.3931235965929172,
+                "y": 0.13585092658920603,
+                "z": 336.8278290602717
               },
-              "clearance_m": 0.03203440152395842,
+              "clearance_m": 0.032034395288405904,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
@@ -17585,11 +17585,11 @@
             {
               "probe_id": "left-foot/sample/-0.11/-0.045",
               "position": {
-                "x": 0.36521521749341934,
-                "y": 0.0480223236087397,
-                "z": 336.864196517319
+                "x": 0.4020764874082502,
+                "y": 0.04801112118543571,
+                "z": 336.8452650670587
               },
-              "clearance_m": 0.031982020104919684,
+              "clearance_m": 0.031982013283766264,
               "in_contact": false,
               "load_fraction": 0,
               "normal_force_n": 0,
