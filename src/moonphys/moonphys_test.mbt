@@ -136,7 +136,7 @@ test "contact patch load flags partial contact pressure" {
 ///|
 test "model metadata inventory reports missing collision and inertial links" {
   let inventory = model_metadata_inventory(
-    "robot-source",
+    "model-source",
     ["base", "foot"],
     ["base"],
     [],
@@ -159,7 +159,7 @@ test "model metadata inventory reports missing collision and inertial links" {
 ///|
 test "model metadata inventory is ready when required metadata is present" {
   let inventory = model_metadata_inventory(
-    "robot-source",
+    "model-source",
     ["base", "foot"],
     ["base", "foot"],
     ["base", "foot"],
@@ -173,7 +173,7 @@ test "model metadata inventory is ready when required metadata is present" {
 ///|
 test "physical model readiness blocks assumed and missing items" {
   let readiness = physical_model_readiness(
-    "robot-physical-model",
+    "physical-model",
     ["mass", "collision-shapes", "joint-damping"],
     ["collision-shapes"],
     ["mass"],
@@ -195,7 +195,7 @@ test "physical model readiness blocks assumed and missing items" {
 ///|
 test "physical model readiness passes authoritative items" {
   let readiness = physical_model_readiness(
-    "robot-physical-model",
+    "physical-model",
     ["mass", "collision-shapes"],
     ["mass", "collision-shapes"],
     [],

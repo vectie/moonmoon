@@ -69,8 +69,8 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_item_receipts.py RECEIPTS_JSON")
 
     receipts = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(receipts, list) or len(receipts) != 4:
-        fail("expected four Noetix readiness work item receipts")
+    if not isinstance(receipts, list) or len(receipts) != 3:
+        fail("expected three Noetix readiness work item receipts")
 
     for receipt in receipts:
         if receipt.get("source_decision_id") != "moonclaw/first-trusted-square/noetix-simulation-readiness-decision":
@@ -94,20 +94,11 @@ def main() -> None:
         "assumed:mass",
         "check_moonrobo_noetix_stability",
     )
-    require_receipt(
-        receipt_by_domain(receipts, "world-replay"),
-        1,
-        "world-dynamic-support-review",
-        "check_moonrobo_noetix_control",
-    )
-    world_replay = receipt_by_domain(receipts, "world-replay")
-    world_blockers = world_replay.get("work_item_result", {}).get("blocker_ids", [])
-    if "world-support-review" in world_blockers:
-        fail("world replay receipt must not retain cleared support blocker")
-    if "world-dynamic-support-review" not in world_blockers:
-        fail("world replay receipt must retain dynamic-support blocker")
-    if "world-envelope-review" in world_blockers:
-        fail("world replay receipt must not retain cleared envelope blocker")
+    if any(
+        receipt.get("work_item_result", {}).get("blocker_domain") == "world-replay"
+        for receipt in receipts
+    ):
+        fail("world replay receipt should be omitted after replay blockers clear")
     require_receipt(
         receipt_by_domain(receipts, "review-artifacts"),
         4,

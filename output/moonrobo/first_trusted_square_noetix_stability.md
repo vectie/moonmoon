@@ -10,44 +10,44 @@
 - stable frames: 0
 - review frames: 32
 - traction-review frames: 0
-- worst planar margin: 0.0049999999999999975 m
-- worst traction margin: 7.5873613630353995 N
+- worst planar margin: 0.004999999999999998 m
+- worst traction margin: 5.973589575775126 N
 - status: static-support-review
 - hardware authority: moonmoon-safety-gate-only
 - note: Static support, contact-patch, and traction evidence only: dynamic walking can be valid with COM outside the instantaneous single-foot rectangle, but that requires a controller/dynamics model not yet present. Contact patches use Moonphys heightfield patch sampling and patch-load pressure review over assumed foot soles, and traction margins use Moonphys terrain-normal force projection plus friction-cone review over assumed foot friction.
 
 ## Frame Margins
 
-- frame 0 t=0s phase=double-support-left-transfer margin=0.08499999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 1 t=0.1s phase=double-support-left-transfer margin=0.09332m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 2 t=0.2s phase=double-support-left-transfer margin=0.104696m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 3 t=0.30000000000000004s phase=double-support-left-transfer margin=0.10930400000000001m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 4 t=0.4s phase=double-support-left-transfer margin=0.09331999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 5 t=0.5s phase=double-support-left-transfer margin=0.08499999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 6 t=0.6000000000000001s phase=left-support margin=0.0049999999999999975m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 7 t=0.7000000000000001s phase=left-support margin=0.0049999999999999975m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 8 t=0.8s phase=left-support margin=0.0049999999999999975m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 9 t=0.9s phase=left-support margin=0.0049999999999999975m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 10 t=1s phase=double-support-right-transfer margin=0.08499999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 11 t=1.1s phase=double-support-right-transfer margin=0.09332m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 12 t=1.2000000000000002s phase=double-support-right-transfer margin=0.104696m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 13 t=1.3s phase=double-support-right-transfer margin=0.10930399999999997m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 14 t=1.4000000000000001s phase=double-support-right-transfer margin=0.09331999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 15 t=1.5s phase=double-support-right-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 16 t=1.6s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 17 t=1.7000000000000002s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 18 t=1.8s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 19 t=1.9000000000000001s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 20 t=2s phase=double-support-left-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 21 t=2.1s phase=double-support-left-transfer margin=0.09332m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 22 t=2.2s phase=double-support-left-transfer margin=0.10469600000000004m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 23 t=2.3000000000000003s phase=double-support-left-transfer margin=0.10930400000000003m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 24 t=2.4000000000000004s phase=double-support-left-transfer margin=0.09331999999999999m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 25 t=2.5s phase=double-support-left-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 26 t=2.6s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 27 t=2.7s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 28 t=2.8000000000000003s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 29 t=2.9000000000000004s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 30 t=3s phase=double-support-right-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
-- frame 31 t=3.1s phase=double-support-right-transfer margin=0.09332m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 0 t=0s phase=double-support-left-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 1 t=0.1s phase=double-support-left-transfer margin=0.08686326070623591m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 2 t=0.2s phase=double-support-left-transfer margin=0.09197220135236664m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 3 t=0.30000000000000004s phase=double-support-left-transfer margin=0.09828538013902216m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 4 t=0.4s phase=double-support-left-transfer margin=0.09785249812572536m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 5 t=0.5s phase=double-support-left-transfer margin=0.09825074957795842m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 6 t=0.6000000000000001s phase=double-support-left-transfer margin=0.0989260455187014m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 7 t=0.7000000000000001s phase=double-support-left-transfer margin=0.09932429697093445m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 8 t=0.8s phase=double-support-left-transfer margin=0.09889141495763766m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 9 t=0.9s phase=double-support-left-transfer margin=0.09197220135236664m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 10 t=1s phase=double-support-left-transfer margin=0.08686326070623593m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 11 t=1.1s phase=double-support-left-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 12 t=1.2000000000000002s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 13 t=1.3s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 14 t=1.4000000000000001s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 15 t=1.5s phase=left-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 16 t=1.6s phase=double-support-right-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 17 t=1.7000000000000002s phase=double-support-right-transfer margin=0.08686326070623591m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 18 t=1.8s phase=double-support-right-transfer margin=0.09197220135236664m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 19 t=1.9000000000000001s phase=double-support-right-transfer margin=0.09828538013902216m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 20 t=2s phase=double-support-right-transfer margin=0.09785249812572537m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 21 t=2.1s phase=double-support-right-transfer margin=0.09825074957795839m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 22 t=2.2s phase=double-support-right-transfer margin=0.09892604551870142m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 23 t=2.3000000000000003s phase=double-support-right-transfer margin=0.09932429697093448m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 24 t=2.4000000000000004s phase=double-support-right-transfer margin=0.09889141495763767m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 25 t=2.5s phase=double-support-right-transfer margin=0.09197220135236664m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 26 t=2.6s phase=double-support-right-transfer margin=0.08686326070623593m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 27 t=2.7s phase=double-support-right-transfer margin=0.08499999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 28 t=2.8000000000000003s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 29 t=2.9000000000000004s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 30 t=3s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
+- frame 31 t=3.1s phase=right-support margin=0.004999999999999998m patch=contact-patch-review traction=traction-ok status=contact-patch-review
 

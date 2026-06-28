@@ -105,30 +105,6 @@
     "next_action": "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
   },
   {
-    "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay",
-    "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-    "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
-    "site_id": "first-trusted-square",
-    "robot_id": "noetix-e1-lab-01",
-    "rank": 3,
-    "state": "NeedsReview",
-    "blocker_domain": "world-replay",
-    "blocker_count": 1,
-    "blocker_ids": [
-      "world-dynamic-support-review"
-    ],
-    "required_evidence": "Moonphys world replay review with envelope, support, and dynamic-support blockers cleared",
-    "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
-    "command": "moon run cmd/main -- moonrobo noetix control json",
-    "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
-    "may_consume_moonrobo_simulation": false,
-    "hardware_state": "HardwareDenied",
-    "hardware_authority": "moonmoon-safety-gate-only",
-    "hardware_denied": true,
-    "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
-    "next_action": "Improve motor-driven Moonphys world replay evidence until the named replay blockers clear, then regenerate MoonClaw review artifacts."
-  },
-  {
     "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts",
     "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
     "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",

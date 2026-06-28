@@ -694,7 +694,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.6,
       "path": "moonrobo/first-trusted-square/noetix-endless-gait.json",
-      "summary": "noetix-e1-lab-01 repeats support/contact phase from frame 0 to 20 while advancing 0.24 m; status endless-gait-window-verified, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 repeats support/contact phase from frame 0 to 32 while advancing 0.384 m; status endless-gait-window-verified, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-walk",
@@ -721,7 +721,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.54,
       "path": "moonrobo/first-trusted-square/noetix-physics.json",
-      "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin 0.0049999999999999975 m, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin 0.004999999999999998 m, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-dynamics",
@@ -730,7 +730,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
-      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.04446360775936132 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin 0.0021231717435670205 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-joint-control",
@@ -739,7 +739,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
-      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 31.870902877062505 W, absolute work 151.62707673085032 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 40.50000000000002 W, absolute work 130.134946778545 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-inertial-collision",
@@ -784,7 +784,7 @@
       "claim_kind": "Derived",
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-work-items.json",
-      "summary": "4 Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied"
+      "summary": "3 Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts",
@@ -793,7 +793,7 @@
       "claim_kind": "Derived",
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts.json",
-      "summary": "4 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
+      "summary": "3 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
     }
   ],
   "review_queue": [

@@ -34,7 +34,7 @@ def main() -> None:
         fail("unexpected terrain tile")
     if evidence.get("reference_frame_index") < 0:
         fail("reference frame must be nonnegative")
-    if evidence.get("cycle_frames") != 20:
+    if evidence.get("cycle_frames") != 32:
         fail("unexpected cycle length")
     if evidence.get("repeated_frame_index") != (
         evidence.get("reference_frame_index") + evidence.get("cycle_frames")

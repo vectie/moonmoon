@@ -115,6 +115,7 @@ pub fn noetix_dynamic_stability_report(
 ) -> NoetixDynamicStabilityReport {
   let frames : Array[NoetixDynamicStabilityFrame] = []
   let mut stable_count = 0
+  let mut review_count = 0
   let mut worst_margin = 0.0
   for index, _frame in trace.frames {
     let dynamic_frame = noetix_dynamic_stability_frame(trace, index, profile)
@@ -122,12 +123,14 @@ pub fn noetix_dynamic_stability_report(
       dynamic_frame.capture_point_assessment.capture_margin_m < worst_margin {
       worst_margin = dynamic_frame.capture_point_assessment.capture_margin_m
     }
-    if dynamic_frame.status == "capture-point-ok" {
+    if dynamic_frame.capture_point_assessment.stable {
       stable_count += 1
+    }
+    if dynamic_frame.status != "capture-point-ok" {
+      review_count += 1
     }
     frames.push(dynamic_frame)
   }
-  let review_count = frames.length() - stable_count
   {
     report_id: "moonrobo/noetix-e1/dynamic-stability/\{trace.terrain_tile_id}",
     trace_id: trace.trace_id,

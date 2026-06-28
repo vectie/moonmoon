@@ -94,21 +94,22 @@ def main() -> None:
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
         "joint_control_review_frame_count",
-        "joint_control_world_capture_review_frame_count",
         "inertial_collision_review_frame_count",
     ]:
         if decision.get(field, 0) <= 0:
             fail(f"{field} must be explicit")
     if decision.get("joint_control_world_support_review_frame_count") != 0:
         fail("joint_control_world_support_review_frame_count should be cleared")
+    if decision.get("joint_control_world_capture_review_frame_count") != 0:
+        fail("joint_control_world_capture_review_frame_count should be cleared")
     if decision.get("joint_control_max_support_recovery_shift_m", -1) < 0:
         fail("joint control max support recovery shift must be explicit")
-    if decision.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
-        fail("joint control worst capture support margin must remain a blocker")
-    if decision.get("joint_control_max_capture_recovery_shift_m", -1) < 0:
-        fail("joint control max capture recovery shift must be explicit")
-    if decision.get("joint_control_world_replay_blocker_count") != 1:
-        fail("joint control world replay blockers should contain only dynamic-support blocker")
+    if decision.get("joint_control_worst_capture_support_margin_m", 0) <= 0:
+        fail("joint control worst capture support margin must be positive")
+    if decision.get("joint_control_max_capture_recovery_shift_m") != 0:
+        fail("joint control max capture recovery shift must be cleared")
+    if decision.get("joint_control_world_replay_blocker_count") != 0:
+        fail("joint control world replay blockers should be cleared")
     replay_blockers = decision.get("joint_control_world_replay_blockers")
     if not isinstance(replay_blockers, list):
         fail("joint control world replay blocker ids must be listed")
@@ -118,8 +119,8 @@ def main() -> None:
         fail("joint control world replay blockers must not retain cleared envelope review")
     if "world-support-review" in replay_blockers:
         fail("joint control world replay blockers must not retain cleared support review")
-    if "world-dynamic-support-review" not in replay_blockers:
-        fail("joint control world replay blockers must name dynamic support review")
+    if "world-dynamic-support-review" in replay_blockers:
+        fail("joint control world replay blockers must clear dynamic support review")
 
     ready_artifacts = decision.get("ready_artifacts", [])
     blocked_artifacts = decision.get("blocked_artifacts", [])

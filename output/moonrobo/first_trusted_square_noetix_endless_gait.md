@@ -5,10 +5,10 @@
 - robot: noetix-e1-lab-01
 - terrain: first-trusted-square-northeast-stepout-lola
 - reference frame: 0
-- repeated frame: 20
-- cycle frames: 20
-- expected forward offset: 0.24 m
-- observed forward offset: 0.24 m
+- repeated frame: 32
+- cycle frames: 32
+- expected forward offset: 0.384 m
+- observed forward offset: 0.384 m
 - reference support: double-support-left-transfer
 - repeated support: double-support-left-transfer
 - phase repeat verified: true

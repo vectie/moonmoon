@@ -67,26 +67,26 @@ def main() -> None:
         fail("body does not progress in +x")
     if frames[0].get("support_phase") != "double-support-left-transfer":
         fail("first frame should start in left double-support transfer")
-    if frames[10].get("support_phase") != "double-support-right-transfer":
-        fail("frame 10 should switch to right double-support transfer")
+    if frames[16].get("support_phase") != "double-support-right-transfer":
+        fail("frame 16 should switch to right double-support transfer")
     if not frames[0]["left_foot"]["in_contact"]:
         fail("left foot should support frame 0")
     if not frames[0]["right_foot"]["in_contact"]:
         fail("right foot should share double support at frame 0")
-    if not frames[10]["left_foot"]["in_contact"]:
-        fail("left foot should share double support at frame 10")
-    if not frames[10]["right_foot"]["in_contact"]:
-        fail("right foot should support frame 10")
-    if frames[6]["right_foot"]["in_contact"]:
+    if not frames[16]["left_foot"]["in_contact"]:
+        fail("left foot should share double support at frame 16")
+    if not frames[16]["right_foot"]["in_contact"]:
+        fail("right foot should support frame 16")
+    if frames[12]["right_foot"]["in_contact"]:
         fail("right foot should swing after the left transfer window")
     left_plant = frames[0]["left_foot"]["position"]
-    for index in range(0, 10):
+    for index in range(0, 16):
         if not frames[index]["left_foot"]["in_contact"]:
             fail(f"left foot should remain planted at frame {index}")
         if not same_position(frames[index]["left_foot"]["position"], left_plant):
             fail(f"left support foot slides at frame {index}")
-    right_plant = frames[10]["right_foot"]["position"]
-    for index in range(10, 20):
+    right_plant = frames[16]["right_foot"]["position"]
+    for index in range(16, 32):
         if not frames[index]["right_foot"]["in_contact"]:
             fail(f"right foot should remain planted at frame {index}")
         if not same_position(frames[index]["right_foot"]["position"], right_plant):

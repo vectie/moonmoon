@@ -23,7 +23,7 @@ def main() -> None:
         fail("unexpected robot id")
     if task.get("frame_count", 0) < 24:
         fail("expected at least 24 walk frames")
-    if task.get("endless_gait_cycle_frames") != 20:
+    if task.get("endless_gait_cycle_frames") != 32:
         fail("unexpected endless gait cycle length")
     if task.get("source_model_collision_tag_count") != 0:
         fail("source model should have no authoritative collision tags yet")
@@ -97,16 +97,16 @@ def main() -> None:
         fail("joint control review blocker should be explicit")
     if task.get("joint_control_world_support_review_frame_count") != 0:
         fail("joint control world-support review should be cleared")
-    if task.get("joint_control_world_capture_review_frame_count", 0) <= 0:
-        fail("joint control world-capture review blocker should be explicit")
+    if task.get("joint_control_world_capture_review_frame_count") != 0:
+        fail("joint control world-capture review should be cleared")
     if task.get("joint_control_max_support_recovery_shift_m", -1) < 0:
         fail("joint control max support recovery shift should be explicit")
-    if task.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
-        fail("joint control worst capture support margin should remain a blocker")
-    if task.get("joint_control_max_capture_recovery_shift_m", -1) < 0:
-        fail("joint control max capture recovery shift should be explicit")
-    if task.get("joint_control_world_replay_blocker_count") != 1:
-        fail("joint control world replay blockers should contain only dynamic-support blocker")
+    if task.get("joint_control_worst_capture_support_margin_m", 0) <= 0:
+        fail("joint control worst capture support margin should be positive")
+    if task.get("joint_control_max_capture_recovery_shift_m") != 0:
+        fail("joint control max capture recovery shift should be cleared")
+    if task.get("joint_control_world_replay_blocker_count") != 0:
+        fail("joint control world replay blockers should be cleared")
     replay_blockers = task.get("joint_control_world_replay_blockers")
     if not isinstance(replay_blockers, list):
         fail("joint control world replay blocker ids must be listed")
@@ -116,8 +116,8 @@ def main() -> None:
         fail("joint control world replay blockers must not retain cleared envelope review")
     if "world-support-review" in replay_blockers:
         fail("joint control world replay blockers must not retain cleared support review")
-    if "world-dynamic-support-review" not in replay_blockers:
-        fail("joint control world replay blockers must name dynamic support review")
+    if "world-dynamic-support-review" in replay_blockers:
+        fail("joint control world replay blockers must clear dynamic support review")
     if task.get("inertial_collision_review_frame_count", 0) <= 0:
         fail("inertial collision review blocker should be explicit")
     if not task.get("source_walk_command_plan_id", "").startswith(

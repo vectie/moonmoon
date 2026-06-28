@@ -245,14 +245,12 @@
   "dynamic_stability_review_frame_count": 32,
   "joint_control_review_frame_count": 32,
   "joint_control_world_support_review_frame_count": 0,
-  "joint_control_world_capture_review_frame_count": 6,
+  "joint_control_world_capture_review_frame_count": 0,
   "joint_control_max_support_recovery_shift_m": 0,
-  "joint_control_worst_capture_support_margin_m": -0.04446360775936132,
-  "joint_control_max_capture_recovery_shift_m": 0.04446360775936131,
-  "joint_control_world_replay_blocker_count": 1,
-  "joint_control_world_replay_blockers": [
-    "world-dynamic-support-review"
-  ],
+  "joint_control_worst_capture_support_margin_m": 0.0021231717435670205,
+  "joint_control_max_capture_recovery_shift_m": 0,
+  "joint_control_world_replay_blocker_count": 0,
+  "joint_control_world_replay_blockers": [],
   "inertial_collision_review_frame_count": 32,
   "ready_artifacts": [
     "noetix-source-model-audit",

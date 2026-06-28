@@ -79,13 +79,12 @@
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
 - joint-control world-support review frames: 0
-- joint-control world-capture review frames: 6
+- joint-control world-capture review frames: 0
 - joint-control max support recovery shift: 0 m
-- joint-control worst capture support margin: -0.04446360775936132 m
-- joint-control max capture recovery shift: 0.04446360775936131 m
-- joint-control world replay blockers: 1
+- joint-control worst capture support margin: 0.0021231717435670205 m
+- joint-control max capture recovery shift: 0 m
+- joint-control world replay blockers: 0
 - joint-control world replay blocker ids:
-  - world-dynamic-support-review
 - inertial-collision review frames: 32
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only

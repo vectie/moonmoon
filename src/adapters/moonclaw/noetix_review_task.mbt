@@ -214,7 +214,7 @@ fn noetix_dynamic_stability_artifact(
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
     "moon run cmd/main -- moonrobo noetix dynamics json",
     "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
-    "\{report.review_frame_count}/\{report.frame_count} frames require capture-point review; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
+    "\{report.review_frame_count}/\{report.frame_count} frames require dynamic review; capture-stable frames \{report.capture_stable_frame_count}; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
     report.review_frame_count == 0 && report.status == "dynamic-stability-ok",
     "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
     "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",

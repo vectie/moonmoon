@@ -50,12 +50,13 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_items.py WORK_ITEMS_JSON")
 
     items = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(items, list) or len(items) != 4:
-        fail("expected four Noetix readiness work items")
+    if not isinstance(items, list) or len(items) != 3:
+        fail("expected three Noetix readiness work items")
 
-    for index, item in enumerate(items, start=1):
-        if item.get("rank") != index:
-            fail("work item ranks must be stable")
+    expected_ranks = [1, 2, 4]
+    for index, item in enumerate(items):
+        if item.get("rank") != expected_ranks[index]:
+            fail("work item ranks must preserve source priority")
         if item.get("decision_id") != "moonclaw/first-trusted-square/noetix-simulation-readiness-decision":
             fail("unexpected decision id")
         if item.get("source_task_id") != "moonclaw/first-trusted-square/noetix-review-task":
@@ -77,19 +78,8 @@ def main() -> None:
         "assumed:mass",
         "check_moonrobo_noetix_stability",
     )
-    require_item(
-        item_by_domain(items, "world-replay"),
-        1,
-        "world-dynamic-support-review",
-        "check_moonrobo_noetix_control",
-    )
-    world_replay = item_by_domain(items, "world-replay")
-    if "world-support-review" in world_replay.get("blocker_ids", []):
-        fail("world replay item must not retain cleared support blocker")
-    if "world-dynamic-support-review" not in world_replay.get("blocker_ids", []):
-        fail("world replay item must retain dynamic-support blocker")
-    if "world-envelope-review" in world_replay.get("blocker_ids", []):
-        fail("world replay item must not retain cleared envelope blocker")
+    if any(item.get("blocker_domain") == "world-replay" for item in items):
+        fail("world replay item should be omitted after replay blockers clear")
     require_item(
         item_by_domain(items, "review-artifacts"),
         4,

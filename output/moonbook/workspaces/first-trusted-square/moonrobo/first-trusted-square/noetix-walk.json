@@ -33,11 +33,11 @@
       "step_length_m": 0.16,
       "step_height_m": 0.045,
       "stride_frequency_hz": 0.75,
-      "cycle_frames": 20,
+      "cycle_frames": 32,
       "lateral_foot_offset_m": 0.08,
       "support_lateral_shift_m": 0.04,
-      "support_forward_lead_m": 0.11,
-      "double_support_frames": 6,
+      "support_forward_lead_m": 0.2,
+      "double_support_frames": 12,
       "min_swing_clearance_m": 0.02,
       "foot_radius_m": 0.012,
       "caution_grade": 0.18,
@@ -61,11 +61,11 @@
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -74,7 +74,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -103,7 +103,7 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.25806126152768083,
+            "position_rad": 0.11038521753981309,
             "status": "urdf-leg-ik"
           },
           {
@@ -117,14 +117,14 @@
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.3432090527688053,
+            "position_rad": 0.060588508229183186,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.2808074068108407,
+            "position_rad": -0.04957241582387715,
             "status": "urdf-leg-ik"
           },
           {
@@ -138,7 +138,7 @@
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.19565961556971623,
+            "position_rad": -0.12140130994511913,
             "status": "urdf-leg-ik"
           },
           {
@@ -261,18 +261,18 @@
         "time_s": 0.1,
         "body_position": {
           "x": 0.012,
-          "y": -0.03168,
-          "z": 337.7501955908256
+          "y": -0.038136739293764085,
+          "z": 337.75108481728716
         },
         "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -281,7 +281,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -310,84 +310,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.3150489103025478,
+            "position_rad": 0.09419766373920599,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.07919999999999999,
+            "position_rad": 0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.384095248036661,
+            "position_rad": 0.060588508229183186,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.3142597483936317,
+            "position_rad": -0.04957241582387715,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.03564,
+            "position_rad": -0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.24521341065951846,
+            "position_rad": -0.10521375614451203,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.5630485006365809,
+            "position_rad": -0.5592548755360591,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.07919999999999999,
+            "position_rad": 0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.43832576583447974,
+            "position_rad": 0.4345307571172201,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.35863017204639247,
+            "position_rad": -0.3555251649140892,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.03564,
+            "position_rad": -0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.4833529068484936,
+            "position_rad": 0.4802492833329282,
             "status": "urdf-leg-ik"
           },
           {
@@ -468,18 +468,18 @@
         "time_s": 0.2,
         "body_position": {
           "x": 0.024,
-          "y": -0.011839999999999993,
-          "z": 337.7412960574656
+          "y": -0.03302779864763336,
+          "z": 337.74421449324296
         },
         "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -488,7 +488,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -517,84 +517,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.3746057598369722,
+            "position_rad": 0.028099199279648282,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.029599999999999974,
+            "position_rad": 0.0825694966190834,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.4272413067078808,
+            "position_rad": 0.11353401470121273,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.3495610691246297,
+            "position_rad": -0.0928914665737195,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.013319999999999988,
+            "position_rad": -0.037156273478587534,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.2969255222537211,
+            "position_rad": -0.04874174740714152,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.6118739953589514,
+            "position_rad": -0.5999346415877842,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.029599999999999974,
+            "position_rad": 0.0825694966190834,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.46684911896147185,
+            "position_rad": 0.45506220262558694,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.38196746096847695,
+            "position_rad": -0.3723236203300257,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.013319999999999988,
+            "position_rad": -0.037156273478587534,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.5269923373659564,
+            "position_rad": 0.5171960592922229,
             "status": "urdf-leg-ik"
           },
           {
@@ -675,18 +675,18 @@
         "time_s": 0.30000000000000004,
         "body_position": {
           "x": 0.036,
-          "y": 0.011840000000000003,
-          "z": 337.73049535798083
+          "y": -0.025394440270473332,
+          "z": 337.7369961891345
         },
         "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -695,7 +695,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -724,84 +724,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.4375489681435886,
+            "position_rad": -0.08081232943117585,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.029600000000000008,
+            "position_rad": 0.06348610067618332,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.47333974878275775,
+            "position_rad": 0.21174255112055984,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.38727797627680177,
+            "position_rad": -0.17324390546227622,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.013320000000000004,
+            "position_rad": -0.028568745304282495,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.35148719563763264,
+            "position_rad": 0.04231368377289221,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.6660310076292073,
+            "position_rad": -0.6405143840649414,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.029600000000000008,
+            "position_rad": 0.06348610067618332,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.4998156417905786,
+            "position_rad": 0.47500156889517814,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4089400705559279,
+            "position_rad": -0.388637647277873,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.013320000000000004,
+            "position_rad": -0.028568745304282495,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.5751554363945566,
+            "position_rad": 0.5541504624476363,
             "status": "urdf-leg-ik"
           },
           {
@@ -882,18 +882,18 @@
         "time_s": 0.4,
         "body_position": {
           "x": 0.048,
-          "y": 0.03168000000000001,
-          "z": 337.71929911322883
+          "y": -0.015957926371149515,
+          "z": 337.7295291258627
         },
         "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -902,7 +902,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -931,84 +931,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.49817893049529766,
+            "position_rad": -0.1599964656905665,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.07919999999999999,
+            "position_rad": 0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5161505681898912,
+            "position_rad": 0.27773746635875207,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.42230501033718376,
+            "position_rad": -0.2272397452026153,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.03564,
+            "position_rad": -0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.40433337264259017,
+            "position_rad": 0.10949874453442973,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7194241381870925,
+            "position_rad": -0.6806638143243919,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.07920000000000002,
+            "position_rad": 0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5310926313118076,
+            "position_rad": 0.4940076053558381,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4345303347096608,
+            "position_rad": -0.40418804074568565,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.03564000000000001,
+            "position_rad": -0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6228618415849456,
+            "position_rad": 0.5908442497142394,
             "status": "urdf-leg-ik"
           },
           {
@@ -1089,18 +1089,18 @@
         "time_s": 0.5,
         "body_position": {
           "x": 0.06,
-          "y": 0.04,
-          "z": 337.711025358
+          "y": -0.005439519158527431,
+          "z": 337.7219125839624
         },
         "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -1109,7 +1109,7 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
@@ -1138,84 +1138,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.5461518258896318,
+            "position_rad": -0.2275210348917466,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.013598797896318578,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5448704161456868,
+            "position_rad": 0.33077397577318046,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.44580306775556183,
+            "position_rad": -0.27063325290532947,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.00611945905334336,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.4470844774995069,
+            "position_rad": 0.1673803120238956,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7604265849394813,
+            "position_rad": -0.7200798340824933,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.013598797896318578,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5497931639147906,
+            "position_rad": 0.5117852936738727,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4498307704757377,
+            "position_rad": -0.4187334220968049,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.00611945905334336,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6604641915004285,
+            "position_rad": 0.6270279625054256,
             "status": "urdf-leg-ik"
           },
           {
@@ -1296,18 +1296,18 @@
         "time_s": 0.6000000000000001,
         "body_position": {
           "x": 0.072,
-          "y": 0.04,
-          "z": 337.7048608296
+          "y": 0.005439519158527417,
+          "z": 337.71361739305604
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -1316,13 +1316,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": -0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 337.02085222399995
+            "z": 336.98885222399997
           },
           "terrain_elevation_m": 336.98885222399997,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
@@ -1345,84 +1345,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.5857120803022413,
+            "position_rad": -0.2909422777777467,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": -0.013598797896318543,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5642745207680645,
+            "position_rad": 0.3789497678223053,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.46167915335568915,
+            "position_rad": -0.31004981003643156,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": 0.006119459053343344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.48311671288986596,
+            "position_rad": 0.22204231999187302,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.9008873706146485,
+            "position_rad": -0.7608192575970358,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": -0.013598797896318543,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6577202592050628,
+            "position_rad": 0.5302622484249276,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.538134757531415,
+            "position_rad": -0.4338509305294862,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": 0.006119459053343344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.7813018689410007,
+            "position_rad": 0.6644079397015944,
             "status": "urdf-leg-ik"
           },
           {
@@ -1503,18 +1503,18 @@
         "time_s": 0.7000000000000001,
         "body_position": {
           "x": 0.084,
-          "y": 0.04,
-          "z": 337.6986963012
+          "y": 0.01595792637114951,
+          "z": 337.70478609762375
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -1523,14 +1523,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.039999999999999994,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 337.0614346551703
+            "z": 336.98885222399997
           },
-          "terrain_elevation_m": 337.022463512,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
-          "local_grade": 0.5138121999999997,
+          "terrain_elevation_m": 336.98885222399997,
+          "clearance_m": 0,
+          "in_contact": true,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -1552,154 +1552,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6243124326317093,
+            "position_rad": -0.3513033109897759,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": -0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.58221720059064,
+            "position_rad": 0.4232966752934596,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.4763595277559782,
+            "position_rad": -0.34633364342192147,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": 0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.5184547597970475,
+            "position_rad": 0.2743402791182378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.9489319253379641,
+            "position_rad": -0.8023117715281001,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": -0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.8213445293405668,
+            "position_rad": 0.5488316721679816,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6720091603695546,
+            "position_rad": -0.4490440954101667,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": 0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.7995965563669519,
+            "position_rad": 0.7025241947702852,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -1710,18 +1710,18 @@
         "time_s": 0.8,
         "body_position": {
           "x": 0.096,
-          "y": 0.04,
-          "z": 337.6925317728
+          "y": 0.025394440270473335,
+          "z": 337.6962302755943
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -1730,14 +1730,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.11999999999999998,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 337.0203296791703
+            "z": 336.98885222399997
           },
-          "terrain_elevation_m": 336.981358536,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
-          "local_grade": 0.5138121999999997,
+          "terrain_elevation_m": 336.98885222399997,
+          "clearance_m": 0,
+          "in_contact": true,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -1759,154 +1759,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6620365083003021,
+            "position_rad": -0.40659821101294485,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": -0.06348610067618335,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5987986225925773,
+            "position_rad": 0.46158891086432263,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.4899261457575632,
+            "position_rad": -0.3776636543435367,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": 0.02856874530428251,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.553164031465288,
+            "position_rad": 0.32267295449215894,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7380050143826054,
+            "position_rad": -0.8416389532289206,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": -0.06348610067618334,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.750385562624066,
+            "position_rad": 0.5648056623129356,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6139518239651449,
+            "position_rad": -0.4621137237105837,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": 0.0285687453042825,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6015712757236843,
+            "position_rad": 0.7389470146265686,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -1917,18 +1917,18 @@
         "time_s": 0.9,
         "body_position": {
           "x": 0.10800000000000001,
-          "y": 0.04,
-          "z": 337.6863672444
+          "y": 0.03302779864763337,
+          "z": 337.6881322842942
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -1937,14 +1937,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 336.97225355999996
+            "z": 336.98885222399997
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
-          "local_grade": 0.5138121999999997,
+          "terrain_elevation_m": 336.98885222399997,
+          "clearance_m": 0,
+          "in_contact": true,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -1966,154 +1966,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.69894736884314,
+            "position_rad": -0.4574068227720883,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": -0.08256949661908344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.614098999807902,
+            "position_rad": 0.49446796072853627,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5024446362064652,
+            "position_rad": -0.40456469514152965,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": 0.03715627347858755,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.5872930052417032,
+            "position_rad": 0.36750355718508165,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.49353542312437343,
+            "position_rad": -0.878276816851395,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": -0.08256949661908342,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6245567764953014,
+            "position_rad": 0.5778043847115424,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5110009989507012,
+            "position_rad": -0.47274904203671647,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": 0.03715627347858754,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.3799796455797732,
+            "position_rad": 0.7732214741765691,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -2.2043642384652358e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -6.123233995736766e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -4.898587196589413e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -1.2246467991473533e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -3.673940397442059e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 2.2043642384652358e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 6.123233995736766e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 4.898587196589413e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 1.2246467991473533e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 3.673940397442059e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -2124,18 +2124,18 @@
         "time_s": 1,
         "body_position": {
           "x": 0.12,
-          "y": 0.04,
-          "z": 337.68020271600005
+          "y": 0.03813673929376408,
+          "z": 337.6806742739324
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -2144,14 +2144,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.98885222399997
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.98885222399997,
           "clearance_m": 0,
           "in_contact": true,
-          "local_grade": 0.5138121999999997,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -2173,84 +2173,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.7350916737605606,
+            "position_rad": -0.5039482440780645,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": -0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6281830996336139,
+            "position_rad": 0.5222227786612439,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5139679906093204,
+            "position_rad": -0.4272731825410177,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": 0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6208765647362672,
+            "position_rad": 0.4089986479578383,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.4409332701924493,
+            "position_rad": -0.9116806967799875,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": -0.09534184823441019,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5428473032568851,
+            "position_rad": 0.587463135234684,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4441477935738151,
+            "position_rad": -0.480651656101105,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": 0.04290383170548459,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.3422337605093793,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
@@ -2331,18 +2331,18 @@
         "time_s": 1.1,
         "body_position": {
           "x": 0.13199999999999998,
-          "y": 0.03168,
-          "z": 337.6761432333792
+          "y": 0.04,
+          "z": 337.6740381876
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "double-support-left-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -2351,14 +2351,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.98885222399997
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.98885222399997,
           "clearance_m": 0,
           "in_contact": true,
-          "local_grade": 0.5138121999999997,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -2380,84 +2380,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.7638734000991381,
+            "position_rad": -0.5462099414062221,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.07919999999999999,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6347835384378001,
+            "position_rad": 0.5449308538563987,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5193683496309274,
+            "position_rad": -0.44585251679159893,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.03564,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6484582112922653,
+            "position_rad": 0.44713160434142235,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.4768272517345904,
+            "position_rad": -0.9412742481398366,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.07919999999999999,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5593715683640368,
+            "position_rad": 0.5934173638409057,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4576676468433028,
+            "position_rad": -0.4855232976880138,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.03564,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.3751233302138564,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
@@ -2538,18 +2538,18 @@
         "time_s": 1.2000000000000002,
         "body_position": {
           "x": 0.144,
-          "y": 0.011839999999999993,
-          "z": 337.67499640792323
+          "y": 0.04,
+          "z": 337.6678736592
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "left-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -2558,14 +2558,14 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": -0.03999999999999998,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 337.02085222399995
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0,
-          "in_contact": true,
-          "local_grade": 0.5138121999999997,
+          "terrain_elevation_m": 336.98885222399997,
+          "clearance_m": 0.031999999999982265,
+          "in_contact": false,
+          "local_grade": 1.354094399999999,
           "status": "terrain-grade-review"
         },
         "joint_phases": [
@@ -2587,84 +2587,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.782677627273981,
+            "position_rad": -0.5857690329563116,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.029599999999999974,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6317336212373342,
+            "position_rad": 0.5643330013465447,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5168729628305462,
+            "position_rad": -0.46172700110171844,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.013319999999999988,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.667816968867193,
+            "position_rad": 0.48316303271148525,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.5027522449698384,
+            "position_rad": -1.0760427587002357,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.029599999999999974,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.564845212907017,
+            "position_rad": 0.6854965814573534,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4621460832875593,
+            "position_rad": -0.5608608393741982,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.013319999999999988,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.40005311535038074,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
@@ -2745,18 +2745,18 @@
         "time_s": 1.3,
         "body_position": {
           "x": 0.15600000000000003,
-          "y": -0.011840000000000003,
-          "z": 337.6734573495264
+          "y": 0.04,
+          "z": 337.66170913080003
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "left-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -2765,13 +2765,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.08800000000000002,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 337.03677166957027
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.9978005264,
+          "clearance_m": 0.03897114317027217,
+          "in_contact": false,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -2794,154 +2794,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.8018911364617938,
+            "position_rad": -0.6243684670326218,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.029600000000000008,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6290520453193649,
+            "position_rad": 0.5822739617509893,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5146789461703895,
+            "position_rad": -0.47640596870535484,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.013320000000000004,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6875180373128184,
+            "position_rad": 0.5185004739869874,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.5291915763652703,
+            "position_rad": -1.0199982661103362,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.029600000000000008,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.570753395175653,
+            "position_rad": 0.83908134086693,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.46698005059826153,
+            "position_rad": -0.6865210970729426,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.013320000000000004,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.42541823178787874,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.15588457268119893,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.04330127018922193,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.08660254037844387,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.025980762113533156,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.15588457268119893,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.04330127018922193,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.08660254037844387,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.025980762113533156,
             "status": "kinematic-phase"
           }
         ],
@@ -2952,18 +2952,18 @@
         "time_s": 1.4000000000000001,
         "body_position": {
           "x": 0.168,
-          "y": -0.03168000000000001,
-          "z": 337.6700279035584
+          "y": 0.04,
+          "z": 337.65554460239997
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "left-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -2972,13 +2972,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.21600000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.9710037079702
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.93203256479995,
+          "clearance_m": 0.03897114317027217,
+          "in_contact": false,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -3001,154 +3001,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.826414299152563,
+            "position_rad": -0.6620918257364938,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.07920000000000002,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6312259032713634,
+            "position_rad": 0.5988538568862861,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5164575572220246,
+            "position_rad": -0.4899713374524159,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.03564000000000001,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.7116459531032242,
+            "position_rad": 0.5532093063026235,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.5608927363023918,
+            "position_rad": -0.660280884429045,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.07919999999999999,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5820484987182402,
+            "position_rad": 0.7176230012830822,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4762214989512874,
+            "position_rad": -0.5871460919588855,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.03564,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.455065736535439,
+            "position_rad": 0.5298039751048482,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.15588457268119896,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.04330127018922194,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.08660254037844388,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -0.02598076211353316,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.15588457268119896,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.04330127018922194,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.08660254037844388,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 0.02598076211353316,
             "status": "kinematic-phase"
           }
         ],
@@ -3159,18 +3159,18 @@
         "time_s": 1.5,
         "body_position": {
           "x": 0.18,
-          "y": -0.04,
-          "z": 337.665009402
+          "y": 0.04,
+          "z": 337.649380074
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "left-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.97061828799997
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -3179,13 +3179,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8982646032
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.8662646032,
+          "clearance_m": 0.031999999999982265,
+          "in_contact": false,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -3208,154 +3208,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.8553471185712545,
+            "position_rad": -0.6990021368897668,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6372344924887432,
+            "position_rad": 0.6141528651396421,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5213736756726081,
+            "position_rad": -0.5024887078415253,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.7394863017551193,
+            "position_rad": 0.58733797959165,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.5968434103151294,
+            "position_rad": -0.22176754736803453,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.597467300276388,
+            "position_rad": 0.4567036478886273,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4888368820443174,
+            "position_rad": -0.3736666209997859,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.4882129920830589,
+            "position_rad": 0.13873052047919318,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -2.2043642384652358e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -6.123233995736766e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -4.898587196589413e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -1.2246467991473533e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": -3.673940397442059e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 2.2043642384652358e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 6.123233995736766e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 4.898587196589413e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 1.2246467991473533e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": 3.673940397442059e-18,
             "status": "kinematic-phase"
           }
         ],
@@ -3366,31 +3366,31 @@
         "time_s": 1.6,
         "body_position": {
           "x": 0.192,
-          "y": -0.04,
-          "z": 337.6588428288
+          "y": 0.04,
+          "z": 337.6432155456
         },
-        "support_phase": "right-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.08,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 337.00261828799995
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.97061828799997,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
+          "terrain_elevation_m": 336.9336483472,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -3415,84 +3415,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.9873595652085922,
+            "position_rad": -0.735146033124072,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.732929954876291,
+            "position_rad": 0.6282357268299319,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5996699630806017,
+            "position_rad": -0.5140110492244897,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.8,
+            "position_rad": 0.6209213555186298,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.6355781863697562,
+            "position_rad": -0.1479201413995964,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6153217225304664,
+            "position_rad": 0.3492974477985418,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5034450457067452,
+            "position_rad": -0.28578882092607966,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.523701509546035,
+            "position_rad": 0.08441151452713422,
             "status": "urdf-leg-ik"
           },
           {
@@ -3573,31 +3573,31 @@
         "time_s": 1.7000000000000002,
         "body_position": {
           "x": 0.20400000000000001,
-          "y": -0.04,
-          "z": 337.6526762556
+          "y": 0.038136739293764085,
+          "z": 337.637521638788
         },
-        "support_phase": "right-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.15999999999999998,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.9685117191703
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.929540576,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
+          "terrain_elevation_m": 336.9336483472,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -3622,154 +3622,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.8179045503412938,
+            "position_rad": -0.7690787966652072,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.7002623051541332,
+            "position_rad": 0.6397470386238165,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5729418860351999,
+            "position_rad": -0.5234293952376681,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6905841312223605,
+            "position_rad": 0.6527611532790587,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.6735388794556676,
+            "position_rad": -0.2018216622760151,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6318907275323188,
+            "position_rad": 0.3881067875533154,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5170015043446244,
+            "position_rad": -0.31754191708907625,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.5586496562679732,
+            "position_rad": 0.13125679181177596,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": -0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": -0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": -0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": -0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -3780,31 +3780,31 @@
         "time_s": 1.8,
         "body_position": {
           "x": 0.21600000000000003,
-          "y": -0.04,
-          "z": 337.6465096824
+          "y": 0.03302779864763336,
+          "z": 337.6326470238852
         },
-        "support_phase": "right-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.24,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.92743400717023
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.88846286399996,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
+          "terrain_elevation_m": 336.9336483472,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -3829,154 +3829,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6075615184017585,
+            "position_rad": -0.7997364026715835,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.0825694966190834,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6159519514555957,
+            "position_rad": 0.647779314570846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5039606875545782,
+            "position_rad": -0.5300012573761468,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.037156273478587534,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.4955702545007411,
+            "position_rad": 0.6819583454768843,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7107780970010036,
+            "position_rad": -0.2489540976250999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.0825694966190834,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.647242427133197,
+            "position_rad": 0.41902875561660946,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5295619858362521,
+            "position_rad": -0.34284170914086226,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.037156273478587534,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.5930976557040587,
+            "position_rad": 0.1727670511493527,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": -0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": -0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": -0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": -0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -3987,31 +3987,31 @@
         "time_s": 1.9000000000000001,
         "body_position": {
           "x": 0.22799999999999998,
-          "y": -0.04,
-          "z": 337.64034310920005
+          "y": 0.025394440270473332,
+          "z": 337.62840892932985
         },
-        "support_phase": "right-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.87938515199994
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
+          "terrain_elevation_m": 336.9336483472,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -4036,154 +4036,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.34524956056585304,
+            "position_rad": -0.8276904782488415,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.06348610067618332,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.45991042564773704,
+            "position_rad": 0.6529971417791023,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.3762903482572394,
+            "position_rad": -0.5342703887283564,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.028568745304282495,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.2616294831753554,
+            "position_rad": 0.7089637251980956,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7473342549296647,
+            "position_rad": -0.29138937278922117,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.06348610067618332,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.661432031506055,
+            "position_rad": 0.4443859408547761,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5411716621413177,
+            "position_rad": -0.3635884970629986,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.028568745304282495,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6270738855649274,
+            "position_rad": 0.21059192899744367,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 2.2043642384652358e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 6.123233995736766e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 4.898587196589413e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 1.2246467991473533e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 3.673940397442059e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": -2.2043642384652358e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": -6.123233995736766e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": -4.898587196589413e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": -1.2246467991473533e-17,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": -3.673940397442059e-18,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -4194,18 +4194,18 @@
         "time_s": 2,
         "body_position": {
           "x": 0.24,
-          "y": -0.04,
-          "z": 337.634176536
+          "y": 0.015957926371149515,
+          "z": 337.6246247906777
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -4214,11 +4214,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -4243,84 +4243,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.2585519497201147,
+            "position_rad": -0.8534878723149288,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.1,
+            "position_rad": -0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.34374194649679246,
+            "position_rad": 0.6560053299535042,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.2812434107701029,
+            "position_rad": -0.5367316335983217,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.045000000000000005,
+            "position_rad": 0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.19605341399342513,
+            "position_rad": 0.7342141759597463,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7832339772898723,
+            "position_rad": -0.3305136559831353,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.09999999999999998,
+            "position_rad": -0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6745044798673802,
+            "position_rad": 0.4657528676545717,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5518673017096747,
+            "position_rad": -0.3810705280810132,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.04499999999999999,
+            "position_rad": 0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6605967991321668,
+            "position_rad": 0.24583131640957684,
             "status": "urdf-leg-ik"
           },
           {
@@ -4401,18 +4401,18 @@
         "time_s": 2.1,
         "body_position": {
           "x": 0.252,
-          "y": -0.03168,
-          "z": 337.6268606873376
+          "y": 0.005439519158527431,
+          "z": 337.62111225060227
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -4421,11 +4421,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -4450,84 +4450,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.3155073551140482,
+            "position_rad": -0.8776699035224526,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.07919999999999999,
+            "position_rad": -0.013598797896318578,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.3845906831147823,
+            "position_rad": 0.6573694063823317,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.31466510436664,
+            "position_rad": -0.5378476961309986,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.03564,
+            "position_rad": 0.00611945905334336,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.24558177636590595,
+            "position_rad": 0.7581481932711195,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.8219312840522088,
+            "position_rad": -0.36736728361936966,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.07919999999999999,
+            "position_rad": -0.013598797896318578,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.689722706585109,
+            "position_rad": 0.48431594710866965,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5643185781150891,
+            "position_rad": -0.39625850217982056,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.03564,
+            "position_rad": 0.00611945905334336,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6965271555821889,
+            "position_rad": 0.27930983869052056,
             "status": "urdf-leg-ik"
           },
           {
@@ -4608,18 +4608,18 @@
         "time_s": 2.2,
         "body_position": {
           "x": 0.26399999999999996,
-          "y": -0.011839999999999993,
-          "z": 337.61795295212164
+          "y": -0.005439519158527417,
+          "z": 337.6170686953551
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -4628,11 +4628,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -4657,84 +4657,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.37505663039166504,
+            "position_rad": -0.9027761382284052,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": 0.029599999999999974,
+            "position_rad": 0.013598797896318543,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.427725328033709,
+            "position_rad": 0.6593929154046498,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.34995708657303465,
+            "position_rad": -0.5395032944219862,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": -0.013319999999999988,
+            "position_rad": -0.006119459053343344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.2972883889309907,
+            "position_rad": 0.7828865172457415,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.8647234901791143,
+            "position_rad": -0.404940274350998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": 0.029599999999999974,
+            "position_rad": 0.013598797896318543,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.7081127511608601,
+            "position_rad": 0.5033805948061477,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5793649782225219,
+            "position_rad": -0.411856850295939,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": -0.013319999999999988,
+            "position_rad": -0.006119459053343344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.735975717240776,
+            "position_rad": 0.31341652984078927,
             "status": "urdf-leg-ik"
           },
           {
@@ -4815,18 +4815,18 @@
         "time_s": 2.3000000000000003,
         "body_position": {
           "x": 0.27599999999999997,
-          "y": 0.011840000000000003,
-          "z": 337.6071643578528
+          "y": -0.01595792637114951,
+          "z": 337.61235479301905
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -4835,11 +4835,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -4864,84 +4864,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.43791659973464064,
+            "position_rad": -0.9292613969874127,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.029600000000000008,
+            "position_rad": 0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.47373098728735036,
+            "position_rad": 0.6624295798036586,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.38759808050783207,
+            "position_rad": -0.5419878380211752,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.013320000000000004,
+            "position_rad": -0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.35178369295512235,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.9124249853148224,
+            "position_rad": -0.44369062475482457,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.029600000000000008,
+            "position_rad": 0.03989481592787378,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.7301405585171409,
+            "position_rad": 0.5233960435224441,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5973877296958425,
+            "position_rad": -0.42823312651836326,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.013320000000000004,
+            "position_rad": -0.0179526671675432,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.7796721564935241,
+            "position_rad": 0.34852770775074376,
             "status": "urdf-leg-ik"
           },
           {
@@ -5022,18 +5022,18 @@
         "time_s": 2.4000000000000004,
         "body_position": {
           "x": 0.288,
-          "y": 0.03168000000000001,
-          "z": 337.5959965993728
+          "y": -0.025394440270473335,
+          "z": 337.60749181209917
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -5042,11 +5042,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -5071,84 +5071,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.4984220186767036,
+            "position_rad": -0.9554462143774234,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.07919999999999999,
+            "position_rad": 0.06348610067618334,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5164064573222581,
+            "position_rad": 0.6649755843011891,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.42251437417275656,
+            "position_rad": -0.5440709326100638,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.03564,
+            "position_rad": -0.0285687453042825,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.40452993552720207,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.9605956710670871,
+            "position_rad": -0.48187393119861544,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.07920000000000002,
+            "position_rad": 0.06348610067618335,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.7515779137996359,
+            "position_rad": 0.5424229562852605,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6149273840178838,
+            "position_rad": -0.44380060059703125,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.03564000000000001,
+            "position_rad": -0.02856874530428251,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.8,
+            "position_rad": 0.3832515755103862,
             "status": "urdf-leg-ik"
           },
           {
@@ -5229,18 +5229,18 @@
         "time_s": 2.5,
         "body_position": {
           "x": 0.30000000000000004,
-          "y": 0.04,
-          "z": 337.58773479
+          "y": -0.03302779864763337,
+          "z": 337.6023799949888
         },
-        "support_phase": "double-support-left-transfer",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -5249,11 +5249,11 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.94025356
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -5278,84 +5278,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.5463455224379811,
+            "position_rad": -0.9816381988366039,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.08256949661908342,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5450718512875946,
+            "position_rad": 0.6672957567306361,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.4459678783262137,
+            "position_rad": -0.5459692555068841,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.03715627347858754,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.44724154947660016,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.999652830374687,
+            "position_rad": -0.5198920974566683,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.08256949661908344,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.7642156876714687,
+            "position_rad": 0.5608798178939794,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6252673808221108,
+            "position_rad": -0.4589016691859832,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.03715627347858755,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.8,
+            "position_rad": 0.41791394874867205,
             "status": "urdf-leg-ik"
           },
           {
@@ -5436,18 +5436,18 @@
         "time_s": 2.6,
         "body_position": {
           "x": 0.31200000000000006,
-          "y": 0.04,
-          "z": 337.5815702616
+          "y": -0.03813673929376408,
+          "z": 337.5969195244472
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -5456,13 +5456,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.2,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.97225355999996
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.94025356,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
+          "terrain_elevation_m": 336.8662646032,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -5485,84 +5485,84 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.5859019030654553,
+            "position_rad": -1.008148475541749,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.09534184823441019,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5644694345583271,
+            "position_rad": 0.6696413586825137,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.46183862827499483,
+            "position_rad": -0.5478883843766021,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.04290383170548459,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.48327109678212304,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -1.1248775720237232,
+            "position_rad": -0.558111733132033,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.09534184823441022,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.8462684694507919,
+            "position_rad": 0.5791316174265682,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6924014750051933,
+            "position_rad": -0.4738349597126466,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.0429038317054846,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.8,
+            "position_rad": 0.45281507541811145,
             "status": "urdf-leg-ik"
           },
           {
@@ -5643,18 +5643,18 @@
         "time_s": 2.7,
         "body_position": {
           "x": 0.324,
-          "y": 0.04,
-          "z": 337.5754057332
+          "y": -0.04,
+          "z": 337.5910105236
         },
-        "support_phase": "left-support",
+        "support_phase": "double-support-right-transfer",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9336483472
           },
-          "terrain_elevation_m": 336.84738515199996,
+          "terrain_elevation_m": 336.9336483472,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5134713999999998,
@@ -5663,13 +5663,13 @@
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.27999999999999997,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.93811972717026
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.899148584,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
+          "terrain_elevation_m": 336.8662646032,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -5692,154 +5692,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6244991965622361,
+            "position_rad": -1.0352905707632354,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.582406384961255,
+            "position_rad": 0.6722488163058551,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.4765143149682995,
+            "position_rad": -0.5500217587956996,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.5186071265692807,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.9488666091031202,
+            "position_rad": -0.5968743331517289,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.821285579298761,
+            "position_rad": 0.5974993088180417,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.671960928517168,
+            "position_rad": -0.48886307085112496,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.7995419583215272,
+            "position_rad": 0.48823809518481215,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0.15588457268119893,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0.04330127018922193,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0.08660254037844387,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0.025980762113533156,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -5850,33 +5850,33 @@
         "time_s": 2.8000000000000003,
         "body_position": {
           "x": 0.336,
-          "y": 0.04,
-          "z": 337.56924120480005
+          "y": -0.04,
+          "z": 337.5848439504
         },
-        "support_phase": "left-support",
+        "support_phase": "right-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.15200000000000002,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.9656483472
           },
-          "terrain_elevation_m": 336.84738515199996,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.9336483472,
+          "clearance_m": 0.031999999999982265,
+          "in_contact": false,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.36,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.8970147511703
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.858043608,
-          "clearance_m": 0.03897114317027217,
-          "in_contact": false,
+          "terrain_elevation_m": 336.8662646032,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -5899,154 +5899,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6622208840431132,
+            "position_rad": -1.1644949032554996,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.5989827190364538,
+            "position_rad": 0.7544378548269421,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.490076770120735,
+            "position_rad": -0.6172673357674981,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.5533149351273943,
+            "position_rad": 0.8,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.7379419989880354,
+            "position_rad": -0.6356087066742032,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.7503211174257753,
+            "position_rad": 0.6153528659967336,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.6138990960756343,
+            "position_rad": -0.5034705267246001,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.6015199776378943,
+            "position_rad": 0.5237263674020698,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0.15588457268119896,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0.04330127018922194,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0.034641016151377546,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0.08660254037844388,
+            "position_rad": 0,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0.02598076211353316,
+            "position_rad": 0,
             "status": "kinematic-phase"
           }
         ],
@@ -6057,33 +6057,33 @@
         "time_s": 2.9000000000000004,
         "body_position": {
           "x": 0.34800000000000003,
-          "y": 0.04,
-          "z": 337.5630766764
+          "y": -0.04,
+          "z": 337.5786773772
         },
-        "support_phase": "left-support",
+        "support_phase": "right-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.28,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.90689515117026
           },
-          "terrain_elevation_m": 336.84738515199996,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.867924008,
+          "clearance_m": 0.03897114317027217,
+          "in_contact": false,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.43999999999999995,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.848938632
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.816938632,
-          "clearance_m": 0.031999999999982265,
-          "in_contact": false,
+          "terrain_elevation_m": 336.8662646032,
+          "clearance_m": 0,
+          "in_contact": true,
           "local_grade": 0.5138121999999997,
           "status": "terrain-grade-review"
         },
@@ -6106,154 +6106,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.6991299147380617,
+            "position_rad": -0.8875517746278013,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.614278534406586,
+            "position_rad": 0.7218680480319504,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5025915281508431,
+            "position_rad": -0.5906193120261412,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.5874429084823188,
+            "position_rad": 0.7563030386219921,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.4934681833220318,
+            "position_rad": -0.6735690961183218,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.6244815213120957,
+            "position_rad": 0.6319210968400069,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.5109394265280782,
+            "position_rad": -0.5170263519600056,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.37992608853801435,
+            "position_rad": 0.5586743512383205,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": -2.2043642384652358e-17,
+            "position_rad": 0.15588457268119893,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": -6.123233995736766e-18,
+            "position_rad": 0.04330127018922193,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": -4.898587196589413e-18,
+            "position_rad": 0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": -1.2246467991473533e-17,
+            "position_rad": 0.08660254037844387,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": -3.673940397442059e-18,
+            "position_rad": 0.025980762113533156,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 2.2043642384652358e-17,
+            "position_rad": -0.15588457268119893,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 6.123233995736766e-18,
+            "position_rad": -0.04330127018922193,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 4.898587196589413e-18,
+            "position_rad": -0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 1.2246467991473533e-17,
+            "position_rad": -0.08660254037844387,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 3.673940397442059e-18,
+            "position_rad": -0.025980762113533156,
             "status": "kinematic-phase"
           }
         ],
@@ -6264,31 +6264,31 @@
         "time_s": 3,
         "body_position": {
           "x": 0.36,
-          "y": 0.04,
-          "z": 337.556912148
+          "y": -0.04,
+          "z": 337.572510804
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "right-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.40800000000000003,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.84117081197024
           },
-          "terrain_elevation_m": 336.84738515199996,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.8021996688,
+          "clearance_m": 0.03897114317027217,
+          "in_contact": false,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.43999999999999995,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.816938632
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.816938632,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -6313,154 +6313,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.7352728586325454,
+            "position_rad": -0.5279372029513683,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.09999999999999998,
+            "position_rad": 0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6283585082601159,
+            "position_rad": 0.5768531129054014,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5141115067582765,
+            "position_rad": -0.471970728740783,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.04499999999999999,
+            "position_rad": -0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6210258571307061,
+            "position_rad": 0.42305481878674983,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.44085529611073654,
+            "position_rad": -0.7108080933796543,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.1,
+            "position_rad": 0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5427617036103309,
+            "position_rad": 0.6472720973460655,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.4440777574993616,
+            "position_rad": -0.5295862614649627,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.045000000000000005,
+            "position_rad": -0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.3421713499997672,
+            "position_rad": 0.5931222574985515,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 0.15588457268119896,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 0.04330127018922194,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 0.08660254037844388,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 0.02598076211353316,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -0.15588457268119896,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -0.04330127018922194,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -0.034641016151377546,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -0.08660254037844388,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -0.02598076211353316,
             "status": "kinematic-phase"
           }
         ],
@@ -6471,31 +6471,31 @@
         "time_s": 3.1,
         "body_position": {
           "x": 0.372,
-          "y": 0.03168,
-          "z": 337.5528407195232
+          "y": -0.04,
+          "z": 337.56634423080004
         },
-        "support_phase": "double-support-right-transfer",
+        "support_phase": "right-support",
         "left_foot": {
           "foot_id": "left-foot",
           "position": {
-            "x": 0.32,
+            "x": 0.536,
             "y": 0.08,
-            "z": 336.84738515199996
+            "z": 336.76847532959994
           },
-          "terrain_elevation_m": 336.84738515199996,
-          "clearance_m": 0,
-          "in_contact": true,
+          "terrain_elevation_m": 336.73647532959995,
+          "clearance_m": 0.031999999999982265,
+          "in_contact": false,
           "local_grade": 0.5134713999999998,
           "status": "terrain-grade-review"
         },
         "right_foot": {
           "foot_id": "right-foot",
           "position": {
-            "x": 0.43999999999999995,
+            "x": 0.34400000000000003,
             "y": -0.08,
-            "z": 336.816938632
+            "z": 336.8662646032
           },
-          "terrain_elevation_m": 336.816938632,
+          "terrain_elevation_m": 336.8662646032,
           "clearance_m": 0,
           "in_contact": true,
           "local_grade": 0.5138121999999997,
@@ -6520,154 +6520,154 @@
             "joint_name": "leg_l1_joint",
             "role": "hip-pitch",
             "side": "left",
-            "position_rad": -0.7640926343052586,
+            "position_rad": 0.010578310705233601,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l2_joint",
             "role": "hip-roll",
             "side": "left",
-            "position_rad": -0.07919999999999999,
+            "position_rad": 0.1,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l3_joint",
             "role": "knee-upper",
             "side": "left",
-            "position_rad": 0.6349927300097548,
+            "position_rad": 0.19363760013284348,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l4_joint",
             "role": "knee-lower",
             "side": "left",
-            "position_rad": -0.5195395063716175,
+            "position_rad": -0.15843076374505374,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l5_joint",
             "role": "ankle-roll",
             "side": "left",
-            "position_rad": 0.03564,
+            "position_rad": -0.045000000000000005,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_l6_joint",
             "role": "ankle-pitch",
             "side": "left",
-            "position_rad": 0.6486394106671214,
+            "position_rad": -0.04578514709302334,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r1_joint",
             "role": "hip-pitch",
             "side": "right",
-            "position_rad": -0.4767881348287775,
+            "position_rad": -0.7473641017529986,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r2_joint",
             "role": "hip-roll",
             "side": "right",
-            "position_rad": -0.07919999999999999,
+            "position_rad": 0.09999999999999998,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r3_joint",
             "role": "knee-upper",
             "side": "right",
-            "position_rad": 0.5593290768056115,
+            "position_rad": 0.6614610651015028,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r4_joint",
             "role": "knee-lower",
             "side": "right",
-            "position_rad": -0.457632881022773,
+            "position_rad": -0.5411954169012295,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r5_joint",
             "role": "ankle-roll",
             "side": "right",
-            "position_rad": 0.03564,
+            "position_rad": -0.04499999999999999,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "leg_r6_joint",
             "role": "ankle-pitch",
             "side": "right",
-            "position_rad": 0.375091939045939,
+            "position_rad": 0.6270984535527253,
             "status": "urdf-leg-ik"
           },
           {
             "joint_name": "arm_l1_joint",
             "role": "shoulder-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 2.2043642384652358e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l2_joint",
             "role": "shoulder-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 6.123233995736766e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l3_joint",
             "role": "elbow-yaw",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 4.898587196589413e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l4_joint",
             "role": "elbow-pitch",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 1.2246467991473533e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_l5_joint",
             "role": "wrist-roll",
             "side": "left",
-            "position_rad": 0,
+            "position_rad": 3.673940397442059e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r1_joint",
             "role": "shoulder-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -2.2043642384652358e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r2_joint",
             "role": "shoulder-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -6.123233995736766e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r3_joint",
             "role": "elbow-yaw",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -4.898587196589413e-18,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r4_joint",
             "role": "elbow-pitch",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -1.2246467991473533e-17,
             "status": "kinematic-phase"
           },
           {
             "joint_name": "arm_r5_joint",
             "role": "wrist-roll",
             "side": "right",
-            "position_rad": 0,
+            "position_rad": -3.673940397442059e-18,
             "status": "kinematic-phase"
           }
         ],

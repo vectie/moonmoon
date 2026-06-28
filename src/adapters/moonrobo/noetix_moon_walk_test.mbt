@@ -7,8 +7,8 @@ fn nearly_equal_double(a : Double, b : Double) -> Bool {
 
 ///|
 test "noetix endless moon walk advances in one direction" {
-  let trace = first_trusted_square_noetix_walk_trace(frame_count=24)
-  assert_eq(trace.frame_count, 24)
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=32)
+  assert_eq(trace.frame_count, 32)
   assert_eq(trace.robot.robot_id, "noetix-e1-lab-01")
   assert_eq(trace.config.terrain_source_id, trace.terrain_tile_id)
   assert_eq(trace.config.heading_rad, 0.0)
@@ -22,7 +22,7 @@ test "noetix endless moon walk advances in one direction" {
     trace.frames[23].body_position.x > trace.frames[0].body_position.x,
   )
   assert_eq(trace.frames[0].support_phase, "double-support-left-transfer")
-  assert_eq(trace.frames[10].support_phase, "double-support-right-transfer")
+  assert_eq(trace.frames[16].support_phase, "double-support-right-transfer")
 }
 
 ///|
@@ -72,13 +72,13 @@ test "noetix moon walk shifts body over support foot" {
   assert_true(trace.config.double_support_frames > 0)
   assert_true(trace.frames[0].left_foot.in_contact)
   assert_true(trace.frames[0].right_foot.in_contact)
-  assert_true(trace.frames[5].body_position.y > 0.0)
-  assert_true(trace.frames[10].left_foot.in_contact)
-  assert_true(trace.frames[10].right_foot.in_contact)
-  assert_true(trace.frames[15].body_position.y < 0.0)
+  assert_true(trace.frames[8].body_position.y > 0.0)
+  assert_true(trace.frames[11].left_foot.in_contact)
+  assert_true(trace.frames[11].right_foot.in_contact)
+  assert_eq(trace.frames[12].support_phase, "left-support")
   assert_true(
     nearly_equal_double(
-      trace.frames[5].body_position.y,
+      trace.frames[11].body_position.y,
       trace.config.support_lateral_shift_m,
     ),
   )
@@ -86,25 +86,26 @@ test "noetix moon walk shifts body over support foot" {
 
 ///|
 test "noetix endless moon walk alternates contact feet" {
-  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=32)
   assert_true(trace.frames[0].left_foot.in_contact)
   assert_true(trace.frames[0].right_foot.in_contact)
-  assert_true(!trace.frames[6].right_foot.in_contact)
-  assert_true(trace.frames[10].left_foot.in_contact)
-  assert_true(trace.frames[10].right_foot.in_contact)
+  assert_true(!trace.frames[12].right_foot.in_contact)
+  assert_true(trace.frames[16].left_foot.in_contact)
+  assert_true(trace.frames[16].right_foot.in_contact)
+  assert_true(!trace.frames[28].left_foot.in_contact)
 }
 
 ///|
 test "noetix support feet stay planted while in contact" {
-  let trace = first_trusted_square_noetix_walk_trace(frame_count=24)
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=32)
   let left_plant = trace.frames[0].left_foot.position
-  for index in 0..<10 {
+  for index in 0..<16 {
     assert_true(trace.frames[index].left_foot.in_contact)
     let delta = trace.frames[index].left_foot.position.sub(left_plant)
     assert_true(delta.length_squared() < 0.000000000001)
   }
-  let right_plant = trace.frames[10].right_foot.position
-  for index in 10..<20 {
+  let right_plant = trace.frames[16].right_foot.position
+  for index in 16..<32 {
     assert_true(trace.frames[index].right_foot.in_contact)
     let delta = trace.frames[index].right_foot.position.sub(right_plant)
     assert_true(delta.length_squared() < 0.000000000001)
@@ -367,11 +368,16 @@ test "noetix dynamic stability report uses capture point evidence" {
   assert_eq(report.profile.robot_id, trace.robot.robot_id)
   assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(report.review_frame_count > 0)
-  assert_true(report.worst_capture_margin_m < 0.0)
+  assert_true(report.worst_capture_margin_m > 0.0)
   assert_eq(report.status, "dynamic-stability-review")
   assert_true(report.note.contains("no controller"))
   assert_true(
-    report.frames.any(fn(frame) { frame.status == "capture-point-review" }),
+    report.frames.all(fn(frame) {
+      frame.capture_point_assessment.status == "capture-point-inside-support"
+    }),
+  )
+  assert_true(
+    report.frames.any(fn(frame) { frame.status == "terrain-contact-review" }),
   )
   assert_true(
     report.frames[0].capture_point_assessment.capture_point.x >
@@ -497,8 +503,9 @@ test "noetix joint control report replays gait phases through moonphys" {
       "world-replay-review",
     ),
   )
-  assert_true(!report.hinge_motor_world_trace.world_review_ready)
-  assert_eq(report.hinge_motor_world_trace.world_review_blocker_count, 1)
+  assert_true(report.hinge_motor_world_trace.world_review_ready)
+  assert_eq(report.hinge_motor_world_trace.world_review_blocker_count, 0)
+  assert_eq(report.hinge_motor_world_trace.world_review_blockers.length(), 0)
   assert_true(
     !report.hinge_motor_world_trace.world_review_blockers.contains(
       "world-envelope-review",
@@ -510,7 +517,7 @@ test "noetix joint control report replays gait phases through moonphys" {
     ),
   )
   assert_true(
-    report.hinge_motor_world_trace.world_review_blockers.contains(
+    !report.hinge_motor_world_trace.world_review_blockers.contains(
       "world-dynamic-support-review",
     ),
   )

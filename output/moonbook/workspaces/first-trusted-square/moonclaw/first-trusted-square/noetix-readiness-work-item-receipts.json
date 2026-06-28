@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.57,
     "path": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts.json",
-    "summary": "4 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
+    "summary": "3 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
   },
   "payload": {
     "receipts": [
@@ -251,97 +251,6 @@
       },
       {
         "receipt": {
-          "receipt_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay/receipt",
-          "proposal_id": "moonclaw/first-trusted-square/noetix-review-task",
-          "status": "Accepted",
-          "accepted_outputs": [
-            "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
-            "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
-            "output/moonrobo/first_trusted_square_noetix_control.json"
-          ],
-          "validation_notes": [
-            "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-            "blocker-accounting-preserved: pass - work item world-replay preserves 1 named blockers",
-            "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
-            "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
-            "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for world-replay",
-            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
-            "fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json passes"
-          ]
-        },
-        "site_id": "first-trusted-square",
-        "robot_id": "noetix-e1-lab-01",
-        "source_work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay",
-        "source_decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
-        "source_work_item_state": "NeedsReview",
-        "may_consume_simulation": false,
-        "may_consume_moonrobo_simulation": false,
-        "simulation_state": "SimulationBlocked",
-        "result_state": "NoetixReadinessWorkItemsCarriedForward",
-        "work_item_result": {
-          "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay",
-          "rank": 3,
-          "robot_id": "noetix-e1-lab-01",
-          "blocker_domain": "world-replay",
-          "blocker_count": 1,
-          "blocker_ids": [
-            "world-dynamic-support-review"
-          ],
-          "required_evidence": "Moonphys world replay review with envelope, support, and dynamic-support blockers cleared",
-          "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
-          "command": "moon run cmd/main -- moonrobo noetix control json",
-          "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
-          "status": "NoetixReadinessWorkItemPendingEvidence",
-          "evidence_path": "output/moonrobo/first_trusted_square_noetix_control.json",
-          "current_state": "Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.",
-          "next_action": "Improve motor-driven Moonphys world replay evidence until the named replay blockers clear, then regenerate MoonClaw review artifacts."
-        },
-        "validation_checks": [
-          {
-            "validation_id": "source-work-item-needs-review",
-            "passed": true,
-            "note": "receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision"
-          },
-          {
-            "validation_id": "blocker-accounting-preserved",
-            "passed": true,
-            "note": "work item world-replay preserves 1 named blockers"
-          },
-          {
-            "validation_id": "result-paths-present",
-            "passed": true,
-            "note": "Noetix readiness result carries required evidence, target, command, check, and evidence paths"
-          },
-          {
-            "validation_id": "readiness-decision-blocked",
-            "passed": true,
-            "note": "source decision remains blocked for MoonRobo simulation consumption"
-          },
-          {
-            "validation_id": "simulation-consumption-blocked",
-            "passed": true,
-            "note": "MoonRobo simulation consumption remains false for world-replay"
-          },
-          {
-            "validation_id": "hardware-denial-preserved",
-            "passed": true,
-            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
-          },
-          {
-            "validation_id": "fresh-evidence-still-pending",
-            "passed": true,
-            "note": "Noetix readiness work item remains pending until python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json passes"
-          }
-        ],
-        "hardware_state": "HardwareDenied",
-        "hardware_authority": "moonmoon-safety-gate-only",
-        "hardware_authority_change": false,
-        "hardware_denied": true,
-        "next_action": "Attach fresh Noetix evidence via moon run cmd/main -- moonrobo noetix control json, verify python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json, regenerate readiness work item receipts, and keep hardware denied."
-      },
-      {
-        "receipt": {
           "receipt_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts/receipt",
           "proposal_id": "moonclaw/first-trusted-square/noetix-review-task",
           "status": "Accepted",
@@ -540,30 +449,6 @@
         "hardware_denied": true,
         "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
         "next_action": "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
-      },
-      {
-        "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay",
-        "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
-        "site_id": "first-trusted-square",
-        "robot_id": "noetix-e1-lab-01",
-        "rank": 3,
-        "state": "NeedsReview",
-        "blocker_domain": "world-replay",
-        "blocker_count": 1,
-        "blocker_ids": [
-          "world-dynamic-support-review"
-        ],
-        "required_evidence": "Moonphys world replay review with envelope, support, and dynamic-support blockers cleared",
-        "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_control.json",
-        "command": "moon run cmd/main -- moonrobo noetix control json",
-        "acceptance_check": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
-        "may_consume_moonrobo_simulation": false,
-        "hardware_state": "HardwareDenied",
-        "hardware_authority": "moonmoon-safety-gate-only",
-        "hardware_denied": true,
-        "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
-        "next_action": "Improve motor-driven Moonphys world replay evidence until the named replay blockers clear, then regenerate MoonClaw review artifacts."
       },
       {
         "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts",
@@ -840,14 +725,12 @@
       "dynamic_stability_review_frame_count": 32,
       "joint_control_review_frame_count": 32,
       "joint_control_world_support_review_frame_count": 0,
-      "joint_control_world_capture_review_frame_count": 6,
+      "joint_control_world_capture_review_frame_count": 0,
       "joint_control_max_support_recovery_shift_m": 0,
-      "joint_control_worst_capture_support_margin_m": -0.04446360775936132,
-      "joint_control_max_capture_recovery_shift_m": 0.04446360775936131,
-      "joint_control_world_replay_blocker_count": 1,
-      "joint_control_world_replay_blockers": [
-        "world-dynamic-support-review"
-      ],
+      "joint_control_worst_capture_support_margin_m": 0.0021231717435670205,
+      "joint_control_max_capture_recovery_shift_m": 0,
+      "joint_control_world_replay_blocker_count": 0,
+      "joint_control_world_replay_blockers": [],
       "inertial_collision_review_frame_count": 32,
       "ready_artifacts": [
         "noetix-source-model-audit",
@@ -892,7 +775,7 @@
       "source_inertial_collision_report_id": "moonrobo/noetix-e1/inertial-collision/first-trusted-square-northeast-stepout-lola",
       "source_link_pose_trace_id": "moonrobo/noetix-e1/link-poses/first-trusted-square-northeast-stepout-lola",
       "frame_count": 32,
-      "endless_gait_cycle_frames": 20,
+      "endless_gait_cycle_frames": 32,
       "source_model_collision_tag_count": 0,
       "source_model_inertial_tag_count": 0,
       "source_model_missing_collision_link_count": 25,
@@ -1132,14 +1015,12 @@
       "dynamic_stability_review_frame_count": 32,
       "joint_control_review_frame_count": 32,
       "joint_control_world_support_review_frame_count": 0,
-      "joint_control_world_capture_review_frame_count": 6,
+      "joint_control_world_capture_review_frame_count": 0,
       "joint_control_max_support_recovery_shift_m": 0,
-      "joint_control_worst_capture_support_margin_m": -0.04446360775936132,
-      "joint_control_max_capture_recovery_shift_m": 0.04446360775936131,
-      "joint_control_world_replay_blocker_count": 1,
-      "joint_control_world_replay_blockers": [
-        "world-dynamic-support-review"
-      ],
+      "joint_control_worst_capture_support_margin_m": 0.0021231717435670205,
+      "joint_control_max_capture_recovery_shift_m": 0,
+      "joint_control_world_replay_blocker_count": 0,
+      "joint_control_world_replay_blockers": [],
       "inertial_collision_review_frame_count": 32,
       "link_pose_count_per_frame": 25,
       "walk_command_segment_count": 3,
@@ -1234,7 +1115,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_endless_gait.json",
           "producer": "moon run cmd/main -- moonrobo noetix endless json",
           "required_state": "Moonrobo evidence that the finite Noetix trace prefix is a window over an endless one-direction gait",
-          "current_state": "cycle 20 frames; frame 0 repeats at 20; forward offset 0.24 m; status endless-gait-window-verified",
+          "current_state": "cycle 32 frames; frame 0 repeats at 32; forward offset 0.384 m; status endless-gait-window-verified",
           "ready": true,
           "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_endless_gait.py output/moonrobo/first_trusted_square_noetix_endless_gait.json"
@@ -1274,7 +1155,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_stability.json",
           "producer": "moon run cmd/main -- moonrobo noetix stability json",
           "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
-          "current_state": "32/32 frames require support review; worst planar margin 0.0049999999999999975 m; status static-support-review",
+          "current_state": "32/32 frames require support review; worst planar margin 0.004999999999999998 m; status static-support-review",
           "ready": false,
           "blocking_reason": "static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
@@ -1284,7 +1165,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
           "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
           "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
-          "current_state": "32/32 frames require capture-point review; worst capture margin -0.04446360775936132 m; status dynamic-stability-review",
+          "current_state": "32/32 frames require dynamic review; capture-stable frames 32; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review",
           "ready": false,
           "blocking_reason": "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
@@ -1294,7 +1175,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 24; support-review frames 0; capture-review frames 6; max support recovery shift 0 m; worst capture support margin -0.04446360775936132 m; max capture recovery shift 0.04446360775936131 m; world replay blockers 1; resolved world hinges 1463; body samples 825; max world speed 1.4838116787271107 m/s; max world energy 1.6732897944244947 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 56; center-of-mass target frames 32; heightfield motor contacts 41; support-review frames 0; capture-review frames 0; max support recovery shift 0 m; worst capture support margin 0.0021231717435670205 m; max capture recovery shift 0 m; world replay blockers 0; resolved world hinges 1400; body samples 825; max world speed 2.974277324316787 m/s; max world energy 6.723207457478219 J; envelope world-trace-envelope-bounded; world review world-replay-review-ready; max power 40.50000000000002 W; absolute work 130.134946778545 J; status joint-control-assumption-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
