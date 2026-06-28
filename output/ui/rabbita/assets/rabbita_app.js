@@ -287,6 +287,11 @@ function noetixLinkMap(poseFrame) {
   return new Map((poseFrame.links || []).map(link => [link.link_name, link]));
 }
 
+function noetixLinkPoint(poseFrame, linkName) {
+  const link = noetixLinkMap(poseFrame).get(linkName);
+  return link ? link.world_position : null;
+}
+
 function noetixPointBounds(frames, poseFrames) {
   const points = frames.flatMap(frame => [
     frame.body_position,
@@ -321,6 +326,14 @@ function noetixPath(frames, pointForFrame, project) {
     const point = project(pointForFrame(frame));
     return `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
   }).join(' ');
+}
+
+function noetixRootMotionPoint(frame, firstFrame) {
+  return {
+    x: frame.body_position.x,
+    y: frame.body_position.y,
+    z: firstFrame.body_position.z
+  };
 }
 
 function noetixLoopLabel() {
@@ -451,14 +464,93 @@ function noetixRigVisuals(poseFrame, project) {
     });
 }
 
+function noetixFootDiagnosticMarkers(frame, poseFrame, project) {
+  const specs = [
+    {
+      side: 'left',
+      linkName: 'left_foot',
+      foot: frame.left_foot,
+      locked: Boolean(frame.left_foot_locked)
+    },
+    {
+      side: 'right',
+      linkName: 'right_foot',
+      foot: frame.right_foot,
+      locked: Boolean(frame.right_foot_locked)
+    }
+  ];
+  const nodes = [];
+  for (const spec of specs) {
+    const target = project(spec.foot.position);
+    const fkWorld = noetixLinkPoint(poseFrame, spec.linkName);
+    const fk = fkWorld ? project(fkWorld) : null;
+    const statusClass = noetixStatusClass(spec.foot.status);
+    nodes.push(svgEl('circle', {
+      class: `noetix-authored-foot-target noetix-${spec.side}-target noetix-status-${statusClass}`,
+      cx: target.x.toFixed(2),
+      cy: target.y.toFixed(2),
+      r: '9',
+      'data-rig-role': 'walk-clip-authored-foot-target',
+      'data-target-source': 'noetix-walk-clip',
+      'data-foot-side': spec.side,
+      'data-link-name': spec.linkName,
+      'data-gait-phase': frame.gait_phase || '',
+      'data-foot-locked': String(spec.locked)
+    }));
+    nodes.push(svgEl('circle', {
+      class: spec.locked
+        ? `noetix-lock-marker noetix-${spec.side}-lock`
+        : `noetix-swing-marker noetix-${spec.side}-swing`,
+      cx: target.x.toFixed(2),
+      cy: target.y.toFixed(2),
+      r: spec.locked ? '3.8' : '3.2',
+      'data-rig-role': spec.locked ? 'walk-clip-foot-lock' : 'walk-clip-swing-foot',
+      'data-foot-side': spec.side,
+      'data-link-name': spec.linkName,
+      'data-gait-phase': frame.gait_phase || ''
+    }));
+    if (fk) {
+      nodes.push(svgEl('line', {
+        class: `noetix-fk-contact-delta noetix-${spec.side}-delta`,
+        x1: fk.x.toFixed(2),
+        y1: fk.y.toFixed(2),
+        x2: target.x.toFixed(2),
+        y2: target.y.toFixed(2),
+        'data-rig-role': 'fk-contact-delta',
+        'data-foot-side': spec.side,
+        'data-link-name': spec.linkName,
+        'data-diagnostic': 'fk-endpoint-to-contact-probe'
+      }));
+      nodes.push(svgEl('circle', {
+        class: `noetix-fk-foot-endpoint noetix-${spec.side}-fk`,
+        cx: fk.x.toFixed(2),
+        cy: fk.y.toFixed(2),
+        r: '4.2',
+        'data-rig-role': 'fk-foot-endpoint',
+        'data-foot-side': spec.side,
+        'data-link-name': spec.linkName,
+        'data-pose-authority': 'urdf-fk-link-transform'
+      }));
+    }
+  }
+  return nodes;
+}
+
 function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   const body = project(frame.body_position);
   const left = project(frame.left_foot.position);
   const right = project(frame.right_foot.position);
-  const supportFoot = frame.support_phase === 'left-support' ? left : right;
+  const supportFoot = frame.left_foot_locked
+    ? left
+    : frame.right_foot_locked
+      ? right
+      : frame.support_phase === 'left-support'
+        ? left
+        : right;
   const rigVisuals = noetixRigVisuals(poseFrame, project);
   const debugSegments = noetixDebugLinkSegments(poseFrame, project);
   const debugJoints = noetixDebugLinkJoints(poseFrame, project);
+  const diagnosticMarkers = noetixFootDiagnosticMarkers(frame, poseFrame, project);
   const canvas = el('canvas', {
     className: 'noetix-rig-canvas',
     width: '840',
@@ -473,13 +565,23 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
     class: 'noetix-stage-overlay',
     viewBox: '0 0 420 170',
     role: 'img',
-    'aria-label': `Noetix frame ${frame.frame_index} ${frame.support_phase} overlay`
+    'aria-label': `Noetix frame ${frame.frame_index} ${frame.support_phase} ${frame.gait_phase || ''} overlay`,
+    'data-gait-phase': frame.gait_phase || '',
+    'data-support-phase': frame.support_phase,
+    'data-root-motion-forward-m': String(frame.root_motion_forward_m ?? '')
   }, [
     svgEl('rect', { class: 'noetix-stage-bg', x: '0', y: '0', width: '420', height: '170' }),
     svgEl('line', { class: 'noetix-ground', x1: '28', y1: '138', x2: '392', y2: '138' }),
     svgEl('polyline', {
       class: 'noetix-body-path',
       points: noetixPath(frames, item => item.body_position, project)
+    }),
+    svgEl('polyline', {
+      class: 'noetix-root-motion-path',
+      points: noetixPath(frames, item => noetixRootMotionPoint(item, frames[0]), project),
+      'data-rig-layer': 'locomotion-root-motion',
+      'data-root-motion-cycle-stride-m': String(frame.root_motion_cycle_stride_m ?? ''),
+      'data-root-motion-forward-m': String(frame.root_motion_forward_m ?? '')
     }),
     svgEl('polyline', {
       class: 'noetix-foot-path noetix-left-path',
@@ -494,6 +596,11 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
       ...debugSegments,
       ...debugJoints
     ]),
+    svgEl('g', {
+      class: 'noetix-locomotion-diagnostics',
+      'data-rig-layer': 'locomotion-diagnostics',
+      'data-diagnostic-source': 'walk-clip-plus-urdf-fk'
+    }, diagnosticMarkers),
     svgEl('g', { class: 'noetix-contact-annotations', 'data-rig-layer': 'review-annotations' }, [
       svgEl('circle', {
         class: `noetix-foot noetix-foot-left noetix-status-${noetixStatusClass(frame.left_foot.status)}`,
@@ -501,6 +608,9 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
         cy: left.y.toFixed(2),
         r: frame.left_foot.in_contact ? '7' : '5',
         'data-rig-role': 'review-contact-annotation',
+        'data-probe-source': 'moonphys-heightfield-contact-probe',
+        'data-foot-locked': String(Boolean(frame.left_foot_locked)),
+        'data-gait-phase': frame.gait_phase || '',
         'data-link-name': 'left_foot'
       }),
       svgEl('circle', {
@@ -509,6 +619,9 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
         cy: right.y.toFixed(2),
         r: frame.right_foot.in_contact ? '7' : '5',
         'data-rig-role': 'review-contact-annotation',
+        'data-probe-source': 'moonphys-heightfield-contact-probe',
+        'data-foot-locked': String(Boolean(frame.right_foot_locked)),
+        'data-gait-phase': frame.gait_phase || '',
         'data-link-name': 'right_foot'
       }),
       svgEl('circle', {
@@ -534,7 +647,10 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   const stage = el('div', {
     className: 'noetix-stage',
     'data-viewer-kind': 'webgl-rig-with-canvas-fallback-and-svg-overlay',
-    'data-render-source': 'robot-rig-visual-instances'
+    'data-render-source': 'robot-rig-visual-instances',
+    'data-motion-source': 'noetix-walk-clip',
+    'data-gait-phase': frame.gait_phase || '',
+    'data-support-phase': frame.support_phase
   }, [canvas, svg]);
   document.getElementById('noetix-walk-viewer').replaceChildren(stage);
   if (window.RabbitaNoetixRig && window.RabbitaNoetixRig.draw) {
@@ -605,11 +721,15 @@ function renderNoetixWalkFacts(frame, poseFrame) {
   const primitiveCount = noetixLinkPoseTrace.primitive_visual_geometry_link_count ?? Math.max(0, visualCount - meshCount);
   const facts = [
     ['phase', frame.support_phase],
+    ['gait phase', frame.gait_phase || 'walk-clip-review'],
     ['time', `${frame.time_s.toFixed(2)} s`],
     ['body x', `${frame.body_position.x.toFixed(3)} m`],
+    ['root motion', `${(frame.root_motion_forward_m ?? 0).toFixed(3)} / ${(frame.root_motion_cycle_stride_m ?? 0).toFixed(3)} m`],
+    ['foot locks', `left ${frame.left_foot_locked ? 'locked' : 'swing'}, right ${frame.right_foot_locked ? 'locked' : 'swing'}`],
     ['endless loop', noetixLoopLabel()],
     ['left foot', `${frame.left_foot.status}, ${frame.left_foot.clearance_m.toFixed(3)} m`],
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
+    ['diagnostics', 'walk target, FK foot endpoint, Moonphys contact probe'],
     ['joints', `${jointCount} phases, URDF walk clip`],
     ['links', `${linkCount} URDF-reference poses`],
     ['pose authority', 'FK link transforms, contact annotations'],

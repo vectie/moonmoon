@@ -184,6 +184,7 @@ pub fn render_html(
     $|      <div id="noetix-walk-viewer" class="noetix-viewer"></div>
     $|      <div id="noetix-walk-controls" class="noetix-controls" aria-label="Noetix trace frame controls"></div>
     $|      <div id="noetix-walk-facts" class="noetix-facts"></div>
+    $|      <div id="noetix-walk-diagnostics-contract" hidden data-motion-source="noetix-walk-clip" data-diagnostic-fields="gait-phase root-motion foot-lock authored-foot-target fk-foot-endpoint contact-probe fk-contact-delta"></div>
     $|      <div id="noetix-simulation-gates" class="noetix-gates" aria-label="Noetix simulation gates"></div>
     $|    </section>
     $|  </section>
