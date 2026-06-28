@@ -43,8 +43,8 @@ the bundled Codex runtime used during generation, two consecutive rebuilds
 produced identical SHA-256 hashes:
 
 ```text
-b1981e738efa1444241431af784702352f3c932d5c148ece1e2afc49848cbe48  output/pdf/moonsuite_exhibition_profile.pdf
-70fa983e4e9777e04f4e6c9ee3883e40b3afa03463817956d9e9d74a5ca4f140  output/pdf/moonsuite_display_generated_20x30cm_300dpi-6.png
+960a32e13745862108ef46f28959db355298b45e51b624c3e66865e901e682e4  output/pdf/moonsuite_exhibition_profile.pdf
+84a13b7f63b7d95d2afa5fe2774e261ebbb8866a5e133877c4d834e6838d4b6a  output/pdf/moonsuite_display_generated_20x30cm_300dpi-6.png
 ```
 
 ## Image Generation Provenance

@@ -98,6 +98,16 @@ styles.add(
 )
 styles.add(
     ParagraphStyle(
+        name="DisplaySub",
+        fontName=FONT,
+        fontSize=14,
+        leading=20,
+        textColor=colors.HexColor("#DDE8F8"),
+        alignment=TA_LEFT,
+    )
+)
+styles.add(
+    ParagraphStyle(
         name="CenterSmall",
         fontName=FONT,
         fontSize=8.5,
@@ -490,28 +500,28 @@ def draw_display_page(c):
     c.setFillAlpha(1)
 
     c.setFillColor(colors.white)
-    c.setFont(FONT, 25)
+    c.setFont(FONT, 34)
     c.drawString(15 * mm, h - 35 * mm, "MoonSuite")
-    c.setFont(FONT, 15)
+    c.setFont(FONT, 20)
     c.setFillColor(colors.HexColor("#DDE8F8"))
-    c.drawString(15 * mm, h - 50 * mm, "月栖智能体系统")
+    c.drawString(15 * mm, h - 53 * mm, "月栖智能体系统")
     para(
         c,
         "让智能体从数字世界走向真实世界，让地球上的人类安全地规划、监督、验证月球上的机器人工作。",
         15 * mm,
-        h - 66 * mm,
-        94 * mm,
-        "HeroSub",
+        h - 72 * mm,
+        112 * mm,
+        "DisplaySub",
     )
 
-    panel_x, panel_y = 16 * mm, 102 * mm
+    panel_x, panel_y = 16 * mm, 97 * mm
     c.setFillColor(COLORS["space"])
     c.setFillAlpha(0.82)
-    c.roundRect(panel_x, panel_y, 76 * mm, 86 * mm, 4 * mm, fill=1, stroke=0)
+    c.roundRect(panel_x, panel_y, 88 * mm, 94 * mm, 4 * mm, fill=1, stroke=0)
     c.setFillAlpha(1)
     c.setFillColor(colors.white)
-    c.setFont(FONT, 12)
-    c.drawString(panel_x + 7 * mm, panel_y + 70 * mm, "核心能力")
+    c.setFont(FONT, 16)
+    c.drawString(panel_x + 7 * mm, panel_y + 76 * mm, "核心能力")
     capabilities = [
         ("MoonMoon", "月球地形、光照、资源、风险建模"),
         ("MoonRobo", "机器人数字孪生、安全门控、执行证据"),
@@ -519,28 +529,28 @@ def draw_display_page(c):
         ("MoonClaw", "智能体运行、工具调用、报告生成"),
         ("MoonBook", "知识库、数据、评审、复盘"),
     ]
-    yy = panel_y + 58 * mm
+    yy = panel_y + 62 * mm
     for title, body in capabilities:
         c.setFillColor(COLORS["blue"])
         c.circle(panel_x + 8 * mm, yy + 1.5 * mm, 1.4 * mm, fill=1, stroke=0)
         c.setFillColor(colors.white)
-        c.setFont(FONT, 8.4)
+        c.setFont(FONT, 11)
         c.drawString(panel_x + 12 * mm, yy, title)
         c.setFillColor(colors.HexColor("#C7D6EA"))
-        c.setFont(FONT, 7.2)
-        c.drawString(panel_x + 12 * mm, yy - 5 * mm, body)
-        yy -= 12 * mm
+        c.setFont(FONT, 9.2)
+        c.drawString(panel_x + 12 * mm, yy - 6 * mm, body)
+        yy -= 13.6 * mm
 
     bottom_y = 22 * mm
     c.setFillColor(COLORS["space"])
     c.setFillAlpha(0.84)
-    c.roundRect(15 * mm, bottom_y, w - 30 * mm, 30 * mm, 4 * mm, fill=1, stroke=0)
+    c.roundRect(15 * mm, bottom_y, w - 30 * mm, 34 * mm, 4 * mm, fill=1, stroke=0)
     c.setFillAlpha(1)
     c.setFillColor(colors.white)
-    c.setFont(FONT, 10)
-    c.drawString(22 * mm, bottom_y + 19 * mm, "向量贴贴 Vectie")
+    c.setFont(FONT, 14)
+    c.drawString(22 * mm, bottom_y + 21 * mm, "向量贴贴 Vectie")
     c.setFillColor(colors.HexColor("#C7D6EA"))
-    c.setFont(FONT, 7.8)
+    c.setFont(FONT, 10.4)
     c.drawString(22 * mm, bottom_y + 10 * mm, "郭嘉安 / MoonSuite 发起人 / WeChat: vectie")
     c.showPage()
     c.setPageSize(A4)
