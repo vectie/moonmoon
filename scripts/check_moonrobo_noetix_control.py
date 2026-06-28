@@ -134,8 +134,12 @@ def main() -> None:
         fail("hinge motor world trace envelope should expose COM speed")
     if "min_support_margin_m" not in hinge_motor_world_trace:
         fail("hinge motor world trace should expose support margin")
+    if hinge_motor_world_trace.get("max_support_recovery_shift_m", -1) < 0:
+        fail("hinge motor world trace should expose support recovery shift")
     if "worst_capture_support_margin_m" not in hinge_motor_world_trace:
         fail("hinge motor world trace should expose capture support margin")
+    if hinge_motor_world_trace.get("max_capture_recovery_shift_m", -1) < 0:
+        fail("hinge motor world trace should expose capture recovery shift")
     if hinge_motor_world_trace.get("max_center_of_pressure_error_m", -1) < 0:
         fail("hinge motor world trace should expose center-of-pressure error")
     if hinge_motor_world_trace.get("max_body_linear_momentum_kg_mps", -1) < 0:

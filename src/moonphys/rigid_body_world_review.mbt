@@ -27,10 +27,12 @@ pub(all) struct RigidBodyWorldReplayReview {
   stable_support_frame_count : Int
   support_review_frame_count : Int
   min_support_margin_m : Double
+  max_support_recovery_shift_m : Double
   max_center_of_pressure_error_m : Double
   capture_stable_frame_count : Int
   capture_review_frame_count : Int
   worst_capture_margin_m : Double
+  max_capture_recovery_shift_m : Double
   ready : Bool
   blocker_count : Int
   blockers : Array[String]
@@ -113,10 +115,12 @@ pub fn rigid_body_world_replay_review(
     stable_support_frame_count: support.stable_frame_count,
     support_review_frame_count: support.review_frame_count,
     min_support_margin_m: support.min_planar_margin_m,
+    max_support_recovery_shift_m: support.max_support_recovery_shift_m,
     max_center_of_pressure_error_m: support.max_center_of_pressure_error_m,
     capture_stable_frame_count: dynamic_support.capture_stable_frame_count,
     capture_review_frame_count: dynamic_support.review_frame_count,
     worst_capture_margin_m: dynamic_support.worst_capture_margin_m,
+    max_capture_recovery_shift_m: dynamic_support.max_capture_recovery_shift_m,
     ready: blockers.is_empty(),
     blocker_count: blockers.length(),
     blockers,

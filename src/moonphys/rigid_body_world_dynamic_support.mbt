@@ -7,6 +7,7 @@ pub(all) struct RigidBodyWorldDynamicSupportFrame {
   center_of_mass : Vec3
   center_of_mass_velocity : Vec3
   capture_point_assessment : CapturePointAssessment
+  capture_support_recovery : SupportRecoveryCorrection
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -19,6 +20,7 @@ pub(all) struct RigidBodyWorldDynamicSupportTrace {
   capture_stable_frame_count : Int
   review_frame_count : Int
   worst_capture_margin_m : Double
+  max_capture_recovery_shift_m : Double
   frames : Array[RigidBodyWorldDynamicSupportFrame]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -61,6 +63,10 @@ pub fn rigid_body_world_dynamic_support_frame(
     velocity,
     support_frame.footprints,
   )
+  let recovery = support_recovery_correction(
+    assessment.capture_point,
+    support_frame.footprints,
+  )
   {
     frame_index: step.frame_index,
     time_s: step.time_s,
@@ -69,6 +75,7 @@ pub fn rigid_body_world_dynamic_support_frame(
     center_of_mass: center,
     center_of_mass_velocity: velocity,
     capture_point_assessment: assessment,
+    capture_support_recovery: recovery,
     status: rigid_body_world_dynamic_support_frame_status(assessment),
   }
 }
@@ -84,6 +91,7 @@ fn rigid_body_world_dynamic_support_trace_from_frames(
   let mut stable_count = 0
   let mut review_count = 0
   let mut worst_margin = 0.0
+  let mut max_recovery_shift = 0.0
   for index, step in steps {
     let frame = rigid_body_world_dynamic_support_frame(step)
     contact_count += frame.contact_count
@@ -96,6 +104,9 @@ fn rigid_body_world_dynamic_support_trace_from_frames(
       frame.capture_point_assessment.capture_margin_m < worst_margin {
       worst_margin = frame.capture_point_assessment.capture_margin_m
     }
+    if frame.capture_support_recovery.required_shift_m > max_recovery_shift {
+      max_recovery_shift = frame.capture_support_recovery.required_shift_m
+    }
     frames.push(frame)
   }
   {
@@ -106,6 +117,7 @@ fn rigid_body_world_dynamic_support_trace_from_frames(
     capture_stable_frame_count: stable_count,
     review_frame_count: review_count,
     worst_capture_margin_m: worst_margin,
+    max_capture_recovery_shift_m: max_recovery_shift,
     frames,
     status: rigid_body_world_dynamic_support_trace_status(
       frames.length(),

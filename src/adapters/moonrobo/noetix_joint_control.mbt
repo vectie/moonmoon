@@ -67,7 +67,9 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   max_center_of_mass : @moonphys.Vec3
   max_center_of_mass_speed_mps : Double
   min_support_margin_m : Double
+  max_support_recovery_shift_m : Double
   worst_capture_support_margin_m : Double
+  max_capture_recovery_shift_m : Double
   max_center_of_pressure_error_m : Double
   max_body_linear_momentum_kg_mps : Double
   max_world_linear_momentum_kg_mps : Double
@@ -335,7 +337,9 @@ fn noetix_hinge_motor_world_trace_evidence(
     max_center_of_mass: review.max_center_of_mass,
     max_center_of_mass_speed_mps: review.max_center_of_mass_speed_mps,
     min_support_margin_m: review.min_support_margin_m,
+    max_support_recovery_shift_m: review.max_support_recovery_shift_m,
     worst_capture_support_margin_m: review.worst_capture_margin_m,
+    max_capture_recovery_shift_m: review.max_capture_recovery_shift_m,
     max_center_of_pressure_error_m: review.max_center_of_pressure_error_m,
     max_body_linear_momentum_kg_mps: review.max_body_linear_momentum_kg_mps,
     max_world_linear_momentum_kg_mps: review.max_world_linear_momentum_kg_mps,
@@ -561,7 +565,9 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor world trace center of mass x: \{report.hinge_motor_world_trace.final_center_of_mass.x} m\n"
   text += "- hinge motor world trace max center-of-mass speed: \{report.hinge_motor_world_trace.max_center_of_mass_speed_mps} m/s\n"
   text += "- hinge motor world trace min support margin: \{report.hinge_motor_world_trace.min_support_margin_m} m\n"
+  text += "- hinge motor world trace max support recovery shift: \{report.hinge_motor_world_trace.max_support_recovery_shift_m} m\n"
   text += "- hinge motor world trace worst capture support margin: \{report.hinge_motor_world_trace.worst_capture_support_margin_m} m\n"
+  text += "- hinge motor world trace max capture recovery shift: \{report.hinge_motor_world_trace.max_capture_recovery_shift_m} m\n"
   text += "- hinge motor world trace max center-of-pressure error: \{report.hinge_motor_world_trace.max_center_of_pressure_error_m} m\n"
   text += "- hinge motor world trace max body momentum: \{report.hinge_motor_world_trace.max_body_linear_momentum_kg_mps} kg*m/s\n"
   text += "- hinge motor world trace max world momentum: \{report.hinge_motor_world_trace.max_world_linear_momentum_kg_mps} kg*m/s\n"

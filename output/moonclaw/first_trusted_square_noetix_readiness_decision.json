@@ -246,7 +246,9 @@
   "joint_control_review_frame_count": 32,
   "joint_control_world_support_review_frame_count": 11,
   "joint_control_world_capture_review_frame_count": 32,
+  "joint_control_max_support_recovery_shift_m": 0.13966170306727652,
   "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
+  "joint_control_max_capture_recovery_shift_m": 1.9992123000807385,
   "joint_control_world_replay_blocker_count": 2,
   "joint_control_world_replay_blockers": [
     "world-support-review",

@@ -1194,6 +1194,7 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   assert_true(support_trace.support_frame_count == 2)
   assert_true(support_trace.stable_frame_count >= 0)
   assert_true(support_trace.min_planar_margin_m <= 1.0)
+  assert_true(support_trace.max_support_recovery_shift_m >= 0.0)
   assert_true(support_trace.max_center_of_pressure_error_m >= 0.0)
   assert_true(support_trace.status.contains("world-support-trace"))
   let dynamic_support_trace = rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(
@@ -1209,6 +1210,7 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
     dynamic_support_trace.frame_count,
   )
   assert_true(dynamic_support_trace.worst_capture_margin_m <= 1.0)
+  assert_true(dynamic_support_trace.max_capture_recovery_shift_m >= 0.0)
   assert_true(
     dynamic_support_trace.status.contains("world-dynamic-support-trace"),
   )
@@ -1224,6 +1226,14 @@ test "rigid body heightfield world hinge motor trace couples drive and contact" 
   )
   assert_true(review.max_position.x >= envelope.max_position.x)
   assert_true(review.max_world_linear_momentum_kg_mps >= 0.0)
+  assert_eq(
+    review.max_support_recovery_shift_m,
+    support_trace.max_support_recovery_shift_m,
+  )
+  assert_eq(
+    review.max_capture_recovery_shift_m,
+    dynamic_support_trace.max_capture_recovery_shift_m,
+  )
   assert_eq(review.ready, review.blocker_count == 0)
   assert_eq(review.blocker_count, review.blockers.length())
   assert_true(review.status.contains("world-replay-review"))
@@ -2278,6 +2288,32 @@ test "support assessment flags projection outside support" {
   assert_true(!assessment.stable)
   assert_true(assessment.planar_margin_m < 0.0)
   assert_eq(assessment.status, "outside-support")
+}
+
+///|
+test "support recovery correction targets nearest support boundary" {
+  let correction = support_recovery_correction(vec3(0.0, 0.0, 1.0), [
+    support_footprint("left", vec3(0.0, 0.2, 0.0), 0.2, 0.05),
+  ])
+  assert_true(!correction.stable_without_shift)
+  assert_true(correction.recoverable)
+  assert_eq(correction.status, "support-recovery-shift-required")
+  assert_true(nearly_equal(correction.target_point.x, 0.0))
+  assert_true(nearly_equal(correction.target_point.y, 0.15))
+  assert_true(nearly_equal(correction.required_shift.y, 0.15))
+  assert_true(nearly_equal(correction.required_shift_m, 0.15))
+  assert_true(correction.recovered_margin_m >= 0.0)
+}
+
+///|
+test "support recovery correction is idle for stable support" {
+  let correction = support_recovery_correction(vec3(0.0, 0.0, 1.0), [
+    support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+  ])
+  assert_true(correction.stable_without_shift)
+  assert_true(correction.recoverable)
+  assert_eq(correction.status, "support-recovery-not-needed")
+  assert_true(nearly_equal(correction.required_shift_m, 0.0))
 }
 
 ///|

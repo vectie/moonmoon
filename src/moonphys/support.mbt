@@ -25,6 +25,19 @@ pub(all) struct SupportAssessment {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SupportRecoveryCorrection {
+  support_count : Int
+  source_point : Vec3
+  target_point : Vec3
+  required_shift : Vec3
+  required_shift_m : Double
+  recovered_margin_m : Double
+  stable_without_shift : Bool
+  recoverable : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct SupportLoad {
   footprint_id : String
   contact_point : Vec3
@@ -337,6 +350,126 @@ fn support_lerp(a : Vec3, b : Vec3, t : Double) -> Vec3 {
 ///|
 fn support_planar_distance(a : Vec3, b : Vec3) -> Double {
   support_point_distance_squared(a, b).sqrt()
+}
+
+///|
+fn support_polygon_centroid(polygon : Array[Vec3], fallback : Vec3) -> Vec3 {
+  if polygon.is_empty() {
+    fallback
+  } else {
+    let mut center = vec3(0.0, 0.0, 0.0)
+    for point in polygon {
+      center = center.add(point)
+    }
+    center.scale(1.0 / polygon.length().to_double())
+  }
+}
+
+///|
+fn support_closest_polygon_point(point : Vec3, polygon : Array[Vec3]) -> Vec3 {
+  if polygon.is_empty() {
+    point
+  } else if polygon.length() == 1 {
+    polygon[0]
+  } else {
+    let mut closest = polygon[0]
+    let mut best_distance = support_planar_distance(point, closest)
+    for index, a in polygon {
+      let b = polygon[(index + 1) % polygon.length()]
+      let candidate = support_lerp(a, b, support_segment_parameter(point, a, b))
+      let distance = support_planar_distance(point, candidate)
+      if distance < best_distance {
+        best_distance = distance
+        closest = candidate
+      }
+    }
+    closest
+  }
+}
+
+///|
+fn support_shift_status(
+  assessment : SupportAssessment,
+  recoverable : Bool,
+  shift_m : Double,
+) -> String {
+  if assessment.support_count <= 0 {
+    "support-recovery-no-support"
+  } else if assessment.stable {
+    "support-recovery-not-needed"
+  } else if !recoverable {
+    "support-recovery-unavailable"
+  } else if shift_m <= 0.000001 {
+    "support-recovery-boundary"
+  } else {
+    "support-recovery-shift-required"
+  }
+}
+
+///|
+pub fn support_recovery_correction(
+  point : Vec3,
+  footprints : Array[SupportFootprint],
+  inward_margin_m? : Double = 0.0,
+) -> SupportRecoveryCorrection {
+  let assessment = support_assessment(point, footprints)
+  if assessment.support_count <= 0 {
+    {
+      support_count: 0,
+      source_point: point,
+      target_point: point,
+      required_shift: vec3(0.0, 0.0, 0.0),
+      required_shift_m: 0.0,
+      recovered_margin_m: assessment.planar_margin_m,
+      stable_without_shift: false,
+      recoverable: false,
+      status: support_shift_status(assessment, false, 0.0),
+    }
+  } else if assessment.stable {
+    {
+      support_count: assessment.support_count,
+      source_point: point,
+      target_point: point,
+      required_shift: vec3(0.0, 0.0, 0.0),
+      required_shift_m: 0.0,
+      recovered_margin_m: assessment.planar_margin_m,
+      stable_without_shift: true,
+      recoverable: true,
+      status: support_shift_status(assessment, true, 0.0),
+    }
+  } else {
+    let polygon = assessment.support_polygon_vertices
+    let boundary = support_closest_polygon_point(point, polygon)
+    let centroid = support_polygon_centroid(polygon, boundary)
+    let boundary_at_source_z = vec3(boundary.x, boundary.y, point.z)
+    let centroid_at_source_z = vec3(centroid.x, centroid.y, point.z)
+    let boundary_to_centroid = support_planar_distance(
+      boundary_at_source_z, centroid_at_source_z,
+    )
+    let inward_t = if inward_margin_m > 0.0 && boundary_to_centroid > 0.0 {
+      clamp_unit(inward_margin_m / boundary_to_centroid)
+    } else {
+      0.0
+    }
+    let target = support_lerp(
+      boundary_at_source_z, centroid_at_source_z, inward_t,
+    )
+    let shift = target.sub(point)
+    let shift_m = support_planar_distance(point, target)
+    let recovered = support_assessment(target, footprints)
+    let recoverable = recovered.stable || recovered.planar_margin_m >= 0.0
+    {
+      support_count: assessment.support_count,
+      source_point: point,
+      target_point: target,
+      required_shift: shift,
+      required_shift_m: shift_m,
+      recovered_margin_m: recovered.planar_margin_m,
+      stable_without_shift: false,
+      recoverable,
+      status: support_shift_status(assessment, recoverable, shift_m),
+    }
+  }
 }
 
 ///|

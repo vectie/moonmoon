@@ -100,8 +100,12 @@ def main() -> None:
     ]:
         if decision.get(field, 0) <= 0:
             fail(f"{field} must be explicit")
+    if decision.get("joint_control_max_support_recovery_shift_m", -1) < 0:
+        fail("joint control max support recovery shift must be explicit")
     if decision.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
         fail("joint control worst capture support margin must remain a blocker")
+    if decision.get("joint_control_max_capture_recovery_shift_m", -1) < 0:
+        fail("joint control max capture recovery shift must be explicit")
     if decision.get("joint_control_world_replay_blocker_count") != 2:
         fail("joint control world replay blockers should contain support and dynamic-support blockers")
     replay_blockers = decision.get("joint_control_world_replay_blockers")

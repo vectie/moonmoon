@@ -8,6 +8,7 @@ pub(all) struct RigidBodyWorldSupportFrame {
   center_of_mass : Vec3
   footprints : Array[SupportFootprint]
   support : SupportAssessment
+  recovery : SupportRecoveryCorrection
   load : SupportLoadAssessment
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -22,6 +23,7 @@ pub(all) struct RigidBodyWorldSupportTrace {
   stable_frame_count : Int
   review_frame_count : Int
   min_planar_margin_m : Double
+  max_support_recovery_shift_m : Double
   max_center_of_pressure_error_m : Double
   frames : Array[RigidBodyWorldSupportFrame]
   status : String
@@ -86,6 +88,7 @@ pub fn rigid_body_world_support_frame(
   }
   let center = rigid_body_world_center_of_mass(step.after)
   let support = support_assessment(center, footprints)
+  let recovery = support_recovery_correction(center, footprints)
   let total_mass = rigid_body_world_total_mass(step.after)
   let load = support_load_assessment(
     center,
@@ -101,6 +104,7 @@ pub fn rigid_body_world_support_frame(
     center_of_mass: center,
     footprints,
     support,
+    recovery,
     load,
     status: rigid_body_world_support_frame_status(support, load),
   }
@@ -116,6 +120,7 @@ fn rigid_body_world_support_trace_from_frames(
   let mut contact_count = 0
   let mut stable_count = 0
   let mut review_count = 0
+  let mut max_recovery_shift = 0.0
   let mut max_center_error = 0.0
   let mut min_margin = 0.0
   let mut has_margin = false
@@ -132,6 +137,9 @@ fn rigid_body_world_support_trace_from_frames(
       min_margin = frame.support.planar_margin_m
       has_margin = true
     }
+    if frame.recovery.required_shift_m > max_recovery_shift {
+      max_recovery_shift = frame.recovery.required_shift_m
+    }
     if frame.load.center_of_pressure_error_m > max_center_error {
       max_center_error = frame.load.center_of_pressure_error_m
     }
@@ -146,6 +154,7 @@ fn rigid_body_world_support_trace_from_frames(
     stable_frame_count: stable_count,
     review_frame_count: review_count,
     min_planar_margin_m: min_margin,
+    max_support_recovery_shift_m: max_recovery_shift,
     max_center_of_pressure_error_m: max_center_error,
     frames,
     status: rigid_body_world_support_trace_status(frames.length(), review_count),

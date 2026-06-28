@@ -99,8 +99,12 @@ def main() -> None:
         fail("joint control world-support review blocker should be explicit")
     if task.get("joint_control_world_capture_review_frame_count", 0) <= 0:
         fail("joint control world-capture review blocker should be explicit")
+    if task.get("joint_control_max_support_recovery_shift_m", -1) < 0:
+        fail("joint control max support recovery shift should be explicit")
     if task.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
         fail("joint control worst capture support margin should remain a blocker")
+    if task.get("joint_control_max_capture_recovery_shift_m", -1) < 0:
+        fail("joint control max capture recovery shift should be explicit")
     if task.get("joint_control_world_replay_blocker_count") != 2:
         fail("joint control world replay blockers should contain support and dynamic-support blockers")
     replay_blockers = task.get("joint_control_world_replay_blockers")

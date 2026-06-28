@@ -1559,7 +1559,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.joint_control_review_frame_count > 0)
   assert_true(task.joint_control_world_support_review_frame_count > 0)
   assert_true(task.joint_control_world_capture_review_frame_count > 0)
+  assert_true(task.joint_control_max_support_recovery_shift_m >= 0.0)
   assert_true(task.joint_control_worst_capture_support_margin_m < 0.0)
+  assert_true(task.joint_control_max_capture_recovery_shift_m >= 0.0)
   assert_true(task.joint_control_world_replay_blocker_count > 0)
   assert_eq(
     task.joint_control_world_replay_blocker_count,
@@ -1759,7 +1761,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   )
   assert_true(decision.joint_control_world_support_review_frame_count > 0)
   assert_true(decision.joint_control_world_capture_review_frame_count > 0)
+  assert_true(decision.joint_control_max_support_recovery_shift_m >= 0.0)
   assert_true(decision.joint_control_worst_capture_support_margin_m < 0.0)
+  assert_true(decision.joint_control_max_capture_recovery_shift_m >= 0.0)
   assert_true(decision.joint_control_world_replay_blocker_count > 0)
   assert_eq(
     decision.joint_control_world_replay_blocker_count,

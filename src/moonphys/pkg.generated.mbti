@@ -217,6 +217,8 @@ pub fn support_footprint(String, Vec3, Double, Double, active? : Bool) -> Suppor
 
 pub fn support_load_assessment(Vec3, Array[SupportFootprint], Double) -> SupportLoadAssessment
 
+pub fn support_recovery_correction(Vec3, Array[SupportFootprint], inward_margin_m? : Double) -> SupportRecoveryCorrection
+
 pub fn surface_traction_assessment(String, MaterialContactModel, Vec3, Vec3) -> TractionAssessment
 
 pub fn traction_assessment(String, MaterialContactModel, Double, Double) -> TractionAssessment
@@ -946,6 +948,7 @@ pub(all) struct RigidBodyWorldDynamicSupportFrame {
   center_of_mass : Vec3
   center_of_mass_velocity : Vec3
   capture_point_assessment : CapturePointAssessment
+  capture_support_recovery : SupportRecoveryCorrection
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -957,6 +960,7 @@ pub(all) struct RigidBodyWorldDynamicSupportTrace {
   capture_stable_frame_count : Int
   review_frame_count : Int
   worst_capture_margin_m : Double
+  max_capture_recovery_shift_m : Double
   frames : Array[RigidBodyWorldDynamicSupportFrame]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -1085,10 +1089,12 @@ pub(all) struct RigidBodyWorldReplayReview {
   stable_support_frame_count : Int
   support_review_frame_count : Int
   min_support_margin_m : Double
+  max_support_recovery_shift_m : Double
   max_center_of_pressure_error_m : Double
   capture_stable_frame_count : Int
   capture_review_frame_count : Int
   worst_capture_margin_m : Double
+  max_capture_recovery_shift_m : Double
   ready : Bool
   blocker_count : Int
   blockers : Array[String]
@@ -1104,6 +1110,7 @@ pub(all) struct RigidBodyWorldSupportFrame {
   center_of_mass : Vec3
   footprints : Array[SupportFootprint]
   support : SupportAssessment
+  recovery : SupportRecoveryCorrection
   load : SupportLoadAssessment
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -1117,6 +1124,7 @@ pub(all) struct RigidBodyWorldSupportTrace {
   stable_frame_count : Int
   review_frame_count : Int
   min_planar_margin_m : Double
+  max_support_recovery_shift_m : Double
   max_center_of_pressure_error_m : Double
   frames : Array[RigidBodyWorldSupportFrame]
   status : String
@@ -1210,6 +1218,18 @@ pub(all) struct SupportLoadAssessment {
   max_load_fraction : Double
   loads : Array[SupportLoad]
   balanced : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SupportRecoveryCorrection {
+  support_count : Int
+  source_point : Vec3
+  target_point : Vec3
+  required_shift : Vec3
+  required_shift_m : Double
+  recovered_margin_m : Double
+  stable_without_shift : Bool
+  recoverable : Bool
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -603,7 +603,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
   joint_control_world_capture_review_frame_count : Int
+  joint_control_max_support_recovery_shift_m : Double
   joint_control_worst_capture_support_margin_m : Double
+  joint_control_max_capture_recovery_shift_m : Double
   joint_control_world_replay_blocker_count : Int
   joint_control_world_replay_blockers : Array[String]
   inertial_collision_review_frame_count : Int
@@ -1333,7 +1335,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
   joint_control_world_capture_review_frame_count : Int
+  joint_control_max_support_recovery_shift_m : Double
   joint_control_worst_capture_support_margin_m : Double
+  joint_control_max_capture_recovery_shift_m : Double
   joint_control_world_replay_blocker_count : Int
   joint_control_world_replay_blockers : Array[String]
   inertial_collision_review_frame_count : Int

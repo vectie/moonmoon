@@ -28,7 +28,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
   joint_control_world_capture_review_frame_count : Int
+  joint_control_max_support_recovery_shift_m : Double
   joint_control_worst_capture_support_margin_m : Double
+  joint_control_max_capture_recovery_shift_m : Double
   joint_control_world_replay_blocker_count : Int
   joint_control_world_replay_blockers : Array[String]
   inertial_collision_review_frame_count : Int
@@ -156,7 +158,9 @@ pub fn noetix_simulation_readiness_decision(
     joint_control_review_frame_count: task.joint_control_review_frame_count,
     joint_control_world_support_review_frame_count: task.joint_control_world_support_review_frame_count,
     joint_control_world_capture_review_frame_count: task.joint_control_world_capture_review_frame_count,
+    joint_control_max_support_recovery_shift_m: task.joint_control_max_support_recovery_shift_m,
     joint_control_worst_capture_support_margin_m: task.joint_control_worst_capture_support_margin_m,
+    joint_control_max_capture_recovery_shift_m: task.joint_control_max_capture_recovery_shift_m,
     joint_control_world_replay_blocker_count: task.joint_control_world_replay_blocker_count,
     joint_control_world_replay_blockers: task.joint_control_world_replay_blockers,
     inertial_collision_review_frame_count: task.inertial_collision_review_frame_count,
@@ -214,7 +218,9 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   text += "- joint-control review frames: \{decision.joint_control_review_frame_count}\n"
   text += "- joint-control world-support review frames: \{decision.joint_control_world_support_review_frame_count}\n"
   text += "- joint-control world-capture review frames: \{decision.joint_control_world_capture_review_frame_count}\n"
+  text += "- joint-control max support recovery shift: \{decision.joint_control_max_support_recovery_shift_m} m\n"
   text += "- joint-control worst capture support margin: \{decision.joint_control_worst_capture_support_margin_m} m\n"
+  text += "- joint-control max capture recovery shift: \{decision.joint_control_max_capture_recovery_shift_m} m\n"
   text += "- joint-control world replay blockers: \{decision.joint_control_world_replay_blocker_count}\n"
   text += "- joint-control world replay blocker ids:\n"
   for blocker in decision.joint_control_world_replay_blockers {
