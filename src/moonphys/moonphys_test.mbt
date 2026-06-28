@@ -255,6 +255,78 @@ test "rigid body gravity integration uses semi implicit step" {
 }
 
 ///|
+test "rigid body world body targets update body and motion state" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let state = rigid_body_state(
+    "body",
+    4.0,
+    0.2,
+    vec3(0.0, 0.0, 1.0),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let motion = rigid_body_joint_frame_body(
+    rigid_body_motion_state(
+      "body",
+      4.0,
+      0.2,
+      state.position,
+      state.velocity,
+      identity_basis3(),
+      vec3(0.0, 0.0, 0.0),
+    ),
+    sphere_diagonal_inertia("body", 4.0, 0.2),
+  )
+  let world = rigid_body_heightfield_world(
+    "target-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [rigid_body_world_body(state)],
+    motion_bodies=[motion],
+  )
+  let target = rigid_body_world_body_target(
+    "body",
+    vec3(1.0, 0.0, 1.0),
+    vec3(2.0, 0.0, 0.0),
+    max_correction_m=2.0,
+  )
+  let frame = rigid_body_world_apply_body_targets(world, [target])
+  assert_eq(frame.status, "body-target-frame-applied")
+  assert_eq(frame.target_count, 1)
+  assert_eq(frame.applied_count, 1)
+  assert_eq(frame.review_count, 0)
+  assert_true(nearly_equal(frame.max_correction_m, 1.0))
+  assert_true(frame.after.bodies[0].state.position == target.target_position)
+  assert_true(frame.after.bodies[0].state.velocity == target.target_velocity)
+  assert_true(
+    frame.after.motion_bodies[0].state.linear == frame.after.bodies[0].state,
+  )
+}
+
+///|
+test "rigid body world body targets review missing body" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let world = rigid_body_heightfield_world(
+    "target-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [],
+  )
+  let frame = rigid_body_world_apply_body_targets(world, [
+    rigid_body_world_body_target(
+      "missing",
+      vec3(0.0, 0.0, 1.0),
+      vec3(0.0, 0.0, 0.0),
+    ),
+  ])
+  assert_eq(frame.status, "body-target-frame-review")
+  assert_eq(frame.applied_count, 0)
+  assert_eq(frame.review_count, 1)
+  assert_eq(frame.steps[0].status, "body-target-missing-body-review")
+}
+
+///|
 test "heightfield collision reports penetration and tangent speed" {
   let field = heightfield("test-field", 1, 1, 10.0, [1.0])
   let state = rigid_body_state(

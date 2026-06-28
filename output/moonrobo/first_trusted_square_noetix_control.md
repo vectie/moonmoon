@@ -16,27 +16,29 @@
 - hinge motor trace driven joints: 768
 - hinge motor trace status: world-hinge-motor-trace-driven
 - hinge motor world trace frames: 32
-- hinge motor world trace contacts: 231
-- hinge motor world trace support contacts: 231
-- hinge motor world trace stable support frames: 22
-- hinge motor world trace support-review frames: 11
-- hinge motor world trace capture-stable support frames: 0
-- hinge motor world trace capture-review support frames: 32
-- hinge motor world trace resolved hinges: 1512
+- hinge motor world trace body-target frames: 32
+- hinge motor world trace body targets: 800
+- hinge motor world trace contacts: 24
+- hinge motor world trace support contacts: 24
+- hinge motor world trace stable support frames: 0
+- hinge motor world trace support-review frames: 32
+- hinge motor world trace capture-stable support frames: 2
+- hinge motor world trace capture-review support frames: 30
+- hinge motor world trace resolved hinges: 1463
 - hinge motor world trace body samples: 825
-- hinge motor world trace max speed: 1.200259248875201 m/s
-- hinge motor world trace max kinetic energy: 1.094872921027951 J
+- hinge motor world trace max speed: 0.8806459254917214 m/s
+- hinge motor world trace max kinetic energy: 0.5894083070247296 J
 - hinge motor world trace total mass: 38.00000000000001 kg
-- hinge motor world trace center of mass x: 0.6607536951847462 m
-- hinge motor world trace max center-of-mass speed: 0.607715100314173 m/s
-- hinge motor world trace min support margin: -0.08407005686178391 m
-- hinge motor world trace max support recovery shift: 0.0840700568617839 m
-- hinge motor world trace worst capture support margin: -1.934598811021556 m
-- hinge motor world trace max capture recovery shift: 1.9959229138955459 m
-- hinge motor world trace max center-of-pressure error: 0.19506048615944802 m
-- hinge motor world trace max body momentum: 1.8243940582903058 kg*m/s
-- hinge motor world trace max world momentum: 23.093173811938577 kg*m/s
-- hinge motor world trace max frame energy delta: 1.5874167717125607 J
+- hinge motor world trace center of mass x: 0.47424662592412786 m
+- hinge motor world trace max center-of-mass speed: 0.2749262411962059 m/s
+- hinge motor world trace min support margin: -1 m
+- hinge motor world trace max support recovery shift: 0.07340840229791806 m
+- hinge motor world trace worst capture support margin: -1.5180092740208426 m
+- hinge motor world trace max capture recovery shift: 1.9009654311808473 m
+- hinge motor world trace max center-of-pressure error: 0.17387879416761737 m
+- hinge motor world trace max body momentum: 1.3385818067474164 kg*m/s
+- hinge motor world trace max world momentum: 10.447197165455826 kg*m/s
+- hinge motor world trace max frame energy delta: 4.1865838105950015 J
 - hinge motor world trace envelope: world-trace-envelope-bounded
 - hinge motor world trace review: world-replay-review-blocked
 - hinge motor world trace review blockers: 2
@@ -54,7 +56,7 @@
 - absolute joint work: 151.62707673085032 J
 - status: joint-control-assumption-review
 - hardware authority: moonmoon-safety-gate-only
-- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.
+- note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and target-driven hinge motor heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.
 
 ## Frame Joint Control
 

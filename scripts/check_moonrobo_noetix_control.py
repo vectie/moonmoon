@@ -56,8 +56,10 @@ def main() -> None:
         fail("report note must mention Moonphys world hinge motor replay")
     if "sequential world hinge motor trace" not in report.get("note", ""):
         fail("report note must mention Moonphys sequential hinge motor trace")
-    if "motor-driven heightfield world replay" not in report.get("note", ""):
-        fail("report note must mention Moonphys motor-driven heightfield replay")
+    if "target-driven hinge motor heightfield world replay" not in report.get(
+        "note", ""
+    ):
+        fail("report note must mention Moonphys target-driven heightfield replay")
     if report.get("hinge_joint_frame_count") != len(frames):
         fail("hinge joint frame count must match report frames")
     if report.get("hinge_joint_count_per_frame") != 24:
@@ -82,6 +84,10 @@ def main() -> None:
         fail("hinge motor world trace must replay every report frame")
     if hinge_motor_world_trace.get("motor_frame_count") != len(frames):
         fail("hinge motor world trace must consume every motor frame")
+    if hinge_motor_world_trace.get("body_target_frame_count") != len(frames):
+        fail("hinge motor world trace must consume every body-target frame")
+    if hinge_motor_world_trace.get("body_target_count") != 25 * len(frames):
+        fail("hinge motor world trace must target every Noetix body per frame")
     if hinge_motor_world_trace.get("driven_joint_count") != report.get(
         "hinge_motor_driven_joint_count"
     ):

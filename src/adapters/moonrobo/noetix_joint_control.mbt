@@ -44,6 +44,8 @@ pub(all) struct NoetixHingeMotorWorldTraceEvidence {
   trace_id : String
   frame_count : Int
   motor_frame_count : Int
+  body_target_frame_count : Int
+  body_target_count : Int
   driven_joint_count : Int
   contact_count : Int
   support_contact_count : Int
@@ -240,6 +242,50 @@ fn noetix_joint_motor_frames(
 }
 
 ///|
+fn noetix_world_body_targets_for_frame(
+  trace : NoetixMoonWalkTrace,
+  frame_index : Int,
+  profile : NoetixPhysicsProfile,
+) -> Array[@moonphys.RigidBodyWorldBodyTarget] {
+  let projection = noetix_hinge_projection_frame(trace, frame_index, profile)
+  let targets : Array[@moonphys.RigidBodyWorldBodyTarget] = []
+  for body in projection.world.bodies {
+    targets.push(
+      @moonphys.rigid_body_world_body_target(
+        body.state.body_id,
+        body.state.position,
+        body.state.velocity,
+        max_correction_m=10.0,
+      ),
+    )
+  }
+  targets
+}
+
+///|
+fn noetix_world_body_target_frames(
+  trace : NoetixMoonWalkTrace,
+  profile : NoetixPhysicsProfile,
+) -> Array[Array[@moonphys.RigidBodyWorldBodyTarget]] {
+  let frames : Array[Array[@moonphys.RigidBodyWorldBodyTarget]] = []
+  for index, _frame in trace.frames {
+    frames.push(noetix_world_body_targets_for_frame(trace, index, profile))
+  }
+  frames
+}
+
+///|
+fn noetix_body_target_count(
+  frames : Array[Array[@moonphys.RigidBodyWorldBodyTarget]],
+) -> Int {
+  let mut count = 0
+  for frame in frames {
+    count += frame.length()
+  }
+  count
+}
+
+///|
 fn noetix_joint_step_status(step : @moonphys.JointMotorFrameStep) -> String {
   if !step.position_within_limits || !step.velocity_within_limits {
     "joint-limit-review"
@@ -299,13 +345,15 @@ fn noetix_hinge_motor_world_trace_evidence(
   profile : NoetixPhysicsProfile,
 ) -> NoetixHingeMotorWorldTraceEvidence {
   let motor_frames = noetix_joint_motor_frames(trace, profile)
+  let body_target_frames = noetix_world_body_target_frames(trace, profile)
   let initial = noetix_hinge_projection_frame(trace, 0, profile)
-  let world_trace = @moonphys.rigid_body_heightfield_world_hinge_motor_trace(
+  let world_trace = @moonphys.rigid_body_heightfield_world_targeted_hinge_motor_trace(
     "noetix-e1/world-heightfield-hinge-motor-trace/\{trace.terrain_tile_id}",
     initial.world,
     first_trusted_square_noetix_heightfield(),
     motor_frames,
-    note="Noetix gait phases replayed through Moonphys motor-driven heightfield world replay",
+    body_target_frames,
+    note="Noetix gait phases replayed through Moonphys target-driven hinge motor heightfield world replay",
   )
   let review = @moonphys.rigid_body_heightfield_world_hinge_motor_replay_review(
     world_trace,
@@ -314,6 +362,8 @@ fn noetix_hinge_motor_world_trace_evidence(
     trace_id: world_trace.trace_id,
     frame_count: world_trace.frame_count,
     motor_frame_count: world_trace.motor_frame_count,
+    body_target_frame_count: body_target_frames.length(),
+    body_target_count: noetix_body_target_count(body_target_frames),
     driven_joint_count: world_trace.driven_joint_count,
     contact_count: world_trace.contact_count,
     support_contact_count: review.support_contact_count,
@@ -516,7 +566,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and target-driven hinge motor heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
   }
 }
 
@@ -551,6 +601,8 @@ pub fn render_noetix_joint_control_markdown(
   text += "- hinge motor trace driven joints: \{report.hinge_motor_trace.driven_joint_count}\n"
   text += "- hinge motor trace status: \{report.hinge_motor_trace.status}\n"
   text += "- hinge motor world trace frames: \{report.hinge_motor_world_trace.frame_count}\n"
+  text += "- hinge motor world trace body-target frames: \{report.hinge_motor_world_trace.body_target_frame_count}\n"
+  text += "- hinge motor world trace body targets: \{report.hinge_motor_world_trace.body_target_count}\n"
   text += "- hinge motor world trace contacts: \{report.hinge_motor_world_trace.contact_count}\n"
   text += "- hinge motor world trace support contacts: \{report.hinge_motor_world_trace.support_contact_count}\n"
   text += "- hinge motor world trace stable support frames: \{report.hinge_motor_world_trace.stable_support_frame_count}\n"

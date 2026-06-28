@@ -392,7 +392,9 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.note.contains("world hinge constraint replay"))
   assert_true(report.note.contains("world hinge motor replay"))
   assert_true(report.note.contains("sequential world hinge motor trace"))
-  assert_true(report.note.contains("motor-driven heightfield world replay"))
+  assert_true(
+    report.note.contains("target-driven hinge motor heightfield world replay"),
+  )
   assert_true(report.note.contains("servo gains"))
   assert_eq(report.hinge_joint_frame_count, 12)
   assert_eq(report.hinge_joint_count_per_frame, 24)
@@ -409,6 +411,8 @@ test "noetix joint control report replays gait phases through moonphys" {
   )
   assert_eq(report.hinge_motor_world_trace.frame_count, 12)
   assert_eq(report.hinge_motor_world_trace.motor_frame_count, 12)
+  assert_eq(report.hinge_motor_world_trace.body_target_frame_count, 12)
+  assert_eq(report.hinge_motor_world_trace.body_target_count, 25 * 12)
   assert_eq(
     report.hinge_motor_world_trace.driven_joint_count,
     report.hinge_motor_driven_joint_count,
