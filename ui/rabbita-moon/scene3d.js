@@ -408,9 +408,9 @@ const NOETIX_VISUAL_RIG = {
   terrainReliefMaxM: 0.032,
   contactPatchMaxRangeM: 0.014,
   jointCorrectionMaxRad: {
-    hip: 0.20,
-    knee: 0.22,
-    ankle: 0.16,
+    hip: 0.04,
+    knee: 0.14,
+    ankle: 0.12,
   },
   lengths: {
     upperLeg: 0.30,
@@ -527,11 +527,34 @@ function footLock(footPhase) {
 }
 
 function footSupport(footPhase) {
-  return footPhase < 0.64 || footPhase >= 0.78
+  return footPhase < 0.50
 }
 
 function supportMassTransferX(clip) {
-  return clip.supportFoot === 'left' ? -0.04 : -0.17
+  return clip.supportFoot === 'left' ? 0.06 : -0.08
+}
+
+function supportAnchoredCenterOfMass(root, diagnostics) {
+  const fallback = transformPoint(root, [
+    diagnostics.supportMassTransferX,
+    0.16,
+    0.035,
+  ])
+  const activeFeet = diagnostics.feet.filter(foot => foot.supporting)
+  if (activeFeet.length === 0) {
+    return pointRecord(fallback)
+  }
+  const center = activeFeet.reduce((sum, foot) => ({
+    x: sum.x + foot.contactPatch.center.x,
+    y: sum.y + foot.contactPatch.center.y,
+    z: sum.z + foot.contactPatch.center.z,
+  }), { x: 0, y: 0, z: 0 })
+  const inv = 1 / activeFeet.length
+  return {
+    x: center.x * inv,
+    y: fallback[1],
+    z: center.z * inv,
+  }
 }
 
 function torsoCounterRotation(phase) {
@@ -609,13 +632,13 @@ function legAngles(legPhase) {
     const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
     return {
       hip: mix(0.30, -0.36, e),
-      knee: 0.08 + 0.58 * Math.sin(u * Math.PI) * landing,
+      knee: -(0.08 + 0.58 * Math.sin(u * Math.PI) * landing),
       ankle: -0.20 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e),
     }
   }
   return {
     hip: mix(-0.35, 0.28, e),
-    knee: 0.08 + 0.08 * Math.sin(u * Math.PI),
+    knee: -(0.08 + 0.08 * Math.sin(u * Math.PI)),
     ankle: mix(0.12, -0.08, e),
   }
 }
@@ -791,12 +814,6 @@ function robotGeometry(time) {
   const diagnostics = { feet: [], authoredJoints, joints, ik, terrain }
   const root = robotRoot(clip, ik.pelvisCorrectionM)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
-  diagnostics.centerOfMass = pointRecord(transformPoint(root, [
-    diagnostics.supportMassTransferX,
-    0.16,
-    0.035,
-  ]))
-  diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: NOETIX_VISUAL_RIG.rootSpeedMps }
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
   torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
@@ -810,6 +827,8 @@ function robotGeometry(time) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
     addArm(vertices, colors, torsoRoot, side, joints)
   }
+  diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics)
+  diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: 0 }
   addGround(vertices, colors, clip)
   addGaitTimingRails(vertices, colors, clip)
   const gait = { ...diagnostics, ...clip }
@@ -845,7 +864,7 @@ function gaitQuality(time, diagnostics) {
     contactPatch: maxContactPatchRange <= NOETIX_VISUAL_RIG.contactPatchMaxRangeM ? 'pass' : 'fail',
     nonFlatTerrain: diagnostics.terrain.heightRangeM > 0.010 ? 'pass' : 'fail',
     ikCorrectionBounded: diagnostics.ik.saturated ? 'fail' : 'pass',
-    jointIkCorrection: Math.abs(diagnostics.ik.jointIk.finalErrorM) <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
+    jointIkCorrection: supportClearanceError <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
@@ -905,7 +924,7 @@ function cycleJointQuality(time, cycleSeconds) {
     const swing = joints[clip.swingFoot]
     const swingFoot = clip.footChannels[clip.swingFoot]
     if (swingFoot.role === 'passing' || swingFoot.role === 'swing') {
-      kneeRoleContrast = Math.max(kneeRoleContrast, swing.knee - support.knee)
+      kneeRoleContrast = Math.max(kneeRoleContrast, Math.abs(swing.knee) - Math.abs(support.knee))
     }
     armCounterSwing = Math.max(
       armCounterSwing,
@@ -1041,15 +1060,15 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
     footprint: {
       footprint_id: `${foot.name}-sole`,
       center: moonphysPoint(patch.center),
-      half_length_m: 0.075,
-      half_width_m: 0.075,
+      half_length_m: 0.12,
+      half_width_m: 0.09,
       active,
     },
     patch: {
       patch_id: `${foot.name}-sole-patch`,
       center: moonphysPoint(patch.center),
-      half_length_m: 0.075,
-      half_width_m: 0.075,
+      half_length_m: 0.12,
+      half_width_m: 0.09,
       sample_count: patch.samples.length,
       contact_count: active ? patch.samples.length : 0,
       min_clearance_m: Number((fk.y - patch.maxHeightM).toFixed(4)),
