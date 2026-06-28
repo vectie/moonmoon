@@ -81,6 +81,37 @@ pub(all) struct MotionFrameTraceReview {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct MotionHingeReplayReview {
+  review_id : String
+  motion_trace_id : String
+  hinge_trace_id : String
+  replay_trace_id : String
+  motion_frame_count : Int
+  hinge_frame_count : Int
+  frame_count_delta : Int
+  motion_contact_count : Int
+  hinge_contact_count : Int
+  driven_joint_count : Int
+  resolved_hinge_constraint_count : Int
+  motion_blocked_frame_count : Int
+  hinge_review_count : Int
+  replay_review_count : Int
+  max_motion_total_normal_force_n : Double
+  max_motion_contact_torque_nm : Double
+  max_motion_pressure_pa : Double
+  max_replay_speed_mps : Double
+  max_replay_kinetic_energy_j : Double
+  max_replay_world_linear_momentum_kg_mps : Double
+  motion_trace_status : String
+  hinge_trace_status : String
+  replay_status : String
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn motion_contact_evidence(
   contact_id : String,
   footprint : SupportFootprint,
@@ -240,6 +271,62 @@ fn motion_frame_trace_status(
     "motion-frame-trace-review-ready"
   } else {
     "motion-frame-trace-review-blocked"
+  }
+}
+
+///|
+fn motion_hinge_replay_prefixed_blocker(
+  prefix : String,
+  blocker : String,
+) -> String {
+  "\{prefix}:\{blocker}"
+}
+
+///|
+fn motion_hinge_replay_blockers(
+  motion_trace : MotionFrameTraceReview,
+  hinge_trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  replay : RigidBodyWorldReplayReview,
+) -> Array[String] {
+  let blockers : Array[String] = []
+  if !motion_trace.ready {
+    blockers.push("motion-trace:\{motion_trace.status}")
+    for blocker in motion_trace.blockers {
+      blockers.push(motion_hinge_replay_prefixed_blocker("motion", blocker))
+    }
+  }
+  if hinge_trace.status.contains("empty") ||
+    hinge_trace.status.contains("review") ||
+    hinge_trace.status.contains("truncated") {
+    blockers.push("hinge-trace:\{hinge_trace.status}")
+  }
+  if hinge_trace.driven_joint_count <= 0 {
+    blockers.push("hinge-trace:no-driven-joints")
+  }
+  if !replay.ready {
+    blockers.push("replay:\{replay.status}")
+    for blocker in replay.blockers {
+      blockers.push(motion_hinge_replay_prefixed_blocker("replay", blocker))
+    }
+  }
+  if motion_trace.frame_count != hinge_trace.frame_count {
+    blockers.push("frame-count-mismatch")
+  }
+  blockers
+}
+
+///|
+fn motion_hinge_replay_status(
+  motion_trace : MotionFrameTraceReview,
+  hinge_trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  blockers : Array[String],
+) -> String {
+  if motion_trace.frame_count == 0 || hinge_trace.frame_count == 0 {
+    "motion-hinge-replay-review-empty"
+  } else if !blockers.is_empty() {
+    "motion-hinge-replay-review-blocked"
+  } else {
+    "motion-hinge-replay-review-ready"
   }
 }
 
@@ -452,4 +539,73 @@ pub fn motion_frame_trace_review(
     ready: blockers.is_empty() && frames.length() > 0,
     status,
   }
+}
+
+///|
+fn motion_hinge_replay_review_from_replay(
+  review_id : String,
+  motion_trace : MotionFrameTraceReview,
+  hinge_trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  replay : RigidBodyWorldReplayReview,
+) -> MotionHingeReplayReview {
+  let blockers = motion_hinge_replay_blockers(motion_trace, hinge_trace, replay)
+  let frame_delta = motion_trace.frame_count - hinge_trace.frame_count
+  let status = motion_hinge_replay_status(motion_trace, hinge_trace, blockers)
+  {
+    review_id,
+    motion_trace_id: motion_trace.trace_id,
+    hinge_trace_id: hinge_trace.trace_id,
+    replay_trace_id: replay.trace_id,
+    motion_frame_count: motion_trace.frame_count,
+    hinge_frame_count: hinge_trace.frame_count,
+    frame_count_delta: frame_delta,
+    motion_contact_count: motion_trace.contact_count,
+    hinge_contact_count: hinge_trace.contact_count,
+    driven_joint_count: hinge_trace.driven_joint_count,
+    resolved_hinge_constraint_count: replay.resolved_hinge_constraint_count,
+    motion_blocked_frame_count: motion_trace.blocked_frame_count,
+    hinge_review_count: hinge_trace.review_count,
+    replay_review_count: replay.review_count,
+    max_motion_total_normal_force_n: motion_trace.max_total_normal_force_n,
+    max_motion_contact_torque_nm: motion_trace.max_contact_torque_nm,
+    max_motion_pressure_pa: motion_trace.max_pressure_pa,
+    max_replay_speed_mps: replay.max_speed_mps,
+    max_replay_kinetic_energy_j: replay.max_kinetic_energy_j,
+    max_replay_world_linear_momentum_kg_mps: replay.max_world_linear_momentum_kg_mps,
+    motion_trace_status: motion_trace.status,
+    hinge_trace_status: hinge_trace.status,
+    replay_status: replay.status,
+    blocker_count: blockers.length(),
+    blockers,
+    ready: blockers.is_empty() &&
+    motion_trace.frame_count > 0 &&
+    hinge_trace.frame_count > 0,
+    status,
+  }
+}
+
+///|
+pub fn motion_hinge_replay_review(
+  review_id : String,
+  motion_trace : MotionFrameTraceReview,
+  hinge_trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+) -> MotionHingeReplayReview {
+  motion_hinge_replay_review_from_replay(
+    review_id,
+    motion_trace,
+    hinge_trace,
+    rigid_body_heightfield_world_hinge_motor_replay_review(hinge_trace),
+  )
+}
+
+///|
+pub fn motion_hinge_replay_review_with_replay(
+  review_id : String,
+  motion_trace : MotionFrameTraceReview,
+  hinge_trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  replay : RigidBodyWorldReplayReview,
+) -> MotionHingeReplayReview {
+  motion_hinge_replay_review_from_replay(
+    review_id, motion_trace, hinge_trace, replay,
+  )
 }

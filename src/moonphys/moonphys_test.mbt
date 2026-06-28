@@ -2785,3 +2785,232 @@ test "motion frame trace review reports blocked frames" {
     trace.blockers.contains("frame:0:capture:capture-point-outside-support"),
   )
 }
+
+///|
+test "motion hinge replay review combines motion trace and targeted replay" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let material = material_contact_model("test", 0.8, 0.0)
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let motion_0 = motion_frame_review(
+    "motion-frame/0",
+    lunar_environment(),
+    material,
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.0, 0.0, 0.0),
+    [
+      motion_contact_evidence(
+        "left-contact",
+        support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+        patch,
+        vec3(0.0, 0.0, 80.0),
+      ),
+    ],
+  )
+  let motion_1 = motion_frame_review(
+    "motion-frame/1",
+    lunar_environment(),
+    material,
+    vec3(0.02, 0.0, 0.7),
+    vec3(0.0, 0.0, 0.0),
+    [
+      motion_contact_evidence(
+        "left-contact",
+        support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+        patch,
+        vec3(4.0, 0.0, 90.0),
+      ),
+    ],
+  )
+  let motion_trace = motion_frame_trace_review("motion-trace", [
+    motion_0, motion_1,
+  ])
+  let root_state = rigid_body_motion_state(
+    "root",
+    2.0,
+    0.1,
+    vec3(0.0, 0.0, 0.08),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let upper_state = rigid_body_motion_state(
+    "upper",
+    2.0,
+    0.1,
+    vec3(2.0, 0.0, 0.08),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [
+      rigid_body_world_body(root_state.linear),
+      rigid_body_world_body(upper_state.linear),
+    ],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        root_state,
+        rigid_body_inertia("root", vec3(2.0, 2.0, 2.0)),
+      ),
+      rigid_body_joint_frame_body(
+        upper_state,
+        rigid_body_inertia("upper", vec3(2.0, 2.0, 2.0)),
+      ),
+    ],
+    hinge_constraints=[
+      rigid_body_hinge_joint_constraint(
+        "shoulder",
+        "root",
+        "upper",
+        anchor_a_m=vec3(1.0, 0.0, 0.0),
+        anchor_b_m=vec3(0.0 - 1.0, 0.0, 0.0),
+        local_axis_a=vec3(0.0, 1.0, 0.0),
+        local_axis_b=vec3(0.0, 1.0, 0.0),
+      ),
+    ],
+  )
+  let motor_0 = integrate_joint_motor_frame(
+    "hinge-motor-frame/0",
+    [joint_motor_state("shoulder", 0.0, 0.0)],
+    [joint_motor_command("shoulder", 1.0, 0.0, 0.0)],
+    [joint_servo_config("shoulder", 2.0, 0.0)],
+    [joint_limit("shoulder", -2.0, 2.0, 4.0, 10.0)],
+    [2.0],
+    0.5,
+  )
+  let motor_1 = integrate_joint_motor_frame(
+    "hinge-motor-frame/1",
+    [joint_motor_state("shoulder", 0.25, 0.0)],
+    [joint_motor_command("shoulder", 1.0, 0.0, 0.0)],
+    [joint_servo_config("shoulder", 2.0, 0.0)],
+    [joint_limit("shoulder", -2.0, 2.0, 4.0, 10.0)],
+    [2.0],
+    0.5,
+  )
+  let hinge_trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "hinge-trace",
+    world,
+    field,
+    [motor_0, motor_1],
+    note="targeted motion ingestion replay",
+  )
+  let footprints = [
+    [support_footprint("support", vec3(1.0, 0.0, 0.0), 3.0, 3.0)],
+    [support_footprint("support", vec3(1.0, 0.0, 0.0), 3.0, 3.0)],
+  ]
+  let targets = [
+    rigid_body_world_center_of_mass_target(
+      vec3(1.0, 0.0, 0.08),
+      vec3(0.0, 0.0, 0.0),
+      total_mass_kg=4.0,
+      nominal_com_height_m=0.72,
+    ),
+    rigid_body_world_center_of_mass_target(
+      vec3(1.0, 0.0, 0.08),
+      vec3(0.0, 0.0, 0.0),
+      total_mass_kg=4.0,
+      nominal_com_height_m=0.72,
+    ),
+  ]
+  let replay = rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(
+    hinge_trace, footprints, targets,
+  )
+  let review = motion_hinge_replay_review_with_replay(
+    "motion-hinge-review", motion_trace, hinge_trace, replay,
+  )
+  assert_true(review.ready)
+  assert_eq(review.status, "motion-hinge-replay-review-ready")
+  assert_eq(review.motion_frame_count, 2)
+  assert_eq(review.hinge_frame_count, 2)
+  assert_eq(review.frame_count_delta, 0)
+  assert_eq(review.driven_joint_count, 2)
+  assert_true(review.resolved_hinge_constraint_count >= 2)
+  assert_eq(review.motion_trace_status, "motion-frame-trace-review-ready")
+  assert_eq(
+    review.hinge_trace_status,
+    "world-heightfield-hinge-motor-trace-driven",
+  )
+  assert_true(review.replay_status.contains("world-replay-review"))
+  assert_true(review.max_motion_total_normal_force_n >= 90.0)
+  assert_true(review.max_motion_contact_torque_nm >= 0.0)
+  assert_true(review.max_motion_pressure_pa > 0.0)
+  assert_true(review.max_replay_speed_mps >= 0.0)
+  assert_eq(review.blocker_count, 0)
+}
+
+///|
+test "motion hinge replay review blocks frame mismatches" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.0, 0.0, 0.0),
+    0.2,
+    0.1,
+  )
+  let motion_trace = motion_frame_trace_review("single-motion-trace", [
+    motion_frame_review(
+      "motion-frame/0",
+      lunar_environment(),
+      material_contact_model("test", 0.8, 0.0),
+      vec3(0.0, 0.0, 0.7),
+      vec3(0.0, 0.0, 0.0),
+      [
+        motion_contact_evidence(
+          "left-contact",
+          support_footprint("left", vec3(0.0, 0.0, 0.0), 0.2, 0.1),
+          patch,
+          vec3(0.0, 0.0, 80.0),
+        ),
+      ],
+    ),
+  ])
+  let body = rigid_body_motion_state(
+    "body",
+    1.0,
+    0.1,
+    vec3(0.0, 0.0, 0.2),
+    vec3(0.0, 0.0, 0.0),
+    identity_basis3(),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "idle-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [rigid_body_world_body(body.linear)],
+    motion_bodies=[
+      rigid_body_joint_frame_body(
+        body,
+        rigid_body_inertia("body", vec3(1.0, 1.0, 1.0)),
+      ),
+    ],
+  )
+  let idle = integrate_joint_motor_frame("idle", [], [], [], [], [], 0.1)
+  let hinge_trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "idle-hinge-trace",
+    world,
+    field,
+    [idle, idle],
+  )
+  let review = motion_hinge_replay_review(
+    "blocked-review", motion_trace, hinge_trace,
+  )
+  assert_true(!review.ready)
+  assert_eq(review.status, "motion-hinge-replay-review-blocked")
+  assert_eq(review.motion_frame_count, 1)
+  assert_eq(review.hinge_frame_count, 2)
+  assert_true(review.blockers.contains("frame-count-mismatch"))
+  assert_true(review.blockers.contains("hinge-trace:no-driven-joints"))
+}

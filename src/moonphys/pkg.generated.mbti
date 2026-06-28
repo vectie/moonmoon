@@ -113,6 +113,10 @@ pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec
 
 pub fn motion_frame_trace_review(String, Array[MotionFrameReview]) -> MotionFrameTraceReview
 
+pub fn motion_hinge_replay_review(String, MotionFrameTraceReview, RigidBodyHeightfieldWorldHingeMotorTrace) -> MotionHingeReplayReview
+
+pub fn motion_hinge_replay_review_with_replay(String, MotionFrameTraceReview, RigidBodyHeightfieldWorldHingeMotorTrace, RigidBodyWorldReplayReview) -> MotionHingeReplayReview
+
 pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
@@ -698,6 +702,36 @@ pub(all) struct MotionFrameTraceReview {
   min_support_margin_m : Double
   worst_capture_margin_m : Double
   max_center_of_pressure_error_m : Double
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MotionHingeReplayReview {
+  review_id : String
+  motion_trace_id : String
+  hinge_trace_id : String
+  replay_trace_id : String
+  motion_frame_count : Int
+  hinge_frame_count : Int
+  frame_count_delta : Int
+  motion_contact_count : Int
+  hinge_contact_count : Int
+  driven_joint_count : Int
+  resolved_hinge_constraint_count : Int
+  motion_blocked_frame_count : Int
+  hinge_review_count : Int
+  replay_review_count : Int
+  max_motion_total_normal_force_n : Double
+  max_motion_contact_torque_nm : Double
+  max_motion_pressure_pa : Double
+  max_replay_speed_mps : Double
+  max_replay_kinetic_energy_j : Double
+  max_replay_world_linear_momentum_kg_mps : Double
+  motion_trace_status : String
+  hinge_trace_status : String
+  replay_status : String
   blocker_count : Int
   blockers : Array[String]
   ready : Bool
