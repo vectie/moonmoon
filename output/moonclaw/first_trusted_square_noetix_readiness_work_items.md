@@ -104,9 +104,8 @@
   - robot: noetix-e1-lab-01
   - rank: 3
   - blocker domain: world-replay
-  - blockers: 3
+  - blockers: 2
   - blocker ids:
-    - world-envelope-review
     - world-support-review
     - world-dynamic-support-review
   - required evidence: Moonphys world replay review with envelope, support, and dynamic-support blockers cleared

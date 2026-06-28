@@ -79,10 +79,15 @@ def main() -> None:
     )
     require_item(
         item_by_domain(items, "world-replay"),
-        3,
-        "world-dynamic-support-review",
+        2,
+        "world-support-review",
         "check_moonrobo_noetix_control",
     )
+    world_replay = item_by_domain(items, "world-replay")
+    if "world-dynamic-support-review" not in world_replay.get("blocker_ids", []):
+        fail("world replay item must retain dynamic-support blocker")
+    if "world-envelope-review" in world_replay.get("blocker_ids", []):
+        fail("world replay item must not retain cleared envelope blocker")
     require_item(
         item_by_domain(items, "review-artifacts"),
         4,

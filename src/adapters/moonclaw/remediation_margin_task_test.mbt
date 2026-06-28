@@ -1846,7 +1846,8 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
   assert_true(
     items.any(fn(item) {
       item.blocker_domain == "world-replay" &&
-      item.blocker_count == 3 &&
+      item.blocker_count == 2 &&
+      item.blocker_ids.contains("world-support-review") &&
       item.blocker_ids.contains("world-dynamic-support-review") &&
       item.acceptance_check.contains("check_moonrobo_noetix_control")
     }),
@@ -1932,7 +1933,8 @@ test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
   assert_true(
     receipts.any(fn(receipt) {
       receipt.work_item_result.blocker_domain == "world-replay" &&
-      receipt.work_item_result.blocker_count == 3 &&
+      receipt.work_item_result.blocker_count == 2 &&
+      receipt.work_item_result.blocker_ids.contains("world-support-review") &&
       receipt.work_item_result.acceptance_check.contains(
         "check_moonrobo_noetix_control",
       )

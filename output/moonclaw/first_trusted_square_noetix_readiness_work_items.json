@@ -113,9 +113,8 @@
     "rank": 3,
     "state": "NeedsReview",
     "blocker_domain": "world-replay",
-    "blocker_count": 3,
+    "blocker_count": 2,
     "blocker_ids": [
-      "world-envelope-review",
       "world-support-review",
       "world-dynamic-support-review"
     ],

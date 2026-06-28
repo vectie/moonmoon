@@ -261,7 +261,7 @@
           ],
           "validation_notes": [
             "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-            "blocker-accounting-preserved: pass - work item world-replay preserves 3 named blockers",
+            "blocker-accounting-preserved: pass - work item world-replay preserves 2 named blockers",
             "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
             "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
             "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for world-replay",
@@ -284,9 +284,8 @@
           "rank": 3,
           "robot_id": "noetix-e1-lab-01",
           "blocker_domain": "world-replay",
-          "blocker_count": 3,
+          "blocker_count": 2,
           "blocker_ids": [
-            "world-envelope-review",
             "world-support-review",
             "world-dynamic-support-review"
           ],
@@ -308,7 +307,7 @@
           {
             "validation_id": "blocker-accounting-preserved",
             "passed": true,
-            "note": "work item world-replay preserves 3 named blockers"
+            "note": "work item world-replay preserves 2 named blockers"
           },
           {
             "validation_id": "result-paths-present",
@@ -552,9 +551,8 @@
         "rank": 3,
         "state": "NeedsReview",
         "blocker_domain": "world-replay",
-        "blocker_count": 3,
+        "blocker_count": 2,
         "blocker_ids": [
-          "world-envelope-review",
           "world-support-review",
           "world-dynamic-support-review"
         ],
@@ -846,9 +844,8 @@
       "joint_control_world_support_review_frame_count": 11,
       "joint_control_world_capture_review_frame_count": 32,
       "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
-      "joint_control_world_replay_blocker_count": 3,
+      "joint_control_world_replay_blocker_count": 2,
       "joint_control_world_replay_blockers": [
-        "world-envelope-review",
         "world-support-review",
         "world-dynamic-support-review"
       ],
@@ -1138,9 +1135,8 @@
       "joint_control_world_support_review_frame_count": 11,
       "joint_control_world_capture_review_frame_count": 32,
       "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
-      "joint_control_world_replay_blocker_count": 3,
+      "joint_control_world_replay_blocker_count": 2,
       "joint_control_world_replay_blockers": [
-        "world-envelope-review",
         "world-support-review",
         "world-dynamic-support-review"
       ],
@@ -1298,7 +1294,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 1; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; world replay blockers 3; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-review; world review world-replay-review-blocked; max power 44.24777191616341 W; absolute work 95.11007647969384 J; status joint-control-limit-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; worst capture support margin -1.9471892830999706 m; world replay blockers 2; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 40.50000000000002 W; absolute work 94.68436850627367 J; status joint-control-assumption-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"

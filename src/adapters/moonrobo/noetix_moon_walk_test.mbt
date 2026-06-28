@@ -445,13 +445,27 @@ test "noetix joint control report replays gait phases through moonphys" {
       "world-trace-envelope",
     ),
   )
+  assert_eq(
+    report.hinge_motor_world_trace.envelope_status,
+    "world-trace-envelope-bounded",
+  )
   assert_true(
     report.hinge_motor_world_trace.world_review_status.contains(
       "world-replay-review",
     ),
   )
   assert_true(!report.hinge_motor_world_trace.world_review_ready)
-  assert_true(report.hinge_motor_world_trace.world_review_blocker_count > 0)
+  assert_eq(report.hinge_motor_world_trace.world_review_blocker_count, 2)
+  assert_true(
+    !report.hinge_motor_world_trace.world_review_blockers.contains(
+      "world-envelope-review",
+    ),
+  )
+  assert_true(
+    report.hinge_motor_world_trace.world_review_blockers.contains(
+      "world-support-review",
+    ),
+  )
   assert_true(
     report.hinge_motor_world_trace.world_review_blockers.contains(
       "world-dynamic-support-review",
@@ -469,7 +483,7 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_true(report.max_hinge_motor_velocity_delta_rad_s >= 0.0)
   assert_true(report.hinge_linear_impulse_ns >= 0.0)
   assert_true(report.hinge_angular_impulse_nms >= 0.0)
-  assert_true(report.max_abs_velocity_rad_s >= 0.0)
+  assert_true(report.max_abs_velocity_rad_s <= 3.0)
   assert_true(report.max_abs_mechanical_power_w > 0.0)
   assert_true(report.total_absolute_work_j > 0.0)
   assert_true(report.frames[0].steps.length() == 24)
@@ -545,11 +559,13 @@ test "noetix joint control report preserves urdf limits" {
       step.motor_step.limit.max_velocity_rad_s == 2.0
     }),
   )
-  assert_eq(report.limit_review_frame_count, 1)
-  assert_eq(report.status, "joint-control-limit-review")
+  assert_eq(report.limit_review_frame_count, 0)
+  assert_eq(report.status, "joint-control-assumption-review")
   assert_true(
     report.frames[3].steps.any(fn(step) {
-      step.joint_name == "leg_r3_joint" && !step.velocity_within_limits
+      step.joint_name == "leg_r3_joint" &&
+      step.velocity_within_limits &&
+      step.target_velocity_rad_s == 3.0
     }),
   )
 }

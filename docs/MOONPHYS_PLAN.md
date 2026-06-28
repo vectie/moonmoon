@@ -98,13 +98,17 @@ evidence.
   compact per-frame/report summaries for body count, joint count, position/axis
   error, impulse review, Moonphys world hinge constraint replay status, and
   motor-driven heightfield world replay contact/hinge-resolution summaries.
-  The same report also carries a generic Moonphys world-trace envelope for
-  body sample count, position bounds, aggregate center-of-mass bounds, max
-  speed, max kinetic energy, max body/world linear momentum, and max per-frame
-  kinetic-energy delta, plus a generic world-support trace summary for
-  contact-derived support margins and capture-point margins. A generic
-  Moonphys world replay review status and blocker inventory now consolidate
-  those evidence streams.
+  Moonphys velocity-limited joint command shaping clamps unreachable per-frame
+  targets to each URDF joint velocity limit before servo replay, clearing the
+  prior Noetix terrain-normal velocity-limit frame. The same report also
+  carries a generic Moonphys world-trace envelope for body sample count,
+  position bounds, aggregate center-of-mass bounds, max speed, max kinetic
+  energy, max body/world linear momentum, and max per-frame kinetic-energy
+  delta, plus a generic world-support trace summary for contact-derived support
+  margins and capture-point margins. A generic Moonphys world replay review
+  status and blocker inventory now consolidate those evidence streams; the
+  envelope is bounded and the remaining world replay blockers are support and
+  dynamic-support review.
 - Moonphys exports generic rectangular heightfield contact-patch sampling and
   patch-load pressure review; Moonrobo Noetix static-support evidence records
   per-foot sole patch samples, clearance ranges, averaged terrain normals, and
@@ -636,6 +640,8 @@ Next `moonphys` capabilities:
 - generic hinge motor replay over world hinge constraints (implemented)
 - generic sequential hinge motor trace replay over world hinge constraints
   (implemented)
+- generic velocity-limited joint command shaping before servo/motor replay
+  (implemented)
 - generic motor-driven heightfield world trace replay that composes hinge motor
   drive with fixed-step world contact/constraint resolution (implemented)
 - generic world-trace envelope summaries for body bounds, max speed, max
@@ -711,6 +717,21 @@ The receipt gate lives in MoonClaw instead of Moonrobo so Moonrobo remains a
 clean producer of robot simulation evidence. MoonBook materializes the receipts
 as a first-class workspace entry, and the dossier build validates the generated
 JSON before any downstream MoonRobo simulation consumption can be claimed.
+
+### Phase 1 Control Improvement Added: Velocity-Limited Joint Commands
+
+Moonphys now exposes a generic velocity-limited joint command shaper. Moonrobo
+uses it before Noetix joint-control replay so terrain-normal IK targets that
+would require more than a URDF joint's velocity limit are converted into
+reachable per-frame commands. This clears the previous Noetix limit-review
+frame and turns the hinge motor trace from review to driven, while keeping the
+joint-control packet review-only because servo gains, joint inertias, support
+stability, source metadata, and hardware authority are still unresolved.
+
+The world replay blocker inventory drops from envelope/support/dynamic-support
+to support/dynamic-support. That keeps downstream MoonClaw work items focused
+on the remaining physical interaction problems instead of a stale command-limit
+artifact.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

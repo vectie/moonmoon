@@ -23,6 +23,18 @@ pub(all) struct JointMotorCommand {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct JointVelocityLimitedCommand {
+  command : JointMotorCommand
+  desired_position_rad : Double
+  desired_velocity_rad_s : Double
+  desired_delta_rad : Double
+  applied_delta_rad : Double
+  velocity_limited : Bool
+  position_limited : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct JointServoConfig {
   joint_id : String
   stiffness_nm_per_rad : Double
@@ -117,6 +129,85 @@ pub fn joint_motor_command(
     target_position_rad,
     target_velocity_rad_s,
     feedforward_torque_nm,
+  }
+}
+
+///|
+fn positive_dt(value : Double) -> Double {
+  if value > 0.0 {
+    value
+  } else {
+    0.0
+  }
+}
+
+///|
+fn velocity_limited_command_status(
+  velocity_limited : Bool,
+  position_limited : Bool,
+) -> String {
+  if velocity_limited && position_limited {
+    "joint-command-velocity-and-position-limited"
+  } else if velocity_limited {
+    "joint-command-velocity-limited"
+  } else if position_limited {
+    "joint-command-position-limited"
+  } else {
+    "joint-command-within-limits"
+  }
+}
+
+///|
+pub fn joint_velocity_limited_command(
+  state : JointMotorState,
+  desired_position_rad : Double,
+  desired_velocity_rad_s : Double,
+  feedforward_torque_nm : Double,
+  limit : JointLimit,
+  dt_s : Double,
+) -> JointVelocityLimitedCommand {
+  let dt = positive_dt(dt_s)
+  let desired_delta = desired_position_rad - state.position_rad
+  let max_delta = limit.max_velocity_rad_s * dt
+  let velocity_delta = if dt > 0.0 {
+    symmetric_clamp(desired_delta, max_delta)
+  } else {
+    0.0
+  }
+  let velocity_limited_by_delta = velocity_delta != desired_delta
+  let unclamped_position = state.position_rad + velocity_delta
+  let target_position = clamp_scalar(
+    unclamped_position,
+    limit.min_position_rad,
+    limit.max_position_rad,
+  )
+  let applied_delta = target_position - state.position_rad
+  let position_limited = target_position != unclamped_position
+  let target_velocity = if dt > 0.0 {
+    applied_delta / dt
+  } else {
+    symmetric_clamp(desired_velocity_rad_s, limit.max_velocity_rad_s)
+  }
+  let clamped_velocity = symmetric_clamp(
+    target_velocity,
+    limit.max_velocity_rad_s,
+  )
+  let velocity_limited = velocity_limited_by_delta ||
+    clamped_velocity != target_velocity
+  {
+    command: joint_motor_command(
+      state.joint_id,
+      target_position,
+      clamped_velocity,
+      feedforward_torque_nm,
+    ),
+    desired_position_rad,
+    desired_velocity_rad_s,
+    desired_delta_rad: desired_delta,
+    applied_delta_rad: applied_delta,
+    velocity_limited,
+    position_limited,
+    status: velocity_limited_command_status(velocity_limited, position_limited),
   }
 }
 

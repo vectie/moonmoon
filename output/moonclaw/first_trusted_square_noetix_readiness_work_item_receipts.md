@@ -84,7 +84,7 @@
   - next action: Attach fresh Noetix evidence via moon run cmd/main -- moonrobo noetix control json, verify python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json, regenerate readiness work item receipts, and keep hardware denied.
   - validation:
     - source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision
-    - blocker-accounting-preserved: pass - work item world-replay preserves 3 named blockers
+    - blocker-accounting-preserved: pass - work item world-replay preserves 2 named blockers
     - result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths
     - readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption
     - simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for world-replay
@@ -92,7 +92,7 @@
     - fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json passes
   - work item result:
     - 3. world-replay: NoetixReadinessWorkItemPendingEvidence
-      - blockers: 3
+      - blockers: 2
       - required evidence: Moonphys world replay review with envelope, support, and dynamic-support blockers cleared
       - target: output/moonrobo/first_trusted_square_noetix_control.json
       - evidence: output/moonrobo/first_trusted_square_noetix_control.json

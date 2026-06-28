@@ -2118,6 +2118,31 @@ test "joint motor integration respects velocity and position limits" {
 }
 
 ///|
+test "joint velocity limited command shapes unreachable targets" {
+  let state = joint_motor_state("ankle", 0.0, 0.0)
+  let limit = joint_limit("ankle", -1.0, 1.0, 0.5, 100.0)
+  let shaped = joint_velocity_limited_command(state, 0.4, 4.0, 0.0, limit, 0.2)
+  assert_eq(shaped.status, "joint-command-velocity-limited")
+  assert_true(shaped.velocity_limited)
+  assert_true(!shaped.position_limited)
+  assert_true(nearly_equal(shaped.desired_delta_rad, 0.4))
+  assert_true(nearly_equal(shaped.applied_delta_rad, 0.1))
+  assert_true(nearly_equal(shaped.command.target_position_rad, 0.1))
+  assert_true(nearly_equal(shaped.command.target_velocity_rad_s, 0.5))
+  let frame = integrate_joint_motor_frame(
+    "velocity-limited-frame",
+    [state],
+    [shaped.command],
+    [joint_servo_config("ankle", 2.0, 0.0)],
+    [limit],
+    [1.0],
+    0.2,
+  )
+  assert_eq(frame.limit_review_count, 0)
+  assert_true(frame.steps[0].velocity_within_limits)
+}
+
+///|
 test "joint motor frame integrates and aggregates multiple joints" {
   let frame = integrate_joint_motor_frame(
     "frame-0",

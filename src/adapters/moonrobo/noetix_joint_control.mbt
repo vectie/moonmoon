@@ -190,22 +190,26 @@ fn noetix_joint_motor_frame(
   for phase in frame.joint_phases {
     let actuator = actuator_profile_for(profile, phase.joint_name)
     let previous_position = phase_position(previous, phase.joint_name)
+    let state = @moonphys.joint_motor_state(
+      phase.joint_name,
+      previous_position,
+      0.0,
+    )
     let target_velocity = if dt > 0.0 {
       (phase.position_rad - previous_position) / dt
     } else {
       0.0
     }
-    states.push(
-      @moonphys.joint_motor_state(phase.joint_name, previous_position, 0.0),
+    let shaped = @moonphys.joint_velocity_limited_command(
+      state,
+      phase.position_rad,
+      target_velocity,
+      0.0,
+      actuator.limit,
+      dt,
     )
-    commands.push(
-      @moonphys.joint_motor_command(
-        phase.joint_name,
-        phase.position_rad,
-        target_velocity,
-        0.0,
-      ),
-    )
+    states.push(state)
+    commands.push(shaped.command)
     configs.push(actuator.servo)
     limits.push(actuator.limit)
     inertias.push(actuator.inertia_kg_m2)
@@ -508,7 +512,7 @@ pub fn noetix_joint_control_report(
     } else {
       "joint-control-assumption-review"
     },
-    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
+    note: "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.",
   }
 }
 

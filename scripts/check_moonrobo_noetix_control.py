@@ -36,14 +36,16 @@ def main() -> None:
         fail("expected 24 controlled joints per frame")
     if "review" not in report.get("status", ""):
         fail("control report must remain review evidence")
-    if report.get("status") != "joint-control-limit-review":
-        fail("control report should expose terrain-normal joint limit review")
+    if report.get("status") != "joint-control-assumption-review":
+        fail("control report should remain assumption review after velocity shaping")
     if report.get("saturated_frame_count") != 0:
         fail("planted-foot gait should not saturate joint control")
-    if report.get("limit_review_frame_count") != 1:
-        fail("terrain-normal gait should have exactly one limit-review frame")
+    if report.get("limit_review_frame_count") != 0:
+        fail("velocity-limited gait should not have limit-review frames")
     if "servo gains" not in report.get("note", ""):
         fail("report note must mention assumed servo gains")
+    if "velocity-limited joint command shaping" not in report.get("note", ""):
+        fail("report note must mention Moonphys velocity-limited command shaping")
     if "joint-frame motor integration" not in report.get("note", ""):
         fail("report note must mention Moonphys joint-frame replay")
     if "hinge-joint frame assessment" not in report.get("note", ""):
@@ -146,6 +148,8 @@ def main() -> None:
         "envelope_status", ""
     ):
         fail("hinge motor world trace should expose envelope status")
+    if hinge_motor_world_trace.get("envelope_status") != "world-trace-envelope-bounded":
+        fail("velocity-shaped replay should have a bounded world envelope")
     if "world-replay-review" not in hinge_motor_world_trace.get(
         "world_review_status", ""
     ):
@@ -155,6 +159,12 @@ def main() -> None:
     blockers = hinge_motor_world_trace.get("world_review_blockers", [])
     if hinge_motor_world_trace.get("world_review_blocker_count", 0) != len(blockers):
         fail("hinge motor world trace blocker count must match blocker list")
+    if len(blockers) != 2:
+        fail("hinge motor world trace should retain exactly two world blockers")
+    if "world-envelope-review" in blockers:
+        fail("velocity-shaped replay should not expose envelope blocker")
+    if "world-support-review" not in blockers:
+        fail("hinge motor world trace must expose support blocker")
     if "world-dynamic-support-review" not in blockers:
         fail("hinge motor world trace must expose dynamic support blocker")
     if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
@@ -175,8 +185,8 @@ def main() -> None:
         fail("hinge linear impulse must be present")
     if report.get("hinge_angular_impulse_nms", -1) < 0:
         fail("hinge angular impulse must be present")
-    if report.get("max_abs_velocity_rad_s", -1) < 0:
-        fail("max velocity must be present")
+    if report.get("max_abs_velocity_rad_s", -1) > 3:
+        fail("max velocity must respect Noetix URDF velocity limits")
     if report.get("max_abs_mechanical_power_w", 0) <= 0:
         fail("max mechanical power must be present")
     if report.get("total_absolute_work_j", 0) <= 0:
@@ -264,6 +274,8 @@ def main() -> None:
         fail("waist_2_joint URDF velocity limit not present in control report")
     if any(frame.get("limit_review_count", -1) < 0 for frame in frames):
         fail("limit review counts must be nonnegative")
+    if any(frame.get("limit_review_count", 0) != 0 for frame in frames):
+        fail("velocity-limited command shaping should clear limit reviews")
     review_steps = [
         step
         for frame in frames
@@ -272,8 +284,20 @@ def main() -> None:
         if not step.get("velocity_within_limits", True)
     ]
     review_joints = {step.get("joint_name") for step in review_steps}
-    if review_joints != {"leg_r1_joint", "leg_r3_joint"}:
-        fail(f"unexpected terrain-normal velocity review joints: {review_joints}")
+    if review_joints:
+        fail(f"unexpected velocity review joints after shaping: {review_joints}")
+    shaped_frame = frames[3]
+    shaped_steps = {
+        step.get("joint_name"): step
+        for step in shaped_frame.get("steps", [])
+        if step.get("joint_name") in {"leg_r1_joint", "leg_r3_joint"}
+    }
+    if shaped_steps.get("leg_r1_joint", {}).get("target_velocity_rad_s") != -3:
+        fail("leg_r1_joint should be velocity-shaped to -3 rad/s")
+    if shaped_steps.get("leg_r3_joint", {}).get("target_velocity_rad_s") != 3:
+        fail("leg_r3_joint should be velocity-shaped to 3 rad/s")
+    if not all(step.get("velocity_within_limits") for step in shaped_steps.values()):
+        fail("velocity-shaped joints must be within limits")
 
 
 if __name__ == "__main__":

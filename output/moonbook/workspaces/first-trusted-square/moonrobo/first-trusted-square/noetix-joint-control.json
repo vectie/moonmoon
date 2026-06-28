@@ -6,7 +6,7 @@
     "claim_kind": "Simulated",
     "confidence": 0.55,
     "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
-    "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 44.24777191616341 W, absolute work 95.11007647969384 J, status joint-control-limit-review, hardware authority moonmoon-safety-gate-only"
+    "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 40.50000000000002 W, absolute work 94.68436850627367 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
   },
   "payload": {
     "report_id": "moonrobo/noetix-e1/joint-control/first-trusted-square-northeast-stepout-lola",
@@ -659,27 +659,27 @@
     "frame_count": 32,
     "joint_count_per_frame": 24,
     "saturated_frame_count": 0,
-    "limit_review_frame_count": 1,
+    "limit_review_frame_count": 0,
     "hinge_joint_frame_count": 32,
-    "hinge_review_frame_count": 1,
+    "hinge_review_frame_count": 0,
     "hinge_joint_count_per_frame": 24,
     "hinge_motor_driven_frame_count": 32,
-    "hinge_motor_driven_joint_count": 766,
+    "hinge_motor_driven_joint_count": 768,
     "hinge_motor_trace": {
       "trace_id": "noetix-e1/world-hinge-motor-trace/first-trusted-square-northeast-stepout-lola",
       "frame_count": 32,
-      "driven_joint_count": 766,
-      "review_count": 2,
+      "driven_joint_count": 768,
+      "review_count": 0,
       "max_angle_delta_rad": 0.30000000000000027,
       "max_velocity_delta_rad_s": 3,
       "final_projected_body_count": 25,
-      "status": "world-hinge-motor-trace-review"
+      "status": "world-hinge-motor-trace-driven"
     },
     "hinge_motor_world_trace": {
       "trace_id": "noetix-e1/world-heightfield-hinge-motor-trace/first-trusted-square-northeast-stepout-lola",
       "frame_count": 32,
       "motor_frame_count": 32,
-      "driven_joint_count": 766,
+      "driven_joint_count": 768,
       "contact_count": 233,
       "support_contact_count": 233,
       "stable_support_frame_count": 22,
@@ -687,7 +687,7 @@
       "capture_stable_support_frame_count": 0,
       "capture_support_review_frame_count": 32,
       "resolved_hinge_constraint_count": 1512,
-      "review_count": 2,
+      "review_count": 0,
       "final_body_count": 25,
       "final_projected_body_count": 25,
       "body_sample_count": 825,
@@ -731,28 +731,27 @@
       "max_body_linear_momentum_kg_mps": 1.8353493941250039,
       "max_world_linear_momentum_kg_mps": 23.795797235028104,
       "max_frame_kinetic_energy_delta_j": 2.050170526416192,
-      "envelope_status": "world-trace-envelope-review",
+      "envelope_status": "world-trace-envelope-bounded",
       "world_review_status": "world-replay-review-blocked",
       "world_review_ready": false,
-      "world_review_blocker_count": 3,
+      "world_review_blocker_count": 2,
       "world_review_blockers": [
-        "world-envelope-review",
         "world-support-review",
         "world-dynamic-support-review"
       ],
-      "status": "world-heightfield-hinge-motor-trace-review"
+      "status": "world-heightfield-hinge-motor-trace-driven"
     },
     "max_abs_position_error_rad": 0.24289082981102283,
-    "max_abs_velocity_rad_s": 3.2776127345306216,
-    "max_abs_mechanical_power_w": 44.24777191616341,
+    "max_abs_velocity_rad_s": 3,
+    "max_abs_mechanical_power_w": 40.50000000000002,
     "max_hinge_position_error_m": 0,
     "max_hinge_angular_error_rad": 0.30000000000000016,
     "max_hinge_motor_angle_delta_rad": 0.30000000000000027,
     "max_hinge_motor_velocity_delta_rad_s": 3,
     "hinge_linear_impulse_ns": 32.25631400931138,
     "hinge_angular_impulse_nms": 1.5000656296828223,
-    "net_work_j": 95.11007647969384,
-    "total_absolute_work_j": 95.11007647969384,
+    "net_work_j": 94.68436850627367,
+    "total_absolute_work_j": 94.68436850627367,
     "frames": [
       {
         "frame_index": 0,
@@ -3894,12 +3893,12 @@
         "time_s": 0.30000000000000004,
         "joint_count": 24,
         "saturated_joint_count": 0,
-        "limit_review_count": 2,
+        "limit_review_count": 0,
         "max_abs_position_error_rad": 0.17572905111047354,
-        "max_abs_velocity_rad_s": 3.2776127345306216,
-        "max_abs_mechanical_power_w": 44.24777191616341,
-        "net_work_j": 15.506707445470482,
-        "total_absolute_work_j": 15.506707445470482,
+        "max_abs_velocity_rad_s": 3,
+        "max_abs_mechanical_power_w": 40.50000000000002,
+        "net_work_j": 15.080999472050298,
+        "total_absolute_work_j": 15.080999472050298,
         "hinge_joint_frame": {
           "frame_id": "noetix-e1/hinge-joint-frame/3",
           "body_count": 25,
@@ -3907,9 +3906,9 @@
           "assessed_joint_count": 24,
           "projected_body_count": 25,
           "resolved_hinge_constraint_count": 22,
-          "motor_driven_joint_count": 22,
-          "motor_review_count": 2,
-          "review_count": 2,
+          "motor_driven_joint_count": 24,
+          "motor_review_count": 0,
+          "review_count": 0,
           "max_position_error_m": 0,
           "max_angular_error_rad": 0.2999999999999994,
           "max_motor_angle_delta_rad": 0.30000000000000016,
@@ -3918,9 +3917,9 @@
           "angular_impulse_nms": 0.08624265163782624,
           "assessment_status": "hinge-joint-frame-satisfied",
           "world_status": "world-hinge-constraint-resolved",
-          "motor_status": "world-hinge-motor-review",
+          "motor_status": "world-hinge-motor-driven",
           "motor_world_status": "world-hinge-constraint-resolved",
-          "status": "noetix-hinge-world-review"
+          "status": "noetix-hinge-world-motor-driven"
         },
         "steps": [
           {
@@ -4262,8 +4261,8 @@
           {
             "joint_name": "leg_r1_joint",
             "joint_index": 16,
-            "target_position_rad": -0.6717369459059761,
-            "target_velocity_rad_s": -3.0419183389332067,
+            "target_position_rad": -0.6675451120126554,
+            "target_velocity_rad_s": -3,
             "motor_step": {
               "before": {
                 "joint_id": "leg_r1_joint",
@@ -4277,9 +4276,9 @@
               },
               "servo": {
                 "joint_id": "leg_r1_joint",
-                "position_error_rad": -0.3041918338933208,
-                "velocity_error_rad_s": -3.0419183389332067,
-                "commanded_torque_nm": -12.31976927267949,
+                "position_error_rad": -0.3000000000000001,
+                "velocity_error_rad_s": -3,
+                "commanded_torque_nm": -12.150000000000002,
                 "saturated": false,
                 "status": "torque-commanded"
               },
@@ -4292,14 +4291,14 @@
               },
               "dt_s": 0.10000000000000003,
               "inertia_kg_m2": 0.08,
-              "average_mechanical_power_w": 36.959307818038475,
-              "work_j": 3.6959307818038485,
-              "absolute_work_j": 3.6959307818038485,
+              "average_mechanical_power_w": 36.45,
+              "work_j": 3.645000000000002,
+              "absolute_work_j": 3.645000000000002,
               "status": "torque-commanded"
             },
             "position_within_limits": true,
-            "velocity_within_limits": false,
-            "status": "joint-limit-review"
+            "velocity_within_limits": true,
+            "status": "joint-command-review"
           },
           {
             "joint_name": "leg_r2_joint",
@@ -4346,8 +4345,8 @@
           {
             "joint_name": "leg_r3_joint",
             "joint_index": 18,
-            "target_position_rad": 0.4557887877176908,
-            "target_velocity_rad_s": 3.2776127345306216,
+            "target_position_rad": 0.4280275142646287,
+            "target_velocity_rad_s": 3,
             "motor_step": {
               "before": {
                 "joint_id": "leg_r3_joint",
@@ -4361,9 +4360,9 @@
               },
               "servo": {
                 "joint_id": "leg_r3_joint",
-                "position_error_rad": 0.3277612734530623,
-                "velocity_error_rad_s": 3.2776127345306216,
-                "commanded_torque_nm": 14.7492573053878,
+                "position_error_rad": 0.30000000000000016,
+                "velocity_error_rad_s": 3,
+                "commanded_torque_nm": 13.500000000000004,
                 "saturated": false,
                 "status": "torque-commanded"
               },
@@ -4376,14 +4375,14 @@
               },
               "dt_s": 0.10000000000000003,
               "inertia_kg_m2": 0.1,
-              "average_mechanical_power_w": 44.24777191616341,
-              "work_j": 4.424777191616342,
-              "absolute_work_j": 4.424777191616342,
+              "average_mechanical_power_w": 40.50000000000002,
+              "work_j": 4.050000000000003,
+              "absolute_work_j": 4.050000000000003,
               "status": "torque-commanded"
             },
             "position_within_limits": true,
-            "velocity_within_limits": false,
-            "status": "joint-limit-review"
+            "velocity_within_limits": true,
+            "status": "joint-command-review"
           },
           {
             "joint_name": "leg_r4_joint",
@@ -4932,7 +4931,7 @@
             "status": "joint-command-review"
           }
         ],
-        "status": "joint-limit-review"
+        "status": "joint-command-review"
       },
       {
         "frame_index": 4,
@@ -10784,7 +10783,7 @@
           {
             "joint_name": "arm_l1_joint",
             "joint_index": 0,
-            "target_position_rad": -2.2043642384652358e-17,
+            "target_position_rad": -2.0816681711721685e-17,
             "target_velocity_rad_s": 0.6156362579862039,
             "motor_step": {
               "before": {
@@ -10826,7 +10825,7 @@
           {
             "joint_name": "arm_l2_joint",
             "joint_index": 1,
-            "target_position_rad": -6.123233995736766e-18,
+            "target_position_rad": -6.938893903907228e-18,
             "target_velocity_rad_s": 0.1710100716628344,
             "motor_step": {
               "before": {
@@ -10868,7 +10867,7 @@
           {
             "joint_name": "arm_l3_joint",
             "joint_index": 2,
-            "target_position_rad": -4.898587196589413e-18,
+            "target_position_rad": -5.204170427930421e-18,
             "target_velocity_rad_s": 0.13680805733026752,
             "motor_step": {
               "before": {
@@ -10910,7 +10909,7 @@
           {
             "joint_name": "arm_l4_joint",
             "joint_index": 3,
-            "target_position_rad": -1.2246467991473533e-17,
+            "target_position_rad": -1.3877787807814457e-17,
             "target_velocity_rad_s": 0.3420201433256688,
             "motor_step": {
               "before": {
@@ -10952,7 +10951,7 @@
           {
             "joint_name": "arm_l5_joint",
             "joint_index": 4,
-            "target_position_rad": -3.673940397442059e-18,
+            "target_position_rad": -3.469446951953614e-18,
             "target_velocity_rad_s": 0.10260604299770065,
             "motor_step": {
               "before": {
@@ -10994,7 +10993,7 @@
           {
             "joint_name": "arm_r1_joint",
             "joint_index": 11,
-            "target_position_rad": 2.2043642384652358e-17,
+            "target_position_rad": 2.0816681711721685e-17,
             "target_velocity_rad_s": -0.6156362579862039,
             "motor_step": {
               "before": {
@@ -11036,7 +11035,7 @@
           {
             "joint_name": "arm_r2_joint",
             "joint_index": 12,
-            "target_position_rad": 6.123233995736766e-18,
+            "target_position_rad": 6.938893903907228e-18,
             "target_velocity_rad_s": -0.1710100716628344,
             "motor_step": {
               "before": {
@@ -11078,7 +11077,7 @@
           {
             "joint_name": "arm_r3_joint",
             "joint_index": 13,
-            "target_position_rad": 4.898587196589413e-18,
+            "target_position_rad": 5.204170427930421e-18,
             "target_velocity_rad_s": -0.13680805733026752,
             "motor_step": {
               "before": {
@@ -11120,7 +11119,7 @@
           {
             "joint_name": "arm_r4_joint",
             "joint_index": 14,
-            "target_position_rad": 1.2246467991473533e-17,
+            "target_position_rad": 1.3877787807814457e-17,
             "target_velocity_rad_s": -0.3420201433256688,
             "motor_step": {
               "before": {
@@ -11162,7 +11161,7 @@
           {
             "joint_name": "arm_r5_joint",
             "joint_index": 15,
-            "target_position_rad": 3.673940397442059e-18,
+            "target_position_rad": 3.469446951953614e-18,
             "target_velocity_rad_s": -0.10260604299770065,
             "motor_step": {
               "before": {
@@ -21234,7 +21233,7 @@
           {
             "joint_name": "arm_l1_joint",
             "joint_index": 0,
-            "target_position_rad": 2.2043642384652358e-17,
+            "target_position_rad": 2.0816681711721685e-17,
             "target_velocity_rad_s": -0.6156362579862033,
             "motor_step": {
               "before": {
@@ -21276,7 +21275,7 @@
           {
             "joint_name": "arm_l2_joint",
             "joint_index": 1,
-            "target_position_rad": 6.123233995736766e-18,
+            "target_position_rad": 6.938893903907228e-18,
             "target_velocity_rad_s": -0.17101007166283422,
             "motor_step": {
               "before": {
@@ -21318,7 +21317,7 @@
           {
             "joint_name": "arm_l3_joint",
             "joint_index": 2,
-            "target_position_rad": 4.898587196589413e-18,
+            "target_position_rad": 5.204170427930421e-18,
             "target_velocity_rad_s": -0.13680805733026738,
             "motor_step": {
               "before": {
@@ -21360,7 +21359,7 @@
           {
             "joint_name": "arm_l4_joint",
             "joint_index": 3,
-            "target_position_rad": 1.2246467991473533e-17,
+            "target_position_rad": 1.3877787807814457e-17,
             "target_velocity_rad_s": -0.34202014332566844,
             "motor_step": {
               "before": {
@@ -21402,7 +21401,7 @@
           {
             "joint_name": "arm_l5_joint",
             "joint_index": 4,
-            "target_position_rad": 3.673940397442059e-18,
+            "target_position_rad": 3.469446951953614e-18,
             "target_velocity_rad_s": -0.10260604299770053,
             "motor_step": {
               "before": {
@@ -21444,7 +21443,7 @@
           {
             "joint_name": "arm_r1_joint",
             "joint_index": 11,
-            "target_position_rad": -2.2043642384652358e-17,
+            "target_position_rad": -2.0816681711721685e-17,
             "target_velocity_rad_s": 0.6156362579862033,
             "motor_step": {
               "before": {
@@ -21486,7 +21485,7 @@
           {
             "joint_name": "arm_r2_joint",
             "joint_index": 12,
-            "target_position_rad": -6.123233995736766e-18,
+            "target_position_rad": -6.938893903907228e-18,
             "target_velocity_rad_s": 0.17101007166283422,
             "motor_step": {
               "before": {
@@ -21528,7 +21527,7 @@
           {
             "joint_name": "arm_r3_joint",
             "joint_index": 13,
-            "target_position_rad": -4.898587196589413e-18,
+            "target_position_rad": -5.204170427930421e-18,
             "target_velocity_rad_s": 0.13680805733026738,
             "motor_step": {
               "before": {
@@ -21570,7 +21569,7 @@
           {
             "joint_name": "arm_r4_joint",
             "joint_index": 14,
-            "target_position_rad": -1.2246467991473533e-17,
+            "target_position_rad": -1.3877787807814457e-17,
             "target_velocity_rad_s": 0.34202014332566844,
             "motor_step": {
               "before": {
@@ -21612,7 +21611,7 @@
           {
             "joint_name": "arm_r5_joint",
             "joint_index": 15,
-            "target_position_rad": -3.673940397442059e-18,
+            "target_position_rad": -3.469446951953614e-18,
             "target_velocity_rad_s": 0.10260604299770053,
             "motor_step": {
               "before": {
@@ -31684,7 +31683,7 @@
           {
             "joint_name": "arm_l1_joint",
             "joint_index": 0,
-            "target_position_rad": -2.2043642384652358e-17,
+            "target_position_rad": -2.0816681711721685e-17,
             "target_velocity_rad_s": 0.6156362579862033,
             "motor_step": {
               "before": {
@@ -31726,7 +31725,7 @@
           {
             "joint_name": "arm_l2_joint",
             "joint_index": 1,
-            "target_position_rad": -6.123233995736766e-18,
+            "target_position_rad": -6.938893903907228e-18,
             "target_velocity_rad_s": 0.17101007166283422,
             "motor_step": {
               "before": {
@@ -31768,7 +31767,7 @@
           {
             "joint_name": "arm_l3_joint",
             "joint_index": 2,
-            "target_position_rad": -4.898587196589413e-18,
+            "target_position_rad": -5.204170427930421e-18,
             "target_velocity_rad_s": 0.13680805733026738,
             "motor_step": {
               "before": {
@@ -31810,7 +31809,7 @@
           {
             "joint_name": "arm_l4_joint",
             "joint_index": 3,
-            "target_position_rad": -1.2246467991473533e-17,
+            "target_position_rad": -1.3877787807814457e-17,
             "target_velocity_rad_s": 0.34202014332566844,
             "motor_step": {
               "before": {
@@ -31852,7 +31851,7 @@
           {
             "joint_name": "arm_l5_joint",
             "joint_index": 4,
-            "target_position_rad": -3.673940397442059e-18,
+            "target_position_rad": -3.469446951953614e-18,
             "target_velocity_rad_s": 0.10260604299770053,
             "motor_step": {
               "before": {
@@ -31894,7 +31893,7 @@
           {
             "joint_name": "arm_r1_joint",
             "joint_index": 11,
-            "target_position_rad": 2.2043642384652358e-17,
+            "target_position_rad": 2.0816681711721685e-17,
             "target_velocity_rad_s": -0.6156362579862033,
             "motor_step": {
               "before": {
@@ -31936,7 +31935,7 @@
           {
             "joint_name": "arm_r2_joint",
             "joint_index": 12,
-            "target_position_rad": 6.123233995736766e-18,
+            "target_position_rad": 6.938893903907228e-18,
             "target_velocity_rad_s": -0.17101007166283422,
             "motor_step": {
               "before": {
@@ -31978,7 +31977,7 @@
           {
             "joint_name": "arm_r3_joint",
             "joint_index": 13,
-            "target_position_rad": 4.898587196589413e-18,
+            "target_position_rad": 5.204170427930421e-18,
             "target_velocity_rad_s": -0.13680805733026738,
             "motor_step": {
               "before": {
@@ -32020,7 +32019,7 @@
           {
             "joint_name": "arm_r4_joint",
             "joint_index": 14,
-            "target_position_rad": 1.2246467991473533e-17,
+            "target_position_rad": 1.3877787807814457e-17,
             "target_velocity_rad_s": -0.34202014332566844,
             "motor_step": {
               "before": {
@@ -32062,7 +32061,7 @@
           {
             "joint_name": "arm_r5_joint",
             "joint_index": 15,
-            "target_position_rad": 3.673940397442059e-18,
+            "target_position_rad": 3.469446951953614e-18,
             "target_velocity_rad_s": -0.10260604299770053,
             "motor_step": {
               "before": {
@@ -34196,8 +34195,8 @@
       }
     ],
     "hardware_authority": "moonmoon-safety-gate-only",
-    "status": "joint-control-limit-review",
-    "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
+    "status": "joint-control-assumption-review",
+    "note": "Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions."
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",

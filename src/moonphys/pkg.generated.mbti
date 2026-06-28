@@ -91,6 +91,8 @@ pub fn joint_servo_config(String, Double, Double) -> JointServoConfig
 
 pub fn joint_servo_output(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit) -> JointServoOutput
 
+pub fn joint_velocity_limited_command(JointMotorState, Double, Double, Double, JointLimit, Double) -> JointVelocityLimitedCommand
+
 pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
 
 pub fn lunar_environment() -> PhysicsEnvironment
@@ -540,6 +542,17 @@ pub(all) struct JointServoOutput {
   velocity_error_rad_s : Double
   commanded_torque_nm : Double
   saturated : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct JointVelocityLimitedCommand {
+  command : JointMotorCommand
+  desired_position_rad : Double
+  desired_velocity_rad_s : Double
+  desired_delta_rad : Double
+  applied_delta_rad : Double
+  velocity_limited : Bool
+  position_limited : Bool
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -96,10 +96,16 @@ def main() -> None:
     )
     require_receipt(
         receipt_by_domain(receipts, "world-replay"),
-        3,
-        "world-dynamic-support-review",
+        2,
+        "world-support-review",
         "check_moonrobo_noetix_control",
     )
+    world_replay = receipt_by_domain(receipts, "world-replay")
+    world_blockers = world_replay.get("work_item_result", {}).get("blocker_ids", [])
+    if "world-dynamic-support-review" not in world_blockers:
+        fail("world replay receipt must retain dynamic-support blocker")
+    if "world-envelope-review" in world_blockers:
+        fail("world replay receipt must not retain cleared envelope blocker")
     require_receipt(
         receipt_by_domain(receipts, "review-artifacts"),
         4,
