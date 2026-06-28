@@ -27,10 +27,11 @@
   Rabbita visualization there, but adapters stay out of the standalone domain
   packages. The current first step is split between Moonmoon's typed suite
   preview payload in `src/suite_adapter_preview` and Moonrobo's typed source
-  contract in `../moonrobo/src/moonmoon_adapter`; the next implementation target
-  is the generator bridge that regenerates Moonmoon evidence from Moonrobo
-  profile, URDF, mesh, required joint, blocker, and readiness data without
-  importing Moonrobo into standalone core packages.
+  contract in `../moonrobo/src/moonmoon_adapter`. The current bridge exports the
+  typed Moonrobo contract through `../moonrobo/cmd/moonmoon_contract` and
+  regenerates Moonmoon suite-preview source metadata without importing Moonrobo
+  into standalone core packages. The next implementation target is live
+  Moonrobo adapter regeneration for the remaining sampled motion evidence.
 
 ## Non-Goals
 

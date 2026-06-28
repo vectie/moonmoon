@@ -7,6 +7,7 @@
     "dev": "vite --host 127.0.0.1 --port 8766",
     "prebuild": "moon build --target js --release && node prepare-rabbita-build.mjs release",
     "build": "vite build",
+    "export:moonrobo-contract": "node export-moonrobo-contract.mjs",
     "export:gait-evidence": "node export-rabbita-gait-evidence.mjs",
     "check:gait": "node check-rabbita-gait-contract.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 8766"

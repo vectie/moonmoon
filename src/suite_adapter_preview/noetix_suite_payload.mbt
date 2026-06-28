@@ -44,15 +44,12 @@ fn noetix_suite_source_ref(
 
 ///|
 fn noetix_expected_profile_joint_count() -> Int {
-  24
+  generated_moonrobo_noetix_expected_profile_joint_count()
 }
 
 ///|
 fn noetix_required_driven_joint_ids() -> Array[String] {
-  [
-    "leg_l1_joint", "leg_l4_joint", "leg_l6_joint", "leg_r1_joint", "leg_r4_joint",
-    "leg_r6_joint", "arm_l1_joint", "arm_l4_joint", "arm_r1_joint", "arm_r4_joint",
-  ]
+  generated_moonrobo_noetix_required_motion_joint_ids()
 }
 
 ///|
@@ -81,20 +78,44 @@ fn noetix_missing_required_driven_joint_ids(
 }
 
 ///|
+fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
+  let blockers : Array[String] = []
+  if generated_moonrobo_noetix_contract_id() !=
+    "\{generated_moonrobo_noetix_robot_id()}/moonmoon-locomotion-source-contract" {
+    blockers.push(
+      "moonrobo-source-contract-id:\{generated_moonrobo_noetix_contract_id()}",
+    )
+  }
+  if generated_moonrobo_noetix_target_payload_type() !=
+    "vectie/moonmoon/src/suite_adapter_preview.NoetixSuiteAdapterPayload" {
+    blockers.push(
+      "moonrobo-source-contract-target:\{generated_moonrobo_noetix_target_payload_type()}",
+    )
+  }
+  if generated_moonrobo_noetix_profile_joint_ids().length() !=
+    noetix_expected_profile_joint_count() {
+    blockers.push(
+      "moonrobo-source-contract-profile-joint-count:\{generated_moonrobo_noetix_profile_joint_ids().length()}",
+    )
+  }
+  for joint_id in noetix_required_driven_joint_ids() {
+    if !generated_moonrobo_noetix_profile_joint_ids().contains(joint_id) {
+      blockers.push(
+        "moonrobo-source-contract-missing-profile-joint:\{joint_id}",
+      )
+    }
+  }
+  blockers
+}
+
+///|
 pub fn moonrobo_noetix_suite_source_refs() -> Array[SuiteAdapterSourceRef] {
-  [
-    noetix_suite_source_ref(
-      "moonrobo-noetix-e1-profile", "moonrobo.robot-profile", "../moonrobo/examples/noetix-e1/robot.json",
-      "robot profile, bridge limits, capability contract", "referenced",
-    ),
-    noetix_suite_source_ref(
-      "moonrobo-noetix-e1-urdf", "moonrobo.urdf", "../moonrobo/examples/noetix-e1/model/robot.urdf",
-      "joint tree, axes, limits, and visual geometry references", "referenced",
-    ),
-    noetix_suite_source_ref(
-      "moonrobo-noetix-e1-base-mesh", "moonrobo.mesh", "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
-      "base_link visual mesh attachment", "referenced",
-    ),
+  let refs : Array[SuiteAdapterSourceRef] = []
+  refs.push(generated_moonrobo_noetix_source_contract_ref())
+  for source in generated_moonrobo_noetix_source_refs() {
+    refs.push(source)
+  }
+  refs.push(
     noetix_suite_source_ref(
       "rabbita-noetix-generated-gait",
       "moonmoon.rabbita.generated-evidence",
@@ -102,7 +123,8 @@ pub fn moonrobo_noetix_suite_source_refs() -> Array[SuiteAdapterSourceRef] {
       "sampled FK/contact/motor evidence consumed by compiled Moonphys",
       "generated",
     ),
-  ]
+  )
+  refs
 }
 
 ///|
@@ -112,6 +134,17 @@ fn moonrobo_noetix_suite_payload_blockers(
   frame_count : Int,
 ) -> Array[String] {
   let blockers : Array[String] = []
+  if !generated_moonrobo_noetix_source_ready() {
+    blockers.push(
+      "moonrobo-source-contract:\{generated_moonrobo_noetix_source_status()}",
+    )
+  }
+  for blocker in generated_moonrobo_noetix_source_blockers() {
+    blockers.push("moonrobo-source-contract-blocker:\{blocker}")
+  }
+  for blocker in moonrobo_noetix_source_contract_bridge_blockers() {
+    blockers.push(blocker)
+  }
   if review_status != "rabbita-noetix-generated-review-ready" {
     blockers.push("compiled-review:\{review_status}")
   }
@@ -133,13 +166,13 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     review_status, driven_joint_ids, frame_count,
   )
   {
-    payload_id: "moonrobo-noetix-e1-lab-01/rabbita-walk-cycle",
-    robot_id: "noetix-e1-lab-01",
-    robot_label: "Noetix E1 Lab 01",
-    platform: "noetix-e1",
-    profile_path: "../moonrobo/examples/noetix-e1/robot.json",
-    urdf_path: "../moonrobo/examples/noetix-e1/model/robot.urdf",
-    mesh_paths: ["../moonrobo/examples/noetix-e1/model/meshes/base.obj"],
+    payload_id: "\{generated_moonrobo_noetix_robot_id()}/rabbita-walk-cycle",
+    robot_id: generated_moonrobo_noetix_robot_id(),
+    robot_label: generated_moonrobo_noetix_robot_label(),
+    platform: generated_moonrobo_noetix_platform(),
+    profile_path: generated_moonrobo_noetix_profile_path(),
+    urdf_path: generated_moonrobo_noetix_urdf_path(),
+    mesh_paths: generated_moonrobo_noetix_mesh_paths(),
     evidence_source: generated_rabbita_noetix_evidence_source(),
     motion_trace_id: generated_rabbita_noetix_motion_trace_id(),
     hinge_trace_id: generated_rabbita_noetix_hinge_trace_id(),

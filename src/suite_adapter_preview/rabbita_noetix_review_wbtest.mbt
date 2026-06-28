@@ -71,6 +71,20 @@ test "Moonrobo Noetix suite payload records durable source refs" {
   assert_eq(payload.robot_id, "noetix-e1-lab-01")
   assert_eq(payload.platform, "noetix-e1")
   assert_eq(payload.expected_profile_joint_count, 24)
+  assert_eq(
+    generated_moonrobo_noetix_contract_id(),
+    "noetix-e1-lab-01/moonmoon-locomotion-source-contract",
+  )
+  assert_eq(
+    generated_moonrobo_noetix_target_payload_type(),
+    "vectie/moonmoon/src/suite_adapter_preview.NoetixSuiteAdapterPayload",
+  )
+  assert_eq(generated_moonrobo_noetix_profile_joint_ids().length(), 24)
+  assert_true(generated_moonrobo_noetix_source_ready())
+  assert_eq(
+    generated_moonrobo_noetix_source_status(),
+    "moonmoon-noetix-locomotion-contract-ready",
+  )
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
   assert_eq(
@@ -91,17 +105,27 @@ test "Moonrobo Noetix suite payload records durable source refs" {
   assert_true(payload.driven_joint_ids.contains("leg_r4_joint"))
   assert_true(payload.driven_joint_ids.contains("arm_l1_joint"))
   assert_true(payload.driven_joint_ids.contains("arm_r4_joint"))
-  assert_eq(payload.source_refs.length(), 4)
+  assert_eq(payload.source_refs.length(), 5)
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonrobo.moonmoon-adapter-contract" &&
+      source.local_path ==
+      "../moonrobo/src/moonmoon_adapter/noetix_contract.mbt#noetix_e1_moonmoon_locomotion_contract" &&
+      source.status == "generated-from-typed-source"
+    }),
+  )
   assert_true(
     payload.source_refs.any(fn(source) {
       source.source_family == "moonrobo.robot-profile" &&
-      source.local_path == "../moonrobo/examples/noetix-e1/robot.json"
+      source.local_path == "../moonrobo/examples/noetix-e1/robot.json" &&
+      source.status == "typed-source"
     }),
   )
   assert_true(
     payload.source_refs.any(fn(source) {
       source.source_family == "moonrobo.urdf" &&
-      source.local_path == "../moonrobo/examples/noetix-e1/model/robot.urdf"
+      source.local_path == "../moonrobo/examples/noetix-e1/model/robot.urdf" &&
+      source.status == "typed-source"
     }),
   )
   assert_true(
