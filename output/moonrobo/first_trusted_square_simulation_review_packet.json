@@ -1,7 +1,7 @@
 {
   "packet_id": "moonrobo-simulation-review-packet/first-trusted-square/northeast-stepout",
   "generated_by": "scripts/import_rabbita_transitions.py",
-  "source_transition_file": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_closeout_action_review_accept.json",
+  "source_transition_file": "/Users/kq/Workspace/moonmoon/data/fixtures/rabbita_clearance_transitions_accept.json",
   "source_handoff_path": "output/moonrobo/first_trusted_square_handoffs.json",
   "source_preview_path": "output/moonrobo/first_trusted_square_readiness_preview.json",
   "route_id": "northeast-stepout",
@@ -150,6 +150,23 @@
       "evidence_path": "output/moonrobo/first_trusted_square_handoffs.json",
       "clearance_status": "NotClearanceGated",
       "next_action": "MoonRobo simulation stays blocked until mission readiness checks clear"
+    }
+  ],
+  "robot_simulation_gates": [
+    {
+      "gate_id": "robot-simulation:noetix-e1-lab-01",
+      "robot_id": "noetix-e1-lab-01",
+      "source_decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
+      "source_decision_path": "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+      "work_item_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
+      "receipt_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
+      "may_consume_simulation": false,
+      "simulation_state": "SimulationBlocked",
+      "source_metadata_blocker_count": 50,
+      "physical_model_blocker_count": 9,
+      "active_work_item_count": 2,
+      "status": "NoetixSimulationBlocked",
+      "next_action": "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption"
     }
   ],
   "hardware_denial_invariants": [

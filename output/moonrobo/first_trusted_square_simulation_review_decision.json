@@ -6,12 +6,17 @@
   "route_id": "northeast-stepout",
   "may_consume_simulation_packet": false,
   "decision": "SimulationBlocked",
-  "reason": "simulation packet remains blocked: 3 remediation margins and 1 active non-margin blockers remain; 2 stale non-margin blockers are closed; hardware authority remains moonmoon-safety-gate-only",
+  "reason": "simulation packet remains blocked: 3 remediation margins, 1 robot simulation gates, and 1 active non-margin blockers remain; 2 stale non-margin blockers are closed; hardware authority remains moonmoon-safety-gate-only",
   "blocking_margin_count": 3,
   "accepted_clearance_transition_count": 4,
   "original_non_margin_blocker_count": 3,
   "closed_non_margin_blocker_count": 2,
   "remaining_non_margin_blocker_count": 1,
+  "robot_simulation_gate_count": 1,
+  "blocked_robot_simulation_gate_count": 1,
+  "blocked_robot_simulation_gates": [
+    "robot-simulation:noetix-e1-lab-01"
+  ],
   "blocking_margin_checks": [
     "terrain-northeast-stepout",
     "illumination-northeast-stepout",

@@ -57,6 +57,15 @@
   - evidence: output/moonrobo/first_trusted_square_handoffs.json
   - next action: MoonRobo simulation stays blocked until mission readiness checks clear
 
+## Robot Simulation Gates
+
+- robot-simulation:noetix-e1-lab-01: NoetixSimulationBlocked
+  - decision: output/moonclaw/first_trusted_square_noetix_readiness_decision.json
+  - source metadata blockers: 50
+  - physical model blockers: 9
+  - active work items: 2
+  - next action: keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption
+
 ## Hardware Denial Invariants
 
 - hardware_state must remain HardwareDenied

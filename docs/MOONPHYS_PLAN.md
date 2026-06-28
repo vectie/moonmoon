@@ -146,6 +146,12 @@ evidence.
   Moonrobo `physical_model_gaps` inventory instead of a flat blocker list, and
   the source-metadata work item targets the Moonrobo `source_metadata_gaps`
   inventory.
+- Moonrobo selected-route simulation review packets now carry a first-class
+  Noetix robot simulation gate with the MoonClaw readiness decision path,
+  readiness work-item paths, source-metadata blocker count, physical-model
+  blocker count, and blocked next action. This keeps the Noetix walking demo
+  visible to MoonRobo consumers without letting MoonRobo consume simulation
+  while authoritative source/physical metadata is still missing.
 - MoonClaw review-task and readiness-decision evidence carries static
   support-stable frames and dynamic capture-stable frames separately from
   review-frame blockers, so downstream gates can distinguish passing Moonphys

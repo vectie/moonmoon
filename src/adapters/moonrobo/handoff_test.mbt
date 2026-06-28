@@ -227,6 +227,23 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
       blocker.check_id == "robot-simulation"
     }),
   )
+  assert_eq(packet.robot_simulation_gates.length(), 1)
+  assert_true(
+    packet.robot_simulation_gates.any(fn(gate) {
+      gate.gate_id == "robot-simulation:noetix-e1-lab-01" &&
+      gate.robot_id == "noetix-e1-lab-01" &&
+      !gate.may_consume_simulation &&
+      gate.simulation_state ==
+      @moonrobo.MoonroboExecutionState::SimulationBlocked &&
+      gate.source_metadata_blocker_count == 50 &&
+      gate.physical_model_blocker_count == 9 &&
+      gate.active_work_item_count == 2 &&
+      gate.source_decision_path.contains("noetix_readiness_decision") &&
+      gate.work_item_path.contains("noetix_readiness_work_items") &&
+      gate.next_action.contains("source_metadata_gaps") &&
+      gate.next_action.contains("physical_model_gaps")
+    }),
+  )
   assert_true(
     packet.remediation_margins.any(fn(margin) {
       margin.check_id == "terrain-northeast-stepout" &&
@@ -260,11 +277,14 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
   )
   assert_true(markdown.contains("Accepted Clearance Transitions"))
   assert_true(markdown.contains("Remediation Margins"))
+  assert_true(markdown.contains("Robot Simulation Gates"))
+  assert_true(markdown.contains("robot-simulation:noetix-e1-lab-01"))
   assert_true(markdown.contains("Hardware Denial Invariants"))
   let json = @moonrobo.simulation_review_packet_json(packet).stringify(indent=2)
   assert_true(json.contains("\"hardware_denied\": true"))
   assert_true(json.contains("\"remediation_margins\""))
   assert_true(json.contains("\"accepted_clearance_transitions\""))
+  assert_true(json.contains("\"robot_simulation_gates\""))
   let decision = @moonrobo.simulation_review_closeout_decision(packet)
   assert_eq(
     decision.decision_id,
@@ -280,6 +300,13 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
   assert_eq(decision.original_non_margin_blocker_count, 3)
   assert_eq(decision.closed_non_margin_blocker_count, 2)
   assert_eq(decision.remaining_non_margin_blocker_count, 1)
+  assert_eq(decision.robot_simulation_gate_count, 1)
+  assert_eq(decision.blocked_robot_simulation_gate_count, 1)
+  assert_true(
+    decision.blocked_robot_simulation_gates.contains(
+      "robot-simulation:noetix-e1-lab-01",
+    ),
+  )
   assert_true(
     decision.blocking_margin_checks.contains("terrain-northeast-stepout"),
   )
@@ -293,6 +320,7 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
   assert_true(decision.hardware_denied)
   assert_eq(decision.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(decision.reason.contains("3 remediation margins"))
+  assert_true(decision.reason.contains("1 robot simulation gates"))
   assert_true(decision.reason.contains("1 active non-margin blockers"))
   assert_true(
     decision.reason.contains("2 stale non-margin blockers are closed"),
@@ -303,6 +331,7 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
     decision,
   )
   assert_true(decision_markdown.contains("Simulation Review Decision"))
+  assert_true(decision_markdown.contains("Blocked Robot Simulation Gates"))
   assert_true(decision_markdown.contains("Hardware Denial Invariants"))
   let decision_json = @moonrobo.simulation_review_decision_json(decision).stringify(
     indent=2,
@@ -311,6 +340,9 @@ test "Moonrobo simulation review packet joins clearance margins and hardware den
     decision_json.contains("\"may_consume_simulation_packet\": false"),
   )
   assert_true(decision_json.contains("\"decision\": \"SimulationBlocked\""))
+  assert_true(
+    decision_json.contains("\"blocked_robot_simulation_gate_count\": 1"),
+  )
 }
 
 ///|

@@ -587,11 +587,44 @@ def hardware_denial_invariants(preview: dict[str, Any]) -> list[str]:
   ]
 
 
+def noetix_robot_simulation_gate(root: Path) -> dict[str, Any]:
+  decision_path = root / "output/moonclaw/first_trusted_square_noetix_readiness_decision.json"
+  work_item_path = root / "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json"
+  receipt_path = root / "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json"
+  decision = load_json(decision_path)
+  work_items = load_json(work_item_path)
+  may_consume = bool(decision["may_consume_moonrobo_simulation"])
+  next_action = (
+    decision["next_action"]
+    if may_consume
+    else (
+      f"{decision['next_action']}; resolve MoonRobo source_metadata_gaps "
+      "and physical_model_gaps before enabling simulation consumption"
+    )
+  )
+  return {
+    "gate_id": f"robot-simulation:{decision['robot_id']}",
+    "robot_id": decision["robot_id"],
+    "source_decision_id": decision["decision_id"],
+    "source_decision_path": "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+    "work_item_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
+    "receipt_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
+    "may_consume_simulation": may_consume,
+    "simulation_state": "SimulationReady" if may_consume else "SimulationBlocked",
+    "source_metadata_blocker_count": decision["metadata_blocker_count"],
+    "physical_model_blocker_count": decision["physical_model_blocker_count"],
+    "active_work_item_count": len(work_items),
+    "status": decision["decision"],
+    "next_action": next_action,
+  }
+
+
 def moonrobo_simulation_review_packet(
   handoff: dict[str, Any],
   preview: dict[str, Any],
   book: dict[str, Any],
   transition_file: Path,
+  root: Path,
 ) -> dict[str, Any]:
   return {
     "packet_id": f"moonrobo-simulation-review-packet/{handoff['site_id']}/{handoff['route_id']}",
@@ -612,6 +645,7 @@ def moonrobo_simulation_review_packet(
     "accepted_clearance_transitions": accepted_clearance_transitions(book),
     "remediation_margins": remediation_margin_evidence(preview),
     "remaining_non_margin_blockers": non_margin_blockers(preview),
+    "robot_simulation_gates": [noetix_robot_simulation_gate(root)],
     "hardware_denial_invariants": hardware_denial_invariants(preview),
     "next_action": (
       "Keep selected-route simulation blocked until terrain, horizon, and "
@@ -654,6 +688,14 @@ def render_moonrobo_simulation_review_packet_markdown(packet: dict[str, Any]) ->
     text += f"- {blocker['check_id']} ({book_entry_kind_label(blocker['kind'])})\n"
     text += f"  - evidence: {blocker['evidence_path']}\n"
     text += f"  - next action: {blocker['next_action']}\n"
+  text += "\n## Robot Simulation Gates\n\n"
+  for gate in packet["robot_simulation_gates"]:
+    text += f"- {gate['gate_id']}: {gate['status']}\n"
+    text += f"  - decision: {gate['source_decision_path']}\n"
+    text += f"  - source metadata blockers: {gate['source_metadata_blocker_count']}\n"
+    text += f"  - physical model blockers: {gate['physical_model_blocker_count']}\n"
+    text += f"  - active work items: {gate['active_work_item_count']}\n"
+    text += f"  - next action: {gate['next_action']}\n"
   text += "\n## Hardware Denial Invariants\n\n"
   for invariant in packet["hardware_denial_invariants"]:
     text += f"- {invariant}\n"
@@ -682,21 +724,28 @@ def moonrobo_simulation_review_decision(
     for check_id in original_non_margin_blockers
     if check_id not in closed_non_margin_blockers
   ]
+  blocked_robot_gates = [
+    gate["gate_id"]
+    for gate in packet["robot_simulation_gates"]
+    if not gate["may_consume_simulation"]
+  ]
   may_consume = (
     not margin_checks
     and not non_margin_blockers
+    and not blocked_robot_gates
     and packet["hardware_denied"]
     and packet["hardware_state"] == "HardwareDenied"
   )
   decision = "SimulationConsumable" if may_consume else "SimulationBlocked"
   reason = (
     "simulation packet may be consumed because no remediation margins or "
-    "non-margin blockers remain, while hardware authority remains "
+    "robot simulation gates, or non-margin blockers remain, while hardware authority remains "
     f"{packet['hardware_authority']}"
     if may_consume
     else (
       "simulation packet remains blocked: "
-      f"{len(margin_checks)} remediation margins and "
+      f"{len(margin_checks)} remediation margins, "
+      f"{len(blocked_robot_gates)} robot simulation gates, and "
       f"{len(non_margin_blockers)} active non-margin blockers remain; "
       f"{len(closed_non_margin_blockers)} stale non-margin blockers are closed; "
       f"hardware authority remains {packet['hardware_authority']}"
@@ -728,6 +777,9 @@ def moonrobo_simulation_review_decision(
     "original_non_margin_blocker_count": len(original_non_margin_blockers),
     "closed_non_margin_blocker_count": len(closed_non_margin_blockers),
     "remaining_non_margin_blocker_count": len(non_margin_blockers),
+    "robot_simulation_gate_count": len(packet["robot_simulation_gates"]),
+    "blocked_robot_simulation_gate_count": len(blocked_robot_gates),
+    "blocked_robot_simulation_gates": blocked_robot_gates,
     "blocking_margin_checks": margin_checks,
     "closed_non_margin_blockers": closed_non_margin_blockers,
     "remaining_non_margin_blockers": non_margin_blockers,
@@ -763,6 +815,8 @@ def render_moonrobo_simulation_review_decision_markdown(
   text += f"- original non-margin blockers: {decision['original_non_margin_blocker_count']}\n"
   text += f"- closed non-margin blockers: {decision['closed_non_margin_blocker_count']}\n"
   text += f"- active non-margin blockers: {decision['remaining_non_margin_blocker_count']}\n"
+  text += f"- robot simulation gates: {decision['robot_simulation_gate_count']}\n"
+  text += f"- blocked robot simulation gates: {decision['blocked_robot_simulation_gate_count']}\n"
   text += (
     "- accepted clearance transitions: "
     f"{decision['accepted_clearance_transition_count']}\n"
@@ -780,6 +834,9 @@ def render_moonrobo_simulation_review_decision_markdown(
   text += "\n## Remaining Non-Margin Blockers\n\n"
   for check_id in decision["remaining_non_margin_blockers"]:
     text += f"- {check_id}\n"
+  text += "\n## Blocked Robot Simulation Gates\n\n"
+  for gate_id in decision["blocked_robot_simulation_gates"]:
+    text += f"- {gate_id}\n"
   text += "\n## Hardware Denial Invariants\n\n"
   for invariant in decision["hardware_denial_invariants"]:
     text += f"- {invariant}\n"
@@ -1375,6 +1432,7 @@ def apply_import(root: Path, transition_file: Path) -> None:
     preview,
     book,
     transition_file,
+    root,
   )
   simulation_decision = moonrobo_simulation_review_decision(simulation_packet)
   blocker_reduction = moonrobo_simulation_blocker_reduction(

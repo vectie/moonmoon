@@ -115,6 +115,33 @@ def assert_packet(root: Path) -> None:
   }:
     if check_id not in blockers:
       raise AssertionError(blockers)
+
+  gates = packet["robot_simulation_gates"]
+  if len(gates) != 1:
+    raise AssertionError(gates)
+  gate = gates[0]
+  expected_gate = {
+    "gate_id": "robot-simulation:noetix-e1-lab-01",
+    "robot_id": "noetix-e1-lab-01",
+    "source_decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
+    "source_decision_path": "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+    "work_item_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
+    "receipt_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
+    "simulation_state": "SimulationBlocked",
+    "source_metadata_blocker_count": 50,
+    "physical_model_blocker_count": 9,
+    "active_work_item_count": 2,
+    "status": "NoetixSimulationBlocked",
+  }
+  for key, value in expected_gate.items():
+    if gate[key] != value:
+      raise AssertionError(gate)
+  if gate["may_consume_simulation"]:
+    raise AssertionError(gate)
+  for term in ["source_metadata_gaps", "physical_model_gaps"]:
+    if term not in gate["next_action"]:
+      raise AssertionError(gate["next_action"])
+
   invariants = packet["hardware_denial_invariants"]
   for invariant in [
     "hardware_state must remain HardwareDenied",
@@ -129,6 +156,9 @@ def assert_packet(root: Path) -> None:
     "MoonRobo Selected-Route Simulation Review Packet",
     "Accepted Clearance Transitions",
     "Remediation Margins",
+    "Robot Simulation Gates",
+    "robot-simulation:noetix-e1-lab-01",
+    "NoetixSimulationBlocked",
     "Hardware Denial Invariants",
     "grade margin",
     "terrain-shadow margin",

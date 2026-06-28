@@ -53,6 +53,14 @@ def assert_decision(root: Path) -> None:
     raise AssertionError(decision["closed_non_margin_blocker_count"])
   if decision["remaining_non_margin_blocker_count"] != 1:
     raise AssertionError(decision["remaining_non_margin_blocker_count"])
+  if decision["robot_simulation_gate_count"] != 1:
+    raise AssertionError(decision["robot_simulation_gate_count"])
+  if decision["blocked_robot_simulation_gate_count"] != 1:
+    raise AssertionError(decision["blocked_robot_simulation_gate_count"])
+  if set(decision["blocked_robot_simulation_gates"]) != {
+    "robot-simulation:noetix-e1-lab-01",
+  }:
+    raise AssertionError(decision["blocked_robot_simulation_gates"])
 
   expected_margins = {
     "terrain-northeast-stepout",
@@ -91,6 +99,7 @@ def assert_decision(root: Path) -> None:
   for term in [
     "simulation packet remains blocked",
     "3 remediation margins",
+    "1 robot simulation gates",
     "1 active non-margin blockers",
     "2 stale non-margin blockers are closed",
     "hardware authority remains moonmoon-safety-gate-only",
@@ -112,6 +121,8 @@ def assert_decision(root: Path) -> None:
     "terrain-northeast-stepout",
     "moonbook-review",
     "robot-simulation",
+    "Blocked Robot Simulation Gates",
+    "robot-simulation:noetix-e1-lab-01",
     "HardwareDenied",
     "Hardware Denial Invariants",
   ]:

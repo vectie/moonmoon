@@ -17,6 +17,9 @@ pub(all) struct SimulationReviewCloseoutDecision {
   original_non_margin_blocker_count : Int
   closed_non_margin_blocker_count : Int
   remaining_non_margin_blocker_count : Int
+  robot_simulation_gate_count : Int
+  blocked_robot_simulation_gate_count : Int
+  blocked_robot_simulation_gates : Array[String]
   blocking_margin_checks : Array[String]
   closed_non_margin_blockers : Array[String]
   remaining_non_margin_blockers : Array[String]
@@ -78,17 +81,31 @@ fn non_margin_blocker_is_closed(check_id : String) -> Bool {
 }
 
 ///|
+fn blocked_robot_simulation_gate_ids(
+  packet : SimulationReviewPacket,
+) -> Array[String] {
+  let gates : Array[String] = []
+  for gate in packet.robot_simulation_gates {
+    if !gate.may_consume_simulation {
+      gates.push(gate.gate_id)
+    }
+  }
+  gates
+}
+
+///|
 fn simulation_review_decision_reason(
   may_consume : Bool,
   margin_count : Int,
   blocker_count : Int,
+  robot_gate_count : Int,
   closed_blocker_count : Int,
   hardware_authority : String,
 ) -> String {
   if may_consume {
-    "simulation packet may be consumed because no remediation margins or non-margin blockers remain, while hardware authority remains \{hardware_authority}"
+    "simulation packet may be consumed because no remediation margins, robot simulation gates, or non-margin blockers remain, while hardware authority remains \{hardware_authority}"
   } else {
-    "simulation packet remains blocked: \{margin_count} remediation margins and \{blocker_count} active non-margin blockers remain; \{closed_blocker_count} stale non-margin blockers are closed; hardware authority remains \{hardware_authority}"
+    "simulation packet remains blocked: \{margin_count} remediation margins, \{robot_gate_count} robot simulation gates, and \{blocker_count} active non-margin blockers remain; \{closed_blocker_count} stale non-margin blockers are closed; hardware authority remains \{hardware_authority}"
   }
 }
 
@@ -112,8 +129,10 @@ pub fn simulation_review_closeout_decision(
   let original_non_margin_count = packet.remaining_non_margin_blockers.length()
   let closed_non_margin_blockers = closed_non_margin_blocker_checks(packet)
   let non_margin_blockers = remaining_non_margin_blocker_checks(packet)
+  let blocked_robot_gates = blocked_robot_simulation_gate_ids(packet)
   let may_consume = margin_checks.length() == 0 &&
     non_margin_blockers.length() == 0 &&
+    blocked_robot_gates.length() == 0 &&
     packet.hardware_denied &&
     packet.hardware_state == HardwareDenied
   {
@@ -130,6 +149,7 @@ pub fn simulation_review_closeout_decision(
       may_consume,
       margin_checks.length(),
       non_margin_blockers.length(),
+      blocked_robot_gates.length(),
       closed_non_margin_blockers.length(),
       packet.hardware_authority,
     ),
@@ -138,6 +158,9 @@ pub fn simulation_review_closeout_decision(
     original_non_margin_blocker_count: original_non_margin_count,
     closed_non_margin_blocker_count: closed_non_margin_blockers.length(),
     remaining_non_margin_blocker_count: non_margin_blockers.length(),
+    robot_simulation_gate_count: packet.robot_simulation_gates.length(),
+    blocked_robot_simulation_gate_count: blocked_robot_gates.length(),
+    blocked_robot_simulation_gates: blocked_robot_gates,
     blocking_margin_checks: margin_checks,
     closed_non_margin_blockers,
     remaining_non_margin_blockers: non_margin_blockers,
@@ -167,6 +190,8 @@ pub fn render_simulation_review_decision_markdown(
   text += "- original non-margin blockers: \{decision.original_non_margin_blocker_count}\n"
   text += "- closed non-margin blockers: \{decision.closed_non_margin_blocker_count}\n"
   text += "- active non-margin blockers: \{decision.remaining_non_margin_blocker_count}\n"
+  text += "- robot simulation gates: \{decision.robot_simulation_gate_count}\n"
+  text += "- blocked robot simulation gates: \{decision.blocked_robot_simulation_gate_count}\n"
   text += "- accepted clearance transitions: \{decision.accepted_clearance_transition_count}\n"
   text += "- hardware state: \{execution_state_label(decision.hardware_state)}\n"
   text += "- hardware authority: \{decision.hardware_authority}\n"
@@ -183,6 +208,10 @@ pub fn render_simulation_review_decision_markdown(
   text += "\n## Remaining Non-Margin Blockers\n\n"
   for check_id in decision.remaining_non_margin_blockers {
     text += "- \{check_id}\n"
+  }
+  text += "\n## Blocked Robot Simulation Gates\n\n"
+  for gate_id in decision.blocked_robot_simulation_gates {
+    text += "- \{gate_id}\n"
   }
   text += "\n## Hardware Denial Invariants\n\n"
   for invariant in decision.hardware_denial_invariants {

@@ -1481,6 +1481,9 @@ pub(all) struct SimulationReviewCloseoutDecision {
   original_non_margin_blocker_count : Int
   closed_non_margin_blocker_count : Int
   remaining_non_margin_blocker_count : Int
+  robot_simulation_gate_count : Int
+  blocked_robot_simulation_gate_count : Int
+  blocked_robot_simulation_gates : Array[String]
   blocking_margin_checks : Array[String]
   closed_non_margin_blockers : Array[String]
   remaining_non_margin_blockers : Array[String]
@@ -1531,7 +1534,24 @@ pub(all) struct SimulationReviewPacket {
   accepted_clearance_transitions : Array[SimulationReviewClearanceTransition]
   remediation_margins : Array[SimulationReviewMarginEvidence]
   remaining_non_margin_blockers : Array[SimulationReviewBlocker]
+  robot_simulation_gates : Array[SimulationReviewRobotGate]
   hardware_denial_invariants : Array[String]
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SimulationReviewRobotGate {
+  gate_id : String
+  robot_id : String
+  source_decision_id : String
+  source_decision_path : String
+  work_item_path : String
+  receipt_path : String
+  may_consume_simulation : Bool
+  simulation_state : MoonroboExecutionState
+  source_metadata_blocker_count : Int
+  physical_model_blocker_count : Int
+  active_work_item_count : Int
+  status : String
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
