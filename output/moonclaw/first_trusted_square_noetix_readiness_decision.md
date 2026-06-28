@@ -6,9 +6,9 @@
 - robot: noetix-e1-lab-01
 - status: noetix-simulation-blocked
 - may consume MoonRobo simulation: false
-- reason: Noetix simulation remains blocked for MoonRobo consumption: 0 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only
-- ready artifacts: 11
-- blocked artifacts: 0
+- reason: Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only
+- ready artifacts: 9
+- blocked artifacts: 2
 - source metadata blockers: 50
 - source metadata blocker ids:
   - missing-collision-shape:base_link
@@ -77,24 +77,27 @@
   - missing:joint-stiffness
 - static-support stable frames: 32
 - static-support review frames: 32
-- dynamic-stability capture-stable frames: 32
+- dynamic-stability capture-stable frames: 30
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
 - joint-control world-support review frames: 0
-- joint-control world-capture review frames: 0
+- joint-control world-capture review frames: 2
 - joint-control max support recovery shift: 0 m
-- joint-control worst capture support margin: 0.0021231717435670205 m
-- joint-control max capture recovery shift: 0 m
-- joint-control world replay blockers: 0
+- joint-control worst capture support margin: -0.0032435425030045146 m
+- joint-control max capture recovery shift: 0.003243542503004515 m
+- joint-control world replay blockers: 1
 - joint-control world replay blocker ids:
+  - world-dynamic-support-review
 - inertial-collision review frames: 0
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only
 - hardware denied: true
-- next action: keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied
+- next action: keep Noetix evidence in MoonClaw review; clear 2 blocked review artifacts, replace source and physical model metadata, regenerate the decision, and keep hardware denied
 
 ## Blocked Artifacts
 
+- noetix-dynamic-stability-review
+- noetix-joint-control-review
 
 ## Ready Artifacts
 
@@ -105,8 +108,6 @@
 - noetix-high-control-walk-command-plan
 - noetix-urdf-reference-link-poses
 - noetix-static-support-review
-- noetix-dynamic-stability-review
-- noetix-joint-control-review
 - noetix-inertial-collision-review
 - noetix-rabbita-playback
 

@@ -43,10 +43,12 @@ def main() -> None:
         fail("dynamic report should remain review-only")
     if report.get("review_frame_count", 0) <= 0:
         fail("expected dynamic review frames")
-    if report.get("capture_stable_frame_count") != len(frames):
-        fail("expected every capture point to remain inside support")
-    if report.get("worst_capture_margin_m", 0) <= 0:
-        fail("expected positive capture margin")
+    if report.get("capture_stable_frame_count") != 30:
+        fail("expected 30 capture-stable frames after URDF-height alignment")
+    if report.get("capture_stable_frame_count") >= len(frames):
+        fail("dynamic review must preserve the two unstable capture frames")
+    if report.get("worst_capture_margin_m", 0) >= 0:
+        fail("expected blocked-review negative worst capture margin")
     if "no controller" not in report.get("note", ""):
         fail("report note must preserve controller limitation")
 
@@ -68,11 +70,11 @@ def main() -> None:
         fail("support-aware body shift should stabilize the first capture point")
     if assessment.get("capture_margin_m", 0) <= 0:
         fail("first frame should expose positive capture margin after body shift")
-    if any(
+    if not any(
         frame.get("capture_point_assessment", {}).get("status") == "capture-point-outside-support"
         for frame in frames
     ):
-        fail("capture points should stay inside support")
+        fail("expected explicit capture-point-outside-support review frames")
 
 
 if __name__ == "__main__":

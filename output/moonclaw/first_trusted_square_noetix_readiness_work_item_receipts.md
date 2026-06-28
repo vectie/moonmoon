@@ -66,3 +66,69 @@
       - command: moon run cmd/main -- moonrobo noetix stability json
       - check: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json
       - current: Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.
+- receipt: moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay/receipt
+  - proposal: moonclaw/first-trusted-square/noetix-review-task
+  - status: accepted
+  - source work item: moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay
+  - source decision: moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+  - source task: moonclaw/first-trusted-square/noetix-review-task
+  - source work item state: needs-review
+  - robot: noetix-e1-lab-01
+  - result state: NoetixReadinessWorkItemsCarriedForward
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - may consume MoonRobo simulation: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - next action: Attach fresh Noetix evidence via moon run cmd/main -- moonrobo noetix control json, verify python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json, regenerate readiness work item receipts, and keep hardware denied.
+  - validation:
+    - source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+    - blocker-accounting-preserved: pass - work item world-replay preserves 1 named blockers
+    - result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths
+    - readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption
+    - simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for world-replay
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json passes
+  - work item result:
+    - 3. world-replay: NoetixReadinessWorkItemPendingEvidence
+      - blockers: 1
+      - required evidence: Moonphys world replay review with envelope, support, and dynamic-support blockers cleared
+      - target: output/moonrobo/first_trusted_square_noetix_control.json
+      - evidence: output/moonrobo/first_trusted_square_noetix_control.json
+      - command: moon run cmd/main -- moonrobo noetix control json
+      - check: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json
+      - current: Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.
+- receipt: moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts/receipt
+  - proposal: moonclaw/first-trusted-square/noetix-review-task
+  - status: accepted
+  - source work item: moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts
+  - source decision: moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+  - source task: moonclaw/first-trusted-square/noetix-review-task
+  - source work item state: needs-review
+  - robot: noetix-e1-lab-01
+  - result state: NoetixReadinessWorkItemsCarriedForward
+  - simulation state: simulation-blocked
+  - may consume simulation: false
+  - may consume MoonRobo simulation: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - hardware authority change: false
+  - next action: Attach fresh Noetix evidence via moon run cmd/main -- moonclaw noetix review task json, verify python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json, regenerate readiness work item receipts, and keep hardware denied.
+  - validation:
+    - source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+    - blocker-accounting-preserved: pass - work item review-artifacts preserves 2 named blockers
+    - result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths
+    - readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption
+    - simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for review-artifacts
+    - hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only
+    - fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json passes
+  - work item result:
+    - 4. review-artifacts: NoetixReadinessWorkItemPendingEvidence
+      - blockers: 2
+      - required evidence: ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared
+      - target: output/moonclaw/first_trusted_square_noetix_review_task.json
+      - evidence: output/moonclaw/first_trusted_square_noetix_review_task.json
+      - command: moon run cmd/main -- moonclaw noetix review task json
+      - check: python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json
+      - current: Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.

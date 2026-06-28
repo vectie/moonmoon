@@ -116,10 +116,10 @@ def main() -> None:
         != hinge_motor_world_trace.get("frame_count")
     ):
         fail("hinge motor world trace capture support frames must cover the replay")
-    if hinge_motor_world_trace.get("capture_stable_support_frame_count") != len(frames):
-        fail("hinge motor world trace should clear capture support review")
-    if hinge_motor_world_trace.get("capture_support_review_frame_count") != 0:
-        fail("hinge motor world trace should have no capture support review frames")
+    if hinge_motor_world_trace.get("capture_stable_support_frame_count") != 30:
+        fail("hinge motor world trace should preserve 30 capture-stable frames")
+    if hinge_motor_world_trace.get("capture_support_review_frame_count") != 2:
+        fail("hinge motor world trace should expose two capture review frames")
     if hinge_motor_world_trace.get("resolved_hinge_constraint_count", 0) <= (
         report.get("hinge_motor_driven_joint_count", 0)
     ):
@@ -178,19 +178,19 @@ def main() -> None:
         "world_review_status", ""
     ):
         fail("hinge motor world trace should expose Moonphys world review status")
-    if not hinge_motor_world_trace.get("world_review_ready"):
-        fail("hinge motor world trace review should be ready")
+    if hinge_motor_world_trace.get("world_review_ready"):
+        fail("hinge motor world trace review should remain blocked")
     blockers = hinge_motor_world_trace.get("world_review_blockers", [])
     if hinge_motor_world_trace.get("world_review_blocker_count", 0) != len(blockers):
         fail("hinge motor world trace blocker count must match blocker list")
-    if blockers:
-        fail("hinge motor world trace should clear all world blockers")
+    if blockers != ["world-dynamic-support-review"]:
+        fail("hinge motor world trace should carry only dynamic support blocker")
     if "world-envelope-review" in blockers:
         fail("velocity-shaped replay should not expose envelope blocker")
     if "world-support-review" in blockers:
         fail("hinge motor world trace should clear support blocker")
-    if "world-dynamic-support-review" in blockers:
-        fail("hinge motor world trace should clear dynamic support blocker")
+    if "world-dynamic-support-review" not in blockers:
+        fail("hinge motor world trace must expose dynamic support blocker")
     if "world-heightfield-hinge-motor-trace" not in hinge_motor_world_trace.get(
         "status", ""
     ):

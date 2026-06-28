@@ -483,10 +483,10 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "static-support-margin-ready", "Static support-stable frames are accepted separately from source/physical-model provenance blockers.",
       ),
       criterion(
-        "dynamic-stability-margin-ready", "Capture-stable frames are accepted separately from source/physical-model provenance blockers.",
+        "dynamic-stability-margin-reviewed", "Capture-stable frame counts are reviewed separately from source/physical-model provenance blockers and may block downstream review when any frame is unstable.",
       ),
       criterion(
-        "joint-control-replay-ready", "Joint-control limit, saturation, support, capture, and Moonphys world replay checks are accepted separately from source/physical-model provenance blockers.",
+        "joint-control-replay-reviewed", "Joint-control limit, saturation, support, capture, and Moonphys world replay checks are reviewed separately from source/physical-model provenance blockers and may block downstream review when replay blockers remain.",
       ),
       criterion(
         "dry-run-walk-command-preserved", "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.",

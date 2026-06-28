@@ -164,9 +164,9 @@
       "simulation_state": "SimulationBlocked",
       "source_metadata_blocker_count": 50,
       "physical_model_blocker_count": 9,
-      "active_work_item_count": 2,
+      "active_work_item_count": 4,
       "status": "NoetixSimulationBlocked",
-      "next_action": "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption"
+      "next_action": "keep Noetix evidence in MoonClaw review; clear 2 blocked review artifacts, replace source and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption"
     }
   ],
   "hardware_denial_invariants": [

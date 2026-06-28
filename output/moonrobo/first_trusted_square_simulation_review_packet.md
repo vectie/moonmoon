@@ -63,8 +63,8 @@
   - decision: output/moonclaw/first_trusted_square_noetix_readiness_decision.json
   - source metadata blockers: 50
   - physical model blockers: 9
-  - active work items: 2
-  - next action: keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption
+  - active work items: 4
+  - next action: keep Noetix evidence in MoonClaw review; clear 2 blocked review artifacts, replace source and physical model metadata, regenerate the decision, and keep hardware denied; resolve MoonRobo source_metadata_gaps and physical_model_gaps before enabling simulation consumption
 
 ## Hardware Denial Invariants
 

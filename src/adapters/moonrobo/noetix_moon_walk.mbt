@@ -134,6 +134,36 @@ pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile {
 }
 
 ///|
+fn noetix_urdf_base_to_foot_height_m() -> Double {
+  0.82
+}
+
+///|
+fn noetix_urdf_hip_drop_m() -> Double {
+  0.08
+}
+
+///|
+fn noetix_urdf_foot_forward_offset_m() -> Double {
+  0.04
+}
+
+///|
+fn noetix_urdf_foot_drop_m() -> Double {
+  0.08
+}
+
+///|
+fn noetix_urdf_upper_leg_m() -> Double {
+  0.32
+}
+
+///|
+fn noetix_urdf_lower_leg_m() -> Double {
+  0.34
+}
+
+///|
 pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
   {
     config_id: "moonrobo/noetix-e1/endless-forward-moon-walk-v1",
@@ -153,7 +183,7 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
-    body_height_m: 0.72,
+    body_height_m: noetix_urdf_base_to_foot_height_m(),
     terrain_source_id: "first-trusted-square-northeast-stepout-lola",
   }
 }
@@ -500,16 +530,16 @@ fn noetix_leg_ik_phases(
   let lateral = noetix_heading_lateral(config)
   let hip_world = body_position
     .add(lateral.scale(side_sign * config.lateral_foot_offset_m))
-    .add(@moonphys.vec3(0.0, 0.0, -0.08))
+    .add(@moonphys.vec3(0.0, 0.0, 0.0 - noetix_urdf_hip_drop_m()))
   let ankle_target = foot.position
-    .sub(forward.scale(0.04))
-    .add(@moonphys.vec3(0.0, 0.0, 0.08))
+    .sub(forward.scale(noetix_urdf_foot_forward_offset_m()))
+    .add(@moonphys.vec3(0.0, 0.0, noetix_urdf_foot_drop_m()))
   let relative = ankle_target.sub(hip_world)
   let sagittal_x = relative.dot(forward)
   let lateral_error = relative.dot(lateral)
   let down = 0.0 - relative.z
-  let upper_leg_m = 0.32
-  let lower_leg_m = 0.34
+  let upper_leg_m = noetix_urdf_upper_leg_m()
+  let lower_leg_m = noetix_urdf_lower_leg_m()
   let distance = clamp_double(
     (sagittal_x * sagittal_x + down * down).sqrt(),
     0.08,

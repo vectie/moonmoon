@@ -96,3 +96,44 @@
   - hardware authority: moonmoon-safety-gate-only
   - safety gate: Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.
   - next action: Replace each Noetix physical_model_gaps entry with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied.
+
+- moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay
+  - state: needs-review
+  - decision: moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+  - site: first-trusted-square
+  - robot: noetix-e1-lab-01
+  - rank: 3
+  - blocker domain: world-replay
+  - blockers: 1
+  - blocker ids:
+    - world-dynamic-support-review
+  - required evidence: Moonphys world replay review with envelope, support, and dynamic-support blockers cleared
+  - target: output/moonrobo/first_trusted_square_noetix_control.json
+  - command: moon run cmd/main -- moonrobo noetix control json
+  - check: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json
+  - may consume MoonRobo simulation: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - safety gate: Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.
+  - next action: Improve motor-driven Moonphys world replay evidence until the named replay blockers clear, then regenerate MoonClaw review artifacts.
+
+- moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts
+  - state: needs-review
+  - decision: moonclaw/first-trusted-square/noetix-simulation-readiness-decision
+  - site: first-trusted-square
+  - robot: noetix-e1-lab-01
+  - rank: 4
+  - blocker domain: review-artifacts
+  - blockers: 2
+  - blocker ids:
+    - noetix-dynamic-stability-review
+    - noetix-joint-control-review
+  - required evidence: ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared
+  - target: output/moonclaw/first_trusted_square_noetix_review_task.json
+  - command: moon run cmd/main -- moonclaw noetix review task json
+  - check: python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json
+  - may consume MoonRobo simulation: false
+  - hardware state: hardware-denied
+  - hardware authority: moonmoon-safety-gate-only
+  - safety gate: Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.
+  - next action: Resolve review-only Noetix artifacts, regenerate the review task and readiness decision, and keep hardware denied.

@@ -36,9 +36,9 @@ def main() -> None:
         fail("Noetix simulation must not be consumable yet")
     if decision.get("decision") != "NoetixSimulationBlocked":
         fail("decision must remain blocked")
-    if decision.get("ready_artifact_count") != 11:
+    if decision.get("ready_artifact_count") != 9:
         fail("unexpected ready artifact count")
-    if decision.get("blocked_artifact_count") != 0:
+    if decision.get("blocked_artifact_count") != 2:
         fail("unexpected blocked artifact count")
     if decision.get("metadata_blocker_count") != 50:
         fail("unexpected metadata blocker count")
@@ -92,8 +92,8 @@ def main() -> None:
         fail("physical blockers must name missing joint damping")
     if decision.get("static_support_stable_frame_count") != 32:
         fail("static support should report all frames support-stable")
-    if decision.get("dynamic_stability_capture_stable_frame_count") != 32:
-        fail("dynamic stability should report all frames capture-stable")
+    if decision.get("dynamic_stability_capture_stable_frame_count") != 30:
+        fail("dynamic stability should preserve 30 capture-stable frames")
     for field in [
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
@@ -105,16 +105,16 @@ def main() -> None:
         fail("inertial_collision_review_frame_count should clear")
     if decision.get("joint_control_world_support_review_frame_count") != 0:
         fail("joint_control_world_support_review_frame_count should be cleared")
-    if decision.get("joint_control_world_capture_review_frame_count") != 0:
-        fail("joint_control_world_capture_review_frame_count should be cleared")
+    if decision.get("joint_control_world_capture_review_frame_count") != 2:
+        fail("joint_control_world_capture_review_frame_count should expose two frames")
     if decision.get("joint_control_max_support_recovery_shift_m", -1) < 0:
         fail("joint control max support recovery shift must be explicit")
-    if decision.get("joint_control_worst_capture_support_margin_m", 0) <= 0:
-        fail("joint control worst capture support margin must be positive")
-    if decision.get("joint_control_max_capture_recovery_shift_m") != 0:
-        fail("joint control max capture recovery shift must be cleared")
-    if decision.get("joint_control_world_replay_blocker_count") != 0:
-        fail("joint control world replay blockers should be cleared")
+    if decision.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
+        fail("joint control worst capture support margin must remain blocked")
+    if decision.get("joint_control_max_capture_recovery_shift_m", 0) <= 0:
+        fail("joint control max capture recovery shift must be explicit")
+    if decision.get("joint_control_world_replay_blocker_count") != 1:
+        fail("joint control world replay blockers should carry dynamic support")
     replay_blockers = decision.get("joint_control_world_replay_blockers")
     if not isinstance(replay_blockers, list):
         fail("joint control world replay blocker ids must be listed")
@@ -124,8 +124,8 @@ def main() -> None:
         fail("joint control world replay blockers must not retain cleared envelope review")
     if "world-support-review" in replay_blockers:
         fail("joint control world replay blockers must not retain cleared support review")
-    if "world-dynamic-support-review" in replay_blockers:
-        fail("joint control world replay blockers must clear dynamic support review")
+    if "world-dynamic-support-review" not in replay_blockers:
+        fail("joint control world replay blockers must expose dynamic support review")
 
     ready_artifacts = decision.get("ready_artifacts", [])
     blocked_artifacts = decision.get("blocked_artifacts", [])
@@ -139,18 +139,17 @@ def main() -> None:
         "noetix-high-control-walk-command-plan",
         "noetix-urdf-reference-link-poses",
         "noetix-static-support-review",
-        "noetix-dynamic-stability-review",
-        "noetix-joint-control-review",
         "noetix-inertial-collision-review",
         "noetix-rabbita-playback",
     ]:
         require_contains(ready_artifacts, expected, "ready artifacts")
-    if blocked_artifacts:
-        fail(f"review artifacts should all be ready: {blocked_artifacts}")
-    for cleared in [
-        "noetix-static-support-review",
+    for expected in [
         "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
+    ]:
+        require_contains(blocked_artifacts, expected, "blocked artifacts")
+    for cleared in [
+        "noetix-static-support-review",
         "noetix-inertial-collision-review",
     ]:
         if cleared in blocked_artifacts:
@@ -180,12 +179,10 @@ def main() -> None:
     if "physical-model-assumption-review" not in reason:
         fail("reason must name physical readiness status")
     next_action = decision.get("next_action", "")
-    if "all review artifacts are ready" not in next_action:
-        fail("next action must acknowledge cleared review artifacts")
-    if "physical model metadata" not in next_action:
-        fail("next action must name physical model metadata")
-    if "clear blocked review artifacts" in next_action:
-        fail("next action must not reference stale blocked review artifacts")
+    if "clear 2 blocked review artifacts" not in next_action:
+        fail("next action must acknowledge blocked review artifacts")
+    if "source and physical model metadata" not in next_action:
+        fail("next action must name source and physical model metadata")
     if "keep hardware denied" not in next_action:
         fail("next action must preserve hardware denial")
 

@@ -50,10 +50,10 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_items.py WORK_ITEMS_JSON")
 
     items = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(items, list) or len(items) != 2:
-        fail("expected two Noetix readiness work items")
+    if not isinstance(items, list) or len(items) != 4:
+        fail("expected four Noetix readiness work items")
 
-    expected_ranks = [1, 2]
+    expected_ranks = [1, 2, 3, 4]
     for index, item in enumerate(items):
         if item.get("rank") != expected_ranks[index]:
             fail("work item ranks must preserve source priority")
@@ -88,10 +88,21 @@ def main() -> None:
         fail("physical-model item must target the physical_model_gaps inventory")
     if "physical_model_gaps" not in physical.get("next_action", ""):
         fail("physical-model next action must name the gap inventory")
-    if any(item.get("blocker_domain") == "world-replay" for item in items):
-        fail("world replay item should be omitted after replay blockers clear")
-    if any(item.get("blocker_domain") == "review-artifacts" for item in items):
-        fail("review artifact item should be omitted after all review artifacts clear")
+    require_item(
+        item_by_domain(items, "world-replay"),
+        1,
+        "world-dynamic-support-review",
+        "check_moonrobo_noetix_control",
+    )
+    require_item(
+        item_by_domain(items, "review-artifacts"),
+        2,
+        "noetix-dynamic-stability-review",
+        "check_moonclaw_noetix_review_task",
+    )
+    review = item_by_domain(items, "review-artifacts")
+    if "noetix-joint-control-review" not in review.get("blocker_ids", []):
+        fail("review-artifacts item must include joint-control review blocker")
 
 
 if __name__ == "__main__":

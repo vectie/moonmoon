@@ -455,7 +455,7 @@
       "claim_kind": "Derived",
       "confidence": 0.62,
       "path": "mission/first-trusted-square/selected-route-clearance.json",
-      "summary": "block northeast-stepout: 4 clearance items, 4 blockers"
+      "summary": "allow northeast-stepout: 4 clearance items, 0 blockers"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/simulation-preconditions",
@@ -788,7 +788,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
-      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin 0.0021231717435670205 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.0032435425030045146 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-joint-control",
@@ -797,7 +797,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
-      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 40.50000000000002 W, absolute work 130.134946778545 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 40.50000000000002 W, absolute work 118.62994874361048 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-inertial-collision",
@@ -815,7 +815,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.56,
       "path": "moonrobo/first-trusted-square/noetix-link-poses.json",
-      "summary": "noetix-e1-lab-01 review-only link pose trace has 32 frames and 25 URDF-reference links per frame; non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied"
+      "summary": "noetix-e1-lab-01 review-only link pose trace uses RobotRig urdf-rigid-rig-ready plus planned-gait-joint-samples; 32 frames, 25 URDF-reference links per frame, and 6 rigid URDF visuals (1 mesh, 5 primitives); non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/noetix-review-task",
@@ -833,7 +833,7 @@
       "claim_kind": "Derived",
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-decision.json",
-      "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 0, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 2, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/noetix-readiness-work-items",
@@ -842,7 +842,7 @@
       "claim_kind": "Derived",
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-work-items.json",
-      "summary": "2 Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied"
+      "summary": "4 Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied"
     },
     {
       "entry_id": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts",
@@ -851,7 +851,61 @@
       "claim_kind": "Derived",
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts.json",
-      "summary": "2 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
+      "summary": "4 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-task",
+      "title": "MoonClaw MoonRobo gap remediation task",
+      "kind": "MoonClawTask",
+      "claim_kind": "Derived",
+      "confidence": 0.82,
+      "path": "moonclaw/first-trusted-square/moonrobo-gap-task.json",
+      "summary": "accepted remediation task for 6 MoonRobo blocker gaps with hardware authority denied"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/moonrobo-gap-remediation-receipt",
+      "title": "MoonClaw MoonRobo gap remediation receipt",
+      "kind": "MoonClawGapReceipt",
+      "claim_kind": "Derived",
+      "confidence": 0.82,
+      "path": "moonclaw/first-trusted-square/moonrobo-gap-receipt.json",
+      "summary": "OpenGapsCarriedForward with 6 MoonRobo gaps still blocking"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/gap-remediation-modeling-pass",
+      "title": "MoonRobo gap remediation modeling pass",
+      "kind": "MoonroboGapModeling",
+      "claim_kind": "Derived",
+      "confidence": 0.82,
+      "path": "moonrobo/first-trusted-square/gap-remediation-modeling.json",
+      "summary": "AllGapsStillBlocked with 6 MoonRobo gaps still blocking"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-review-packet",
+      "title": "MoonRobo selected-route simulation review packet",
+      "kind": "MoonroboSimulationReviewPacket",
+      "claim_kind": "Derived",
+      "confidence": 0.84,
+      "path": "moonrobo/first-trusted-square/simulation-review-packet.json",
+      "summary": "simulation-blocked northeast-stepout with 3 remediation margins, 4 accepted clearance transitions, hardware-denial invariants locked at HardwareDenied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-review-decision",
+      "title": "MoonRobo selected-route simulation review decision",
+      "kind": "MoonroboSimulationReviewDecision",
+      "claim_kind": "Derived",
+      "confidence": 0.84,
+      "path": "moonrobo/first-trusted-square/simulation-review-decision.json",
+      "summary": "SimulationBlocked northeast-stepout: consume=false, 3 remediation margins, 1 active non-margin blockers, 2 closed non-margin blockers, hardware authority denied at HardwareDenied"
+    },
+    {
+      "entry_id": "moonrobo/first-trusted-square/simulation-blocker-reduction",
+      "title": "MoonRobo simulation blocker reduction",
+      "kind": "MoonroboSimulationBlockerReduction",
+      "claim_kind": "Derived",
+      "confidence": 0.84,
+      "path": "moonrobo/first-trusted-square/simulation-blocker-reduction.json",
+      "summary": "2 closed non-margin blockers, 1 active non-margin blockers, 3 remediation margins still blocking, hardware authority denied at HardwareDenied"
     }
   ],
   "review_queue_path": "review_queue.json",

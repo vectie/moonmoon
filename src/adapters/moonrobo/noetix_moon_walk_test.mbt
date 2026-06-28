@@ -18,6 +18,7 @@ test "noetix endless moon walk advances in one direction" {
     trace.config.speed_mps ==
     trace.config.step_length_m * trace.config.stride_frequency_hz,
   )
+  assert_eq(trace.config.body_height_m, 0.82)
   assert_true(
     trace.frames[23].body_position.x > trace.frames[0].body_position.x,
   )
@@ -212,6 +213,7 @@ test "noetix physics profile keeps assumed dynamics explicit" {
   assert_eq(profile.actuator_profiles.length(), 24)
   assert_true(profile.collision_shapes.length() >= 6)
   assert_true(profile.mass_model.mass_kg > 0.0)
+  assert_eq(profile.mass_model.nominal_com_height_m, 0.82)
   assert_eq(
     profile.physical_model_readiness.readiness_id,
     "moonrobo/noetix-e1/physical-model-readiness-v0",

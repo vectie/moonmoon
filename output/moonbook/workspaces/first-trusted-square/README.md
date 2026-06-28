@@ -56,6 +56,6 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 88
+- Entries: 94
 - Review queue items: 29
 - Review transitions: 29

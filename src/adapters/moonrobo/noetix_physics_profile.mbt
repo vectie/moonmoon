@@ -400,7 +400,7 @@ pub fn default_noetix_physics_profile() -> NoetixPhysicsProfile {
     mass_model: {
       model_id: "noetix-e1-assumed-lumped-mass-v0",
       mass_kg: 38.0,
-      nominal_com_height_m: 0.72,
+      nominal_com_height_m: noetix_urdf_base_to_foot_height_m(),
       com_x_offset_m: 0.0,
       com_y_offset_m: 0.0,
       source_status: "simulation-assumption; no inertial tags in referenced URDF/profile",

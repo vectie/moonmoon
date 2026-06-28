@@ -69,8 +69,8 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_item_receipts.py RECEIPTS_JSON")
 
     receipts = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(receipts, list) or len(receipts) != 2:
-        fail("expected two Noetix readiness work item receipts")
+    if not isinstance(receipts, list) or len(receipts) != 4:
+        fail("expected four Noetix readiness work item receipts")
 
     for receipt in receipts:
         if receipt.get("source_decision_id") != "moonclaw/first-trusted-square/noetix-simulation-readiness-decision":
@@ -104,16 +104,23 @@ def main() -> None:
         fail("physical-model receipt must target the physical_model_gaps inventory")
     if "physical_model_gaps" not in physical.get("next_action", ""):
         fail("physical-model receipt next action must name the gap inventory")
-    if any(
-        receipt.get("work_item_result", {}).get("blocker_domain") == "world-replay"
-        for receipt in receipts
-    ):
-        fail("world replay receipt should be omitted after replay blockers clear")
-    if any(
-        receipt.get("work_item_result", {}).get("blocker_domain") == "review-artifacts"
-        for receipt in receipts
-    ):
-        fail("review artifact receipt should be omitted after all review artifacts clear")
+    require_receipt(
+        receipt_by_domain(receipts, "world-replay"),
+        1,
+        "world-dynamic-support-review",
+        "check_moonrobo_noetix_control",
+    )
+    require_receipt(
+        receipt_by_domain(receipts, "review-artifacts"),
+        2,
+        "noetix-dynamic-stability-review",
+        "check_moonclaw_noetix_review_task",
+    )
+    review = receipt_by_domain(receipts, "review-artifacts").get(
+        "work_item_result", {}
+    )
+    if "noetix-joint-control-review" not in review.get("blocker_ids", []):
+        fail("review-artifacts receipt must include joint-control review blocker")
 
 
 if __name__ == "__main__":

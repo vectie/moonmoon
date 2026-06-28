@@ -5,9 +5,9 @@
   "robot_id": "noetix-e1-lab-01",
   "may_consume_moonrobo_simulation": false,
   "decision": "NoetixSimulationBlocked",
-  "reason": "Noetix simulation remains blocked for MoonRobo consumption: 0 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
-  "ready_artifact_count": 11,
-  "blocked_artifact_count": 0,
+  "reason": "Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
+  "ready_artifact_count": 9,
+  "blocked_artifact_count": 2,
   "metadata_blocker_count": 50,
   "metadata_blocker_ids": [
     "missing-collision-shape:base_link",
@@ -243,16 +243,18 @@
   ],
   "static_support_stable_frame_count": 32,
   "static_support_review_frame_count": 32,
-  "dynamic_stability_capture_stable_frame_count": 32,
+  "dynamic_stability_capture_stable_frame_count": 30,
   "dynamic_stability_review_frame_count": 32,
   "joint_control_review_frame_count": 32,
   "joint_control_world_support_review_frame_count": 0,
-  "joint_control_world_capture_review_frame_count": 0,
+  "joint_control_world_capture_review_frame_count": 2,
   "joint_control_max_support_recovery_shift_m": 0,
-  "joint_control_worst_capture_support_margin_m": 0.0021231717435670205,
-  "joint_control_max_capture_recovery_shift_m": 0,
-  "joint_control_world_replay_blocker_count": 0,
-  "joint_control_world_replay_blockers": [],
+  "joint_control_worst_capture_support_margin_m": -0.0032435425030045146,
+  "joint_control_max_capture_recovery_shift_m": 0.003243542503004515,
+  "joint_control_world_replay_blocker_count": 1,
+  "joint_control_world_replay_blockers": [
+    "world-dynamic-support-review"
+  ],
   "inertial_collision_review_frame_count": 0,
   "ready_artifacts": [
     "noetix-source-model-audit",
@@ -262,12 +264,13 @@
     "noetix-high-control-walk-command-plan",
     "noetix-urdf-reference-link-poses",
     "noetix-static-support-review",
-    "noetix-dynamic-stability-review",
-    "noetix-joint-control-review",
     "noetix-inertial-collision-review",
     "noetix-rabbita-playback"
   ],
-  "blocked_artifacts": [],
+  "blocked_artifacts": [
+    "noetix-dynamic-stability-review",
+    "noetix-joint-control-review"
+  ],
   "hardware_state": "HardwareDenied",
   "hardware_authority": "moonmoon-safety-gate-only",
   "hardware_denied": true,
@@ -277,5 +280,5 @@
     "Noetix review decision must never issue hardware authority",
     "MoonRobo simulation consumption requires all review artifacts ready, source metadata inventory ready, and physical model readiness clear"
   ],
-  "next_action": "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied"
+  "next_action": "keep Noetix evidence in MoonClaw review; clear 2 blocked review artifacts, replace source and physical model metadata, regenerate the decision, and keep hardware denied"
 }

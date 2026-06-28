@@ -79,16 +79,17 @@
   - walk command segments: 3
   - static-support stable frames: 32
   - static-support review frames: 32
-  - dynamic-stability capture-stable frames: 32
+  - dynamic-stability capture-stable frames: 30
   - dynamic-stability review frames: 32
   - joint-control review frames: 32
   - joint-control world-support review frames: 0
-  - joint-control world-capture review frames: 0
+  - joint-control world-capture review frames: 2
   - joint-control max support recovery shift: 0 m
-  - joint-control worst capture support margin: 0.0021231717435670205 m
-  - joint-control max capture recovery shift: 0 m
-  - joint-control world replay blockers: 0
+  - joint-control worst capture support margin: -0.0032435425030045146 m
+  - joint-control max capture recovery shift: 0.003243542503004515 m
+  - joint-control world replay blockers: 1
   - joint-control world replay blocker ids:
+    - world-dynamic-support-review
   - inertial-collision review frames: 0
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
@@ -142,14 +143,14 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
     - noetix-dynamic-stability-review: output/moonrobo/first_trusted_square_noetix_dynamics.json
-      - current: 32/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review
-      - ready: true
-      - blocking: none
+      - current: 30/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin -0.0032435425030045146 m; status dynamic-stability-review
+      - ready: false
+      - blocking: capture-point margins must be stable in every frame before downstream review
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 47; support-review frames 0; capture-review frames 0; max support recovery shift 0 m; worst capture support margin 0.0021231717435670205 m; max capture recovery shift 0 m; world replay blockers 0; resolved world hinges 1512; body samples 825; max world speed 1.6908324763156608 m/s; max world energy 2.1727749918524495 J; envelope world-trace-envelope-bounded; world review world-replay-review-ready; max power 36.45000000000002 W; absolute work 132.57194984332526 J; status joint-control-assumption-review
-      - ready: true
-      - blocking: none
+      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 58; support-review frames 0; capture-review frames 2; max support recovery shift 0 m; worst capture support margin -0.0032435425030045146 m; max capture recovery shift 0.003243542503004515 m; world replay blockers 1; resolved world hinges 1512; body samples 825; max world speed 2.1346289639943006 m/s; max world energy 3.4630470185817694 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 40.50000000000002 W; absolute work 118.62994874361048 J; status joint-control-assumption-review
+      - ready: false
+      - blocking: joint-control replay must clear limit, saturation, support, capture, and Moonphys world replay blockers
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json
     - noetix-inertial-collision-review: output/moonrobo/first_trusted_square_noetix_inertial_collision.json
       - current: 32 frames; 8 shapes per frame; self-contact review frames 0; terrain-review frames 0; max self penetration 0 m; max world correction 0 m; status inertial-collision-assumption-review
@@ -181,8 +182,8 @@
     - moonrobo-source-sync-preserved: Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.
     - endless-gait-window-preserved: Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.
     - static-support-margin-ready: Static support-stable frames are accepted separately from source/physical-model provenance blockers.
-    - dynamic-stability-margin-ready: Capture-stable frames are accepted separately from source/physical-model provenance blockers.
-    - joint-control-replay-ready: Joint-control limit, saturation, support, capture, and Moonphys world replay checks are accepted separately from source/physical-model provenance blockers.
+    - dynamic-stability-margin-reviewed: Capture-stable frame counts are reviewed separately from source/physical-model provenance blockers and may block downstream review when any frame is unstable.
+    - joint-control-replay-reviewed: Joint-control limit, saturation, support, capture, and Moonphys world replay checks are reviewed separately from source/physical-model provenance blockers and may block downstream review when replay blockers remain.
     - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
     - inertial-collision-review-ready: Inertial/collision terrain and filtered self-contact replay checks are accepted separately from source/physical-model provenance blockers.
     - hardware-denial-preserved: MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.

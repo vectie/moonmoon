@@ -120,26 +120,28 @@ def main() -> None:
         fail("static support should report every frame support-stable")
     if task.get("static_support_review_frame_count", 0) <= 0:
         fail("static support provenance review blocker should be explicit")
-    if task.get("dynamic_stability_capture_stable_frame_count") != task.get(
+    if task.get("dynamic_stability_capture_stable_frame_count") != 30:
+        fail("dynamic stability should preserve 30 capture-stable frames")
+    if task.get("dynamic_stability_capture_stable_frame_count") >= task.get(
         "frame_count"
     ):
-        fail("dynamic stability should report every frame capture-stable")
+        fail("dynamic stability should preserve blocked capture frames")
     if task.get("dynamic_stability_review_frame_count", 0) <= 0:
         fail("dynamic stability provenance review blocker should be explicit")
     if task.get("joint_control_review_frame_count", 0) <= 0:
         fail("joint control review blocker should be explicit")
     if task.get("joint_control_world_support_review_frame_count") != 0:
         fail("joint control world-support review should be cleared")
-    if task.get("joint_control_world_capture_review_frame_count") != 0:
-        fail("joint control world-capture review should be cleared")
+    if task.get("joint_control_world_capture_review_frame_count") != 2:
+        fail("joint control world-capture review should expose two frames")
     if task.get("joint_control_max_support_recovery_shift_m", -1) < 0:
         fail("joint control max support recovery shift should be explicit")
-    if task.get("joint_control_worst_capture_support_margin_m", 0) <= 0:
-        fail("joint control worst capture support margin should be positive")
-    if task.get("joint_control_max_capture_recovery_shift_m") != 0:
-        fail("joint control max capture recovery shift should be cleared")
-    if task.get("joint_control_world_replay_blocker_count") != 0:
-        fail("joint control world replay blockers should be cleared")
+    if task.get("joint_control_worst_capture_support_margin_m", 0) >= 0:
+        fail("joint control worst capture support margin should remain blocked")
+    if task.get("joint_control_max_capture_recovery_shift_m", 0) <= 0:
+        fail("joint control max capture recovery shift should be explicit")
+    if task.get("joint_control_world_replay_blocker_count") != 1:
+        fail("joint control world replay blockers should carry dynamic support")
     replay_blockers = task.get("joint_control_world_replay_blockers")
     if not isinstance(replay_blockers, list):
         fail("joint control world replay blocker ids must be listed")
@@ -149,8 +151,8 @@ def main() -> None:
         fail("joint control world replay blockers must not retain cleared envelope review")
     if "world-support-review" in replay_blockers:
         fail("joint control world replay blockers must not retain cleared support review")
-    if "world-dynamic-support-review" in replay_blockers:
-        fail("joint control world replay blockers must clear dynamic support review")
+    if "world-dynamic-support-review" not in replay_blockers:
+        fail("joint control world replay blockers must expose dynamic support review")
     if task.get("inertial_collision_review_frame_count") != 0:
         fail("inertial collision terrain/self-contact review frames should clear")
     if not task.get("source_walk_command_plan_id", "").startswith(
@@ -261,19 +263,19 @@ def main() -> None:
         fail("static support artifact must expose support-stable frame count")
     if "review frames from contact/model provenance" not in static_state:
         fail("static support artifact must separate review provenance blockers")
-    if not artifacts["noetix-dynamic-stability-review"].get("ready"):
-        fail("dynamic stability artifact should be ready once every frame is capture-stable")
-    if artifacts["noetix-dynamic-stability-review"].get("blocking_reason") != "none":
-        fail("dynamic stability artifact should keep provenance blockers outside artifact readiness")
+    if artifacts["noetix-dynamic-stability-review"].get("ready"):
+        fail("dynamic stability artifact should block when capture frames are unstable")
+    if "capture-point margins" not in artifacts["noetix-dynamic-stability-review"].get("blocking_reason", ""):
+        fail("dynamic stability artifact must name capture margin blocker")
     dynamic_state = artifacts["noetix-dynamic-stability-review"].get("current_state", "")
     if "frames capture-stable" not in dynamic_state:
         fail("dynamic stability artifact must expose capture-stable frame count")
     if "dynamic review frames from model/provenance blockers" not in dynamic_state:
         fail("dynamic stability artifact must separate review provenance blockers")
-    if not artifacts["noetix-joint-control-review"].get("ready"):
-        fail("joint control artifact should be ready after replay blockers clear")
-    if artifacts["noetix-joint-control-review"].get("blocking_reason") != "none":
-        fail("joint control artifact should keep servo/inertia authority blockers outside artifact readiness")
+    if artifacts["noetix-joint-control-review"].get("ready"):
+        fail("joint control artifact should block while replay blockers remain")
+    if "world replay blockers" not in artifacts["noetix-joint-control-review"].get("blocking_reason", ""):
+        fail("joint control artifact must name world replay blocker")
     joint_control_state = artifacts["noetix-joint-control-review"].get("current_state", "")
     if "capture-review frames" not in joint_control_state:
         fail("joint control artifact must expose world capture-review frames")
