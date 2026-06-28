@@ -46,6 +46,9 @@ const sceneContracts = [
   'swingFootClearance',
   'visualAttachmentStatus',
   'visualLinkAttachments',
+  'noetixVisualAttachmentStatus',
+  'noetixVisualAttachments',
+  'NOETIX_VISUAL_DUPLICATE_OFFSET_X',
   'visualMeshAssetStatus',
   'visualMeshAssets',
   'visual_mesh_assets',
@@ -365,12 +368,23 @@ for (const time of sampleTimes) {
   if (frame.quality.statuses.visualLinkAttachments !== 'pass') {
     throw new Error(`visual link attachment failed at ${time}s: ${JSON.stringify(frame.quality.visualLinkAttachments)}`)
   }
-  const baseVisualLink = frame.quality.visualLinkAttachments.links.find(link => link.linkId === 'base_link')
-  if (baseVisualLink?.geometry !== 'mesh' ||
-    !baseVisualLink.meshPath?.endsWith('base.obj') ||
-    baseVisualLink.vertexCount < 8 ||
-    baseVisualLink.triangleCount < 12) {
-    throw new Error(`base_link did not render from Moonrobo Noetix OBJ mesh at ${time}s: ${JSON.stringify(baseVisualLink)}`)
+  const debugBaseVisualLink = frame.quality.visualLinkAttachments.links.find(link => link.linkId === 'base_link')
+  if (debugBaseVisualLink?.geometry !== 'box' || !debugBaseVisualLink.source.includes('debug box')) {
+    throw new Error(`debug base_link did not remain boxed at ${time}s: ${JSON.stringify(debugBaseVisualLink)}`)
+  }
+  if (frame.quality.statuses.noetixVisualAttachments !== 'pass') {
+    throw new Error(`Noetix duplicate visual attachment failed at ${time}s: ${JSON.stringify(frame.quality.noetixVisualAttachments)}`)
+  }
+  if (frame.quality.noetixVisualAttachments.expectedCount !== 6 ||
+    frame.quality.noetixVisualAttachments.attachedCount !== 6) {
+    throw new Error(`Noetix duplicate visual did not render the current 6 URDF visuals at ${time}s: ${JSON.stringify(frame.quality.noetixVisualAttachments)}`)
+  }
+  const noetixBaseVisualLink = frame.quality.noetixVisualAttachments.links.find(link => link.linkId === 'base_link')
+  if (noetixBaseVisualLink?.geometry !== 'mesh' ||
+    !noetixBaseVisualLink.meshPath?.endsWith('base.obj') ||
+    noetixBaseVisualLink.vertexCount < 8 ||
+    noetixBaseVisualLink.triangleCount < 12) {
+    throw new Error(`Noetix duplicate base_link did not render from OBJ mesh at ${time}s: ${JSON.stringify(noetixBaseVisualLink)}`)
   }
   if (frame.quality.statuses.limbForwardBend !== 'pass') {
     throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)

@@ -20,6 +20,7 @@ const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.me
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
 const VISUAL_MESH_CACHE = new Map()
+const NOETIX_VISUAL_DUPLICATE_OFFSET_X = 0.74
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -58,6 +59,14 @@ function mat4Translate(m, x, y, z) {
   t[13] = y
   t[14] = z
   return mat4Multiply(m, t)
+}
+
+function mat4WorldOffset(m, x, y, z) {
+  const t = mat4Identity()
+  t[12] = x
+  t[13] = y
+  t[14] = z
+  return mat4Multiply(t, m)
 }
 
 function mat4RotateX(m, a) {
@@ -416,6 +425,23 @@ function addCube(vertices, colors, matrix, center, size, color) {
   }
 }
 
+function addCylinderY(vertices, colors, matrix, center, radius, length, color, segments = 14) {
+  const half = length * 0.5
+  const topCenter = transformPoint(matrix, [center[0], center[1] + half, center[2]])
+  const bottomCenter = transformPoint(matrix, [center[0], center[1] - half, center[2]])
+  for (let i = 0; i < segments; i += 1) {
+    const a0 = (i / segments) * Math.PI * 2
+    const a1 = ((i + 1) / segments) * Math.PI * 2
+    const p0 = transformPoint(matrix, [center[0] + Math.cos(a0) * radius, center[1] - half, center[2] + Math.sin(a0) * radius])
+    const p1 = transformPoint(matrix, [center[0] + Math.cos(a1) * radius, center[1] - half, center[2] + Math.sin(a1) * radius])
+    const p2 = transformPoint(matrix, [center[0] + Math.cos(a1) * radius, center[1] + half, center[2] + Math.sin(a1) * radius])
+    const p3 = transformPoint(matrix, [center[0] + Math.cos(a0) * radius, center[1] + half, center[2] + Math.sin(a0) * radius])
+    addQuad(vertices, colors, p0, p1, p2, p3, color)
+    addTri(vertices, colors, topCenter, p3, p2, color)
+    addTri(vertices, colors, bottomCenter, p1, p0, color)
+  }
+}
+
 function parseObjIndex(token, vertexCount) {
   const raw = Number.parseInt(token.split('/')[0], 10)
   if (!Number.isFinite(raw) || raw === 0) return null
@@ -488,10 +514,14 @@ function meshBounds(mesh, center) {
 }
 
 function addVisualMeshLink(vertices, colors, diagnostics, linkId, matrix, center, color, asset) {
+  return addVisualMeshLinkTo(vertices, colors, diagnostics.visualLinks, linkId, matrix, center, color, asset)
+}
+
+function addVisualMeshLinkTo(vertices, colors, visualLinks, linkId, matrix, center, color, asset) {
   if (!asset?.obj_text) return false
   const mesh = parseVisualObj(asset)
   addObjMesh(vertices, colors, matrix, center, mesh, color)
-  diagnostics.visualLinks.push({
+  visualLinks.push({
     linkId,
     geometry: 'mesh',
     source: asset.moonrobo_path,
@@ -509,7 +539,11 @@ function addVisualMeshLink(vertices, colors, diagnostics, linkId, matrix, center
 
 function addVisualLink(vertices, colors, diagnostics, linkId, matrix, center, size, color, source) {
   addCube(vertices, colors, matrix, center, size, color)
-  diagnostics.visualLinks.push({
+  addVisualBoxLinkTo(diagnostics.visualLinks, linkId, matrix, center, size, source)
+}
+
+function addVisualBoxLinkTo(visualLinks, linkId, matrix, center, size, source) {
+  visualLinks.push({
     linkId,
     geometry: 'box',
     source,
@@ -520,6 +554,25 @@ function addVisualLink(vertices, colors, diagnostics, linkId, matrix, center, si
       y: size[1],
       z: size[2],
     },
+    attached: true,
+  })
+}
+
+function addNoetixBoxVisual(vertices, colors, visualLinks, linkId, matrix, center, size, color, source) {
+  addCube(vertices, colors, matrix, center, size, color)
+  addVisualBoxLinkTo(visualLinks, linkId, matrix, center, size, source)
+}
+
+function addNoetixCylinderVisual(vertices, colors, visualLinks, linkId, matrix, center, radius, length, color, source) {
+  addCylinderY(vertices, colors, matrix, center, radius, length, color)
+  visualLinks.push({
+    linkId,
+    geometry: 'cylinder',
+    source,
+    origin: matrixOrigin(matrix),
+    center: pointRecord(transformPoint(matrix, center)),
+    radiusM: radius,
+    lengthM: length,
     attached: true,
   })
 }
@@ -863,6 +916,92 @@ function addArm(vertices, colors, root, side, joints, diagnostics) {
   })
 }
 
+function addNoetixUrdfVisualCharacter(vertices, colors, root, clip, joints, visualLinks) {
+  const noetixRoot = mat4WorldOffset(root, NOETIX_VISUAL_DUPLICATE_OFFSET_X, 0, 0)
+  const baseMeshAsset = visualMeshAsset('base_link')
+  if (!addVisualMeshLinkTo(
+    vertices,
+    colors,
+    visualLinks,
+    'base_link',
+    noetixRoot,
+    [0, -0.040, 0],
+    [0.40, 0.72, 0.70],
+    baseMeshAsset,
+  )) {
+    addNoetixBoxVisual(
+      vertices,
+      colors,
+      visualLinks,
+      'base_link',
+      noetixRoot,
+      [0, -0.025, 0],
+      [0.24, 0.18, 0.18],
+      [0.40, 0.72, 0.70],
+      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
+    )
+  }
+
+  let torsoRoot = mat4RotateY(noetixRoot, clip.torsoCounterRotation)
+  torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
+  addNoetixBoxVisual(
+    vertices,
+    colors,
+    visualLinks,
+    'torso_link',
+    torsoRoot,
+    [0, 0.185, 0.01],
+    [0.22, 0.18, 0.16],
+    [0.42, 0.76, 0.72],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#torso_link box`,
+  )
+  addNoetixBoxVisual(
+    vertices,
+    colors,
+    visualLinks,
+    'chest_link',
+    mat4Translate(torsoRoot, 0, 0.37, 0.015),
+    [0, 0, 0],
+    [0.24, 0.20, 0.15],
+    [0.50, 0.82, 0.76],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#chest_link box`,
+  )
+
+  for (const side of [-1, 1]) {
+    const name = side > 0 ? 'left' : 'right'
+    const angles = joints[name]
+    let shoulder = mat4Translate(torsoRoot, side * 0.155, 0.265, 0.0)
+    shoulder = mat4RotateX(shoulder, angles.shoulder)
+    shoulder = mat4RotateZ(shoulder, side * 0.07)
+    addNoetixCylinderVisual(
+      vertices,
+      colors,
+      visualLinks,
+      `${name}_arm_1`,
+      shoulder,
+      [0, -NOETIX_VISUAL_RIG.lengths.upperArm * 0.5, 0],
+      0.035,
+      0.12,
+      [0.54, 0.70, 0.74],
+      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_arm_1 cylinder`,
+    )
+  }
+
+  const leftLeg = legPose(noetixRoot, 1, joints).hip
+  addNoetixCylinderVisual(
+    vertices,
+    colors,
+    visualLinks,
+    'left_leg_1',
+    leftLeg,
+    [0, -NOETIX_VISUAL_RIG.lengths.upperLeg * 0.5, 0],
+    0.045,
+    0.14,
+    [0.82, 0.66, 0.30],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#left_leg_1 cylinder`,
+  )
+}
+
 function robotGeometry(time, options = { quality: true }) {
   const vertices = []
   const colors = []
@@ -889,32 +1028,31 @@ function robotGeometry(time, options = { quality: true }) {
   }
   const joints = ik.correctedJoints
   const terrain = terrainProfileReport(clip)
-  const diagnostics = { feet: [], arms: [], visualLinks: [], authoredJoints, authoredMotion, joints, ik, terrain, footLock }
+  const diagnostics = {
+    feet: [],
+    arms: [],
+    visualLinks: [],
+    noetixVisualLinks: [],
+    authoredJoints,
+    authoredMotion,
+    joints,
+    ik,
+    terrain,
+    footLock,
+  }
   const root = robotRoot(clip, ik.pelvisCorrectionM, footLock)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
-  const baseMeshAsset = visualMeshAsset('base_link')
-  if (!addVisualMeshLink(
+  addVisualLink(
     vertices,
     colors,
     diagnostics,
     'base_link',
     root,
-    [0, -0.040, 0],
+    [0, -0.025, 0],
+    [0.24, 0.18, 0.18],
     [0.40, 0.72, 0.70],
-    baseMeshAsset,
-  )) {
-    addVisualLink(
-      vertices,
-      colors,
-      diagnostics,
-      'base_link',
-      root,
-      [0, -0.025, 0],
-      [0.24, 0.18, 0.18],
-      [0.40, 0.72, 0.70],
-      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
-    )
-  }
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link debug box`,
+  )
   let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
   torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
   addVisualLink(
@@ -947,6 +1085,7 @@ function robotGeometry(time, options = { quality: true }) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
     addArm(vertices, colors, torsoRoot, side, joints, diagnostics)
   }
+  addNoetixUrdfVisualCharacter(vertices, colors, root, clip, joints, diagnostics.noetixVisualLinks)
   diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics, clip)
   diagnostics.centerOfMassVelocity = centerOfMassVelocityAt(time, options)
   diagnostics.visualRootWorldZ = visualRootWorldZ
@@ -1006,6 +1145,7 @@ function gaitQuality(time, diagnostics) {
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
   const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
+  const noetixVisualAttachments = noetixVisualAttachmentReport(diagnostics.noetixVisualLinks)
   const supportSoleAlignment = diagnostics.ik.supportSoleAlignment
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
@@ -1046,6 +1186,7 @@ function gaitQuality(time, diagnostics) {
       flatTerrainPreservation.maxFootWorldStepM <= NOETIX_VISUAL_RIG.footWorldStepMaxM ? 'pass' : 'fail',
     swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
     visualLinkAttachments: visualLinkAttachments.status,
+    noetixVisualAttachments: noetixVisualAttachments.status,
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
@@ -1077,6 +1218,7 @@ function gaitQuality(time, diagnostics) {
     flatTerrainPreservation,
     swingFootClearance,
     visualLinkAttachments,
+    noetixVisualAttachments,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
     toeRoll: cycle.toeRoll,
@@ -1094,19 +1236,27 @@ function gaitQuality(time, diagnostics) {
 }
 
 function visualLinkAttachmentReport(visualLinks) {
+  return linkAttachmentReport(visualLinks, NOETIX_VISUAL_RIG.linkCount)
+}
+
+function noetixVisualAttachmentReport(visualLinks) {
+  return linkAttachmentReport(visualLinks, 6)
+}
+
+function linkAttachmentReport(visualLinks, expectedCount) {
   const ids = new Set(visualLinks.map(link => link.linkId))
   const duplicateIds = visualLinks
     .map(link => link.linkId)
     .filter((id, index, list) => list.indexOf(id) !== index)
-  const missingCount = Math.max(0, NOETIX_VISUAL_RIG.linkCount - ids.size)
-  const status = ids.size === NOETIX_VISUAL_RIG.linkCount &&
+  const missingCount = Math.max(0, expectedCount - ids.size)
+  const status = ids.size === expectedCount &&
     duplicateIds.length === 0 &&
     visualLinks.every(link => link.attached)
     ? 'pass'
     : 'fail'
   return {
     status,
-    expectedCount: NOETIX_VISUAL_RIG.linkCount,
+    expectedCount,
     attachedCount: ids.size,
     missingCount,
     duplicateIds,
@@ -2394,6 +2544,14 @@ function initRobot(canvas) {
       missingCount: geometry.diagnostics.quality.visualLinkAttachments.missingCount,
       duplicateIds: geometry.diagnostics.quality.visualLinkAttachments.duplicateIds,
       links: geometry.diagnostics.quality.visualLinkAttachments.links,
+    })
+    canvas.dataset.noetixVisualAttachmentStatus = geometry.diagnostics.quality.statuses.noetixVisualAttachments
+    canvas.dataset.noetixVisualAttachments = JSON.stringify({
+      expectedCount: geometry.diagnostics.quality.noetixVisualAttachments.expectedCount,
+      attachedCount: geometry.diagnostics.quality.noetixVisualAttachments.attachedCount,
+      missingCount: geometry.diagnostics.quality.noetixVisualAttachments.missingCount,
+      duplicateIds: geometry.diagnostics.quality.noetixVisualAttachments.duplicateIds,
+      links: geometry.diagnostics.quality.noetixVisualAttachments.links,
     })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
