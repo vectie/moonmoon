@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const moonroboRoot = fileURLToPath(new URL('../../../moonrobo', import.meta.url))
@@ -97,6 +97,31 @@ function validateEvidence(evidence, clip) {
   }
 }
 
+function linkIdForMeshPath(path) {
+  if (path.endsWith('/meshes/base.obj')) return 'base_link'
+  return path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? 'unknown_link'
+}
+
+function visualMeshAssets(contract) {
+  const assets = contract.mesh_paths.map(localPath => {
+    const absolutePath = fileURLToPath(new URL(`../../../moonrobo/${localPath}`, import.meta.url))
+    const objText = readFileSync(absolutePath, 'utf8')
+    return {
+      link_id: linkIdForMeshPath(localPath),
+      local_path: localPath,
+      moonrobo_path: `../moonrobo/${localPath}`,
+      format: localPath.split('.').pop()?.toLowerCase() ?? '',
+      obj_text: objText,
+      source: `moonrobo:${localPath}`,
+      status: 'moonrobo-mesh-loaded',
+    }
+  })
+  if (!assets.some(asset => asset.link_id === 'base_link' && asset.local_path.endsWith('base.obj'))) {
+    throw new Error('Moonrobo Noetix contract did not expose base_link base.obj mesh')
+  }
+  return assets
+}
+
 const contract = runMoonroboJson('cmd/moonmoon_contract')
 const evidence = runMoonroboJson('cmd/moonmoon_suite_evidence')
 const clip = validateContract(contract)
@@ -120,6 +145,7 @@ const runtimeClip = {
   authored_motion_samples: clip.authored_motion_samples,
   authored_contact_frames: clip.authored_contact_frames,
   authored_motor_frames: clip.authored_motor_frames,
+  visual_mesh_assets: visualMeshAssets(contract),
   ready: clip.ready,
   status: 'moonrobo-live-runtime-clip-ready',
 }

@@ -428,6 +428,31 @@ function validateContact(contact, frameIndex) {
   }
 }
 
+function linkIdForMeshPath(path) {
+  if (path.endsWith('/meshes/base.obj')) return 'base_link'
+  return path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? 'unknown_link'
+}
+
+function visualMeshAssets(contract) {
+  const assets = contract.mesh_paths.map(localPath => {
+    const absolutePath = fileURLToPath(new URL(`../../../moonrobo/${localPath}`, import.meta.url))
+    const objText = readFileSync(absolutePath, 'utf8')
+    return {
+      link_id: linkIdForMeshPath(localPath),
+      local_path: localPath,
+      moonrobo_path: `../moonrobo/${localPath}`,
+      format: localPath.split('.').pop()?.toLowerCase() ?? '',
+      obj_text: objText,
+      source: `moonrobo:${localPath}`,
+      status: 'moonrobo-mesh-loaded',
+    }
+  })
+  if (!assets.some(asset => asset.link_id === 'base_link' && asset.local_path.endsWith('base.obj'))) {
+    throw new Error('Moonrobo Noetix contract did not expose base_link base.obj mesh')
+  }
+  return assets
+}
+
 function generatedJsContent(contract, liveEvidence) {
   const clip = contract.walk_clip
   const runtimeClip = {
@@ -447,6 +472,7 @@ function generatedJsContent(contract, liveEvidence) {
     authored_motion_samples: clip.authored_motion_samples,
     authored_contact_frames: clip.authored_contact_frames,
     authored_motor_frames: clip.authored_motor_frames,
+    visual_mesh_assets: visualMeshAssets(contract),
     live_suite_evidence: liveEvidence,
     ready: clip.ready,
     status: clip.status,

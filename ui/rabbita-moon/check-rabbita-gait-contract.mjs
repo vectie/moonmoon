@@ -46,6 +46,11 @@ const sceneContracts = [
   'swingFootClearance',
   'visualAttachmentStatus',
   'visualLinkAttachments',
+  'visualMeshAssetStatus',
+  'visualMeshAssets',
+  'visual_mesh_assets',
+  "geometry: 'mesh'",
+  'base.obj',
   'limbForwardBendStatus',
   'limbForwardBend',
   'ikCorrectionReport',
@@ -119,6 +124,13 @@ if (gaitModule.NOETIX_VISUAL_RIG.cycleHz !== gaitModule.NOETIX_WALK_CLIP.cycle_h
 }
 if (gaitModule.NOETIX_VISUAL_RIG.rootSpeedMps !== gaitModule.NOETIX_WALK_CLIP.root_speed_mps) {
   throw new Error('Rabbita visual rig root speed does not come from the generated Moonrobo walk clip')
+}
+if (gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus !== 'moonrobo-noetix-mesh-assets-ready') {
+  throw new Error(`Rabbita visual rig did not load Moonrobo mesh assets: ${gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus}`)
+}
+const baseMeshAsset = gaitModule.visualMeshAsset('base_link')
+if (!baseMeshAsset?.local_path?.endsWith('base.obj') || !baseMeshAsset.obj_text.includes('o base_link')) {
+  throw new Error('Rabbita visual rig did not expose Moonrobo Noetix base_link OBJ text')
 }
 if (JSON.stringify(gaitModule.FOOT_PHASE_SEQUENCE) !== JSON.stringify(gaitModule.NOETIX_WALK_CLIP.foot_phase_sequence)) {
   throw new Error('Rabbita foot phase sequence does not come from the generated Moonrobo walk clip')
@@ -352,6 +364,13 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.visualLinkAttachments !== 'pass') {
     throw new Error(`visual link attachment failed at ${time}s: ${JSON.stringify(frame.quality.visualLinkAttachments)}`)
+  }
+  const baseVisualLink = frame.quality.visualLinkAttachments.links.find(link => link.linkId === 'base_link')
+  if (baseVisualLink?.geometry !== 'mesh' ||
+    !baseVisualLink.meshPath?.endsWith('base.obj') ||
+    baseVisualLink.vertexCount < 8 ||
+    baseVisualLink.triangleCount < 12) {
+    throw new Error(`base_link did not render from Moonrobo Noetix OBJ mesh at ${time}s: ${JSON.stringify(baseVisualLink)}`)
   }
   if (frame.quality.statuses.limbForwardBend !== 'pass') {
     throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)

@@ -124,6 +124,7 @@ function validateAgainstRuntimeBridge(evidence) {
     evidence.authored_motor_frame_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
     throw new Error('runtime Moonrobo authored sample tables do not match live suite evidence')
   }
+  validateMeshAssets(LIVE_MOONROBO_NOETIX_WALK_CLIP, 'runtime Moonrobo')
 }
 
 function validateAgainstGeneratedBridge(evidence) {
@@ -141,6 +142,26 @@ function validateAgainstGeneratedBridge(evidence) {
     evidence.authored_contact_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
     evidence.authored_motor_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
     throw new Error('generated Moonrobo authored sample tables do not match live suite evidence')
+  }
+  validateMeshAssets(GENERATED_MOONROBO_NOETIX_WALK_CLIP, 'generated Moonrobo')
+}
+
+function validateMeshAssets(clip, label) {
+  if (!Array.isArray(clip.visual_mesh_assets) || clip.visual_mesh_assets.length === 0) {
+    throw new Error(`${label} bridge did not carry visual_mesh_assets`)
+  }
+  const baseMesh = clip.visual_mesh_assets.find(asset => asset.link_id === 'base_link')
+  if (!baseMesh) {
+    throw new Error(`${label} bridge did not carry base_link mesh asset`)
+  }
+  if (!baseMesh.local_path.endsWith('examples/noetix-e1/model/meshes/base.obj')) {
+    throw new Error(`${label} bridge carried unexpected base_link mesh path: ${baseMesh.local_path}`)
+  }
+  if (baseMesh.format !== 'obj' ||
+    baseMesh.status !== 'moonrobo-mesh-loaded' ||
+    !baseMesh.obj_text.includes('o base_link') ||
+    !baseMesh.obj_text.includes('f 1 2 3 4')) {
+    throw new Error(`${label} bridge carried an invalid base_link OBJ mesh payload`)
   }
 }
 

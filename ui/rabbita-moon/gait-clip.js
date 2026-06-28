@@ -5,6 +5,10 @@ export const NOETIX_VISUAL_RIG = {
   source: MOONROBO_NOETIX_WALK_CLIP.source,
   rootLink: 'base_link',
   linkCount: 15,
+  visualMeshAssets: MOONROBO_NOETIX_WALK_CLIP.visual_mesh_assets ?? [],
+  meshAssetStatus: (MOONROBO_NOETIX_WALK_CLIP.visual_mesh_assets ?? []).some(asset => asset.link_id === 'base_link')
+    ? 'moonrobo-noetix-mesh-assets-ready'
+    : 'moonrobo-noetix-mesh-assets-missing',
   estimatedMassKg: 54.0,
   cycleHz: MOONROBO_NOETIX_WALK_CLIP.cycle_hz,
   rootSpeedMps: MOONROBO_NOETIX_WALK_CLIP.root_speed_mps,
@@ -69,6 +73,10 @@ export const NOETIX_HINGE_MOTOR_JOINTS = [
 
 export const NOETIX_WALK_CLIP = MOONROBO_NOETIX_WALK_CLIP
 export const FOOT_PHASE_SEQUENCE = MOONROBO_NOETIX_WALK_CLIP.foot_phase_sequence
+
+export function visualMeshAsset(linkId) {
+  return NOETIX_VISUAL_RIG.visualMeshAssets.find(asset => asset.link_id === linkId)
+}
 
 export function cycle01(value) {
   return value - Math.floor(value)

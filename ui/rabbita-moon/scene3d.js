@@ -11,6 +11,7 @@ import {
   jointSamples,
   near,
   supportMassTransferX,
+  visualMeshAsset,
   walkClipSample,
 } from './gait-clip.js'
 
@@ -18,6 +19,7 @@ const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
+const VISUAL_MESH_CACHE = new Map()
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -414,6 +416,97 @@ function addCube(vertices, colors, matrix, center, size, color) {
   }
 }
 
+function parseObjIndex(token, vertexCount) {
+  const raw = Number.parseInt(token.split('/')[0], 10)
+  if (!Number.isFinite(raw) || raw === 0) return null
+  return raw > 0 ? raw - 1 : vertexCount + raw
+}
+
+function parseVisualObj(asset) {
+  if (VISUAL_MESH_CACHE.has(asset.local_path)) {
+    return VISUAL_MESH_CACHE.get(asset.local_path)
+  }
+  const positions = []
+  const triangles = []
+  const lines = asset.obj_text.split(/\r?\n/)
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) continue
+    const parts = trimmed.split(/\s+/)
+    if (parts[0] === 'v' && parts.length >= 4) {
+      positions.push([
+        Number.parseFloat(parts[1]),
+        Number.parseFloat(parts[2]),
+        Number.parseFloat(parts[3]),
+      ])
+    } else if (parts[0] === 'f' && parts.length >= 4) {
+      const indices = parts.slice(1)
+        .map(token => parseObjIndex(token, positions.length))
+        .filter(index => index !== null && index >= 0 && index < positions.length)
+      for (let i = 1; i + 1 < indices.length; i += 1) {
+        triangles.push([indices[0], indices[i], indices[i + 1]])
+      }
+    }
+  }
+  if (positions.length === 0 || triangles.length === 0) {
+    throw new Error(`Moonrobo visual mesh ${asset.local_path} did not contain renderable OBJ triangles`)
+  }
+  const mesh = { positions, triangles }
+  VISUAL_MESH_CACHE.set(asset.local_path, mesh)
+  return mesh
+}
+
+function objPointToScene(point, center) {
+  return [
+    center[0] + point[0],
+    center[1] + point[2],
+    center[2] + point[1],
+  ]
+}
+
+function addObjMesh(vertices, colors, matrix, center, mesh, color) {
+  for (const triangle of mesh.triangles) {
+    const points = triangle.map(index => transformPoint(matrix, objPointToScene(mesh.positions[index], center)))
+    addTri(vertices, colors, points[0], points[1], points[2], color)
+  }
+}
+
+function meshBounds(mesh, center) {
+  const points = mesh.positions.map(point => objPointToScene(point, center))
+  return {
+    min: {
+      x: Math.min(...points.map(point => point[0])),
+      y: Math.min(...points.map(point => point[1])),
+      z: Math.min(...points.map(point => point[2])),
+    },
+    max: {
+      x: Math.max(...points.map(point => point[0])),
+      y: Math.max(...points.map(point => point[1])),
+      z: Math.max(...points.map(point => point[2])),
+    },
+  }
+}
+
+function addVisualMeshLink(vertices, colors, diagnostics, linkId, matrix, center, color, asset) {
+  if (!asset?.obj_text) return false
+  const mesh = parseVisualObj(asset)
+  addObjMesh(vertices, colors, matrix, center, mesh, color)
+  diagnostics.visualLinks.push({
+    linkId,
+    geometry: 'mesh',
+    source: asset.moonrobo_path,
+    meshSource: asset.source,
+    meshPath: asset.local_path,
+    origin: matrixOrigin(matrix),
+    center: pointRecord(transformPoint(matrix, center)),
+    boundsM: meshBounds(mesh, center),
+    vertexCount: mesh.positions.length,
+    triangleCount: mesh.triangles.length,
+    attached: true,
+  })
+  return true
+}
+
 function addVisualLink(vertices, colors, diagnostics, linkId, matrix, center, size, color, source) {
   addCube(vertices, colors, matrix, center, size, color)
   diagnostics.visualLinks.push({
@@ -799,17 +892,29 @@ function robotGeometry(time, options = { quality: true }) {
   const diagnostics = { feet: [], arms: [], visualLinks: [], authoredJoints, authoredMotion, joints, ik, terrain, footLock }
   const root = robotRoot(clip, ik.pelvisCorrectionM, footLock)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
-  addVisualLink(
+  const baseMeshAsset = visualMeshAsset('base_link')
+  if (!addVisualMeshLink(
     vertices,
     colors,
     diagnostics,
     'base_link',
     root,
-    [0, -0.025, 0],
-    [0.24, 0.18, 0.18],
+    [0, -0.040, 0],
     [0.40, 0.72, 0.70],
-    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
-  )
+    baseMeshAsset,
+  )) {
+    addVisualLink(
+      vertices,
+      colors,
+      diagnostics,
+      'base_link',
+      root,
+      [0, -0.025, 0],
+      [0.24, 0.18, 0.18],
+      [0.40, 0.72, 0.70],
+      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
+    )
+  }
   let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
   torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
   addVisualLink(
@@ -1009,6 +1114,9 @@ function visualLinkAttachmentReport(visualLinks) {
       linkId: link.linkId,
       geometry: link.geometry,
       source: link.source,
+      meshPath: link.meshPath,
+      vertexCount: link.vertexCount,
+      triangleCount: link.triangleCount,
       attached: link.attached,
     })),
   }
@@ -2272,6 +2380,14 @@ function initRobot(canvas) {
       sampleCount: geometry.diagnostics.quality.swingFootClearance.sampleCount,
     })
     canvas.dataset.visualAttachmentStatus = geometry.diagnostics.quality.statuses.visualLinkAttachments
+    canvas.dataset.visualMeshAssetStatus = NOETIX_VISUAL_RIG.meshAssetStatus
+    canvas.dataset.visualMeshAssets = JSON.stringify(NOETIX_VISUAL_RIG.visualMeshAssets.map(asset => ({
+      linkId: asset.link_id,
+      path: asset.local_path,
+      source: asset.source,
+      status: asset.status,
+      bytes: asset.obj_text.length,
+    })))
     canvas.dataset.visualLinkAttachments = JSON.stringify({
       expectedCount: geometry.diagnostics.quality.visualLinkAttachments.expectedCount,
       attachedCount: geometry.diagnostics.quality.visualLinkAttachments.attachedCount,

@@ -13225,6 +13225,17 @@ export const MOONROBO_NOETIX_WALK_CLIP = {
       "status": "world-heightfield-hinge-motor-driven"
     }
   ],
+  "visual_mesh_assets": [
+    {
+      "link_id": "base_link",
+      "local_path": "examples/noetix-e1/model/meshes/base.obj",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+      "format": "obj",
+      "obj_text": "# Moonrobo Noetix E1 placeholder base mesh.\no base_link\nv -0.12 -0.10 0.00\nv 0.12 -0.10 0.00\nv 0.12 0.10 0.00\nv -0.12 0.10 0.00\nv -0.12 -0.10 0.04\nv 0.12 -0.10 0.04\nv 0.12 0.10 0.04\nv -0.12 0.10 0.04\nf 1 2 3 4\nf 5 8 7 6\nf 1 5 6 2\nf 2 6 7 3\nf 3 7 8 4\nf 4 8 5 1\n",
+      "source": "moonrobo:examples/noetix-e1/model/meshes/base.obj",
+      "status": "moonrobo-mesh-loaded"
+    }
+  ],
   "live_suite_evidence": {
     "evidence_id": "noetix-e1-lab-01/moonmoon-live-suite-evidence",
     "regeneration_mode": "live-moonrobo-typed-adapter",
