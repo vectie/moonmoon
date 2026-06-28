@@ -111,6 +111,7 @@ function validateWalkClip(clip, requiredJointIds) {
     'joint_anchors',
     'joint_curve_params',
     'authored_joint_samples',
+    'authored_motion_samples',
     'blockers',
   ]) {
     requireArray(clip, field)
@@ -154,6 +155,9 @@ function validateWalkClip(clip, requiredJointIds) {
   if (clip.authored_joint_samples.length !== clip.sample_count) {
     throw new Error('Moonrobo walk clip authored_joint_samples length must match sample_count')
   }
+  if (clip.authored_motion_samples.length !== clip.sample_count) {
+    throw new Error('Moonrobo walk clip authored_motion_samples length must match sample_count')
+  }
   for (const sample of clip.authored_joint_samples) {
     for (const field of [
       'phase',
@@ -172,6 +176,28 @@ function validateWalkClip(clip, requiredJointIds) {
     }
     if (sample.left_knee_rad > 0 || sample.right_knee_rad > 0) {
       throw new Error(`Moonrobo walk clip authored sample has backward knee sign at phase ${sample.phase}`)
+    }
+  }
+  for (const sample of clip.authored_motion_samples) {
+    for (const field of [
+      'phase',
+      'root_cycle_forward_m',
+      'root_sway_m',
+      'root_bob_m',
+      'torso_counter_rotation_rad',
+      'left_foot_x_m',
+      'left_foot_y_m',
+      'left_foot_z_m',
+      'left_foot_roll_pitch_rad',
+      'right_foot_x_m',
+      'right_foot_y_m',
+      'right_foot_z_m',
+      'right_foot_roll_pitch_rad',
+    ]) {
+      requireField(sample, field, 'number')
+    }
+    if (sample.left_foot_x_m < 0 || sample.right_foot_x_m > 0) {
+      throw new Error(`Moonrobo walk clip authored foot sample has wrong side sign at phase ${sample.phase}`)
     }
   }
   for (const required of [
@@ -283,6 +309,24 @@ function mbAuthoredJointSample(sample) {
   ${mbDouble(sample.right_ankle_rad)},
   ${mbDouble(sample.right_shoulder_rad)},
   ${mbDouble(sample.right_elbow_rad)},
+)`
+}
+
+function mbAuthoredMotionSample(sample) {
+  return `noetix_suite_authored_motion_sample(
+  ${mbDouble(sample.phase)},
+  ${mbDouble(sample.root_cycle_forward_m)},
+  ${mbDouble(sample.root_sway_m)},
+  ${mbDouble(sample.root_bob_m)},
+  ${mbDouble(sample.torso_counter_rotation_rad)},
+  ${mbDouble(sample.left_foot_x_m)},
+  ${mbDouble(sample.left_foot_y_m)},
+  ${mbDouble(sample.left_foot_z_m)},
+  ${mbDouble(sample.left_foot_roll_pitch_rad)},
+  ${mbDouble(sample.right_foot_x_m)},
+  ${mbDouble(sample.right_foot_y_m)},
+  ${mbDouble(sample.right_foot_z_m)},
+  ${mbDouble(sample.right_foot_roll_pitch_rad)},
 )`
 }
 
@@ -421,6 +465,13 @@ fn generated_moonrobo_noetix_authored_joint_samples() -> Array[
 }
 
 ///|
+fn generated_moonrobo_noetix_authored_motion_samples() -> Array[
+  SuiteAdapterAuthoredMotionSample,
+] {
+  ${indent(mbArray(clip.authored_motion_samples, mbAuthoredMotionSample), 2).trimStart()}
+}
+
+///|
 fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
   ${indent(mbStringArray(clip.blockers), 2).trimStart()}
 }
@@ -484,6 +535,7 @@ function generatedJsContent(contract) {
     joint_anchors: clip.joint_anchors,
     joint_curve_params: clip.joint_curve_params,
     authored_joint_samples: clip.authored_joint_samples,
+    authored_motion_samples: clip.authored_motion_samples,
     ready: clip.ready,
     status: clip.status,
   }

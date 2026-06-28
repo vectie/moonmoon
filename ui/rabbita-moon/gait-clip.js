@@ -134,28 +134,9 @@ export function supportMassTransferX(clip) {
   return clip.supportFoot === 'left' ? 0.06 : -0.08
 }
 
-function torsoCounterRotation(phase) {
-  return -0.16 * Math.sin(phase * Math.PI * 2)
-}
-
-function footRollPitch(footPhase) {
-  if (footPhase < 0.08) {
-    return mix(-0.20, 0.0, smoothstep(footPhase / 0.08))
-  }
-  if (footPhase >= 0.42 && footPhase < 0.64) {
-    return 0.34 * smoothstep((footPhase - 0.42) / 0.22)
-  }
-  if (footPhase >= 0.64 && footPhase < 0.78) {
-    return mix(0.34, 0.10, smoothstep((footPhase - 0.64) / 0.14))
-  }
-  if (footPhase >= 0.78) {
-    return mix(-0.18, 0.0, smoothstep((footPhase - 0.78) / 0.14))
-  }
-  return 0.0
-}
-
 export function walkClipSample(time, options = {}) {
   const phase = cycle01(time * NOETIX_VISUAL_RIG.cycleHz)
+  const motion = authoredMotionSampleAtPhase(phase)
   const leftStance = phase < 0.5
   const leftPhase = phase
   const rightPhase = cycle01(phase + 0.5)
@@ -166,7 +147,7 @@ export function walkClipSample(time, options = {}) {
       locked: footLock(leftPhase),
       lockWeight: footLockWeight(leftPhase),
       supporting: footSupport(leftPhase),
-      rollPitch: footRollPitch(leftPhase),
+      rollPitch: motion.left_foot_roll_pitch_rad,
     },
     right: {
       phase: rightPhase,
@@ -174,7 +155,7 @@ export function walkClipSample(time, options = {}) {
       locked: footLock(rightPhase),
       lockWeight: footLockWeight(rightPhase),
       supporting: footSupport(rightPhase),
-      rollPitch: footRollPitch(rightPhase),
+      rollPitch: motion.right_foot_roll_pitch_rad,
     },
   }
   const supportFoot = leftStance ? 'left' : 'right'
@@ -190,9 +171,10 @@ export function walkClipSample(time, options = {}) {
     rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
     terrainReliefScale: options.terrainReliefScale ?? 1,
     strideM: MOONROBO_NOETIX_WALK_CLIP.stride_m,
-    bob: Math.cos(phase * Math.PI * 4) * 0.032,
-    sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
-    torsoCounterRotation: torsoCounterRotation(phase),
+    bob: motion.root_bob_m,
+    sway: motion.root_sway_m,
+    torsoCounterRotation: motion.torso_counter_rotation_rad,
+    authoredMotion: motion,
     footChannels,
   }
 }
@@ -226,6 +208,39 @@ function authoredSampleAtPhase(phase) {
     right_shoulder_rad: interp(a.right_shoulder_rad, b.right_shoulder_rad, t),
     right_elbow_rad: interp(a.right_elbow_rad, b.right_elbow_rad, t),
   }
+}
+
+function authoredMotionSampleAtPhase(phase) {
+  const samples = MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples
+  if (!Array.isArray(samples) || samples.length === 0) {
+    throw new Error('Moonrobo Noetix walk clip is missing authored motion samples')
+  }
+  const normalized = cycle01(phase)
+  const scaled = normalized * samples.length
+  const baseIndex = Math.floor(scaled)
+  const nextIndex = (baseIndex + 1) % samples.length
+  const t = scaled - baseIndex
+  const a = samples[baseIndex % samples.length]
+  const b = samples[nextIndex]
+  return {
+    phase: normalized,
+    root_cycle_forward_m: normalized * MOONROBO_NOETIX_WALK_CLIP.stride_m,
+    root_sway_m: interp(a.root_sway_m, b.root_sway_m, t),
+    root_bob_m: interp(a.root_bob_m, b.root_bob_m, t),
+    torso_counter_rotation_rad: interp(a.torso_counter_rotation_rad, b.torso_counter_rotation_rad, t),
+    left_foot_x_m: interp(a.left_foot_x_m, b.left_foot_x_m, t),
+    left_foot_y_m: interp(a.left_foot_y_m, b.left_foot_y_m, t),
+    left_foot_z_m: interp(a.left_foot_z_m, b.left_foot_z_m, t),
+    left_foot_roll_pitch_rad: interp(a.left_foot_roll_pitch_rad, b.left_foot_roll_pitch_rad, t),
+    right_foot_x_m: interp(a.right_foot_x_m, b.right_foot_x_m, t),
+    right_foot_y_m: interp(a.right_foot_y_m, b.right_foot_y_m, t),
+    right_foot_z_m: interp(a.right_foot_z_m, b.right_foot_z_m, t),
+    right_foot_roll_pitch_rad: interp(a.right_foot_roll_pitch_rad, b.right_foot_roll_pitch_rad, t),
+  }
+}
+
+export function authoredMotionSample(clip) {
+  return clip.authoredMotion ?? authoredMotionSampleAtPhase(clip.phase)
 }
 
 function sideJointSample(sample, side) {

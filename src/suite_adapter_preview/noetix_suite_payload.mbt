@@ -47,6 +47,23 @@ pub(all) struct SuiteAdapterAuthoredJointSample {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterAuthoredMotionSample {
+  phase : Double
+  root_cycle_forward_m : Double
+  root_sway_m : Double
+  root_bob_m : Double
+  torso_counter_rotation_rad : Double
+  left_foot_x_m : Double
+  left_foot_y_m : Double
+  left_foot_z_m : Double
+  left_foot_roll_pitch_rad : Double
+  right_foot_x_m : Double
+  right_foot_y_m : Double
+  right_foot_z_m : Double
+  right_foot_roll_pitch_rad : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSuiteAdapterPayload {
   payload_id : String
   robot_id : String
@@ -71,6 +88,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   joint_anchors : Array[SuiteAdapterJointAnchor]
   joint_curve_params : Array[SuiteAdapterJointCurveParam]
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
+  authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -149,6 +167,39 @@ fn noetix_suite_authored_joint_sample(
     right_ankle_rad,
     right_shoulder_rad,
     right_elbow_rad,
+  }
+}
+
+///|
+fn noetix_suite_authored_motion_sample(
+  phase : Double,
+  root_cycle_forward_m : Double,
+  root_sway_m : Double,
+  root_bob_m : Double,
+  torso_counter_rotation_rad : Double,
+  left_foot_x_m : Double,
+  left_foot_y_m : Double,
+  left_foot_z_m : Double,
+  left_foot_roll_pitch_rad : Double,
+  right_foot_x_m : Double,
+  right_foot_y_m : Double,
+  right_foot_z_m : Double,
+  right_foot_roll_pitch_rad : Double,
+) -> SuiteAdapterAuthoredMotionSample {
+  {
+    phase,
+    root_cycle_forward_m,
+    root_sway_m,
+    root_bob_m,
+    torso_counter_rotation_rad,
+    left_foot_x_m,
+    left_foot_y_m,
+    left_foot_z_m,
+    left_foot_roll_pitch_rad,
+    right_foot_x_m,
+    right_foot_y_m,
+    right_foot_z_m,
+    right_foot_roll_pitch_rad,
   }
 }
 
@@ -234,6 +285,12 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       "moonrobo-walk-clip-authored-sample-count:\{generated_moonrobo_noetix_authored_joint_samples().length()}",
     )
   }
+  if generated_moonrobo_noetix_authored_motion_samples().length() !=
+    generated_moonrobo_noetix_walk_sample_count() {
+    blockers.push(
+      "moonrobo-walk-clip-authored-motion-sample-count:\{generated_moonrobo_noetix_authored_motion_samples().length()}",
+    )
+  }
   if generated_moonrobo_noetix_foot_phase_sequence().length() != 6 {
     blockers.push(
       "moonrobo-walk-clip-foot-phase-count:\{generated_moonrobo_noetix_foot_phase_sequence().length()}",
@@ -261,6 +318,11 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
   for sample in generated_moonrobo_noetix_authored_joint_samples() {
     if sample.left_knee_rad > 0.0 || sample.right_knee_rad > 0.0 {
       blockers.push("moonrobo-walk-clip-authored-knee-sign:\{sample.phase}")
+    }
+  }
+  for sample in generated_moonrobo_noetix_authored_motion_samples() {
+    if sample.left_foot_x_m < 0.0 || sample.right_foot_x_m > 0.0 {
+      blockers.push("moonrobo-walk-clip-authored-foot-side:\{sample.phase}")
     }
   }
   blockers
@@ -347,6 +409,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     joint_anchors: generated_moonrobo_noetix_joint_anchors(),
     joint_curve_params: generated_moonrobo_noetix_joint_curve_params(),
     authored_joint_samples: generated_moonrobo_noetix_authored_joint_samples(),
+    authored_motion_samples: generated_moonrobo_noetix_authored_motion_samples(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),
     driven_joint_ids,
     frame_count,

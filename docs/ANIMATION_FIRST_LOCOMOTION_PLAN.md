@@ -410,12 +410,14 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from that typed source
    package. The suite payload now consumes those generated Moonrobo contract and
    walk-clip fields, the Rabbita runtime imports the generated JS clip for
-   cycle rate, root speed, stride, foot phase sequence, foot roles, and support
-   windows, curve metadata, and the typed Moonrobo-authored joint sample table.
-   Rabbita interpolates those generated samples instead of owning the leg and
-   arm curve formulas in `gait-clip.js`. `npm run check:gait` verifies the
-   contract bridge freshness, runtime authored-sample consumption, and Rabbita
-   gait evidence freshness. The next Phase 5/D target is replacing the
-   remaining preview-only root/foot motion evidence with typed Moonrobo adapter
-   output; the next Phase 10 target is replacing the remaining Rabbita preview
-   motion evidence with live Moonrobo adapter regeneration.
+   cycle rate, root speed, stride, foot phase sequence, foot roles, support
+   windows, curve metadata, the typed Moonrobo-authored joint sample table, and
+   typed authored motion samples for root bob/sway, torso counter-rotation,
+   foot roll, and root-local foot targets. Rabbita interpolates those generated
+   samples instead of owning the leg/arm, root, torso, foot-roll, or authored
+   foot-target formulas in `gait-clip.js` and `scene3d.js`. `npm run
+   check:gait` verifies the contract bridge freshness, runtime authored-sample
+   consumption, and Rabbita gait evidence freshness. The next Phase 5/D target
+   is replacing the remaining preview-only FK/contact/motor evidence with typed
+   Moonrobo adapter output; the next Phase 10 target is replacing the remaining
+   Rabbita preview motion evidence with live Moonrobo adapter regeneration.

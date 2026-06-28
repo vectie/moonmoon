@@ -13,6 +13,7 @@ const sceneContracts = [
   'walkPipeline',
   'gaitQualityStatus',
   'authoredJointSamples',
+  'authoredMotion',
   'jointSamples',
   'jointCorrectionReport',
   'correctedFootTargets',
@@ -61,6 +62,7 @@ const sceneContracts = [
   'MOONROBO_NOETIX_WALK_CLIP',
   'NOETIX_WALK_CLIP',
   'authored_joint_samples',
+  'authored_motion_samples',
   'generated-moonrobo-noetix-clip.js',
 ]
 
@@ -131,13 +133,24 @@ for (const paramName of ['knee_swing_lift_rad', 'arm_phase_lag', 'shoulder_hip_s
 if (gaitModule.NOETIX_WALK_CLIP.authored_joint_samples.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
   throw new Error('generated Moonrobo authored joint samples do not match sample_count')
 }
+if (gaitModule.NOETIX_WALK_CLIP.authored_motion_samples.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
+  throw new Error('generated Moonrobo authored motion samples do not match sample_count')
+}
 const firstAuthoredSample = gaitModule.NOETIX_WALK_CLIP.authored_joint_samples[0]
+const firstMotionSample = gaitModule.NOETIX_WALK_CLIP.authored_motion_samples[0]
 const firstJoints = gaitModule.jointSamples(gaitModule.walkClipSample(0))
 if (Math.abs(firstJoints.left.knee - firstAuthoredSample.left_knee_rad) > 0.000001) {
   throw new Error('Rabbita left knee did not come from the generated Moonrobo authored sample')
 }
 if (Math.abs(firstJoints.right.shoulder - firstAuthoredSample.right_shoulder_rad) > 0.000001) {
   throw new Error('Rabbita right shoulder did not come from the generated Moonrobo authored sample')
+}
+const firstClip = gaitModule.walkClipSample(0)
+if (Math.abs(firstClip.bob - firstMotionSample.root_bob_m) > 0.000001) {
+  throw new Error('Rabbita root bob did not come from the generated Moonrobo motion sample')
+}
+if (Math.abs(firstClip.footChannels.left.rollPitch - firstMotionSample.left_foot_roll_pitch_rad) > 0.000001) {
+  throw new Error('Rabbita left foot roll did not come from the generated Moonrobo motion sample')
 }
 const swingJoints = gaitModule.jointSamples(gaitModule.walkClipSample(0.25))
 if (Math.abs(swingJoints.left.knee) <= curveParams.get('knee_base_rad')) {

@@ -35,7 +35,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: -0.0576, y: 0.1211, z: 0.9632 },
-      center_of_mass_velocity: { x: 0.0783, y: 0.0216, z: 0.0 },
+      center_of_mass_velocity: { x: 0.0782, y: 0.0216, z: 0.0 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -178,7 +178,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: -0.0142, y: 0.23, z: 0.9646 },
-      center_of_mass_velocity: { x: 0.0584, y: 0.0216, z: -0.0111 },
+      center_of_mass_velocity: { x: 0.0583, y: 0.0216, z: -0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -321,7 +321,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0056, y: 0.2785, z: 0.9648 },
-      center_of_mass_velocity: { x: 0.0075, y: 0.0216, z: -0.0192 },
+      center_of_mass_velocity: { x: 0.0075, y: 0.0216, z: -0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -464,7 +464,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.014, y: 0.2738, z: 0.9625 },
-      center_of_mass_velocity: { x: 0.0044, y: 0.0216, z: -0.0221 },
+      center_of_mass_velocity: { x: 0.0044, y: 0.0216, z: -0.0212 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -607,7 +607,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0273, y: 0.2558, z: 0.9629 },
-      center_of_mass_velocity: { x: 0.0031, y: 0.0216, z: -0.0192 },
+      center_of_mass_velocity: { x: 0.0031, y: 0.0216, z: -0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -750,7 +750,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0387, y: 0.238, z: 0.9629 },
-      center_of_mass_velocity: { x: 0.0016, y: 0.0216, z: -0.0111 },
+      center_of_mass_velocity: { x: 0.0016, y: 0.0216, z: -0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1036,7 +1036,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0486, y: 0.2173, z: 0.9653 },
-      center_of_mass_velocity: { x: -0.0016, y: 0.0216, z: 0.0111 },
+      center_of_mass_velocity: { x: -0.0016, y: 0.0216, z: 0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1179,7 +1179,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0563, y: 0.1949, z: 0.9692 },
-      center_of_mass_velocity: { x: -0.0031, y: 0.0216, z: 0.0192 },
+      center_of_mass_velocity: { x: -0.0031, y: 0.0216, z: 0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1322,7 +1322,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0573, y: 0.183, z: 0.973 },
-      center_of_mass_velocity: { x: -0.0044, y: 0.0216, z: 0.0221 },
+      center_of_mass_velocity: { x: -0.0044, y: 0.0216, z: 0.0212 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1465,7 +1465,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0704, y: 0.1422, z: 0.9757 },
-      center_of_mass_velocity: { x: -0.0075, y: 0.0216, z: 0.0192 },
+      center_of_mass_velocity: { x: -0.0075, y: 0.0216, z: 0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1608,7 +1608,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "left",
       review_id: "noetix-e1-lab-01/left-stance-right-swing",
       center_of_mass: { x: 0.0531, y: 0.088, z: 0.9784 },
-      center_of_mass_velocity: { x: -0.0584, y: 0.0216, z: 0.0111 },
+      center_of_mass_velocity: { x: -0.0583, y: 0.0216, z: 0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1751,7 +1751,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.0589, y: 0.1201, z: 0.9609 },
-      center_of_mass_velocity: { x: -0.0783, y: 0.0216, z: 0.0 },
+      center_of_mass_velocity: { x: -0.0782, y: 0.0216, z: 0.0 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -1894,7 +1894,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.1726, y: 0.1566, z: 0.962 },
-      center_of_mass_velocity: { x: -0.0584, y: 0.0216, z: -0.0111 },
+      center_of_mass_velocity: { x: -0.0583, y: 0.0216, z: -0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2037,7 +2037,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.223, y: 0.1716, z: 0.9628 },
-      center_of_mass_velocity: { x: -0.0075, y: 0.0216, z: -0.0192 },
+      center_of_mass_velocity: { x: -0.0075, y: 0.0216, z: -0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2180,7 +2180,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.2264, y: 0.166, z: 0.9599 },
-      center_of_mass_velocity: { x: -0.0044, y: 0.0216, z: -0.0221 },
+      center_of_mass_velocity: { x: -0.0044, y: 0.0216, z: -0.0212 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2323,7 +2323,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.2226, y: 0.1485, z: 0.9596 },
-      center_of_mass_velocity: { x: -0.0031, y: 0.0216, z: -0.0192 },
+      center_of_mass_velocity: { x: -0.0031, y: 0.0216, z: -0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2466,7 +2466,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.2165, y: 0.13, z: 0.9595 },
-      center_of_mass_velocity: { x: -0.0016, y: 0.0216, z: -0.0111 },
+      center_of_mass_velocity: { x: -0.0016, y: 0.0216, z: -0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2752,7 +2752,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.2064, y: 0.1093, z: 0.9618 },
-      center_of_mass_velocity: { x: 0.0016, y: 0.0216, z: 0.0111 },
+      center_of_mass_velocity: { x: 0.0016, y: 0.0216, z: 0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -2895,7 +2895,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.193, y: 0.0881, z: 0.9657 },
-      center_of_mass_velocity: { x: 0.0031, y: 0.0216, z: 0.0192 },
+      center_of_mass_velocity: { x: 0.0031, y: 0.0216, z: 0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -3038,7 +3038,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.1833, y: 0.0777, z: 0.9696 },
-      center_of_mass_velocity: { x: 0.0044, y: 0.0216, z: 0.0221 },
+      center_of_mass_velocity: { x: 0.0044, y: 0.0216, z: 0.0212 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -3181,7 +3181,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.1583, y: 0.0396, z: 0.9724 },
-      center_of_mass_velocity: { x: 0.0075, y: 0.0216, z: 0.0192 },
+      center_of_mass_velocity: { x: 0.0075, y: 0.0216, z: 0.0184 },
       total_mass_kg: 54.0,
       contacts: [
         {
@@ -3324,7 +3324,7 @@ fn generated_rabbita_noetix_motion_frames() -> Array[
       support_foot: "right",
       review_id: "noetix-e1-lab-01/right-stance-left-swing",
       center_of_mass: { x: -0.1079, y: 0.026, z: 0.9691 },
-      center_of_mass_velocity: { x: 0.0584, y: 0.0216, z: 0.0111 },
+      center_of_mass_velocity: { x: 0.0583, y: 0.0216, z: 0.0106 },
       total_mass_kg: 54.0,
       contacts: [
         {

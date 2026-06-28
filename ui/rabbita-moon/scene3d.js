@@ -3,6 +3,7 @@ import {
   NOETIX_HINGE_MOTOR_JOINTS,
   NOETIX_URDF_LIMIT_SOURCE,
   NOETIX_VISUAL_RIG,
+  authoredMotionSample,
   cloneJointSamples,
   cycle01,
   emptyJointCorrections,
@@ -613,6 +614,15 @@ function footTargetForPose(sole, foot, clip) {
   ]
 }
 
+function authoredFootTargetForRoot(root, motion, side) {
+  const prefix = side === 'left' ? 'left' : 'right'
+  return transformPoint(root, [
+    motion[`${prefix}_foot_x_m`],
+    motion[`${prefix}_foot_y_m`],
+    motion[`${prefix}_foot_z_m`],
+  ])
+}
+
 function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics) {
   const isLeft = side > 0
   const name = isLeft ? 'left' : 'right'
@@ -779,13 +789,14 @@ function robotGeometry(time, options = { quality: true }) {
     ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints, footLock)
   }
   const ikRoot = robotRoot(clip, 0, footLock)
+  const authoredMotion = authoredMotionSample(clip)
   const authoredTargets = {
-    left: footTargetForPose(legPose(ikRoot, 1, authoredJoints).sole, clip.footChannels.left, clip),
-    right: footTargetForPose(legPose(ikRoot, -1, authoredJoints).sole, clip.footChannels.right, clip),
+    left: authoredFootTargetForRoot(ikRoot, authoredMotion, 'left'),
+    right: authoredFootTargetForRoot(ikRoot, authoredMotion, 'right'),
   }
   const joints = ik.correctedJoints
   const terrain = terrainProfileReport(clip)
-  const diagnostics = { feet: [], arms: [], visualLinks: [], authoredJoints, joints, ik, terrain, footLock }
+  const diagnostics = { feet: [], arms: [], visualLinks: [], authoredJoints, authoredMotion, joints, ik, terrain, footLock }
   const root = robotRoot(clip, ik.pelvisCorrectionM, footLock)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
   addVisualLink(
