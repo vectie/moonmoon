@@ -143,6 +143,15 @@ if (moonphysTrace.envelope.max_contact_torque_nm <= 0) {
 if (moonphysTrace.envelope.max_pressure_pa <= 0) {
   throw new Error('Moonphys review trace did not report a pressure envelope')
 }
+if (moonphysTrace.envelope.max_center_of_mass_speed_mps <= 0) {
+  throw new Error('Moonphys review trace did not report COM speed accounting')
+}
+if (moonphysTrace.envelope.max_linear_momentum_kg_mps <= 0) {
+  throw new Error('Moonphys review trace did not report linear momentum accounting')
+}
+if (moonphysTrace.envelope.max_linear_kinetic_energy_j <= 0) {
+  throw new Error('Moonphys review trace did not report linear kinetic energy accounting')
+}
 if (moonphysTrace.envelope.max_friction_utilization <= 0 || moonphysTrace.envelope.max_friction_utilization >= 1) {
   throw new Error('Moonphys review trace friction utilization envelope is outside the expected walking range')
 }
@@ -202,6 +211,12 @@ if (motionHingeReview.motion_frame_count !== moonphysTrace.frame_count || motion
 }
 if (motionHingeReview.driven_joint_count !== hingeTrace.driven_joint_count) {
   throw new Error('Moonphys motion hinge review did not carry hinge driven joint evidence')
+}
+if (motionHingeReview.max_motion_linear_momentum_kg_mps <= 0) {
+  throw new Error('Moonphys motion hinge review did not carry motion linear momentum evidence')
+}
+if (motionHingeReview.max_motion_linear_kinetic_energy_j <= 0) {
+  throw new Error('Moonphys motion hinge review did not carry motion kinetic energy evidence')
 }
 let maxSupportJointCorrection = 0
 let maxTerrainRange = 0

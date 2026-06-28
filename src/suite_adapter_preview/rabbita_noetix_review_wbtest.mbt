@@ -55,5 +55,10 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
   assert_true(review.max_motion_total_normal_force_n > 0.0)
   assert_true(review.max_motion_contact_torque_nm > 0.0)
   assert_true(review.max_motion_pressure_pa > 0.0)
+  assert_true(motion.max_center_of_mass_speed_mps > 0.0)
+  assert_true(motion.max_linear_momentum_kg_mps > 0.0)
+  assert_true(motion.max_linear_kinetic_energy_j > 0.0)
+  assert_true(review.max_motion_linear_momentum_kg_mps > 0.0)
+  assert_true(review.max_motion_linear_kinetic_energy_j > 0.0)
   assert_true(review.max_replay_kinetic_energy_j >= 0.0)
 }

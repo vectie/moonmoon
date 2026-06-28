@@ -42,6 +42,10 @@ pub(all) struct MotionFrameReview {
   min_support_margin_m : Double
   center_of_pressure_error_m : Double
   capture_margin_m : Double
+  estimated_mass_kg : Double
+  center_of_mass_speed_mps : Double
+  linear_momentum_kg_mps : Double
+  linear_kinetic_energy_j : Double
   contact_reviews : Array[MotionContactReview]
   support : SupportAssessment
   support_load : SupportLoadAssessment
@@ -71,6 +75,10 @@ pub(all) struct MotionFrameTraceReview {
   max_contact_torque_nm : Double
   max_friction_utilization : Double
   max_pressure_pa : Double
+  max_estimated_mass_kg : Double
+  max_center_of_mass_speed_mps : Double
+  max_linear_momentum_kg_mps : Double
+  max_linear_kinetic_energy_j : Double
   min_support_margin_m : Double
   worst_capture_margin_m : Double
   max_center_of_pressure_error_m : Double
@@ -99,6 +107,8 @@ pub(all) struct MotionHingeReplayReview {
   max_motion_total_normal_force_n : Double
   max_motion_contact_torque_nm : Double
   max_motion_pressure_pa : Double
+  max_motion_linear_momentum_kg_mps : Double
+  max_motion_linear_kinetic_energy_j : Double
   max_replay_speed_mps : Double
   max_replay_kinetic_energy_j : Double
   max_replay_world_linear_momentum_kg_mps : Double
@@ -359,6 +369,23 @@ fn motion_frame_trace_worst_capture(
 }
 
 ///|
+fn motion_frame_estimated_mass_kg(
+  total_normal_force_n : Double,
+  environment : PhysicsEnvironment,
+) -> Double {
+  let gravity = if environment.gravity_mps2 < 0.0 {
+    0.0 - environment.gravity_mps2
+  } else {
+    environment.gravity_mps2
+  }
+  if gravity > 0.0 && total_normal_force_n > 0.0 {
+    total_normal_force_n / gravity
+  } else {
+    0.0
+  }
+}
+
+///|
 pub fn motion_frame_review(
   review_id : String,
   environment : PhysicsEnvironment,
@@ -384,6 +411,12 @@ pub fn motion_frame_review(
     footprints,
     nominal_com_height_m~,
   )
+  let center_speed = center_of_mass_velocity.length()
+  let estimated_mass = motion_frame_estimated_mass_kg(
+    total_normal_force_n, environment,
+  )
+  let linear_momentum = estimated_mass * center_speed
+  let linear_kinetic_energy = 0.5 * estimated_mass * center_speed * center_speed
   let contact_reviews : Array[MotionContactReview] = []
   let mut patch_review_count = 0
   let mut load_review_count = 0
@@ -423,6 +456,10 @@ pub fn motion_frame_review(
     min_support_margin_m: support.planar_margin_m,
     center_of_pressure_error_m: support_load.center_of_pressure_error_m,
     capture_margin_m: capture.capture_margin_m,
+    estimated_mass_kg: estimated_mass,
+    center_of_mass_speed_mps: center_speed,
+    linear_momentum_kg_mps: linear_momentum,
+    linear_kinetic_energy_j: linear_kinetic_energy,
     contact_reviews,
     support,
     support_load,
@@ -455,6 +492,10 @@ pub fn motion_frame_trace_review(
   let mut max_contact_torque = 0.0
   let mut max_friction = 0.0
   let mut max_pressure = 0.0
+  let mut max_estimated_mass = 0.0
+  let mut max_center_of_mass_speed = 0.0
+  let mut max_linear_momentum = 0.0
+  let mut max_linear_kinetic_energy = 0.0
   let mut min_support_margin = 0.0
   let mut worst_capture_margin = 0.0
   let mut max_center_of_pressure_error = 0.0
@@ -492,6 +533,19 @@ pub fn motion_frame_trace_review(
     max_center_of_pressure_error = max_double(
       max_center_of_pressure_error,
       frame.center_of_pressure_error_m,
+    )
+    max_estimated_mass = max_double(max_estimated_mass, frame.estimated_mass_kg)
+    max_center_of_mass_speed = max_double(
+      max_center_of_mass_speed,
+      frame.center_of_mass_speed_mps,
+    )
+    max_linear_momentum = max_double(
+      max_linear_momentum,
+      frame.linear_momentum_kg_mps,
+    )
+    max_linear_kinetic_energy = max_double(
+      max_linear_kinetic_energy,
+      frame.linear_kinetic_energy_j,
     )
     has_frame = true
     for contact in frame.contact_reviews {
@@ -534,6 +588,10 @@ pub fn motion_frame_trace_review(
     max_contact_torque_nm: max_contact_torque,
     max_friction_utilization: max_friction,
     max_pressure_pa: max_pressure,
+    max_estimated_mass_kg: max_estimated_mass,
+    max_center_of_mass_speed_mps: max_center_of_mass_speed,
+    max_linear_momentum_kg_mps: max_linear_momentum,
+    max_linear_kinetic_energy_j: max_linear_kinetic_energy,
     min_support_margin_m: min_support_margin,
     worst_capture_margin_m: worst_capture_margin,
     max_center_of_pressure_error_m: max_center_of_pressure_error,
@@ -572,6 +630,8 @@ fn motion_hinge_replay_review_from_replay(
     max_motion_total_normal_force_n: motion_trace.max_total_normal_force_n,
     max_motion_contact_torque_nm: motion_trace.max_contact_torque_nm,
     max_motion_pressure_pa: motion_trace.max_pressure_pa,
+    max_motion_linear_momentum_kg_mps: motion_trace.max_linear_momentum_kg_mps,
+    max_motion_linear_kinetic_energy_j: motion_trace.max_linear_kinetic_energy_j,
     max_replay_speed_mps: replay.max_speed_mps,
     max_replay_kinetic_energy_j: replay.max_kinetic_energy_j,
     max_replay_world_linear_momentum_kg_mps: replay.max_world_linear_momentum_kg_mps,

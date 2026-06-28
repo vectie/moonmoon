@@ -671,6 +671,10 @@ pub(all) struct MotionFrameReview {
   min_support_margin_m : Double
   center_of_pressure_error_m : Double
   capture_margin_m : Double
+  estimated_mass_kg : Double
+  center_of_mass_speed_mps : Double
+  linear_momentum_kg_mps : Double
+  linear_kinetic_energy_j : Double
   contact_reviews : Array[MotionContactReview]
   support : SupportAssessment
   support_load : SupportLoadAssessment
@@ -699,6 +703,10 @@ pub(all) struct MotionFrameTraceReview {
   max_contact_torque_nm : Double
   max_friction_utilization : Double
   max_pressure_pa : Double
+  max_estimated_mass_kg : Double
+  max_center_of_mass_speed_mps : Double
+  max_linear_momentum_kg_mps : Double
+  max_linear_kinetic_energy_j : Double
   min_support_margin_m : Double
   worst_capture_margin_m : Double
   max_center_of_pressure_error_m : Double
@@ -726,6 +734,8 @@ pub(all) struct MotionHingeReplayReview {
   max_motion_total_normal_force_n : Double
   max_motion_contact_torque_nm : Double
   max_motion_pressure_pa : Double
+  max_motion_linear_momentum_kg_mps : Double
+  max_motion_linear_kinetic_energy_j : Double
   max_replay_speed_mps : Double
   max_replay_kinetic_energy_j : Double
   max_replay_world_linear_momentum_kg_mps : Double

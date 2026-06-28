@@ -285,8 +285,9 @@ Status: active in `src/suite_adapter_preview` as a suite-side compiled
 Moonphys review of a generated Rabbita/Moonrobo Noetix evidence artifact.
 `npm run check:gait` verifies that artifact is fresh. The current generated
 walk now clears the compiled Moonphys motion, hinge, replay, support, capture,
-contact, torque, pressure, velocity, and effort review gate. The next work is
-visual walk-cycle polish and eventual live Moonrobo adapter payloads.
+contact, torque, pressure, velocity, effort, motion-side momentum, and
+motion-side kinetic-energy review gate. The next work is visual walk-cycle
+polish and eventual live Moonrobo adapter payloads.
 
 ## Phase 10: Durable Suite Evidence
 

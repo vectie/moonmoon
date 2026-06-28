@@ -488,26 +488,36 @@ function moonphysVector(vector) {
   }
 }
 
-function supportAnchoredCenterOfMass(root, diagnostics) {
+function supportTransferWeightLeft(phase) {
+  if (phase >= 0.42 && phase < 0.58) {
+    return 1 - smoothstep((phase - 0.42) / 0.16)
+  }
+  if (phase >= 0.92) {
+    return smoothstep((phase - 0.92) / 0.16)
+  }
+  if (phase < 0.08) {
+    return smoothstep((phase + 0.08) / 0.16)
+  }
+  return phase < 0.42 ? 1 : 0
+}
+
+function supportAnchoredCenterOfMass(root, diagnostics, clip) {
   const fallback = transformPoint(root, [
     diagnostics.supportMassTransferX,
     0.16,
     0.035,
   ])
-  const activeFeet = diagnostics.feet.filter(foot => foot.supporting)
-  if (activeFeet.length === 0) {
+  const left = diagnostics.feet.find(foot => foot.name === 'left')
+  const right = diagnostics.feet.find(foot => foot.name === 'right')
+  if (!left || !right) {
     return pointRecord(fallback)
   }
-  const center = activeFeet.reduce((sum, foot) => ({
-    x: sum.x + foot.contactPatch.center.x,
-    y: sum.y + foot.contactPatch.center.y,
-    z: sum.z + foot.contactPatch.center.z,
-  }), { x: 0, y: 0, z: 0 })
-  const inv = 1 / activeFeet.length
+  const leftWeight = supportTransferWeightLeft(clip.phase)
+  const rightWeight = 1 - leftWeight
   return {
-    x: center.x * inv,
+    x: left.contactPatch.center.x * leftWeight + right.contactPatch.center.x * rightWeight,
     y: fallback[1],
-    z: center.z * inv,
+    z: left.contactPatch.center.z * leftWeight + right.contactPatch.center.z * rightWeight,
   }
 }
 
@@ -525,36 +535,48 @@ function pointRecordDistance(a, b) {
   return Math.sqrt(dx * dx + dy * dy + dz * dz)
 }
 
-function addGround(vertices, colors, clip) {
+function translateVertexRangeZ(vertices, start, end, dz) {
+  if (dz === 0) return
+  for (let i = start + 2; i < end; i += 3) {
+    vertices[i] += dz
+  }
+}
+
+function addGround(vertices, colors, clip, rootWorldZ = 0) {
   const spacing = 0.24
   const startWorldZ = Math.floor((clip.rootDistanceM - 1.92) / spacing) * spacing
   for (let i = 0; i <= 17; i += 1) {
     const worldZ = startWorldZ + i * spacing
-    const z = worldZ - clip.rootDistanceM
-    const nextZ = z + 0.018
-    const a = terrainSampleAt(-1.6, z, clip).heightM
-    const b = terrainSampleAt(1.6, z, clip).heightM
-    const c = terrainSampleAt(1.6, nextZ, clip).heightM
-    const d = terrainSampleAt(-1.6, nextZ, clip).heightM
-    addQuad(vertices, colors, [-1.6, a, z], [1.6, b, z], [1.6, c - 0.012, nextZ], [-1.6, d - 0.012, nextZ], [0.18, 0.24, 0.21])
+    const localZ = worldZ - clip.rootDistanceM
+    const nextWorldZ = worldZ + 0.018
+    const nextLocalZ = localZ + 0.018
+    const a = terrainSampleAt(-1.6, localZ, clip).heightM
+    const b = terrainSampleAt(1.6, localZ, clip).heightM
+    const c = terrainSampleAt(1.6, nextLocalZ, clip).heightM
+    const d = terrainSampleAt(-1.6, nextLocalZ, clip).heightM
+    addQuad(vertices, colors, [-1.6, a, worldZ], [1.6, b, worldZ], [1.6, c - 0.012, nextWorldZ], [-1.6, d - 0.012, nextWorldZ], [0.18, 0.24, 0.21])
   }
   for (let i = -4; i <= 4; i += 1) {
     const x = i * 0.32
-    const a = terrainSampleAt(x, -1.4, clip).heightM
-    const b = terrainSampleAt(x + 0.014, -1.4, clip).heightM
-    const c = terrainSampleAt(x + 0.014, 1.4, clip).heightM
-    const d = terrainSampleAt(x, 1.4, clip).heightM
-    addQuad(vertices, colors, [x, a, -1.4], [x + 0.014, b, -1.4], [x + 0.014, c - 0.012, 1.4], [x, d - 0.012, 1.4], [0.14, 0.20, 0.18])
+    const startZ = rootWorldZ - 1.4
+    const endZ = rootWorldZ + 1.4
+    const startLocalZ = startZ - clip.rootDistanceM
+    const endLocalZ = endZ - clip.rootDistanceM
+    const a = terrainSampleAt(x, startLocalZ, clip).heightM
+    const b = terrainSampleAt(x + 0.014, startLocalZ, clip).heightM
+    const c = terrainSampleAt(x + 0.014, endLocalZ, clip).heightM
+    const d = terrainSampleAt(x, endLocalZ, clip).heightM
+    addQuad(vertices, colors, [x, a, startZ], [x + 0.014, b, startZ], [x + 0.014, c - 0.012, endZ], [x, d - 0.012, endZ], [0.14, 0.20, 0.18])
   }
 }
 
-function addGaitTimingRails(vertices, colors, clip) {
+function addGaitTimingRails(vertices, colors, clip, rootWorldZ = 0) {
   for (let i = -6; i <= 6; i += 1) {
     const z = i * 0.18
     const terrain = terrainSampleAt(0, z, clip)
     const size = i === 0 ? [0.050, 0.020, 0.050] : [0.030, 0.012, 0.030]
     const color = i === 0 ? [0.74, 0.96, 0.88] : [0.26, 0.48, 0.42]
-    addCube(vertices, colors, mat4Identity(), [0, terrain.heightM + 0.018, z], size, color)
+    addCube(vertices, colors, mat4Identity(), [0, terrain.heightM + 0.018, rootWorldZ + z], size, color)
   }
   for (const [footIndex, footName] of ['left', 'right'].entries()) {
     const foot = clip.footChannels[footName]
@@ -569,7 +591,7 @@ function addGaitTimingRails(vertices, colors, clip) {
       const color = active
         ? baseColor
         : baseColor.map(channel => channel * 0.44 * dim)
-      addCube(vertices, colors, mat4Identity(), [x, terrain.heightM + 0.020, z], size, color)
+      addCube(vertices, colors, mat4Identity(), [x, terrain.heightM + 0.020, rootWorldZ + z], size, color)
     }
   }
 }
@@ -740,6 +762,7 @@ function robotGeometry(time, options = { quality: true }) {
   const vertices = []
   const colors = []
   const clip = walkClipSample(time, options)
+  const visualRootWorldZ = options.visualWorldSpace === false ? 0 : clip.rootDistanceM
   const authoredJoints = jointSamples(clip)
   let footLock = footLockRootCorrection(time, clip, authoredJoints)
   let ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints, footLock)
@@ -806,15 +829,43 @@ function robotGeometry(time, options = { quality: true }) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
     addArm(vertices, colors, torsoRoot, side, joints, diagnostics)
   }
-  diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics)
-  diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: 0 }
-  addGround(vertices, colors, clip)
-  addGaitTimingRails(vertices, colors, clip)
+  diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics, clip)
+  diagnostics.centerOfMassVelocity = centerOfMassVelocityAt(time, options)
+  diagnostics.visualRootWorldZ = visualRootWorldZ
+  const robotVertexEnd = vertices.length
+  translateVertexRangeZ(vertices, 0, robotVertexEnd, visualRootWorldZ)
+  addGround(vertices, colors, clip, visualRootWorldZ)
+  addGaitTimingRails(vertices, colors, clip, visualRootWorldZ)
   const gait = { ...diagnostics, ...clip }
   if (options.quality === false) {
     return { vertices, colors, diagnostics: gait }
   }
   return { vertices, colors, diagnostics: { ...gait, quality: gaitQuality(time, gait) } }
+}
+
+function centerOfMassVelocityAt(time, options) {
+  if (options.centerOfMassVelocity === false) {
+    return { x: 0, y: 0, z: 0 }
+  }
+  const dt = 1 / (NOETIX_VISUAL_RIG.cycleHz * 96)
+  const before = bodyCenterOfMassReference(time - dt, options)
+  const after = bodyCenterOfMassReference(time + dt, options)
+  const scale = NOETIX_VISUAL_RIG.centerOfMassVelocityScale
+  return {
+    x: (after.x - before.x) / (2 * dt) * scale,
+    y: (after.y - before.y) / (2 * dt) * scale,
+    z: (after.z - before.z) / (2 * dt) * scale,
+  }
+}
+
+function bodyCenterOfMassReference(time, options) {
+  const clip = walkClipSample(time, options)
+  const leftWeight = supportTransferWeightLeft(clip.phase)
+  return {
+    x: clip.sway + mix(-0.08, 0.06, leftWeight),
+    y: 0.95 + clip.bob,
+    z: clip.rootDistanceM,
+  }
 }
 
 function gaitQuality(time, diagnostics) {
@@ -1424,6 +1475,8 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
   const fk = foot.fkEndpoint
   const active = foot.supporting
   const averageElevation = patch.samples.reduce((sum, sample) => sum + sample.y, 0) / patch.samples.length
+  const sampleClearance = sample => active ? 0 : fk.y - sample.y
+  const clearances = patch.samples.map(sampleClearance)
   return {
     contact_id: `${foot.name}-contact`,
     footprint: {
@@ -1440,8 +1493,8 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
       half_width_m: 0.09,
       sample_count: patch.samples.length,
       contact_count: active ? patch.samples.length : 0,
-      min_clearance_m: Number((fk.y - patch.maxHeightM).toFixed(4)),
-      max_clearance_m: Number((fk.y - patch.minHeightM).toFixed(4)),
+      min_clearance_m: Number(Math.min(...clearances).toFixed(4)),
+      max_clearance_m: Number(Math.max(...clearances).toFixed(4)),
       average_surface_elevation_m: Number(averageElevation.toFixed(4)),
       average_surface_normal: moonphysVector(patch.normal),
       samples: patch.samples.map((sample, index) => ({
@@ -1449,7 +1502,7 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
         position: moonphysPoint(sample),
         surface_elevation_m: Number(sample.y.toFixed(4)),
         surface_normal: moonphysVector(sample.normal),
-        clearance_m: Number((fk.y - sample.y).toFixed(4)),
+        clearance_m: Number(sampleClearance(sample).toFixed(4)),
         in_contact: active,
         local_grade: Number(Math.sqrt(sample.normal.x * sample.normal.x + sample.normal.z * sample.normal.z).toFixed(4)),
         status: active ? 'contact' : 'clear',
@@ -1536,8 +1589,18 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
   let maxContactTorqueNm = 0
   let maxFrictionUtilization = 0
   let maxPressurePa = 0
+  let maxEstimatedMassKg = 0
+  let maxCenterOfMassSpeedMps = 0
+  let maxLinearMomentumKgMps = 0
+  let maxLinearKineticEnergyJ = 0
   for (const frame of frames) {
     maxTotalNormalForceN = Math.max(maxTotalNormalForceN, frame.review.total_normal_force_n)
+    const massKg = frame.review.total_normal_force_n / 1.625
+    const speedMps = vec3Length(frame.review.center_of_mass_velocity)
+    maxEstimatedMassKg = Math.max(maxEstimatedMassKg, massKg)
+    maxCenterOfMassSpeedMps = Math.max(maxCenterOfMassSpeedMps, speedMps)
+    maxLinearMomentumKgMps = Math.max(maxLinearMomentumKgMps, massKg * speedMps)
+    maxLinearKineticEnergyJ = Math.max(maxLinearKineticEnergyJ, 0.5 * massKg * speedMps * speedMps)
     for (const contact of frame.review.contacts) {
       const envelope = moonphysContactEnvelope(contact, frame.review.center_of_mass)
       maxContactNormalForceN = Math.max(maxContactNormalForceN, envelope.normal_force_n)
@@ -1563,6 +1626,10 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
       max_contact_torque_nm: Number(maxContactTorqueNm.toFixed(4)),
       max_friction_utilization: Number(maxFrictionUtilization.toFixed(4)),
       max_pressure_pa: Number(maxPressurePa.toFixed(4)),
+      max_estimated_mass_kg: Number(maxEstimatedMassKg.toFixed(4)),
+      max_center_of_mass_speed_mps: Number(maxCenterOfMassSpeedMps.toFixed(4)),
+      max_linear_momentum_kg_mps: Number(maxLinearMomentumKgMps.toFixed(4)),
+      max_linear_kinetic_energy_j: Number(maxLinearKineticEnergyJ.toFixed(4)),
     },
   }
 }
@@ -1722,6 +1789,8 @@ function moonphysMotionHingeReviewEvidence(sampleCount = 24) {
     max_motion_total_normal_force_n: motionTrace.envelope.max_total_normal_force_n,
     max_motion_contact_torque_nm: motionTrace.envelope.max_contact_torque_nm,
     max_motion_pressure_pa: motionTrace.envelope.max_pressure_pa,
+    max_motion_linear_momentum_kg_mps: motionTrace.envelope.max_linear_momentum_kg_mps,
+    max_motion_linear_kinetic_energy_j: motionTrace.envelope.max_linear_kinetic_energy_j,
     max_hinge_commanded_torque_nm: hingeTrace.max_abs_commanded_torque_nm,
     max_hinge_velocity_rad_s: hingeTrace.max_abs_velocity_delta_rad_s,
     total_hinge_absolute_work_j: hingeTrace.total_absolute_work_j,
@@ -1765,7 +1834,7 @@ function supportJointIk(root, clip, joints) {
   const supportFoot = clip.supportFoot
   const footIkWeight = footName => {
     const foot = clip.footChannels[footName]
-    if (footName === supportFoot || foot.supporting) return 1
+    if (footName === supportFoot) return 1
     if (foot.role === 'passing') return 1 - smoothstep((foot.phase - 0.50) / 0.10)
     if (foot.role === 'release') return smoothstep((foot.phase - 0.92) / 0.08)
     return foot.lockWeight
@@ -1975,10 +2044,12 @@ function initRobot(canvas) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     gl.enable(gl.DEPTH_TEST)
     const aspect = canvas.width / Math.max(1, canvas.height)
+    const geometry = robotGeometry(now * 0.001)
+    const follow = mat4Translate(mat4Identity(), 0, 0, -geometry.diagnostics.visualRootWorldZ)
     const camera = mat4Translate(mat4Identity(), 0, -0.68, -3.25)
     const scene = mat4RotateX(mat4Identity(), -0.08)
-    const mvp = mat4Multiply(mat4Perspective(38 * DEG, aspect, 0.1, 20), mat4Multiply(camera, scene))
-    const geometry = robotGeometry(now * 0.001)
+    const view = mat4Multiply(camera, mat4Multiply(scene, follow))
+    const mvp = mat4Multiply(mat4Perspective(38 * DEG, aspect, 0.1, 20), view)
     upload(gl, shader, buffers, geometry.vertices, geometry.colors, mvp)
     gl.drawArrays(gl.TRIANGLES, 0, geometry.vertices.length / 3)
     canvas.dataset.sceneStatus = 'robot-rig-webgl-rendered'
@@ -1993,6 +2064,8 @@ function initRobot(canvas) {
     canvas.dataset.supportFoot = geometry.diagnostics.supportFoot
     canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
     canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
+    canvas.dataset.visualRootWorldZ = geometry.diagnostics.visualRootWorldZ.toFixed(2)
+    canvas.dataset.visualLocomotionStatus = 'world-root-camera-follow'
     canvas.dataset.walkPipeline = 'clip-targets-to-rigid-fk'
     canvas.dataset.footPhaseChannels = JSON.stringify({
       left: {

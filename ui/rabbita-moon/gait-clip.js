@@ -14,6 +14,7 @@ export const NOETIX_VISUAL_RIG = {
   flatTerrainHeightRangeMaxM: 0.000001,
   flatTerrainContactPatchMaxRangeM: 0.000001,
   flatTerrainSolePitchMaxM: 0.020,
+  centerOfMassVelocityScale: 0.12,
   footLockRootCorrectionMaxM: 0.22,
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
@@ -118,7 +119,7 @@ function footLockWeight(footPhase) {
 }
 
 function footSupport(footPhase) {
-  return footPhase < 0.50
+  return footPhase < 0.58 || footPhase >= 0.92
 }
 
 export function supportMassTransferX(clip) {

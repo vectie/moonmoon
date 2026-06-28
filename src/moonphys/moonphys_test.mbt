@@ -2701,6 +2701,10 @@ test "motion frame review accepts stable contact evidence" {
   assert_eq(review.capture_status, "capture-point-inside-support")
   assert_eq(review.contact_reviews[0].traction_status, "traction-ok")
   assert_true(nearly_equal(review.total_normal_force_n, 120.0))
+  assert_true(nearly_equal(review.estimated_mass_kg, 120.0 / 1.625))
+  assert_true(nearly_equal(review.center_of_mass_speed_mps, 0.0))
+  assert_true(nearly_equal(review.linear_momentum_kg_mps, 0.0))
+  assert_true(nearly_equal(review.linear_kinetic_energy_j, 0.0))
 }
 
 ///|
@@ -2773,7 +2777,7 @@ test "motion frame trace review envelopes contact force and torque" {
     lunar_environment(),
     material,
     vec3(0.05, 0.0, 0.7),
-    vec3(0.0, 0.0, 0.0),
+    vec3(0.2, 0.0, 0.0),
     [
       motion_contact_evidence(
         "left-contact",
@@ -2798,6 +2802,17 @@ test "motion frame trace review envelopes contact force and torque" {
   assert_true(trace.max_contact_torque_nm > 0.0)
   assert_true(trace.max_friction_utilization > 0.0)
   assert_true(trace.max_pressure_pa > 0.0)
+  assert_true(nearly_equal(trace.max_estimated_mass_kg, 120.0 / 1.625))
+  assert_true(nearly_equal(trace.max_center_of_mass_speed_mps, 0.2))
+  assert_true(
+    nearly_equal(trace.max_linear_momentum_kg_mps, 120.0 / 1.625 * 0.2),
+  )
+  assert_true(
+    nearly_equal(
+      trace.max_linear_kinetic_energy_j,
+      0.5 * 120.0 / 1.625 * 0.2 * 0.2,
+    ),
+  )
 }
 
 ///|

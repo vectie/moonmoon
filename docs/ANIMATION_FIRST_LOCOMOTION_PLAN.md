@@ -373,9 +373,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    Rabbita preview now emits an explicit load-bearing support channel, wider
    rendered-sole support patches, and a small support-phase mass-transfer COM
    channel; the generated evidence now clears compiled Moonphys motion, hinge,
-   replay, support, capture, contact, torque, pressure, velocity, and effort
-   review for the sampled endless walk. Phase D visual polish is now being
-   implemented in the Rabbita 3D preview itself: the endless walk clip has a
+   replay, support, capture, contact, torque, pressure, velocity, effort,
+   motion-side linear momentum, and motion-side kinetic-energy review for the
+   sampled endless walk. Phase D visual polish is now being implemented in the
+   Rabbita 3D preview itself: the endless walk clip has a
    toe-off/contact foot-roll channel rendered through separate toe/heel blocks,
    lagged arm counter-swing with visible hands, and torso/waist
    counter-rotation above the pelvis while the legs remain rigid FK from the

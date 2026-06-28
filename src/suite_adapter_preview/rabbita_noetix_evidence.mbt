@@ -336,13 +336,14 @@ fn rabbita_noetix_generated_replay_review(
   let footprint_frames : Array[Array[@moonphys.SupportFootprint]] = []
   let targets : Array[@moonphys.RigidBodyWorldCenterOfMassTarget] = []
   for frame in generated_rabbita_noetix_motion_frames() {
+    let center_of_mass = generated_vec3_to_moonphys(frame.center_of_mass)
     footprint_frames.push(generated_active_footprints(frame))
     targets.push(
       @moonphys.rigid_body_world_center_of_mass_target(
-        generated_vec3_to_moonphys(frame.center_of_mass),
+        center_of_mass,
         generated_vec3_to_moonphys(frame.center_of_mass_velocity),
         total_mass_kg=frame.total_mass_kg,
-        nominal_com_height_m=frame.center_of_mass.z,
+        nominal_com_height_m=center_of_mass.z,
       ),
     )
   }
