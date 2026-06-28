@@ -399,8 +399,14 @@ const NOETIX_VISUAL_RIG = {
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
   supportTargetClearanceM: 0.006,
+  jointClearanceToleranceM: 0.0025,
   pelvisCorrectionMaxM: 0.18,
   supportClearanceMaxM: 0.014,
+  jointCorrectionMaxRad: {
+    hip: 0.20,
+    knee: 0.22,
+    ankle: 0.16,
+  },
   lengths: {
     upperLeg: 0.30,
     lowerLeg: 0.31,
@@ -514,6 +520,20 @@ function jointSamples(clip) {
   }
 }
 
+function cloneJointSamples(joints) {
+  return {
+    left: { ...joints.left },
+    right: { ...joints.right },
+  }
+}
+
+function emptyJointCorrections() {
+  return {
+    left: { hip: 0, knee: 0, ankle: 0 },
+    right: { hip: 0, knee: 0, ankle: 0 },
+  }
+}
+
 function addGround(vertices, colors, clip) {
   const offset = clip.rootDistanceM % 0.24
   for (let i = -8; i <= 8; i += 1) {
@@ -590,14 +610,15 @@ function robotGeometry(time) {
   const vertices = []
   const colors = []
   const clip = walkClipSample(time)
-  const joints = jointSamples(clip)
+  const authoredJoints = jointSamples(clip)
   const baseRoot = robotRoot(clip, 0)
   const authoredTargets = {
-    left: footTargetForPose(legPose(baseRoot, 1, joints).sole, clip.footChannels.left),
-    right: footTargetForPose(legPose(baseRoot, -1, joints).sole, clip.footChannels.right),
+    left: footTargetForPose(legPose(baseRoot, 1, authoredJoints).sole, clip.footChannels.left),
+    right: footTargetForPose(legPose(baseRoot, -1, authoredJoints).sole, clip.footChannels.right),
   }
-  const ik = terrainIkCorrection(baseRoot, clip, joints)
-  const diagnostics = { feet: [], joints, ik }
+  const ik = terrainIkCorrection(baseRoot, clip, authoredJoints)
+  const joints = ik.correctedJoints
+  const diagnostics = { feet: [], authoredJoints, joints, ik }
   const root = robotRoot(clip, ik.pelvisCorrectionM)
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
@@ -637,6 +658,7 @@ function gaitQuality(time, diagnostics) {
     supportFootLocked: supportFoot?.locked ? 'pass' : 'fail',
     terrainContact: supportClearanceError <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     ikCorrectionBounded: diagnostics.ik.saturated ? 'fail' : 'pass',
+    jointIkCorrection: diagnostics.ik.jointIk.saturated ? 'fail' : 'pass',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     linkLengthInvariant: 'pass',
@@ -655,6 +677,7 @@ function gaitQuality(time, diagnostics) {
     ik: diagnostics.ik,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
+    authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
   }
 }
@@ -727,9 +750,67 @@ function terrainContactProbe(point) {
   }
 }
 
+function supportJointIk(root, clip, joints) {
+  const supportName = clip.supportFoot
+  const supportSide = supportName === 'left' ? 1 : -1
+  const correctedJoints = cloneJointSamples(joints)
+  const jointCorrections = emptyJointCorrections()
+  const fields = ['hip', 'knee', 'ankle']
+  const epsilon = 0.01
+  const preProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+  let finalProbe = preProbe
+  let saturated = false
+  let iterations = 0
+  for (let i = 0; i < 5; i += 1) {
+    const probe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+    const error = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
+    finalProbe = probe
+    if (Math.abs(error) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM) {
+      break
+    }
+    let denom = 0
+    const derivatives = {}
+    for (const field of fields) {
+      const trial = cloneJointSamples(correctedJoints)
+      trial[supportName][field] += epsilon
+      const trialProbe = terrainContactProbe(legPose(root, supportSide, trial).sole)
+      const derivative = (trialProbe.clearanceM - probe.clearanceM) / epsilon
+      derivatives[field] = derivative
+      denom += derivative * derivative
+    }
+    if (denom <= 0.000001) {
+      break
+    }
+    for (const field of fields) {
+      const limit = NOETIX_VISUAL_RIG.jointCorrectionMaxRad[field]
+      const proposed = jointCorrections[supportName][field] + error * derivatives[field] / denom * 0.85
+      const bounded = clamp(proposed, -limit, limit)
+      const delta = bounded - jointCorrections[supportName][field]
+      correctedJoints[supportName][field] += delta
+      jointCorrections[supportName][field] = bounded
+      saturated = saturated || Math.abs(proposed - bounded) > 0.000001
+    }
+    iterations += 1
+  }
+  finalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole)
+  return {
+    correctedJoints,
+    jointCorrections,
+    report: {
+      supportFoot: supportName,
+      iterations,
+      preClearanceM: preProbe.clearanceM,
+      finalClearanceM: finalProbe.clearanceM,
+      finalErrorM: NOETIX_VISUAL_RIG.supportTargetClearanceM - finalProbe.clearanceM,
+      saturated,
+    },
+  }
+}
+
 function terrainIkCorrection(root, clip, joints) {
   const supportSide = clip.supportFoot === 'left' ? 1 : -1
-  const supportPose = legPose(root, supportSide, joints)
+  const jointIk = supportJointIk(root, clip, joints)
+  const supportPose = legPose(root, supportSide, jointIk.correctedJoints)
   const probe = terrainContactProbe(supportPose.sole)
   const rawPelvisCorrectionM = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
   const pelvisCorrectionM = clamp(
@@ -739,6 +820,9 @@ function terrainIkCorrection(root, clip, joints) {
   )
   return {
     supportFoot: clip.supportFoot,
+    correctedJoints: jointIk.correctedJoints,
+    jointCorrections: jointIk.jointCorrections,
+    jointIk: jointIk.report,
     rawPelvisCorrectionM,
     pelvisCorrectionM,
     saturated: Math.abs(rawPelvisCorrectionM - pelvisCorrectionM) > 0.000001,
@@ -832,6 +916,22 @@ function initRobot(canvas) {
       saturated: geometry.diagnostics.ik.saturated,
       supportClearanceError: Number(geometry.diagnostics.quality.supportClearanceError.toFixed(4)),
     })
+    canvas.dataset.jointCorrectionReport = JSON.stringify({
+      supportFoot: geometry.diagnostics.ik.jointIk.supportFoot,
+      iterations: geometry.diagnostics.ik.jointIk.iterations,
+      preClearanceM: Number(geometry.diagnostics.ik.jointIk.preClearanceM.toFixed(4)),
+      finalClearanceM: Number(geometry.diagnostics.ik.jointIk.finalClearanceM.toFixed(4)),
+      finalErrorM: Number(geometry.diagnostics.ik.jointIk.finalErrorM.toFixed(4)),
+      saturated: geometry.diagnostics.ik.jointIk.saturated,
+      corrections: {
+        left: compactJointSample({ ...geometry.diagnostics.ik.jointCorrections.left, shoulder: 0, elbow: 0 }),
+        right: compactJointSample({ ...geometry.diagnostics.ik.jointCorrections.right, shoulder: 0, elbow: 0 }),
+      },
+    })
+    canvas.dataset.authoredJointSamples = JSON.stringify({
+      left: compactJointSample(geometry.diagnostics.authoredJoints.left),
+      right: compactJointSample(geometry.diagnostics.authoredJoints.right),
+    })
     canvas.dataset.jointSamples = JSON.stringify({
       left: compactJointSample(geometry.diagnostics.joints.left),
       right: compactJointSample(geometry.diagnostics.joints.right),
@@ -845,6 +945,7 @@ function initRobot(canvas) {
     canvas.dataset.supportFootLockedStatus = geometry.diagnostics.quality.statuses.supportFootLocked
     canvas.dataset.terrainContactStatus = geometry.diagnostics.quality.statuses.terrainContact
     canvas.dataset.ikCorrectionStatus = geometry.diagnostics.quality.statuses.ikCorrectionBounded
+    canvas.dataset.jointIkStatus = geometry.diagnostics.quality.statuses.jointIkCorrection
     canvas.dataset.kneeRoleContrastStatus = geometry.diagnostics.quality.statuses.kneeRoleContrast
     canvas.dataset.armCounterSwingStatus = geometry.diagnostics.quality.statuses.armCounterSwing
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
@@ -869,4 +970,9 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
     robot.dataset.sceneBooted = 'true'
     initRobot(robot)
   }
+}
+
+globalThis.__moonmoonGaitDiagnostics = {
+  rig: NOETIX_VISUAL_RIG,
+  sampleRobotGeometry: robotGeometry,
 }

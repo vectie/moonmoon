@@ -306,9 +306,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    lock, knee role contrast, arm counter-swing, and link-length invariant
    statuses.
 4. Add terrain IK only after the base walk is readable. Status: the Rabbita
-   preview now has a flat-terrain contact probe, bounded support-pelvis
-   correction, terrain-corrected foot targets, and browser-facing IK/contact
-   status datasets. Hip, knee, ankle, and non-flat terrain correction remain the
-   next solver step.
-5. Feed corrected FK poses into Moonphys review once the terrain solver updates
-   joint targets instead of only the bounded pelvis preview.
+   preview now has a flat-terrain contact probe, bounded support-leg
+   hip/knee/ankle correction, bounded support-pelvis fallback correction,
+   terrain-corrected foot targets, authored/corrected joint samples, and
+   browser-facing IK/contact status datasets. Non-flat terrain height and normal
+   response remain the next solver step.
+5. Feed corrected FK poses into Moonphys review once the terrain solver handles
+   non-flat terrain and publishes stable contact patches.
