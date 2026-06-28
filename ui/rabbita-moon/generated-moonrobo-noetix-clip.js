@@ -13228,12 +13228,228 @@ export const MOONROBO_NOETIX_WALK_CLIP = {
   "visual_mesh_assets": [
     {
       "link_id": "base_link",
-      "local_path": "examples/noetix-e1/model/meshes/base.obj",
-      "moonrobo_path": "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
-      "format": "obj",
-      "obj_text": "# Moonrobo Noetix E1 placeholder base mesh.\no base_link\nv -0.12 -0.10 0.00\nv 0.12 -0.10 0.00\nv 0.12 0.10 0.00\nv -0.12 0.10 0.00\nv -0.12 -0.10 0.04\nv 0.12 -0.10 0.04\nv 0.12 0.10 0.04\nv -0.12 0.10 0.04\nf 1 2 3 4\nf 5 8 7 6\nf 1 5 6 2\nf 2 6 7 3\nf 3 7 8 4\nf 4 8 5 1\n",
-      "source": "moonrobo:examples/noetix-e1/model/meshes/base.obj",
-      "status": "moonrobo-mesh-loaded"
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/base_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/base_link.STL",
+      "format": "stl",
+      "byte_length": 6634884,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/base_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "waist_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/waist_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/waist_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 2547784,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/waist_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "waist_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/waist_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/waist_roll_link.STL",
+      "format": "stl",
+      "byte_length": 8514384,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/waist_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_arm_shoulder_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 9980784,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_arm_shoulder_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_roll_link.STL",
+      "format": "stl",
+      "byte_length": 5927184,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_arm_shoulder_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 5596784,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_arm_shoulder_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_arm_elbow_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 5315884,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_arm_elbow_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 2321284,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_arm_elbow_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_arm_shoulder_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 9975584,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_arm_shoulder_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_roll_link.STL",
+      "format": "stl",
+      "byte_length": 5889684,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_arm_shoulder_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 5602184,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_arm_shoulder_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_arm_elbow_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 5327684,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_arm_elbow_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 2300234,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_arm_elbow_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_hip_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 2989284,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_hip_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_roll_link.STL",
+      "format": "stl",
+      "byte_length": 4307784,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_hip_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 5372984,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_hip_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_knee_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_knee_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_knee_link.STL",
+      "format": "stl",
+      "byte_length": 5000084,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_knee_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_ankle_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 26584,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "l_leg_ankle_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_roll_link.STL",
+      "format": "stl",
+      "byte_length": 4726484,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/l_leg_ankle_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_hip_yaw_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_yaw_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_yaw_link.STL",
+      "format": "stl",
+      "byte_length": 2992384,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_yaw_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_hip_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_roll_link.STL",
+      "format": "stl",
+      "byte_length": 4306384,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_hip_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 5374284,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_hip_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_knee_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_knee_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_knee_link.STL",
+      "format": "stl",
+      "byte_length": 4910484,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_knee_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_ankle_pitch_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_pitch_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_pitch_link.STL",
+      "format": "stl",
+      "byte_length": 26584,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_pitch_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
+    },
+    {
+      "link_id": "r_leg_ankle_roll_link",
+      "local_path": "examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_roll_link.STL",
+      "moonrobo_path": "../moonrobo/examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_roll_link.STL",
+      "format": "stl",
+      "byte_length": 4761384,
+      "source": "moonrobo:examples/noetix-e1/e1_asm_251028/meshes/r_leg_ankle_roll_link.STL",
+      "status": "moonrobo-stl-mesh-referenced"
     }
   ],
   "live_suite_evidence": {

@@ -52,8 +52,10 @@
   exercise that path from live Moonrobo JSON. The committed generated MoonBit
   table snapshot has been removed; plain MoonBit tests use compact fixture
   coverage, and the live command gate owns full Moonrobo integration coverage.
-  The next implementation targets are visual gait polish, URDF/mesh-derived
-  attachment authority, terrain IK completion, and durable evidence consumers.
+  Rabbita now generates an ignored local E1 assembly asset bridge from the
+  downloaded package and renders a second Three.js 3D character from all 25 URDF
+  STL link visuals. The next implementation targets are visual gait polish,
+  terrain IK completion, and durable evidence consumers.
 
 ## Non-Goals
 

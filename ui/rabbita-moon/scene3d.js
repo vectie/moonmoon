@@ -1,3 +1,5 @@
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import {
   FOOT_PHASE_SEQUENCE,
   NOETIX_URDF_LIMIT_SOURCE,
@@ -11,16 +13,16 @@ import {
   jointSamples,
   near,
   supportMassTransferX,
-  visualMeshAsset,
   walkClipSample,
 } from './gait-clip.js'
+import { E1_ASM_ASSEMBLY } from './.generated/e1-asm-assembly.js'
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
-const VISUAL_MESH_CACHE = new Map()
-const NOETIX_VISUAL_DUPLICATE_OFFSET_X = 0.74
+const E1_ASM_DUPLICATE_OFFSET_X = 0.74
+const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -85,6 +87,35 @@ function mat4RotateZ(m, a) {
   const c = Math.cos(a)
   const s = Math.sin(a)
   return mat4Multiply(m, [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])
+}
+
+function mat4AxisAngle(m, axis, angle) {
+  const [x, y, z] = normalizeArray3(axis)
+  const c = Math.cos(angle)
+  const s = Math.sin(angle)
+  const t = 1 - c
+  return mat4Multiply(m, [
+    t * x * x + c, t * x * y + s * z, t * x * z - s * y, 0,
+    t * x * y - s * z, t * y * y + c, t * y * z + s * x, 0,
+    t * x * z + s * y, t * y * z - s * x, t * z * z + c, 0,
+    0, 0, 0, 1,
+  ])
+}
+
+function normalizeArray3(axis) {
+  const len = Math.max(0.000001, Math.hypot(axis[0], axis[1], axis[2]))
+  return [axis[0] / len, axis[1] / len, axis[2] / len]
+}
+
+function mat4FromUrdfOrigin(origin) {
+  let matrix = mat4Identity()
+  const xyz = origin?.xyz ?? [0, 0, 0]
+  const rpy = origin?.rpy ?? [0, 0, 0]
+  matrix = mat4Translate(matrix, xyz[0], xyz[1], xyz[2])
+  matrix = mat4RotateX(matrix, rpy[0])
+  matrix = mat4RotateY(matrix, rpy[1])
+  matrix = mat4RotateZ(matrix, rpy[2])
+  return matrix
 }
 
 function mat4Perspective(fov, aspect, near, far) {
@@ -425,116 +456,101 @@ function addCube(vertices, colors, matrix, center, size, color) {
   }
 }
 
-function addCylinderY(vertices, colors, matrix, center, radius, length, color, segments = 14) {
-  const half = length * 0.5
-  const topCenter = transformPoint(matrix, [center[0], center[1] + half, center[2]])
-  const bottomCenter = transformPoint(matrix, [center[0], center[1] - half, center[2]])
-  for (let i = 0; i < segments; i += 1) {
-    const a0 = (i / segments) * Math.PI * 2
-    const a1 = ((i + 1) / segments) * Math.PI * 2
-    const p0 = transformPoint(matrix, [center[0] + Math.cos(a0) * radius, center[1] - half, center[2] + Math.sin(a0) * radius])
-    const p1 = transformPoint(matrix, [center[0] + Math.cos(a1) * radius, center[1] - half, center[2] + Math.sin(a1) * radius])
-    const p2 = transformPoint(matrix, [center[0] + Math.cos(a1) * radius, center[1] + half, center[2] + Math.sin(a1) * radius])
-    const p3 = transformPoint(matrix, [center[0] + Math.cos(a0) * radius, center[1] + half, center[2] + Math.sin(a0) * radius])
-    addQuad(vertices, colors, p0, p1, p2, p3, color)
-    addTri(vertices, colors, topCenter, p3, p2, color)
-    addTri(vertices, colors, bottomCenter, p1, p0, color)
-  }
+function e1UrdfPointToScene(point) {
+  return [-point[1], point[2], point[0]]
 }
 
-function parseObjIndex(token, vertexCount) {
-  const raw = Number.parseInt(token.split('/')[0], 10)
-  if (!Number.isFinite(raw) || raw === 0) return null
-  return raw > 0 ? raw - 1 : vertexCount + raw
-}
-
-function parseVisualObj(asset) {
-  if (VISUAL_MESH_CACHE.has(asset.local_path)) {
-    return VISUAL_MESH_CACHE.get(asset.local_path)
-  }
-  const positions = []
-  const triangles = []
-  const lines = asset.obj_text.split(/\r?\n/)
-  for (const line of lines) {
-    const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith('#')) continue
-    const parts = trimmed.split(/\s+/)
-    if (parts[0] === 'v' && parts.length >= 4) {
-      positions.push([
-        Number.parseFloat(parts[1]),
-        Number.parseFloat(parts[2]),
-        Number.parseFloat(parts[3]),
-      ])
-    } else if (parts[0] === 'f' && parts.length >= 4) {
-      const indices = parts.slice(1)
-        .map(token => parseObjIndex(token, positions.length))
-        .filter(index => index !== null && index >= 0 && index < positions.length)
-      for (let i = 1; i + 1 < indices.length; i += 1) {
-        triangles.push([indices[0], indices[i], indices[i + 1]])
-      }
-    }
-  }
-  if (positions.length === 0 || triangles.length === 0) {
-    throw new Error(`Moonrobo visual mesh ${asset.local_path} did not contain renderable OBJ triangles`)
-  }
-  const mesh = { positions, triangles }
-  VISUAL_MESH_CACHE.set(asset.local_path, mesh)
-  return mesh
-}
-
-function objPointToScene(point, center) {
+function e1Color(visual, phaseShift = 0) {
+  const rgba = visual.color_rgba ?? [0.82, 0.84, 0.82, 1]
   return [
-    center[0] + point[0],
-    center[1] + point[2],
-    center[2] + point[1],
+    clamp(rgba[0] * 0.72 + 0.10 + phaseShift, 0, 1),
+    clamp(rgba[1] * 0.76 + 0.08, 0, 1),
+    clamp(rgba[2] * 0.82 + 0.06, 0, 1),
   ]
 }
 
-function addObjMesh(vertices, colors, matrix, center, mesh, color) {
-  for (const triangle of mesh.triangles) {
-    const points = triangle.map(index => transformPoint(matrix, objPointToScene(mesh.positions[index], center)))
+function addE1StlMesh(vertices, colors, sceneRoot, linkMatrix, visual, mesh) {
+  const visualMatrix = mat4Multiply(linkMatrix, mat4FromUrdfOrigin(visual.origin))
+  const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
+  for (const triangle of mesh.sampled_triangles) {
+    const points = triangle.map(point => transformPoint(
+      sceneRoot,
+      e1UrdfPointToScene(transformPoint(visualMatrix, point)),
+    ))
     addTri(vertices, colors, points[0], points[1], points[2], color)
   }
 }
 
-function meshBounds(mesh, center) {
-  const points = mesh.positions.map(point => objPointToScene(point, center))
-  return {
-    min: {
-      x: Math.min(...points.map(point => point[0])),
-      y: Math.min(...points.map(point => point[1])),
-      z: Math.min(...points.map(point => point[2])),
-    },
-    max: {
-      x: Math.max(...points.map(point => point[0])),
-      y: Math.max(...points.map(point => point[1])),
-      z: Math.max(...points.map(point => point[2])),
-    },
+function threeMatrixFromMat4(matrix) {
+  return new THREE.Matrix4().fromArray(matrix)
+}
+
+function e1ThreeGeometry(visual) {
+  const positions = []
+  for (const triangle of visual.sampled_triangles ?? []) {
+    for (const point of triangle) {
+      positions.push(point[0], point[1], point[2])
+    }
+  }
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  geometry.computeVertexNormals()
+  geometry.computeBoundingBox()
+  geometry.computeBoundingSphere()
+  return geometry
+}
+
+function e1ThreeMaterial(visual) {
+  const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color(color[0], color[1], color[2]),
+    roughness: 0.64,
+    metalness: 0.08,
+    side: THREE.DoubleSide,
+  })
+}
+
+function createE1ThreeVisuals() {
+  const group = new THREE.Group()
+  const visuals = new Map()
+  if (!E1_ASM_ASSEMBLY.ready) return { group, visuals }
+  for (const visual of E1_ASM_ASSEMBLY.visuals) {
+    const mesh = new THREE.Mesh(e1ThreeGeometry(visual), e1ThreeMaterial(visual))
+    const linkGroup = new THREE.Group()
+    linkGroup.matrixAutoUpdate = false
+    linkGroup.add(mesh)
+    linkGroup.userData.linkId = visual.link_id
+    group.add(linkGroup)
+    visuals.set(visual.link_id, { group: linkGroup, visual })
+  }
+  return { group, visuals }
+}
+
+function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
+  if (!E1_ASM_ASSEMBLY.ready) return
+  let sceneRoot = mat4WorldOffset(root, E1_ASM_DUPLICATE_OFFSET_X, 0, 0)
+  sceneRoot = mat4WorldOffset(sceneRoot, 0, 0, rootWorldZ)
+  const transforms = e1AssemblyLinkTransforms(e1AssemblyJointAngles(clip, joints))
+  for (const { group, visual } of visuals.values()) {
+    const linkMatrix = transforms.get(visual.link_id)
+    if (!linkMatrix) {
+      group.visible = false
+      continue
+    }
+    const visualMatrix = mat4Multiply(linkMatrix, mat4FromUrdfOrigin(visual.origin))
+    const matrix = mat4Multiply(sceneRoot, mat4Multiply(URDF_TO_SCENE_MATRIX, visualMatrix))
+    group.matrix.copy(threeMatrixFromMat4(matrix))
+    group.visible = true
   }
 }
 
-function addVisualMeshLink(vertices, colors, diagnostics, linkId, matrix, center, color, asset) {
-  return addVisualMeshLinkTo(vertices, colors, diagnostics.visualLinks, linkId, matrix, center, color, asset)
-}
-
-function addVisualMeshLinkTo(vertices, colors, visualLinks, linkId, matrix, center, color, asset) {
-  if (!asset?.obj_text) return false
-  const mesh = parseVisualObj(asset)
-  addObjMesh(vertices, colors, matrix, center, mesh, color)
-  visualLinks.push({
-    linkId,
-    geometry: 'mesh',
-    source: asset.moonrobo_path,
-    meshSource: asset.source,
-    meshPath: asset.local_path,
-    origin: matrixOrigin(matrix),
-    center: pointRecord(transformPoint(matrix, center)),
-    boundsM: meshBounds(mesh, center),
-    vertexCount: mesh.positions.length,
-    triangleCount: mesh.triangles.length,
-    attached: true,
-  })
-  return true
+function updateThreeDebugGeometry(mesh, vertices, colors) {
+  mesh.geometry.dispose()
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+  geometry.computeBoundingSphere()
+  mesh.geometry = geometry
 }
 
 function addVisualLink(vertices, colors, diagnostics, linkId, matrix, center, size, color, source) {
@@ -554,25 +570,6 @@ function addVisualBoxLinkTo(visualLinks, linkId, matrix, center, size, source) {
       y: size[1],
       z: size[2],
     },
-    attached: true,
-  })
-}
-
-function addNoetixBoxVisual(vertices, colors, visualLinks, linkId, matrix, center, size, color, source) {
-  addCube(vertices, colors, matrix, center, size, color)
-  addVisualBoxLinkTo(visualLinks, linkId, matrix, center, size, source)
-}
-
-function addNoetixCylinderVisual(vertices, colors, visualLinks, linkId, matrix, center, radius, length, color, source) {
-  addCylinderY(vertices, colors, matrix, center, radius, length, color)
-  visualLinks.push({
-    linkId,
-    geometry: 'cylinder',
-    source,
-    origin: matrixOrigin(matrix),
-    center: pointRecord(transformPoint(matrix, center)),
-    radiusM: radius,
-    lengthM: length,
     attached: true,
   })
 }
@@ -916,90 +913,95 @@ function addArm(vertices, colors, root, side, joints, diagnostics) {
   })
 }
 
-function addNoetixUrdfVisualCharacter(vertices, colors, root, clip, joints, visualLinks) {
-  const noetixRoot = mat4WorldOffset(root, NOETIX_VISUAL_DUPLICATE_OFFSET_X, 0, 0)
-  const baseMeshAsset = visualMeshAsset('base_link')
-  if (!addVisualMeshLinkTo(
-    vertices,
-    colors,
-    visualLinks,
-    'base_link',
-    noetixRoot,
-    [0, -0.040, 0],
-    [0.40, 0.72, 0.70],
-    baseMeshAsset,
-  )) {
-    addNoetixBoxVisual(
-      vertices,
-      colors,
-      visualLinks,
-      'base_link',
-      noetixRoot,
-      [0, -0.025, 0],
-      [0.24, 0.18, 0.18],
-      [0.40, 0.72, 0.70],
-      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
-    )
+function e1AssemblyJointAngles(clip, joints) {
+  return {
+    waist_yaw_joint: clip.torsoCounterRotation,
+    waist_roll_joint: clamp(-clip.sway * 1.8, -0.18, 0.18),
+    l_leg_hip_yaw_joint: 0,
+    l_leg_hip_roll_joint: clamp(clip.sway * 1.4, -0.20, 0.20),
+    l_leg_hip_pitch_joint: clamp(joints.left.hip, -1.20, 0.72),
+    l_leg_knee_joint: clamp(Math.abs(joints.left.knee), 0.02, 1.75),
+    l_leg_ankle_pitch_joint: clamp(joints.left.ankle, -0.78, 0.38),
+    l_leg_ankle_roll_joint: clamp(-clip.sway * 0.7, -0.16, 0.16),
+    r_leg_hip_yaw_joint: 0,
+    r_leg_hip_roll_joint: clamp(clip.sway * 1.4, -0.20, 0.20),
+    r_leg_hip_pitch_joint: clamp(joints.right.hip, -1.20, 0.72),
+    r_leg_knee_joint: clamp(Math.abs(joints.right.knee), 0.02, 1.75),
+    r_leg_ankle_pitch_joint: clamp(joints.right.ankle, -0.78, 0.38),
+    r_leg_ankle_roll_joint: clamp(-clip.sway * 0.7, -0.16, 0.16),
+    l_arm_shoulder_pitch_joint: clamp(joints.left.shoulder, -1.25, 1.25),
+    l_arm_shoulder_roll_joint: 0.18,
+    l_arm_shoulder_yaw_joint: clamp(clip.torsoCounterRotation * 0.45, -0.35, 0.35),
+    l_arm_elbow_pitch_joint: clamp(-Math.abs(joints.left.elbow), -1.35, -0.05),
+    l_arm_elbow_yaw_joint: 0,
+    r_arm_shoulder_pitch_joint: clamp(joints.right.shoulder, -1.25, 1.25),
+    r_arm_shoulder_roll_joint: -0.18,
+    r_arm_shoulder_yaw_joint: clamp(clip.torsoCounterRotation * 0.45, -0.35, 0.35),
+    r_arm_elbow_pitch_joint: clamp(-Math.abs(joints.right.elbow), -1.35, -0.05),
+    r_arm_elbow_yaw_joint: 0,
   }
+}
 
-  let torsoRoot = mat4RotateY(noetixRoot, clip.torsoCounterRotation)
-  torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
-  addNoetixBoxVisual(
-    vertices,
-    colors,
-    visualLinks,
-    'torso_link',
-    torsoRoot,
-    [0, 0.185, 0.01],
-    [0.22, 0.18, 0.16],
-    [0.42, 0.76, 0.72],
-    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#torso_link box`,
-  )
-  addNoetixBoxVisual(
-    vertices,
-    colors,
-    visualLinks,
-    'chest_link',
-    mat4Translate(torsoRoot, 0, 0.37, 0.015),
-    [0, 0, 0],
-    [0.24, 0.20, 0.15],
-    [0.50, 0.82, 0.76],
-    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#chest_link box`,
-  )
-
-  for (const side of [-1, 1]) {
-    const name = side > 0 ? 'left' : 'right'
-    const angles = joints[name]
-    let shoulder = mat4Translate(torsoRoot, side * 0.155, 0.265, 0.0)
-    shoulder = mat4RotateX(shoulder, angles.shoulder)
-    shoulder = mat4RotateZ(shoulder, side * 0.07)
-    addNoetixCylinderVisual(
-      vertices,
-      colors,
-      visualLinks,
-      `${name}_arm_1`,
-      shoulder,
-      [0, -NOETIX_VISUAL_RIG.lengths.upperArm * 0.5, 0],
-      0.035,
-      0.12,
-      [0.54, 0.70, 0.74],
-      `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_arm_1 cylinder`,
-    )
+function e1AssemblyLinkTransforms(jointAngles) {
+  const transforms = new Map([[E1_ASM_ASSEMBLY.root_link, mat4Identity()]])
+  const pending = [...(E1_ASM_ASSEMBLY.joints ?? [])]
+  let progress = true
+  while (pending.length > 0 && progress) {
+    progress = false
+    for (let i = pending.length - 1; i >= 0; i -= 1) {
+      const joint = pending[i]
+      const parent = transforms.get(joint.parent)
+      if (!parent) continue
+      const angle = jointAngles[joint.name] ?? 0
+      let child = mat4Multiply(parent, mat4FromUrdfOrigin(joint.origin))
+      if (joint.type === 'revolute' || joint.type === 'continuous') {
+        child = mat4AxisAngle(child, joint.axis, angle)
+      }
+      transforms.set(joint.child, child)
+      pending.splice(i, 1)
+      progress = true
+    }
   }
+  return transforms
+}
 
-  const leftLeg = legPose(noetixRoot, 1, joints).hip
-  addNoetixCylinderVisual(
-    vertices,
-    colors,
-    visualLinks,
-    'left_leg_1',
-    leftLeg,
-    [0, -NOETIX_VISUAL_RIG.lengths.upperLeg * 0.5, 0],
-    0.045,
-    0.14,
-    [0.82, 0.66, 0.30],
-    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#left_leg_1 cylinder`,
-  )
+function addE1AssemblyVisualCharacter(vertices, colors, root, clip, joints, visualLinks, renderMeshes = true) {
+  const sceneRoot = mat4WorldOffset(root, E1_ASM_DUPLICATE_OFFSET_X, 0, 0)
+  if (!E1_ASM_ASSEMBLY.ready) {
+    visualLinks.push({
+      linkId: 'e1_asm_unavailable',
+      geometry: 'mesh',
+      source: E1_ASM_ASSEMBLY.source_archive,
+      attached: false,
+      status: E1_ASM_ASSEMBLY.status,
+    })
+    return
+  }
+  const transforms = e1AssemblyLinkTransforms(e1AssemblyJointAngles(clip, joints))
+  for (const visual of E1_ASM_ASSEMBLY.visuals) {
+    const linkMatrix = transforms.get(visual.link_id)
+    const attached = Boolean(linkMatrix) && visual.status === 'e1-asm-stl-ready'
+    if (attached && renderMeshes) {
+      addE1StlMesh(vertices, colors, sceneRoot, linkMatrix, visual, visual)
+    }
+    const origin = linkMatrix
+      ? pointRecord(transformPoint(sceneRoot, e1UrdfPointToScene(transformPoint(linkMatrix, [0, 0, 0]))))
+      : null
+    visualLinks.push({
+      linkId: visual.link_id,
+      geometry: 'mesh',
+      source: visual.source,
+      meshSource: E1_ASM_ASSEMBLY.source_urdf_entry,
+      meshPath: visual.mesh_name,
+      origin,
+      vertexCount: visual.triangle_count * 3,
+      triangleCount: visual.triangle_count,
+      sourceTriangleCount: visual.source_triangle_count,
+      decimationStride: visual.decimation_stride,
+      loadStatus: visual.status,
+      attached,
+    })
+  }
 }
 
 function robotGeometry(time, options = { quality: true }) {
@@ -1032,7 +1034,7 @@ function robotGeometry(time, options = { quality: true }) {
     feet: [],
     arms: [],
     visualLinks: [],
-    noetixVisualLinks: [],
+    e1AssemblyVisualLinks: [],
     authoredJoints,
     authoredMotion,
     joints,
@@ -1085,7 +1087,15 @@ function robotGeometry(time, options = { quality: true }) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
     addArm(vertices, colors, torsoRoot, side, joints, diagnostics)
   }
-  addNoetixUrdfVisualCharacter(vertices, colors, root, clip, joints, diagnostics.noetixVisualLinks)
+  addE1AssemblyVisualCharacter(
+    vertices,
+    colors,
+    root,
+    clip,
+    joints,
+    diagnostics.e1AssemblyVisualLinks,
+    options.e1VisualTriangles !== false,
+  )
   diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics, clip)
   diagnostics.centerOfMassVelocity = centerOfMassVelocityAt(time, options)
   diagnostics.visualRootWorldZ = visualRootWorldZ
@@ -1145,7 +1155,7 @@ function gaitQuality(time, diagnostics) {
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
   const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
-  const noetixVisualAttachments = noetixVisualAttachmentReport(diagnostics.noetixVisualLinks)
+  const e1AssemblyVisualAttachments = e1AssemblyVisualAttachmentReport(diagnostics.e1AssemblyVisualLinks)
   const supportSoleAlignment = diagnostics.ik.supportSoleAlignment
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
@@ -1186,7 +1196,7 @@ function gaitQuality(time, diagnostics) {
       flatTerrainPreservation.maxFootWorldStepM <= NOETIX_VISUAL_RIG.footWorldStepMaxM ? 'pass' : 'fail',
     swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
     visualLinkAttachments: visualLinkAttachments.status,
-    noetixVisualAttachments: noetixVisualAttachments.status,
+    e1AssemblyVisualAttachments: e1AssemblyVisualAttachments.status,
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
@@ -1218,7 +1228,7 @@ function gaitQuality(time, diagnostics) {
     flatTerrainPreservation,
     swingFootClearance,
     visualLinkAttachments,
-    noetixVisualAttachments,
+    e1AssemblyVisualAttachments,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
     toeRoll: cycle.toeRoll,
@@ -1239,8 +1249,8 @@ function visualLinkAttachmentReport(visualLinks) {
   return linkAttachmentReport(visualLinks, NOETIX_VISUAL_RIG.linkCount)
 }
 
-function noetixVisualAttachmentReport(visualLinks) {
-  return linkAttachmentReport(visualLinks, 6)
+function e1AssemblyVisualAttachmentReport(visualLinks) {
+  return linkAttachmentReport(visualLinks, E1_ASM_ASSEMBLY.mesh_count || 25)
 }
 
 function linkAttachmentReport(visualLinks, expectedCount) {
@@ -1267,6 +1277,9 @@ function linkAttachmentReport(visualLinks, expectedCount) {
       meshPath: link.meshPath,
       vertexCount: link.vertexCount,
       triangleCount: link.triangleCount,
+      sourceTriangleCount: link.sourceTriangleCount,
+      decimationStride: link.decimationStride,
+      loadStatus: link.loadStatus,
       attached: link.attached,
     })),
   }
@@ -2265,14 +2278,39 @@ function updateRobotDebug(debug, diagnostics) {
 }
 
 function initRobot(canvas) {
-  const gl = canvas.getContext('webgl', { antialias: true })
-  if (!gl) {
-    canvas.dataset.sceneStatus = 'webgl-unavailable'
+  let renderer
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      preserveDrawingBuffer: true,
+    })
+  } catch (_error) {
+    canvas.dataset.sceneStatus = 'three-webgl-unavailable'
     return
   }
   const debug = document.getElementById('moonmoon-robot-debug')
-  const shader = createProgram(gl)
-  const buffers = createBuffers(gl)
+  const scene = new THREE.Scene()
+  scene.background = new THREE.Color(0x08110f)
+  scene.add(new THREE.HemisphereLight(0xf8fff9, 0x31413b, 1.45))
+  const key = new THREE.DirectionalLight(0xffffff, 2.0)
+  key.position.set(2.4, 3.8, 4.2)
+  scene.add(key)
+  const fill = new THREE.DirectionalLight(0xaed7e4, 0.72)
+  fill.position.set(-3.2, 1.6, 2.6)
+  scene.add(fill)
+  const camera = new THREE.PerspectiveCamera(38, 1, 0.01, 30)
+  const controls = new OrbitControls(camera, renderer.domElement)
+  controls.enableDamping = true
+  controls.dampingFactor = 0.07
+  controls.screenSpacePanning = true
+  controls.enablePan = true
+  controls.target.set(0, 0.62, 0)
+  const debugMaterial = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide })
+  const debugMesh = new THREE.Mesh(new THREE.BufferGeometry(), debugMaterial)
+  scene.add(debugMesh)
+  const e1Visuals = createE1ThreeVisuals()
+  scene.add(e1Visuals.group)
   const moonphysReviewTrace = moonphysReviewTraceEvidence()
   const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
   const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidenceFromTraces(
@@ -2283,13 +2321,17 @@ function initRobot(canvas) {
   let lastQualityRefreshMs = -Infinity
   let lastDiagnosticDatasetMs = -Infinity
   function draw(now) {
-    resizeCanvas(canvas, gl)
-    gl.clearColor(0.035, 0.055, 0.052, 1)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-    gl.enable(gl.DEPTH_TEST)
-    const aspect = canvas.width / Math.max(1, canvas.height)
+    const ratio = Math.min(2, window.devicePixelRatio || 1)
+    const rect = canvas.getBoundingClientRect()
+    const width = Math.max(320, Math.floor(rect.width * ratio))
+    const height = Math.max(260, Math.floor(rect.height * ratio))
+    if (canvas.width !== width || canvas.height !== height) {
+      renderer.setSize(width, height, false)
+    }
+    camera.aspect = canvas.width / Math.max(1, canvas.height)
+    camera.updateProjectionMatrix()
     const time = now * 0.001
-    const geometry = robotGeometry(time, { quality: false })
+    const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
     if (!cachedQuality || now - lastQualityRefreshMs >= ROBOT_QUALITY_REFRESH_MS) {
       cachedQuality = gaitQuality(time, geometry.diagnostics)
       lastQualityRefreshMs = now
@@ -2298,14 +2340,23 @@ function initRobot(canvas) {
       )
     }
     geometry.diagnostics = { ...geometry.diagnostics, quality: cachedQuality }
-    const follow = mat4Translate(mat4Identity(), 0, 0, -geometry.diagnostics.visualRootWorldZ)
-    const camera = mat4Translate(mat4Identity(), 0, -0.68, -3.25)
-    const scene = mat4RotateX(mat4Identity(), -0.08)
-    const view = mat4Multiply(camera, mat4Multiply(scene, follow))
-    const mvp = mat4Multiply(mat4Perspective(38 * DEG, aspect, 0.1, 20), view)
-    upload(gl, shader, buffers, geometry.vertices, geometry.colors, mvp)
-    gl.drawArrays(gl.TRIANGLES, 0, geometry.vertices.length / 3)
-    canvas.dataset.sceneStatus = 'robot-rig-webgl-rendered'
+    updateThreeDebugGeometry(debugMesh, geometry.vertices, geometry.colors)
+    updateE1ThreeVisuals(
+      robotRoot(geometry.diagnostics, geometry.diagnostics.ik.pelvisCorrectionM, geometry.diagnostics.footLock),
+      geometry.diagnostics,
+      geometry.diagnostics.joints,
+      e1Visuals.visuals,
+      geometry.diagnostics.visualRootWorldZ,
+    )
+    const followZ = geometry.diagnostics.visualRootWorldZ
+    camera.position.set(0.74, 0.78, followZ + 2.65)
+    controls.target.set(0.26, 0.54, followZ + 0.08)
+    controls.update()
+    renderer.render(scene, camera)
+    canvas.dataset.sceneStatus = 'robot-rig-three-rendered'
+    canvas.dataset.renderer = 'three-stl-scene-graph'
+    canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
+    canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
     canvas.dataset.motionStatus = 'endless-rigid-fk-gait'
     canvas.dataset.robotSource = NOETIX_VISUAL_RIG.source
     canvas.dataset.robotId = NOETIX_VISUAL_RIG.robotId
@@ -2536,7 +2587,7 @@ function initRobot(canvas) {
       path: asset.local_path,
       source: asset.source,
       status: asset.status,
-      bytes: asset.obj_text.length,
+      bytes: asset.byte_length,
     })))
     canvas.dataset.visualLinkAttachments = JSON.stringify({
       expectedCount: geometry.diagnostics.quality.visualLinkAttachments.expectedCount,
@@ -2545,13 +2596,15 @@ function initRobot(canvas) {
       duplicateIds: geometry.diagnostics.quality.visualLinkAttachments.duplicateIds,
       links: geometry.diagnostics.quality.visualLinkAttachments.links,
     })
-    canvas.dataset.noetixVisualAttachmentStatus = geometry.diagnostics.quality.statuses.noetixVisualAttachments
-    canvas.dataset.noetixVisualAttachments = JSON.stringify({
-      expectedCount: geometry.diagnostics.quality.noetixVisualAttachments.expectedCount,
-      attachedCount: geometry.diagnostics.quality.noetixVisualAttachments.attachedCount,
-      missingCount: geometry.diagnostics.quality.noetixVisualAttachments.missingCount,
-      duplicateIds: geometry.diagnostics.quality.noetixVisualAttachments.duplicateIds,
-      links: geometry.diagnostics.quality.noetixVisualAttachments.links,
+    canvas.dataset.e1AssemblyStatus = E1_ASM_ASSEMBLY.status
+    canvas.dataset.e1AssemblyMeshCount = String(E1_ASM_ASSEMBLY.mesh_count)
+    canvas.dataset.e1AssemblyVisualAttachmentStatus = geometry.diagnostics.quality.statuses.e1AssemblyVisualAttachments
+    canvas.dataset.e1AssemblyVisualAttachments = JSON.stringify({
+      expectedCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.expectedCount,
+      attachedCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.attachedCount,
+      missingCount: geometry.diagnostics.quality.e1AssemblyVisualAttachments.missingCount,
+      duplicateIds: geometry.diagnostics.quality.e1AssemblyVisualAttachments.duplicateIds,
+      links: geometry.diagnostics.quality.e1AssemblyVisualAttachments.links,
     })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)

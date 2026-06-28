@@ -154,14 +154,17 @@ function validateMeshAssets(clip, label) {
   if (!baseMesh) {
     throw new Error(`${label} bridge did not carry base_link mesh asset`)
   }
-  if (!baseMesh.local_path.endsWith('examples/noetix-e1/model/meshes/base.obj')) {
+  if (!baseMesh.local_path.endsWith('examples/noetix-e1/e1_asm_251028/meshes/base_link.STL')) {
     throw new Error(`${label} bridge carried unexpected base_link mesh path: ${baseMesh.local_path}`)
   }
-  if (baseMesh.format !== 'obj' ||
-    baseMesh.status !== 'moonrobo-mesh-loaded' ||
-    !baseMesh.obj_text.includes('o base_link') ||
-    !baseMesh.obj_text.includes('f 1 2 3 4')) {
-    throw new Error(`${label} bridge carried an invalid base_link OBJ mesh payload`)
+  if (baseMesh.format !== 'stl' ||
+    baseMesh.status !== 'moonrobo-stl-mesh-referenced' ||
+    baseMesh.byte_length <= 0) {
+    throw new Error(`${label} bridge carried an invalid base_link STL mesh reference`)
+  }
+  if (clip.visual_mesh_assets.length !== 25 ||
+    clip.visual_mesh_assets.some(asset => asset.format !== 'stl' || asset.status !== 'moonrobo-stl-mesh-referenced')) {
+    throw new Error(`${label} bridge must carry 25 referenced E1 STL mesh assets`)
   }
 }
 

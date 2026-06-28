@@ -439,6 +439,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    exporter through that command before validating the emitted suite payload.
    Plain MoonBit tests now use compact fixture data for parser and review
    coverage, while full Moonrobo integration coverage is owned by the live
-   command gate. The next target returns to motion quality and robot-definition
-   authority: visual gait polish, full URDF/mesh-derived attachment, terrain IK
-   completion, and durable evidence consumers.
+   command gate. Rabbita now also generates a local E1 assembly bridge from
+   `~/Downloads/e1_asm_251028.tar.gz`, extracts the ignored 25 STL mesh assets
+   under `ui/rabbita-moon/.generated`, and renders a second 3D character with
+   Three.js by applying URDF forward kinematics to one scene-graph group per
+   link visual. The boxed walker remains the gait diagnostic body; the duplicate
+   mesh body is the Noetix E1 visual authority. The next target returns to motion quality: richer
+   animation layers, terrain IK completion, and durable evidence consumers.

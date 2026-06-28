@@ -325,12 +325,18 @@ motion-side kinetic-energy review gate. The preview now also exposes a typed
 `NoetixSuiteAdapterPayload` that binds the compiled review to Moonrobo source
 references regenerated from `../moonrobo/src/moonmoon_adapter`, including
 `../moonrobo/examples/noetix-e1/robot.json`,
-`../moonrobo/examples/noetix-e1/model/robot.urdf`, and the base mesh.
+`../moonrobo/examples/noetix-e1/e1_asm_251028/urdf/e1_asm.urdf`, and the
+25 referenced E1 STL meshes. Rabbita mirrors that authority with
+`ui/rabbita-moon/prepare-e1-asm-assets.mjs`, which extracts the local E1
+archive into ignored `.generated` storage and renders a second 3D character
+from all 25 URDF link visuals using Three.js scene-graph groups while keeping
+the boxed walker as the diagnostic body.
 `npm run check:gait` now runs the Rabbita UI evidence freshness gate, the
 Moonrobo typed-contract freshness gate, the live Moonrobo suite-evidence gate,
 and the compiled Moonphys bridge over Moonrobo-authored contact and motor
-frames. The next work is visual walk-cycle polish and using live Moonrobo
-adapter output as the runtime data path instead of generated snapshots.
+frames. The next work is visual walk-cycle polish, better terrain IK, and using
+live Moonrobo adapter output as the runtime data path instead of generated
+snapshots.
 
 ## Phase 10: Durable Suite Evidence
 

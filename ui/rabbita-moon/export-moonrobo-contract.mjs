@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const moonroboRoot = fileURLToPath(new URL('../../../moonrobo', import.meta.url))
@@ -429,26 +429,26 @@ function validateContact(contact, frameIndex) {
 }
 
 function linkIdForMeshPath(path) {
-  if (path.endsWith('/meshes/base.obj')) return 'base_link'
   return path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? 'unknown_link'
 }
 
 function visualMeshAssets(contract) {
   const assets = contract.mesh_paths.map(localPath => {
     const absolutePath = fileURLToPath(new URL(`../../../moonrobo/${localPath}`, import.meta.url))
-    const objText = readFileSync(absolutePath, 'utf8')
+    const format = localPath.split('.').pop()?.toLowerCase() ?? ''
+    const exists = existsSync(absolutePath)
     return {
       link_id: linkIdForMeshPath(localPath),
       local_path: localPath,
       moonrobo_path: `../moonrobo/${localPath}`,
-      format: localPath.split('.').pop()?.toLowerCase() ?? '',
-      obj_text: objText,
+      format,
+      byte_length: exists ? statSync(absolutePath).size : 0,
       source: `moonrobo:${localPath}`,
-      status: 'moonrobo-mesh-loaded',
+      status: exists ? `moonrobo-${format}-mesh-referenced` : 'moonrobo-mesh-missing',
     }
   })
-  if (!assets.some(asset => asset.link_id === 'base_link' && asset.local_path.endsWith('base.obj'))) {
-    throw new Error('Moonrobo Noetix contract did not expose base_link base.obj mesh')
+  if (!assets.some(asset => asset.link_id === 'base_link' && asset.format === 'stl')) {
+    throw new Error('Moonrobo Noetix contract did not expose base_link STL mesh')
   }
   return assets
 }

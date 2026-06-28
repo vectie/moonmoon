@@ -6,9 +6,10 @@ const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
+const e1AssemblyBridge = readFileSync(new URL('./.generated/e1-asm-assembly.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
-const gaitRuntimeSource = `${liveRuntimeClip}\n${gaitClip}\n${scene}`
+const gaitRuntimeSource = `${liveRuntimeClip}\n${e1AssemblyBridge}\n${gaitClip}\n${scene}`
 const generatedSnapshotSource = generatedClip
 
 const sceneContracts = [
@@ -46,14 +47,20 @@ const sceneContracts = [
   'swingFootClearance',
   'visualAttachmentStatus',
   'visualLinkAttachments',
-  'noetixVisualAttachmentStatus',
-  'noetixVisualAttachments',
-  'NOETIX_VISUAL_DUPLICATE_OFFSET_X',
+  'e1AssemblyVisualAttachmentStatus',
+  'e1AssemblyVisualAttachments',
+  'E1_ASM_DUPLICATE_OFFSET_X',
+  'E1_ASM_ASSEMBLY',
+  'e1-asm-assembly.js',
+  'e1-asm-25-stl-assembly-ready',
+  'three-stl-scene-graph',
+  'robot-rig-three-rendered',
+  'OrbitControls',
   'visualMeshAssetStatus',
   'visualMeshAssets',
   'visual_mesh_assets',
   "geometry: 'mesh'",
-  'base.obj',
+  'base_link.STL',
   'limbForwardBendStatus',
   'limbForwardBend',
   'ikCorrectionReport',
@@ -116,6 +123,22 @@ for (const token of planContracts) {
 }
 
 const gaitModule = await import(new URL('./gait-clip.js', import.meta.url).href)
+const e1AssemblyModule = await import(new URL('./.generated/e1-asm-assembly.js', import.meta.url).href)
+if (!e1AssemblyModule.E1_ASM_ASSEMBLY?.ready) {
+  throw new Error(`E1 assembly bridge was not ready: ${e1AssemblyModule.E1_ASM_ASSEMBLY?.status}`)
+}
+if (e1AssemblyModule.E1_ASM_ASSEMBLY.mesh_count !== 25 ||
+  e1AssemblyModule.E1_ASM_ASSEMBLY.link_count !== 25 ||
+  e1AssemblyModule.E1_ASM_ASSEMBLY.joint_count !== 24) {
+  throw new Error(`E1 assembly bridge carried wrong counts: ${JSON.stringify({
+    mesh_count: e1AssemblyModule.E1_ASM_ASSEMBLY.mesh_count,
+    link_count: e1AssemblyModule.E1_ASM_ASSEMBLY.link_count,
+    joint_count: e1AssemblyModule.E1_ASM_ASSEMBLY.joint_count,
+  })}`)
+}
+if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual => visual.format === 'stl' && visual.status === 'e1-asm-stl-ready')) {
+  throw new Error('E1 assembly bridge did not expose 25 ready STL visuals')
+}
 if (!gaitModule.NOETIX_WALK_CLIP?.ready) {
   throw new Error(`generated Moonrobo walk clip was not ready: ${gaitModule.NOETIX_WALK_CLIP?.status}`)
 }
@@ -132,8 +155,13 @@ if (gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus !== 'moonrobo-noetix-mesh-asset
   throw new Error(`Rabbita visual rig did not load Moonrobo mesh assets: ${gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus}`)
 }
 const baseMeshAsset = gaitModule.visualMeshAsset('base_link')
-if (!baseMeshAsset?.local_path?.endsWith('base.obj') || !baseMeshAsset.obj_text.includes('o base_link')) {
-  throw new Error('Rabbita visual rig did not expose Moonrobo Noetix base_link OBJ text')
+if (!baseMeshAsset?.local_path?.endsWith('base_link.STL') ||
+  baseMeshAsset.format !== 'stl' ||
+  baseMeshAsset.status !== 'moonrobo-stl-mesh-referenced') {
+  throw new Error('Rabbita visual rig did not expose Moonrobo Noetix base_link STL reference')
+}
+if (gaitModule.NOETIX_VISUAL_RIG.visualMeshAssets.length !== 25) {
+  throw new Error(`Rabbita visual rig did not expose all 25 Moonrobo E1 STL mesh references: ${gaitModule.NOETIX_VISUAL_RIG.visualMeshAssets.length}`)
 }
 if (JSON.stringify(gaitModule.FOOT_PHASE_SEQUENCE) !== JSON.stringify(gaitModule.NOETIX_WALK_CLIP.foot_phase_sequence)) {
   throw new Error('Rabbita foot phase sequence does not come from the generated Moonrobo walk clip')
@@ -372,19 +400,18 @@ for (const time of sampleTimes) {
   if (debugBaseVisualLink?.geometry !== 'box' || !debugBaseVisualLink.source.includes('debug box')) {
     throw new Error(`debug base_link did not remain boxed at ${time}s: ${JSON.stringify(debugBaseVisualLink)}`)
   }
-  if (frame.quality.statuses.noetixVisualAttachments !== 'pass') {
-    throw new Error(`Noetix duplicate visual attachment failed at ${time}s: ${JSON.stringify(frame.quality.noetixVisualAttachments)}`)
+  if (frame.quality.statuses.e1AssemblyVisualAttachments !== 'pass') {
+    throw new Error(`E1 assembly visual attachment failed at ${time}s: ${JSON.stringify(frame.quality.e1AssemblyVisualAttachments)}`)
   }
-  if (frame.quality.noetixVisualAttachments.expectedCount !== 6 ||
-    frame.quality.noetixVisualAttachments.attachedCount !== 6) {
-    throw new Error(`Noetix duplicate visual did not render the current 6 URDF visuals at ${time}s: ${JSON.stringify(frame.quality.noetixVisualAttachments)}`)
+  if (frame.quality.e1AssemblyVisualAttachments.expectedCount !== 25 ||
+    frame.quality.e1AssemblyVisualAttachments.attachedCount !== 25) {
+    throw new Error(`E1 assembly duplicate did not attach all 25 URDF STL visuals at ${time}s: ${JSON.stringify(frame.quality.e1AssemblyVisualAttachments)}`)
   }
-  const noetixBaseVisualLink = frame.quality.noetixVisualAttachments.links.find(link => link.linkId === 'base_link')
-  if (noetixBaseVisualLink?.geometry !== 'mesh' ||
-    !noetixBaseVisualLink.meshPath?.endsWith('base.obj') ||
-    noetixBaseVisualLink.vertexCount < 8 ||
-    noetixBaseVisualLink.triangleCount < 12) {
-    throw new Error(`Noetix duplicate base_link did not render from OBJ mesh at ${time}s: ${JSON.stringify(noetixBaseVisualLink)}`)
+  const e1BaseVisualLink = frame.quality.e1AssemblyVisualAttachments.links.find(link => link.linkId === 'base_link')
+  if (e1BaseVisualLink?.geometry !== 'mesh' ||
+    !e1BaseVisualLink.meshPath?.endsWith('base_link.STL') ||
+    e1BaseVisualLink.attached !== true) {
+    throw new Error(`E1 assembly base_link did not attach from STL mesh at ${time}s: ${JSON.stringify(e1BaseVisualLink)}`)
   }
   if (frame.quality.statuses.limbForwardBend !== 'pass') {
     throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)
