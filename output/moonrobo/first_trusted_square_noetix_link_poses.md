@@ -36,8 +36,8 @@
 - frame 7 t=0.7000000000000001s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/7 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 8 t=0.8s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/8 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 9 t=0.9s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/9 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
-- frame 10 t=1s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/10 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
-- frame 11 t=1.1s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/11 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
+- frame 10 t=1s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/10 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
+- frame 11 t=1.1s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/11 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 12 t=1.2000000000000002s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/12 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 13 t=1.3s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/13 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 14 t=1.4000000000000001s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/14 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
@@ -52,8 +52,8 @@
 - frame 23 t=2.3000000000000003s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/23 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 24 t=2.4000000000000004s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/24 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 25 t=2.5s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/25 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
-- frame 26 t=2.6s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/26 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
-- frame 27 t=2.7s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/27 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
+- frame 26 t=2.6s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/26 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
+- frame 27 t=2.7s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/27 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 28 t=2.8000000000000003s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/28 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 29 t=2.9000000000000004s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/29 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk
 - frame 30 t=3s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/30 rig_pose=robot-rig-pose-ready rig_render=robot-rig-render-frame-ready visuals=6 links=25 status=review-only-urdf-fk

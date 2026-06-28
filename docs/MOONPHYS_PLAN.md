@@ -524,6 +524,14 @@ and rendering the resulting bone matrices. For Noetix, the equivalent skeleton
 is the URDF link/joint tree, but the motion authority must be robot data rather
 than an artist-authored random animation.
 
+Current motion correction: the first Rabbita rigid render exposed a motion
+problem rather than a renderer problem. The Noetix gait had an overly long
+double-support transfer and a very short swing window, so it read as mostly
+static with a late foot snap. The Moonrobo gait now keeps the URDF/FK motion
+contract but adds a clearer planned gait cycle: longer visible swing, body bob,
+waist sway, and arm counter-swing, while still labeling the output as
+simulation evidence only.
+
 The sibling Moonrobo viewer is already beyond stick rendering: it exports URDF
 visual instances, resolves mesh assets, and has a real Noetix `base_link` OBJ
 under `examples/noetix-e1/model/meshes/base.obj`, plus primitive link visuals.
@@ -584,6 +592,10 @@ Immediate Phase 5A deliverables:
   `world_position` is FK-authored, foot contact probes are separate review
   annotations, and links without visual blocks remain absent except debug
   overlay)
+- Refine the planned gait motion itself, not only the renderer. (implemented:
+  the default gait moves from a 12-frame transfer/4-frame swing split to a
+  10-frame transfer/6-frame swing split, adds terrain-relative body bob, waist
+  sway, and arm counter-swing, and verifies these motion channels in tests)
 - Support mesh assets by extension instead of assuming STL-only rendering:
   `OBJLoader` for `.obj`, `STLLoader` for `.stl`, and a clear unsupported-asset
   status for anything else. Moonrobo's current Three viewer resolves mesh

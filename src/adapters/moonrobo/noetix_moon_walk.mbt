@@ -136,7 +136,7 @@ pub fn noetix_moon_walk_robot_profile() -> NoetixMoonWalkRobotProfile {
 ///|
 pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
   {
-    config_id: "moonrobo/noetix-e1/endless-forward-moon-walk-v0",
+    config_id: "moonrobo/noetix-e1/endless-forward-moon-walk-v1",
     gravity_mps2: @moonphys.lunar_environment().gravity_mps2,
     dt_s: 0.1,
     speed_mps: 0.12,
@@ -149,7 +149,7 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     lateral_foot_offset_m: 0.08,
     support_lateral_shift_m: 0.04,
     support_forward_lead_m: 0.2,
-    double_support_frames: 12,
+    double_support_frames: 10,
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
@@ -283,6 +283,15 @@ fn swing_lift(config : NoetixMoonWalkConfig, progress : Double) -> Double {
 }
 
 ///|
+fn cycle_progress(phase : Int, cycle_frames : Int) -> Double {
+  if cycle_frames <= 1 {
+    0.0
+  } else {
+    phase.to_double() / cycle_frames.to_double()
+  }
+}
+
+///|
 fn noetix_heading_forward(config : NoetixMoonWalkConfig) -> @moonphys.Vec3 {
   @moonphys.vec3(
     @math.cos(config.heading_rad),
@@ -335,6 +344,16 @@ fn noetix_support_body_lateral_m(
   let previous = 0.0 - target
   let progress = support_transfer_progress(local_phase, transfer_frames)
   previous + (target - previous) * progress
+}
+
+///|
+fn noetix_body_bob_m(
+  config : NoetixMoonWalkConfig,
+  local_phase : Int,
+  half_cycle : Int,
+) -> Double {
+  let progress = phase_progress(local_phase, half_cycle)
+  config.step_height_m * 0.35 * @math.sin(progress * 3.141592653589793)
 }
 
 ///|
@@ -404,18 +423,6 @@ fn frame_status(
   } else {
     "walking-needs-review"
   }
-}
-
-///|
-fn joint_phase(
-  joint_name : String,
-  role : String,
-  side : String,
-  position_rad : Double,
-) -> NoetixJointPhase {
-  joint_phase_with_status(
-    joint_name, role, side, position_rad, "kinematic-phase",
-  )
 }
 
 ///|
@@ -577,24 +584,81 @@ fn noetix_leg_ik_phases(
 }
 
 ///|
-fn arm_phases(
-  left_support : Bool,
-  progress : Double,
-) -> Array[NoetixJointPhase] {
-  let wave = @math.sin(progress * 3.141592653589793)
-  let left = if left_support { 0.0 - wave } else { wave }
+fn arm_phases(gait_progress : Double) -> Array[NoetixJointPhase] {
+  let wave = @math.sin(gait_progress * 2.0 * 3.141592653589793)
+  let left = 0.0 - wave
   let right = 0.0 - left
   [
-    joint_phase("arm_l1_joint", "shoulder-pitch", "left", 0.18 * left),
-    joint_phase("arm_l2_joint", "shoulder-roll", "left", 0.05 * left),
-    joint_phase("arm_l3_joint", "elbow-yaw", "left", 0.04 * left),
-    joint_phase("arm_l4_joint", "elbow-pitch", "left", 0.10 * left),
-    joint_phase("arm_l5_joint", "wrist-roll", "left", 0.03 * left),
-    joint_phase("arm_r1_joint", "shoulder-pitch", "right", 0.18 * right),
-    joint_phase("arm_r2_joint", "shoulder-roll", "right", 0.05 * right),
-    joint_phase("arm_r3_joint", "elbow-yaw", "right", 0.04 * right),
-    joint_phase("arm_r4_joint", "elbow-pitch", "right", 0.10 * right),
-    joint_phase("arm_r5_joint", "wrist-roll", "right", 0.03 * right),
+    joint_phase_with_status(
+      "arm_l1_joint",
+      "shoulder-pitch",
+      "left",
+      0.22 * left,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_l2_joint",
+      "shoulder-roll",
+      "left",
+      0.06 * left,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_l3_joint",
+      "elbow-yaw",
+      "left",
+      0.04 * left,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_l4_joint",
+      "elbow-pitch",
+      "left",
+      0.12 * left,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_l5_joint",
+      "wrist-roll",
+      "left",
+      0.03 * left,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_r1_joint",
+      "shoulder-pitch",
+      "right",
+      0.22 * right,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_r2_joint",
+      "shoulder-roll",
+      "right",
+      0.06 * right,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_r3_joint",
+      "elbow-yaw",
+      "right",
+      0.04 * right,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_r4_joint",
+      "elbow-pitch",
+      "right",
+      0.12 * right,
+      "planned-counter-swing",
+    ),
+    joint_phase_with_status(
+      "arm_r5_joint",
+      "wrist-roll",
+      "right",
+      0.03 * right,
+      "planned-counter-swing",
+    ),
   ]
 }
 
@@ -604,12 +668,28 @@ fn noetix_joint_phases(
   body_position : @moonphys.Vec3,
   left_foot : NoetixFootContactProbe,
   right_foot : NoetixFootContactProbe,
-  left_support : Bool,
-  progress : Double,
+  gait_progress : Double,
 ) -> Array[NoetixJointPhase] {
   let phases : Array[NoetixJointPhase] = []
-  phases.push(joint_phase("waist_1_joint", "waist-yaw", "center", 0.0))
-  phases.push(joint_phase("waist_2_joint", "waist-pitch", "center", 0.0))
+  let cycle_angle = gait_progress * 2.0 * 3.141592653589793
+  phases.push(
+    joint_phase_with_status(
+      "waist_1_joint",
+      "waist-yaw",
+      "center",
+      0.055 * @math.sin(cycle_angle),
+      "planned-body-sway",
+    ),
+  )
+  phases.push(
+    joint_phase_with_status(
+      "waist_2_joint",
+      "waist-pitch",
+      "center",
+      -0.035 + 0.025 * @math.cos(cycle_angle * 2.0),
+      "planned-body-sway",
+    ),
+  )
   for
     phase in noetix_leg_ik_phases(
       config, body_position, left_foot, "left", "leg_l",
@@ -622,7 +702,7 @@ fn noetix_joint_phases(
     ) {
     phases.push(phase)
   }
-  for phase in arm_phases(left_support, progress) {
+  for phase in arm_phases(gait_progress) {
     phases.push(phase)
   }
   phases
@@ -644,6 +724,7 @@ pub fn noetix_moon_walk_frame(
   let left_support = phase < half_cycle
   let local_phase = if left_support { phase } else { phase - half_cycle }
   let transfer_frames = double_support_frame_count(config, half_cycle)
+  let gait_progress = cycle_progress(phase, cycle_frames)
   let progress = swing_progress_after_transfer(
     local_phase, half_cycle, transfer_frames,
   )
@@ -656,7 +737,8 @@ pub fn noetix_moon_walk_frame(
   let body_sample = @moonphys.sample_heightfield(field, body_xy.x, body_xy.y)
   let body_z = body_sample.elevation_m +
     config.body_height_m +
-    config.start_position.z
+    config.start_position.z +
+    noetix_body_bob_m(config, local_phase, half_cycle)
   let in_double_support = local_phase < transfer_frames
   let left = if left_support {
     let foot_xy = noetix_walk_xy(
@@ -734,8 +816,7 @@ pub fn noetix_moon_walk_frame(
       @moonphys.vec3(body_xy.x, body_xy.y, body_z),
       left,
       right,
-      left_support,
-      progress,
+      gait_progress,
     ),
     status: frame_status(left, right),
   }

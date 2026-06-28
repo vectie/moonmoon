@@ -73,12 +73,12 @@ test "noetix moon walk shifts body over support foot" {
   assert_true(trace.frames[0].left_foot.in_contact)
   assert_true(trace.frames[0].right_foot.in_contact)
   assert_true(trace.frames[8].body_position.y > 0.0)
-  assert_true(trace.frames[11].left_foot.in_contact)
-  assert_true(trace.frames[11].right_foot.in_contact)
-  assert_eq(trace.frames[12].support_phase, "left-support")
+  assert_true(trace.frames[9].left_foot.in_contact)
+  assert_true(trace.frames[9].right_foot.in_contact)
+  assert_eq(trace.frames[10].support_phase, "left-support")
   assert_true(
     nearly_equal_double(
-      trace.frames[11].body_position.y,
+      trace.frames[9].body_position.y,
       trace.config.support_lateral_shift_m,
     ),
   )
@@ -167,6 +167,39 @@ test "noetix endless moon walk carries urdf leg ik phases" {
       phase.status == "urdf-leg-ik" &&
       phase.position_rad >= -1.2 &&
       phase.position_rad <= 1.2
+    }),
+  )
+}
+
+///|
+test "noetix endless moon walk carries visible gait motion" {
+  let field = first_trusted_square_noetix_heightfield()
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=16)
+  assert_eq(trace.config.double_support_frames, 10)
+  assert_eq(trace.frames[9].support_phase, "double-support-left-transfer")
+  assert_eq(trace.frames[10].support_phase, "left-support")
+  assert_true(trace.frames[10].right_foot.clearance_m > 0.0)
+  let terrain = @moonphys.sample_heightfield(
+    field,
+    trace.frames[5].body_position.x,
+    trace.frames[5].body_position.y,
+  )
+  assert_true(
+    trace.frames[5].body_position.z >
+    terrain.elevation_m + trace.config.body_height_m,
+  )
+  assert_true(
+    trace.frames[4].joint_phases.any(fn(phase) {
+      phase.joint_name == "waist_1_joint" &&
+      phase.status == "planned-body-sway" &&
+      phase.position_rad > 0.0
+    }),
+  )
+  assert_true(
+    trace.frames[4].joint_phases.any(fn(phase) {
+      phase.joint_name == "arm_l1_joint" &&
+      phase.status == "planned-counter-swing" &&
+      phase.position_rad < 0.0
     }),
   )
 }

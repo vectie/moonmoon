@@ -13,7 +13,7 @@
 - max self-contact world correction: 0 m
 - max self-contact normal impulse: 0 Ns
 - max self-contact friction impulse: 0 Ns
-- max support contact torque: 34.547345981159516 Nm
+- max support contact torque: 36.5072394125325 Nm
 - status: inertial-collision-assumption-review
 - hardware authority: moonmoon-safety-gate-only
 - note: Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, adjacent URDF-link self-collision exclusions, generic manifold resolution, Moonphys world body-pair contact response, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.
@@ -30,8 +30,8 @@
 - frame 7 t=0.7000000000000001s phase=double-support-left-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
 - frame 8 t=0.8s phase=double-support-left-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
 - frame 9 t=0.9s phase=double-support-left-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
-- frame 10 t=1s phase=double-support-left-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
-- frame 11 t=1.1s phase=double-support-left-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
+- frame 10 t=1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
+- frame 11 t=1.1s phase=left-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 12 t=1.2000000000000002s phase=left-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 13 t=1.3s phase=left-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 14 t=1.4000000000000001s phase=left-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
@@ -46,8 +46,8 @@
 - frame 23 t=2.3000000000000003s phase=double-support-right-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
 - frame 24 t=2.4000000000000004s phase=double-support-right-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
 - frame 25 t=2.5s phase=double-support-right-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
-- frame 26 t=2.6s phase=double-support-right-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
-- frame 27 t=2.7s phase=double-support-right-transfer shapes=8 terrain_contacts=2 self_contacts=0 status=collision-clear-review
+- frame 26 t=2.6s phase=right-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
+- frame 27 t=2.7s phase=right-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 28 t=2.8000000000000003s phase=right-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 29 t=2.9000000000000004s phase=right-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
 - frame 30 t=3s phase=right-support shapes=8 terrain_contacts=1 self_contacts=0 status=collision-clear-review
