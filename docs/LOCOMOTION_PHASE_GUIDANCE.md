@@ -330,9 +330,11 @@ references regenerated from `../moonrobo/src/moonmoon_adapter`, including
 `ui/rabbita-moon/prepare-e1-asm-assets.mjs`, which extracts the local E1
 archive into ignored `.generated` storage and renders a second 3D character
 from all 25 URDF link visuals using Three.js scene-graph groups while keeping
-the boxed walker as the diagnostic body. The viewport uses sampled STL geometry
-as the immediate fallback, then progressively upgrades each link to the original
-full STL geometry through Three's `STLLoader`.
+the boxed walker as the diagnostic body. The viewport renders bounded sampled
+STL geometry for the animated walk, then progressively loads each original full
+STL through Three's `STLLoader` as source-readiness evidence. Full-detail mesh
+inspection should remain a separate mode so the endless walking preview stays
+responsive.
 `npm run check:gait` now runs the Rabbita UI evidence freshness gate, the
 Moonrobo typed-contract freshness gate, the live Moonrobo suite-evidence gate,
 and the compiled Moonphys bridge over Moonrobo-authored contact and motor

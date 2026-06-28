@@ -443,10 +443,11 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `~/Downloads/e1_asm_251028.tar.gz`, extracts the ignored 25 STL mesh assets
    under `ui/rabbita-moon/.generated`, and renders a second 3D character with
    Three.js by applying URDF forward kinematics to one scene-graph group per
-   link visual. The browser starts from a sampled STL fallback for immediate
-   motion, then progressively upgrades those groups with the original full STL
-   geometry through Three's `STLLoader`, matching Moonrobo's mesh-viewer
-   direction. The boxed walker remains the gait diagnostic body; the duplicate
-   mesh body is the Noetix E1 visual authority. The next target returns to
-   motion quality: richer animation layers, terrain IK completion, and durable
-   evidence consumers.
+   link visual. The browser renders bounded sampled STL geometry for realtime
+   walking while progressively loading the original full STL assets through
+   Three's `STLLoader` as source-readiness evidence. Full-detail inspection can
+   be added as a separate mode; the endless walking viewport must stay smooth.
+   The boxed walker remains the gait diagnostic body; the duplicate mesh body is
+   the Noetix E1 visual authority. The next target returns to motion quality:
+   richer animation layers, terrain IK completion, and durable evidence
+   consumers.

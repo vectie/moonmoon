@@ -26,6 +26,7 @@ const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_STL_LOADER = new STLLoader()
 const E1_FULL_STL_CACHE = new Map()
+const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -592,21 +593,23 @@ function createE1ThreeVisuals() {
   return { group, visuals }
 }
 
-async function upgradeE1ThreeVisualsToFullStl(visuals, canvas) {
+async function cacheFullE1StlAssets(visuals, canvas) {
   if (!E1_ASM_ASSEMBLY.ready) return
   let loaded = 0
   let failed = 0
   let removedTriangles = 0
+  let sourceTriangles = 0
   canvas.dataset.e1FullStlStatus = 'loading'
   canvas.dataset.e1FullStlLoaded = '0'
   canvas.dataset.e1FullStlTotal = String(visuals.size)
+  canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
   for (const entry of visuals.values()) {
     try {
       const geometry = await loadFullE1StlGeometry(entry.visual)
-      entry.mesh.geometry.dispose()
-      entry.mesh.geometry = geometry.clone()
-      entry.mesh.userData.detailMode = 'full-stl'
+      entry.fullGeometryReady = true
+      entry.fullTriangleCount = geometry.getAttribute('position').count / 3
       loaded += 1
+      sourceTriangles += entry.fullTriangleCount
       removedTriangles += geometry.userData.removedTriangles || 0
     } catch (error) {
       failed += 1
@@ -615,9 +618,11 @@ async function upgradeE1ThreeVisualsToFullStl(visuals, canvas) {
     canvas.dataset.e1FullStlLoaded = String(loaded)
     canvas.dataset.e1FullStlFailed = String(failed)
     canvas.dataset.e1FullStlRepairedTriangles = String(removedTriangles)
+    canvas.dataset.e1FullStlSourceTriangles = String(sourceTriangles)
     await new Promise(resolve => requestAnimationFrame(resolve))
   }
   canvas.dataset.e1FullStlStatus = failed === 0 ? 'full-stl-ready' : 'full-stl-partial'
+  canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
 }
 
 function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
@@ -2405,7 +2410,7 @@ function initRobot(canvas) {
   scene.add(debugMesh)
   const e1Visuals = createE1ThreeVisuals()
   scene.add(e1Visuals.group)
-  upgradeE1ThreeVisualsToFullStl(e1Visuals.visuals, canvas)
+  cacheFullE1StlAssets(e1Visuals.visuals, canvas)
   const moonphysReviewTrace = moonphysReviewTraceEvidence()
   const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
   const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidenceFromTraces(
@@ -2452,7 +2457,7 @@ function initRobot(canvas) {
     canvas.dataset.renderer = 'three-stl-scene-graph'
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
-    canvas.dataset.e1MeshDetailMode = canvas.dataset.e1FullStlStatus || 'sampled-stl'
+    canvas.dataset.e1MeshDetailMode = E1_RENDER_DETAIL_MODE
     canvas.dataset.motionStatus = 'endless-rigid-fk-gait'
     canvas.dataset.robotSource = NOETIX_VISUAL_RIG.source
     canvas.dataset.robotId = NOETIX_VISUAL_RIG.robotId

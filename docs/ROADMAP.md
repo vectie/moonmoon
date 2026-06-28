@@ -54,9 +54,10 @@
   coverage, and the live command gate owns full Moonrobo integration coverage.
   Rabbita now generates an ignored local E1 assembly asset bridge from the
   downloaded package and renders a second Three.js 3D character from all 25 URDF
-  STL link visuals, with sampled geometry for immediate preview and progressive
-  full-STL upgrade for the real mesh body. The next implementation targets are
-  visual gait polish, terrain IK completion, and durable evidence consumers.
+  STL link visuals, with bounded sampled geometry for realtime walking and
+  progressive full-STL source loading for readiness evidence. The next
+  implementation targets are visual gait polish, terrain IK completion, and
+  durable evidence consumers.
 
 ## Non-Goals
 
