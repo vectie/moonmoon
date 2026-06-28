@@ -74,6 +74,97 @@ fn generated_moonrobo_noetix_required_motion_joint_ids() -> Array[String] {
 }
 
 ///|
+fn generated_moonrobo_noetix_walk_clip_id() -> String {
+  "noetix-e1-lab-01/endless-forward-walk"
+}
+
+///|
+fn generated_moonrobo_noetix_walk_clip_source() -> String {
+  "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract"
+}
+
+///|
+fn generated_moonrobo_noetix_walk_cycle_hz() -> Double {
+  0.46
+}
+
+///|
+fn generated_moonrobo_noetix_root_speed_mps() -> Double {
+  0.18
+}
+
+///|
+fn generated_moonrobo_noetix_stride_m() -> Double {
+  0.38
+}
+
+///|
+fn generated_moonrobo_noetix_walk_sample_count() -> Int {
+  24
+}
+
+///|
+fn generated_moonrobo_noetix_foot_phase_sequence() -> Array[String] {
+  ["contact", "loading", "stance", "passing", "swing", "release"]
+}
+
+///|
+fn generated_moonrobo_noetix_walk_phase_labels() -> Array[String] {
+  ["left-stance-right-swing", "right-stance-left-swing"]
+}
+
+///|
+fn generated_moonrobo_noetix_foot_phase_specs() -> Array[
+  SuiteAdapterFootPhaseSpec,
+] {
+  [
+    noetix_suite_foot_phase_spec("contact", 0.0, 0.08, true, false),
+    noetix_suite_foot_phase_spec("loading", 0.08, 0.18, true, true),
+    noetix_suite_foot_phase_spec("stance", 0.18, 0.5, true, true),
+    noetix_suite_foot_phase_spec("passing", 0.5, 0.72, true, false),
+    noetix_suite_foot_phase_spec("swing", 0.72, 0.92, false, false),
+    noetix_suite_foot_phase_spec("release", 0.92, 1.0, true, false),
+  ]
+}
+
+///|
+fn generated_moonrobo_noetix_joint_anchors() -> Array[SuiteAdapterJointAnchor] {
+  [
+    noetix_suite_joint_anchor("leg_l1_joint", "left", "hip", 0.0, -0.35),
+    noetix_suite_joint_anchor("leg_l1_joint", "left", "hip", 0.5, 0.28),
+    noetix_suite_joint_anchor("leg_l4_joint", "left", "knee", 0.0, -0.08),
+    noetix_suite_joint_anchor("leg_l4_joint", "left", "knee", 0.75, -0.82),
+    noetix_suite_joint_anchor("leg_l6_joint", "left", "ankle", 0.0, 0.12),
+    noetix_suite_joint_anchor("leg_l6_joint", "left", "ankle", 0.75, -0.28),
+    noetix_suite_joint_anchor("leg_r1_joint", "right", "hip", 0.0, 0.28),
+    noetix_suite_joint_anchor("leg_r1_joint", "right", "hip", 0.5, -0.35),
+    noetix_suite_joint_anchor("leg_r4_joint", "right", "knee", 0.25, -0.82),
+    noetix_suite_joint_anchor("leg_r4_joint", "right", "knee", 0.5, -0.08),
+    noetix_suite_joint_anchor("leg_r6_joint", "right", "ankle", 0.25, -0.28),
+    noetix_suite_joint_anchor("leg_r6_joint", "right", "ankle", 0.5, 0.12),
+    noetix_suite_joint_anchor("arm_l1_joint", "left", "shoulder", 0.0, -0.21),
+    noetix_suite_joint_anchor("arm_l4_joint", "left", "elbow", 0.0, 0.25),
+    noetix_suite_joint_anchor("arm_r1_joint", "right", "shoulder", 0.0, 0.21),
+    noetix_suite_joint_anchor("arm_r4_joint", "right", "elbow", 0.0, 0.25),
+  ]
+}
+
+///|
+fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
+  []
+}
+
+///|
+fn generated_moonrobo_noetix_walk_clip_ready() -> Bool {
+  true
+}
+
+///|
+fn generated_moonrobo_noetix_walk_clip_status() -> String {
+  "moonmoon-noetix-walk-clip-ready"
+}
+
+///|
 fn generated_moonrobo_noetix_source_contract_ref() -> SuiteAdapterSourceRef {
   noetix_suite_source_ref(
     "moonrobo-noetix-e1-moonmoon-contract",

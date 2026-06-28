@@ -402,13 +402,15 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    for the Noetix robot profile, URDF, mesh asset, generated evidence source,
    driven joint ids, compiled review status, and blockers. Moonrobo now has a
    typed source-side `src/moonmoon_adapter` contract for the same Noetix
-   profile, URDF, mesh, required motion joints, blockers, and readiness fields.
+   profile, URDF, mesh, required motion joints, blockers, readiness fields, and
+   a typed `noetix_walk_clip` authority for the endless forward walk cycle.
    Moonrobo also exposes `cmd/moonmoon_contract`, and
    `ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
    `src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` from that
    typed source package. The suite payload now consumes those generated
-   Moonrobo contract fields, and `npm run check:gait` verifies the contract
-   bridge freshness beside the Rabbita gait evidence freshness. The next Phase
-   10 target is replacing the remaining Rabbita preview motion evidence with
-   live Moonrobo adapter regeneration; the next Phase D/E target remains visual
-   readability of the same walk cycle before adding another fixture mirror.
+   Moonrobo contract and walk-clip fields, and `npm run check:gait` verifies the
+   contract bridge freshness beside the Rabbita gait evidence freshness. The
+   next Phase 5/D target is making the runtime sampler consume the typed
+   Moonrobo clip instead of mirrored JS constants; the next Phase 10 target is
+   replacing the remaining Rabbita preview motion evidence with live Moonrobo
+   adapter regeneration.

@@ -28,10 +28,12 @@
   packages. The current first step is split between Moonmoon's typed suite
   preview payload in `src/suite_adapter_preview` and Moonrobo's typed source
   contract in `../moonrobo/src/moonmoon_adapter`. The current bridge exports the
-  typed Moonrobo contract through `../moonrobo/cmd/moonmoon_contract` and
-  regenerates Moonmoon suite-preview source metadata without importing Moonrobo
-  into standalone core packages. The next implementation target is live
-  Moonrobo adapter regeneration for the remaining sampled motion evidence.
+  typed Moonrobo contract and Noetix walk-clip authority through
+  `../moonrobo/cmd/moonmoon_contract` and regenerates Moonmoon suite-preview
+  source and clip metadata without importing Moonrobo into standalone core
+  packages. The next implementation target is making runtime sampling consume
+  that typed clip, then live Moonrobo adapter regeneration for the remaining
+  sampled motion evidence.
 
 ## Non-Goals
 

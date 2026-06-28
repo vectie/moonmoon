@@ -85,6 +85,49 @@ test "Moonrobo Noetix suite payload records durable source refs" {
     generated_moonrobo_noetix_source_status(),
     "moonmoon-noetix-locomotion-contract-ready",
   )
+  assert_true(generated_moonrobo_noetix_walk_clip_ready())
+  assert_eq(
+    generated_moonrobo_noetix_walk_clip_status(),
+    "moonmoon-noetix-walk-clip-ready",
+  )
+  assert_eq(payload.walk_clip_id, "noetix-e1-lab-01/endless-forward-walk")
+  assert_eq(
+    payload.walk_clip_source,
+    "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_walk_clip_contract",
+  )
+  assert_eq(payload.walk_cycle_hz, 0.46)
+  assert_eq(payload.root_speed_mps, 0.18)
+  assert_eq(payload.stride_m, 0.38)
+  assert_eq(payload.walk_sample_count, 24)
+  assert_eq(payload.foot_phase_sequence.length(), 6)
+  assert_true(payload.foot_phase_sequence.contains("contact"))
+  assert_true(payload.foot_phase_sequence.contains("swing"))
+  assert_true(payload.walk_phase_labels.contains("left-stance-right-swing"))
+  assert_true(payload.walk_phase_labels.contains("right-stance-left-swing"))
+  assert_eq(payload.foot_phase_specs.length(), 6)
+  assert_true(
+    payload.foot_phase_specs.any(fn(spec) {
+      spec.role == "stance" && spec.support && spec.lock_window
+    }),
+  )
+  assert_true(
+    payload.foot_phase_specs.any(fn(spec) {
+      spec.role == "swing" && !spec.support && !spec.lock_window
+    }),
+  )
+  assert_true(
+    payload.joint_anchors.any(fn(anchor) {
+      anchor.joint_id == "leg_l4_joint" &&
+      anchor.side == "left" &&
+      anchor.field == "knee" &&
+      anchor.position_rad < -0.5
+    }),
+  )
+  assert_true(
+    payload.joint_anchors.any(fn(anchor) {
+      anchor.joint_id == "arm_r4_joint" && anchor.field == "elbow"
+    }),
+  )
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
   assert_eq(

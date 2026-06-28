@@ -8,6 +8,24 @@ pub(all) struct SuiteAdapterSourceRef {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterFootPhaseSpec {
+  role : String
+  phase_start : Double
+  phase_end : Double
+  support : Bool
+  lock_window : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterJointAnchor {
+  joint_id : String
+  side : String
+  field : String
+  phase : Double
+  position_rad : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSuiteAdapterPayload {
   payload_id : String
   robot_id : String
@@ -20,6 +38,16 @@ pub(all) struct NoetixSuiteAdapterPayload {
   motion_trace_id : String
   hinge_trace_id : String
   combined_review_id : String
+  walk_clip_id : String
+  walk_clip_source : String
+  walk_cycle_hz : Double
+  root_speed_mps : Double
+  stride_m : Double
+  walk_sample_count : Int
+  foot_phase_sequence : Array[String]
+  walk_phase_labels : Array[String]
+  foot_phase_specs : Array[SuiteAdapterFootPhaseSpec]
+  joint_anchors : Array[SuiteAdapterJointAnchor]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -40,6 +68,28 @@ fn noetix_suite_source_ref(
   status : String,
 ) -> SuiteAdapterSourceRef {
   { source_id, source_family, local_path, role, status }
+}
+
+///|
+fn noetix_suite_foot_phase_spec(
+  role : String,
+  phase_start : Double,
+  phase_end : Double,
+  support : Bool,
+  lock_window : Bool,
+) -> SuiteAdapterFootPhaseSpec {
+  { role, phase_start, phase_end, support, lock_window }
+}
+
+///|
+fn noetix_suite_joint_anchor(
+  joint_id : String,
+  side : String,
+  field : String,
+  phase : Double,
+  position_rad : Double,
+) -> SuiteAdapterJointAnchor {
+  { joint_id, side, field, phase, position_rad }
 }
 
 ///|
@@ -103,6 +153,31 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       blockers.push(
         "moonrobo-source-contract-missing-profile-joint:\{joint_id}",
       )
+    }
+  }
+  if !generated_moonrobo_noetix_walk_clip_ready() {
+    blockers.push(
+      "moonrobo-walk-clip:\{generated_moonrobo_noetix_walk_clip_status()}",
+    )
+  }
+  for blocker in generated_moonrobo_noetix_walk_clip_blockers() {
+    blockers.push("moonrobo-walk-clip-blocker:\{blocker}")
+  }
+  if generated_moonrobo_noetix_walk_sample_count() != 24 {
+    blockers.push(
+      "moonrobo-walk-clip-sample-count:\{generated_moonrobo_noetix_walk_sample_count()}",
+    )
+  }
+  if generated_moonrobo_noetix_foot_phase_sequence().length() != 6 {
+    blockers.push(
+      "moonrobo-walk-clip-foot-phase-count:\{generated_moonrobo_noetix_foot_phase_sequence().length()}",
+    )
+  }
+  for joint_id in noetix_required_driven_joint_ids() {
+    if !generated_moonrobo_noetix_joint_anchors().any(fn(anchor) {
+        anchor.joint_id == joint_id
+      }) {
+      blockers.push("moonrobo-walk-clip-missing-anchor:\{joint_id}")
     }
   }
   blockers
@@ -177,6 +252,16 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     motion_trace_id: generated_rabbita_noetix_motion_trace_id(),
     hinge_trace_id: generated_rabbita_noetix_hinge_trace_id(),
     combined_review_id: generated_rabbita_noetix_combined_review_id(),
+    walk_clip_id: generated_moonrobo_noetix_walk_clip_id(),
+    walk_clip_source: generated_moonrobo_noetix_walk_clip_source(),
+    walk_cycle_hz: generated_moonrobo_noetix_walk_cycle_hz(),
+    root_speed_mps: generated_moonrobo_noetix_root_speed_mps(),
+    stride_m: generated_moonrobo_noetix_stride_m(),
+    walk_sample_count: generated_moonrobo_noetix_walk_sample_count(),
+    foot_phase_sequence: generated_moonrobo_noetix_foot_phase_sequence(),
+    walk_phase_labels: generated_moonrobo_noetix_walk_phase_labels(),
+    foot_phase_specs: generated_moonrobo_noetix_foot_phase_specs(),
+    joint_anchors: generated_moonrobo_noetix_joint_anchors(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),
     driven_joint_ids,
     frame_count,

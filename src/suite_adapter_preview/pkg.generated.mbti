@@ -30,6 +30,16 @@ pub(all) struct NoetixSuiteAdapterPayload {
   motion_trace_id : String
   hinge_trace_id : String
   combined_review_id : String
+  walk_clip_id : String
+  walk_clip_source : String
+  walk_cycle_hz : Double
+  root_speed_mps : Double
+  stride_m : Double
+  walk_sample_count : Int
+  foot_phase_sequence : Array[String]
+  walk_phase_labels : Array[String]
+  foot_phase_specs : Array[SuiteAdapterFootPhaseSpec]
+  joint_anchors : Array[SuiteAdapterJointAnchor]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -39,6 +49,22 @@ pub(all) struct NoetixSuiteAdapterPayload {
   blockers : Array[String]
   ready : Bool
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterFootPhaseSpec {
+  role : String
+  phase_start : Double
+  phase_end : Double
+  support : Bool
+  lock_window : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterJointAnchor {
+  joint_id : String
+  side : String
+  field : String
+  phase : Double
+  position_rad : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SuiteAdapterSourceRef {
