@@ -180,8 +180,8 @@ fn noetix_link_pose_artifact(
     "noetix-urdf-reference-link-poses",
     "output/moonrobo/first_trusted_square_noetix_link_poses.json",
     "moon run cmd/main -- moonrobo noetix poses json",
-    "URDF-reference link poses and rigid visual rig contract are present for each Noetix walk frame",
-    "\{trace.frame_count} frames; \{trace.links_per_frame} links per frame; \{trace.visual_geometry_link_count} rigid visuals (\{trace.mesh_visual_geometry_link_count} mesh, \{trace.primitive_visual_geometry_link_count} primitives); rig contract \{trace.rig_render_contract_status}; collision metadata links \{trace.collision_metadata_link_count}; inertial metadata links \{trace.inertial_metadata_link_count}; missing collision links \{trace.missing_collision_link_count}; missing inertial links \{trace.missing_inertial_link_count}; status \{trace.status}",
+    "URDF-reference RobotRig, RobotMotionFrame samples, link poses, and rigid visual rig contract are present for each Noetix walk frame",
+    "\{trace.frame_count} frames; \{trace.links_per_frame} links per frame; rig \{trace.robot_rig_status}; motion \{trace.motion_frame_source}; rig-motion \{trace.rig_motion_contract_status}; \{trace.visual_geometry_link_count} rigid visuals (\{trace.mesh_visual_geometry_link_count} mesh, \{trace.primitive_visual_geometry_link_count} primitives); rig contract \{trace.rig_render_contract_status}; collision metadata links \{trace.collision_metadata_link_count}; inertial metadata links \{trace.inertial_metadata_link_count}; missing collision links \{trace.missing_collision_link_count}; missing inertial links \{trace.missing_inertial_link_count}; status \{trace.status}",
     ready,
     if ready {
       "none"

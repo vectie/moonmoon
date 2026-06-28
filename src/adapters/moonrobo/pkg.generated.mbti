@@ -180,6 +180,10 @@ pub fn noetix_moon_walk_trace(@moonphys.Heightfield, Int, config? : NoetixMoonWa
 
 pub fn noetix_reference_links() -> Array[NoetixReferenceLink]
 
+pub fn noetix_robot_motion_frame(NoetixMoonWalkFrame) -> RobotMotionFrame
+
+pub fn noetix_robot_rig() -> RobotRig
+
 pub fn noetix_source_joint_limits() -> Array[NoetixSourceJointLimit]
 
 pub fn noetix_source_model_report() -> NoetixSourceModelReport
@@ -299,6 +303,8 @@ pub fn render_remediation_margin_regenerated_receipt_readiness_markdown(Remediat
 pub fn render_simulation_review_decision_markdown(SimulationReviewCloseoutDecision) -> String
 
 pub fn render_simulation_review_packet_markdown(SimulationReviewPacket) -> String
+
+pub fn robot_rig_pose_frame(RobotRig, RobotMotionFrame) -> RobotRigPoseFrame
 
 pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
 
@@ -702,6 +708,9 @@ pub(all) struct NoetixLinkPoseFrame {
   time_s : Double
   support_phase : String
   body_position : @moonphys.Vec3
+  robot_rig_id : String
+  motion_id : String
+  rig_pose_status : String
   links : Array[NoetixLinkPose]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -711,6 +720,10 @@ pub(all) struct NoetixLinkPoseTrace {
   source_walk_trace_id : String
   robot_id : String
   source_model_path : String
+  robot_rig_id : String
+  robot_rig_status : String
+  motion_frame_source : String
+  rig_motion_contract_status : String
   frame_count : Int
   links_per_frame : Int
   visual_geometry_link_count : Int
@@ -1451,12 +1464,93 @@ pub(all) enum RemediationMarginRegeneratedReceiptReadinessState {
   RegeneratedReceiptsPendingFreshEvidence
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RobotMotionFrame {
+  motion_id : String
+  rig_id : String
+  frame_index : Int
+  time_s : Double
+  floating_base_transform : @moonphys.Transform3
+  joint_sample_count : Int
+  joint_samples : Array[RobotMotionJointSample]
+  source : String
+  hardware_authority : String
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotMotionJointSample {
+  joint_name : String
+  role : String
+  side : String
+  position_rad : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RobotPrecondition {
   precondition_id : String
   label : String
   decision : @mission.TraverseDecision
   evidence_path : String
   reason : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRig {
+  rig_id : String
+  robot_id : String
+  source_model_path : String
+  node_count : Int
+  joint_count : Int
+  visual_count : Int
+  mesh_visual_count : Int
+  primitive_visual_count : Int
+  nodes : Array[RobotRigNode]
+  visuals : Array[RobotRigVisual]
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigLinkPose {
+  link_name : String
+  parent_link : String
+  joint_name : String
+  joint_position_rad : Double
+  world_transform : @moonphys.Transform3
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigNode {
+  link_name : String
+  parent_link : String
+  joint_name : String
+  role : String
+  side : String
+  parent_offset_m : @moonphys.Vec3
+  joint_axis : @moonphys.Vec3
+  visual_count : Int
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigPoseFrame {
+  rig_id : String
+  motion_id : String
+  frame_index : Int
+  time_s : Double
+  floating_base_transform : @moonphys.Transform3
+  link_count : Int
+  missing_parent_count : Int
+  links : Array[RobotRigLinkPose]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigVisual {
+  visual_index : Int
+  link_name : String
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  local_origin_xyz_m : @moonphys.Vec3
+  source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SimulationReviewBlocker {

@@ -58,6 +58,9 @@ pub(all) struct NoetixLinkPoseFrame {
   time_s : Double
   support_phase : String
   body_position : @moonphys.Vec3
+  robot_rig_id : String
+  motion_id : String
+  rig_pose_status : String
   links : Array[NoetixLinkPose]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -68,6 +71,10 @@ pub(all) struct NoetixLinkPoseTrace {
   source_walk_trace_id : String
   robot_id : String
   source_model_path : String
+  robot_rig_id : String
+  robot_rig_status : String
+  motion_frame_source : String
+  rig_motion_contract_status : String
   frame_count : Int
   links_per_frame : Int
   visual_geometry_link_count : Int
@@ -213,56 +220,6 @@ pub fn noetix_reference_links() -> Array[NoetixReferenceLink] {
       0.0, 1.0, 0.0,
     ),
   ]
-}
-
-///|
-fn joint_position_rad(
-  frame : NoetixMoonWalkFrame,
-  joint_name : String,
-) -> Double {
-  for phase in frame.joint_phases {
-    if phase.joint_name == joint_name {
-      return phase.position_rad
-    }
-  }
-  0.0
-}
-
-///|
-fn reference_link_spec(
-  link : NoetixReferenceLink,
-) -> @moonphys.ArticulatedLinkSpec {
-  @moonphys.articulated_link_spec(
-    link.link_name,
-    link.parent_link,
-    link.joint_name,
-    link.nominal_parent_offset_m,
-    link.joint_axis,
-  )
-}
-
-///|
-fn reference_link_specs(
-  links : Array[NoetixReferenceLink],
-) -> Array[@moonphys.ArticulatedLinkSpec] {
-  let specs : Array[@moonphys.ArticulatedLinkSpec] = []
-  for link in links {
-    specs.push(reference_link_spec(link))
-  }
-  specs
-}
-
-///|
-fn articulated_joint_positions(
-  frame : NoetixMoonWalkFrame,
-) -> Array[@moonphys.ArticulatedJointPosition] {
-  let positions : Array[@moonphys.ArticulatedJointPosition] = []
-  for phase in frame.joint_phases {
-    positions.push(
-      @moonphys.articulated_joint_position(phase.joint_name, phase.position_rad),
-    )
-  }
-  positions
 }
 
 ///|
@@ -422,18 +379,15 @@ pub fn noetix_link_pose_frame(
 ) -> NoetixLinkPoseFrame {
   let reference_links = noetix_reference_links()
   let links : Array[NoetixLinkPose] = []
-  let root_transform = @moonphys.transform3(
-    @moonphys.identity_basis3(),
-    frame.body_position,
-  )
-  let pose_tree = @moonphys.articulated_pose_tree(
-    root_transform,
-    reference_link_specs(reference_links),
-    articulated_joint_positions(frame),
-  )
+  let rig = noetix_robot_rig()
+  let motion = noetix_robot_motion_frame(frame)
+  let rig_pose = robot_rig_pose_frame(rig, motion)
   for link in reference_links {
-    let joint_position = joint_position_rad(frame, link.joint_name)
-    let transform = pose_tree.link_transform(link.link_name)
+    let joint_position = robot_rig_pose_link_joint_position(
+      rig_pose,
+      link.link_name,
+    )
+    let transform = robot_rig_pose_link_transform(rig_pose, link.link_name)
     let fk_position = transform.translation
     let world_position = if link.role == "foot" {
       contact_position(frame, link.side)
@@ -456,6 +410,9 @@ pub fn noetix_link_pose_frame(
     time_s: frame.time_s,
     support_phase: frame.support_phase,
     body_position: frame.body_position,
+    robot_rig_id: rig.rig_id,
+    motion_id: motion.motion_id,
+    rig_pose_status: rig_pose.status,
     links,
     status: "review-only-urdf-fk",
   }
@@ -468,6 +425,7 @@ pub fn noetix_link_pose_trace(
   let frames : Array[NoetixLinkPoseFrame] = []
   let source_model = noetix_source_model_report()
   let reference_links = noetix_reference_links()
+  let rig = noetix_robot_rig()
   let mesh_visuals = visual_geometry_count_by_kind(SourceMeshGeometry)
   let box_visuals = visual_geometry_count_by_kind(SourceBoxGeometry)
   let cylinder_visuals = visual_geometry_count_by_kind(SourceCylinderGeometry)
@@ -479,6 +437,15 @@ pub fn noetix_link_pose_trace(
     source_walk_trace_id: trace.trace_id,
     robot_id: trace.robot.robot_id,
     source_model_path: trace.robot.source_model_path,
+    robot_rig_id: rig.rig_id,
+    robot_rig_status: rig.status,
+    motion_frame_source: "planned-gait-joint-samples",
+    rig_motion_contract_status: if rig.status == "urdf-rigid-rig-ready" &&
+      frames.length() == trace.frame_count {
+      "robot-rig-motion-contract-ready"
+    } else {
+      "robot-rig-motion-contract-review"
+    },
     frame_count: frames.length(),
     links_per_frame: reference_links.length(),
     visual_geometry_link_count: source_model.visual_geometry_count,
@@ -501,7 +468,7 @@ pub fn noetix_link_pose_trace(
       "urdf-rigid-visual-contract-incomplete"
     },
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 
@@ -522,6 +489,10 @@ pub fn render_noetix_link_pose_markdown(trace : NoetixLinkPoseTrace) -> String {
   text += "- source walk trace: \{trace.source_walk_trace_id}\n"
   text += "- robot: \{trace.robot_id}\n"
   text += "- source model: \{trace.source_model_path}\n"
+  text += "- robot rig: \{trace.robot_rig_id}\n"
+  text += "- robot rig status: \{trace.robot_rig_status}\n"
+  text += "- motion frame source: \{trace.motion_frame_source}\n"
+  text += "- rig motion contract: \{trace.rig_motion_contract_status}\n"
   text += "- frames: \{trace.frame_count}\n"
   text += "- links per frame: \{trace.links_per_frame}\n"
   text += "- visual geometry links: \{trace.visual_geometry_link_count}\n"
@@ -536,7 +507,7 @@ pub fn render_noetix_link_pose_markdown(trace : NoetixLinkPoseTrace) -> String {
   text += "- note: \{trace.note}\n\n"
   text += "## Frame Prefix\n\n"
   for frame in trace.frames {
-    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} links=\{frame.links.length()} status=\{frame.status}\n"
+    text += "- frame \{frame.frame_index} t=\{frame.time_s}s phase=\{frame.support_phase} motion=\{frame.motion_id} rig_pose=\{frame.rig_pose_status} links=\{frame.links.length()} status=\{frame.status}\n"
   }
   text
 }

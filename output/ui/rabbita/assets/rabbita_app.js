@@ -604,6 +604,8 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['links', `${linkCount} URDF-reference poses`],
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
+    ['motion', noetixLinkPoseTrace.motion_frame_source || 'planned-gait-joint-samples'],
+    ['rig motion', noetixLinkPoseTrace.rig_motion_contract_status || 'robot-rig-motion-contract-review'],
     ['pose status', poseFrame.status || noetixLinkPoseTrace.status],
   ];
   document.getElementById('noetix-walk-facts').replaceChildren(...facts.map(([label, value]) =>

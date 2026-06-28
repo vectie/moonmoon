@@ -300,6 +300,8 @@ def assert_noetix_walk_panel(
       f"{noetix_link_poses['primitive_visual_geometry_link_count']} primitives)"
     ),
     "rig contract": "urdf-rigid-visual-contract-ready",
+    "motion": "planned-gait-joint-samples",
+    "rig motion": "robot-rig-motion-contract-ready",
     "pose status": "review-only-urdf-fk",
   }
   for key, value in expected.items():

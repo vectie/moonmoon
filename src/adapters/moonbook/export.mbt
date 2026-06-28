@@ -1063,7 +1063,7 @@ fn moonrobo_noetix_link_poses_entry(dossier : @site.SiteDossier) -> BookEntry {
     claim_kind: @core.ClaimKind::Simulated,
     confidence: 0.56,
     path: "moonrobo/\{dossier.site.site_id}/noetix-link-poses.json",
-    summary: "\{trace.robot_id} review-only link pose trace has \{trace.frame_count} frames, \{trace.links_per_frame} URDF-reference links per frame, and \{trace.visual_geometry_link_count} rigid URDF visuals (\{trace.mesh_visual_geometry_link_count} mesh, \{trace.primitive_visual_geometry_link_count} primitives); non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied",
+    summary: "\{trace.robot_id} review-only link pose trace uses RobotRig \{trace.robot_rig_status} plus \{trace.motion_frame_source}; \{trace.frame_count} frames, \{trace.links_per_frame} URDF-reference links per frame, and \{trace.visual_geometry_link_count} rigid URDF visuals (\{trace.mesh_visual_geometry_link_count} mesh, \{trace.primitive_visual_geometry_link_count} primitives); non-foot links use URDF forward kinematics, feet are contact-bound, and no hardware authority is implied",
   }
 }
 

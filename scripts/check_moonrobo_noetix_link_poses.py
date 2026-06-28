@@ -31,6 +31,14 @@ def main() -> None:
         fail("unexpected source walk trace")
     if trace.get("robot_id") != "noetix-e1-lab-01":
         fail("unexpected robot id")
+    if trace.get("robot_rig_id") != "moonrobo/noetix-e1/urdf-rigid-rig":
+        fail("unexpected robot rig id")
+    if trace.get("robot_rig_status") != "urdf-rigid-rig-ready":
+        fail("robot rig should be ready for current URDF source")
+    if trace.get("motion_frame_source") != "planned-gait-joint-samples":
+        fail("motion frame source should come from planned robot joint samples")
+    if trace.get("rig_motion_contract_status") != "robot-rig-motion-contract-ready":
+        fail("rig motion contract should be ready")
     if trace.get("links_per_frame") != 25:
         fail("expected 25 URDF-reference links per frame")
     if trace.get("visual_geometry_link_count") != 6:
@@ -61,6 +69,8 @@ def main() -> None:
         fail("trace note must preserve Moonphys articulated-tree provenance")
     if "missing collision/inertial metadata" not in trace.get("note", ""):
         fail("trace note must preserve missing collision/inertial metadata")
+    if "RobotRig plus RobotMotionFrame" not in trace.get("note", ""):
+        fail("trace note must name the robot rig and motion frame contract")
     if "debug sticks are only a link-tree overlay" not in trace.get("note", ""):
         fail("trace note must keep sticks as debug overlay only")
     physical_metadata = {
@@ -88,6 +98,13 @@ def main() -> None:
     required = {"base_link", "chest_link", "left_foot", "right_foot", "right_leg_3"}
     if not required.issubset(first):
         fail("first frame is missing required links")
+    first_frame = frames[0]
+    if first_frame.get("robot_rig_id") != trace.get("robot_rig_id"):
+        fail("frame should carry robot rig id")
+    if not first_frame.get("motion_id", "").endswith("/0"):
+        fail("first frame should carry motion frame id")
+    if first_frame.get("rig_pose_status") != "robot-rig-pose-ready":
+        fail("first frame should be produced by ready rig pose sampling")
     if first["left_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("left foot must be bound to contact evidence")
     if first["left_foot"].get("visual_geometry", {}).get("source_status") != "urdf-visual-geometry-missing":

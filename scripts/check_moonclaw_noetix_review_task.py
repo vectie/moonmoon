@@ -236,6 +236,12 @@ def main() -> None:
         fail("link pose artifact must expose rigid visual count")
     if "1 mesh, 5 primitives" not in link_pose_state:
         fail("link pose artifact must expose mesh and primitive visual counts")
+    if "rig urdf-rigid-rig-ready" not in link_pose_state:
+        fail("link pose artifact must expose robot rig readiness")
+    if "motion planned-gait-joint-samples" not in link_pose_state:
+        fail("link pose artifact must expose motion frame source")
+    if "rig-motion robot-rig-motion-contract-ready" not in link_pose_state:
+        fail("link pose artifact must expose rig-motion contract readiness")
     if "rig contract urdf-rigid-visual-contract-ready" not in link_pose_state:
         fail("link pose artifact must expose ready rigid visual contract")
     if "collision metadata links 0" not in link_pose_state:

@@ -851,12 +851,65 @@ test "noetix reference links mirror the compact urdf tree" {
 }
 
 ///|
+test "noetix robot rig exposes urdf nodes visuals and motion frames" {
+  let rig = noetix_robot_rig()
+  assert_eq(rig.rig_id, "moonrobo/noetix-e1/urdf-rigid-rig")
+  assert_eq(rig.node_count, 25)
+  assert_eq(rig.joint_count, 24)
+  assert_eq(rig.visual_count, 6)
+  assert_eq(rig.mesh_visual_count, 1)
+  assert_eq(rig.primitive_visual_count, 5)
+  assert_eq(rig.status, "urdf-rigid-rig-ready")
+  assert_true(
+    rig.nodes.any(fn(node) {
+      node.link_name == "base_link" &&
+      node.parent_link == "" &&
+      node.visual_count == 1
+    }),
+  )
+  assert_true(
+    rig.visuals.any(fn(visual) {
+      visual.link_name == "base_link" &&
+      visual.kind == SourceMeshGeometry &&
+      visual.mesh_path.contains("base.obj")
+    }),
+  )
+  assert_true(
+    rig.visuals.any(fn(visual) {
+      visual.link_name == "left_arm_1" && visual.kind == SourceCylinderGeometry
+    }),
+  )
+  let walk = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let motion = noetix_robot_motion_frame(walk.frames[0])
+  assert_eq(motion.rig_id, rig.rig_id)
+  assert_eq(motion.joint_sample_count, 24)
+  assert_eq(motion.source, "planned-gait-joint-samples")
+  assert_eq(motion.hardware_authority, "moonmoon-safety-gate-only")
+  assert_eq(motion.status, "robot-motion-frame-ready")
+  let pose = robot_rig_pose_frame(rig, motion)
+  assert_eq(pose.rig_id, rig.rig_id)
+  assert_eq(pose.motion_id, motion.motion_id)
+  assert_eq(pose.link_count, 25)
+  assert_eq(pose.missing_parent_count, 0)
+  assert_eq(pose.status, "robot-rig-pose-ready")
+  assert_true(
+    pose.links.any(fn(link) {
+      link.link_name == "chest_link" && link.parent_link == "torso_link"
+    }),
+  )
+}
+
+///|
 test "noetix link pose trace binds feet to walk contact probes" {
   let walk = first_trusted_square_noetix_walk_trace(frame_count=12)
   let poses = noetix_link_pose_trace(walk)
   assert_eq(poses.frame_count, walk.frame_count)
   assert_eq(poses.links_per_frame, 25)
   assert_eq(poses.robot_id, walk.robot.robot_id)
+  assert_eq(poses.robot_rig_id, "moonrobo/noetix-e1/urdf-rigid-rig")
+  assert_eq(poses.robot_rig_status, "urdf-rigid-rig-ready")
+  assert_eq(poses.motion_frame_source, "planned-gait-joint-samples")
+  assert_eq(poses.rig_motion_contract_status, "robot-rig-motion-contract-ready")
   assert_eq(poses.visual_geometry_link_count, 6)
   assert_eq(poses.mesh_visual_geometry_link_count, 1)
   assert_eq(poses.primitive_visual_geometry_link_count, 5)
@@ -888,8 +941,12 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("hardware authority"))
   assert_true(poses.note.contains("not full dynamics"))
   assert_true(poses.note.contains("missing collision/inertial metadata"))
+  assert_true(poses.note.contains("RobotRig plus RobotMotionFrame"))
   assert_true(poses.note.contains("debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
+  assert_eq(first.robot_rig_id, poses.robot_rig_id)
+  assert_true(first.motion_id.contains("robot-motion-frame/0"))
+  assert_eq(first.rig_pose_status, "robot-rig-pose-ready")
   assert_eq(first.links.length(), 25)
   assert_true(
     first.links.any(fn(link) {

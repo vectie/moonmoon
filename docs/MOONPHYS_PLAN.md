@@ -507,7 +507,11 @@ Do not connect this to hardware controls.
 
 ### Phase 5A: URDF Robot Rig Animation
 
-Status: planned next; prioritize before more MoonClaw orchestration.
+Status: active. Moonrobo now exposes a first-class `RobotRig`,
+`RobotMotionFrame`, and FK `RobotRigPoseFrame` contract for Noetix. Rabbita
+uses the rigid visual contract as the primary robot body, with debug sticks
+separated as a link-tree overlay. Continue prioritizing this visual/rig slice
+before new MoonClaw orchestration.
 
 The current Rabbita pose uses URDF-reference FK plus contact-bound foot
 correction. That is useful evidence, but it is not the same as how a walking
@@ -516,6 +520,11 @@ normalized animation clip, sampling channels, applying them through a skeleton,
 and rendering the resulting bone matrices. For Noetix, the equivalent skeleton
 is the URDF link/joint tree, but the motion authority must be robot data rather
 than an artist-authored random animation.
+
+The sibling Moonrobo viewer is already beyond stick rendering: it exports URDF
+visual instances, resolves mesh assets, and renders the resolved `base_link` OBJ
+plus primitive link visuals. Moonmoon should consume that same mesh/primitive
+visual contract for Rabbita, keeping sticks only as an optional rig diagnostic.
 
 Robot animation bridge:
 
@@ -555,15 +564,17 @@ Rules:
 Immediate Phase 5A deliverables:
 
 - Add a Moonrobo `RobotRig`/`RobotMotionFrame` contract for URDF-backed rigid
-  robot animation.
+  robot animation. (implemented)
 - Convert the Noetix URDF-reference link tree and visual geometry into that
-  contract:
+  contract: (implemented)
   - one resolved `base_link` OBJ mesh from `meshes/base.obj`
   - existing URDF box visuals for torso/chest links
   - existing URDF cylinder visuals for arm/leg links
   - explicit missing-visual status for links without a visual block
 - Rework the Rabbita Noetix viewer to render rigid link visuals from FK link
-  transforms instead of the current contact-corrected stick pose.
+  transforms instead of the current contact-corrected stick pose. (partially
+  implemented: current primary render uses available rigid visuals; links
+  without visual blocks remain absent except debug overlay)
 - Support mesh assets by extension instead of assuming STL-only rendering:
   `OBJLoader` for `.obj`, `STLLoader` for `.stl`, and a clear unsupported-asset
   status for anything else. Moonrobo's current Three viewer resolves mesh
@@ -571,7 +582,8 @@ Immediate Phase 5A deliverables:
   an OBJ mesh.
 - Render URDF primitive boxes and cylinders directly in Three.js so the current
   Noetix source can show more than the one base mesh even before full per-link
-  meshes exist.
+  meshes exist. (implemented in the current SVG rig renderer; future Three.js
+  renderer should keep the same contract)
 - Keep the endless gait loop source-backed by the existing Noetix walk command
   or simulated joint trajectory, with explicit `simulation evidence only` and
   `hardware denied` labels.
@@ -579,6 +591,8 @@ Immediate Phase 5A deliverables:
   from the FK tree, if the viewer presents debug sticks as the primary robot,
   if the resolved OBJ base mesh is not represented in the render contract, or if
   URDF box/cylinder primitives disappear from the visual instance contract.
+  (implemented for current contract/renderer; still strengthen when full
+  per-link visuals or Three.js mesh loaders land)
 
 ## Phase 6: Evidence Export
 

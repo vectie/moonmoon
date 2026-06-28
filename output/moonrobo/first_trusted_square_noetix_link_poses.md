@@ -4,6 +4,10 @@
 - source walk trace: moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola
 - robot: noetix-e1-lab-01
 - source model: ../moonrobo/examples/noetix-e1/model/robot.urdf
+- robot rig: moonrobo/noetix-e1/urdf-rigid-rig
+- robot rig status: urdf-rigid-rig-ready
+- motion frame source: planned-gait-joint-samples
+- rig motion contract: robot-rig-motion-contract-ready
 - frames: 32
 - links per frame: 25
 - visual geometry links: 6
@@ -15,40 +19,40 @@
 - missing collision links: 25
 - missing inertial links: 25
 - status: review-only
-- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
+- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The rigid render contract carries one mesh visual and primitive box/cylinder visuals as the primary robot body; debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
 
 ## Frame Prefix
 
-- frame 0 t=0s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 1 t=0.1s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 2 t=0.2s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 3 t=0.30000000000000004s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 4 t=0.4s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 5 t=0.5s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 6 t=0.6000000000000001s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 7 t=0.7000000000000001s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 8 t=0.8s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 9 t=0.9s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 10 t=1s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 11 t=1.1s phase=double-support-left-transfer links=25 status=review-only-urdf-fk
-- frame 12 t=1.2000000000000002s phase=left-support links=25 status=review-only-urdf-fk
-- frame 13 t=1.3s phase=left-support links=25 status=review-only-urdf-fk
-- frame 14 t=1.4000000000000001s phase=left-support links=25 status=review-only-urdf-fk
-- frame 15 t=1.5s phase=left-support links=25 status=review-only-urdf-fk
-- frame 16 t=1.6s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 17 t=1.7000000000000002s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 18 t=1.8s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 19 t=1.9000000000000001s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 20 t=2s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 21 t=2.1s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 22 t=2.2s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 23 t=2.3000000000000003s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 24 t=2.4000000000000004s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 25 t=2.5s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 26 t=2.6s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 27 t=2.7s phase=double-support-right-transfer links=25 status=review-only-urdf-fk
-- frame 28 t=2.8000000000000003s phase=right-support links=25 status=review-only-urdf-fk
-- frame 29 t=2.9000000000000004s phase=right-support links=25 status=review-only-urdf-fk
-- frame 30 t=3s phase=right-support links=25 status=review-only-urdf-fk
-- frame 31 t=3.1s phase=right-support links=25 status=review-only-urdf-fk
+- frame 0 t=0s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/0 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 1 t=0.1s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/1 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 2 t=0.2s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/2 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 3 t=0.30000000000000004s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/3 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 4 t=0.4s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/4 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 5 t=0.5s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/5 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 6 t=0.6000000000000001s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/6 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 7 t=0.7000000000000001s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/7 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 8 t=0.8s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/8 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 9 t=0.9s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/9 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 10 t=1s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/10 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 11 t=1.1s phase=double-support-left-transfer motion=moonrobo/noetix-e1/robot-motion-frame/11 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 12 t=1.2000000000000002s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/12 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 13 t=1.3s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/13 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 14 t=1.4000000000000001s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/14 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 15 t=1.5s phase=left-support motion=moonrobo/noetix-e1/robot-motion-frame/15 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 16 t=1.6s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/16 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 17 t=1.7000000000000002s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/17 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 18 t=1.8s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/18 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 19 t=1.9000000000000001s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/19 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 20 t=2s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/20 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 21 t=2.1s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/21 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 22 t=2.2s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/22 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 23 t=2.3000000000000003s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/23 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 24 t=2.4000000000000004s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/24 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 25 t=2.5s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/25 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 26 t=2.6s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/26 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 27 t=2.7s phase=double-support-right-transfer motion=moonrobo/noetix-e1/robot-motion-frame/27 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 28 t=2.8000000000000003s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/28 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 29 t=2.9000000000000004s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/29 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 30 t=3s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/30 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
+- frame 31 t=3.1s phase=right-support motion=moonrobo/noetix-e1/robot-motion-frame/31 rig_pose=robot-rig-pose-ready links=25 status=review-only-urdf-fk
 
