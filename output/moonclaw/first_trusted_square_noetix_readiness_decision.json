@@ -5,9 +5,9 @@
   "robot_id": "noetix-e1-lab-01",
   "may_consume_moonrobo_simulation": false,
   "decision": "NoetixSimulationBlocked",
-  "reason": "Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
-  "ready_artifact_count": 7,
-  "blocked_artifact_count": 4,
+  "reason": "Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
+  "ready_artifact_count": 9,
+  "blocked_artifact_count": 2,
   "metadata_blocker_count": 50,
   "metadata_blocker_ids": [
     "missing-collision-shape:base_link",
@@ -261,11 +261,11 @@
     "noetix-endless-walk-trace",
     "noetix-high-control-walk-command-plan",
     "noetix-urdf-reference-link-poses",
+    "noetix-static-support-review",
+    "noetix-dynamic-stability-review",
     "noetix-rabbita-playback"
   ],
   "blocked_artifacts": [
-    "noetix-static-support-review",
-    "noetix-dynamic-stability-review",
     "noetix-joint-control-review",
     "noetix-inertial-collision-review"
   ],

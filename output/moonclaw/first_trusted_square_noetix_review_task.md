@@ -137,13 +137,13 @@
       - gate: python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
     - noetix-static-support-review: output/moonrobo/first_trusted_square_noetix_stability.json
       - current: 32/32 frames support-stable; 32 review frames from contact/model provenance; worst planar margin 0.004999999999999998 m; status static-support-review
-      - ready: false
-      - blocking: static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear
+      - ready: true
+      - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
     - noetix-dynamic-stability-review: output/moonrobo/first_trusted_square_noetix_dynamics.json
       - current: 32/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review
-      - ready: false
-      - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
+      - ready: true
+      - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
       - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 56; center-of-mass target frames 32; heightfield motor contacts 41; support-review frames 0; capture-review frames 0; max support recovery shift 0 m; worst capture support margin 0.0021231717435670205 m; max capture recovery shift 0 m; world replay blockers 0; resolved world hinges 1400; body samples 825; max world speed 2.974277324316787 m/s; max world energy 6.723207457478219 J; envelope world-trace-envelope-bounded; world review world-replay-review-ready; max power 40.50000000000002 W; absolute work 130.134946778545 J; status joint-control-assumption-review
@@ -179,7 +179,8 @@
     - source-model-gaps-preserved: Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.
     - moonrobo-source-sync-preserved: Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.
     - endless-gait-window-preserved: Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.
-    - review-only-static-support-preserved: Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence.
+    - static-support-margin-ready: Static support-stable frames are accepted separately from source/physical-model provenance blockers.
+    - dynamic-stability-margin-ready: Capture-stable frames are accepted separately from source/physical-model provenance blockers.
     - review-only-joint-control-preserved: Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.
     - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
     - review-only-inertial-collision-preserved: Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.

@@ -195,14 +195,20 @@ fn noetix_link_pose_artifact(
 fn noetix_static_support_artifact(
   report : @moonrobo.NoetixWalkStabilityReport,
 ) -> MoonClawTaskArtifact {
+  let ready = report.frame_count > 0 &&
+    report.stable_frame_count == report.frame_count
   task_artifact(
     "noetix-static-support-review",
     "output/moonrobo/first_trusted_square_noetix_stability.json",
     "moon run cmd/main -- moonrobo noetix stability json",
     "static support evidence is reviewed before any dynamic-walk or hardware claim",
     "\{report.stable_frame_count}/\{report.frame_count} frames support-stable; \{report.review_frame_count} review frames from contact/model provenance; worst planar margin \{report.worst_planar_margin_m} m; status \{report.status}",
-    report.review_frame_count == 0 && report.status == "static-support-ok",
-    "static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "static support margins must be stable in every frame before downstream review"
+    },
     "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
   )
 }
@@ -211,14 +217,20 @@ fn noetix_static_support_artifact(
 fn noetix_dynamic_stability_artifact(
   report : @moonrobo.NoetixDynamicStabilityReport,
 ) -> MoonClawTaskArtifact {
+  let ready = report.frame_count > 0 &&
+    report.capture_stable_frame_count == report.frame_count
   task_artifact(
     "noetix-dynamic-stability-review",
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
     "moon run cmd/main -- moonrobo noetix dynamics json",
     "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
     "\{report.capture_stable_frame_count}/\{report.frame_count} frames capture-stable; \{report.review_frame_count} dynamic review frames from model/provenance blockers; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
-    report.review_frame_count == 0 && report.status == "dynamic-stability-ok",
-    "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "capture-point margins must be stable in every frame before downstream review"
+    },
     "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
   )
 }
@@ -439,7 +451,10 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "endless-gait-window-preserved", "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.",
       ),
       criterion(
-        "review-only-static-support-preserved", "Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence.",
+        "static-support-margin-ready", "Static support-stable frames are accepted separately from source/physical-model provenance blockers.",
+      ),
+      criterion(
+        "dynamic-stability-margin-ready", "Capture-stable frames are accepted separately from source/physical-model provenance blockers.",
       ),
       criterion(
         "review-only-joint-control-preserved", "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.",

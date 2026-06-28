@@ -250,7 +250,7 @@
       ],
       "validation_notes": [
         "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "blocker-accounting-preserved: pass - work item review-artifacts preserves 4 named blockers",
+        "blocker-accounting-preserved: pass - work item review-artifacts preserves 2 named blockers",
         "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
         "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
         "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for review-artifacts",
@@ -273,14 +273,12 @@
       "rank": 4,
       "robot_id": "noetix-e1-lab-01",
       "blocker_domain": "review-artifacts",
-      "blocker_count": 4,
+      "blocker_count": 2,
       "blocker_ids": [
-        "noetix-static-support-review",
-        "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
         "noetix-inertial-collision-review"
       ],
-      "required_evidence": "ready Noetix static-support, dynamic-stability, joint-control, and inertial/collision review artifacts",
+      "required_evidence": "ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared",
       "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
       "command": "moon run cmd/main -- moonclaw noetix review task json",
       "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
@@ -298,7 +296,7 @@
       {
         "validation_id": "blocker-accounting-preserved",
         "passed": true,
-        "note": "work item review-artifacts preserves 4 named blockers"
+        "note": "work item review-artifacts preserves 2 named blockers"
       },
       {
         "validation_id": "result-paths-present",

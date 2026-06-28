@@ -6,9 +6,9 @@
 - robot: noetix-e1-lab-01
 - status: noetix-simulation-blocked
 - may consume MoonRobo simulation: false
-- reason: Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only
-- ready artifacts: 7
-- blocked artifacts: 4
+- reason: Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only
+- ready artifacts: 9
+- blocked artifacts: 2
 - source metadata blockers: 50
 - source metadata blocker ids:
   - missing-collision-shape:base_link
@@ -95,8 +95,6 @@
 
 ## Blocked Artifacts
 
-- noetix-static-support-review
-- noetix-dynamic-stability-review
 - noetix-joint-control-review
 - noetix-inertial-collision-review
 
@@ -108,6 +106,8 @@
 - noetix-endless-walk-trace
 - noetix-high-control-walk-command-plan
 - noetix-urdf-reference-link-poses
+- noetix-static-support-review
+- noetix-dynamic-stability-review
 - noetix-rabbita-playback
 
 ## Hardware Denial Invariants

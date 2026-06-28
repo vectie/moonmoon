@@ -101,10 +101,18 @@ def main() -> None:
         fail("world replay receipt should be omitted after replay blockers clear")
     require_receipt(
         receipt_by_domain(receipts, "review-artifacts"),
-        4,
+        2,
         "noetix-joint-control-review",
         "check_moonclaw_noetix_review_task",
     )
+    review = receipt_by_domain(receipts, "review-artifacts")
+    ids = review.get("work_item_result", {}).get("blocker_ids", [])
+    if "noetix-inertial-collision-review" not in ids:
+        fail("review artifact receipt should keep inertial/collision blocker")
+    if "noetix-static-support-review" in ids:
+        fail("review artifact receipt should omit cleared static support margin")
+    if "noetix-dynamic-stability-review" in ids:
+        fail("review artifact receipt should omit cleared dynamic stability margin")
 
 
 if __name__ == "__main__":

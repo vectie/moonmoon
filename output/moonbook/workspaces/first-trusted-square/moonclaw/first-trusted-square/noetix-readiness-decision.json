@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.57,
     "path": "moonclaw/first-trusted-square/noetix-readiness-decision.json",
-    "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 4, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
+    "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 2, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
   },
   "payload": {
     "primary_decision": {
@@ -16,9 +16,9 @@
       "robot_id": "noetix-e1-lab-01",
       "may_consume_moonrobo_simulation": false,
       "decision": "NoetixSimulationBlocked",
-      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 4 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
-      "ready_artifact_count": 7,
-      "blocked_artifact_count": 4,
+      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
+      "ready_artifact_count": 9,
+      "blocked_artifact_count": 2,
       "metadata_blocker_count": 50,
       "metadata_blocker_ids": [
         "missing-collision-shape:base_link",
@@ -272,11 +272,11 @@
         "noetix-endless-walk-trace",
         "noetix-high-control-walk-command-plan",
         "noetix-urdf-reference-link-poses",
+        "noetix-static-support-review",
+        "noetix-dynamic-stability-review",
         "noetix-rabbita-playback"
       ],
       "blocked_artifacts": [
-        "noetix-static-support-review",
-        "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
         "noetix-inertial-collision-review"
       ],
@@ -691,8 +691,8 @@
           "producer": "moon run cmd/main -- moonrobo noetix stability json",
           "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
           "current_state": "32/32 frames support-stable; 32 review frames from contact/model provenance; worst planar margin 0.004999999999999998 m; status static-support-review",
-          "ready": false,
-          "blocking_reason": "static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear",
+          "ready": true,
+          "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
         },
         {
@@ -701,8 +701,8 @@
           "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
           "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
           "current_state": "32/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review",
-          "ready": false,
-          "blocking_reason": "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
+          "ready": true,
+          "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
         },
         {
@@ -769,8 +769,12 @@
           "description": "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait."
         },
         {
-          "criterion_id": "review-only-static-support-preserved",
-          "description": "Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence."
+          "criterion_id": "static-support-margin-ready",
+          "description": "Static support-stable frames are accepted separately from source/physical-model provenance blockers."
+        },
+        {
+          "criterion_id": "dynamic-stability-margin-ready",
+          "description": "Capture-stable frames are accepted separately from source/physical-model provenance blockers."
         },
         {
           "criterion_id": "review-only-joint-control-preserved",

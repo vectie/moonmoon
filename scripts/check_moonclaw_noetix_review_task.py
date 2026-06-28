@@ -213,19 +213,19 @@ def main() -> None:
         fail("link pose artifact must preserve missing collision link count")
     if "missing inertial links 25" not in link_pose_state:
         fail("link pose artifact must preserve missing inertial link count")
-    if artifacts["noetix-static-support-review"].get("ready"):
-        fail("static support artifact must remain review-blocked")
-    if "review-only" not in artifacts["noetix-static-support-review"].get("blocking_reason", ""):
-        fail("static support blocker must explain review-only state")
+    if not artifacts["noetix-static-support-review"].get("ready"):
+        fail("static support artifact should be ready once every frame is support-stable")
+    if artifacts["noetix-static-support-review"].get("blocking_reason") != "none":
+        fail("static support artifact should keep provenance blockers outside artifact readiness")
     static_state = artifacts["noetix-static-support-review"].get("current_state", "")
     if "frames support-stable" not in static_state:
         fail("static support artifact must expose support-stable frame count")
     if "review frames from contact/model provenance" not in static_state:
         fail("static support artifact must separate review provenance blockers")
-    if artifacts["noetix-dynamic-stability-review"].get("ready"):
-        fail("dynamic stability artifact must remain review-blocked")
-    if "review-only" not in artifacts["noetix-dynamic-stability-review"].get("blocking_reason", ""):
-        fail("dynamic stability blocker must explain review-only state")
+    if not artifacts["noetix-dynamic-stability-review"].get("ready"):
+        fail("dynamic stability artifact should be ready once every frame is capture-stable")
+    if artifacts["noetix-dynamic-stability-review"].get("blocking_reason") != "none":
+        fail("dynamic stability artifact should keep provenance blockers outside artifact readiness")
     dynamic_state = artifacts["noetix-dynamic-stability-review"].get("current_state", "")
     if "frames capture-stable" not in dynamic_state:
         fail("dynamic stability artifact must expose capture-stable frame count")

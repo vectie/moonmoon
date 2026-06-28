@@ -251,7 +251,7 @@ test "first trusted square exports a MoonBook evidence dossier" {
     dossier.entries[85].kind ==
     @moonbook.BookEntryKind::MoonClawNoetixReadinessDecision,
   )
-  assert_true(dossier.entries[85].summary.contains("blocked artifacts 4"))
+  assert_true(dossier.entries[85].summary.contains("blocked artifacts 2"))
   assert_true(dossier.entries[85].path.contains("noetix-readiness-decision"))
   assert_true(
     dossier.entries[86].kind ==

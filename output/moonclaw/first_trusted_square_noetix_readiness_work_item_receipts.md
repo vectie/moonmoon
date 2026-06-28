@@ -84,7 +84,7 @@
   - next action: Attach fresh Noetix evidence via moon run cmd/main -- moonclaw noetix review task json, verify python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json, regenerate readiness work item receipts, and keep hardware denied.
   - validation:
     - source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision
-    - blocker-accounting-preserved: pass - work item review-artifacts preserves 4 named blockers
+    - blocker-accounting-preserved: pass - work item review-artifacts preserves 2 named blockers
     - result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths
     - readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption
     - simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for review-artifacts
@@ -92,8 +92,8 @@
     - fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json passes
   - work item result:
     - 4. review-artifacts: NoetixReadinessWorkItemPendingEvidence
-      - blockers: 4
-      - required evidence: ready Noetix static-support, dynamic-stability, joint-control, and inertial/collision review artifacts
+      - blockers: 2
+      - required evidence: ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared
       - target: output/moonclaw/first_trusted_square_noetix_review_task.json
       - evidence: output/moonclaw/first_trusted_square_noetix_review_task.json
       - command: moon run cmd/main -- moonclaw noetix review task json

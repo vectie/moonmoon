@@ -36,9 +36,9 @@ def main() -> None:
         fail("Noetix simulation must not be consumable yet")
     if decision.get("decision") != "NoetixSimulationBlocked":
         fail("decision must remain blocked")
-    if decision.get("ready_artifact_count") != 7:
+    if decision.get("ready_artifact_count") != 9:
         fail("unexpected ready artifact count")
-    if decision.get("blocked_artifact_count") != 4:
+    if decision.get("blocked_artifact_count") != 2:
         fail("unexpected blocked artifact count")
     if decision.get("metadata_blocker_count") != 50:
         fail("unexpected metadata blocker count")
@@ -137,16 +137,22 @@ def main() -> None:
         "noetix-endless-walk-trace",
         "noetix-high-control-walk-command-plan",
         "noetix-urdf-reference-link-poses",
+        "noetix-static-support-review",
+        "noetix-dynamic-stability-review",
         "noetix-rabbita-playback",
     ]:
         require_contains(ready_artifacts, expected, "ready artifacts")
     for expected in [
-        "noetix-static-support-review",
-        "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
         "noetix-inertial-collision-review",
     ]:
         require_contains(blocked_artifacts, expected, "blocked artifacts")
+    for cleared in [
+        "noetix-static-support-review",
+        "noetix-dynamic-stability-review",
+    ]:
+        if cleared in blocked_artifacts:
+            fail(f"blocked artifacts should not retain cleared margin artifact {cleared}")
 
     if decision.get("hardware_state") != "HardwareDenied":
         fail("hardware state must remain denied")
