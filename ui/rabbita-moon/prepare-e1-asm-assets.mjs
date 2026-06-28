@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { homedir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -194,12 +194,19 @@ if (!existsSync(archivePath)) {
   process.exit(0)
 }
 
-mkdirSync(assetRoot, { recursive: true })
-runTar(['-xzf', archivePath, '-C', assetRoot, `${packageRoot}/meshes`, urdfEntry])
 const urdf = runTar(['-xOf', archivePath, urdfEntry])
 const links = parseLinks(urdf)
 const joints = parseJoints(urdf)
 validateAssembly(links, joints)
+const requiredMeshPaths = links
+  .filter(link => link.visual?.mesh_name?.endsWith('.STL'))
+  .map(link => path.join(assetRoot, packageRoot, 'meshes', link.visual.mesh_name))
+
+mkdirSync(assetRoot, { recursive: true })
+if (!requiredMeshPaths.every(meshPath => existsSync(meshPath))) {
+  rmSync(path.join(assetRoot, packageRoot), { recursive: true, force: true })
+  runTar(['-xzf', archivePath, '-C', assetRoot, `${packageRoot}/meshes`, urdfEntry])
+}
 
 const visuals = links
   .filter(link => link.visual?.mesh_name?.endsWith('.STL'))
@@ -220,6 +227,7 @@ const visuals = links
       source: `e1_asm_251028:${link.visual.mesh_filename}`,
       mesh_name: link.visual.mesh_name,
       mesh_path: meshPath,
+      asset_url: `/@fs${meshPath}`,
       origin: link.visual.origin,
       color_rgba: link.visual.color_rgba,
       ...meshSample,

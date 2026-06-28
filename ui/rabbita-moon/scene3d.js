@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
 import {
   FOOT_PHASE_SEQUENCE,
   NOETIX_URDF_LIMIT_SOURCE,
@@ -23,6 +24,8 @@ const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
+const E1_STL_LOADER = new STLLoader()
+const E1_FULL_STL_CACHE = new Map()
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -500,6 +503,68 @@ function e1ThreeGeometry(visual) {
   return geometry
 }
 
+function finiteTriangleAttribute(attribute, itemSize) {
+  if (!attribute?.array) return null
+  const source = attribute.array
+  const clean = []
+  const stride = itemSize * 3
+  let removed = 0
+  for (let index = 0; index + stride - 1 < source.length; index += stride) {
+    let valid = true
+    for (let offset = 0; offset < stride; offset += 1) {
+      if (!Number.isFinite(source[index + offset])) {
+        valid = false
+        break
+      }
+    }
+    if (valid) {
+      for (let offset = 0; offset < stride; offset += 1) {
+        clean.push(source[index + offset])
+      }
+    } else {
+      removed += 1
+    }
+  }
+  return { array: new Float32Array(clean), removed }
+}
+
+function sanitizeStlGeometry(geometry) {
+  const position = finiteTriangleAttribute(geometry.getAttribute('position'), 3)
+  if (!position || position.array.length === 0) {
+    geometry.dispose()
+    throw new Error('STL contains no finite triangles')
+  }
+  const normal = finiteTriangleAttribute(geometry.getAttribute('normal'), 3)
+  const clean = new THREE.BufferGeometry()
+  clean.setAttribute('position', new THREE.Float32BufferAttribute(position.array, 3))
+  if (normal && normal.array.length === position.array.length) {
+    clean.setAttribute('normal', new THREE.Float32BufferAttribute(normal.array, 3))
+  } else {
+    clean.computeVertexNormals()
+  }
+  clean.computeBoundingBox()
+  clean.computeBoundingSphere()
+  geometry.dispose()
+  clean.userData.removedTriangles = position.removed
+  return clean
+}
+
+async function loadFullE1StlGeometry(visual) {
+  if (E1_FULL_STL_CACHE.has(visual.link_id)) {
+    return await E1_FULL_STL_CACHE.get(visual.link_id)
+  }
+  const pending = fetch(visual.asset_url, { cache: 'no-store' })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`STL fetch failed ${response.status}: ${visual.mesh_name}`)
+      }
+      return response.arrayBuffer()
+    })
+    .then(buffer => sanitizeStlGeometry(E1_STL_LOADER.parse(buffer)))
+  E1_FULL_STL_CACHE.set(visual.link_id, pending)
+  return await pending
+}
+
 function e1ThreeMaterial(visual) {
   const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
   return new THREE.MeshStandardMaterial({
@@ -516,14 +581,43 @@ function createE1ThreeVisuals() {
   if (!E1_ASM_ASSEMBLY.ready) return { group, visuals }
   for (const visual of E1_ASM_ASSEMBLY.visuals) {
     const mesh = new THREE.Mesh(e1ThreeGeometry(visual), e1ThreeMaterial(visual))
+    mesh.userData.detailMode = 'sampled-stl'
     const linkGroup = new THREE.Group()
     linkGroup.matrixAutoUpdate = false
     linkGroup.add(mesh)
     linkGroup.userData.linkId = visual.link_id
     group.add(linkGroup)
-    visuals.set(visual.link_id, { group: linkGroup, visual })
+    visuals.set(visual.link_id, { group: linkGroup, mesh, visual })
   }
   return { group, visuals }
+}
+
+async function upgradeE1ThreeVisualsToFullStl(visuals, canvas) {
+  if (!E1_ASM_ASSEMBLY.ready) return
+  let loaded = 0
+  let failed = 0
+  let removedTriangles = 0
+  canvas.dataset.e1FullStlStatus = 'loading'
+  canvas.dataset.e1FullStlLoaded = '0'
+  canvas.dataset.e1FullStlTotal = String(visuals.size)
+  for (const entry of visuals.values()) {
+    try {
+      const geometry = await loadFullE1StlGeometry(entry.visual)
+      entry.mesh.geometry.dispose()
+      entry.mesh.geometry = geometry.clone()
+      entry.mesh.userData.detailMode = 'full-stl'
+      loaded += 1
+      removedTriangles += geometry.userData.removedTriangles || 0
+    } catch (error) {
+      failed += 1
+      canvas.dataset.e1FullStlError = error instanceof Error ? error.message : String(error)
+    }
+    canvas.dataset.e1FullStlLoaded = String(loaded)
+    canvas.dataset.e1FullStlFailed = String(failed)
+    canvas.dataset.e1FullStlRepairedTriangles = String(removedTriangles)
+    await new Promise(resolve => requestAnimationFrame(resolve))
+  }
+  canvas.dataset.e1FullStlStatus = failed === 0 ? 'full-stl-ready' : 'full-stl-partial'
 }
 
 function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
@@ -2311,6 +2405,7 @@ function initRobot(canvas) {
   scene.add(debugMesh)
   const e1Visuals = createE1ThreeVisuals()
   scene.add(e1Visuals.group)
+  upgradeE1ThreeVisualsToFullStl(e1Visuals.visuals, canvas)
   const moonphysReviewTrace = moonphysReviewTraceEvidence()
   const moonphysHingeMotorTrace = moonphysHingeMotorReplayEvidence()
   const moonphysMotionHingeReview = moonphysMotionHingeReviewEvidenceFromTraces(
@@ -2357,6 +2452,7 @@ function initRobot(canvas) {
     canvas.dataset.renderer = 'three-stl-scene-graph'
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
+    canvas.dataset.e1MeshDetailMode = canvas.dataset.e1FullStlStatus || 'sampled-stl'
     canvas.dataset.motionStatus = 'endless-rigid-fk-gait'
     canvas.dataset.robotSource = NOETIX_VISUAL_RIG.source
     canvas.dataset.robotId = NOETIX_VISUAL_RIG.robotId
