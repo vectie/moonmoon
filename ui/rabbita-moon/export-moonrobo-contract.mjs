@@ -9,9 +9,10 @@ const jsTargetPath = fileURLToPath(new URL('./generated-moonrobo-noetix-clip.js'
 const checkOnly = process.argv.includes('--check')
 const moonBin = process.env.MOON_BIN ?? 'moon'
 const contractSource = '../moonrobo/src/moonmoon_adapter/noetix_contract.mbt#noetix_e1_moonmoon_locomotion_contract'
+const liveEvidenceSource = '../moonrobo/src/moonmoon_adapter/noetix_live_suite_evidence.mbt#noetix_e1_moonmoon_live_suite_evidence'
 
-function runMoonroboContract() {
-  const result = spawnSync(moonBin, ['run', 'cmd/moonmoon_contract', '--target', 'native'], {
+function runMoonroboJson(command) {
+  const result = spawnSync(moonBin, ['run', command, '--target', 'native'], {
     cwd: moonroboRoot,
     encoding: 'utf8',
   })
@@ -20,12 +21,20 @@ function runMoonroboContract() {
   }
   if (result.status !== 0) {
     throw new Error([
-      'Moonrobo Moonmoon contract export failed',
+      `Moonrobo export failed: ${command}`,
       result.stdout,
       result.stderr,
     ].filter(Boolean).join('\n'))
   }
   return JSON.parse(result.stdout)
+}
+
+function runMoonroboContract() {
+  return runMoonroboJson('cmd/moonmoon_contract')
+}
+
+function runMoonroboLiveEvidence() {
+  return runMoonroboJson('cmd/moonmoon_suite_evidence')
 }
 
 function requireField(value, field, type) {
@@ -91,6 +100,63 @@ function validateContract(contract) {
     }
   }
   validateWalkClip(contract.walk_clip, contract.required_motion_joint_ids)
+}
+
+function validateLiveEvidence(evidence, contract) {
+  for (const field of [
+    'evidence_id',
+    'regeneration_mode',
+    'contract_id',
+    'robot_id',
+    'walk_clip_id',
+    'source',
+    'status',
+  ]) {
+    requireField(evidence, field, 'string')
+  }
+  for (const field of [
+    'sample_count',
+    'profile_joint_count',
+    'required_motion_joint_count',
+    'authored_joint_sample_count',
+    'authored_motion_sample_count',
+    'authored_contact_frame_count',
+    'authored_motor_frame_count',
+    'active_contact_frame_count',
+    'loaded_contact_count',
+    'driven_motor_frame_count',
+    'motor_review_count',
+    'contact_review_count',
+    'blocker_count',
+  ]) {
+    requireField(evidence, field, 'number')
+  }
+  requireField(evidence, 'ready', 'boolean')
+  requireArray(evidence, 'blockers')
+  if (evidence.contract_id !== contract.contract_id) {
+    throw new Error('Moonrobo live suite evidence contract_id does not match contract')
+  }
+  if (evidence.walk_clip_id !== contract.walk_clip.clip_id) {
+    throw new Error('Moonrobo live suite evidence walk_clip_id does not match contract')
+  }
+  if (evidence.regeneration_mode !== 'live-moonrobo-typed-adapter') {
+    throw new Error(`Moonrobo live suite evidence used unexpected mode: ${evidence.regeneration_mode}`)
+  }
+  if (!evidence.ready || evidence.status !== 'moonmoon-noetix-live-suite-evidence-ready') {
+    throw new Error(`Moonrobo live suite evidence is not ready: ${evidence.status}`)
+  }
+  if (evidence.blocker_count !== 0 || evidence.blockers.length !== 0) {
+    throw new Error(`Moonrobo live suite evidence reported blockers: ${evidence.blockers.join(', ')}`)
+  }
+  if (evidence.sample_count !== contract.walk_clip.sample_count ||
+    evidence.profile_joint_count !== contract.profile_joint_ids.length ||
+    evidence.required_motion_joint_count !== contract.required_motion_joint_ids.length ||
+    evidence.authored_joint_sample_count !== contract.walk_clip.authored_joint_samples.length ||
+    evidence.authored_motion_sample_count !== contract.walk_clip.authored_motion_samples.length ||
+    evidence.authored_contact_frame_count !== contract.walk_clip.authored_contact_frames.length ||
+    evidence.authored_motor_frame_count !== contract.walk_clip.authored_motor_frames.length) {
+    throw new Error('Moonrobo live suite evidence counts do not match contract payload')
+  }
 }
 
 function validateWalkClip(clip, requiredJointIds) {
@@ -541,6 +607,33 @@ function mbContactFrame(frame) {
 }`
 }
 
+function mbLiveSuiteEvidence(evidence) {
+  return `noetix_suite_live_evidence(
+  ${mbString(evidence.evidence_id)},
+  ${mbString(evidence.regeneration_mode)},
+  ${mbString(evidence.contract_id)},
+  ${mbString(evidence.robot_id)},
+  ${mbString(evidence.walk_clip_id)},
+  ${mbString(evidence.source)},
+  ${evidence.sample_count},
+  ${evidence.profile_joint_count},
+  ${evidence.required_motion_joint_count},
+  ${evidence.authored_joint_sample_count},
+  ${evidence.authored_motion_sample_count},
+  ${evidence.authored_contact_frame_count},
+  ${evidence.authored_motor_frame_count},
+  ${evidence.active_contact_frame_count},
+  ${evidence.loaded_contact_count},
+  ${evidence.driven_motor_frame_count},
+  ${evidence.motor_review_count},
+  ${evidence.contact_review_count},
+  ${evidence.blocker_count},
+  ${indent(mbStringArray(evidence.blockers), 2).trimStart()},
+  ${mbBool(evidence.ready)},
+  ${mbString(evidence.status)},
+)`
+}
+
 function mbMotorTargetStep(step) {
   return `noetix_suite_motor_target_step(
   ${mbString(step.joint_id)},
@@ -589,7 +682,7 @@ function mbMotorFrame(frame) {
 )`
 }
 
-function generatedContent(contract) {
+function generatedContent(contract, liveEvidence) {
   const clip = contract.walk_clip
   return `///| Generated by ui/rabbita-moon/export-moonrobo-contract.mjs.
 ///| Do not edit this file by hand.
@@ -776,6 +869,16 @@ fn generated_moonrobo_noetix_source_contract_ref() -> SuiteAdapterSourceRef {
 }
 
 ///|
+fn generated_moonrobo_noetix_live_evidence_source() -> String {
+  ${mbString(liveEvidenceSource)}
+}
+
+///|
+fn generated_moonrobo_noetix_live_suite_evidence() -> SuiteAdapterLiveSuiteEvidence {
+  ${indent(mbLiveSuiteEvidence(liveEvidence), 2).trimStart()}
+}
+
+///|
 fn generated_moonrobo_noetix_source_refs() -> Array[SuiteAdapterSourceRef] {
   ${indent(mbArray(contract.source_refs, mbSourceRef), 2).trimStart()}
 }
@@ -797,7 +900,7 @@ fn generated_moonrobo_noetix_source_status() -> String {
 `
 }
 
-function generatedJsContent(contract) {
+function generatedJsContent(contract, liveEvidence) {
   const clip = contract.walk_clip
   const runtimeClip = {
     clip_id: clip.clip_id,
@@ -816,6 +919,7 @@ function generatedJsContent(contract) {
     authored_motion_samples: clip.authored_motion_samples,
     authored_contact_frames: clip.authored_contact_frames,
     authored_motor_frames: clip.authored_motor_frames,
+    live_suite_evidence: liveEvidence,
     ready: clip.ready,
     status: clip.status,
   }
@@ -856,9 +960,11 @@ function formattedMoonBit(content) {
 }
 
 const contract = runMoonroboContract()
+const liveEvidence = runMoonroboLiveEvidence()
 validateContract(contract)
-const formatted = formattedMoonBit(generatedContent(contract))
-const jsContent = generatedJsContent(contract)
+validateLiveEvidence(liveEvidence, contract)
+const formatted = formattedMoonBit(generatedContent(contract, liveEvidence))
+const jsContent = generatedJsContent(contract, liveEvidence)
 
 if (checkOnly) {
   const current = readFileSync(moonbitTargetPath, 'utf8')

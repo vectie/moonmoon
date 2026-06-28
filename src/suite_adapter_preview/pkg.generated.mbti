@@ -44,6 +44,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
   authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
+  live_suite_evidence : SuiteAdapterLiveSuiteEvidence
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -104,6 +105,31 @@ pub(all) struct SuiteAdapterJointAnchor {
 pub(all) struct SuiteAdapterJointCurveParam {
   name : String
   value : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterLiveSuiteEvidence {
+  evidence_id : String
+  regeneration_mode : String
+  contract_id : String
+  robot_id : String
+  walk_clip_id : String
+  source : String
+  sample_count : Int
+  profile_joint_count : Int
+  required_motion_joint_count : Int
+  authored_joint_sample_count : Int
+  authored_motion_sample_count : Int
+  authored_contact_frame_count : Int
+  authored_motor_frame_count : Int
+  active_contact_frame_count : Int
+  loaded_contact_count : Int
+  driven_motor_frame_count : Int
+  motor_review_count : Int
+  contact_review_count : Int
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SuiteAdapterMotorFrameSample {

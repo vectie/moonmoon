@@ -110,6 +110,32 @@ pub(all) struct SuiteAdapterMotorFrameSample {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterLiveSuiteEvidence {
+  evidence_id : String
+  regeneration_mode : String
+  contract_id : String
+  robot_id : String
+  walk_clip_id : String
+  source : String
+  sample_count : Int
+  profile_joint_count : Int
+  required_motion_joint_count : Int
+  authored_joint_sample_count : Int
+  authored_motion_sample_count : Int
+  authored_contact_frame_count : Int
+  authored_motor_frame_count : Int
+  active_contact_frame_count : Int
+  loaded_contact_count : Int
+  driven_motor_frame_count : Int
+  motor_review_count : Int
+  contact_review_count : Int
+  blocker_count : Int
+  blockers : Array[String]
+  ready : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSuiteAdapterPayload {
   payload_id : String
   robot_id : String
@@ -136,6 +162,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
   authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
+  live_suite_evidence : SuiteAdapterLiveSuiteEvidence
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -341,6 +368,57 @@ fn noetix_suite_motor_frame_sample(
 }
 
 ///|
+fn noetix_suite_live_evidence(
+  evidence_id : String,
+  regeneration_mode : String,
+  contract_id : String,
+  robot_id : String,
+  walk_clip_id : String,
+  source : String,
+  sample_count : Int,
+  profile_joint_count : Int,
+  required_motion_joint_count : Int,
+  authored_joint_sample_count : Int,
+  authored_motion_sample_count : Int,
+  authored_contact_frame_count : Int,
+  authored_motor_frame_count : Int,
+  active_contact_frame_count : Int,
+  loaded_contact_count : Int,
+  driven_motor_frame_count : Int,
+  motor_review_count : Int,
+  contact_review_count : Int,
+  blocker_count : Int,
+  blockers : Array[String],
+  ready : Bool,
+  status : String,
+) -> SuiteAdapterLiveSuiteEvidence {
+  {
+    evidence_id,
+    regeneration_mode,
+    contract_id,
+    robot_id,
+    walk_clip_id,
+    source,
+    sample_count,
+    profile_joint_count,
+    required_motion_joint_count,
+    authored_joint_sample_count,
+    authored_motion_sample_count,
+    authored_contact_frame_count,
+    authored_motor_frame_count,
+    active_contact_frame_count,
+    loaded_contact_count,
+    driven_motor_frame_count,
+    motor_review_count,
+    contact_review_count,
+    blocker_count,
+    blockers,
+    ready,
+    status,
+  }
+}
+
+///|
 fn noetix_expected_profile_joint_count() -> Int {
   generated_moonrobo_noetix_expected_profile_joint_count()
 }
@@ -506,6 +584,36 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       }
     }
   }
+  let live = generated_moonrobo_noetix_live_suite_evidence()
+  if !live.ready || live.status != "moonmoon-noetix-live-suite-evidence-ready" {
+    blockers.push("moonrobo-live-suite-evidence:\{live.status}")
+  }
+  if live.regeneration_mode != "live-moonrobo-typed-adapter" {
+    blockers.push("moonrobo-live-suite-mode:\{live.regeneration_mode}")
+  }
+  if live.contract_id != generated_moonrobo_noetix_contract_id() {
+    blockers.push("moonrobo-live-suite-contract:\{live.contract_id}")
+  }
+  if live.walk_clip_id != generated_moonrobo_noetix_walk_clip_id() {
+    blockers.push("moonrobo-live-suite-walk-clip:\{live.walk_clip_id}")
+  }
+  if live.sample_count != generated_moonrobo_noetix_walk_sample_count() ||
+    live.authored_joint_sample_count !=
+    generated_moonrobo_noetix_authored_joint_samples().length() ||
+    live.authored_motion_sample_count !=
+    generated_moonrobo_noetix_authored_motion_samples().length() ||
+    live.authored_contact_frame_count !=
+    generated_moonrobo_noetix_contact_frames().length() ||
+    live.authored_motor_frame_count !=
+    generated_moonrobo_noetix_authored_motor_frames().length() {
+    blockers.push("moonrobo-live-suite-counts")
+  }
+  if live.motor_review_count != 0 || live.contact_review_count != 0 {
+    blockers.push("moonrobo-live-suite-review-count")
+  }
+  for blocker in live.blockers {
+    blockers.push("moonrobo-live-suite-blocker:\{blocker}")
+  }
   blockers
 }
 
@@ -523,6 +631,15 @@ pub fn moonrobo_noetix_suite_source_refs() -> Array[SuiteAdapterSourceRef] {
       generated_moonrobo_noetix_contact_frame_source(),
       "typed Moonrobo FK/contact evidence consumed by compiled Moonphys",
       "generated-from-typed-source",
+    ),
+  )
+  refs.push(
+    noetix_suite_source_ref(
+      "moonrobo-noetix-live-suite-evidence",
+      "moonrobo.moonmoon-live-suite-evidence",
+      generated_moonrobo_noetix_live_evidence_source(),
+      "live Moonrobo typed adapter suite evidence ingested by Moonmoon",
+      "live-typed-source",
     ),
   )
   refs.push(
@@ -601,6 +718,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     authored_joint_samples: generated_moonrobo_noetix_authored_joint_samples(),
     authored_motion_samples: generated_moonrobo_noetix_authored_motion_samples(),
     authored_motor_frames: generated_moonrobo_noetix_authored_motor_frames(),
+    live_suite_evidence: generated_moonrobo_noetix_live_suite_evidence(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),
     driven_joint_ids,
     frame_count,

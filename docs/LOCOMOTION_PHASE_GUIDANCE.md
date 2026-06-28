@@ -168,7 +168,10 @@ from Moonrobo rather than committed snapshots. The first live gate now exists:
 `noetix_e1_moonmoon_live_suite_evidence()` directly from Moonrobo's typed
 adapter, and `ui/rabbita-moon/check-live-moonrobo-suite.mjs` compares that live
 authority against both the live runtime bridge and the committed Moonmoon
-suite-preview snapshot.
+suite-preview snapshot. The MoonBit suite-preview payload now also carries that
+live evidence summary as typed `SuiteAdapterLiveSuiteEvidence`, records the
+live source ref, and blocks readiness if the live Moonrobo counts, status,
+contract id, or walk-clip id diverge from the generated suite payload.
 
 Deliverables:
 
@@ -365,9 +368,12 @@ summary with sample counts, contact load counts, motor drive counts, review
 counts, blockers, readiness, and regeneration mode. `npm run check:gait`
 invokes `ui/rabbita-moon/check-live-moonrobo-suite.mjs`, which runs that command
 and compares the live authority with the live runtime bridge and generated
-Moonmoon suite-preview bridge. The remaining Phase 10 feature is to move the
-MoonBit suite-preview payload itself off committed generated snapshots and onto
-a live adapter ingestion path.
+Moonmoon suite-preview bridge. The MoonBit suite-preview payload now ingests the
+live summary in its typed evidence entry, so stale or blocked live Moonrobo
+adapter output becomes a payload blocker instead of only an external script
+failure. The remaining Phase 10 feature is to move the full MoonBit
+suite-preview motion/contact/motor tables off committed generated snapshots and
+onto a live adapter ingestion API.
 
 Acceptance:
 

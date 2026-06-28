@@ -427,6 +427,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`.
    `ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` now writes the live runtime
    bridge at `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, and
-   Rabbita imports that bridge for runtime gait data. The next Phase 10 target
-   is moving the MoonBit suite-preview payload itself from committed generated
-   snapshots to live adapter ingestion.
+   Rabbita imports that bridge for runtime gait data. The MoonBit suite-preview
+   payload also carries the live Moonrobo evidence summary, records its typed
+   source, and blocks readiness when the live summary diverges from the
+   generated bridge. The next Phase 10 target is moving the full MoonBit
+   motion/contact/motor tables from committed generated snapshots to a live
+   adapter ingestion API.

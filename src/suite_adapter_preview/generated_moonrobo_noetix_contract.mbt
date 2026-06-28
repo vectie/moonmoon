@@ -5523,6 +5523,39 @@ fn generated_moonrobo_noetix_source_contract_ref() -> SuiteAdapterSourceRef {
 }
 
 ///|
+fn generated_moonrobo_noetix_live_evidence_source() -> String {
+  "../moonrobo/src/moonmoon_adapter/noetix_live_suite_evidence.mbt#noetix_e1_moonmoon_live_suite_evidence"
+}
+
+///|
+fn generated_moonrobo_noetix_live_suite_evidence() -> SuiteAdapterLiveSuiteEvidence {
+  noetix_suite_live_evidence(
+    "noetix-e1-lab-01/moonmoon-live-suite-evidence",
+    "live-moonrobo-typed-adapter",
+    "noetix-e1-lab-01/moonmoon-locomotion-source-contract",
+    "noetix-e1-lab-01",
+    "noetix-e1-lab-01/endless-forward-walk",
+    "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_live_suite_evidence",
+    24,
+    24,
+    10,
+    24,
+    24,
+    24,
+    24,
+    24,
+    38,
+    24,
+    0,
+    0,
+    0,
+    [],
+    true,
+    "moonmoon-noetix-live-suite-evidence-ready",
+  )
+}
+
+///|
 fn generated_moonrobo_noetix_source_refs() -> Array[SuiteAdapterSourceRef] {
   [
     noetix_suite_source_ref(

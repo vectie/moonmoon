@@ -13225,6 +13225,30 @@ export const MOONROBO_NOETIX_WALK_CLIP = {
       "status": "world-heightfield-hinge-motor-driven"
     }
   ],
+  "live_suite_evidence": {
+    "evidence_id": "noetix-e1-lab-01/moonmoon-live-suite-evidence",
+    "regeneration_mode": "live-moonrobo-typed-adapter",
+    "contract_id": "noetix-e1-lab-01/moonmoon-locomotion-source-contract",
+    "robot_id": "noetix-e1-lab-01",
+    "walk_clip_id": "noetix-e1-lab-01/endless-forward-walk",
+    "source": "vectie/moonrobo/src/moonmoon_adapter#noetix_e1_moonmoon_live_suite_evidence",
+    "sample_count": 24,
+    "profile_joint_count": 24,
+    "required_motion_joint_count": 10,
+    "authored_joint_sample_count": 24,
+    "authored_motion_sample_count": 24,
+    "authored_contact_frame_count": 24,
+    "authored_motor_frame_count": 24,
+    "active_contact_frame_count": 24,
+    "loaded_contact_count": 38,
+    "driven_motor_frame_count": 24,
+    "motor_review_count": 0,
+    "contact_review_count": 0,
+    "blocker_count": 0,
+    "blockers": [],
+    "ready": true,
+    "status": "moonmoon-noetix-live-suite-evidence-ready"
+  },
   "ready": true,
   "status": "moonmoon-noetix-walk-clip-ready"
 }
