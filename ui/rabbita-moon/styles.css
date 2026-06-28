@@ -243,6 +243,30 @@ h2 {
   color: #f7fbf9;
 }
 
+.robot-debug {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  color: rgba(247, 251, 249, .88);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.robot-debug span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 1px solid rgba(247, 251, 249, .16);
+  border-radius: 4px;
+  background: rgba(4, 8, 7, .68);
+  padding: 6px 8px;
+}
+
 .terrain-panel-mini {
   min-height: 220px;
 }

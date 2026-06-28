@@ -14,6 +14,10 @@ Moonphys remains a clean physics library. Moonmoon may expose whether a route
 is ready for motion, but robot-specific walking style, URDF gait assets, and
 live Rabbita animation belong in a future suite adapter.
 
+For the detailed animation-first gait pipeline, see
+`docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md`. This phase guide is the boundary and
+delivery checklist; that document is the motion-quality plan.
+
 ## Phase 0: Standalone Boundary
 
 Status: current architecture.

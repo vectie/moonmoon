@@ -173,6 +173,16 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
             span([b("3D robot"), span(" rigid FK gait")]),
             span(view.selected_route_id),
           ]),
+          div(
+            id="moonmoon-robot-debug",
+            class="robot-debug",
+            attrs=@html.Attrs::build().aria_label("robot locomotion diagnostics"),
+            [
+              span("phase --"),
+              span("support --"),
+              span("targets --"),
+            ],
+          ),
         ]),
       ]),
       div(class="terrain-panel-mini", [

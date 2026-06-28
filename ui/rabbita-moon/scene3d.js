@@ -413,18 +413,59 @@ function mix(a, b, t) {
   return a + (b - a) * t
 }
 
-function gaitState(time) {
+function footRole(footPhase) {
+  if (footPhase < 0.08) return 'contact'
+  if (footPhase < 0.18) return 'loading'
+  if (footPhase < 0.50) return 'stance'
+  if (footPhase < 0.72) return 'passing'
+  if (footPhase < 0.92) return 'swing'
+  return 'release'
+}
+
+function footLock(footPhase) {
+  return footPhase < 0.50 || footPhase >= 0.92
+}
+
+function walkClipSample(time) {
   const phase = cycle01(time * 0.74)
   const leftStance = phase < 0.5
+  const leftPhase = phase
+  const rightPhase = cycle01(phase + 0.5)
   return {
     phase,
+    leftPhase,
+    rightPhase,
     phaseLabel: leftStance ? 'left-stance-right-swing' : 'right-stance-left-swing',
     supportFoot: leftStance ? 'left' : 'right',
     swingFoot: leftStance ? 'right' : 'left',
     rootDistanceM: time * 0.28,
+    strideM: 0.38,
     bob: Math.cos(phase * Math.PI * 4) * 0.016,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
+    footChannels: {
+      left: {
+        phase: leftPhase,
+        role: footRole(leftPhase),
+        locked: footLock(leftPhase),
+      },
+      right: {
+        phase: rightPhase,
+        role: footRole(rightPhase),
+        locked: footLock(rightPhase),
+      },
+    },
   }
+}
+
+function footPhaseForSide(clip, isLeft) {
+  return isLeft ? clip.leftPhase : clip.rightPhase
+}
+
+function pointDistance(a, b) {
+  const dx = a[0] - b[0]
+  const dy = a[1] - b[1]
+  const dz = a[2] - b[2]
+  return Math.sqrt(dx * dx + dy * dy + dz * dz)
 }
 
 function legAngles(legPhase) {
@@ -453,8 +494,8 @@ function armAngles(legPhase) {
   }
 }
 
-function addGround(vertices, colors, gait) {
-  const offset = gait.rootDistanceM % 0.24
+function addGround(vertices, colors, clip) {
+  const offset = clip.rootDistanceM % 0.24
   for (let i = -8; i <= 8; i += 1) {
     const z = i * 0.24 - offset
     addQuad(vertices, colors, [-1.6, 0, z], [1.6, 0, z], [1.6, -0.012, z + 0.018], [-1.6, -0.012, z + 0.018], [0.18, 0.24, 0.21])
@@ -465,11 +506,12 @@ function addGround(vertices, colors, gait) {
   }
 }
 
-function addLeg(vertices, colors, root, side, gait, diagnostics) {
+function addLeg(vertices, colors, root, side, clip, diagnostics) {
   const isLeft = side > 0
   const name = isLeft ? 'left' : 'right'
-  const legPhase = cycle01(gait.phase + (isLeft ? 0 : 0.5))
+  const legPhase = footPhaseForSide(clip, isLeft)
   const angles = legAngles(legPhase)
+  const foot = clip.footChannels[name]
   const sideColor = isLeft ? [0.88, 0.72, 0.28] : [0.68, 0.76, 0.90]
   const upperLen = NOETIX_VISUAL_RIG.lengths.upperLeg
   const lowerLen = NOETIX_VISUAL_RIG.lengths.lowerLeg
@@ -484,14 +526,23 @@ function addLeg(vertices, colors, root, side, gait, diagnostics) {
   ankle = mat4RotateX(ankle, angles.ankle)
   addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
   const sole = transformPoint(ankle, [0, -0.056, 0.13])
-  const marker = name === gait.supportFoot ? [0.30, 0.92, 0.50] : [0.94, 0.80, 0.24]
+  const authoredTarget = [sole[0], sole[1] + (foot.locked ? 0.006 : 0.018), sole[2]]
+  addCube(vertices, colors, mat4Identity(), authoredTarget, [0.038, 0.020, 0.038], [0.34, 0.58, 0.96])
+  const marker = name === clip.supportFoot ? [0.30, 0.92, 0.50] : [0.94, 0.80, 0.24]
   addCube(vertices, colors, mat4Identity(), sole, [0.055, 0.022, 0.055], marker)
-  diagnostics.feet.push({ name, x: sole[0], y: sole[1], z: sole[2] })
+  diagnostics.feet.push({
+    name,
+    role: foot.role,
+    locked: foot.locked,
+    authoredTarget: { x: authoredTarget[0], y: authoredTarget[1], z: authoredTarget[2] },
+    fkEndpoint: { x: sole[0], y: sole[1], z: sole[2] },
+    targetFkDeltaM: pointDistance(authoredTarget, sole),
+  })
 }
 
-function addArm(vertices, colors, root, side, gait) {
+function addArm(vertices, colors, root, side, clip) {
   const isLeft = side > 0
-  const legPhase = cycle01(gait.phase + (isLeft ? 0 : 0.5))
+  const legPhase = footPhaseForSide(clip, isLeft)
   const angles = armAngles(legPhase)
   const upperLen = NOETIX_VISUAL_RIG.lengths.upperArm
   const lowerLen = NOETIX_VISUAL_RIG.lengths.lowerArm
@@ -507,22 +558,37 @@ function addArm(vertices, colors, root, side, gait) {
 function robotGeometry(time) {
   const vertices = []
   const colors = []
-  const gait = gaitState(time)
+  const clip = walkClipSample(time)
   const diagnostics = { feet: [] }
   let root = mat4Identity()
-  root = mat4Translate(root, gait.sway, 0.79 + gait.bob, 0)
+  root = mat4Translate(root, clip.sway, 0.79 + clip.bob, 0)
   root = mat4RotateY(root, -0.45)
-  root = mat4RotateZ(root, gait.sway * 0.8)
+  root = mat4RotateZ(root, clip.sway * 0.8)
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
   addCube(vertices, colors, mat4Translate(root, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
   addCube(vertices, colors, mat4Translate(root, 0, 0.52, 0.005), [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
   for (const side of [-1, 1]) {
-    addLeg(vertices, colors, root, side, gait, diagnostics)
-    addArm(vertices, colors, root, side, gait)
+    addLeg(vertices, colors, root, side, clip, diagnostics)
+    addArm(vertices, colors, root, side, clip)
   }
-  addGround(vertices, colors, gait)
-  return { vertices, colors, diagnostics: { ...diagnostics, ...gait } }
+  addGround(vertices, colors, clip)
+  return { vertices, colors, diagnostics: { ...diagnostics, ...clip } }
+}
+
+function updateRobotDebug(debug, diagnostics) {
+  if (!debug) return
+  const locked = diagnostics.feet
+    .filter(foot => foot.locked)
+    .map(foot => foot.name)
+    .join('+') || 'none'
+  const maxDelta = diagnostics.feet.reduce((value, foot) => Math.max(value, foot.targetFkDeltaM), 0)
+  while (debug.children.length < 3) {
+    debug.appendChild(document.createElement('span'))
+  }
+  debug.children[0].textContent = `phase ${diagnostics.phaseLabel}`
+  debug.children[1].textContent = `support ${diagnostics.supportFoot} swing ${diagnostics.swingFoot} lock ${locked}`
+  debug.children[2].textContent = `root ${diagnostics.rootDistanceM.toFixed(2)}m target/FK ${maxDelta.toFixed(3)}m`
 }
 
 function initRobot(canvas) {
@@ -531,6 +597,7 @@ function initRobot(canvas) {
     canvas.dataset.sceneStatus = 'webgl-unavailable'
     return
   }
+  const debug = document.getElementById('moonmoon-robot-debug')
   const shader = createProgram(gl)
   const buffers = createBuffers(gl)
   function draw(now) {
@@ -556,9 +623,28 @@ function initRobot(canvas) {
     canvas.dataset.supportFoot = geometry.diagnostics.supportFoot
     canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
     canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
-    canvas.dataset.fkFootEndpoints = JSON.stringify(geometry.diagnostics.feet)
+    canvas.dataset.walkPipeline = 'clip-targets-to-rigid-fk'
+    canvas.dataset.lockedFeet = geometry.diagnostics.feet
+      .filter(foot => foot.locked)
+      .map(foot => foot.name)
+      .join('+')
+    canvas.dataset.authoredFootTargets = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
+      name: foot.name,
+      role: foot.role,
+      locked: foot.locked,
+      target: foot.authoredTarget,
+    })))
+    canvas.dataset.fkFootEndpoints = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
+      name: foot.name,
+      endpoint: foot.fkEndpoint,
+    })))
+    canvas.dataset.footTargetFkDeltas = JSON.stringify(geometry.diagnostics.feet.map(foot => ({
+      name: foot.name,
+      deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
+    })))
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
+    updateRobotDebug(debug, geometry.diagnostics)
     requestAnimationFrame(draw)
   }
   requestAnimationFrame(draw)
