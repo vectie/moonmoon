@@ -28,6 +28,8 @@ def main() -> None:
         fail("unexpected decision id")
     if decision.get("source_task_id") != "moonclaw/first-trusted-square/noetix-review-task":
         fail("unexpected source task id")
+    if decision.get("site_id") != "first-trusted-square":
+        fail("unexpected site id")
     if decision.get("robot_id") != "noetix-e1-lab-01":
         fail("unexpected robot id")
     if decision.get("may_consume_moonrobo_simulation"):

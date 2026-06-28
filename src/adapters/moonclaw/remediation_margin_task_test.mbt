@@ -1716,6 +1716,7 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
     decision.source_task_id,
     "moonclaw/first-trusted-square/noetix-review-task",
   )
+  assert_eq(decision.site_id, "first-trusted-square")
   assert_eq(decision.robot_id, "noetix-e1-lab-01")
   assert_true(!decision.may_consume_moonrobo_simulation)
   assert_true(
@@ -1820,4 +1821,67 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
     indent=2,
   )
   assert_true(json.contains("NoetixSimulationBlocked"))
+}
+
+///|
+test "MoonClaw Noetix readiness work items convert blockers into bounded followup" {
+  let items = @moonclaw.first_trusted_square_noetix_readiness_work_items()
+  assert_eq(items.length(), 4)
+  assert_true(
+    items.any(fn(item) {
+      item.blocker_domain == "source-metadata" &&
+      item.blocker_count == 50 &&
+      item.blocker_ids.contains("missing-collision-shape:left_foot") &&
+      item.acceptance_check.contains("check_moonrobo_noetix_source_sync")
+    }),
+  )
+  assert_true(
+    items.any(fn(item) {
+      item.blocker_domain == "physical-model" &&
+      item.blocker_count == 9 &&
+      item.blocker_ids.contains("assumed:mass") &&
+      item.acceptance_check.contains("check_moonrobo_noetix_stability")
+    }),
+  )
+  assert_true(
+    items.any(fn(item) {
+      item.blocker_domain == "world-replay" &&
+      item.blocker_count == 3 &&
+      item.blocker_ids.contains("world-dynamic-support-review") &&
+      item.acceptance_check.contains("check_moonrobo_noetix_control")
+    }),
+  )
+  assert_true(
+    items.any(fn(item) {
+      item.blocker_domain == "review-artifacts" &&
+      item.blocker_count == 4 &&
+      item.blocker_ids.contains("noetix-joint-control-review") &&
+      item.acceptance_check.contains("check_moonclaw_noetix_review_task")
+    }),
+  )
+  for item in items {
+    assert_true(item.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
+    assert_eq(item.site_id, "first-trusted-square")
+    assert_true(!item.may_consume_moonrobo_simulation)
+    assert_true(item.hardware_denied)
+    assert_eq(item.hardware_authority, "moonmoon-safety-gate-only")
+  }
+}
+
+///|
+test "MoonClaw Noetix readiness work items render markdown and json" {
+  let markdown = @moonclaw.first_trusted_square_noetix_readiness_work_items_markdown()
+  assert_true(markdown.contains("MoonClaw Noetix Readiness Work Items"))
+  assert_true(markdown.contains("source-metadata"))
+  assert_true(markdown.contains("physical-model"))
+  assert_true(markdown.contains("world-replay"))
+  assert_true(markdown.contains("review-artifacts"))
+  assert_true(markdown.contains("missing-collision-shape:left_foot"))
+  assert_true(markdown.contains("assumed:mass"))
+  let json = @moonclaw.first_trusted_square_noetix_readiness_work_items_json().stringify(
+    indent=2,
+  )
+  assert_true(json.contains("\"blocker_domain\": \"source-metadata\""))
+  assert_true(json.contains("\"may_consume_moonrobo_simulation\": false"))
+  assert_true(json.contains("\"hardware_denied\": true"))
 }

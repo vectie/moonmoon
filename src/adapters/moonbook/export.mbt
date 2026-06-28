@@ -42,6 +42,7 @@ pub(all) enum BookEntryKind {
   MoonClawTask
   MoonClawNoetixReviewTask
   MoonClawNoetixReadinessDecision
+  MoonClawNoetixReadinessWorkItems
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
@@ -186,6 +187,7 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawTask => "moonclaw-task"
     MoonClawNoetixReviewTask => "moonclaw-noetix-review-task"
     MoonClawNoetixReadinessDecision => "moonclaw-noetix-readiness-decision"
+    MoonClawNoetixReadinessWorkItems => "moonclaw-noetix-readiness-work-items"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
     MoonClawRemediationMarginRefreshFollowupTask =>
@@ -1139,6 +1141,22 @@ fn moonclaw_noetix_readiness_decision_entry(
 }
 
 ///|
+fn moonclaw_noetix_readiness_work_items_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let items = @moonclaw.first_trusted_square_noetix_readiness_work_items()
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/noetix-readiness-work-items",
+    title: "MoonClaw Noetix readiness work items for \{dossier.site.name}",
+    kind: MoonClawNoetixReadinessWorkItems,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.57,
+    path: "moonclaw/\{dossier.site.site_id}/noetix-readiness-work-items.json",
+    summary: "\{items.length()} Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied",
+  }
+}
+
+///|
 fn selected_route_clearance_entry(
   dossier : @site.SiteDossier,
   clearance_transitions : Array[@mission.MissionClearanceTransition],
@@ -2049,6 +2067,7 @@ fn book_entries(
   entries.push(moonrobo_noetix_link_poses_entry(dossier))
   entries.push(moonclaw_noetix_review_task_entry(dossier))
   entries.push(moonclaw_noetix_readiness_decision_entry(dossier))
+  entries.push(moonclaw_noetix_readiness_work_items_entry(dossier))
   entries
 }
 

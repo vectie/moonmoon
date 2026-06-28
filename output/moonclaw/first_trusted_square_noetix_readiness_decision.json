@@ -1,6 +1,7 @@
 {
   "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
   "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
+  "site_id": "first-trusted-square",
   "robot_id": "noetix-e1-lab-01",
   "may_consume_moonrobo_simulation": false,
   "decision": "NoetixSimulationBlocked",

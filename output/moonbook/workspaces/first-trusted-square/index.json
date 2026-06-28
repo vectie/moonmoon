@@ -11,6 +11,7 @@
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_noetix_review_task.json",
     "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+    "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
     "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
@@ -832,6 +833,15 @@
       "confidence": 0.57,
       "path": "moonclaw/first-trusted-square/noetix-readiness-decision.json",
       "summary": "noetix-e1-lab-01 readiness decision is noetix-simulation-blocked; may consume MoonRobo simulation false, blocked artifacts 4, source metadata blockers 50, hardware authority moonmoon-safety-gate-only"
+    },
+    {
+      "entry_id": "moonclaw/first-trusted-square/noetix-readiness-work-items",
+      "title": "MoonClaw Noetix readiness work items for First Trusted Square / Shackleton Rim rehearsal tile",
+      "kind": "MoonClawNoetixReadinessWorkItems",
+      "claim_kind": "Derived",
+      "confidence": 0.57,
+      "path": "moonclaw/first-trusted-square/noetix-readiness-work-items.json",
+      "summary": "4 Noetix readiness work items convert source metadata, physical model, world replay, and review-artifact blockers into bounded follow-up evidence while hardware remains denied"
     }
   ],
   "review_queue_path": "review_queue.json",

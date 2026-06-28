@@ -27,6 +27,9 @@ MOONCLAW_NOETIX_REVIEW_TASK_JSON = (
 MOONCLAW_NOETIX_READINESS_DECISION_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_noetix_readiness_decision.json"
 )
+MOONCLAW_NOETIX_READINESS_WORK_ITEMS_JSON = (
+  ROOT / "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json"
+)
 MOONCLAW_REMEDIATION_MARGIN_TASK_JSON = (
   ROOT / "output/moonclaw/first_trusted_square_remediation_margin_task.json"
 )
@@ -394,6 +397,7 @@ def payload_for_entry(
   moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_noetix_review_tasks: list[dict[str, Any]],
   moonclaw_noetix_readiness_decision: dict[str, Any],
+  moonclaw_noetix_readiness_work_items: list[dict[str, Any]],
   moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_followup_tasks: list[dict[str, Any]],
@@ -611,6 +615,12 @@ def payload_for_entry(
       "primary_decision": moonclaw_noetix_readiness_decision,
       "source_task": moonclaw_noetix_review_tasks[0],
     }
+  if kind == "MoonClawNoetixReadinessWorkItems":
+    return {
+      "work_items": moonclaw_noetix_readiness_work_items,
+      "source_decision": moonclaw_noetix_readiness_decision,
+      "source_task": moonclaw_noetix_review_tasks[0],
+    }
   if kind == "MoonClawRemediationMarginRefreshTask":
     return {
       "primary_task": moonclaw_remediation_margin_refresh_tasks[0],
@@ -764,6 +774,7 @@ def workspace_files(
   moonclaw_corridor_tasks: list[dict[str, Any]],
   moonclaw_noetix_review_tasks: list[dict[str, Any]],
   moonclaw_noetix_readiness_decision: dict[str, Any],
+  moonclaw_noetix_readiness_work_items: list[dict[str, Any]],
   moonclaw_remediation_margin_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_tasks: list[dict[str, Any]],
   moonclaw_remediation_margin_refresh_followup_tasks: list[dict[str, Any]],
@@ -840,6 +851,7 @@ def workspace_files(
     "output/moonclaw/first_trusted_square_corridor_tasks.json",
     "output/moonclaw/first_trusted_square_noetix_review_task.json",
     "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+    "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
     "output/moonclaw/first_trusted_square_remediation_margin_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json",
     "output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json",
@@ -957,6 +969,7 @@ def workspace_files(
       moonclaw_corridor_tasks,
       moonclaw_noetix_review_tasks,
       moonclaw_noetix_readiness_decision,
+      moonclaw_noetix_readiness_work_items,
       moonclaw_remediation_margin_tasks,
       moonclaw_remediation_margin_refresh_tasks,
       moonclaw_remediation_margin_refresh_followup_tasks,
@@ -1049,6 +1062,7 @@ def workspace_files(
     "- Source MoonClaw corridor tasks: `output/moonclaw/first_trusted_square_corridor_tasks.json`\n"
     "- Source MoonClaw Noetix review task: `output/moonclaw/first_trusted_square_noetix_review_task.json`\n"
     "- Source MoonClaw Noetix readiness decision: `output/moonclaw/first_trusted_square_noetix_readiness_decision.json`\n"
+    "- Source MoonClaw Noetix readiness work items: `output/moonclaw/first_trusted_square_noetix_readiness_work_items.json`\n"
     "- Source MoonClaw remediation-margin task: `output/moonclaw/first_trusted_square_remediation_margin_task.json`\n"
     "- Source MoonClaw remediation-margin refresh task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json`\n"
     "- Source MoonClaw remediation-margin refresh follow-up task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json`\n"
@@ -1179,6 +1193,9 @@ def main() -> int:
   moonclaw_noetix_review_tasks = load_json(MOONCLAW_NOETIX_REVIEW_TASK_JSON)
   moonclaw_noetix_readiness_decision = load_json(
     MOONCLAW_NOETIX_READINESS_DECISION_JSON,
+  )
+  moonclaw_noetix_readiness_work_items = load_json(
+    MOONCLAW_NOETIX_READINESS_WORK_ITEMS_JSON,
   )
   moonclaw_remediation_margin_tasks = load_optional_json(
     MOONCLAW_REMEDIATION_MARGIN_TASK_JSON,
@@ -1317,6 +1334,7 @@ def main() -> int:
     moonclaw_corridor_tasks,
     moonclaw_noetix_review_tasks,
     moonclaw_noetix_readiness_decision,
+    moonclaw_noetix_readiness_work_items,
     moonclaw_remediation_margin_tasks,
     moonclaw_remediation_margin_refresh_tasks,
     moonclaw_remediation_margin_refresh_followup_tasks,

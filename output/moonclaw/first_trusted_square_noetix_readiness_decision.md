@@ -2,6 +2,7 @@
 
 - decision: moonclaw/first-trusted-square/noetix-simulation-readiness-decision
 - source task: moonclaw/first-trusted-square/noetix-review-task
+- site: first-trusted-square
 - robot: noetix-e1-lab-01
 - status: noetix-simulation-blocked
 - may consume MoonRobo simulation: false

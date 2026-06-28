@@ -2,7 +2,7 @@
 test "first trusted square exports a MoonBook evidence dossier" {
   let dossier = @moonbook.first_trusted_square_book_dossier()
   assert_eq(dossier.site_id, "first-trusted-square")
-  assert_eq(dossier.entries.length(), 86)
+  assert_eq(dossier.entries.length(), 87)
   assert_eq(dossier.review_queue.length(), 29)
   assert_eq(dossier.review_transitions.length(), dossier.review_queue.length())
   assert_eq(
@@ -253,6 +253,14 @@ test "first trusted square exports a MoonBook evidence dossier" {
   )
   assert_true(dossier.entries[85].summary.contains("blocked artifacts 4"))
   assert_true(dossier.entries[85].path.contains("noetix-readiness-decision"))
+  assert_true(
+    dossier.entries[86].kind ==
+    @moonbook.BookEntryKind::MoonClawNoetixReadinessWorkItems,
+  )
+  assert_true(
+    dossier.entries[86].summary.contains("4 Noetix readiness work items"),
+  )
+  assert_true(dossier.entries[86].path.contains("noetix-readiness-work-items"))
   assert_eq(
     @moonbook.book_entry_kind_label(dossier.entries[24].kind),
     "mission-decision",

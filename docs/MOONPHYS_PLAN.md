@@ -120,6 +120,10 @@ evidence.
   simulation consumption until all review artifacts are ready, the generic
   Moonphys metadata inventory and physical-model readiness are ready, named
   world-replay blockers are resolved, and hardware remains denied.
+- MoonClaw exports Noetix readiness work items that convert source metadata,
+  physical-model, world-replay, and review-artifact blockers into bounded
+  follow-up evidence tasks while keeping MoonRobo simulation consumption and
+  hardware authority denied.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.

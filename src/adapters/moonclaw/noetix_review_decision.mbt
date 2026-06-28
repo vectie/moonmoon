@@ -8,6 +8,7 @@ pub(all) enum NoetixSimulationReadinessDecisionStatus {
 pub(all) struct NoetixSimulationReadinessDecision {
   decision_id : String
   source_task_id : String
+  site_id : @core.SiteId
   robot_id : String
   may_consume_moonrobo_simulation : Bool
   decision : NoetixSimulationReadinessDecisionStatus
@@ -123,6 +124,7 @@ pub fn noetix_simulation_readiness_decision(
   {
     decision_id: "moonclaw/\{task.site_id}/noetix-simulation-readiness-decision",
     source_task_id: task.task_id,
+    site_id: task.site_id,
     robot_id: task.robot_id,
     may_consume_moonrobo_simulation: may_consume,
     decision: if may_consume {
@@ -187,6 +189,7 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   let mut text = "# MoonClaw Noetix Simulation Readiness Decision\n\n"
   text += "- decision: \{decision.decision_id}\n"
   text += "- source task: \{decision.source_task_id}\n"
+  text += "- site: \{decision.site_id}\n"
   text += "- robot: \{decision.robot_id}\n"
   text += "- status: \{noetix_simulation_readiness_decision_status_label(decision.decision)}\n"
   text += "- may consume MoonRobo simulation: \{decision.may_consume_moonrobo_simulation}\n"

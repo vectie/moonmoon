@@ -66,6 +66,12 @@ pub fn first_trusted_square_json() -> Json
 
 pub fn first_trusted_square_markdown() -> String
 
+pub fn first_trusted_square_noetix_readiness_work_items() -> Array[MoonClawNoetixReadinessWorkItem]
+
+pub fn first_trusted_square_noetix_readiness_work_items_json() -> Json
+
+pub fn first_trusted_square_noetix_readiness_work_items_markdown() -> String
+
 pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask
 
 pub fn first_trusted_square_noetix_review_tasks() -> Array[MoonClawNoetixReviewTask]
@@ -200,6 +206,8 @@ pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonClawProposal]
 
 pub fn job_kind_label(MoonClawJobKind) -> String
 
+pub fn noetix_readiness_work_items_from_decision(NoetixSimulationReadinessDecision) -> Array[MoonClawNoetixReadinessWorkItem]
+
 pub fn noetix_review_task_blocked_artifact_count(MoonClawNoetixReviewTask) -> Int
 
 pub fn noetix_simulation_readiness_decision(MoonClawNoetixReviewTask) -> NoetixSimulationReadinessDecision
@@ -273,6 +281,10 @@ pub fn render_ephemeris_tasks_markdown(Array[MoonClawEphemerisAcquisitionTask]) 
 pub fn render_json(Array[MoonClawProposal]) -> Json
 
 pub fn render_markdown(Array[MoonClawProposal]) -> String
+
+pub fn render_noetix_readiness_work_items_json(Array[MoonClawNoetixReadinessWorkItem]) -> Json
+
+pub fn render_noetix_readiness_work_items_markdown(Array[MoonClawNoetixReadinessWorkItem]) -> String
 
 pub fn render_noetix_review_tasks_json(Array[MoonClawNoetixReviewTask]) -> Json
 
@@ -469,6 +481,29 @@ pub(all) enum MoonClawJobPriority {
   Medium
   High
   Critical
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonClawNoetixReadinessWorkItem {
+  work_item_id : String
+  decision_id : String
+  source_task_id : String
+  site_id : String
+  robot_id : String
+  rank : Int
+  state : MoonClawReceiptStatus
+  blocker_domain : String
+  blocker_count : Int
+  blocker_ids : Array[String]
+  required_evidence : String
+  target_artifact_path : String
+  command : String
+  acceptance_check : String
+  may_consume_moonrobo_simulation : Bool
+  hardware_state : @moonrobo.MoonroboExecutionState
+  hardware_authority : String
+  hardware_denied : Bool
+  safety_gate : String
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct MoonClawNoetixReviewTask {
@@ -1214,6 +1249,7 @@ pub(all) struct MoonClawTaskArtifact {
 pub(all) struct NoetixSimulationReadinessDecision {
   decision_id : String
   source_task_id : String
+  site_id : String
   robot_id : String
   may_consume_moonrobo_simulation : Bool
   decision : NoetixSimulationReadinessDecisionStatus
