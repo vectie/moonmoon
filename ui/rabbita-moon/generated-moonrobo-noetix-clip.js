@@ -957,6 +957,6056 @@ export const MOONROBO_NOETIX_WALK_CLIP = {
       "right_foot_roll_pitch_rad": 0.02737038080529838
     }
   ],
+  "authored_contact_frames": [
+    {
+      "frame_index": 0,
+      "time_s": 0,
+      "phase": 0,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": -0.05652751684510537,
+        "y": 0.1177309161830368,
+        "z": 0.982
+      },
+      "center_of_mass_velocity": {
+        "x": 0.03838763039180464,
+        "y": 0.021599999999999998,
+        "z": 0
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.04384096094032611,
+              "y": 0.3488314038000141,
+              "z": 0.010113908702566076
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.04384096094032611,
+              "y": 0.3488314038000141,
+              "z": 0.010113908702566076
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010113908702566076,
+            "average_surface_normal": {
+              "x": -0.02236004016743644,
+              "y": -0.009968820730169518,
+              "z": 0.9997002806926486
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.0888409609403261,
+                  "y": 0.2738314038000141,
+                  "z": 0.008194399812514564
+                },
+                "surface_elevation_m": 0.008194399812514564,
+                "surface_normal": {
+                  "x": -0.02554951310363491,
+                  "y": -0.0197015950072896,
+                  "z": 0.9994793992545999
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.032263454025632014,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.0011590390596738914,
+                  "y": 0.2738314038000141,
+                  "z": 0.010487660495512393
+                },
+                "surface_elevation_m": 0.010487660495512393,
+                "surface_normal": {
+                  "x": -0.025247061934616174,
+                  "y": -0.01683476533290569,
+                  "z": 0.9995394822316201
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.030345073078579796,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.0011590390596738914,
+                  "y": 0.4238314038000141,
+                  "z": 0.011759189179947631
+                },
+                "surface_elevation_m": 0.011759189179947631,
+                "surface_normal": {
+                  "x": -0.019497536596752085,
+                  "y": 0.0004945314691074551,
+                  "z": 0.9998097826613244
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019503807185152964,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.0888409609403261,
+                  "y": 0.4238314038000141,
+                  "z": 0.010014385322289713
+                },
+                "surface_elevation_m": 0.010014385322289713,
+                "surface_normal": {
+                  "x": -0.01914240249449549,
+                  "y": -0.003831828305372575,
+                  "z": 0.9998094245997969
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01952215360617577,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.06921407274988463,
+              "y": -0.11336957143394048,
+              "z": -0.002318942712632114
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.06921407274988463,
+              "y": -0.11336957143394048,
+              "z": -0.002318942712632114
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.002318942712632114,
+            "average_surface_normal": {
+              "x": -0.02606605029994207,
+              "y": -0.0283499443492483,
+              "z": 0.9992581456646503
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.11421407274988463,
+                  "y": -0.18836957143394048,
+                  "z": -0.005575852014693232
+                },
+                "surface_elevation_m": -0.005575852014693232,
+                "surface_normal": {
+                  "x": -0.024644346665910123,
+                  "y": -0.023215347351360976,
+                  "z": 0.9994266875688111
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03385699595702339,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.02421407274988463,
+                  "y": -0.18836957143394048,
+                  "z": -0.0034165299046406026
+                },
+                "surface_elevation_m": -0.0034165299046406026,
+                "surface_normal": {
+                  "x": -0.023192804014292724,
+                  "y": -0.026805817086357306,
+                  "z": 0.9993715735462397
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03544655113988719,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.02421407274988463,
+                  "y": -0.038369571433940486,
+                  "z": 0.0011321187392249956
+                },
+                "surface_elevation_m": 0.0011321187392249956,
+                "surface_normal": {
+                  "x": -0.027682777574308603,
+                  "y": -0.032447641708351155,
+                  "z": 0.9990899931304175
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0426519123447258,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.11421407274988463,
+                  "y": -0.038369571433940486,
+                  "z": -0.0014155076704196155
+                },
+                "surface_elevation_m": -0.0014155076704196155,
+                "surface_normal": {
+                  "x": -0.028743330052777617,
+                  "y": -0.030929945742685813,
+                  "z": 0.9991081820472855
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04222369673735824,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 1,
+      "time_s": 0.09057971014492752,
+      "phase": 0.041666666666666664,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": -0.028095944206905053,
+        "y": 0.25797051033775603,
+        "z": 0.977712812921102
+      },
+      "center_of_mass_velocity": {
+        "x": 0.03471426457769553,
+        "y": 0.021599999999999998,
+        "z": -0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.027975356001585502,
+              "y": 0.3322090780988356,
+              "z": 0.010461336090480736
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.027975356001585502,
+              "y": 0.3322090780988356,
+              "z": 0.010461336090480736
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010461336090480736,
+            "average_surface_normal": {
+              "x": -0.022382626151105523,
+              "y": -0.009428606295415977,
+              "z": 0.999705016207234
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.0729753560015855,
+                  "y": 0.2572090780988356,
+                  "z": 0.008584898697855
+                },
+                "surface_elevation_m": 0.008584898697855,
+                "surface_normal": {
+                  "x": -0.025582990763245963,
+                  "y": -0.019242766404157903,
+                  "z": 0.9994874819249727
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03201208326987352,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.017024643998414492,
+                  "y": 0.2572090780988356,
+                  "z": 0.010874371010313142
+                },
+                "surface_elevation_m": 0.010874371010313142,
+                "surface_normal": {
+                  "x": -0.02512947601412667,
+                  "y": -0.016448376878344394,
+                  "z": 0.9995488784113178
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03003397520603328,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.017024643998414492,
+                  "y": 0.4072090780988356,
+                  "z": 0.012069401295228587
+                },
+                "surface_elevation_m": 0.012069401295228587,
+                "surface_normal": {
+                  "x": -0.019515716178008666,
+                  "y": 0.0011106575944894689,
+                  "z": 0.9998089333776567
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019547294908318805,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.0729753560015855,
+                  "y": 0.4072090780988356,
+                  "z": 0.010316673358526214
+                },
+                "surface_elevation_m": 0.010316673358526214,
+                "surface_normal": {
+                  "x": -0.01929860697602692,
+                  "y": -0.003132374700086312,
+                  "z": 0.999808857731078
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019551163711577266,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.028808744481499254,
+              "y": -0.18085575252394032,
+              "z": -0.0027450527327355263
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.028808744481499254,
+              "y": -0.18085575252394032,
+              "z": -0.0027450527327355263
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.0027450527327355263,
+            "average_surface_normal": {
+              "x": -0.023715637157892412,
+              "y": -0.027123030992155423,
+              "z": 0.9993507441053885
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.07380874448149925,
+                  "y": -0.2558557525239403,
+                  "z": -0.005771178611033825
+                },
+                "surface_elevation_m": -0.005771178611033825,
+                "surface_normal": {
+                  "x": -0.021851153319336986,
+                  "y": -0.020770819131479778,
+                  "z": 0.9995454467762945
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03014796558273573,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.01619125551850074,
+                  "y": -0.2558557525239403,
+                  "z": -0.003883233322969598
+                },
+                "surface_elevation_m": -0.003883233322969598,
+                "surface_normal": {
+                  "x": -0.019980565056659384,
+                  "y": -0.025058637776691765,
+                  "z": 0.9994862888968478
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03204931055743386,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.01619125551850074,
+                  "y": -0.10585575252394032,
+                  "z": 0.0005341089037931529
+                },
+                "surface_elevation_m": 0.0005341089037931529,
+                "surface_normal": {
+                  "x": -0.025742195540441846,
+                  "y": -0.032516193121284065,
+                  "z": 0.9991396481741963
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04147244201084601,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.07380874448149925,
+                  "y": -0.10585575252394032,
+                  "z": -0.001859907900731836
+                },
+                "surface_elevation_m": -0.001859907900731836,
+                "surface_normal": {
+                  "x": -0.027287244351254653,
+                  "y": -0.03014488381184758,
+                  "z": 0.9991730041767967
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04066088691008681,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 2,
+      "time_s": 0.18115942028985504,
+      "phase": 0.08333333333333333,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": -0.00412071645607226,
+        "y": 0.2981406503933345,
+        "z": 0.966
+      },
+      "center_of_mass_velocity": {
+        "x": 0.03376723175703004,
+        "y": 0.021599999999999998,
+        "z": -0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.00412071645607226,
+              "y": 0.2981406503933345,
+              "z": 0.010820986744244757
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.00412071645607226,
+              "y": 0.2981406503933345,
+              "z": 0.010820986744244757
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010820986744244757,
+            "average_surface_normal": {
+              "x": -0.022994550938731755,
+              "y": -0.01053752166209483,
+              "z": 0.9996800544495958
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.04912071645607226,
+                  "y": 0.22314065039333447,
+                  "z": 0.00884275701748018
+                },
+                "surface_elevation_m": 0.00884275701748018,
+                "surface_normal": {
+                  "x": -0.0261046543342042,
+                  "y": -0.02014667482629653,
+                  "z": 0.9994561813884265
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03297486140175295,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.04087928354392774,
+                  "y": 0.22314065039333447,
+                  "z": 0.011165984884261888
+                },
+                "surface_elevation_m": 0.011165984884261888,
+                "surface_normal": {
+                  "x": -0.0253552963823897,
+                  "y": -0.017665823141443552,
+                  "z": 0.9995223997680572
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.030902627103590832,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.04087928354392774,
+                  "y": 0.3731406503933345,
+                  "z": 0.012552331352059173
+                },
+                "surface_elevation_m": 0.012552331352059173,
+                "surface_normal": {
+                  "x": -0.0202174540153671,
+                  "y": -0.0001738724075208287,
+                  "z": 0.9997955912692965
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02021820166279831,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.04912071645607226,
+                  "y": 0.3731406503933345,
+                  "z": 0.010722873723177786
+                },
+                "surface_elevation_m": 0.010722873723177786,
+                "surface_normal": {
+                  "x": -0.020297102252354236,
+                  "y": -0.004162022184788289,
+                  "z": 0.9997853295640473
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.020719430216808405,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.007825777583989127,
+              "y": -0.20867970917554912,
+              "z": -0.002582342529210104
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.007825777583989127,
+              "y": -0.20867970917554912,
+              "z": -0.002582342529210104
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.002582342529210104,
+            "average_surface_normal": {
+              "x": -0.022843190108692634,
+              "y": -0.02725563995158162,
+              "z": 0.9993674593243908
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.052825777583989125,
+                  "y": -0.28367970917554913,
+                  "z": -0.005571328009707376
+                },
+                "surface_elevation_m": -0.005571328009707376,
+                "surface_normal": {
+                  "x": -0.02089803531005952,
+                  "y": -0.020743675903621247,
+                  "z": 0.9995663920071469
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.029445338677199336,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.03717422241601087,
+                  "y": -0.28367970917554913,
+                  "z": -0.003776828394034412
+                },
+                "surface_elevation_m": -0.003776828394034412,
+                "surface_normal": {
+                  "x": -0.018865889607374363,
+                  "y": -0.02520134071773275,
+                  "z": 0.9995043624894046
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.031480618873346355,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.03717422241601087,
+                  "y": -0.1336797091755491,
+                  "z": 0.000674250415089974
+                },
+                "surface_elevation_m": 0.000674250415089974,
+                "surface_normal": {
+                  "x": -0.024931645799389616,
+                  "y": -0.032831029016210315,
+                  "z": 0.9991499069566441
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04122454885780396,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.052825777583989125,
+                  "y": -0.1336797091755491,
+                  "z": -0.0016554641281886022
+                },
+                "surface_elevation_m": -0.0016554641281886022,
+                "surface_normal": {
+                  "x": -0.026675757026798936,
+                  "y": -0.03024480473527635,
+                  "z": 0.999186496993215
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04032795837167817,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 3,
+      "time_s": 0.2717391304347826,
+      "phase": 0.125,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.022881156875567826,
+        "y": 0.25560198506911225,
+        "z": 0.95
+      },
+      "center_of_mass_velocity": {
+        "x": 0.034377582248325315,
+        "y": 0.021599999999999998,
+        "z": -0.021196800000000023
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.022881156875567826,
+              "y": 0.25560198506911225,
+              "z": 0.011144399459477235
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.022881156875567826,
+              "y": 0.25560198506911225,
+              "z": 0.011144399459477235
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011144399459477235,
+            "average_surface_normal": {
+              "x": -0.023715573170602255,
+              "y": -0.012525293362227305,
+              "z": 0.9996402796083099
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.022118843124432172,
+                  "y": 0.18060198506911224,
+                  "z": 0.008996457481459346
+                },
+                "surface_elevation_m": 0.008996457481459346,
+                "surface_normal": {
+                  "x": -0.026675176506520328,
+                  "y": -0.02176034813620374,
+                  "z": 0.9994072854483989
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03442495886218021,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.06788115687556782,
+                  "y": 0.18060198506911224,
+                  "z": 0.011355105819806036
+                },
+                "surface_elevation_m": 0.011355105819806036,
+                "surface_normal": {
+                  "x": -0.025569397504214893,
+                  "y": -0.019713487027314566,
+                  "z": 0.9994786562706056
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.032286462480498705,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.06788115687556782,
+                  "y": 0.33060198506911226,
+                  "z": 0.013075103359550536
+                },
+                "surface_elevation_m": 0.013075103359550536,
+                "surface_normal": {
+                  "x": -0.021080828168845895,
+                  "y": -0.002493486912499632,
+                  "z": 0.9997746652154839
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02122778352224305,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.022118843124432172,
+                  "y": 0.33060198506911226,
+                  "z": 0.011150931177093018
+                },
+                "surface_elevation_m": 0.011150931177093018,
+                "surface_normal": {
+                  "x": -0.021533303774823508,
+                  "y": -0.006131957055594268,
+                  "z": 0.9997493265470146
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.022389374015154614,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.004797736183539472,
+              "y": -0.20143001362919288,
+              "z": -0.001866786281774504
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.004797736183539472,
+              "y": -0.20143001362919288,
+              "z": -0.001866786281774504
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.001866786281774504,
+            "average_surface_normal": {
+              "x": -0.023644745055745705,
+              "y": -0.02856800938455398,
+              "z": 0.9993121608741949
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.04979773618353947,
+                  "y": -0.27643001362919284,
+                  "z": -0.00500344404363049
+                },
+                "surface_elevation_m": -0.00500344404363049,
+                "surface_normal": {
+                  "x": -0.021928238671382647,
+                  "y": -0.022790868327720214,
+                  "z": 0.9994997392043877
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0316270664204033,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.040202263816460526,
+                  "y": -0.27643001362919284,
+                  "z": -0.0031149044948158445
+                },
+                "surface_elevation_m": -0.0031149044948158445,
+                "surface_normal": {
+                  "x": -0.01991784994836713,
+                  "y": -0.027001532771029436,
+                  "z": 0.9994369397222865
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03355299567178235,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.040202263816460526,
+                  "y": -0.12643001362919287,
+                  "z": 0.0015158802382244227
+                },
+                "surface_elevation_m": 0.0015158802382244227,
+                "surface_normal": {
+                  "x": -0.02550580966920735,
+                  "y": -0.03337223412801045,
+                  "z": 0.9991174844143322
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04200300391134635,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.04979773618353947,
+                  "y": -0.12643001362919287,
+                  "z": -0.0008646768268761053
+                },
+                "surface_elevation_m": -0.0008646768268761053,
+                "surface_normal": {
+                  "x": -0.027225916340734648,
+                  "y": -0.031105994020522755,
+                  "z": 0.9991452179815518
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04133803798679225,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 4,
+      "time_s": 0.3623188405797101,
+      "phase": 0.16666666666666666,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.04777780746953962,
+        "y": 0.2144148924028687,
+        "z": 0.9339999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.028003112129425738,
+        "y": 0.021599999999999998,
+        "z": -0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.04777780746953962,
+              "y": 0.2144148924028687,
+              "z": 0.01139900061107407
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.04777780746953962,
+              "y": 0.2144148924028687,
+              "z": 0.01139900061107407
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.01139900061107407,
+            "average_surface_normal": {
+              "x": -0.024199948612843976,
+              "y": -0.014488135615135901,
+              "z": 0.999602149064083
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.0027778074695396157,
+                  "y": 0.1394148924028687,
+                  "z": 0.009093548945093264
+                },
+                "surface_elevation_m": 0.009093548945093264,
+                "surface_normal": {
+                  "x": -0.027004641649887157,
+                  "y": -0.023334651543213455,
+                  "z": 0.9993629187470975
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.035689727279456955,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.09277780746953962,
+                  "y": 0.1394148924028687,
+                  "z": 0.011467267863044056
+                },
+                "surface_elevation_m": 0.011467267863044056,
+                "surface_normal": {
+                  "x": -0.025574141458756892,
+                  "y": -0.0217012479770569,
+                  "z": 0.9994373512756494
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03354073456432081,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.09277780746953962,
+                  "y": 0.2894148924028687,
+                  "z": 0.013515836162542476
+                },
+                "surface_elevation_m": 0.013515836162542476,
+                "surface_normal": {
+                  "x": -0.021707618389515817,
+                  "y": -0.004809497046900991,
+                  "z": 0.9997527934654703
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.022234027030409824,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.0027778074695396157,
+                  "y": 0.2894148924028687,
+                  "z": 0.011519349473616476
+                },
+                "surface_elevation_m": 0.011519349473616476,
+                "surface_normal": {
+                  "x": -0.022509960781533594,
+                  "y": -0.00810509110517476,
+                  "z": 0.9997137636162615
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.023924690932368667,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.00573664812152349,
+              "y": -0.18898499641387748,
+              "z": -0.001063566783310661
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.00573664812152349,
+              "y": -0.18898499641387748,
+              "z": -0.001063566783310661
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.001063566783310661,
+            "average_surface_normal": {
+              "x": -0.024620292315971633,
+              "y": -0.029757034017498598,
+              "z": 0.9992539017350683
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.05073664812152349,
+                  "y": -0.26398499641387746,
+                  "z": -0.004349792149868833
+                },
+                "surface_elevation_m": -0.004349792149868833,
+                "surface_normal": {
+                  "x": -0.023187748174586804,
+                  "y": -0.024874877014293764,
+                  "z": 0.9994216171506977
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03400634017186051,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.03926335187847651,
+                  "y": -0.26398499641387746,
+                  "z": -0.0023448376213605557
+                },
+                "surface_elevation_m": -0.0023448376213605557,
+                "surface_normal": {
+                  "x": -0.02123504177634916,
+                  "y": -0.028754796997967437,
+                  "z": 0.9993609131091543
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03574584380928238,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.03926335187847651,
+                  "y": -0.11398499641387745,
+                  "z": 0.0024404385715063926
+                },
+                "surface_elevation_m": 0.0024404385715063926,
+                "surface_normal": {
+                  "x": -0.026203505503229023,
+                  "y": -0.03362658126792048,
+                  "z": 0.9990909014356871
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.042630630636032285,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.05073664812152349,
+                  "y": -0.11398499641387745,
+                  "z": -7.593351964828993e-8
+                },
+                "surface_elevation_m": -7.593351964828993e-8,
+                "surface_normal": {
+                  "x": -0.02785400678115879,
+                  "y": -0.03177083286568148,
+                  "z": 0.9991069855051841
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.042252000127140796,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 5,
+      "time_s": 0.45289855072463764,
+      "phase": 0.20833333333333334,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.06515638653955595,
+        "y": 0.18496107516364646,
+        "z": 0.9222871870788979
+      },
+      "center_of_mass_velocity": {
+        "x": 0.015123366307654925,
+        "y": 0.021599999999999998,
+        "z": -0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.06515638653955595,
+              "y": 0.18496107516364646,
+              "z": 0.011616865513442544
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.06515638653955595,
+              "y": 0.18496107516364646,
+              "z": 0.011616865513442544
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011616865513442544,
+            "average_surface_normal": {
+              "x": -0.02431951681603836,
+              "y": -0.015459973176815465,
+              "z": 0.9995846889239584
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.020156386539555954,
+                  "y": 0.10996107516364646,
+                  "z": 0.00924024669151177
+                },
+                "surface_elevation_m": 0.00924024669151177,
+                "surface_normal": {
+                  "x": -0.027041480398598747,
+                  "y": -0.02411738648066341,
+                  "z": 0.9993433394020267
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.036233823877773186,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.11015638653955595,
+                  "y": 0.10996107516364646,
+                  "z": 0.011607923404905133
+                },
+                "surface_elevation_m": 0.011607923404905133,
+                "surface_normal": {
+                  "x": -0.025404008281052794,
+                  "y": -0.022720309903575157,
+                  "z": 0.9994190431851606
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.034081903099127175,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.11015638653955595,
+                  "y": 0.25996107516364647,
+                  "z": 0.01382167731415179
+                },
+                "surface_elevation_m": 0.01382167731415179,
+                "surface_normal": {
+                  "x": -0.021901358248368672,
+                  "y": -0.00595626835786579,
+                  "z": 0.9997423935065102
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.022696841759907913,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.020156386539555954,
+                  "y": 0.25996107516364647,
+                  "z": 0.011797614643201485
+                },
+                "surface_elevation_m": 0.011797614643201485,
+                "surface_normal": {
+                  "x": -0.02292786857906198,
+                  "y": -0.00904379724542286,
+                  "z": 0.9996962151442832
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.024647057150805157,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.013542353034325258,
+              "y": -0.1660460722082914,
+              "z": -0.0000851236492248251
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.013542353034325258,
+              "y": -0.1660460722082914,
+              "z": -0.0000851236492248251
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": -0.0000851236492248251,
+            "average_surface_normal": {
+              "x": -0.025884908071134683,
+              "y": -0.030776676521131096,
+              "z": 0.9991910566635706
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.058542353034325256,
+                  "y": -0.24104607220829138,
+                  "z": -0.003527864723169701
+                },
+                "surface_elevation_m": -0.003527864723169701,
+                "surface_normal": {
+                  "x": -0.02484562487172272,
+                  "y": -0.027109381753163915,
+                  "z": 0.9993236594545809
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.036772593793546075,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.03145764696567474,
+                  "y": -0.24104607220829138,
+                  "z": -0.0013671287325518625
+                },
+                "surface_elevation_m": -0.0013671287325518625,
+                "surface_normal": {
+                  "x": -0.02302404167907675,
+                  "y": -0.03049095262511068,
+                  "z": 0.9992698310830631
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03820739047915478,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.03145764696567474,
+                  "y": -0.09104607220829138,
+                  "z": 0.0035339569235828933
+                },
+                "surface_elevation_m": 0.0035339569235828933,
+                "surface_normal": {
+                  "x": -0.027088624791638486,
+                  "y": -0.03338566095927629,
+                  "z": 0.9990753745585014
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04299297559822902,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.058542353034325256,
+                  "y": -0.09104607220829138,
+                  "z": 0.0010205419352393695
+                },
+                "surface_elevation_m": 0.0010205419352393695,
+                "surface_normal": {
+                  "x": -0.028580820987099676,
+                  "y": -0.032120092530102465,
+                  "z": 0.9990752906200618
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04299492612435776,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 6,
+      "time_s": 0.5434782608695652,
+      "phase": 0.25,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.07060897641225539,
+        "y": 0.17589323173737131,
+        "z": 0.9179999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.008201285194119475,
+        "y": 0.021599999999999998,
+        "z": 0
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.07060897641225539,
+              "y": 0.17589323173737131,
+              "z": 0.011850621350967427
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.07060897641225539,
+              "y": 0.17589323173737131,
+              "z": 0.011850621350967427
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011850621350967427,
+            "average_surface_normal": {
+              "x": -0.02406806331745656,
+              "y": -0.014609833001761118,
+              "z": 0.9996035619723489
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.025608976412255388,
+                  "y": 0.10089323173737132,
+                  "z": 0.009548348227602753
+                },
+                "surface_elevation_m": 0.009548348227602753,
+                "surface_normal": {
+                  "x": -0.026847584202915227,
+                  "y": -0.023467731581311182,
+                  "z": 0.9993640341721803
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03565848010088335,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.11560897641225538,
+                  "y": 0.10089323173737132,
+                  "z": 0.011897305368515675
+                },
+                "surface_elevation_m": 0.011897305368515675,
+                "surface_normal": {
+                  "x": -0.025183549465431238,
+                  "y": -0.022002178351572144,
+                  "z": 0.9994406900782598
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.033441097707644286,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.11560897641225538,
+                  "y": 0.2508932317373713,
+                  "z": 0.013977112254770569
+                },
+                "surface_elevation_m": 0.013977112254770569,
+                "surface_normal": {
+                  "x": -0.0215968974370484,
+                  "y": -0.004922083993954224,
+                  "z": 0.9997546434552079
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02215068598824714,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.025608976412255388,
+                  "y": 0.2508932317373713,
+                  "z": 0.011979719552980717
+                },
+                "surface_elevation_m": 0.011979719552980717,
+                "surface_normal": {
+                  "x": -0.022640764934844234,
+                  "y": -0.008045239467358403,
+                  "z": 0.9997112932667501
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02402769474839427,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.03241687556565176,
+              "y": -0.12454034298194736,
+              "z": 0.0011970151920771615
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.03241687556565176,
+              "y": -0.12454034298194736,
+              "z": 0.0011970151920771615
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.00869374869520997,
+            "max_clearance_m": -0.0014069011548847265,
+            "average_surface_elevation_m": 0.0011970151920771615,
+            "average_surface_normal": {
+              "x": -0.027404071829454493,
+              "y": -0.03133817815279177,
+              "z": 0.9991330919538348
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.07741687556565176,
+                  "y": -0.19954034298194734,
+                  "z": -0.002391028157754499
+                },
+                "surface_elevation_m": -0.002391028157754499,
+                "surface_normal": {
+                  "x": -0.026953631748865958,
+                  "y": -0.029466119499444797,
+                  "z": 0.9992023066112242
+                },
+                "clearance_m": -0.0014069011548847265,
+                "in_contact": false,
+                "local_grade": 0.039934326873118015,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": 0.012583124434348239,
+                  "y": -0.19954034298194734,
+                  "z": -0.000027332426170786732
+                },
+                "surface_elevation_m": -0.000027332426170786732,
+                "surface_normal": {
+                  "x": -0.02540528012150535,
+                  "y": -0.03203398747197171,
+                  "z": 0.999163848119313
+                },
+                "clearance_m": -0.0037705968864684388,
+                "in_contact": false,
+                "local_grade": 0.04088526154259742,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": 0.012583124434348239,
+                  "y": -0.04954034298194736,
+                  "z": 0.004895819382570745
+                },
+                "surface_elevation_m": 0.004895819382570745,
+                "surface_normal": {
+                  "x": -0.02804288260215238,
+                  "y": -0.032104277292388836,
+                  "z": 0.9990910429559937
+                },
+                "clearance_m": -0.00869374869520997,
+                "in_contact": false,
+                "local_grade": 0.04262731383871959,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.07741687556565176,
+                  "y": -0.04954034298194736,
+                  "z": 0.0023106019696631864
+                },
+                "surface_elevation_m": 0.0023106019696631864,
+                "surface_normal": {
+                  "x": -0.02921431967218422,
+                  "y": -0.031748130313660416,
+                  "z": 0.9990688563595995
+                },
+                "clearance_m": -0.006108531282302412,
+                "in_contact": false,
+                "local_grade": 0.043144179819782566,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 7,
+      "time_s": 0.6340579710144927,
+      "phase": 0.2916666666666667,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.07753755380120975,
+        "y": 0.15935895061789063,
+        "z": 0.9222871870788979
+      },
+      "center_of_mass_velocity": {
+        "x": 0.009461202528066696,
+        "y": 0.021599999999999998,
+        "z": 0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.07753755380120975,
+              "y": 0.15935895061789063,
+              "z": 0.012006931804229414
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.07753755380120975,
+              "y": 0.15935895061789063,
+              "z": 0.012006931804229414
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.012006931804229414,
+            "average_surface_normal": {
+              "x": -0.02397921120165873,
+              "y": -0.014509427392477743,
+              "z": 0.9996071598117375
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.03253755380120975,
+                  "y": 0.08435895061789063,
+                  "z": 0.009717748489688888
+                },
+                "surface_elevation_m": 0.009717748489688888,
+                "surface_normal": {
+                  "x": -0.026761233167717887,
+                  "y": -0.02340277567000492,
+                  "z": 0.9993678734531557
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03555071742901313,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.12253755380120974,
+                  "y": 0.08435895061789063,
+                  "z": 0.012055946510964349
+                },
+                "surface_elevation_m": 0.012055946510964349,
+                "surface_normal": {
+                  "x": -0.025031880666523534,
+                  "y": -0.021969964191946856,
+                  "z": 0.999445208915277
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03330577091584132,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.12253755380120974,
+                  "y": 0.23435895061789064,
+                  "z": 0.014123064506153145
+                },
+                "surface_elevation_m": 0.014123064506153145,
+                "surface_normal": {
+                  "x": -0.02150490357179171,
+                  "y": -0.004789801680403138,
+                  "z": 0.9997572690019464
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02203186505427202,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.03253755380120975,
+                  "y": 0.23435895061789064,
+                  "z": 0.012130967710111275
+                },
+                "surface_elevation_m": 0.012130967710111275,
+                "surface_normal": {
+                  "x": -0.02261534788437368,
+                  "y": -0.007873062629357249,
+                  "z": 0.9997132393466155
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.023946587963570652,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.07058371679182103,
+              "y": -0.04800718042484149,
+              "z": 0.0029919014193708167
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.07058371679182103,
+              "y": -0.04800718042484149,
+              "z": 0.0029919014193708167
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.023019983535935304,
+            "max_clearance_m": -0.015763136340661732,
+            "average_surface_elevation_m": 0.0029919014193708167,
+            "average_surface_normal": {
+              "x": -0.028600232120024358,
+              "y": -0.030423271512006026,
+              "z": 0.9991278453096919
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.11558371679182103,
+                  "y": -0.12300718042484149,
+                  "z": -0.0006370257862026163
+                },
+                "surface_elevation_m": -0.0006370257862026163,
+                "surface_normal": {
+                  "x": -0.029099482631156103,
+                  "y": -0.031436135975857454,
+                  "z": 0.9990820734381667
+                },
+                "clearance_m": -0.015763136340661732,
+                "in_contact": false,
+                "local_grade": 0.04283702294153452,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.025583716791821032,
+                  "y": -0.12300718042484149,
+                  "z": 0.0019466201253630147
+                },
+                "surface_elevation_m": 0.0019466201253630147,
+                "surface_normal": {
+                  "x": -0.02812297027969788,
+                  "y": -0.03255780706235766,
+                  "z": 0.9990741152396742
+                },
+                "clearance_m": -0.018346782252227363,
+                "in_contact": false,
+                "local_grade": 0.04302222981276629,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.025583716791821032,
+                  "y": 0.026992819575158505,
+                  "z": 0.006619821409070957
+                },
+                "surface_elevation_m": 0.006619821409070957,
+                "surface_normal": {
+                  "x": -0.02832324177494871,
+                  "y": -0.02828160980381086,
+                  "z": 0.9991986511811667
+                },
+                "clearance_m": -0.023019983535935304,
+                "in_contact": false,
+                "local_grade": 0.040025685225080286,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.11558371679182103,
+                  "y": 0.026992819575158505,
+                  "z": 0.004038189929251911
+                },
+                "surface_elevation_m": 0.004038189929251911,
+                "surface_normal": {
+                  "x": -0.02885506491091497,
+                  "y": -0.029417353557633905,
+                  "z": 0.9991506415644501
+                },
+                "clearance_m": -0.020438352056116257,
+                "in_contact": false,
+                "local_grade": 0.041206740484391054,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 8,
+      "time_s": 0.7246376811594202,
+      "phase": 0.3333333333333333,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.08489219278916767,
+        "y": 0.13764763114059136,
+        "z": 0.9339999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.0039055078960851843,
+        "y": 0.021599999999999998,
+        "z": 0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.08489219278916767,
+              "y": 0.13764763114059136,
+              "z": 0.012096819951566442
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.08489219278916767,
+              "y": 0.13764763114059136,
+              "z": 0.012096819951566442
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.012096819951566442,
+            "average_surface_normal": {
+              "x": -0.024003910914169025,
+              "y": -0.014957127275056707,
+              "z": 0.9995999682895665
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.03989219278916767,
+                  "y": 0.06264763114059137,
+                  "z": 0.00977593643188455
+                },
+                "surface_elevation_m": 0.00977593643188455,
+                "surface_normal": {
+                  "x": -0.02675006720330677,
+                  "y": -0.023769114151456997,
+                  "z": 0.9993595264553563
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03578459002037639,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.12989219278916767,
+                  "y": 0.06264763114059137,
+                  "z": 0.01210921903992725
+                },
+                "surface_elevation_m": 0.01210921903992725,
+                "surface_normal": {
+                  "x": -0.024934489809242066,
+                  "y": -0.022436206335344648,
+                  "z": 0.9994372856078718
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.033542691257103324,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.12989219278916767,
+                  "y": 0.21264763114059138,
+                  "z": 0.014251781748279796
+                },
+                "surface_elevation_m": 0.014251781748279796,
+                "surface_normal": {
+                  "x": -0.02156092678773276,
+                  "y": -0.005313170816846207,
+                  "z": 0.9997534179246026
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.022205930470821488,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.03989219278916767,
+                  "y": 0.21264763114059138,
+                  "z": 0.012250342586174173
+                },
+                "surface_elevation_m": 0.012250342586174173,
+                "surface_normal": {
+                  "x": -0.022766717317297135,
+                  "y": -0.008307872708821697,
+                  "z": 0.9997062847825098
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.024235184471171282,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.12161910879190835,
+              "y": 0.05046559303415294,
+              "z": 0.004837352494613473
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.12161910879190835,
+              "y": 0.05046559303415294,
+              "z": 0.004837352494613473
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.01743004258424923,
+            "max_clearance_m": -0.01083129445396877,
+            "average_surface_elevation_m": 0.004837352494613473,
+            "average_surface_normal": {
+              "x": -0.027619690026224206,
+              "y": -0.026701234162259117,
+              "z": 0.9992618259580757
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.16661910879190836,
+                  "y": -0.024534406965847064,
+                  "z": 0.0014683188057787728
+                },
+                "surface_elevation_m": 0.0014683188057787728,
+                "surface_normal": {
+                  "x": -0.029237020321705325,
+                  "y": -0.031138006737702582,
+                  "z": 0.9990873941648505
+                },
+                "clearance_m": -0.01083129445396877,
+                "in_contact": false,
+                "local_grade": 0.04271274775624979,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.07661910879190836,
+                  "y": -0.024534406965847064,
+                  "z": 0.004101613836571431
+                },
+                "surface_elevation_m": 0.004101613836571431,
+                "surface_normal": {
+                  "x": -0.029083419270760413,
+                  "y": -0.030372581559506253,
+                  "z": 0.9991154392826348
+                },
+                "clearance_m": -0.013464589484761428,
+                "in_contact": false,
+                "local_grade": 0.04205162288268667,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.07661910879190836,
+                  "y": 0.12546559303415294,
+                  "z": 0.008067066936059231
+                },
+                "surface_elevation_m": 0.008067066936059231,
+                "surface_normal": {
+                  "x": -0.02624644401370418,
+                  "y": -0.021202995925006168,
+                  "z": 0.9994306164714184
+                },
+                "clearance_m": -0.01743004258424923,
+                "in_contact": false,
+                "local_grade": 0.03374081889285344,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.16661910879190836,
+                  "y": 0.12546559303415294,
+                  "z": 0.005712410400044455
+                },
+                "surface_elevation_m": 0.005712410400044455,
+                "surface_normal": {
+                  "x": -0.025910773523059327,
+                  "y": -0.02409028612913502,
+                  "z": 0.9993739489948961
+                },
+                "clearance_m": -0.015075386048234453,
+                "in_contact": false,
+                "local_grade": 0.0353795148404676,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 9,
+      "time_s": 0.8152173913043478,
+      "phase": 0.375,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.08343355002114511,
+        "y": 0.13034777346302295,
+        "z": 0.95
+      },
+      "center_of_mass_velocity": {
+        "x": 0.008449804324503665,
+        "y": 0.021599999999999998,
+        "z": 0.021196800000000023
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.08343355002114511,
+              "y": 0.13034777346302295,
+              "z": 0.01218586947488446
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.08343355002114511,
+              "y": 0.13034777346302295,
+              "z": 0.01218586947488446
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.01218586947488446,
+            "average_surface_normal": {
+              "x": -0.02381840834403331,
+              "y": -0.014075212166043592,
+              "z": 0.9996172126501413
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.038433550021145096,
+                  "y": 0.055347773463022956,
+                  "z": 0.00993698334839204
+                },
+                "surface_elevation_m": 0.00993698334839204,
+                "surface_normal": {
+                  "x": -0.026626489571652565,
+                  "y": -0.023072839017165166,
+                  "z": 0.9993791443455176
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.035232454459224696,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.1284335500211451,
+                  "y": 0.055347773463022956,
+                  "z": 0.012261007052873132
+                },
+                "surface_elevation_m": 0.012261007052873132,
+                "surface_normal": {
+                  "x": -0.024852924801871252,
+                  "y": -0.02162653311335974,
+                  "z": 0.9994571652623684
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03294502702549677,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.1284335500211451,
+                  "y": 0.20534777346302296,
+                  "z": 0.014261362799191176
+                },
+                "surface_elevation_m": 0.014261362799191176,
+                "surface_normal": {
+                  "x": -0.021319724908207237,
+                  "y": -0.004260603781602514,
+                  "z": 0.9997636303573233
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.021741283649900658,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.038433550021145096,
+                  "y": 0.20534777346302296,
+                  "z": 0.012284124699081484
+                },
+                "surface_elevation_m": 0.012284124699081484,
+                "surface_normal": {
+                  "x": -0.02247095926713811,
+                  "y": -0.007338783886872008,
+                  "z": 0.9997205600770029
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.023638988119705807,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.17276098446355562,
+              "y": 0.14538604842586506,
+              "z": 0.006155401992543104
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.17276098446355562,
+              "y": 0.14538604842586506,
+              "z": 0.006155401992543104
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": 0.013167144388182235,
+            "max_clearance_m": 0.018542798955764692,
+            "average_surface_elevation_m": 0.006155401992543104,
+            "average_surface_normal": {
+              "x": -0.024084242996498726,
+              "y": -0.020808691274629643,
+              "z": 0.999493345453947
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.21776098446355563,
+                  "y": 0.07038604842586506,
+                  "z": 0.003336979559217326
+                },
+                "surface_elevation_m": 0.003336979559217326,
+                "surface_normal": {
+                  "x": -0.026638168904302595,
+                  "y": -0.02815686997136476,
+                  "z": 0.9992485169520351
+                },
+                "clearance_m": 0.018542798955764692,
+                "in_contact": false,
+                "local_grade": 0.03876082260683455,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.1277609844635556,
+                  "y": 0.07038604842586506,
+                  "z": 0.005772613844604864
+                },
+                "surface_elevation_m": 0.005772613844604864,
+                "surface_normal": {
+                  "x": -0.027311407140972604,
+                  "y": -0.0256241104680694,
+                  "z": 0.99929849995019
+                },
+                "clearance_m": 0.016107164670377153,
+                "in_contact": false,
+                "local_grade": 0.03745007339511891,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.1277609844635556,
+                  "y": 0.22038604842586507,
+                  "z": 0.008712634126799783
+                },
+                "surface_elevation_m": 0.008712634126799783,
+                "surface_normal": {
+                  "x": -0.021770080959985696,
+                  "y": -0.012561021679246553,
+                  "z": 0.9996840922558331
+                },
+                "clearance_m": 0.013167144388182235,
+                "in_contact": false,
+                "local_grade": 0.02513395493412912,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.21776098446355563,
+                  "y": 0.22038604842586507,
+                  "z": 0.006799380439550443
+                },
+                "surface_elevation_m": 0.006799380439550443,
+                "surface_normal": {
+                  "x": -0.020614966236954788,
+                  "y": -0.016890733674445435,
+                  "z": 0.9996448000579947
+                },
+                "clearance_m": 0.015080398075431576,
+                "in_contact": false,
+                "local_grade": 0.02665096090222322,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 10,
+      "time_s": 0.9057971014492753,
+      "phase": 0.4166666666666667,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.09764853989741595,
+        "y": 0.08735190666447937,
+        "z": 0.966
+      },
+      "center_of_mass_velocity": {
+        "x": -0.00783228636607977,
+        "y": 0.021599999999999998,
+        "z": 0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.09764853989741595,
+              "y": 0.08735190666447937,
+              "z": 0.012110071235171844
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.09764853989741595,
+              "y": 0.08735190666447937,
+              "z": 0.012110071235171844
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.012110071235171844,
+            "average_surface_normal": {
+              "x": -0.024197618100720252,
+              "y": -0.01663150508236304,
+              "z": 0.9995688412095222
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.052648539897415955,
+                  "y": 0.01235190666447937,
+                  "z": 0.009662400018552703
+                },
+                "surface_elevation_m": 0.009662400018552703,
+                "surface_normal": {
+                  "x": -0.026814510359193463,
+                  "y": -0.02509507584024733,
+                  "z": 0.9993253820466931
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.036725751145906586,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.14264853989741594,
+                  "y": 0.01235190666447937,
+                  "z": 0.011993626678442058
+                },
+                "surface_elevation_m": 0.011993626678442058,
+                "surface_normal": {
+                  "x": -0.024825120518758223,
+                  "y": -0.024043485449188922,
+                  "z": 0.9994026336760794
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0345597424949352,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.14264853989741594,
+                  "y": 0.16235190666447935,
+                  "z": 0.014411319467960971
+                },
+                "surface_elevation_m": 0.014411319467960971,
+                "surface_normal": {
+                  "x": -0.021868947902786744,
+                  "y": -0.0073119188664609105,
+                  "z": 0.9997341071305488
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0230589470679931,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.052648539897415955,
+                  "y": 0.16235190666447935,
+                  "z": 0.012372938775731644
+                },
+                "surface_elevation_m": 0.012372938775731644,
+                "surface_normal": {
+                  "x": -0.02327862610140847,
+                  "y": -0.010073294341445833,
+                  "z": 0.9996782653973935
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02536465438476504,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.21283965399433807,
+              "y": 0.21470092957530282,
+              "z": 0.006807095147710224
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.21283965399433807,
+              "y": 0.21470092957530282,
+              "z": 0.006807095147710224
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": 0.049711425453542,
+            "max_clearance_m": 0.05382481214949004,
+            "average_surface_elevation_m": 0.006807095147710224,
+            "average_surface_normal": {
+              "x": -0.01980741911873153,
+              "y": -0.01509996384503241,
+              "z": 0.9996897805017984
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.25783965399433806,
+                  "y": 0.13970092957530283,
+                  "z": 0.0045806447035038845
+                },
+                "surface_elevation_m": 0.0045806447035038845,
+                "surface_normal": {
+                  "x": -0.022931323726486548,
+                  "y": -0.02425838799403576,
+                  "z": 0.9994426872032641
+                },
+                "clearance_m": 0.05382481214949004,
+                "in_contact": false,
+                "local_grade": 0.03338135701133348,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.1678396539943381,
+                  "y": 0.13970092957530283,
+                  "z": 0.006708285499021619
+                },
+                "surface_elevation_m": 0.006708285499021619,
+                "surface_normal": {
+                  "x": -0.024203641980213776,
+                  "y": -0.02051154145518686,
+                  "z": 0.9994966034869882
+                },
+                "clearance_m": 0.0516971713539723,
+                "in_contact": false,
+                "local_grade": 0.03172600854148242,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.1678396539943381,
+                  "y": 0.2897009295753028,
+                  "z": 0.00869403139945192
+                },
+                "surface_elevation_m": 0.00869403139945192,
+                "surface_normal": {
+                  "x": -0.016902811312162036,
+                  "y": -0.005223504968415379,
+                  "z": 0.9998434927355333
+                },
+                "clearance_m": 0.049711425453542,
+                "in_contact": false,
+                "local_grade": 0.01769152436647597,
+                "status": "clear"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.25783965399433806,
+                  "y": 0.2897009295753028,
+                  "z": 0.007245418988863473
+                },
+                "surface_elevation_m": 0.007245418988863473,
+                "surface_normal": {
+                  "x": -0.015189010047013417,
+                  "y": -0.010404218253903896,
+                  "z": 0.9998305087445156
+                },
+                "clearance_m": 0.051160037864130446,
+                "in_contact": false,
+                "local_grade": 0.018410697533856275,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 11,
+      "time_s": 0.9963768115942028,
+      "phase": 0.4583333333333333,
+      "phase_label": "left-stance-right-swing",
+      "support_foot": "left",
+      "review_id": "noetix-e1-lab-01/left-stance-right-swing",
+      "center_of_mass": {
+        "x": 0.07160944620761889,
+        "y": 0.05077358745120382,
+        "z": 0.977712812921102
+      },
+      "center_of_mass_velocity": {
+        "x": -0.10249465345292638,
+        "y": 0.021599999999999998,
+        "z": 0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.12390999412713086,
+              "y": 0.017023137591444054,
+              "z": 0.011708967327415365
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.12390999412713086,
+              "y": 0.017023137591444054,
+              "z": 0.011708967327415365
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011708967327415365,
+            "average_surface_normal": {
+              "x": -0.02457380569228453,
+              "y": -0.021566203264972557,
+              "z": 0.9994653705609474
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.07890999412713087,
+                  "y": -0.05797686240855594,
+                  "z": 0.008895453265998252
+                },
+                "surface_elevation_m": 0.008895453265998252,
+                "surface_normal": {
+                  "x": -0.026764570647548176,
+                  "y": -0.028811674345654764,
+                  "z": 0.9992264734180397
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03932498977174258,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.16890999412713087,
+                  "y": -0.05797686240855594,
+                  "z": 0.011205082189022872
+                },
+                "surface_elevation_m": 0.011205082189022872,
+                "surface_normal": {
+                  "x": -0.02439834157131428,
+                  "y": -0.02855596239695505,
+                  "z": 0.9992943900273598
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03755958013405945,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.16890999412713087,
+                  "y": 0.09202313759144405,
+                  "z": 0.014431502737141999
+                },
+                "surface_elevation_m": 0.014431502737141999,
+                "surface_normal": {
+                  "x": -0.022623483628761053,
+                  "y": -0.013399544165075133,
+                  "z": 0.9996542553326463
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02629391175410419,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.07890999412713087,
+                  "y": 0.09202313759144405,
+                  "z": 0.012303831117498337
+                },
+                "surface_elevation_m": 0.012303831117498337,
+                "surface_normal": {
+                  "x": -0.024506201492683198,
+                  "y": -0.015495328051141535,
+                  "z": 0.9995795820728769
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0289941218700012,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.23754056410778404,
+              "y": 0.2502734461974558,
+              "z": 0.00703575769289006
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.23754056410778404,
+              "y": 0.2502734461974558,
+              "z": 0.00703575769289006
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.00703575769289006,
+            "average_surface_normal": {
+              "x": -0.016663271644764936,
+              "y": -0.011308939018060257,
+              "z": 0.9997972010744872
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.28254056410778405,
+                  "y": 0.17527344619745577,
+                  "z": 0.005222795986218855
+                },
+                "surface_elevation_m": 0.005222795986218855,
+                "surface_normal": {
+                  "x": -0.02005325617953465,
+                  "y": -0.02133470331572012,
+                  "z": 0.9995712567651335
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02927973102628922,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.19254056410778403,
+                  "y": 0.17527344619745577,
+                  "z": 0.007105305601349672
+                },
+                "surface_elevation_m": 0.007105305601349672,
+                "surface_normal": {
+                  "x": -0.021655393504681864,
+                  "y": -0.01694722596841548,
+                  "z": 0.9996218462319303
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0274984460627715,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.19254056410778403,
+                  "y": 0.3252734461974558,
+                  "z": 0.008470443728539218
+                },
+                "surface_elevation_m": 0.008470443728539218,
+                "surface_normal": {
+                  "x": -0.013473265746507541,
+                  "y": -0.0006945272482176783,
+                  "z": 0.9999089902296235
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.013491154805076185,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.28254056410778405,
+                  "y": 0.3252734461974558,
+                  "z": 0.007344485455452494
+                },
+                "surface_elevation_m": 0.007344485455452494,
+                "surface_normal": {
+                  "x": -0.011468303601882616,
+                  "y": -0.006257353408980181,
+                  "z": 0.9999146581287877
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01306432008142137,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 12,
+      "time_s": 1.0869565217391304,
+      "phase": 0.5,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.05708372678876515,
+        "y": 0.11746223615220569,
+        "z": 0.982
+      },
+      "center_of_mass_velocity": {
+        "x": -0.17088780122136618,
+        "y": 0.021599999999999998,
+        "z": 0
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.13182959360308005,
+              "y": -0.016254409992011623,
+              "z": 0.011514181654298928
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.13182959360308005,
+              "y": -0.016254409992011623,
+              "z": 0.011514181654298928
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011514181654298928,
+            "average_surface_normal": {
+              "x": -0.024586822812376456,
+              "y": -0.02306662080202033,
+              "z": 0.9994315480055493
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.08682959360308005,
+                  "y": -0.09125440999201162,
+                  "z": 0.008594645832020499
+                },
+                "surface_elevation_m": 0.008594645832020499,
+                "surface_normal": {
+                  "x": -0.02663028921857663,
+                  "y": -0.029884271397872433,
+                  "z": 0.9991985578548207
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04002801495011631,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.17682959360308004,
+                  "y": -0.09125440999201162,
+                  "z": 0.010887360901050669
+                },
+                "surface_elevation_m": 0.010887360901050669,
+                "surface_normal": {
+                  "x": -0.02415867645433646,
+                  "y": -0.02988324478514588,
+                  "z": 0.999261402253227
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.038427203475067756,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.17682959360308004,
+                  "y": 0.058745590007988374,
+                  "z": 0.01436079142962313
+                },
+                "surface_elevation_m": 0.01436079142962313,
+                "surface_normal": {
+                  "x": -0.022767297370325856,
+                  "y": -0.015310857366851902,
+                  "z": 0.9996235430486534
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.027436694094896522,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.08682959360308005,
+                  "y": 0.058745590007988374,
+                  "z": 0.012213928454501416
+                },
+                "surface_elevation_m": 0.012213928454501416,
+                "surface_normal": {
+                  "x": -0.024788624531788716,
+                  "y": -0.017185854602804296,
+                  "z": 0.9995449817268821
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.030163380191993185,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.24599704718061027,
+              "y": 0.25117888229642293,
+              "z": 0.007078348243782888
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.24599704718061027,
+              "y": 0.25117888229642293,
+              "z": 0.007078348243782888
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.007078348243782888,
+            "average_surface_normal": {
+              "x": -0.015553332691199963,
+              "y": -0.010053160562692873,
+              "z": 0.9998284991961859
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.2909970471806103,
+                  "y": 0.17617888229642292,
+                  "z": 0.005406321246591812
+                },
+                "surface_elevation_m": 0.005406321246591812,
+                "surface_normal": {
+                  "x": -0.019015683824150597,
+                  "y": -0.020319626644708533,
+                  "z": 0.9996126832637328
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.027829542904625863,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.2009970471806103,
+                  "y": 0.17617888229642292,
+                  "z": 0.007199747173861625
+                },
+                "surface_elevation_m": 0.007199747173861625,
+                "surface_normal": {
+                  "x": -0.02072051912397534,
+                  "y": -0.015740646538287804,
+                  "z": 0.9996613887381014
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.026021296397572884,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.2009970471806103,
+                  "y": 0.32617888229642295,
+                  "z": 0.008360980498141888
+                },
+                "surface_elevation_m": 0.008360980498141888,
+                "surface_normal": {
+                  "x": -0.012283254316207394,
+                  "y": 0.0007571312297783662,
+                  "z": 0.9999242713404372
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.012306566714390055,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.2909970471806103,
+                  "y": 0.32617888229642295,
+                  "z": 0.007346344056536223
+                },
+                "surface_elevation_m": 0.007346344056536223,
+                "surface_normal": {
+                  "x": -0.010191079218591064,
+                  "y": -0.004907694166037584,
+                  "z": 0.9999360261748412
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01131121380166417,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 13,
+      "time_s": 1.1775362318840579,
+      "phase": 0.5416666666666666,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.18637334549130347,
+        "y": 0.18601466850403284,
+        "z": 0.977712812921102
+      },
+      "center_of_mass_velocity": {
+        "x": -0.1174447781481369,
+        "y": 0.021599999999999998,
+        "z": -0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.1578141586156006,
+              "y": -0.08620575519348095,
+              "z": 0.010781492681271005
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.1578141586156006,
+              "y": -0.08620575519348095,
+              "z": 0.010781492681271005
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010781492681271005,
+            "average_surface_normal": {
+              "x": -0.02422723391991512,
+              "y": -0.0273910496278337,
+              "z": 0.999331162096367
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.11281415861560058,
+                  "y": -0.16120575519348096,
+                  "z": 0.007576989474291787
+                },
+                "surface_elevation_m": 0.007576989474291787,
+                "surface_normal": {
+                  "x": -0.025789415335151472,
+                  "y": -0.03280518589130808,
+                  "z": 0.9991289835828544
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04172857731450024,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.2028141586156006,
+                  "y": -0.16120575519348096,
+                  "z": 0.009780117405721604
+                },
+                "surface_elevation_m": 0.009780117405721604,
+                "surface_normal": {
+                  "x": -0.023018317080309825,
+                  "y": -0.033591943711256324,
+                  "z": 0.9991705251840097
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04072175835483896,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.2028141586156006,
+                  "y": -0.011205755193480951,
+                  "z": 0.013970062059995835
+                },
+                "surface_elevation_m": 0.013970062059995835,
+                "surface_normal": {
+                  "x": -0.022833623815779407,
+                  "y": -0.021001200252536125,
+                  "z": 0.9995186717672624
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03102297194995431,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.11281415861560058,
+                  "y": -0.011205755193480951,
+                  "z": 0.011798801785074791
+                },
+                "surface_elevation_m": 0.011798801785074791,
+                "surface_normal": {
+                  "x": -0.025265847776553805,
+                  "y": -0.0221639108466809,
+                  "z": 0.9994350394058198
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03360955233096103,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.24460137218124306,
+              "y": 0.23206764226824667,
+              "z": 0.007066817635947109
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.24460137218124306,
+              "y": 0.23206764226824667,
+              "z": 0.007066817635947109
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.007066817635947109,
+            "average_surface_normal": {
+              "x": -0.0157681062578157,
+              "y": -0.010315172860232667,
+              "z": 0.999822466257838
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.28960137218124304,
+                  "y": 0.15706764226824665,
+                  "z": 0.005366026547953736
+                },
+                "surface_elevation_m": 0.005366026547953736,
+                "surface_normal": {
+                  "x": -0.019216487079330328,
+                  "y": -0.02053480185795499,
+                  "z": 0.9996044460370234
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.028123859319366912,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.19960137218124308,
+                  "y": 0.15706764226824665,
+                  "z": 0.007176777675959452
+                },
+                "surface_elevation_m": 0.007176777675959452,
+                "surface_normal": {
+                  "x": -0.020903356491728385,
+                  "y": -0.015991910340404224,
+                  "z": 0.9996535942470491
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.026319033207088185,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.19960137218124308,
+                  "y": 0.3070676422682467,
+                  "z": 0.008380276248196691
+                },
+                "surface_elevation_m": 0.008380276248196691,
+                "surface_normal": {
+                  "x": -0.012513273700210648,
+                  "y": 0.0004571729571666028,
+                  "z": 0.9999216014139263
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.012521622331357386,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.28960137218124304,
+                  "y": 0.3070676422682467,
+                  "z": 0.007344190071678554
+                },
+                "surface_elevation_m": 0.007344190071678554,
+                "surface_normal": {
+                  "x": -0.010436498167098848,
+                  "y": -0.005189314221486217,
+                  "z": 0.9999320729549177
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.011655448343207425,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 14,
+      "time_s": 1.2681159420289854,
+      "phase": 0.5833333333333334,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.23438562616699113,
+        "y": 0.19560501050482926,
+        "z": 0.966
+      },
+      "center_of_mass_velocity": {
+        "x": -0.021783581475573684,
+        "y": 0.021599999999999998,
+        "z": -0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.16492350276055762,
+              "y": -0.11653730304239898,
+              "z": 0.010547968661591184
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.16492350276055762,
+              "y": -0.11653730304239898,
+              "z": 0.010547968661591184
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010547968661591184,
+            "average_surface_normal": {
+              "x": -0.02403334318815052,
+              "y": -0.028461122198112924,
+              "z": 0.999305940609994
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.11992350276055762,
+                  "y": -0.19153730304239897,
+                  "z": 0.007278361120254153
+                },
+                "surface_elevation_m": 0.007278361120254153,
+                "surface_normal": {
+                  "x": -0.025460987664353025,
+                  "y": -0.03348055259357017,
+                  "z": 0.9991150037434052
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04206196969728302,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.2099235027605576,
+                  "y": -0.19153730304239897,
+                  "z": 0.009448600609426448
+                },
+                "surface_elevation_m": 0.009448600609426448,
+                "surface_normal": {
+                  "x": -0.02261936283254831,
+                  "y": -0.03447549579235893,
+                  "z": 0.9991495406669215
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.041233425580218606,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.2099235027605576,
+                  "y": -0.04153730304239897,
+                  "z": 0.013816984948203132
+                },
+                "surface_elevation_m": 0.013816984948203132,
+                "surface_normal": {
+                  "x": -0.022758498782193996,
+                  "y": -0.02245961377309843,
+                  "z": 0.9994886775158305
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.031974732487635896,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.11992350276055762,
+                  "y": -0.04153730304239897,
+                  "z": 0.011647927968481006
+                },
+                "surface_elevation_m": 0.011647927968481006,
+                "surface_normal": {
+                  "x": -0.02529296032429337,
+                  "y": -0.02342697549767382,
+                  "z": 0.9994055448000402
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.034475455369507274,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.23438562616699113,
+              "y": 0.19560501050482926,
+              "z": 0.0070059671440120454
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.23438562616699113,
+              "y": 0.19560501050482926,
+              "z": 0.0070059671440120454
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.0070059671440120454,
+            "average_surface_normal": {
+              "x": -0.01711822594665747,
+              "y": -0.011866462554002425,
+              "z": 0.9997830531704834
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.27938562616699114,
+                  "y": 0.12060501050482926,
+                  "z": 0.005132150093408209
+                },
+                "surface_elevation_m": 0.005132150093408209,
+                "surface_normal": {
+                  "x": -0.02047447245611912,
+                  "y": -0.021780620323316763,
+                  "z": 0.9995531004183695
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.029893133727076186,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.18938562616699112,
+                  "y": 0.12060501050482926,
+                  "z": 0.007050819681416215
+                },
+                "surface_elevation_m": 0.007050819681416215,
+                "surface_normal": {
+                  "x": -0.0220347697657715,
+                  "y": -0.017476781775102274,
+                  "z": 0.9996044372751428
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.028124170740576597,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.18938562616699112,
+                  "y": 0.27060501050482927,
+                  "z": 0.008506421379394724
+                },
+                "surface_elevation_m": 0.008506421379394724,
+                "surface_normal": {
+                  "x": -0.013964640967988542,
+                  "y": -0.001344811934115559,
+                  "z": 0.999901585299022
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01402924504394173,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.27938562616699114,
+                  "y": 0.27060501050482927,
+                  "z": 0.007334477421829032
+                },
+                "surface_elevation_m": 0.007334477421829032,
+                "surface_normal": {
+                  "x": -0.011996134027909755,
+                  "y": -0.0068616351956877365,
+                  "z": 0.9999045008053647
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.013819886727982796,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 15,
+      "time_s": 1.3586956521739129,
+      "phase": 0.625,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.21925918709090142,
+        "y": 0.15093143977899245,
+        "z": 0.95
+      },
+      "center_of_mass_velocity": {
+        "x": 0.02042244969528072,
+        "y": 0.021599999999999998,
+        "z": -0.021196800000000023
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.1559517518865528,
+              "y": -0.11148258466863922,
+              "z": 0.010909898595800467
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.1559517518865528,
+              "y": -0.11148258466863922,
+              "z": 0.010909898595800467
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.010909898595800467,
+            "average_surface_normal": {
+              "x": -0.02426406902034833,
+              "y": -0.026903219974619606,
+              "z": 0.9993435203720356
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.11095175188655278,
+                  "y": -0.1864825846686392,
+                  "z": 0.007737662240470064
+                },
+                "surface_elevation_m": 0.007737662240470064,
+                "surface_normal": {
+                  "x": -0.02588703982796696,
+                  "y": -0.032501523979144985,
+                  "z": 0.9991363831369461
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.041551027568782026,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.2009517518865528,
+                  "y": -0.1864825846686392,
+                  "z": 0.009950669479151745
+                },
+                "surface_elevation_m": 0.009950669479151745,
+                "surface_normal": {
+                  "x": -0.023139186931927947,
+                  "y": -0.033197952924923085,
+                  "z": 0.9991809015136968
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.04046635701760308,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.2009517518865528,
+                  "y": -0.036482584668639226,
+                  "z": 0.0140596598784462
+                },
+                "surface_elevation_m": 0.0140596598784462,
+                "surface_normal": {
+                  "x": -0.022815834682222026,
+                  "y": -0.02033352853538321,
+                  "z": 0.9995328835536399
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03056165399558291,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.11095175188655278,
+                  "y": -0.036482584668639226,
+                  "z": 0.011891602785133862
+                },
+                "surface_elevation_m": 0.011891602785133862,
+                "surface_normal": {
+                  "x": -0.025212400931316565,
+                  "y": -0.021577863477926968,
+                  "z": 0.9994492136406965
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03318537860253378,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.21925918709090142,
+              "y": 0.15093143977899245,
+              "z": 0.00690639626704808
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.21925918709090142,
+              "y": 0.15093143977899245,
+              "z": 0.00690639626704808
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.00690639626704808,
+            "average_surface_normal": {
+              "x": -0.018922824343800417,
+              "y": -0.013938499886586166,
+              "z": 0.9997237843223324
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.2642591870909014,
+                  "y": 0.07593143977899246,
+                  "z": 0.004802906666850718
+                },
+                "surface_elevation_m": 0.004802906666850718,
+                "surface_normal": {
+                  "x": -0.02213441177031599,
+                  "y": -0.023381469662519166,
+                  "z": 0.9994815529523307
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.032196666100657176,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.17425918709090144,
+                  "y": 0.07593143977899246,
+                  "z": 0.006862810377030019
+                },
+                "surface_elevation_m": 0.006862810377030019,
+                "surface_normal": {
+                  "x": -0.023501269544604655,
+                  "y": -0.019437110864996134,
+                  "z": 0.9995348363368901
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.030497720389994938,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.17425918709090144,
+                  "y": 0.22593143977899244,
+                  "z": 0.008658231495337933
+                },
+                "surface_elevation_m": 0.008658231495337933,
+                "surface_normal": {
+                  "x": -0.01592614397287402,
+                  "y": -0.0038149289525284506,
+                  "z": 0.9998658931352957
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.016376682959548045,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.2642591870909014,
+                  "y": 0.22593143977899244,
+                  "z": 0.007301636528973649
+                },
+                "surface_elevation_m": 0.007301636528973649,
+                "surface_normal": {
+                  "x": -0.01412655306619605,
+                  "y": -0.009118339923379399,
+                  "z": 0.9998586381961749
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.016813792686076145,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 16,
+      "time_s": 1.4492753623188404,
+      "phase": 0.6666666666666666,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.20355463326952628,
+        "y": 0.10806765024711032,
+        "z": 0.9339999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.018079147920914907,
+        "y": 0.021599999999999998,
+        "z": -0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.1457044740233486,
+              "y": -0.10077042872211223,
+              "z": 0.011347141317527478
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.1457044740233486,
+              "y": -0.10077042872211223,
+              "z": 0.011347141317527478
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011347141317527478,
+            "average_surface_normal": {
+              "x": -0.024413113997998545,
+              "y": -0.02479162629056763,
+              "z": 0.9993945042528449
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.1007044740233486,
+                  "y": -0.17577042872211224,
+                  "z": 0.00831545562222211
+                },
+                "surface_elevation_m": 0.00831545562222211,
+                "surface_normal": {
+                  "x": -0.026278706515603063,
+                  "y": -0.031110735037466974,
+                  "z": 0.9991704317829342
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.040724050028265533,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.1907044740233486,
+                  "y": -0.17577042872211224,
+                  "z": 0.010569446916510237
+                },
+                "surface_elevation_m": 0.010569446916510237,
+                "surface_normal": {
+                  "x": -0.023653905226086926,
+                  "y": -0.03142668656341842,
+                  "z": 0.9992261286311523
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03933374964073533,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.1907044740233486,
+                  "y": -0.02577042872211223,
+                  "z": 0.01432888189588176
+                },
+                "surface_elevation_m": 0.01432888189588176,
+                "surface_normal": {
+                  "x": -0.022748757560620853,
+                  "y": -0.017520194444474033,
+                  "z": 0.999587683405551
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.028713466943650033,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.1007044740233486,
+                  "y": -0.02577042872211223,
+                  "z": 0.012174780835495804
+                },
+                "surface_elevation_m": 0.012174780835495804,
+                "surface_normal": {
+                  "x": -0.024968933314896715,
+                  "y": -0.019106702355198606,
+                  "z": 0.9995056209417864
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.031440637808001146,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.20355463326952628,
+              "y": 0.10806765024711032,
+              "z": 0.006814912661113288
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.20355463326952628,
+              "y": 0.10806765024711032,
+              "z": 0.006814912661113288
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.006814912661113288,
+            "average_surface_normal": {
+              "x": -0.02052187740482587,
+              "y": -0.01574671131685212,
+              "z": 0.9996653908335954
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.24855463326952626,
+                  "y": 0.03306765024711032,
+                  "z": 0.00451173515022042
+                },
+                "surface_elevation_m": 0.00451173515022042,
+                "surface_normal": {
+                  "x": -0.02358311234798787,
+                  "y": -0.024709608420798,
+                  "z": 0.999416465775741
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03415739943741311,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.15855463326952624,
+                  "y": 0.03306765024711032,
+                  "z": 0.006693339098046598
+                },
+                "surface_elevation_m": 0.006693339098046598,
+                "surface_normal": {
+                  "x": -0.0247460103405703,
+                  "y": -0.021129226317236828,
+                  "z": 0.9994704551748688
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.032539348987658395,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.15855463326952624,
+                  "y": 0.1830676502471103,
+                  "z": 0.008789145670028451
+                },
+                "surface_elevation_m": 0.008789145670028451,
+                "surface_normal": {
+                  "x": -0.017686763146552546,
+                  "y": -0.006038841398620117,
+                  "z": 0.9998253401489482
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.018689280244031267,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.24855463326952626,
+                  "y": 0.1830676502471103,
+                  "z": 0.007265430726157683
+                },
+                "surface_elevation_m": 0.007265430726157683,
+                "surface_normal": {
+                  "x": -0.01606874760278566,
+                  "y": -0.011106962198248334,
+                  "z": 0.9998091971677419
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019533797858976305,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 17,
+      "time_s": 1.539855072463768,
+      "phase": 0.7083333333333334,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.19196578745183907,
+        "y": 0.07755433961711312,
+        "z": 0.9222871870788979
+      },
+      "center_of_mass_velocity": {
+        "x": 0.009982677652079143,
+        "y": 0.021599999999999998,
+        "z": -0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.1319074775656412,
+              "y": -0.07898836166154707,
+              "z": 0.011883070439127105
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.1319074775656412,
+              "y": -0.07898836166154707,
+              "z": 0.011883070439127105
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.011883070439127105,
+            "average_surface_normal": {
+              "x": -0.02439539001427365,
+              "y": -0.02155793644228636,
+              "z": 0.9994699196686221
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.0869074775656412,
+                  "y": -0.15398836166154706,
+                  "z": 0.00907978590617976
+                },
+                "surface_elevation_m": 0.00907978590617976,
+                "surface_normal": {
+                  "x": -0.02658876366850373,
+                  "y": -0.028846709054818644,
+                  "z": 0.9992301561818914
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03923130098165112,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.17690747756564118,
+                  "y": -0.15398836166154706,
+                  "z": 0.01137043371717648
+                },
+                "surface_elevation_m": 0.01137043371717648,
+                "surface_normal": {
+                  "x": -0.024154333103569653,
+                  "y": -0.028623914148018965,
+                  "z": 0.9992983737258702
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.037453441348310856,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.17690747756564118,
+                  "y": -0.003988361661547077,
+                  "z": 0.01459822811433167
+                },
+                "surface_elevation_m": 0.01459822811433167,
+                "surface_normal": {
+                  "x": -0.022439004625309632,
+                  "y": -0.013352979027152732,
+                  "z": 0.9996590363831689
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02611151044030674,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.0869074775656412,
+                  "y": -0.003988361661547077,
+                  "z": 0.012483834018820514
+                },
+                "surface_elevation_m": 0.012483834018820514,
+                "surface_normal": {
+                  "x": -0.02439681107239877,
+                  "y": -0.015405803895518247,
+                  "z": 0.999583641730811
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02885382442882545,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.19196578745183907,
+              "y": 0.07755433961711312,
+              "z": 0.006820572999566496
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.19196578745183907,
+              "y": 0.07755433961711312,
+              "z": 0.006820572999566496
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.006820572999566496,
+            "average_surface_normal": {
+              "x": -0.021380117610597115,
+              "y": -0.016564784189850558,
+              "z": 0.9996341823365689
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.23696578745183905,
+                  "y": 0.002554339617113127,
+                  "z": 0.004422649731400562
+                },
+                "surface_elevation_m": 0.004422649731400562,
+                "surface_normal": {
+                  "x": -0.024358186707203747,
+                  "y": -0.0252706474910623,
+                  "z": 0.9993838467354371
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03509881599542256,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.14696578745183908,
+                  "y": 0.002554339617113127,
+                  "z": 0.006667944145359345
+                },
+                "surface_elevation_m": 0.006667944145359345,
+                "surface_normal": {
+                  "x": -0.02538024483788728,
+                  "y": -0.021905667318663766,
+                  "z": 0.9994378344405884
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03352633425692522,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.14696578745183908,
+                  "y": 0.15255433961711312,
+                  "z": 0.00890338548631198
+                },
+                "surface_elevation_m": 0.00890338548631198,
+                "surface_normal": {
+                  "x": -0.018635915099173783,
+                  "y": -0.0070811469024534245,
+                  "z": 0.9998012602647399
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019935896594779456,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.23696578745183905,
+                  "y": 0.15255433961711312,
+                  "z": 0.007288312635194097
+                },
+                "surface_elevation_m": 0.007288312635194097,
+                "surface_normal": {
+                  "x": -0.017143284512866667,
+                  "y": -0.011999475239513923,
+                  "z": 0.9997810362224756
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.02092557310834764,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 18,
+      "time_s": 1.6304347826086956,
+      "phase": 0.75,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.18848416579960003,
+        "y": 0.06812695928761481,
+        "z": 0.9179999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.008186320816359869,
+        "y": 0.021599999999999998,
+        "z": 0
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.11089543441266649,
+              "y": -0.03792262331951059,
+              "z": 0.012451739913151148
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.11089543441266649,
+              "y": -0.03792262331951059,
+              "z": 0.012451739913151148
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.01850675154983781,
+            "max_clearance_m": -0.01384882820501971,
+            "average_surface_elevation_m": 0.012451739913151148,
+            "average_surface_normal": {
+              "x": -0.023910628061601436,
+              "y": -0.01620717649055787,
+              "z": 0.9995827175856452
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.06589543441266649,
+                  "y": -0.11292262331951058,
+                  "z": 0.010050898892380485
+                },
+                "surface_elevation_m": 0.010050898892380485,
+                "surface_normal": {
+                  "x": -0.026554151476031546,
+                  "y": -0.02480884718148192,
+                  "z": 0.9993394809277344
+                },
+                "clearance_m": -0.01384882820501971,
+                "in_contact": false,
+                "local_grade": 0.036340086118309516,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.15589543441266648,
+                  "y": -0.11292262331951058,
+                  "z": 0.012353535270493824
+                },
+                "surface_elevation_m": 0.012353535270493824,
+                "surface_normal": {
+                  "x": -0.024452958623082208,
+                  "y": -0.023780359261873607,
+                  "z": 0.9994181043627106
+                },
+                "clearance_m": -0.01615146458313305,
+                "in_contact": false,
+                "local_grade": 0.03410942204209782,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.15589543441266648,
+                  "y": 0.03707737668048942,
+                  "z": 0.014708822237198582
+                },
+                "surface_elevation_m": 0.014708822237198582,
+                "surface_normal": {
+                  "x": -0.021554386753574923,
+                  "y": -0.006762134711268262,
+                  "z": 0.9997448084115385
+                },
+                "clearance_m": -0.01850675154983781,
+                "in_contact": false,
+                "local_grade": 0.022590220321546783,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.06589543441266649,
+                  "y": 0.03707737668048942,
+                  "z": 0.012693703252531701
+                },
+                "surface_elevation_m": 0.012693703252531701,
+                "surface_normal": {
+                  "x": -0.02307767360469421,
+                  "y": -0.009475099665749078,
+                  "z": 0.9996887733026311
+                },
+                "clearance_m": -0.016491632565170927,
+                "in_contact": false,
+                "local_grade": 0.024947074631721414,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.18848416579960003,
+              "y": 0.06812695928761481,
+              "z": 0.006998357328478938
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.18848416579960003,
+              "y": 0.06812695928761481,
+              "z": 0.006998357328478938
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.006998357328478938,
+            "average_surface_normal": {
+              "x": -0.02113242439525165,
+              "y": -0.015809788586101787,
+              "z": 0.9996516749468495
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.23348416579960002,
+                  "y": -0.006873040712385189,
+                  "z": 0.004667290128585553
+                },
+                "surface_elevation_m": 0.004667290128585553,
+                "surface_normal": {
+                  "x": -0.02416111967994863,
+                  "y": -0.024688399168516596,
+                  "z": 0.999403183526202
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03454383820152028,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.14348416579960005,
+                  "y": -0.006873040712385189,
+                  "z": 0.006894324411125216
+                },
+                "surface_elevation_m": 0.006894324411125216,
+                "surface_normal": {
+                  "x": -0.025173075702944248,
+                  "y": -0.021254407109589545,
+                  "z": 0.999457135868304
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.032945918744608296,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.14348416579960005,
+                  "y": 0.14312695928761482,
+                  "z": 0.009010220478161947
+                },
+                "surface_elevation_m": 0.009010220478161947,
+                "surface_normal": {
+                  "x": -0.018341170227861053,
+                  "y": -0.006168686978866577,
+                  "z": 0.9998127568578177
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019350742217564026,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.23348416579960002,
+                  "y": 0.14312695928761482,
+                  "z": 0.007421594296043038
+                },
+                "surface_elevation_m": 0.007421594296043038,
+                "surface_normal": {
+                  "x": -0.016851424873057554,
+                  "y": -0.01112548620247119,
+                  "z": 0.999796105731817
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.020192745318397883,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 19,
+      "time_s": 1.721014492753623,
+      "phase": 0.7916666666666666,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.17960721134018467,
+        "y": 0.051941302301912115,
+        "z": 0.9222871870788979
+      },
+      "center_of_mass_velocity": {
+        "x": 0.01456797916825631,
+        "y": 0.021599999999999998,
+        "z": 0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.07490191756447093,
+              "y": 0.039067825307763704,
+              "z": 0.012689251387791202
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.07490191756447093,
+              "y": 0.039067825307763704,
+              "z": 0.012689251387791202
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.03048923226745837,
+            "max_clearance_m": -0.027463022969237222,
+            "average_surface_elevation_m": 0.012689251387791202,
+            "average_surface_normal": {
+              "x": -0.021988388783997132,
+              "y": -0.006658969379237862,
+              "z": 0.9997360496078403
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": 0.02990191756447093,
+                  "y": -0.03593217469223629,
+                  "z": 0.011062860842372875
+                },
+                "surface_elevation_m": 0.011062860842372875,
+                "surface_normal": {
+                  "x": -0.025222597448739698,
+                  "y": -0.01692373166582526,
+                  "z": 0.9995385974960858
+                },
+                "clearance_m": -0.027463022969237222,
+                "in_contact": false,
+                "local_grade": 0.03037420148017108,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.11990191756447093,
+                  "y": -0.03593217469223629,
+                  "z": 0.013275050753118203
+                },
+                "surface_elevation_m": 0.013275050753118203,
+                "surface_normal": {
+                  "x": -0.023778399823827595,
+                  "y": -0.014642827451358767,
+                  "z": 0.9996100116075508
+                },
+                "clearance_m": -0.02967521287998255,
+                "in_contact": false,
+                "local_grade": 0.027925341429462774,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.11990191756447093,
+                  "y": 0.1140678253077637,
+                  "z": 0.014089070140594021
+                },
+                "surface_elevation_m": 0.014089070140594021,
+                "surface_normal": {
+                  "x": -0.01911084418654212,
+                  "y": 0.004288740335110596,
+                  "z": 0.9998081727715651
+                },
+                "clearance_m": -0.03048923226745837,
+                "in_contact": false,
+                "local_grade": 0.01958615988866361,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": 0.02990191756447093,
+                  "y": 0.1140678253077637,
+                  "z": 0.012330023815079713
+                },
+                "surface_elevation_m": 0.012330023815079713,
+                "surface_normal": {
+                  "x": -0.019837657746775025,
+                  "y": 0.0006431695640497855,
+                  "z": 0.9998030074309807
+                },
+                "clearance_m": -0.028730185941944063,
+                "in_contact": false,
+                "local_grade": 0.01984808131700148,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.17960721134018467,
+              "y": 0.051941302301912115,
+              "z": 0.007181120904858563
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.17960721134018467,
+              "y": 0.051941302301912115,
+              "z": 0.007181120904858563
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.007181120904858563,
+            "average_surface_normal": {
+              "x": -0.021267965974661854,
+              "y": -0.015431407209910623,
+              "z": 0.9996547130358675
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.2246072113401847,
+                  "y": -0.02305869769808789,
+                  "z": 0.004873907688757105
+                },
+                "surface_elevation_m": 0.004873907688757105,
+                "surface_normal": {
+                  "x": -0.0243082621841364,
+                  "y": -0.02436324877451019,
+                  "z": 0.9994075947773954
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03441597741255343,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.13460721134018466,
+                  "y": -0.02305869769808789,
+                  "z": 0.007110783588008011
+                },
+                "surface_elevation_m": 0.007110783588008011,
+                "surface_normal": {
+                  "x": -0.025243503039341322,
+                  "y": -0.02096103031050068,
+                  "z": 0.9994615554200297
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03281157169924907,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.13460721134018466,
+                  "y": 0.1269413023019121,
+                  "z": 0.009171552926959658
+                },
+                "surface_elevation_m": 0.009171552926959658,
+                "surface_normal": {
+                  "x": -0.018472017973356687,
+                  "y": -0.005737588253223927,
+                  "z": 0.9998129148160813
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.019342579118916528,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.2246072113401847,
+                  "y": 0.1269413023019121,
+                  "z": 0.007568239415709478
+                },
+                "surface_elevation_m": 0.007568239415709478,
+                "surface_normal": {
+                  "x": -0.01704512533234071,
+                  "y": -0.010661617172709916,
+                  "z": 0.9997978763838555
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.020104884439673506,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 20,
+      "time_s": 1.8115942028985506,
+      "phase": 0.8333333333333334,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.16649144362530005,
+        "y": 0.031275658654492236,
+        "z": 0.9339999999999999
+      },
+      "center_of_mass_velocity": {
+        "x": 0.013793186705448357,
+        "y": 0.021599999999999998,
+        "z": 0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": 0.03017007648298796,
+              "y": 0.13884829438403107,
+              "z": 0.011840891927522357
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": 0.03017007648298796,
+              "y": 0.13884829438403107,
+              "z": 0.011840891927522357
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": -0.02259649262549197,
+            "max_clearance_m": -0.020119792085239483,
+            "average_surface_elevation_m": 0.011840891927522357,
+            "average_surface_normal": {
+              "x": -0.017748102788505492,
+              "y": 0.005861426070874759,
+              "z": 0.9998253090074407
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.014829923517012046,
+                  "y": 0.06384829438403107,
+                  "z": 0.011321605337488194
+                },
+                "surface_elevation_m": 0.011321605337488194,
+                "surface_normal": {
+                  "x": -0.021423995021059735,
+                  "y": -0.005532524156552736,
+                  "z": 0.9997551718364827
+                },
+                "clearance_m": -0.020684580985678193,
+                "in_contact": false,
+                "local_grade": 0.02212682503671125,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.07517007648298796,
+                  "y": 0.06384829438403107,
+                  "z": 0.013233516977301973
+                },
+                "surface_elevation_m": 0.013233516977301973,
+                "surface_normal": {
+                  "x": -0.020917919767771177,
+                  "y": -0.0019102707430611828,
+                  "z": 0.9997793714106513
+                },
+                "clearance_m": -0.02259649262549197,
+                "in_contact": false,
+                "local_grade": 0.021004963740095046,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.07517007648298796,
+                  "y": 0.21384829438403108,
+                  "z": 0.012051628958249782
+                },
+                "surface_elevation_m": 0.012051628958249782,
+                "surface_normal": {
+                  "x": -0.014486935305285525,
+                  "y": 0.017678671012992694,
+                  "z": 0.9997387625258285
+                },
+                "clearance_m": -0.021414604606439777,
+                "in_contact": false,
+                "local_grade": 0.022856218045100032,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.014829923517012046,
+                  "y": 0.21384829438403108,
+                  "z": 0.010756816437049486
+                },
+                "surface_elevation_m": 0.010756816437049486,
+                "surface_normal": {
+                  "x": -0.014159736917949294,
+                  "y": 0.013208565222433506,
+                  "z": 0.9998125002495114
+                },
+                "clearance_m": -0.020119792085239483,
+                "in_contact": false,
+                "local_grade": 0.019363996096385068,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.16649144362530005,
+              "y": 0.031275658654492236,
+              "z": 0.0073884539203500806
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.16649144362530005,
+              "y": 0.031275658654492236,
+              "z": 0.0073884539203500806
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.0073884539203500806,
+            "average_surface_normal": {
+              "x": -0.02165088125865527,
+              "y": -0.015290258166037839,
+              "z": 0.9996486619537583
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.21149144362530004,
+                  "y": -0.04372434134550776,
+                  "z": 0.0050779635530597295
+                },
+                "surface_elevation_m": 0.0050779635530597295,
+                "surface_normal": {
+                  "x": -0.02467810983567809,
+                  "y": -0.02420312065605691,
+                  "z": 0.9994024213726153
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0345658813652052,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.12149144362530005,
+                  "y": -0.04372434134550776,
+                  "z": 0.007342465004052287
+                },
+                "surface_elevation_m": 0.007342465004052287,
+                "surface_normal": {
+                  "x": -0.025484738883599433,
+                  "y": -0.02090239713155117,
+                  "z": 0.99945666133064
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.0329603113124,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.12149144362530005,
+                  "y": 0.10627565865449223,
+                  "z": 0.009389147381806733
+                },
+                "surface_elevation_m": 0.009389147381806733,
+                "surface_normal": {
+                  "x": -0.018877120496549996,
+                  "y": -0.005606458739713816,
+                  "z": 0.9998060921709563
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01969208109472895,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.21149144362530004,
+                  "y": 0.10627565865449223,
+                  "z": 0.007744239742481572
+                },
+                "surface_elevation_m": 0.007744239742481572,
+                "surface_normal": {
+                  "x": -0.01756056151753647,
+                  "y": -0.010446941505156928,
+                  "z": 0.9997912222521143
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.020433108124398337,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 21,
+      "time_s": 1.902173913043478,
+      "phase": 0.875,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.15878416377761168,
+        "y": 0.02563985428349072,
+        "z": 0.95
+      },
+      "center_of_mass_velocity": {
+        "x": 0.02249611644850686,
+        "y": 0.021599999999999998,
+        "z": 0.021196800000000023
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.011310972778230663,
+              "y": 0.23567186886734087,
+              "z": 0.009880570818649303
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.011310972778230663,
+              "y": 0.23567186886734087,
+              "z": 0.009880570818649303
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": 0.009931836349242922,
+            "max_clearance_m": 0.013708411943465906,
+            "average_surface_elevation_m": 0.009880570818649303,
+            "average_surface_normal": {
+              "x": -0.012051896754349836,
+              "y": 0.017711398032498864,
+              "z": 0.999770502747684
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.05631097277823066,
+                  "y": 0.16067186886734086,
+                  "z": 0.010499987707920665
+                },
+                "surface_elevation_m": 0.010499987707920665,
+                "surface_normal": {
+                  "x": -0.015802883018835694,
+                  "y": 0.006326118322951772,
+                  "z": 0.9998551140616608
+                },
+                "clearance_m": 0.011379790807061353,
+                "in_contact": false,
+                "local_grade": 0.017022070518682257,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.033689027221769335,
+                  "y": 0.16067186886734086,
+                  "z": 0.011947942165739096
+                },
+                "surface_elevation_m": 0.011947942165739096,
+                "surface_normal": {
+                  "x": -0.016247698347866827,
+                  "y": 0.010896194686564652,
+                  "z": 0.9998086243075467
+                },
+                "clearance_m": 0.009931836349242922,
+                "in_contact": false,
+                "local_grade": 0.01956309689826215,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.033689027221769335,
+                  "y": 0.3106718688673409,
+                  "z": 0.008902986829421335
+                },
+                "surface_elevation_m": 0.008902986829421335,
+                "surface_normal": {
+                  "x": -0.00873817223016134,
+                  "y": 0.029227361270029523,
+                  "z": 0.9995345945485166
+                },
+                "clearance_m": 0.012976791685560683,
+                "in_contact": false,
+                "local_grade": 0.030505643752145022,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.05631097277823066,
+                  "y": 0.3106718688673409,
+                  "z": 0.008171366571516112
+                },
+                "surface_elevation_m": 0.008171366571516112,
+                "surface_normal": {
+                  "x": -0.007416317347284088,
+                  "y": 0.024392220243695754,
+                  "z": 0.9996749560875211
+                },
+                "clearance_m": 0.013708411943465906,
+                "in_contact": false,
+                "local_grade": 0.025494747918200483,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.15878416377761168,
+              "y": 0.02563985428349072,
+              "z": 0.007703157186692969
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.15878416377761168,
+              "y": 0.02563985428349072,
+              "z": 0.007703157186692969
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.007703157186692969,
+            "average_surface_normal": {
+              "x": -0.02127579328693072,
+              "y": -0.013955284071113273,
+              "z": 0.9996762429239311
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.20378416377761166,
+                  "y": -0.04936014571650928,
+                  "z": 0.005508755384769172
+                },
+                "surface_elevation_m": 0.005508755384769172,
+                "surface_normal": {
+                  "x": -0.024383584757991524,
+                  "y": -0.02314613429041523,
+                  "z": 0.9994346888425277
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03361997528613149,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.11378416377761168,
+                  "y": -0.04936014571650928,
+                  "z": 0.007745132036424343
+                },
+                "surface_elevation_m": 0.007745132036424343,
+                "surface_normal": {
+                  "x": -0.025156501838198578,
+                  "y": -0.019745207707477504,
+                  "z": 0.999488507781782
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03198003771334108,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.11378416377761168,
+                  "y": 0.10063985428349072,
+                  "z": 0.009582047900321859
+                },
+                "surface_elevation_m": 0.009582047900321859,
+                "surface_normal": {
+                  "x": -0.018429038075539902,
+                  "y": -0.004018823945983075,
+                  "z": 0.9998220939795748
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01886214172087853,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.20378416377761166,
+                  "y": 0.10063985428349072,
+                  "z": 0.007976693425256504
+                },
+                "surface_elevation_m": 0.007976693425256504,
+                "surface_normal": {
+                  "x": -0.01713093870295688,
+                  "y": -0.008908930568638878,
+                  "z": 0.9998135635683679
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.01930901615104442,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 22,
+      "time_s": 1.9927536231884055,
+      "phase": 0.9166666666666666,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.13252991517042859,
+        "y": -0.015141970870742217,
+        "z": 0.966
+      },
+      "center_of_mass_velocity": {
+        "x": 0.048180246251831434,
+        "y": 0.021599999999999998,
+        "z": 0.018356967278938006
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 1,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.039283275377774235,
+              "y": 0.30723320861720105,
+              "z": 0.007689520981116735
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": false
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.039283275377774235,
+              "y": 0.30723320861720105,
+              "z": 0.007689520981116735
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 0,
+            "min_clearance_m": 0.04822735680464163,
+            "max_clearance_m": 0.052832525418023406,
+            "average_surface_elevation_m": 0.007689520981116735,
+            "average_surface_normal": {
+              "x": -0.006996631005769881,
+              "y": 0.02609442050707943,
+              "z": 0.9996349975730986
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.08428327537777423,
+                  "y": 0.23223320861720104,
+                  "z": 0.009172246529638432
+                },
+                "surface_elevation_m": 0.009172246529638432,
+                "surface_normal": {
+                  "x": -0.010551355094374347,
+                  "y": 0.01549802296852784,
+                  "z": 0.9998242246463822
+                },
+                "clearance_m": 0.04923321032335549,
+                "in_contact": false,
+                "local_grade": 0.01874886157238876,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": 0.005716724622225763,
+                  "y": 0.23223320861720104,
+                  "z": 0.010178100048352292
+                },
+                "surface_elevation_m": 0.010178100048352292,
+                "surface_normal": {
+                  "x": -0.011692560333277749,
+                  "y": 0.020486154394107624,
+                  "z": 0.9997217620473177
+                },
+                "clearance_m": 0.04822735680464163,
+                "in_contact": false,
+                "local_grade": 0.023588100580728313,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": 0.005716724622225763,
+                  "y": 0.38223320861720106,
+                  "z": 0.005834805911505702
+                },
+                "surface_elevation_m": 0.005834805911505702,
+                "surface_normal": {
+                  "x": -0.003874980320842221,
+                  "y": 0.03658712469919937,
+                  "z": 0.9993229542213862
+                },
+                "clearance_m": 0.05257065094148822,
+                "in_contact": false,
+                "local_grade": 0.03679175405225577,
+                "status": "clear"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.08428327537777423,
+                  "y": 0.38223320861720106,
+                  "z": 0.0055729314349705125
+                },
+                "surface_elevation_m": 0.0055729314349705125,
+                "surface_normal": {
+                  "x": -0.001866378258549621,
+                  "y": 0.03180171794499767,
+                  "z": 0.9994924548829486
+                },
+                "clearance_m": 0.052832525418023406,
+                "in_contact": false,
+                "local_grade": 0.03185643784319229,
+                "status": "clear"
+              }
+            ],
+            "status": "patch-clear"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.13252991517042859,
+              "y": -0.015141970870742217,
+              "z": 0.007916220270924828
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.13252991517042859,
+              "y": -0.015141970870742217,
+              "z": 0.007916220270924828
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.007916220270924828,
+            "average_surface_normal": {
+              "x": -0.022630771277697397,
+              "y": -0.015213138177711267,
+              "z": 0.9996281351673543
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.1775299151704286,
+                  "y": -0.09014197087074222,
+                  "z": 0.0055770318979532375
+                },
+                "surface_elevation_m": 0.0055770318979532375,
+                "surface_normal": {
+                  "x": -0.02560551704166363,
+                  "y": -0.024026852772105443,
+                  "z": 0.9993833437890071
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03511313368389893,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.08752991517042859,
+                  "y": -0.09014197087074222,
+                  "z": 0.007909521472783199
+                },
+                "surface_elevation_m": 0.007909521472783199,
+                "surface_normal": {
+                  "x": -0.026061304767762278,
+                  "y": -0.02102464311387116,
+                  "z": 0.9994392291558983
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.033484731210864434,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.08752991517042859,
+                  "y": 0.059858029129257785,
+                  "z": 0.00996618234091853
+                },
+                "surface_elevation_m": 0.00996618234091853,
+                "surface_normal": {
+                  "x": -0.019929638924147508,
+                  "y": -0.005602371242803527,
+                  "z": 0.999785688499696
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.020702103061985933,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.1775299151704286,
+                  "y": 0.059858029129257785,
+                  "z": 0.008212145372044344
+                },
+                "surface_elevation_m": 0.008212145372044344,
+                "surface_normal": {
+                  "x": -0.018923560342218364,
+                  "y": -0.010196625838398612,
+                  "z": 0.9997689371477221
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.021495867382217395,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 7.0200000000000005,
+            "z": 87.75
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    },
+    {
+      "frame_index": 23,
+      "time_s": 2.083333333333333,
+      "phase": 0.9583333333333334,
+      "phase_label": "right-stance-left-swing",
+      "support_foot": "right",
+      "review_id": "noetix-e1-lab-01/right-stance-left-swing",
+      "center_of_mass": {
+        "x": -0.08604828477424298,
+        "y": -0.020882919503867135,
+        "z": 0.977712812921102
+      },
+      "center_of_mass_velocity": {
+        "x": 0.0503439886506941,
+        "y": 0.021599999999999998,
+        "z": 0.010598400000000011
+      },
+      "total_mass_kg": 54,
+      "contact_count": 2,
+      "active_footprint_count": 2,
+      "contacts": [
+        {
+          "contact_id": "left-contact",
+          "footprint": {
+            "footprint_id": "left-sole",
+            "center": {
+              "x": -0.05015116449403094,
+              "y": 0.34529370355306216,
+              "z": 0.006090727226614382
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "left-sole-patch",
+            "center": {
+              "x": -0.05015116449403094,
+              "y": 0.34529370355306216,
+              "z": 0.006090727226614382
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.006090727226614382,
+            "average_surface_normal": {
+              "x": -0.003873064360595272,
+              "y": 0.030912877370613854,
+              "z": 0.9995145788757301
+            },
+            "samples": [
+              {
+                "probe_id": "left-sole-patch/sample/0",
+                "position": {
+                  "x": -0.09515116449403094,
+                  "y": 0.27029370355306215,
+                  "z": 0.008086003360946413
+                },
+                "surface_elevation_m": 0.008086003360946413,
+                "surface_normal": {
+                  "x": -0.00719038082771609,
+                  "y": 0.021162359972363636,
+                  "z": 0.9997501952707749
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.022350549345541506,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/1",
+                "position": {
+                  "x": -0.005151164494030948,
+                  "y": 0.27029370355306215,
+                  "z": 0.008805648000049009
+                },
+                "surface_elevation_m": 0.008805648000049009,
+                "surface_normal": {
+                  "x": -0.008705246867913142,
+                  "y": 0.026233449338890377,
+                  "z": 0.9996179394212333
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.027640101071585096,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/2",
+                "position": {
+                  "x": -0.005151164494030948,
+                  "y": 0.42029370355306217,
+                  "z": 0.003727896272455642
+                },
+                "surface_elevation_m": 0.003727896272455642,
+                "surface_normal": {
+                  "x": -0.0009819828915160896,
+                  "y": 0.040419729160631135,
+                  "z": 0.9991823062905896
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.040431655862925096,
+                "status": "contact"
+              },
+              {
+                "probe_id": "left-sole-patch/sample/3",
+                "position": {
+                  "x": -0.09515116449403094,
+                  "y": 0.42029370355306217,
+                  "z": 0.003743361273006467
+                },
+                "surface_elevation_m": 0.003743361273006467,
+                "surface_normal": {
+                  "x": 0.0013859381948923078,
+                  "y": 0.0358313014308316,
+                  "z": 0.9993568917124116
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.035858095137739486,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        },
+        {
+          "contact_id": "right-contact",
+          "footprint": {
+            "footprint_id": "right-sole",
+            "center": {
+              "x": -0.09212119111984621,
+              "y": -0.08283096214392853,
+              "z": 0.008004046936035496
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "active": true
+          },
+          "patch": {
+            "patch_id": "right-sole-patch",
+            "center": {
+              "x": -0.09212119111984621,
+              "y": -0.08283096214392853,
+              "z": 0.008004046936035496
+            },
+            "half_length_m": 0.12,
+            "half_width_m": 0.09,
+            "sample_count": 4,
+            "contact_count": 4,
+            "min_clearance_m": 0,
+            "max_clearance_m": 0,
+            "average_surface_elevation_m": 0.008004046936035496,
+            "average_surface_normal": {
+              "x": -0.02481227638020424,
+              "y": -0.01844667586954178,
+              "z": 0.99952192126546
+            },
+            "samples": [
+              {
+                "probe_id": "right-sole-patch/sample/0",
+                "position": {
+                  "x": -0.13712119111984622,
+                  "y": -0.15783096214392853,
+                  "z": 0.0053459644685263305
+                },
+                "surface_elevation_m": 0.0053459644685263305,
+                "surface_normal": {
+                  "x": -0.02745240303090124,
+                  "y": -0.026287804135379827,
+                  "z": 0.9992773973835138
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.038008986811425644,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/1",
+                "position": {
+                  "x": -0.04712119111984621,
+                  "y": -0.15783096214392853,
+                  "z": 0.007820382692960662
+                },
+                "surface_elevation_m": 0.007820382692960662,
+                "surface_normal": {
+                  "x": -0.02735459518640221,
+                  "y": -0.024109445672166108,
+                  "z": 0.9993350092694485
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.03646284750854036,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/2",
+                "position": {
+                  "x": -0.04712119111984621,
+                  "y": -0.007830962143928533,
+                  "z": 0.010428031671876148
+                },
+                "surface_elevation_m": 0.010428031671876148,
+                "surface_normal": {
+                  "x": -0.022452574057996513,
+                  "y": -0.009712319170650588,
+                  "z": 0.9997007316064631
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.024463181017651915,
+                "status": "contact"
+              },
+              {
+                "probe_id": "right-sole-patch/sample/3",
+                "position": {
+                  "x": -0.13712119111984622,
+                  "y": -0.007830962143928533,
+                  "z": 0.008421808910778846
+                },
+                "surface_elevation_m": 0.008421808910778846,
+                "surface_normal": {
+                  "x": -0.021986807129097966,
+                  "y": -0.013675107769928013,
+                  "z": 0.9996647296667761
+                },
+                "clearance_m": 0,
+                "in_contact": true,
+                "local_grade": 0.025892629458038798,
+                "status": "contact"
+              }
+            ],
+            "status": "patch-contact"
+          },
+          "applied_force_n": {
+            "x": 0,
+            "y": 3.5100000000000002,
+            "z": 43.875
+          }
+        }
+      ],
+      "status": "moonrobo-authored-contact-frame-ready"
+    }
+  ],
   "authored_motor_frames": [
     {
       "frame_index": 0,

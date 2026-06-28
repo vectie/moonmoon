@@ -112,6 +112,7 @@ function validateWalkClip(clip, requiredJointIds) {
     'joint_curve_params',
     'authored_joint_samples',
     'authored_motion_samples',
+    'authored_contact_frames',
     'authored_motor_frames',
     'blockers',
   ]) {
@@ -159,6 +160,9 @@ function validateWalkClip(clip, requiredJointIds) {
   if (clip.authored_motion_samples.length !== clip.sample_count) {
     throw new Error('Moonrobo walk clip authored_motion_samples length must match sample_count')
   }
+  if (clip.authored_contact_frames.length !== clip.sample_count) {
+    throw new Error('Moonrobo walk clip authored_contact_frames length must match sample_count')
+  }
   if (clip.authored_motor_frames.length !== clip.sample_count) {
     throw new Error('Moonrobo walk clip authored_motor_frames length must match sample_count')
   }
@@ -202,6 +206,29 @@ function validateWalkClip(clip, requiredJointIds) {
     }
     if (sample.left_foot_x_m < 0 || sample.right_foot_x_m > 0) {
       throw new Error(`Moonrobo walk clip authored foot sample has wrong side sign at phase ${sample.phase}`)
+    }
+  }
+  for (const frame of clip.authored_contact_frames) {
+    for (const field of ['frame_index', 'contact_count', 'active_footprint_count']) {
+      requireField(frame, field, 'number')
+    }
+    for (const field of ['time_s', 'phase', 'total_mass_kg']) {
+      requireField(frame, field, 'number')
+    }
+    for (const field of ['phase_label', 'support_foot', 'review_id', 'status']) {
+      requireField(frame, field, 'string')
+    }
+    validateVec3(frame.center_of_mass, `contact frame ${frame.frame_index} center_of_mass`)
+    validateVec3(frame.center_of_mass_velocity, `contact frame ${frame.frame_index} center_of_mass_velocity`)
+    requireArray(frame, 'contacts')
+    if (frame.contacts.length !== 2) {
+      throw new Error(`Moonrobo contact frame ${frame.frame_index} must include both feet`)
+    }
+    if (frame.active_footprint_count <= 0 || frame.status.includes('review')) {
+      throw new Error(`Moonrobo contact frame ${frame.frame_index} is not support-ready: ${frame.status}`)
+    }
+    for (const contact of frame.contacts) {
+      validateContact(contact, frame.frame_index)
     }
   }
   for (const frame of clip.authored_motor_frames) {
@@ -273,6 +300,69 @@ function validateWalkClip(clip, requiredJointIds) {
     if (!clip.joint_curve_params.some(param => param.name === required)) {
       throw new Error(`Moonrobo walk clip omits joint curve parameter ${required}`)
     }
+  }
+}
+
+function validateVec3(value, label) {
+  if (!value || typeof value !== 'object') {
+    throw new Error(`Moonrobo ${label} must be an object`)
+  }
+  for (const field of ['x', 'y', 'z']) {
+    requireField(value, field, 'number')
+  }
+}
+
+function validateContact(contact, frameIndex) {
+  requireField(contact, 'contact_id', 'string')
+  validateVec3(contact.applied_force_n, `contact ${contact.contact_id} applied_force_n`)
+  if (!contact.footprint || typeof contact.footprint !== 'object') {
+    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} needs a footprint`)
+  }
+  requireField(contact.footprint, 'footprint_id', 'string')
+  validateVec3(contact.footprint.center, `contact ${contact.contact_id} footprint center`)
+  for (const field of ['half_length_m', 'half_width_m']) {
+    requireField(contact.footprint, field, 'number')
+  }
+  requireField(contact.footprint, 'active', 'boolean')
+  if (!contact.patch || typeof contact.patch !== 'object') {
+    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} needs a patch`)
+  }
+  requireField(contact.patch, 'patch_id', 'string')
+  validateVec3(contact.patch.center, `contact ${contact.contact_id} patch center`)
+  for (const field of [
+    'half_length_m',
+    'half_width_m',
+    'sample_count',
+    'contact_count',
+    'min_clearance_m',
+    'max_clearance_m',
+    'average_surface_elevation_m',
+  ]) {
+    requireField(contact.patch, field, 'number')
+  }
+  validateVec3(contact.patch.average_surface_normal, `contact ${contact.contact_id} patch normal`)
+  requireField(contact.patch, 'status', 'string')
+  requireArray(contact.patch, 'samples')
+  if (contact.patch.samples.length !== 4) {
+    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} must have four patch samples`)
+  }
+  if (contact.footprint.active) {
+    if (contact.patch.contact_count !== contact.patch.samples.length || contact.patch.status !== 'patch-contact') {
+      throw new Error(`Moonrobo active contact ${contact.contact_id} in frame ${frameIndex} is not patch-contact`)
+    }
+    if (contact.applied_force_n.z <= 0) {
+      throw new Error(`Moonrobo active contact ${contact.contact_id} in frame ${frameIndex} has no normal load`)
+    }
+  }
+  for (const sample of contact.patch.samples) {
+    requireField(sample, 'probe_id', 'string')
+    validateVec3(sample.position, `contact ${contact.contact_id} probe position`)
+    validateVec3(sample.surface_normal, `contact ${contact.contact_id} probe normal`)
+    for (const field of ['surface_elevation_m', 'clearance_m', 'local_grade']) {
+      requireField(sample, field, 'number')
+    }
+    requireField(sample, 'in_contact', 'boolean')
+    requireField(sample, 'status', 'string')
   }
 }
 
@@ -387,6 +477,68 @@ function mbAuthoredMotionSample(sample) {
   ${mbDouble(sample.right_foot_z_m)},
   ${mbDouble(sample.right_foot_roll_pitch_rad)},
 )`
+}
+
+function mbVec3(value) {
+  return `{ x: ${mbDouble(value.x)}, y: ${mbDouble(value.y)}, z: ${mbDouble(value.z)} }`
+}
+
+function mbContactProbe(sample) {
+  return `{
+  probe_id: ${mbString(sample.probe_id)},
+  position: ${mbVec3(sample.position)},
+  surface_elevation_m: ${mbDouble(sample.surface_elevation_m)},
+  surface_normal: ${mbVec3(sample.surface_normal)},
+  clearance_m: ${mbDouble(sample.clearance_m)},
+  in_contact: ${mbBool(sample.in_contact)},
+  local_grade: ${mbDouble(sample.local_grade)},
+  status: ${mbString(sample.status)},
+}`
+}
+
+function mbContactPatch(patch) {
+  return `{
+  patch_id: ${mbString(patch.patch_id)},
+  center: ${mbVec3(patch.center)},
+  half_length_m: ${mbDouble(patch.half_length_m)},
+  half_width_m: ${mbDouble(patch.half_width_m)},
+  sample_count: ${patch.sample_count},
+  contact_count: ${patch.contact_count},
+  min_clearance_m: ${mbDouble(patch.min_clearance_m)},
+  max_clearance_m: ${mbDouble(patch.max_clearance_m)},
+  average_surface_elevation_m: ${mbDouble(patch.average_surface_elevation_m)},
+  average_surface_normal: ${mbVec3(patch.average_surface_normal)},
+  samples: ${indent(mbArray(patch.samples, mbContactProbe), 2).trimStart()},
+  status: ${mbString(patch.status)},
+}`
+}
+
+function mbContact(contact) {
+  return `{
+  contact_id: ${mbString(contact.contact_id)},
+  footprint: {
+    footprint_id: ${mbString(contact.footprint.footprint_id)},
+    center: ${mbVec3(contact.footprint.center)},
+    half_length_m: ${mbDouble(contact.footprint.half_length_m)},
+    half_width_m: ${mbDouble(contact.footprint.half_width_m)},
+    active: ${mbBool(contact.footprint.active)},
+  },
+  patch: ${indent(mbContactPatch(contact.patch), 2).trimStart()},
+  applied_force_n: ${mbVec3(contact.applied_force_n)},
+}`
+}
+
+function mbContactFrame(frame) {
+  return `{
+  time_s: ${mbDouble(frame.time_s)},
+  phase_label: ${mbString(frame.phase_label)},
+  support_foot: ${mbString(frame.support_foot)},
+  review_id: ${mbString(frame.review_id)},
+  center_of_mass: ${mbVec3(frame.center_of_mass)},
+  center_of_mass_velocity: ${mbVec3(frame.center_of_mass_velocity)},
+  total_mass_kg: ${mbDouble(frame.total_mass_kg)},
+  contacts: ${indent(mbArray(frame.contacts, mbContact), 2).trimStart()},
+}`
 }
 
 function mbMotorTargetStep(step) {
@@ -514,6 +666,11 @@ fn generated_moonrobo_noetix_walk_clip_source() -> String {
 }
 
 ///|
+fn generated_moonrobo_noetix_contact_frame_source() -> String {
+  ${mbString(`${clip.source}#authored_contact_frames`)}
+}
+
+///|
 fn generated_moonrobo_noetix_walk_cycle_hz() -> Double {
   ${mbDouble(clip.cycle_hz)}
 }
@@ -576,6 +733,13 @@ fn generated_moonrobo_noetix_authored_motion_samples() -> Array[
   SuiteAdapterAuthoredMotionSample,
 ] {
   ${indent(mbArray(clip.authored_motion_samples, mbAuthoredMotionSample), 2).trimStart()}
+}
+
+///|
+fn generated_moonrobo_noetix_contact_frames() -> Array[
+  RabbitaNoetixGeneratedMotionFrame,
+] {
+  ${indent(mbArray(clip.authored_contact_frames, mbContactFrame), 2).trimStart()}
 }
 
 ///|
@@ -650,6 +814,7 @@ function generatedJsContent(contract) {
     joint_curve_params: clip.joint_curve_params,
     authored_joint_samples: clip.authored_joint_samples,
     authored_motion_samples: clip.authored_motion_samples,
+    authored_contact_frames: clip.authored_contact_frames,
     authored_motor_frames: clip.authored_motor_frames,
     ready: clip.ready,
     status: clip.status,

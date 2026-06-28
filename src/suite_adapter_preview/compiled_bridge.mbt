@@ -5,8 +5,11 @@ pub fn compiled_moonphys_bridge_environment_id() -> String {
 
 ///|
 pub fn compiled_moonphys_bridge_status() -> String {
-  let motion_frames = generated_rabbita_noetix_motion_frames()
-  let hinge_frames = generated_rabbita_noetix_hinge_frames()
+  let motion_frames = generated_moonrobo_noetix_contact_frames()
+  let ui_motion_frames = generated_rabbita_noetix_motion_frames()
+  let hinge_frames = generated_moonrobo_noetix_authored_motor_frames()
+  let ui_hinge_frames = generated_rabbita_noetix_hinge_frames()
+  let ui_hinge_gate = generated_rabbita_noetix_hinge_ui_gate()
   let field = @moonphys.heightfield(
     "rabbita-noetix-generated-flat-field",
     1,
@@ -23,31 +26,34 @@ pub fn compiled_moonphys_bridge_status() -> String {
     hinge,
     replay,
   )
-  if generated_rabbita_noetix_evidence_source() ==
-    "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics" &&
-    motion_frames.length() == 24 &&
+  if motion_frames.length() == 24 &&
+    ui_motion_frames.length() == 24 &&
     hinge_frames.length() == 24 &&
+    ui_hinge_frames.length() == 24 &&
+    ui_hinge_gate &&
     motion_frames[0].time_s == 0.0 &&
     motion_frames[0].phase_label == "left-stance-right-swing" &&
     motion_frames[0].support_foot == "left" &&
     hinge_frames[0].time_s == 0.0 &&
+    ui_hinge_frames[0].time_s == 0.0 &&
     hinge.status == "world-heightfield-hinge-motor-trace-driven" &&
     hinge.review_count == 0 &&
     motion.ready &&
     replay.ready &&
     review.ready &&
     review.status == "motion-hinge-replay-review-ready" {
-    "rabbita-noetix-generated-review-ready"
-  } else if generated_rabbita_noetix_evidence_source() ==
-    "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics" &&
-    motion_frames.length() == 24 &&
+    "moonrobo-noetix-generated-review-ready"
+  } else if motion_frames.length() == 24 &&
+    ui_motion_frames.length() == 24 &&
     hinge_frames.length() == 24 &&
+    ui_hinge_frames.length() == 24 &&
+    ui_hinge_gate &&
     hinge.status == "world-heightfield-hinge-motor-trace-driven" &&
     hinge.review_count == 0 &&
     !review.ready &&
     review.status == "motion-hinge-replay-review-blocked" {
-    "rabbita-noetix-generated-review-blocked"
+    "moonrobo-noetix-generated-review-blocked"
   } else {
-    "rabbita-noetix-generated-review-mismatch"
+    "moonrobo-noetix-generated-review-mismatch"
   }
 }

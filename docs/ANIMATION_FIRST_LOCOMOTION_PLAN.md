@@ -413,13 +413,14 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    cycle rate, root speed, stride, foot phase sequence, foot roles, support
    windows, curve metadata, the typed Moonrobo-authored joint sample table, and
    typed authored motion samples for root bob/sway, torso counter-rotation,
-   foot roll, root-local foot targets, and typed authored motor frames for the
-   Moonphys hinge replay. Rabbita interpolates those generated samples instead
-   of owning the leg/arm, root, torso, foot-roll, authored foot-target, or hinge
-   motor target formulas in `gait-clip.js` and `scene3d.js`. `npm run
+   foot roll, root-local foot targets, typed authored FK/contact frames, and
+   typed authored motor frames for Moonphys review. Rabbita interpolates those
+   generated samples instead of owning the leg/arm, root, torso, foot-roll,
+   authored foot-target, FK/contact, or hinge motor target formulas in
+   `gait-clip.js` and `scene3d.js`. The compiled Moonphys bridge now consumes
+   Moonrobo-authored contact frames and Moonrobo-authored motor frames directly;
+   Rabbita-generated evidence remains a browser/UI freshness gate. `npm run
    check:gait` verifies the contract bridge freshness, runtime authored-sample
-   consumption, Moonrobo-authored hinge motor trace consumption, and Rabbita
-   gait evidence freshness. The next Phase 5/D target is replacing the
-   remaining preview-only FK/contact evidence with typed Moonrobo adapter
-   output; the next Phase 10 target is replacing the remaining Rabbita preview
-   motion evidence with live Moonrobo adapter regeneration.
+   consumption, Moonrobo-authored contact and hinge motor trace consumption,
+   and Rabbita UI evidence freshness. The next Phase 10 target is replacing
+   generated snapshots with live Moonrobo adapter regeneration.

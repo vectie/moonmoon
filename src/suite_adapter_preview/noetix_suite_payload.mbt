@@ -353,7 +353,7 @@ fn noetix_required_driven_joint_ids() -> Array[String] {
 ///|
 fn noetix_generated_driven_joint_ids() -> Array[String] {
   let ids : Array[String] = []
-  let frames = generated_rabbita_noetix_hinge_frames()
+  let frames = generated_moonrobo_noetix_authored_motor_frames()
   if frames.length() > 0 {
     for step in frames[0].steps {
       ids.push(step.joint_id)
@@ -428,6 +428,12 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       "moonrobo-walk-clip-authored-motion-sample-count:\{generated_moonrobo_noetix_authored_motion_samples().length()}",
     )
   }
+  if generated_moonrobo_noetix_contact_frames().length() !=
+    generated_moonrobo_noetix_walk_sample_count() {
+    blockers.push(
+      "moonrobo-walk-clip-contact-frame-count:\{generated_moonrobo_noetix_contact_frames().length()}",
+    )
+  }
   if generated_moonrobo_noetix_authored_motor_frames().length() !=
     generated_moonrobo_noetix_walk_sample_count() {
     blockers.push(
@@ -468,6 +474,17 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       blockers.push("moonrobo-walk-clip-authored-foot-side:\{sample.phase}")
     }
   }
+  for frame in generated_moonrobo_noetix_contact_frames() {
+    if frame.contacts.length() != 2 {
+      blockers.push("moonrobo-walk-clip-contact-count:\{frame.time_s}")
+    }
+    if !frame.contacts.any(fn(contact) { contact.footprint.active }) {
+      blockers.push("moonrobo-walk-clip-contact-no-active-foot:\{frame.time_s}")
+    }
+    if frame.total_mass_kg <= 0.0 {
+      blockers.push("moonrobo-walk-clip-contact-mass:\{frame.time_s}")
+    }
+  }
   for frame in generated_moonrobo_noetix_authored_motor_frames() {
     if frame.joint_count != noetix_required_driven_joint_ids().length() {
       blockers.push(
@@ -501,11 +518,20 @@ pub fn moonrobo_noetix_suite_source_refs() -> Array[SuiteAdapterSourceRef] {
   }
   refs.push(
     noetix_suite_source_ref(
-      "rabbita-noetix-generated-gait",
+      "moonrobo-noetix-authored-contact-frames",
+      "moonrobo.moonmoon-adapter-contact-evidence",
+      generated_moonrobo_noetix_contact_frame_source(),
+      "typed Moonrobo FK/contact evidence consumed by compiled Moonphys",
+      "generated-from-typed-source",
+    ),
+  )
+  refs.push(
+    noetix_suite_source_ref(
+      "rabbita-noetix-generated-ui-evidence",
       "moonmoon.rabbita.generated-evidence",
       generated_rabbita_noetix_evidence_source(),
-      "sampled FK/contact/motor evidence consumed by compiled Moonphys",
-      "generated",
+      "browser visualization evidence and hinge replay freshness gate",
+      "generated-ui-gate",
     ),
   )
   refs
@@ -529,7 +555,7 @@ fn moonrobo_noetix_suite_payload_blockers(
   for blocker in moonrobo_noetix_source_contract_bridge_blockers() {
     blockers.push(blocker)
   }
-  if review_status != "rabbita-noetix-generated-review-ready" {
+  if review_status != "moonrobo-noetix-generated-review-ready" {
     blockers.push("compiled-review:\{review_status}")
   }
   if frame_count <= 0 {
@@ -544,7 +570,7 @@ fn moonrobo_noetix_suite_payload_blockers(
 ///|
 pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
   let driven_joint_ids = noetix_generated_driven_joint_ids()
-  let frame_count = generated_rabbita_noetix_motion_frames().length()
+  let frame_count = generated_moonrobo_noetix_contact_frames().length()
   let review_status = compiled_moonphys_bridge_status()
   let blockers = moonrobo_noetix_suite_payload_blockers(
     review_status, driven_joint_ids, frame_count,
@@ -557,7 +583,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     profile_path: generated_moonrobo_noetix_profile_path(),
     urdf_path: generated_moonrobo_noetix_urdf_path(),
     mesh_paths: generated_moonrobo_noetix_mesh_paths(),
-    evidence_source: generated_rabbita_noetix_evidence_source(),
+    evidence_source: generated_moonrobo_noetix_contact_frame_source(),
     motion_trace_id: generated_rabbita_noetix_motion_trace_id(),
     hinge_trace_id: generated_rabbita_noetix_hinge_trace_id(),
     combined_review_id: generated_rabbita_noetix_combined_review_id(),

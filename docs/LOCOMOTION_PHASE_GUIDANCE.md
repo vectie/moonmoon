@@ -143,18 +143,23 @@ joint curve parameters. It now also evaluates those curve parameters into a
 typed 24-frame authored joint sample table for hip, knee, ankle, shoulder, and
 elbow targets on both sides, plus authored motion samples for root bob/sway,
 torso counter-rotation, foot roll, and root-local foot targets. It also exports
-typed authored motor frames with per-joint position, velocity, torque, work,
-limit, and review status fields for the Moonphys hinge replay.
+typed authored FK/contact frames with support footprints, contact patches,
+terrain probes, applied lunar loads, COM state, and review status, plus typed
+authored motor frames with per-joint position, velocity, torque, work, limit,
+and review status fields for the Moonphys hinge replay.
 Moonmoon regenerates durable suite metadata from that contract through
 `ui/rabbita-moon/export-moonrobo-contract.mjs`, which now also emits
 `ui/rabbita-moon/generated-moonrobo-noetix-clip.js`. The Rabbita runtime imports
 that generated JS bridge for cycle rate, root speed, stride, foot phase
 sequence, foot roles, support windows, curve metadata, authored joint samples,
-authored motion samples, and authored motor frames. Rabbita now interpolates
+authored motion samples, authored contact frames, and authored motor frames.
+Rabbita now interpolates
 the generated sample tables instead of owning the leg/arm, root bob/sway,
 torso, foot-roll, authored foot-target, or hinge motor target formulas. The
-remaining Phase 5 feature is to replace the remaining preview-only FK/contact
-evidence with typed Moonrobo adapter output.
+compiled Moonphys review now consumes Moonrobo-authored contact frames and
+Moonrobo-authored motor frames directly; Rabbita's generated evidence remains a
+browser/UI freshness gate. The remaining Phase 5 feature is live adapter
+regeneration instead of generated snapshots.
 
 Deliverables:
 
@@ -299,19 +304,21 @@ Acceptance:
 - Moonphys remains robot-agnostic
 
 Status: active in `src/suite_adapter_preview` as a suite-side compiled
-Moonphys review of a generated Rabbita/Moonrobo Noetix evidence artifact.
-`npm run check:gait` verifies that artifact is fresh. The current generated
-walk now clears the compiled Moonphys motion, hinge, replay, support, capture,
+Moonphys review of typed Moonrobo Noetix contact and motor evidence, with the
+Rabbita generated artifact retained as a browser/UI freshness gate. `npm run
+check:gait` verifies both generated paths are fresh. The current generated walk
+now clears the compiled Moonphys motion, hinge, replay, support, capture,
 contact, torque, pressure, velocity, effort, motion-side momentum, and
 motion-side kinetic-energy review gate. The preview now also exposes a typed
 `NoetixSuiteAdapterPayload` that binds the compiled review to Moonrobo source
 references regenerated from `../moonrobo/src/moonmoon_adapter`, including
 `../moonrobo/examples/noetix-e1/robot.json`,
 `../moonrobo/examples/noetix-e1/model/robot.urdf`, and the base mesh.
-`npm run check:gait` now runs both the Rabbita evidence freshness gate and the
-Moonrobo typed-contract freshness gate. The next work is visual walk-cycle
-polish and replacing the preview motion evidence itself with live Moonrobo
-adapter regeneration.
+`npm run check:gait` now runs the Rabbita UI evidence freshness gate, the
+Moonrobo typed-contract freshness gate, and the compiled Moonphys bridge over
+Moonrobo-authored contact and motor frames. The next work is visual walk-cycle
+polish and replacing generated snapshots with live Moonrobo adapter
+regeneration.
 
 ## Phase 10: Durable Suite Evidence
 
@@ -340,10 +347,10 @@ consumption.
 `ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it. The Moonmoon
 payload consumes those generated source-contract and walk-clip fields, the
 Rabbita runtime consumes the generated JS clip bridge including authored joint,
-motion, and motor-frame samples, and the payload includes the typed Moonrobo
-adapter contract as a durable source ref. This still uses Rabbita for sampled
-FK/contact evidence; the remaining Phase 10 feature is to replace that preview
-motion evidence with live Moonrobo adapter regeneration.
+motion, contact-frame, and motor-frame samples. The compiled Moonphys bridge
+uses the Moonrobo contact and motor frames directly, while the Rabbita artifact
+is checked as the visual/browser evidence gate. The remaining Phase 10 feature
+is to replace generated snapshots with live Moonrobo adapter regeneration.
 
 Acceptance:
 
