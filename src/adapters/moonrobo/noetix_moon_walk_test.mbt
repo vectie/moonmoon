@@ -859,7 +859,24 @@ test "noetix robot rig exposes urdf nodes visuals and motion frames" {
   assert_eq(rig.visual_count, 6)
   assert_eq(rig.mesh_visual_count, 1)
   assert_eq(rig.primitive_visual_count, 5)
+  assert_eq(rig.mesh_asset_count, 1)
   assert_eq(rig.status, "urdf-rigid-rig-ready")
+  let base_asset = rig.mesh_assets[0]
+  assert_eq(base_asset.mesh_asset_id, "moonrobo/noetix-e1/mesh/base.obj")
+  assert_true(base_asset.mesh_path.contains("meshes/base.obj"))
+  assert_eq(base_asset.mesh_extension, "obj")
+  assert_eq(base_asset.vertex_count, 8)
+  assert_eq(base_asset.face_count, 6)
+  assert_eq(base_asset.vertices.length(), 8)
+  assert_eq(base_asset.faces.length(), 6)
+  assert_true(base_asset.vertices[0] == @moonphys.vec3(-0.12, -0.10, 0.0))
+  assert_eq(base_asset.faces[0].vertex_indices.length(), 4)
+  assert_eq(base_asset.faces[0].vertex_indices[0], 0)
+  assert_eq(base_asset.faces[0].vertex_indices[3], 3)
+  assert_eq(
+    base_asset.source_status,
+    "obj-vertices-from-moonrobo-noetix-base-mesh",
+  )
   assert_true(
     rig.nodes.any(fn(node) {
       node.link_name == "base_link" &&
@@ -871,6 +888,7 @@ test "noetix robot rig exposes urdf nodes visuals and motion frames" {
     rig.visuals.any(fn(visual) {
       visual.link_name == "base_link" &&
       visual.kind == SourceMeshGeometry &&
+      visual.mesh_asset_id == "moonrobo/noetix-e1/mesh/base.obj" &&
       visual.mesh_path.contains("base.obj")
     }),
   )
@@ -904,12 +922,16 @@ test "noetix robot rig exposes urdf nodes visuals and motion frames" {
   assert_eq(render.mesh_instance_count, 1)
   assert_eq(render.primitive_instance_count, 5)
   assert_eq(render.missing_pose_count, 0)
+  assert_eq(render.mesh_assets.length(), 1)
+  assert_eq(render.mesh_assets[0].vertex_count, 8)
+  assert_eq(render.mesh_assets[0].face_count, 6)
   assert_eq(render.status, "robot-rig-render-frame-ready")
   assert_true(render.note.contains("animation results and mesh render parts"))
   assert_true(
     render.visual_instances.any(fn(instance) {
       instance.link_name == "base_link" &&
       instance.render_kind == "mesh" &&
+      instance.mesh_asset_id == "moonrobo/noetix-e1/mesh/base.obj" &&
       instance.mesh_extension == "obj" &&
       instance.loader_status == "mesh-loader-obj-ready" &&
       instance.mesh_path.contains("base.obj")
@@ -937,6 +959,10 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_eq(poses.rig_motion_contract_status, "robot-rig-motion-contract-ready")
   assert_eq(poses.primary_render_source, "robot-rig-visual-instances")
   assert_eq(poses.visual_instances_per_frame, 6)
+  assert_eq(poses.mesh_asset_count, 1)
+  assert_eq(poses.mesh_assets.length(), 1)
+  assert_eq(poses.mesh_assets[0].vertex_count, 8)
+  assert_eq(poses.mesh_assets[0].face_count, 6)
   assert_eq(poses.visual_geometry_link_count, 6)
   assert_eq(poses.mesh_visual_geometry_link_count, 1)
   assert_eq(poses.primitive_visual_geometry_link_count, 5)
@@ -970,6 +996,7 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("missing collision/inertial metadata"))
   assert_true(poses.note.contains("RobotRig plus RobotMotionFrame"))
   assert_true(poses.note.contains("RobotRig visual instances"))
+  assert_true(poses.note.contains("OBJ vertices/faces"))
   assert_true(poses.note.contains("Debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
   assert_eq(first.robot_rig_id, poses.robot_rig_id)
@@ -983,6 +1010,7 @@ test "noetix link pose trace binds feet to walk contact probes" {
       instance.link_name == "base_link" &&
       instance.kind == SourceMeshGeometry &&
       instance.render_kind == "mesh" &&
+      instance.mesh_asset_id == "moonrobo/noetix-e1/mesh/base.obj" &&
       instance.mesh_extension == "obj" &&
       instance.loader_status == "mesh-loader-obj-ready"
     }),

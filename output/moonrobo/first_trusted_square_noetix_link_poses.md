@@ -12,6 +12,7 @@
 - frames: 32
 - links per frame: 25
 - visual instances per frame: 6
+- mesh assets: 1
 - visual geometry links: 6
 - mesh visual geometry links: 1
 - primitive visual geometry links: 5
@@ -21,7 +22,7 @@
 - missing collision links: 25
 - missing inertial links: 25
 - status: review-only
-- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual and primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then contact probes are recorded as review annotations with FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
+- note: URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then contact probes are recorded as review annotations with FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.
 
 ## Frame Prefix
 

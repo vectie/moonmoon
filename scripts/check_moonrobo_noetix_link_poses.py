@@ -53,6 +53,29 @@ def main() -> None:
         fail("expected five primitive visual geometry links")
     if trace.get("rig_render_contract_status") != "urdf-rigid-visual-contract-ready":
         fail("rig render contract should be ready for current URDF visuals")
+    if trace.get("mesh_asset_count") != 1:
+        fail("expected one resolved mesh asset")
+    mesh_assets = trace.get("mesh_assets", [])
+    if len(mesh_assets) != 1:
+        fail("trace should carry the resolved base mesh asset")
+    base_asset = mesh_assets[0]
+    if base_asset.get("mesh_asset_id") != "moonrobo/noetix-e1/mesh/base.obj":
+        fail("base mesh asset id should be stable")
+    if not base_asset.get("mesh_path", "").endswith("meshes/base.obj"):
+        fail("base mesh asset should preserve Moonrobo source path")
+    if base_asset.get("mesh_extension") != "obj":
+        fail("base mesh asset should preserve OBJ extension")
+    if base_asset.get("vertex_count") != 8:
+        fail("base OBJ mesh should carry eight vertices")
+    if base_asset.get("face_count") != 6:
+        fail("base OBJ mesh should carry six faces")
+    if len(base_asset.get("vertices", [])) != 8 or len(base_asset.get("faces", [])) != 6:
+        fail("base OBJ mesh should carry concrete vertices and faces")
+    first_vertex = base_asset["vertices"][0]
+    if first_vertex != {"x": -0.12, "y": -0.1, "z": 0}:
+        fail("base OBJ first vertex should match Moonrobo source mesh")
+    if base_asset["faces"][0].get("vertex_indices") != [0, 1, 2, 3]:
+        fail("base OBJ first face should match Moonrobo source mesh")
     if trace.get("collision_metadata_link_count") != 0:
         fail("link pose trace should not claim authoritative collision metadata")
     if trace.get("inertial_metadata_link_count") != 0:
@@ -77,6 +100,10 @@ def main() -> None:
         fail("trace note must name the robot rig and motion frame contract")
     if "RobotRig visual instances" not in trace.get("note", ""):
         fail("trace note must name robot rig visual instances as primary render source")
+    if "OBJ vertices/faces from the Moonrobo Noetix base mesh" not in trace.get(
+        "note", ""
+    ):
+        fail("trace note must name the Moonrobo OBJ mesh asset")
     if "Debug sticks are only a link-tree overlay" not in trace.get("note", ""):
         fail("trace note must keep sticks as debug overlay only")
     physical_metadata = {
@@ -129,6 +156,8 @@ def main() -> None:
     base_instance = visual_by_link.get("base_link", {})
     if base_instance.get("render_kind") != "mesh":
         fail("base visual instance should render as mesh")
+    if base_instance.get("mesh_asset_id") != "moonrobo/noetix-e1/mesh/base.obj":
+        fail("base visual instance should reference the resolved mesh asset")
     if base_instance.get("mesh_extension") != "obj":
         fail("base visual instance should preserve OBJ extension")
     if base_instance.get("loader_status") != "mesh-loader-obj-ready":

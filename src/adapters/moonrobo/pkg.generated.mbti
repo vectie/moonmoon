@@ -733,6 +733,8 @@ pub(all) struct NoetixLinkPoseTrace {
   frame_count : Int
   links_per_frame : Int
   visual_instances_per_frame : Int
+  mesh_asset_count : Int
+  mesh_assets : Array[RobotRigMeshAsset]
   visual_geometry_link_count : Int
   mesh_visual_geometry_link_count : Int
   primitive_visual_geometry_link_count : Int
@@ -1509,8 +1511,10 @@ pub(all) struct RobotRig {
   visual_count : Int
   mesh_visual_count : Int
   primitive_visual_count : Int
+  mesh_asset_count : Int
   nodes : Array[RobotRigNode]
   visuals : Array[RobotRigVisual]
+  mesh_assets : Array[RobotRigMeshAsset]
   status : String
   note : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -1522,6 +1526,22 @@ pub(all) struct RobotRigLinkPose {
   joint_position_rad : Double
   world_transform : @moonphys.Transform3
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigMeshAsset {
+  mesh_asset_id : String
+  mesh_path : String
+  mesh_extension : String
+  vertex_count : Int
+  face_count : Int
+  vertices : Array[@moonphys.Vec3]
+  faces : Array[RobotRigMeshFace]
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigMeshFace {
+  face_index : Int
+  vertex_indices : Array[Int]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotRigNode {
@@ -1557,6 +1577,7 @@ pub(all) struct RobotRigRenderFrame {
   mesh_instance_count : Int
   primitive_instance_count : Int
   missing_pose_count : Int
+  mesh_assets : Array[RobotRigMeshAsset]
   visual_instances : Array[RobotRigVisualInstance]
   status : String
   note : String
@@ -1566,6 +1587,7 @@ pub(all) struct RobotRigVisual {
   visual_index : Int
   link_name : String
   kind : NoetixSourceGeometryKind
+  mesh_asset_id : String
   size_m : @moonphys.Vec3
   radius_m : Double
   length_m : Double
@@ -1581,6 +1603,7 @@ pub(all) struct RobotRigVisualInstance {
   role : String
   side : String
   kind : NoetixSourceGeometryKind
+  mesh_asset_id : String
   size_m : @moonphys.Vec3
   radius_m : Double
   length_m : Double

@@ -82,6 +82,10 @@ return {
   canvas_render_source_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas' && node.attributes['data-render-source'] === 'robot-rig-visual-instances').length,
   canvas_rendered_visuals: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-rendered-visuals'] || ''),
   canvas_render_status: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-render-status'] || ''),
+  canvas_mesh_asset_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-mesh-asset-count'] || ''),
+  canvas_mesh_vertex_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-mesh-vertex-count'] || ''),
+  canvas_mesh_face_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-mesh-face-count'] || ''),
+  canvas_mesh_draw_source: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-mesh-draw-source'] || ''),
   debug_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'debug-link-tree').length,
   annotation_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'review-annotations').length,
   rig_visual_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual').length,
@@ -262,6 +266,24 @@ def assert_noetix_walk_panel(
     raise AssertionError(rendered)
   if rendered["canvas_render_status"] not in (["robot-rig-canvas-ready"], ["robot-rig-canvas-rendered"]):
     raise AssertionError(rendered)
+  if noetix_link_poses["mesh_asset_count"] != 1:
+    raise AssertionError(noetix_link_poses)
+  mesh_assets = noetix_link_poses.get("mesh_assets", [])
+  if len(mesh_assets) != 1:
+    raise AssertionError(mesh_assets)
+  mesh_asset = mesh_assets[0]
+  if mesh_asset.get("mesh_extension") != "obj":
+    raise AssertionError(mesh_asset)
+  if mesh_asset.get("vertex_count") != 8 or mesh_asset.get("face_count") != 6:
+    raise AssertionError(mesh_asset)
+  if rendered["canvas_mesh_asset_count"] != ["1"]:
+    raise AssertionError(rendered)
+  if rendered["canvas_mesh_vertex_count"] != ["8"]:
+    raise AssertionError(rendered)
+  if rendered["canvas_mesh_face_count"] != ["6"]:
+    raise AssertionError(rendered)
+  if rendered["canvas_mesh_draw_source"] != ["obj-face-projection"]:
+    raise AssertionError(rendered)
   if rendered["rig_visual_count"] != expected_visuals:
     raise AssertionError({"rendered": rendered, "expected_visuals": expected_visuals})
   if rendered["visual_instance_source_count"] != expected_visuals:
@@ -317,6 +339,7 @@ def assert_noetix_walk_panel(
       f"({noetix_link_poses['mesh_visual_geometry_link_count']} mesh, "
       f"{noetix_link_poses['primitive_visual_geometry_link_count']} primitives)"
     ),
+    "mesh assets": "1 resolved OBJ mesh assets",
     "rig contract": "urdf-rigid-visual-contract-ready",
     "render source": "robot-rig-visual-instances",
     "viewer": "canvas-rig-with-svg-overlay",

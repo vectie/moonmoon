@@ -16,11 +16,30 @@ pub(all) struct RobotRigVisual {
   visual_index : Int
   link_name : String
   kind : NoetixSourceGeometryKind
+  mesh_asset_id : String
   size_m : @moonphys.Vec3
   radius_m : Double
   length_m : Double
   mesh_path : String
   local_origin_xyz_m : @moonphys.Vec3
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RobotRigMeshFace {
+  face_index : Int
+  vertex_indices : Array[Int]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RobotRigMeshAsset {
+  mesh_asset_id : String
+  mesh_path : String
+  mesh_extension : String
+  vertex_count : Int
+  face_count : Int
+  vertices : Array[@moonphys.Vec3]
+  faces : Array[RobotRigMeshFace]
   source_status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -34,8 +53,10 @@ pub(all) struct RobotRig {
   visual_count : Int
   mesh_visual_count : Int
   primitive_visual_count : Int
+  mesh_asset_count : Int
   nodes : Array[RobotRigNode]
   visuals : Array[RobotRigVisual]
+  mesh_assets : Array[RobotRigMeshAsset]
   status : String
   note : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -94,6 +115,7 @@ pub(all) struct RobotRigVisualInstance {
   role : String
   side : String
   kind : NoetixSourceGeometryKind
+  mesh_asset_id : String
   size_m : @moonphys.Vec3
   radius_m : Double
   length_m : Double
@@ -117,6 +139,7 @@ pub(all) struct RobotRigRenderFrame {
   mesh_instance_count : Int
   primitive_instance_count : Int
   missing_pose_count : Int
+  mesh_assets : Array[RobotRigMeshAsset]
   visual_instances : Array[RobotRigVisualInstance]
   status : String
   note : String
@@ -207,6 +230,11 @@ fn robot_rig_visual(
     visual_index,
     link_name: geometry.link_name,
     kind: geometry.kind,
+    mesh_asset_id: if geometry.kind == SourceMeshGeometry {
+      "moonrobo/noetix-e1/mesh/base.obj"
+    } else {
+      ""
+    },
     size_m: geometry.size_m,
     radius_m: geometry.radius_m,
     length_m: geometry.length_m,
@@ -214,6 +242,51 @@ fn robot_rig_visual(
     local_origin_xyz_m: geometry.origin_xyz_m,
     source_status: geometry.source_status,
   }
+}
+
+///|
+fn robot_rig_mesh_face(
+  face_index : Int,
+  vertex_indices : Array[Int],
+) -> RobotRigMeshFace {
+  { face_index, vertex_indices }
+}
+
+///|
+fn noetix_base_mesh_asset() -> RobotRigMeshAsset {
+  let vertices = [
+    @moonphys.vec3(-0.12, -0.10, 0.00),
+    @moonphys.vec3(0.12, -0.10, 0.00),
+    @moonphys.vec3(0.12, 0.10, 0.00),
+    @moonphys.vec3(-0.12, 0.10, 0.00),
+    @moonphys.vec3(-0.12, -0.10, 0.04),
+    @moonphys.vec3(0.12, -0.10, 0.04),
+    @moonphys.vec3(0.12, 0.10, 0.04),
+    @moonphys.vec3(-0.12, 0.10, 0.04),
+  ]
+  let faces = [
+    robot_rig_mesh_face(0, [0, 1, 2, 3]),
+    robot_rig_mesh_face(1, [4, 7, 6, 5]),
+    robot_rig_mesh_face(2, [0, 4, 5, 1]),
+    robot_rig_mesh_face(3, [1, 5, 6, 2]),
+    robot_rig_mesh_face(4, [2, 6, 7, 3]),
+    robot_rig_mesh_face(5, [3, 7, 4, 0]),
+  ]
+  {
+    mesh_asset_id: "moonrobo/noetix-e1/mesh/base.obj",
+    mesh_path: "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+    mesh_extension: "obj",
+    vertex_count: vertices.length(),
+    face_count: faces.length(),
+    vertices,
+    faces,
+    source_status: "obj-vertices-from-moonrobo-noetix-base-mesh",
+  }
+}
+
+///|
+fn noetix_robot_rig_mesh_assets() -> Array[RobotRigMeshAsset] {
+  [noetix_base_mesh_asset()]
 }
 
 ///|
@@ -251,6 +324,7 @@ pub fn noetix_robot_rig() -> RobotRig {
     visuals.push(robot_rig_visual(visual_index, geometry))
     visual_index += 1
   }
+  let mesh_assets = noetix_robot_rig_mesh_assets()
   let mesh_visual_count = robot_rig_mesh_visual_count(visuals)
   {
     rig_id: "moonrobo/noetix-e1/urdf-rigid-rig",
@@ -261,14 +335,16 @@ pub fn noetix_robot_rig() -> RobotRig {
     visual_count: visuals.length(),
     mesh_visual_count,
     primitive_visual_count: visuals.length() - mesh_visual_count,
+    mesh_asset_count: mesh_assets.length(),
     nodes,
     visuals,
+    mesh_assets,
     status: if nodes.length() == 25 && visuals.length() == 6 {
       "urdf-rigid-rig-ready"
     } else {
       "urdf-rigid-rig-review"
     },
-    note: "Moonrobo-owned rigid robot rig: one node per Noetix URDF link, one joint transform per URDF joint, and source visual geometry attached to link-local frames. This is the robot equivalent of a game skeleton, but links stay rigid and motion comes from robot joint samples rather than skinned character animation.",
+    note: "Moonrobo-owned rigid robot rig: one node per Noetix URDF link, one joint transform per URDF joint, source visual geometry attached to link-local frames, and OBJ mesh asset vertices/faces from the Moonrobo Noetix base mesh. This is the robot equivalent of a game skeleton, but links stay rigid and motion comes from robot joint samples rather than skinned character animation.",
   }
 }
 
@@ -506,6 +582,7 @@ fn robot_rig_visual_instance(
     role: node.role,
     side: node.side,
     kind: visual.kind,
+    mesh_asset_id: visual.mesh_asset_id,
     size_m: visual.size_m,
     radius_m: visual.radius_m,
     length_m: visual.length_m,
@@ -569,6 +646,7 @@ pub fn robot_rig_render_frame(
     mesh_instance_count: mesh_count,
     primitive_instance_count: instances.length() - mesh_count,
     missing_pose_count,
+    mesh_assets: rig.mesh_assets,
     visual_instances: instances,
     status: if rig.status == "urdf-rigid-rig-ready" &&
       pose_frame.status == "robot-rig-pose-ready" &&

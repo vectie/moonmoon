@@ -56,9 +56,10 @@ evidence.
 - Sibling Moonrobo is already mesh-aware, not just stick-aware: its cockpit
   projection exports URDF `visuals` and `visual_instances`, resolves mesh asset
   paths, and records primitive box/cylinder visuals. The current Noetix source
-  has one resolved OBJ mesh on `base_link` plus primitive torso/chest/limb
-  visuals, so Rabbita should render rigid mesh and primitive link visuals as
-  the primary robot body.
+  has one resolved OBJ mesh on `base_link`, with concrete vertices/faces in
+  `examples/noetix-e1/model/meshes/base.obj`, plus primitive torso/chest/limb
+  visuals. Rabbita must therefore render rigid mesh and primitive link visuals
+  as the primary robot body; sticks remain a debug overlay only.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
@@ -523,9 +524,10 @@ is the URDF link/joint tree, but the motion authority must be robot data rather
 than an artist-authored random animation.
 
 The sibling Moonrobo viewer is already beyond stick rendering: it exports URDF
-visual instances, resolves mesh assets, and renders the resolved `base_link` OBJ
-plus primitive link visuals. Moonmoon should consume that same mesh/primitive
-visual contract for Rabbita, keeping sticks only as an optional rig diagnostic.
+visual instances, resolves mesh assets, and has a real Noetix `base_link` OBJ
+under `examples/noetix-e1/model/meshes/base.obj`, plus primitive link visuals.
+Moonmoon should consume that same mesh/primitive visual contract for Rabbita,
+keeping sticks only as an optional rig diagnostic.
 
 Robot animation bridge:
 
@@ -584,8 +586,9 @@ Immediate Phase 5A deliverables:
   status for anything else. Moonrobo's current Three viewer resolves mesh
   assets but its loader path is STL-focused, while Noetix currently references
   an OBJ mesh. (partially implemented: render instances carry extension and
-  loader status, and Rabbita's canvas viewport consumes the OBJ-derived bounds;
-  actual Three.js OBJ/STL loader integration remains)
+  loader status, `RobotRigMeshAsset` carries the Moonrobo Noetix base OBJ's
+  vertices/faces, and Rabbita's canvas viewport projects those OBJ faces through
+  the FK link transform; actual Three.js OBJ/STL loader integration remains)
 - Render URDF primitive boxes and cylinders directly in Three.js so the current
   Noetix source can show more than the one base mesh even before full per-link
   meshes exist. (implemented in the current canvas/SVG rig renderer; future
@@ -597,8 +600,9 @@ Immediate Phase 5A deliverables:
   from the FK tree, if the viewer presents debug sticks as the primary robot,
   if the resolved OBJ base mesh is not represented in the render contract, or if
   URDF box/cylinder primitives disappear from the visual instance contract.
-  (implemented for current `RobotRigVisualInstance` contract/renderer; still
-  strengthen when full per-link visuals or Three.js mesh loaders land)
+  (implemented for current `RobotRigVisualInstance` and `RobotRigMeshAsset`
+  contract/renderer; still strengthen when full per-link visuals or Three.js
+  mesh loaders land)
 
 ## Phase 6: Evidence Export
 

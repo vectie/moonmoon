@@ -538,7 +538,7 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   }, [canvas, svg]);
   document.getElementById('noetix-walk-viewer').replaceChildren(stage);
   if (window.RabbitaNoetixRig && window.RabbitaNoetixRig.draw) {
-    window.RabbitaNoetixRig.draw(canvas, poseFrame, project);
+    window.RabbitaNoetixRig.draw(canvas, poseFrame, noetixLinkPoseTrace.mesh_assets || [], project);
   }
 }
 
@@ -613,6 +613,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['joints', `${jointCount} phases, URDF leg IK`],
     ['links', `${linkCount} URDF-reference poses`],
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
+    ['mesh assets', `${noetixLinkPoseTrace.mesh_asset_count || 0} resolved OBJ mesh assets`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
     ['render source', noetixLinkPoseTrace.primary_render_source || 'robot-rig-visual-instances'],
     ['viewer', 'canvas-rig-with-svg-overlay'],

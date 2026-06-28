@@ -21,6 +21,115 @@
     "frame_count": 32,
     "links_per_frame": 25,
     "visual_instances_per_frame": 6,
+    "mesh_asset_count": 1,
+    "mesh_assets": [
+      {
+        "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
+        "mesh_path": "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+        "mesh_extension": "obj",
+        "vertex_count": 8,
+        "face_count": 6,
+        "vertices": [
+          {
+            "x": -0.12,
+            "y": -0.1,
+            "z": 0
+          },
+          {
+            "x": 0.12,
+            "y": -0.1,
+            "z": 0
+          },
+          {
+            "x": 0.12,
+            "y": 0.1,
+            "z": 0
+          },
+          {
+            "x": -0.12,
+            "y": 0.1,
+            "z": 0
+          },
+          {
+            "x": -0.12,
+            "y": -0.1,
+            "z": 0.04
+          },
+          {
+            "x": 0.12,
+            "y": -0.1,
+            "z": 0.04
+          },
+          {
+            "x": 0.12,
+            "y": 0.1,
+            "z": 0.04
+          },
+          {
+            "x": -0.12,
+            "y": 0.1,
+            "z": 0.04
+          }
+        ],
+        "faces": [
+          {
+            "face_index": 0,
+            "vertex_indices": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          {
+            "face_index": 1,
+            "vertex_indices": [
+              4,
+              7,
+              6,
+              5
+            ]
+          },
+          {
+            "face_index": 2,
+            "vertex_indices": [
+              0,
+              4,
+              5,
+              1
+            ]
+          },
+          {
+            "face_index": 3,
+            "vertex_indices": [
+              1,
+              5,
+              6,
+              2
+            ]
+          },
+          {
+            "face_index": 4,
+            "vertex_indices": [
+              2,
+              6,
+              7,
+              3
+            ]
+          },
+          {
+            "face_index": 5,
+            "vertex_indices": [
+              3,
+              7,
+              4,
+              0
+            ]
+          }
+        ],
+        "source_status": "obj-vertices-from-moonrobo-noetix-base-mesh"
+      }
+    ],
     "visual_geometry_link_count": 6,
     "mesh_visual_geometry_link_count": 1,
     "primitive_visual_geometry_link_count": 5,
@@ -278,6 +387,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -326,6 +436,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -374,6 +485,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -422,6 +534,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -470,6 +583,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -518,6 +632,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -1936,6 +2051,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -1984,6 +2100,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -2032,6 +2149,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -2080,6 +2198,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -2128,6 +2247,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -2176,6 +2296,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -3594,6 +3715,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -3642,6 +3764,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -3690,6 +3813,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -3738,6 +3862,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -3786,6 +3911,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -3834,6 +3960,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -5252,6 +5379,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -5300,6 +5428,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -5348,6 +5477,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -5396,6 +5526,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -5444,6 +5575,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -5492,6 +5624,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -6910,6 +7043,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -6958,6 +7092,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -7006,6 +7141,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -7054,6 +7190,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -7102,6 +7239,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -7150,6 +7288,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -8568,6 +8707,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -8616,6 +8756,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -8664,6 +8805,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -8712,6 +8854,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -8760,6 +8903,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -8808,6 +8952,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -10226,6 +10371,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -10274,6 +10420,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -10322,6 +10469,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -10370,6 +10518,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -10418,6 +10567,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -10466,6 +10616,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -11884,6 +12035,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -11932,6 +12084,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -11980,6 +12133,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -12028,6 +12182,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -12076,6 +12231,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -12124,6 +12280,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -13542,6 +13699,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -13590,6 +13748,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -13638,6 +13797,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -13686,6 +13846,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -13734,6 +13895,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -13782,6 +13944,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -15200,6 +15363,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -15248,6 +15412,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -15296,6 +15461,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -15344,6 +15510,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -15392,6 +15559,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -15440,6 +15608,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -16858,6 +17027,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -16906,6 +17076,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -16954,6 +17125,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -17002,6 +17174,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -17050,6 +17223,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -17098,6 +17272,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -18516,6 +18691,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -18564,6 +18740,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -18612,6 +18789,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -18660,6 +18838,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -18708,6 +18887,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -18756,6 +18936,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -20174,6 +20355,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -20222,6 +20404,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -20270,6 +20453,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -20318,6 +20502,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -20366,6 +20551,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -20414,6 +20600,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -21832,6 +22019,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -21880,6 +22068,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -21928,6 +22117,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -21976,6 +22166,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -22024,6 +22215,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -22072,6 +22264,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -23490,6 +23683,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -23538,6 +23732,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -23586,6 +23781,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -23634,6 +23830,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -23682,6 +23879,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -23730,6 +23928,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -25148,6 +25347,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -25196,6 +25396,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -25244,6 +25445,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -25292,6 +25494,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -25340,6 +25543,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -25388,6 +25592,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -26806,6 +27011,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -26854,6 +27060,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -26902,6 +27109,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -26950,6 +27158,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -26998,6 +27207,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -27046,6 +27256,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -28464,6 +28675,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -28512,6 +28724,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -28560,6 +28773,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -28608,6 +28822,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -28656,6 +28871,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -28704,6 +28920,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -30122,6 +30339,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -30170,6 +30388,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -30218,6 +30437,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -30266,6 +30486,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -30314,6 +30535,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -30362,6 +30584,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -31780,6 +32003,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -31828,6 +32052,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -31876,6 +32101,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -31924,6 +32150,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -31972,6 +32199,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -32020,6 +32248,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -33438,6 +33667,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -33486,6 +33716,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -33534,6 +33765,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -33582,6 +33814,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -33630,6 +33863,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -33678,6 +33912,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -35096,6 +35331,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -35144,6 +35380,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -35192,6 +35429,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -35240,6 +35478,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -35288,6 +35527,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -35336,6 +35576,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -36754,6 +36995,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -36802,6 +37044,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -36850,6 +37093,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -36898,6 +37142,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -36946,6 +37191,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -36994,6 +37240,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -38412,6 +38659,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -38460,6 +38708,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -38508,6 +38757,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -38556,6 +38806,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -38604,6 +38855,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -38652,6 +38904,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -40070,6 +40323,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -40118,6 +40372,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -40166,6 +40421,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -40214,6 +40470,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -40262,6 +40519,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -40310,6 +40568,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -41728,6 +41987,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -41776,6 +42036,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -41824,6 +42085,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -41872,6 +42134,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -41920,6 +42183,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -41968,6 +42232,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -43386,6 +43651,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -43434,6 +43700,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -43482,6 +43749,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -43530,6 +43798,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -43578,6 +43847,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -43626,6 +43896,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -45044,6 +45315,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -45092,6 +45364,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -45140,6 +45413,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -45188,6 +45462,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -45236,6 +45511,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -45284,6 +45560,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -46702,6 +46979,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -46750,6 +47028,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -46798,6 +47077,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -46846,6 +47126,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -46894,6 +47175,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -46942,6 +47224,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -48360,6 +48643,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -48408,6 +48692,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -48456,6 +48741,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -48504,6 +48790,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -48552,6 +48839,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -48600,6 +48888,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -50018,6 +50307,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -50066,6 +50356,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -50114,6 +50405,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -50162,6 +50454,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -50210,6 +50503,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -50258,6 +50552,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -51676,6 +51971,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceMeshGeometry",
+            "mesh_asset_id": "moonrobo/noetix-e1/mesh/base.obj",
             "size_m": {
               "x": 0.24,
               "y": 0.2,
@@ -51724,6 +52020,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.22,
               "y": 0.16,
@@ -51772,6 +52069,7 @@
             "role": "body",
             "side": "center",
             "kind": "SourceBoxGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0.28,
               "y": 0.34,
@@ -51820,6 +52118,7 @@
             "role": "arm",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -51868,6 +52167,7 @@
             "role": "arm",
             "side": "right",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -51916,6 +52216,7 @@
             "role": "leg",
             "side": "left",
             "kind": "SourceCylinderGeometry",
+            "mesh_asset_id": "",
             "size_m": {
               "x": 0,
               "y": 0,
@@ -53315,7 +53616,7 @@
     ],
     "rig_render_contract_status": "urdf-rigid-visual-contract-ready",
     "status": "review-only",
-    "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual and primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then contact probes are recorded as review annotations with FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
+    "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then contact probes are recorded as review annotations with FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
   "site_id": "first-trusted-square",
