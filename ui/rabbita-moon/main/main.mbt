@@ -34,6 +34,10 @@ struct Model {
 extern "js" fn render_terrain_canvas(model_json : String) -> Unit = "(modelJson) => globalThis.__moonmoonRenderTerrain?.(modelJson)"
 
 ///|
+#cfg(target="js")
+extern "js" fn render_3d_scene(model_json : String) -> Unit = "(modelJson) => globalThis.__moonmoonRenderScene3d?.(modelJson)"
+
+///|
 fn init_model() -> Model {
   let view = @ui.first_trusted_square_view_model()
   {
@@ -142,18 +146,46 @@ fn blocker_list(view : @ui.TrustedSquareViewModel) -> Html {
 ///|
 fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
   section(
-    class="terrain-panel panel",
-    attrs=@html.Attrs::build().aria_label("3D lunar terrain view"),
+    class="scene-panel panel",
+    attrs=@html.Attrs::build().aria_label("3D Moon and robot view"),
     [
-      canvas(
-        id="moonmoon-terrain-3d",
-        class="terrain-canvas",
-        attrs=@html.Attrs::build().width(960).height(460),
-        "",
-      ),
-      div(class="terrain-readout", [
-        span([b("3D terrain"), span(" \{view.selected_route_id}")]),
-        span("\{view.viewport.rows}x\{view.viewport.cols} LOLA cells"),
+      div(class="scene-grid", [
+        div(class="moon-viewport", [
+          canvas(
+            id="moonmoon-globe-3d",
+            class="scene-canvas moon-globe-canvas",
+            attrs=@html.Attrs::build().width(960).height(540),
+            "",
+          ),
+          div(class="scene-readout", [
+            span([b("3D Moon"), span(" drag to inspect")]),
+            span("\{view.site_latitude_deg} / \{view.site_longitude_deg}"),
+          ]),
+        ]),
+        div(class="robot-viewport", [
+          canvas(
+            id="moonmoon-robot-3d",
+            class="scene-canvas robot-canvas",
+            attrs=@html.Attrs::build().width(760).height(540),
+            "",
+          ),
+          div(class="scene-readout", [
+            span([b("3D robot"), span(" endless visual gait")]),
+            span(view.selected_route_id),
+          ]),
+        ]),
+      ]),
+      div(class="terrain-panel-mini", [
+        canvas(
+          id="moonmoon-terrain-3d",
+          class="terrain-canvas",
+          attrs=@html.Attrs::build().width(960).height(260),
+          "",
+        ),
+        div(class="terrain-readout", [
+          span([b("LOLA terrain"), span(" \{view.selected_route_id}")]),
+          span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
+        ]),
       ]),
     ],
   )
@@ -252,7 +284,10 @@ fn view(model : Model) -> Html {
 #cfg(target="js")
 fn start_renderer(model : Model) -> @rabbita.Cmd {
   @cmd.custom_cmd(
-    _ => render_terrain_canvas(model.model_json),
+    _ => {
+      render_terrain_canvas(model.model_json)
+      render_3d_scene(model.model_json)
+    },
     kind=@cmd.after_render,
   )
 }

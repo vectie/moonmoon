@@ -180,17 +180,77 @@ h2 {
   font-size: 12px;
 }
 
+.scene-panel,
 .terrain-panel {
   background: #101714;
   overflow: hidden;
   position: relative;
-  min-height: 380px;
+}
+
+.scene-panel {
+  padding: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.scene-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, .85fr);
+  gap: 10px;
+  min-height: 420px;
+}
+
+.moon-viewport,
+.robot-viewport,
+.terrain-panel-mini {
+  position: relative;
+  min-height: 320px;
+  border: 1px solid rgba(245, 247, 244, .13);
+  border-radius: 5px;
+  overflow: hidden;
+  background: #0c1210;
+}
+
+.moon-viewport {
+  min-height: 420px;
+}
+
+.robot-viewport {
+  min-height: 420px;
+}
+
+.scene-canvas {
+  display: block;
+  width: 100%;
+  height: 420px;
+  touch-action: none;
+}
+
+.scene-readout {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 10px;
+  color: rgba(247, 251, 249, .84);
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.scene-readout b {
+  color: #f7fbf9;
+}
+
+.terrain-panel-mini {
+  min-height: 220px;
 }
 
 .terrain-canvas {
   display: block;
   width: 100%;
-  height: 380px;
+  height: 220px;
   touch-action: none;
 }
 
@@ -292,6 +352,19 @@ ul {
 
   .hero {
     grid-template-columns: 1fr;
+  }
+
+  .scene-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .scene-canvas {
+    height: 270px;
+  }
+
+  .moon-viewport,
+  .robot-viewport {
+    min-height: 270px;
   }
 
   .grid {
