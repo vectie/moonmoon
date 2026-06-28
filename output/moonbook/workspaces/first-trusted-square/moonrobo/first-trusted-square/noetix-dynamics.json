@@ -6,7 +6,7 @@
     "claim_kind": "Simulated",
     "confidence": 0.55,
     "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
-    "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.10787682825643309 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+    "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.44751218837622186 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
   },
   "payload": {
     "report_id": "moonrobo/noetix-e1/dynamic-stability/first-trusted-square-northeast-stepout-lola",
@@ -660,7 +660,7 @@
     "frame_count": 32,
     "capture_stable_frame_count": 0,
     "review_frame_count": 32,
-    "worst_capture_margin_m": -0.10787682825643309,
+    "worst_capture_margin_m": -0.44751218837622186,
     "frames": [
       {
         "frame_index": 0,
@@ -668,29 +668,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0,
-          "y": 0,
-          "z": 337.752
+          "y": 0.04,
+          "z": 337.741848
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981171
+          "z": -0.061645283999496314
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0,
-            "y": 0,
-            "z": 337.752
+            "y": 0.04,
+            "z": 337.741848
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981171
+            "z": -0.061645283999496314
           },
           "capture_point": {
             "x": 0.079876828256433,
-            "y": 0,
-            "z": 337.752
+            "y": 0.04,
+            "z": 337.741848
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -698,16 +698,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.079876828256433,
-              "y": 0,
-              "z": 337.752
+              "y": 0.04,
+              "z": 337.741848
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": 0.0001231717435670049,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": 0.0001231717435670049,
             "support_polygon_vertices": [
               {
                 "x": -0.14,
@@ -731,15 +731,15 @@
               }
             ],
             "support_polygon_vertex_count": 4,
-            "stable": false,
-            "status": "outside-support"
+            "stable": true,
+            "status": "inside-support"
           },
-          "capture_margin_m": -0.035,
-          "stable": false,
-          "status": "capture-point-outside-support"
+          "capture_margin_m": 0.0001231717435670049,
+          "stable": true,
+          "status": "capture-point-inside-support"
         },
         "terrain_contact_status": "terrain-contact-review",
-        "status": "capture-point-review"
+        "status": "terrain-contact-review"
       },
       {
         "frame_index": 1,
@@ -747,29 +747,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.012,
-          "y": 0,
-          "z": 337.7458326
+          "y": 0.04,
+          "z": 337.73568347160005
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981171
+          "z": -0.061645283999496314
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.012,
-            "y": 0,
-            "z": 337.7458326
+            "y": 0.04,
+            "z": 337.73568347160005
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981171
+            "z": -0.061645283999496314
           },
           "capture_point": {
             "x": 0.091876828256433,
-            "y": 0,
-            "z": 337.7458326
+            "y": 0.04,
+            "z": 337.73568347160005
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -777,16 +777,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.091876828256433,
-              "y": 0,
-              "z": 337.7458326
+              "y": 0.04,
+              "z": 337.73568347160005
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.011876828256432992,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.011876828256432992,
             "support_polygon_vertices": [
               {
                 "x": -0.14,
@@ -813,7 +813,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.011876828256432992,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -826,29 +826,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.024,
-          "y": 0,
-          "z": 337.7396652
+          "y": 0.04,
+          "z": 337.7295189432
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038015
+          "z": -0.06164528400063318
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.024,
-            "y": 0,
-            "z": 337.7396652
+            "y": 0.04,
+            "z": 337.7295189432
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038015
+            "z": -0.06164528400063318
           },
           "capture_point": {
             "x": 0.10387682825643299,
-            "y": 0,
-            "z": 337.7396652
+            "y": 0.04,
+            "z": 337.7295189432
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -856,16 +856,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.10387682825643299,
-              "y": 0,
-              "z": 337.7396652
+              "y": 0.04,
+              "z": 337.7295189432
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.02387682825643299,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.02387682825643299,
             "support_polygon_vertices": [
               {
                 "x": -0.14,
@@ -892,7 +892,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.02387682825643299,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -905,29 +905,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.036,
-          "y": 0,
-          "z": 337.7334978
+          "y": 0.04,
+          "z": 337.7233544148
         },
         "com_velocity": {
           "x": 0.11999999999999993,
           "y": 0,
-          "z": -0.06167399999981169
+          "z": -0.06164528400006473
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.036,
-            "y": 0,
-            "z": 337.7334978
+            "y": 0.04,
+            "z": 337.7233544148
           },
           "com_velocity": {
             "x": 0.11999999999999993,
             "y": 0,
-            "z": -0.06167399999981169
+            "z": -0.06164528400006473
           },
           "capture_point": {
             "x": 0.11587682825643295,
-            "y": 0,
-            "z": 337.7334978
+            "y": 0.04,
+            "z": 337.7233544148
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -935,15 +935,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.11587682825643295,
-              "y": 0,
-              "z": 337.7334978
+              "y": 0.04,
+              "z": 337.7233544148
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.035876828256432944,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.035876828256432944,
             "support_polygon_vertices": [
               {
@@ -984,29 +984,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.048,
-          "y": 0,
-          "z": 337.7273304
+          "y": 0.04,
+          "z": 337.71718988640004
         },
         "com_velocity": {
           "x": 0.12000000000000006,
           "y": 0,
-          "z": -0.06167399999981173
+          "z": -0.06164528399949633
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.048,
-            "y": 0,
-            "z": 337.7273304
+            "y": 0.04,
+            "z": 337.71718988640004
           },
           "com_velocity": {
             "x": 0.12000000000000006,
             "y": 0,
-            "z": -0.06167399999981173
+            "z": -0.06164528399949633
           },
           "capture_point": {
             "x": 0.12787682825643304,
-            "y": 0,
-            "z": 337.7273304
+            "y": 0.04,
+            "z": 337.71718988640004
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1014,15 +1014,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.12787682825643304,
-              "y": 0,
-              "z": 337.7273304
+              "y": 0.04,
+              "z": 337.71718988640004
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.04787682825643304,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.04787682825643303,
             "support_polygon_vertices": [
               {
@@ -1063,29 +1063,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.06,
-          "y": 0,
-          "z": 337.721163
+          "y": 0.04,
+          "z": 337.711025358
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038016
+          "z": -0.061645284000633196
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.06,
-            "y": 0,
-            "z": 337.721163
+            "y": 0.04,
+            "z": 337.711025358
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038016
+            "z": -0.061645284000633196
           },
           "capture_point": {
             "x": 0.139876828256433,
-            "y": 0,
-            "z": 337.721163
+            "y": 0.04,
+            "z": 337.711025358
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1093,15 +1093,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.139876828256433,
-              "y": 0,
-              "z": 337.721163
+              "y": 0.04,
+              "z": 337.711025358
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.05987682825643299,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.059876828256432986,
             "support_polygon_vertices": [
               {
@@ -1142,29 +1142,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.072,
-          "y": 0,
-          "z": 337.7149956
+          "y": 0.04,
+          "z": 337.7048608296
         },
         "com_velocity": {
           "x": 0.11999999999999986,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528399949626
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.072,
-            "y": 0,
-            "z": 337.7149956
+            "y": 0.04,
+            "z": 337.7048608296
           },
           "com_velocity": {
             "x": 0.11999999999999986,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528399949626
           },
           "capture_point": {
             "x": 0.1518768282564329,
-            "y": 0,
-            "z": 337.7149956
+            "y": 0.04,
+            "z": 337.7048608296
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1172,15 +1172,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.1518768282564329,
-              "y": 0,
-              "z": 337.7149956
+              "y": 0.04,
+              "z": 337.7048608296
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.07187682825643289,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.07187682825643289,
             "support_polygon_vertices": [
               {
@@ -1221,29 +1221,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.084,
-          "y": 0,
-          "z": 337.7088282
+          "y": 0.04,
+          "z": 337.6986963012
         },
         "com_velocity": {
           "x": 0.12000000000000013,
           "y": 0,
-          "z": -0.06167399999981173
+          "z": -0.06164528400006476
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.084,
-            "y": 0,
-            "z": 337.7088282
+            "y": 0.04,
+            "z": 337.6986963012
           },
           "com_velocity": {
             "x": 0.12000000000000013,
             "y": 0,
-            "z": -0.06167399999981173
+            "z": -0.06164528400006476
           },
           "capture_point": {
             "x": 0.16387682825643307,
-            "y": 0,
-            "z": 337.7088282
+            "y": 0.04,
+            "z": 337.6986963012
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1251,15 +1251,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.16387682825643307,
-              "y": 0,
-              "z": 337.7088282
+              "y": 0.04,
+              "z": 337.6986963012
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.08387682825643307,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.08387682825643307,
             "support_polygon_vertices": [
               {
@@ -1300,29 +1300,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.096,
-          "y": 0,
-          "z": 337.7026608
+          "y": 0.04,
+          "z": 337.6925317728
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038016
+          "z": -0.06164528400006476
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.096,
-            "y": 0,
-            "z": 337.7026608
+            "y": 0.04,
+            "z": 337.6925317728
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038016
+            "z": -0.06164528400006476
           },
           "capture_point": {
             "x": 0.175876828256433,
-            "y": 0,
-            "z": 337.7026608
+            "y": 0.04,
+            "z": 337.6925317728
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1330,15 +1330,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.175876828256433,
-              "y": 0,
-              "z": 337.7026608
+              "y": 0.04,
+              "z": 337.6925317728
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.095876828256433,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.09587682825643298,
             "support_polygon_vertices": [
               {
@@ -1379,29 +1379,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.10800000000000001,
-          "y": 0,
-          "z": 337.6964934
+          "y": 0.04,
+          "z": 337.6863672444
         },
         "com_velocity": {
           "x": 0.12000000000000013,
           "y": 0,
-          "z": -0.06167399999981173
+          "z": -0.06164528400006476
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.10800000000000001,
-            "y": 0,
-            "z": 337.6964934
+            "y": 0.04,
+            "z": 337.6863672444
           },
           "com_velocity": {
             "x": 0.12000000000000013,
             "y": 0,
-            "z": -0.06167399999981173
+            "z": -0.06164528400006476
           },
           "capture_point": {
             "x": 0.1878768282564331,
-            "y": 0,
-            "z": 337.6964934
+            "y": 0.04,
+            "z": 337.6863672444
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1409,15 +1409,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.1878768282564331,
-              "y": 0,
-              "z": 337.6964934
+              "y": 0.04,
+              "z": 337.6863672444
             },
             "min_x_m": -0.14,
             "max_x_m": 0.08,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.10787682825643309,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.10787682825643309,
             "support_polygon_vertices": [
               {
@@ -1458,29 +1458,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.12,
-          "y": 0,
-          "z": 337.690326
+          "y": -0.04,
+          "z": 337.69584226800004
         },
         "com_velocity": {
           "x": 0.11999999999999986,
-          "y": 0,
-          "z": -0.06167399999981173
+          "y": -0.8000000000000002,
+          "z": 0.09475023600032274
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.12,
-            "y": 0,
-            "z": 337.690326
+            "y": -0.04,
+            "z": 337.69584226800004
           },
           "com_velocity": {
             "x": 0.11999999999999986,
-            "y": 0,
-            "z": -0.06167399999981173
+            "y": -0.8000000000000002,
+            "z": 0.09475023600032274
           },
           "capture_point": {
             "x": 0.19987682825643288,
-            "y": 0,
-            "z": 337.690326
+            "y": -0.5725121883762201,
+            "z": 337.69584226800004
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1488,16 +1488,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.19987682825643288,
-              "y": 0,
-              "z": 337.690326
+              "y": -0.5725121883762201,
+              "z": 337.69584226800004
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": 0.0001231717435671298,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": -0.4475121883762201,
+            "planar_margin_m": -0.4475121883762201,
             "support_polygon_vertices": [
               {
                 "x": -0.020000000000000004,
@@ -1524,7 +1524,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.4475121883762201,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -1537,29 +1537,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.13199999999999998,
-          "y": 0,
-          "z": 337.6841586
+          "y": -0.04,
+          "z": 337.6896756948
         },
         "com_velocity": {
           "x": 0.11999999999999972,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.0616657320006197
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.13199999999999998,
-            "y": 0,
-            "z": 337.6841586
+            "y": -0.04,
+            "z": 337.6896756948
           },
           "com_velocity": {
             "x": 0.11999999999999972,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.0616657320006197
           },
           "capture_point": {
             "x": 0.21187682825643278,
-            "y": 0,
-            "z": 337.6841586
+            "y": -0.04,
+            "z": 337.6896756948
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1567,16 +1567,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.21187682825643278,
-              "y": 0,
-              "z": 337.6841586
+              "y": -0.04,
+              "z": 337.6896756948
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.01187682825643277,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.01187682825643277,
             "support_polygon_vertices": [
               {
                 "x": -0.020000000000000004,
@@ -1603,7 +1603,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.01187682825643277,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -1616,29 +1616,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.144,
-          "y": 0,
-          "z": 337.6779912
+          "y": -0.04,
+          "z": 337.6835091216
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06166573199948283
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.144,
-            "y": 0,
-            "z": 337.6779912
+            "y": -0.04,
+            "z": 337.6835091216
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06166573199948283
           },
           "capture_point": {
             "x": 0.22387682825643299,
-            "y": 0,
-            "z": 337.6779912
+            "y": -0.04,
+            "z": 337.6835091216
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1646,16 +1646,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.22387682825643299,
-              "y": 0,
-              "z": 337.6779912
+              "y": -0.04,
+              "z": 337.6835091216
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.023876828256432975,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.023876828256432975,
             "support_polygon_vertices": [
               {
                 "x": -0.020000000000000004,
@@ -1682,7 +1682,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.023876828256432975,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -1695,29 +1695,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.15600000000000003,
-          "y": 0,
-          "z": 337.6718238
+          "y": -0.04,
+          "z": 337.6773425484
         },
         "com_velocity": {
           "x": 0.12000000000000055,
           "y": 0,
-          "z": -0.0616739999998118
+          "z": -0.06166573200005141
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.15600000000000003,
-            "y": 0,
-            "z": 337.6718238
+            "y": -0.04,
+            "z": 337.6773425484
           },
           "com_velocity": {
             "x": 0.12000000000000055,
             "y": 0,
-            "z": -0.0616739999998118
+            "z": -0.06166573200005141
           },
           "capture_point": {
             "x": 0.23587682825643339,
-            "y": 0,
-            "z": 337.6718238
+            "y": -0.04,
+            "z": 337.6773425484
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1725,15 +1725,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.23587682825643339,
-              "y": 0,
-              "z": 337.6718238
+              "y": -0.04,
+              "z": 337.6773425484
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.035876828256433374,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.035876828256433374,
             "support_polygon_vertices": [
               {
@@ -1774,29 +1774,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.168,
-          "y": 0,
-          "z": 337.6656564
+          "y": -0.04,
+          "z": 337.6711759752
         },
         "com_velocity": {
           "x": 0.11999999999999972,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.061665732000051265
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.168,
-            "y": 0,
-            "z": 337.6656564
+            "y": -0.04,
+            "z": 337.6711759752
           },
           "com_velocity": {
             "x": 0.11999999999999972,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.061665732000051265
           },
           "capture_point": {
             "x": 0.2478768282564328,
-            "y": 0,
-            "z": 337.6656564
+            "y": -0.04,
+            "z": 337.6711759752
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1804,15 +1804,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.2478768282564328,
-              "y": 0,
-              "z": 337.6656564
+              "y": -0.04,
+              "z": 337.6711759752
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.0478768282564328,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.0478768282564328,
             "support_polygon_vertices": [
               {
@@ -1853,29 +1853,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.18,
-          "y": 0,
-          "z": 337.659489
+          "y": -0.04,
+          "z": 337.665009402
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.0616739999998118
+          "z": -0.06166573200005141
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.18,
-            "y": 0,
-            "z": 337.659489
+            "y": -0.04,
+            "z": 337.665009402
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.0616739999998118
+            "z": -0.06166573200005141
           },
           "capture_point": {
             "x": 0.259876828256433,
-            "y": 0,
-            "z": 337.659489
+            "y": -0.04,
+            "z": 337.665009402
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1883,15 +1883,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.259876828256433,
-              "y": 0,
-              "z": 337.659489
+              "y": -0.04,
+              "z": 337.665009402
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.05987682825643298,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.05987682825643298,
             "support_polygon_vertices": [
               {
@@ -1932,29 +1932,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.192,
-          "y": 0,
-          "z": 337.6533216
+          "y": -0.04,
+          "z": 337.6588428288
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.061665732000051265
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.192,
-            "y": 0,
-            "z": 337.6533216
+            "y": -0.04,
+            "z": 337.6588428288
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.061665732000051265
           },
           "capture_point": {
             "x": 0.271876828256433,
-            "y": 0,
-            "z": 337.6533216
+            "y": -0.04,
+            "z": 337.6588428288
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -1962,15 +1962,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.271876828256433,
-              "y": 0,
-              "z": 337.6533216
+              "y": -0.04,
+              "z": 337.6588428288
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.07187682825643299,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.07187682825643299,
             "support_polygon_vertices": [
               {
@@ -2011,29 +2011,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.20400000000000001,
-          "y": 0,
-          "z": 337.6471542
+          "y": -0.04,
+          "z": 337.6526762556
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.061665732000051265
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.20400000000000001,
-            "y": 0,
-            "z": 337.6471542
+            "y": -0.04,
+            "z": 337.6526762556
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.061665732000051265
           },
           "capture_point": {
             "x": 0.283876828256433,
-            "y": 0,
-            "z": 337.6471542
+            "y": -0.04,
+            "z": 337.6526762556
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2041,15 +2041,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.283876828256433,
-              "y": 0,
-              "z": 337.6471542
+              "y": -0.04,
+              "z": 337.6526762556
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.083876828256433,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.083876828256433,
             "support_polygon_vertices": [
               {
@@ -2090,29 +2090,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.21600000000000003,
-          "y": 0,
-          "z": 337.6409868
+          "y": -0.04,
+          "z": 337.6465096824
         },
         "com_velocity": {
           "x": 0.12000000000000027,
           "y": 0,
-          "z": -0.0616739999998118
+          "z": -0.06166573200005141
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.21600000000000003,
-            "y": 0,
-            "z": 337.6409868
+            "y": -0.04,
+            "z": 337.6465096824
           },
           "com_velocity": {
             "x": 0.12000000000000027,
             "y": 0,
-            "z": -0.0616739999998118
+            "z": -0.06166573200005141
           },
           "capture_point": {
             "x": 0.2958768282564332,
-            "y": 0,
-            "z": 337.6409868
+            "y": -0.04,
+            "z": 337.6465096824
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2120,15 +2120,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.2958768282564332,
-              "y": 0,
-              "z": 337.6409868
+              "y": -0.04,
+              "z": 337.6465096824
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.09587682825643318,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.09587682825643318,
             "support_polygon_vertices": [
               {
@@ -2169,29 +2169,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.22799999999999998,
-          "y": 0,
-          "z": 337.6348194
+          "y": -0.04,
+          "z": 337.64034310920005
         },
         "com_velocity": {
           "x": 0.11999999999999944,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06166573199948283
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.22799999999999998,
-            "y": 0,
-            "z": 337.6348194
+            "y": -0.04,
+            "z": 337.64034310920005
           },
           "com_velocity": {
             "x": 0.11999999999999944,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06166573199948283
           },
           "capture_point": {
             "x": 0.3078768282564326,
-            "y": 0,
-            "z": 337.6348194
+            "y": -0.04,
+            "z": 337.64034310920005
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2199,15 +2199,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.3078768282564326,
-              "y": 0,
-              "z": 337.6348194
+              "y": -0.04,
+              "z": 337.64034310920005
             },
             "min_x_m": -0.020000000000000004,
             "max_x_m": 0.2,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.10787682825643258,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.10787682825643258,
             "support_polygon_vertices": [
               {
@@ -2248,29 +2248,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.24,
-          "y": 0,
-          "z": 337.628652
+          "y": 0.04,
+          "z": 337.618557432
         },
         "com_velocity": {
           "x": 0.12000000000000027,
-          "y": 0,
-          "z": -0.06167400000038024
+          "y": 0.8000000000000012,
+          "z": -0.21785677200057338
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.24,
-            "y": 0,
-            "z": 337.628652
+            "y": 0.04,
+            "z": 337.618557432
           },
           "com_velocity": {
             "x": 0.12000000000000027,
-            "y": 0,
-            "z": -0.06167400000038024
+            "y": 0.8000000000000012,
+            "z": -0.21785677200057338
           },
           "capture_point": {
             "x": 0.31987682825643315,
-            "y": 0,
-            "z": 337.628652
+            "y": 0.5725121883762208,
+            "z": 337.618557432
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2278,16 +2278,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.31987682825643315,
-              "y": 0,
-              "z": 337.628652
+              "y": 0.5725121883762208,
+              "z": 337.618557432
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": 0.00012317174356685223,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": -0.44751218837622075,
+            "planar_margin_m": -0.4475121883762207,
             "support_polygon_vertices": [
               {
                 "x": 0.09999999999999999,
@@ -2314,7 +2314,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.4475121883762207,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -2327,29 +2327,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.252,
-          "y": 0,
-          "z": 337.6224846
+          "y": 0.04,
+          "z": 337.6123929036
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528400006469
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.252,
-            "y": 0,
-            "z": 337.6224846
+            "y": 0.04,
+            "z": 337.6123929036
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528400006469
           },
           "capture_point": {
             "x": 0.331876828256433,
-            "y": 0,
-            "z": 337.6224846
+            "y": 0.04,
+            "z": 337.6123929036
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2357,16 +2357,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.331876828256433,
-              "y": 0,
-              "z": 337.6224846
+              "y": 0.04,
+              "z": 337.6123929036
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.011876828256432992,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.011876828256432992,
             "support_polygon_vertices": [
               {
                 "x": 0.09999999999999999,
@@ -2393,7 +2393,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.011876828256432992,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -2406,29 +2406,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.26399999999999996,
-          "y": 0,
-          "z": 337.6163172
+          "y": 0.04,
+          "z": 337.60622837520003
         },
         "com_velocity": {
           "x": 0.11999999999999944,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528399949626
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.26399999999999996,
-            "y": 0,
-            "z": 337.6163172
+            "y": 0.04,
+            "z": 337.60622837520003
           },
           "com_velocity": {
             "x": 0.11999999999999944,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528399949626
           },
           "capture_point": {
             "x": 0.34387682825643257,
-            "y": 0,
-            "z": 337.6163172
+            "y": 0.04,
+            "z": 337.60622837520003
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2436,16 +2436,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.34387682825643257,
-              "y": 0,
-              "z": 337.6163172
+              "y": 0.04,
+              "z": 337.60622837520003
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.02387682825643256,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.023876828256432562,
             "support_polygon_vertices": [
               {
                 "x": 0.09999999999999999,
@@ -2472,7 +2472,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.023876828256432562,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -2485,29 +2485,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.27599999999999997,
-          "y": 0,
-          "z": 337.6101498
+          "y": 0.04,
+          "z": 337.60006384679997
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.06164528400063313
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.27599999999999997,
-            "y": 0,
-            "z": 337.6101498
+            "y": 0.04,
+            "z": 337.60006384679997
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.06164528400063313
           },
           "capture_point": {
             "x": 0.35587682825643296,
-            "y": 0,
-            "z": 337.6101498
+            "y": 0.04,
+            "z": 337.60006384679997
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2515,15 +2515,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.35587682825643296,
-              "y": 0,
-              "z": 337.6101498
+              "y": 0.04,
+              "z": 337.60006384679997
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.03587682825643296,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.03587682825643296,
             "support_polygon_vertices": [
               {
@@ -2564,29 +2564,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.288,
-          "y": 0,
-          "z": 337.6039824
+          "y": 0.04,
+          "z": 337.5938993184
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528399949626
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.288,
-            "y": 0,
-            "z": 337.6039824
+            "y": 0.04,
+            "z": 337.5938993184
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528399949626
           },
           "capture_point": {
             "x": 0.367876828256433,
-            "y": 0,
-            "z": 337.6039824
+            "y": 0.04,
+            "z": 337.5938993184
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2594,15 +2594,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.367876828256433,
-              "y": 0,
-              "z": 337.6039824
+              "y": 0.04,
+              "z": 337.5938993184
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.04787682825643297,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.04787682825643297,
             "support_polygon_vertices": [
               {
@@ -2643,29 +2643,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.30000000000000004,
-          "y": 0,
-          "z": 337.597815
+          "y": 0.04,
+          "z": 337.58773479
         },
         "com_velocity": {
           "x": 0.12000000000000109,
           "y": 0,
-          "z": -0.061673999999811935
+          "z": -0.06164528400006497
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.30000000000000004,
-            "y": 0,
-            "z": 337.597815
+            "y": 0.04,
+            "z": 337.58773479
           },
           "com_velocity": {
             "x": 0.12000000000000109,
             "y": 0,
-            "z": -0.061673999999811935
+            "z": -0.06164528400006497
           },
           "capture_point": {
             "x": 0.37987682825643376,
-            "y": 0,
-            "z": 337.597815
+            "y": 0.04,
+            "z": 337.58773479
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2673,15 +2673,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.37987682825643376,
-              "y": 0,
-              "z": 337.597815
+              "y": 0.04,
+              "z": 337.58773479
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.059876828256433756,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.05987682825643376,
             "support_polygon_vertices": [
               {
@@ -2722,29 +2722,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.31200000000000006,
-          "y": 0,
-          "z": 337.5916476
+          "y": 0.04,
+          "z": 337.5815702616
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.06164528400006469
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.31200000000000006,
-            "y": 0,
-            "z": 337.5916476
+            "y": 0.04,
+            "z": 337.5815702616
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.06164528400006469
           },
           "capture_point": {
             "x": 0.39187682825643305,
-            "y": 0,
-            "z": 337.5916476
+            "y": 0.04,
+            "z": 337.5815702616
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2752,15 +2752,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.39187682825643305,
-              "y": 0,
-              "z": 337.5916476
+              "y": 0.04,
+              "z": 337.5815702616
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.07187682825643305,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.07187682825643305,
             "support_polygon_vertices": [
               {
@@ -2801,29 +2801,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.324,
-          "y": 0,
-          "z": 337.5854802
+          "y": 0.04,
+          "z": 337.5754057332
         },
         "com_velocity": {
           "x": 0.11999999999999944,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528400006469
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.324,
-            "y": 0,
-            "z": 337.5854802
+            "y": 0.04,
+            "z": 337.5754057332
           },
           "com_velocity": {
             "x": 0.11999999999999944,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528400006469
           },
           "capture_point": {
             "x": 0.4038768282564326,
-            "y": 0,
-            "z": 337.5854802
+            "y": 0.04,
+            "z": 337.5754057332
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2831,15 +2831,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.4038768282564326,
-              "y": 0,
-              "z": 337.5854802
+              "y": 0.04,
+              "z": 337.5754057332
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.08387682825643261,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.08387682825643261,
             "support_polygon_vertices": [
               {
@@ -2880,29 +2880,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.336,
-          "y": 0,
-          "z": 337.5793128
+          "y": 0.04,
+          "z": 337.56924120480005
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06164528399949626
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.336,
-            "y": 0,
-            "z": 337.5793128
+            "y": 0.04,
+            "z": 337.56924120480005
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06164528399949626
           },
           "capture_point": {
             "x": 0.415876828256433,
-            "y": 0,
-            "z": 337.5793128
+            "y": 0.04,
+            "z": 337.56924120480005
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2910,15 +2910,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.415876828256433,
-              "y": 0,
-              "z": 337.5793128
+              "y": 0.04,
+              "z": 337.56924120480005
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.09587682825643301,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.09587682825643301,
             "support_polygon_vertices": [
               {
@@ -2959,29 +2959,29 @@
         "support_phase": "left-support",
         "com_position": {
           "x": 0.34800000000000003,
-          "y": 0,
-          "z": 337.5731454
+          "y": 0.04,
+          "z": 337.5630766764
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167400000038009
+          "z": -0.06164528400063313
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.34800000000000003,
-            "y": 0,
-            "z": 337.5731454
+            "y": 0.04,
+            "z": 337.5630766764
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167400000038009
+            "z": -0.06164528400063313
           },
           "capture_point": {
             "x": 0.42787682825643303,
-            "y": 0,
-            "z": 337.5731454
+            "y": 0.04,
+            "z": 337.5630766764
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -2989,15 +2989,15 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.42787682825643303,
-              "y": 0,
-              "z": 337.5731454
+              "y": 0.04,
+              "z": 337.5630766764
             },
             "min_x_m": 0.09999999999999999,
             "max_x_m": 0.32,
             "min_y_m": 0.035,
             "max_y_m": 0.125,
             "margin_x_m": -0.10787682825643302,
-            "margin_y_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
             "planar_margin_m": -0.10787682825643302,
             "support_polygon_vertices": [
               {
@@ -3038,29 +3038,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.36,
-          "y": 0,
-          "z": 337.566978
+          "y": -0.04,
+          "z": 337.572510804
         },
         "com_velocity": {
           "x": 0.11999999999999998,
-          "y": 0,
-          "z": -0.061673999999811935
+          "y": -0.8000000000000028,
+          "z": 0.09434127600002318
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.36,
-            "y": 0,
-            "z": 337.566978
+            "y": -0.04,
+            "z": 337.572510804
           },
           "com_velocity": {
             "x": 0.11999999999999998,
-            "y": 0,
-            "z": -0.061673999999811935
+            "y": -0.8000000000000028,
+            "z": 0.09434127600002318
           },
           "capture_point": {
             "x": 0.439876828256433,
-            "y": 0,
-            "z": 337.566978
+            "y": -0.5725121883762219,
+            "z": 337.572510804
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -3068,16 +3068,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.439876828256433,
-              "y": 0,
-              "z": 337.566978
+              "y": -0.5725121883762219,
+              "z": 337.572510804
             },
             "min_x_m": 0.21999999999999997,
             "max_x_m": 0.43999999999999995,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": 0.00012317174356696325,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": -0.44751218837622186,
+            "planar_margin_m": -0.44751218837622186,
             "support_polygon_vertices": [
               {
                 "x": 0.21999999999999997,
@@ -3104,7 +3104,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.44751218837622186,
           "stable": false,
           "status": "capture-point-outside-support"
         },
@@ -3117,29 +3117,29 @@
         "support_phase": "right-support",
         "com_position": {
           "x": 0.372,
-          "y": 0,
-          "z": 337.5608106
+          "y": -0.04,
+          "z": 337.56634423080004
         },
         "com_velocity": {
           "x": 0.12,
           "y": 0,
-          "z": -0.06167399999981166
+          "z": -0.06166573199948283
         },
         "capture_point_assessment": {
           "com_position": {
             "x": 0.372,
-            "y": 0,
-            "z": 337.5608106
+            "y": -0.04,
+            "z": 337.56634423080004
           },
           "com_velocity": {
             "x": 0.12,
             "y": 0,
-            "z": -0.06167399999981166
+            "z": -0.06166573199948283
           },
           "capture_point": {
             "x": 0.451876828256433,
-            "y": 0,
-            "z": 337.5608106
+            "y": -0.04,
+            "z": 337.56634423080004
           },
           "nominal_com_height_m": 0.72,
           "omega_rad_s": 1.5023130314433288,
@@ -3147,16 +3147,16 @@
             "support_count": 1,
             "com_projection": {
               "x": 0.451876828256433,
-              "y": 0,
-              "z": 337.5608106
+              "y": -0.04,
+              "z": 337.56634423080004
             },
             "min_x_m": 0.21999999999999997,
             "max_x_m": 0.43999999999999995,
             "min_y_m": -0.125,
             "max_y_m": -0.035,
             "margin_x_m": -0.011876828256433047,
-            "margin_y_m": -0.035,
-            "planar_margin_m": -0.035,
+            "margin_y_m": 0.0049999999999999975,
+            "planar_margin_m": -0.011876828256433047,
             "support_polygon_vertices": [
               {
                 "x": 0.21999999999999997,
@@ -3183,7 +3183,7 @@
             "stable": false,
             "status": "outside-support"
           },
-          "capture_margin_m": -0.035,
+          "capture_margin_m": -0.011876828256433047,
           "stable": false,
           "status": "capture-point-outside-support"
         },

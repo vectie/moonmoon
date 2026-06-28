@@ -257,9 +257,9 @@
       "joint_control_review_frame_count": 32,
       "joint_control_world_support_review_frame_count": 11,
       "joint_control_world_capture_review_frame_count": 32,
-      "joint_control_max_support_recovery_shift_m": 0.13966170306727652,
-      "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
-      "joint_control_max_capture_recovery_shift_m": 1.9992123000807385,
+      "joint_control_max_support_recovery_shift_m": 0.14552269298463164,
+      "joint_control_worst_capture_support_margin_m": -1.9654486632510992,
+      "joint_control_max_capture_recovery_shift_m": 1.9657610190466694,
       "joint_control_world_replay_blocker_count": 2,
       "joint_control_world_replay_blockers": [
         "world-support-review",
@@ -550,9 +550,9 @@
       "joint_control_review_frame_count": 32,
       "joint_control_world_support_review_frame_count": 11,
       "joint_control_world_capture_review_frame_count": 32,
-      "joint_control_max_support_recovery_shift_m": 0.13966170306727652,
-      "joint_control_worst_capture_support_margin_m": -1.9471892830999706,
-      "joint_control_max_capture_recovery_shift_m": 1.9992123000807385,
+      "joint_control_max_support_recovery_shift_m": 0.14552269298463164,
+      "joint_control_worst_capture_support_margin_m": -1.9654486632510992,
+      "joint_control_max_capture_recovery_shift_m": 1.9657610190466694,
       "joint_control_world_replay_blocker_count": 2,
       "joint_control_world_replay_blockers": [
         "world-support-review",
@@ -692,7 +692,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_stability.json",
           "producer": "moon run cmd/main -- moonrobo noetix stability json",
           "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
-          "current_state": "32/32 frames require support review; worst planar margin -0.035 m; status static-support-review",
+          "current_state": "32/32 frames require support review; worst planar margin -0.028000000000000025 m; status static-support-review",
           "ready": false,
           "blocking_reason": "static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
@@ -702,7 +702,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
           "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
           "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
-          "current_state": "32/32 frames require capture-point review; worst capture margin -0.10787682825643309 m; status dynamic-stability-review",
+          "current_state": "32/32 frames require capture-point review; worst capture margin -0.44751218837622186 m; status dynamic-stability-review",
           "ready": false,
           "blocking_reason": "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
@@ -712,7 +712,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_control.json",
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
-          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; max support recovery shift 0.13966170306727652 m; worst capture support margin -1.9471892830999706 m; max capture recovery shift 1.9992123000807385 m; world replay blockers 2; resolved world hinges 1512; body samples 825; max world speed 1.2074667066611866 m/s; max world energy 1.1080616442483613 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 40.50000000000002 W; absolute work 94.68436850627367 J; status joint-control-assumption-review",
+          "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield motor contacts 233; support-review frames 11; capture-review frames 32; max support recovery shift 0.14552269298463164 m; worst capture support margin -1.9654486632510992 m; max capture recovery shift 1.9657610190466694 m; world replay blockers 2; resolved world hinges 1512; body samples 825; max world speed 1.2003989840302869 m/s; max world energy 1.095127867854318 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 35.846164339490684 W; absolute work 113.8327842990804 J; status joint-control-assumption-review",
           "ready": false,
           "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"

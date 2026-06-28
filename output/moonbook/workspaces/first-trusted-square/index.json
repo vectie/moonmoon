@@ -779,7 +779,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.54,
       "path": "moonrobo/first-trusted-square/noetix-physics.json",
-      "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin -0.035 m, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 review-only profile uses explicit mass/sole/friction assumptions; 32/32 frames need static-support review, worst margin -0.028000000000000025 m, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-dynamics",
@@ -788,7 +788,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-dynamics.json",
-      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.10787682825643309 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 capture-point report has 32/32 review frames, worst capture margin -0.44751218837622186 m, status dynamic-stability-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-joint-control",
@@ -797,7 +797,7 @@
       "claim_kind": "Simulated",
       "confidence": 0.55,
       "path": "moonrobo/first-trusted-square/noetix-joint-control.json",
-      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 40.50000000000002 W, absolute work 94.68436850627367 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
+      "summary": "noetix-e1-lab-01 joint-control report has 32 frames, 24 joints per frame, max power 35.846164339490684 W, absolute work 113.8327842990804 J, status joint-control-assumption-review, hardware authority moonmoon-safety-gate-only"
     },
     {
       "entry_id": "moonrobo/first-trusted-square/noetix-inertial-collision",

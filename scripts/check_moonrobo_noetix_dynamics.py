@@ -52,8 +52,8 @@ def main() -> None:
 
     first = frames[0]
     assessment = first.get("capture_point_assessment", {})
-    if first.get("status") != "capture-point-review":
-        fail("first frame should require capture-point review")
+    if first.get("status") not in {"capture-point-review", "terrain-contact-review"}:
+        fail("first frame should expose capture or terrain review status")
     if first.get("terrain_contact_status") != "terrain-contact-review":
         fail("terrain contact review must carry through")
     if first.get("com_velocity", {}).get("x", 0) <= 0:
@@ -64,6 +64,10 @@ def main() -> None:
         fail("forward walking capture point should lead COM")
     if assessment.get("support_assessment", {}).get("support_count") != 1:
         fail("first frame should have one active support foot")
+    if assessment.get("support_assessment", {}).get("stable") is not True:
+        fail("support-aware body shift should stabilize the first capture point")
+    if assessment.get("capture_margin_m", 0) <= 0:
+        fail("first frame should expose positive capture margin after body shift")
     if not any(
         frame.get("capture_point_assessment", {}).get("status") == "capture-point-outside-support"
         for frame in frames

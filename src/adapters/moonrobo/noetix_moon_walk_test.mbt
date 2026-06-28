@@ -40,6 +40,7 @@ test "noetix endless moon walk honors heading and start position" {
     stride_frequency_hz: 0.75,
     cycle_frames: 20,
     lateral_foot_offset_m: 0.08,
+    support_lateral_shift_m: 0.08,
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
@@ -48,7 +49,7 @@ test "noetix endless moon walk honors heading and start position" {
   }
   let trace = noetix_moon_walk_trace(field, 3, config~)
   assert_eq(trace.endless_axis, "heading-rad:\{config.heading_rad}")
-  assert_true(trace.frames[0].body_position.x > 0.999999)
+  assert_true(trace.frames[0].body_position.x < 1.0)
   assert_true(trace.frames[0].body_position.y > 1.999999)
   assert_true(trace.frames[2].body_position.y > trace.frames[0].body_position.y)
   assert_true(
@@ -58,6 +59,22 @@ test "noetix endless moon walk honors heading and start position" {
     trace.frames[0].body_position.z >
     @moonphys.sample_heightfield(field, 1.0, 2.0).elevation_m +
     config.body_height_m,
+  )
+}
+
+///|
+test "noetix moon walk shifts body over support foot" {
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  assert_true(trace.config.support_lateral_shift_m > 0.0)
+  assert_true(trace.frames[0].body_position.y > 0.0)
+  assert_true(trace.frames[0].left_foot.in_contact)
+  assert_true(trace.frames[10].body_position.y < 0.0)
+  assert_true(trace.frames[10].right_foot.in_contact)
+  assert_true(
+    nearly_equal_double(
+      trace.frames[0].body_position.y,
+      trace.config.support_lateral_shift_m,
+    ),
   )
 }
 
@@ -571,7 +588,8 @@ test "noetix joint control report preserves urdf limits" {
     report.frames[3].steps.any(fn(step) {
       step.joint_name == "leg_r3_joint" &&
       step.velocity_within_limits &&
-      step.target_velocity_rad_s == 3.0
+      step.target_velocity_rad_s <= 3.0 &&
+      step.target_velocity_rad_s >= -3.0
     }),
   )
 }

@@ -401,7 +401,7 @@ fn support_count_for_frame(frame : NoetixMoonWalkFrame) -> Int {
 fn noetix_lateral_speed(config : NoetixMoonWalkConfig) -> Double {
   let half_cycle_s = config.dt_s * config.cycle_frames.to_double() * 0.5
   if half_cycle_s > 0.0 {
-    config.lateral_foot_offset_m / half_cycle_s
+    config.support_lateral_shift_m / half_cycle_s
   } else {
     0.0
   }

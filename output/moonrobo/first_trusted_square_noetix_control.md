@@ -24,34 +24,34 @@
 - hinge motor world trace capture-review support frames: 32
 - hinge motor world trace resolved hinges: 1512
 - hinge motor world trace body samples: 825
-- hinge motor world trace max speed: 1.2074667066611866 m/s
-- hinge motor world trace max kinetic energy: 1.1080616442483613 J
+- hinge motor world trace max speed: 1.2003989840302869 m/s
+- hinge motor world trace max kinetic energy: 1.095127867854318 J
 - hinge motor world trace total mass: 38.00000000000001 kg
-- hinge motor world trace center of mass x: 0.69030135511729 m
-- hinge motor world trace max center-of-mass speed: 0.6262051903954763 m/s
-- hinge motor world trace min support margin: -0.13966170306727652 m
-- hinge motor world trace max support recovery shift: 0.13966170306727652 m
-- hinge motor world trace worst capture support margin: -1.9471892830999706 m
-- hinge motor world trace max capture recovery shift: 1.9992123000807385 m
-- hinge motor world trace max center-of-pressure error: 0.2213821536134138 m
-- hinge motor world trace max body momentum: 1.8353493941250039 kg*m/s
-- hinge motor world trace max world momentum: 23.795797235028104 kg*m/s
-- hinge motor world trace max frame energy delta: 2.050170526416192 J
+- hinge motor world trace center of mass x: 0.6918049828183249 m
+- hinge motor world trace max center-of-mass speed: 0.619895476453518 m/s
+- hinge motor world trace min support margin: -0.1455226929846316 m
+- hinge motor world trace max support recovery shift: 0.14552269298463164 m
+- hinge motor world trace worst capture support margin: -1.9654486632510992 m
+- hinge motor world trace max capture recovery shift: 1.9657610190466694 m
+- hinge motor world trace max center-of-pressure error: 0.22969192435895353 m
+- hinge motor world trace max body momentum: 1.824606455726036 kg*m/s
+- hinge motor world trace max world momentum: 23.556028105233683 kg*m/s
+- hinge motor world trace max frame energy delta: 1.6988277413902635 J
 - hinge motor world trace envelope: world-trace-envelope-bounded
 - hinge motor world trace review: world-replay-review-blocked
 - hinge motor world trace review blockers: 2
 - hinge motor world trace status: world-heightfield-hinge-motor-trace-driven
-- max position error: 0.24289082981102283 rad
-- max target velocity: 3 rad/s
-- max mechanical power: 40.50000000000002 W
+- max position error: 0.24736322022518686 rad
+- max target velocity: 2.655271432554865 rad/s
+- max mechanical power: 35.846164339490684 W
 - max hinge position error: 0 m
-- max hinge angular error: 0.30000000000000016 rad
+- max hinge angular error: 0.30810658445147304 rad
 - max hinge motor angle delta: 0.30000000000000027 rad
 - max hinge motor velocity delta: 3 rad/s
-- hinge linear impulse: 32.25631400931138 Ns
-- hinge angular impulse: 1.5000656296828223 Nms
-- net joint work: 94.68436850627367 J
-- absolute joint work: 94.68436850627367 J
+- hinge linear impulse: 31.81548353285141 Ns
+- hinge angular impulse: 1.5475876589539617 Nms
+- net joint work: 113.8327842990804 J
+- absolute joint work: 113.8327842990804 J
 - status: joint-control-assumption-review
 - hardware authority: moonmoon-safety-gate-only
 - note: Joint-control evidence replays Noetix joint phases, including URDF leg IK phases, through Moonphys velocity-limited joint command shaping, joint-frame motor integration, servo, torque, velocity, position limits, and power/work accounting. Each frame also projects the URDF link graph through Moonphys hinge-joint frame assessment, world hinge constraint replay, world hinge motor replay, a sequential world hinge motor trace, and motor-driven heightfield world replay for generic body/joint/contact constraint evidence. It remains review evidence only because servo gains, joint inertias, and link inertias are assumptions.
@@ -59,34 +59,34 @@
 ## Frame Joint Control
 
 - frame 0 t=0s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=0W abs_work=0J status=joint-command-review
-- frame 1 t=0.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266188W abs_work=1.864816759803522J status=joint-command-review
-- frame 2 t=0.2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=9.104265814785128W abs_work=4.209860143640319J status=joint-command-review
-- frame 3 t=0.30000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=40.50000000000002W abs_work=15.080999472050298J status=joint-command-review
-- frame 4 t=0.4s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=23.656698058768715W abs_work=7.9807171967328925J status=joint-command-review
-- frame 5 t=0.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=17.013602047200525W abs_work=5.265378290423696J status=joint-command-review
-- frame 6 t=0.6000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=5.829567288094258W abs_work=1.814407585961857J status=joint-command-review
-- frame 7 t=0.7000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.571109222841735W abs_work=2.1473770707457325J status=joint-command-review
-- frame 8 t=0.8s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.92516720471694W abs_work=2.049285952618466J status=joint-command-review
-- frame 9 t=0.9s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.056649431789355W abs_work=2.226473602375826J status=joint-command-review
-- frame 10 t=1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=17.752623700759443W abs_work=7.715950490048546J status=joint-command-review
-- frame 11 t=1.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=17.46685553789003W abs_work=6.065580335643522J status=joint-command-review
-- frame 12 t=1.2000000000000002s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.004670054710879W abs_work=1.3316271814438931J status=joint-command-review
-- frame 13 t=1.3s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.4463454075693214W abs_work=0.9200079180669564J status=joint-command-review
-- frame 14 t=1.4000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.3603751081741207W abs_work=0.5813833948533785J status=joint-command-review
-- frame 15 t=1.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.4282284235453826W abs_work=0.6447632689792111J status=joint-command-review
-- frame 16 t=1.6s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=6.713290371539654W abs_work=1.7169071684553456J status=joint-command-review
-- frame 17 t=1.7000000000000002s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.645790613402443W abs_work=2.386313847059272J status=joint-command-review
-- frame 18 t=1.8s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.8654075291719594W abs_work=1.8189931012773186J status=joint-command-review
-- frame 19 t=1.9000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.030763703371611W abs_work=2.0531624922102676J status=joint-command-review
-- frame 20 t=2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=11.301747404693975W abs_work=5.86968845549522J status=joint-command-review
-- frame 21 t=2.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266186W abs_work=1.86885826640397J status=joint-command-review
-- frame 22 t=2.2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.0483936749837515W abs_work=1.655899204526689J status=joint-command-review
-- frame 23 t=2.3000000000000003s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.4741751004336994W abs_work=1.0410578407348865J status=joint-command-review
-- frame 24 t=2.4000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.3684412592355586W abs_work=0.701230368690834J status=joint-command-review
-- frame 25 t=2.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.5825930237102117W abs_work=0.7589000475003617J status=joint-command-review
-- frame 26 t=2.6s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=6.728290667725829W abs_work=1.2925891894599424J status=joint-command-review
-- frame 27 t=2.7s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.57109848788462W abs_work=1.9345766782547895J status=joint-command-review
-- frame 28 t=2.8000000000000003s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.9252889778592714W abs_work=1.8254545997649685J status=joint-command-review
-- frame 29 t=2.9000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.056743338704085W abs_work=2.0449089397563944J status=joint-command-review
-- frame 30 t=3s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=11.968814574222131W abs_work=6.044732303375574J status=joint-command-review
-- frame 31 t=3.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266186W abs_work=1.7724673399197075J status=joint-command-review
+- frame 1 t=0.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266188W abs_work=1.761411140448555J status=joint-command-review
+- frame 2 t=0.2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=22.796353471840536W abs_work=8.80164319936946J status=joint-command-review
+- frame 3 t=0.30000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=35.846164339490684W abs_work=12.715131287955789J status=joint-command-review
+- frame 4 t=0.4s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=22.370048804867842W abs_work=7.39800847417832J status=joint-command-review
+- frame 5 t=0.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=16.459666735279736W abs_work=4.953044497282157J status=joint-command-review
+- frame 6 t=0.6000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=5.5615535942571555W abs_work=1.7262260045020899J status=joint-command-review
+- frame 7 t=0.7000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.574976619108428W abs_work=1.9156594605563568J status=joint-command-review
+- frame 8 t=0.8s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.969540030323474W abs_work=2.0057974601131665J status=joint-command-review
+- frame 9 t=0.9s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.093061525630629W abs_work=2.185406345563102J status=joint-command-review
+- frame 10 t=1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=24.300000000000004W abs_work=14.184668353042705J status=joint-command-review
+- frame 11 t=1.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=17.819419714625244W abs_work=6.27087356874793J status=joint-command-review
+- frame 12 t=1.2000000000000002s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.004670054710879W abs_work=1.347964431942586J status=joint-command-review
+- frame 13 t=1.3s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.443681500443703W abs_work=0.9355940534070231J status=joint-command-review
+- frame 14 t=1.4000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.3551121792757126W abs_work=0.5955879070160907J status=joint-command-review
+- frame 15 t=1.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.411078833147889W abs_work=0.6806506791472382J status=joint-command-review
+- frame 16 t=1.6s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=6.7359611686597605W abs_work=1.8280377681538567J status=joint-command-review
+- frame 17 t=1.7000000000000002s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.676033609303114W abs_work=2.4055891002789798J status=joint-command-review
+- frame 18 t=1.8s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.8702136552372846W abs_work=1.8222344501844665J status=joint-command-review
+- frame 19 t=1.9000000000000001s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.043741189016645W abs_work=2.05850559323821J status=joint-command-review
+- frame 20 t=2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=24.300000000000015W abs_work=10.959903725535149J status=joint-command-review
+- frame 21 t=2.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266186W abs_work=1.5992871232733572J status=joint-command-review
+- frame 22 t=2.2s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.1039658322700165W abs_work=1.620634979883916J status=joint-command-review
+- frame 23 t=2.3000000000000003s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.452096274670626W abs_work=1.0064914724780545J status=joint-command-review
+- frame 24 t=2.4000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=2.3543027494920126W abs_work=0.6705713191865884J status=joint-command-review
+- frame 25 t=2.5s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.6495871700480604W abs_work=0.7291036883669939J status=joint-command-review
+- frame 26 t=2.6s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=6.775476900058914W abs_work=1.2539427261379767J status=joint-command-review
+- frame 27 t=2.7s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=7.574955080380079W abs_work=1.6975363501118181J status=joint-command-review
+- frame 28 t=2.8000000000000003s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.9694233045672336W abs_work=1.8265826155841252J status=joint-command-review
+- frame 29 t=2.9000000000000004s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=4.092962660006932W abs_work=2.0480648158345502J status=joint-command-review
+- frame 30 t=3s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=24.300000000000036W abs_work=13.037732310189J status=joint-command-review
+- frame 31 t=3.1s joints=24 saturated=0 limit_review=0 hinge_joints=24 hinge_motor_driven=24 hinge_status=noetix-hinge-world-motor-driven hinge_motor_status=world-hinge-motor-driven max_power=3.739990267266186W abs_work=1.79089939737078J status=joint-command-review

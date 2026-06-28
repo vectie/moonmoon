@@ -290,18 +290,18 @@ def main() -> None:
     review_joints = {step.get("joint_name") for step in review_steps}
     if review_joints:
         fail(f"unexpected velocity review joints after shaping: {review_joints}")
-    shaped_frame = frames[3]
-    shaped_steps = {
-        step.get("joint_name"): step
-        for step in shaped_frame.get("steps", [])
-        if step.get("joint_name") in {"leg_r1_joint", "leg_r3_joint"}
-    }
-    if shaped_steps.get("leg_r1_joint", {}).get("target_velocity_rad_s") != -3:
-        fail("leg_r1_joint should be velocity-shaped to -3 rad/s")
-    if shaped_steps.get("leg_r3_joint", {}).get("target_velocity_rad_s") != 3:
-        fail("leg_r3_joint should be velocity-shaped to 3 rad/s")
-    if not all(step.get("velocity_within_limits") for step in shaped_steps.values()):
-        fail("velocity-shaped joints must be within limits")
+    leg_steps = [
+        step
+        for frame in frames
+        for step in frame.get("steps", [])
+        if str(step.get("joint_name", "")).startswith("leg_")
+    ]
+    if not leg_steps:
+        fail("expected leg joint control steps")
+    if any(abs(step.get("target_velocity_rad_s", 0)) > 3 for step in leg_steps):
+        fail("leg joint velocities must remain shaped within URDF limits")
+    if not all(step.get("velocity_within_limits") for step in leg_steps):
+        fail("velocity-shaped leg joints must be within limits")
 
 
 if __name__ == "__main__":

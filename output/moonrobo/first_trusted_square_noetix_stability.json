@@ -650,8 +650,8 @@
   "stable_frame_count": 0,
   "review_frame_count": 32,
   "traction_review_frame_count": 0,
-  "worst_planar_margin_m": -0.035,
-  "worst_traction_margin_n": 35.26888932191745,
+  "worst_planar_margin_m": -0.028000000000000025,
+  "worst_traction_margin_n": 35.55180029625397,
   "frames": [
     {
       "frame_index": 0,
@@ -659,23 +659,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0,
-        "y": 0,
-        "z": 337.752
+        "y": 0.04,
+        "z": 337.741848
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0,
-          "y": 0,
-          "z": 337.752
+          "y": 0.04,
+          "z": 337.741848
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.08,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -699,22 +699,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0,
-          "y": 0,
-          "z": 337.752
+          "y": 0.04,
+          "z": 337.741848
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.08544003745317531,
+        "center_of_pressure_error_m": 0.05,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -729,15 +729,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 1.8525,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -1156,11 +1156,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -1190,23 +1190,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.012,
-        "y": 0,
-        "z": 337.7458326
+        "y": 0.04,
+        "z": 337.73568347160005
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.012,
-          "y": 0,
-          "z": 337.7458326
+          "y": 0.04,
+          "z": 337.73568347160005
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.068,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -1230,22 +1230,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.012,
-          "y": 0,
-          "z": 337.7458326
+          "y": 0.04,
+          "z": 337.73568347160005
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.09035485598461214,
+        "center_of_pressure_error_m": 0.057999999999999996,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -1260,15 +1260,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 2.5934999999999997,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -1687,11 +1687,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -1721,23 +1721,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.024,
-        "y": 0,
-        "z": 337.7396652
+        "y": 0.04,
+        "z": 337.7295189432
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.024,
-          "y": 0,
-          "z": 337.7396652
+          "y": 0.04,
+          "z": 337.7295189432
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.056,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -1761,22 +1761,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.024,
-          "y": 0,
-          "z": 337.7396652
+          "y": 0.04,
+          "z": 337.7295189432
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.09651942809610922,
+        "center_of_pressure_error_m": 0.06720119046564577,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -1791,15 +1791,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 3.3345,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -2218,11 +2218,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -2252,23 +2252,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.036,
-        "y": 0,
-        "z": 337.7334978
+        "y": 0.04,
+        "z": 337.7233544148
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.036,
-          "y": 0,
-          "z": 337.7334978
+          "y": 0.04,
+          "z": 337.7233544148
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.044000000000000004,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -2292,22 +2292,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.036,
-          "y": 0,
-          "z": 337.7334978
+          "y": 0.04,
+          "z": 337.7233544148
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.10371113729971339,
+        "center_of_pressure_error_m": 0.07717512552629896,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -2322,15 +2322,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 4.0755,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -2749,11 +2749,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -2783,23 +2783,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.048,
-        "y": 0,
-        "z": 337.7273304
+        "y": 0.04,
+        "z": 337.71718988640004
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.048,
-          "y": 0,
-          "z": 337.7273304
+          "y": 0.04,
+          "z": 337.71718988640004
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.032,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -2823,22 +2823,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.048,
-          "y": 0,
-          "z": 337.7273304
+          "y": 0.04,
+          "z": 337.71718988640004
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.11173182178770738,
+        "center_of_pressure_error_m": 0.0876584280032445,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -2853,15 +2853,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 4.8165,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -3280,11 +3280,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -3314,23 +3314,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.06,
-        "y": 0,
-        "z": 337.721163
+        "y": 0.04,
+        "z": 337.711025358
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.06,
-          "y": 0,
-          "z": 337.721163
+          "y": 0.04,
+          "z": 337.711025358
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.020000000000000004,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -3354,22 +3354,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.06,
-          "y": 0,
-          "z": 337.721163
+          "y": 0.04,
+          "z": 337.711025358
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.12041594578792295,
+        "center_of_pressure_error_m": 0.09848857801796104,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -3384,15 +3384,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 5.5575,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -3811,11 +3811,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -3845,23 +3845,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.072,
-        "y": 0,
-        "z": 337.7149956
+        "y": 0.04,
+        "z": 337.7048608296
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.072,
-          "y": 0,
-          "z": 337.7149956
+          "y": 0.04,
+          "z": 337.7048608296
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.008000000000000007,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -3885,22 +3885,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.072,
-          "y": 0,
-          "z": 337.7149956
+          "y": 0.04,
+          "z": 337.7048608296
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.12963024338479043,
+        "center_of_pressure_error_m": 0.10956276739841869,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -3915,15 +3915,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 6.2985,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -4342,11 +4342,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -4376,23 +4376,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.084,
-        "y": 0,
-        "z": 337.7088282
+        "y": 0.04,
+        "z": 337.6986963012
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.084,
-          "y": 0,
-          "z": 337.7088282
+          "y": 0.04,
+          "z": 337.6986963012
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.0040000000000000036,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.0040000000000000036,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -4423,15 +4423,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.084,
-          "y": 0,
-          "z": 337.7088282
+          "y": 0.04,
+          "z": 337.6986963012
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.13926952286842947,
+        "center_of_pressure_error_m": 0.12081390648431166,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -4446,7 +4446,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 7.0395,
               "z": 0
             },
@@ -4873,11 +4873,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -4907,23 +4907,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.096,
-        "y": 0,
-        "z": 337.7026608
+        "y": 0.04,
+        "z": 337.6925317728
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.096,
-          "y": 0,
-          "z": 337.7026608
+          "y": 0.04,
+          "z": 337.6925317728
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.016,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.016,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -4954,15 +4954,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.096,
-          "y": 0,
-          "z": 337.7026608
+          "y": 0.04,
+          "z": 337.6925317728
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.14925146565444508,
+        "center_of_pressure_error_m": 0.13219682295728594,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -4977,7 +4977,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 7.7805,
               "z": 0
             },
@@ -5404,11 +5404,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -5438,23 +5438,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.10800000000000001,
-        "y": 0,
-        "z": 337.6964934
+        "y": 0.04,
+        "z": 337.6863672444
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.10800000000000001,
-          "y": 0,
-          "z": 337.6964934
+          "y": 0.04,
+          "z": 337.6863672444
         },
         "min_x_m": -0.14,
         "max_x_m": 0.08,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.02800000000000001,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.02800000000000001,
         "support_polygon_vertices": [
           {
             "x": -0.14,
@@ -5485,15 +5485,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.10800000000000001,
-          "y": 0,
-          "z": 337.6964934
+          "y": 0.04,
+          "z": 337.6863672444
         },
         "center_of_pressure": {
           "x": -0.03,
           "y": 0.08,
           "z": 336.97107363000003
         },
-        "center_of_pressure_error_m": 0.1595117550527233,
+        "center_of_pressure_error_m": 0.14368020044529448,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -5508,7 +5508,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 8.521500000000001,
               "z": 0
             },
@@ -5935,11 +5935,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.222279047025566,
-          "tangential_force_n": 2.688923687238398,
-          "friction_limit_n": 37.95781300915585,
-          "utilization": 0.0708397948688403,
-          "margin_n": 35.26888932191745,
+          "normal_force_n": 61.049779915173914,
+          "tangential_force_n": 2.299063251153857,
+          "friction_limit_n": 37.850863547407826,
+          "utilization": 0.060740047536149436,
+          "margin_n": 35.55180029625397,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -5969,23 +5969,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.12,
-        "y": 0,
-        "z": 337.690326
+        "y": -0.04,
+        "z": 337.69584226800004
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.12,
-          "y": 0,
-          "z": 337.690326
+          "y": -0.04,
+          "z": 337.69584226800004
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.08000000000000002,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -6009,22 +6009,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.12,
-          "y": 0,
-          "z": 337.690326
+          "y": -0.04,
+          "z": 337.69584226800004
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.08544003745317531,
+        "center_of_pressure_error_m": 0.05,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -6039,15 +6039,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 1.8525,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -6481,11 +6481,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -6500,23 +6500,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.13199999999999998,
-        "y": 0,
-        "z": 337.6841586
+        "y": -0.04,
+        "z": 337.6896756948
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.13199999999999998,
-          "y": 0,
-          "z": 337.6841586
+          "y": -0.04,
+          "z": 337.6896756948
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.06800000000000003,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -6540,22 +6540,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.13199999999999998,
-          "y": 0,
-          "z": 337.6841586
+          "y": -0.04,
+          "z": 337.6896756948
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.09035485598461214,
+        "center_of_pressure_error_m": 0.05799999999999999,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -6570,15 +6570,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 2.593499999999999,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -7012,11 +7012,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -7031,23 +7031,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.144,
-        "y": 0,
-        "z": 337.6779912
+        "y": -0.04,
+        "z": 337.6835091216
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.144,
-          "y": 0,
-          "z": 337.6779912
+          "y": -0.04,
+          "z": 337.6835091216
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.05600000000000002,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -7071,22 +7071,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.144,
-          "y": 0,
-          "z": 337.6779912
+          "y": -0.04,
+          "z": 337.6835091216
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.09651942809610922,
+        "center_of_pressure_error_m": 0.06720119046564577,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -7101,15 +7101,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 3.3344999999999994,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -7543,11 +7543,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -7562,23 +7562,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.15600000000000003,
-        "y": 0,
-        "z": 337.6718238
+        "y": -0.04,
+        "z": 337.6773425484
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.15600000000000003,
-          "y": 0,
-          "z": 337.6718238
+          "y": -0.04,
+          "z": 337.6773425484
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.043999999999999984,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -7602,22 +7602,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.15600000000000003,
-          "y": 0,
-          "z": 337.6718238
+          "y": -0.04,
+          "z": 337.6773425484
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.1037111372997134,
+        "center_of_pressure_error_m": 0.07717512552629897,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -7632,15 +7632,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 4.075500000000002,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -8074,11 +8074,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -8093,23 +8093,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.168,
-        "y": 0,
-        "z": 337.6656564
+        "y": -0.04,
+        "z": 337.6711759752
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.168,
-          "y": 0,
-          "z": 337.6656564
+          "y": -0.04,
+          "z": 337.6711759752
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.032,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -8133,22 +8133,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.168,
-          "y": 0,
-          "z": 337.6656564
+          "y": -0.04,
+          "z": 337.6711759752
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.11173182178770738,
+        "center_of_pressure_error_m": 0.08765842800324451,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -8163,15 +8163,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 4.8165000000000004,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -8605,11 +8605,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -8624,23 +8624,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.18,
-        "y": 0,
-        "z": 337.659489
+        "y": -0.04,
+        "z": 337.665009402
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.18,
-          "y": 0,
-          "z": 337.659489
+          "y": -0.04,
+          "z": 337.665009402
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.020000000000000018,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -8664,22 +8664,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.18,
-          "y": 0,
-          "z": 337.659489
+          "y": -0.04,
+          "z": 337.665009402
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.12041594578792295,
+        "center_of_pressure_error_m": 0.09848857801796104,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -8694,15 +8694,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 5.5575,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -9136,11 +9136,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -9155,23 +9155,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.192,
-        "y": 0,
-        "z": 337.6533216
+        "y": -0.04,
+        "z": 337.6588428288
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.192,
-          "y": 0,
-          "z": 337.6533216
+          "y": -0.04,
+          "z": 337.6588428288
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.008000000000000007,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -9195,22 +9195,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.192,
-          "y": 0,
-          "z": 337.6533216
+          "y": -0.04,
+          "z": 337.6588428288
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.12963024338479043,
+        "center_of_pressure_error_m": 0.10956276739841872,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -9225,15 +9225,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 6.298500000000001,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -9667,11 +9667,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -9686,23 +9686,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.20400000000000001,
-        "y": 0,
-        "z": 337.6471542
+        "y": -0.04,
+        "z": 337.6526762556
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.20400000000000001,
-          "y": 0,
-          "z": 337.6471542
+          "y": -0.04,
+          "z": 337.6526762556
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": -0.0040000000000000036,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.0040000000000000036,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -9733,15 +9733,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.20400000000000001,
-          "y": 0,
-          "z": 337.6471542
+          "y": -0.04,
+          "z": 337.6526762556
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.13926952286842947,
+        "center_of_pressure_error_m": 0.12081390648431167,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -9756,7 +9756,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 7.039500000000001,
               "z": 0
             },
@@ -10198,11 +10198,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -10217,23 +10217,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.21600000000000003,
-        "y": 0,
-        "z": 337.6409868
+        "y": -0.04,
+        "z": 337.6465096824
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.21600000000000003,
-          "y": 0,
-          "z": 337.6409868
+          "y": -0.04,
+          "z": 337.6465096824
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": -0.016000000000000014,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.016000000000000014,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -10264,15 +10264,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.21600000000000003,
-          "y": 0,
-          "z": 337.6409868
+          "y": -0.04,
+          "z": 337.6465096824
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.1492514656544451,
+        "center_of_pressure_error_m": 0.13219682295728596,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -10287,7 +10287,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 7.780500000000002,
               "z": 0
             },
@@ -10729,11 +10729,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -10748,23 +10748,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.22799999999999998,
-        "y": 0,
-        "z": 337.6348194
+        "y": -0.04,
+        "z": 337.64034310920005
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.22799999999999998,
-          "y": 0,
-          "z": 337.6348194
+          "y": -0.04,
+          "z": 337.64034310920005
         },
         "min_x_m": -0.020000000000000004,
         "max_x_m": 0.2,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": -0.02799999999999997,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.02799999999999997,
         "support_polygon_vertices": [
           {
             "x": -0.020000000000000004,
@@ -10795,15 +10795,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.22799999999999998,
-          "y": 0,
-          "z": 337.6348194
+          "y": -0.04,
+          "z": 337.64034310920005
         },
         "center_of_pressure": {
           "x": 0.09,
           "y": -0.08,
           "z": 336.99677290200003
         },
-        "center_of_pressure_error_m": 0.1595117550527233,
+        "center_of_pressure_error_m": 0.14368020044529448,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -10818,7 +10818,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 8.5215,
               "z": 0
             },
@@ -11260,11 +11260,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 61.40004381555254,
-          "tangential_force_n": 2.7177804673974264,
-          "friction_limit_n": 38.068027165642576,
-          "utilization": 0.07139273216265582,
-          "margin_n": 35.35024669824515,
+          "normal_force_n": 61.503666476703884,
+          "tangential_force_n": 2.3906735024466474,
+          "friction_limit_n": 38.13227321555641,
+          "utilization": 0.06269422987012876,
+          "margin_n": 35.741599713109764,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -11279,23 +11279,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.24,
-        "y": 0,
-        "z": 337.628652
+        "y": 0.04,
+        "z": 337.618557432
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.24,
-          "y": 0,
-          "z": 337.628652
+          "y": 0.04,
+          "z": 337.618557432
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.08000000000000002,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -11319,22 +11319,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.24,
-          "y": 0,
-          "z": 337.628652
+          "y": 0.04,
+          "z": 337.618557432
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.08544003745317531,
+        "center_of_pressure_error_m": 0.05,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -11349,15 +11349,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 1.8525,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -11776,11 +11776,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -11810,23 +11810,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.252,
-        "y": 0,
-        "z": 337.6224846
+        "y": 0.04,
+        "z": 337.6123929036
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.252,
-          "y": 0,
-          "z": 337.6224846
+          "y": 0.04,
+          "z": 337.6123929036
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.068,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -11850,22 +11850,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.252,
-          "y": 0,
-          "z": 337.6224846
+          "y": 0.04,
+          "z": 337.6123929036
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.09035485598461214,
+        "center_of_pressure_error_m": 0.058,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -11880,15 +11880,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 2.5935000000000006,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -12307,11 +12307,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -12341,23 +12341,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.26399999999999996,
-        "y": 0,
-        "z": 337.6163172
+        "y": 0.04,
+        "z": 337.60622837520003
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.26399999999999996,
-          "y": 0,
-          "z": 337.6163172
+          "y": 0.04,
+          "z": 337.60622837520003
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.05600000000000005,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -12381,22 +12381,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.26399999999999996,
-          "y": 0,
-          "z": 337.6163172
+          "y": 0.04,
+          "z": 337.60622837520003
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.09651942809610921,
+        "center_of_pressure_error_m": 0.06720119046564574,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -12411,15 +12411,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 3.334499999999998,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -12838,11 +12838,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -12872,23 +12872,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.27599999999999997,
-        "y": 0,
-        "z": 337.6101498
+        "y": 0.04,
+        "z": 337.60006384679997
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.27599999999999997,
-          "y": 0,
-          "z": 337.6101498
+          "y": 0.04,
+          "z": 337.60006384679997
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.04400000000000004,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -12912,22 +12912,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.27599999999999997,
-          "y": 0,
-          "z": 337.6101498
+          "y": 0.04,
+          "z": 337.60006384679997
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.10371113729971337,
+        "center_of_pressure_error_m": 0.07717512552629893,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -12942,15 +12942,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 4.075499999999998,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -13369,11 +13369,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -13403,23 +13403,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.288,
-        "y": 0,
-        "z": 337.6039824
+        "y": 0.04,
+        "z": 337.5938993184
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.288,
-          "y": 0,
-          "z": 337.6039824
+          "y": 0.04,
+          "z": 337.5938993184
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.03200000000000003,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -13443,22 +13443,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.288,
-          "y": 0,
-          "z": 337.6039824
+          "y": 0.04,
+          "z": 337.5938993184
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.11173182178770737,
+        "center_of_pressure_error_m": 0.08765842800324448,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -13473,15 +13473,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 4.8165,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -13900,11 +13900,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -13934,23 +13934,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.30000000000000004,
-        "y": 0,
-        "z": 337.597815
+        "y": 0.04,
+        "z": 337.58773479
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.30000000000000004,
-          "y": 0,
-          "z": 337.597815
+          "y": 0.04,
+          "z": 337.58773479
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.019999999999999962,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -13974,22 +13974,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.30000000000000004,
-          "y": 0,
-          "z": 337.597815
+          "y": 0.04,
+          "z": 337.58773479
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.12041594578792299,
+        "center_of_pressure_error_m": 0.0984885780179611,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -14004,15 +14004,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 5.557500000000004,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -14431,11 +14431,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -14465,23 +14465,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.31200000000000006,
-        "y": 0,
-        "z": 337.5916476
+        "y": 0.04,
+        "z": 337.5815702616
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.31200000000000006,
-          "y": 0,
-          "z": 337.5916476
+          "y": 0.04,
+          "z": 337.5815702616
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": 0.007999999999999952,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.0049999999999999975,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -14505,22 +14505,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.31200000000000006,
-          "y": 0,
-          "z": 337.5916476
+          "y": 0.04,
+          "z": 337.5815702616
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.12963024338479048,
+        "center_of_pressure_error_m": 0.10956276739841876,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -14535,15 +14535,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 6.298500000000004,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -14962,11 +14962,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -14996,23 +14996,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.324,
-        "y": 0,
-        "z": 337.5854802
+        "y": 0.04,
+        "z": 337.5754057332
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.324,
-          "y": 0,
-          "z": 337.5854802
+          "y": 0.04,
+          "z": 337.5754057332
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.0040000000000000036,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.0040000000000000036,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -15043,15 +15043,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.324,
-          "y": 0,
-          "z": 337.5854802
+          "y": 0.04,
+          "z": 337.5754057332
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.13926952286842947,
+        "center_of_pressure_error_m": 0.12081390648431167,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -15066,7 +15066,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 7.039500000000001,
               "z": 0
             },
@@ -15493,11 +15493,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -15527,23 +15527,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.336,
-        "y": 0,
-        "z": 337.5793128
+        "y": 0.04,
+        "z": 337.56924120480005
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.336,
-          "y": 0,
-          "z": 337.5793128
+          "y": 0.04,
+          "z": 337.56924120480005
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.016000000000000014,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.016000000000000014,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -15574,15 +15574,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.336,
-          "y": 0,
-          "z": 337.5793128
+          "y": 0.04,
+          "z": 337.56924120480005
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.1492514656544451,
+        "center_of_pressure_error_m": 0.13219682295728596,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -15597,7 +15597,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 7.780500000000002,
               "z": 0
             },
@@ -16024,11 +16024,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -16058,23 +16058,23 @@
       "support_phase": "left-support",
       "com_projection": {
         "x": 0.34800000000000003,
-        "y": 0,
-        "z": 337.5731454
+        "y": 0.04,
+        "z": 337.5630766764
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.34800000000000003,
-          "y": 0,
-          "z": 337.5731454
+          "y": 0.04,
+          "z": 337.5630766764
         },
         "min_x_m": 0.09999999999999999,
         "max_x_m": 0.32,
         "min_y_m": 0.035,
         "max_y_m": 0.125,
         "margin_x_m": -0.028000000000000025,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": -0.028000000000000025,
         "support_polygon_vertices": [
           {
             "x": 0.09999999999999999,
@@ -16105,15 +16105,15 @@
         "load_count": 1,
         "center_of_mass": {
           "x": 0.34800000000000003,
-          "y": 0,
-          "z": 337.5731454
+          "y": 0.04,
+          "z": 337.5630766764
         },
         "center_of_pressure": {
           "x": 0.21,
           "y": 0.08,
           "z": 336.903867006
         },
-        "center_of_pressure_error_m": 0.15951175505272336,
+        "center_of_pressure_error_m": 0.14368020044529453,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -16128,7 +16128,7 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": 4.94,
+              "x": 2.47,
               "y": 8.521500000000003,
               "z": 0
             },
@@ -16555,11 +16555,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 63.099296406772616,
-          "tangential_force_n": 2.3849945925872666,
-          "friction_limit_n": 39.121563772199025,
-          "utilization": 0.06096368249681564,
-          "margin_n": 36.736569179611756,
+          "normal_force_n": 62.93270830642892,
+          "tangential_force_n": 2.0921761546065007,
+          "friction_limit_n": 39.01827914998593,
+          "utilization": 0.05362041074554297,
+          "margin_n": 36.92610299537943,
           "slipping": false,
           "status": "traction-ok"
         },
@@ -16589,23 +16589,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.36,
-        "y": 0,
-        "z": 337.566978
+        "y": -0.04,
+        "z": 337.572510804
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.36,
-          "y": 0,
-          "z": 337.566978
+          "y": -0.04,
+          "z": 337.572510804
         },
         "min_x_m": 0.21999999999999997,
         "max_x_m": 0.43999999999999995,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.07999999999999996,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
           {
             "x": 0.21999999999999997,
@@ -16629,22 +16629,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.36,
-          "y": 0,
-          "z": 337.566978
+          "y": -0.04,
+          "z": 337.572510804
         },
         "center_of_pressure": {
           "x": 0.32999999999999996,
           "y": -0.08,
           "z": 336.87345797399996
         },
-        "center_of_pressure_error_m": 0.08544003745317533,
+        "center_of_pressure_error_m": 0.05000000000000002,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -16659,15 +16659,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 1.8525000000000016,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -17101,11 +17101,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 62.59866417692865,
-          "tangential_force_n": 2.605488268021572,
-          "friction_limit_n": 38.81117178969576,
-          "utilization": 0.06713242986168536,
-          "margin_n": 36.20568352167419,
+          "normal_force_n": 62.69143315441697,
+          "tangential_force_n": 2.211267422941996,
+          "friction_limit_n": 38.86868855573852,
+          "utilization": 0.05689071345360654,
+          "margin_n": 36.65742113279653,
           "slipping": false,
           "status": "traction-ok"
         }
@@ -17120,23 +17120,23 @@
       "support_phase": "right-support",
       "com_projection": {
         "x": 0.372,
-        "y": 0,
-        "z": 337.5608106
+        "y": -0.04,
+        "z": 337.56634423080004
       },
       "support_assessment": {
         "support_count": 1,
         "com_projection": {
           "x": 0.372,
-          "y": 0,
-          "z": 337.5608106
+          "y": -0.04,
+          "z": 337.56634423080004
         },
         "min_x_m": 0.21999999999999997,
         "max_x_m": 0.43999999999999995,
         "min_y_m": -0.125,
         "max_y_m": -0.035,
         "margin_x_m": 0.06799999999999995,
-        "margin_y_m": -0.035,
-        "planar_margin_m": -0.035,
+        "margin_y_m": 0.0049999999999999975,
+        "planar_margin_m": 0.004999999999999998,
         "support_polygon_vertices": [
           {
             "x": 0.21999999999999997,
@@ -17160,22 +17160,22 @@
           }
         ],
         "support_polygon_vertex_count": 4,
-        "stable": false,
-        "status": "outside-support"
+        "stable": true,
+        "status": "inside-support"
       },
       "support_load_assessment": {
         "load_count": 1,
         "center_of_mass": {
           "x": 0.372,
-          "y": 0,
-          "z": 337.5608106
+          "y": -0.04,
+          "z": 337.56634423080004
         },
         "center_of_pressure": {
           "x": 0.32999999999999996,
           "y": -0.08,
           "z": 336.87345797399996
         },
-        "center_of_pressure_error_m": 0.09035485598461215,
+        "center_of_pressure_error_m": 0.05800000000000003,
         "total_normal_force_n": 61.75,
         "min_load_fraction": 1,
         "max_load_fraction": 1,
@@ -17190,15 +17190,15 @@
             "load_fraction": 1,
             "normal_force_n": 61.75,
             "contact_torque_nm": {
-              "x": -4.94,
+              "x": -2.47,
               "y": 2.5935000000000024,
               "z": 0
             },
             "status": "loaded"
           }
         ],
-        "balanced": false,
-        "status": "outside-support-load-review"
+        "balanced": true,
+        "status": "single-support-load"
       },
       "contact_patches": [
         {
@@ -17632,11 +17632,11 @@
             "friction_coefficient": 0.62,
             "restitution_coefficient": 0.04
           },
-          "normal_force_n": 62.59866417692865,
-          "tangential_force_n": 2.605488268021572,
-          "friction_limit_n": 38.81117178969576,
-          "utilization": 0.06713242986168536,
-          "margin_n": 36.20568352167419,
+          "normal_force_n": 62.69143315441697,
+          "tangential_force_n": 2.211267422941996,
+          "friction_limit_n": 38.86868855573852,
+          "utilization": 0.05689071345360654,
+          "margin_n": 36.65742113279653,
           "slipping": false,
           "status": "traction-ok"
         }

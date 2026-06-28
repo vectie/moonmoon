@@ -22,6 +22,7 @@ pub(all) struct NoetixMoonWalkConfig {
   stride_frequency_hz : Double
   cycle_frames : Int
   lateral_foot_offset_m : Double
+  support_lateral_shift_m : Double
   min_swing_clearance_m : Double
   foot_radius_m : Double
   caution_grade : Double
@@ -124,6 +125,7 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     stride_frequency_hz: 0.75,
     cycle_frames: 20,
     lateral_foot_offset_m: 0.08,
+    support_lateral_shift_m: 0.04,
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
@@ -239,6 +241,18 @@ fn noetix_endless_axis(config : NoetixMoonWalkConfig) -> String {
     "+x"
   } else {
     "heading-rad:\{config.heading_rad}"
+  }
+}
+
+///|
+fn noetix_support_body_lateral_m(
+  config : NoetixMoonWalkConfig,
+  left_support : Bool,
+) -> Double {
+  if left_support {
+    config.support_lateral_shift_m
+  } else {
+    0.0 - config.support_lateral_shift_m
   }
 }
 
@@ -551,7 +565,8 @@ pub fn noetix_moon_walk_frame(
   let progress = phase_progress(local_phase, half_cycle)
   let block = half_cycle_block(frame_index, half_cycle)
   let body_forward = frame_index.to_double() * config.speed_mps * config.dt_s
-  let body_xy = noetix_walk_xy(config, body_forward, 0.0)
+  let body_lateral = noetix_support_body_lateral_m(config, left_support)
+  let body_xy = noetix_walk_xy(config, body_forward, body_lateral)
   let body_sample = @moonphys.sample_heightfield(field, body_xy.x, body_xy.y)
   let body_z = body_sample.elevation_m +
     config.body_height_m +
