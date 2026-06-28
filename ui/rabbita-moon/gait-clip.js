@@ -11,6 +11,9 @@ export const NOETIX_VISUAL_RIG = {
   stanceFootWorldStepMaxM: 0.030,
   footWorldStepMaxM: 0.035,
   rootCorrectionStepMaxM: 0.050,
+  flatTerrainHeightRangeMaxM: 0.000001,
+  flatTerrainContactPatchMaxRangeM: 0.000001,
+  flatTerrainSolePitchMaxM: 0.020,
   footLockRootCorrectionMaxM: 0.22,
   kneeContrastMin: 0.25,
   armCounterSwingMin: 0.08,
@@ -142,7 +145,7 @@ function footRollPitch(footPhase) {
   return 0.0
 }
 
-export function walkClipSample(time) {
+export function walkClipSample(time, options = {}) {
   const phase = cycle01(time * NOETIX_VISUAL_RIG.cycleHz)
   const leftStance = phase < 0.5
   const leftPhase = phase
@@ -176,6 +179,7 @@ export function walkClipSample(time) {
     supportFoot,
     swingFoot,
     rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
+    terrainReliefScale: options.terrainReliefScale ?? 1,
     strideM: 0.38,
     bob: Math.cos(phase * Math.PI * 4) * 0.032,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),

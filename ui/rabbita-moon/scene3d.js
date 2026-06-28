@@ -739,7 +739,7 @@ function addArm(vertices, colors, root, side, joints, diagnostics) {
 function robotGeometry(time, options = { quality: true }) {
   const vertices = []
   const colors = []
-  const clip = walkClipSample(time)
+  const clip = walkClipSample(time, options)
   const authoredJoints = jointSamples(clip)
   let footLock = footLockRootCorrection(time, clip, authoredJoints)
   let ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints, footLock)
@@ -833,6 +833,7 @@ function gaitQuality(time, diagnostics) {
   const footLockDrift = cycleFootLockWorldDrift(time, cycleSeconds)
   const footWorldMotionContinuity = cycleFootWorldMotionContinuity(time, cycleSeconds)
   const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds)
+  const flatTerrainPreservation = cycleFlatTerrainPreservation(time, cycleSeconds)
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
   const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
@@ -868,6 +869,12 @@ function gaitQuality(time, diagnostics) {
     stanceFootWorldLock: footLockDrift.maxStepM <= NOETIX_VISUAL_RIG.stanceFootWorldStepMaxM ? 'pass' : 'fail',
     footWorldMotionContinuity: footWorldMotionContinuity.maxStepM <= NOETIX_VISUAL_RIG.footWorldStepMaxM ? 'pass' : 'fail',
     rootCorrectionContinuity: rootCorrectionContinuity.maxStepM <= NOETIX_VISUAL_RIG.rootCorrectionStepMaxM ? 'pass' : 'fail',
+    flatTerrainPreservation:
+      flatTerrainPreservation.maxTerrainHeightRangeM <= NOETIX_VISUAL_RIG.flatTerrainHeightRangeMaxM &&
+      flatTerrainPreservation.maxContactPatchRangeM <= NOETIX_VISUAL_RIG.flatTerrainContactPatchMaxRangeM &&
+      flatTerrainPreservation.maxSupportSoleSpreadM <= NOETIX_VISUAL_RIG.flatTerrainSolePitchMaxM &&
+      flatTerrainPreservation.maxSupportClearanceErrorM <= NOETIX_VISUAL_RIG.supportClearanceMaxM &&
+      flatTerrainPreservation.maxFootWorldStepM <= NOETIX_VISUAL_RIG.footWorldStepMaxM ? 'pass' : 'fail',
     swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
     visualLinkAttachments: visualLinkAttachments.status,
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
@@ -898,6 +905,7 @@ function gaitQuality(time, diagnostics) {
     footLockDrift,
     footWorldMotionContinuity,
     rootCorrectionContinuity,
+    flatTerrainPreservation,
     swingFootClearance,
     visualLinkAttachments,
     kneeRoleContrast: cycle.kneeRoleContrast,
@@ -1104,6 +1112,68 @@ function cycleRootCorrectionContinuity(time, cycleSeconds) {
   return { maxStepM, maxFrame, sampleCount: 97 }
 }
 
+function cycleFlatTerrainPreservation(time, cycleSeconds) {
+  const previous = {}
+  let maxTerrainHeightRangeM = 0
+  let maxContactPatchRangeM = 0
+  let maxSupportSoleSpreadM = 0
+  let maxSupportClearanceErrorM = 0
+  let maxFootWorldStepM = 0
+  let maxFrame = null
+  for (let i = 0; i <= 96; i += 1) {
+    const sampleTime = time + (i / 96) * cycleSeconds
+    const diagnostics = robotGeometry(sampleTime, {
+      quality: false,
+      terrainReliefScale: 0,
+    }).diagnostics
+    maxTerrainHeightRangeM = Math.max(maxTerrainHeightRangeM, diagnostics.terrain.heightRangeM)
+    maxSupportSoleSpreadM = Math.max(
+      maxSupportSoleSpreadM,
+      Math.abs(diagnostics.ik.supportSoleAlignment.spreadM),
+    )
+    const supportFoot = diagnostics.feet.find(foot => foot.name === diagnostics.supportFoot)
+    maxSupportClearanceErrorM = Math.max(
+      maxSupportClearanceErrorM,
+      Math.abs((supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM),
+    )
+    for (const foot of diagnostics.feet) {
+      maxContactPatchRangeM = Math.max(maxContactPatchRangeM, foot.contactPatch.heightRangeM)
+      const world = {
+        x: foot.fkEndpoint.x + (diagnostics.footLock.visibleX ?? 0),
+        y: foot.fkEndpoint.y,
+        z: foot.fkEndpoint.z + diagnostics.rootDistanceM + (diagnostics.footLock.visibleZ ?? 0),
+      }
+      if (previous[foot.name]) {
+        const stepM = Math.hypot(
+          world.x - previous[foot.name].x,
+          world.z - previous[foot.name].z,
+        )
+        if (stepM > maxFootWorldStepM) {
+          maxFootWorldStepM = stepM
+          maxFrame = {
+            phase: diagnostics.phase,
+            foot: foot.name,
+            role: foot.role,
+            previous: previous[foot.name],
+            current: world,
+          }
+        }
+      }
+      previous[foot.name] = world
+    }
+  }
+  return {
+    terrainReliefScale: 0,
+    maxTerrainHeightRangeM,
+    maxContactPatchRangeM,
+    maxSupportSoleSpreadM,
+    maxSupportClearanceErrorM,
+    maxFootWorldStepM,
+    maxFrame,
+    sampleCount: 97,
+  }
+}
+
 function cycleFootPhaseCoverage(time, cycleSeconds) {
   const seen = { left: new Set(), right: new Set() }
   for (let i = 0; i < 24; i += 1) {
@@ -1232,8 +1302,9 @@ function footSoleAlignmentProbe(root, side, joints, clip) {
 
 function terrainSampleAt(x, z, clip) {
   const travelZ = z + clip.rootDistanceM
-  const a = NOETIX_VISUAL_RIG.terrainReliefMaxM * 0.44
-  const b = NOETIX_VISUAL_RIG.terrainReliefMaxM * 0.22
+  const reliefScale = clip.terrainReliefScale ?? 1
+  const a = NOETIX_VISUAL_RIG.terrainReliefMaxM * reliefScale * 0.44
+  const b = NOETIX_VISUAL_RIG.terrainReliefMaxM * reliefScale * 0.22
   const kxA = 0.9
   const kzA = 3.1
   const kxB = 2.4
@@ -1267,7 +1338,10 @@ function supportFootWorldPoint(clip, pose) {
 
 function supportFootAnchor(time, clip) {
   const startTime = supportStanceStartTime(time, clip)
-  const startClip = walkClipSample(startTime + 0.000001 / NOETIX_VISUAL_RIG.cycleHz)
+  const startClip = walkClipSample(
+    startTime + 0.000001 / NOETIX_VISUAL_RIG.cycleHz,
+    { terrainReliefScale: clip.terrainReliefScale ?? 1 },
+  )
   const startJoints = jointSamples(startClip)
   const startRoot = robotRoot(startClip, 0)
   const side = clip.supportFoot === 'left' ? 1 : -1
@@ -2061,6 +2135,15 @@ function initRobot(canvas) {
       maxFrame: geometry.diagnostics.quality.rootCorrectionContinuity.maxFrame,
       sampleCount: geometry.diagnostics.quality.rootCorrectionContinuity.sampleCount,
     })
+    canvas.dataset.flatTerrainPreservation = JSON.stringify({
+      terrainReliefScale: geometry.diagnostics.quality.flatTerrainPreservation.terrainReliefScale,
+      maxTerrainHeightRangeM: Number(geometry.diagnostics.quality.flatTerrainPreservation.maxTerrainHeightRangeM.toFixed(6)),
+      maxContactPatchRangeM: Number(geometry.diagnostics.quality.flatTerrainPreservation.maxContactPatchRangeM.toFixed(6)),
+      maxSupportSoleSpreadM: Number(geometry.diagnostics.quality.flatTerrainPreservation.maxSupportSoleSpreadM.toFixed(4)),
+      maxSupportClearanceErrorM: Number(geometry.diagnostics.quality.flatTerrainPreservation.maxSupportClearanceErrorM.toFixed(4)),
+      maxFootWorldStepM: Number(geometry.diagnostics.quality.flatTerrainPreservation.maxFootWorldStepM.toFixed(4)),
+      sampleCount: geometry.diagnostics.quality.flatTerrainPreservation.sampleCount,
+    })
     canvas.dataset.jointCorrectionReport = JSON.stringify({
       supportFoot: geometry.diagnostics.ik.jointIk.supportFoot,
       iterations: geometry.diagnostics.ik.jointIk.iterations,
@@ -2091,6 +2174,7 @@ function initRobot(canvas) {
     canvas.dataset.stanceFootWorldLockStatus = geometry.diagnostics.quality.statuses.stanceFootWorldLock
     canvas.dataset.footWorldMotionContinuityStatus = geometry.diagnostics.quality.statuses.footWorldMotionContinuity
     canvas.dataset.rootCorrectionContinuityStatus = geometry.diagnostics.quality.statuses.rootCorrectionContinuity
+    canvas.dataset.flatTerrainPreservationStatus = geometry.diagnostics.quality.statuses.flatTerrainPreservation
     canvas.dataset.swingFootClearanceStatus = geometry.diagnostics.quality.statuses.swingFootClearance
     canvas.dataset.terrainContactStatus = geometry.diagnostics.quality.statuses.terrainContact
     canvas.dataset.contactPatchStatus = geometry.diagnostics.quality.statuses.contactPatch

@@ -36,6 +36,8 @@ const sceneContracts = [
   'footLockRootCorrection',
   'rootCorrectionContinuityStatus',
   'rootCorrectionContinuity',
+  'flatTerrainPreservationStatus',
+  'flatTerrainPreservation',
   'swingFootClearanceStatus',
   'swingFootClearance',
   'visualAttachmentStatus',
@@ -69,6 +71,7 @@ const planContracts = [
   'visible stance foot world delta stays near zero',
   'full foot world motion remains continuous through lift-off, release, and loop wrap',
   'root correction remains continuous through support transfer',
+  'flat-terrain preservation',
   'swing foot clearance',
   'visual mesh or primitive attachment per link',
   'toe-off/contact ankle curve',
@@ -250,6 +253,9 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.rootCorrectionContinuity !== 'pass') {
     throw new Error(`root correction continuity failed at ${time}s: ${JSON.stringify(frame.quality.rootCorrectionContinuity)}`)
+  }
+  if (frame.quality.statuses.flatTerrainPreservation !== 'pass') {
+    throw new Error(`flat terrain preservation failed at ${time}s: ${JSON.stringify(frame.quality.flatTerrainPreservation)}`)
   }
   if (frame.quality.statuses.swingFootClearance !== 'pass') {
     throw new Error(`swing foot clearance failed at ${time}s: ${JSON.stringify(frame.quality.swingFootClearance)}`)

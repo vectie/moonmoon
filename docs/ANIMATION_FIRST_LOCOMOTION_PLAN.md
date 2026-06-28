@@ -115,6 +115,7 @@ The first clip exposes:
 - swing foot clearance remains visible after toe-off through passing, swing,
   and release
 - full foot world motion remains continuous through lift-off, release, and loop wrap
+- flat-terrain preservation
 - forward-bend convention: knee flexion places the knee forward of the
   hip-to-ankle chain, never visually back-folding the leg
 - ankle/toe pitch across contact, foot-flat, and toe-off
@@ -141,6 +142,8 @@ Acceptance:
 - the loop is seamless over the Rabbita demo window
 - full foot world motion does not jump backward when support changes or the
   cycle wraps
+- a zero-relief terrain pass preserves flat contact patches and smooth foot
+  motion
 - root path and phase labels are visible
 
 ## Layer 3: Foot Locking
@@ -386,7 +389,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    scene so the walk can be inspected like an animation asset. The preview now
    also blends terrain IK across lift-off and pre-contact release, and exposes
    `footWorldMotionContinuityStatus` plus `footWorldMotionContinuity` so sudden
-   forward-then-backward foot pops are caught at the world-motion layer. The
+   forward-then-backward foot pops are caught at the world-motion layer. It also
+   exposes `flatTerrainPreservationStatus` and `flatTerrainPreservation` from a
+   zero-relief terrain sweep through the same FK/IK path, so flat-terrain
+   preservation is checked before non-flat terrain response is trusted. The
    renderer now reports named rigid visual attachments through
    `visualLinkAttachments` and `visualAttachmentStatus`, separating Noetix link
    visuals from foot markers, target cubes, terrain rails, and other debug

@@ -196,9 +196,11 @@ passing knee-contrast metric. It also exposes
 `rootCorrectionContinuityStatus` so support-transfer snaps are caught directly.
 It exposes `footWorldMotionContinuityStatus` and
 `footWorldMotionContinuity` so sudden forward-then-backward foot pops across
-lift-off, release, or loop wrap are caught directly. It renders root/phase
-timing rails beside the robot so clip timing is visible without replacing the
-rigid FK pose.
+lift-off, release, or loop wrap are caught directly. It also exposes
+`flatTerrainPreservationStatus` and `flatTerrainPreservation` so the same
+FK/IK path proves zero-relief terrain keeps flat contact patches and smooth
+foot motion. It renders root/phase timing rails beside the robot so clip timing
+is visible without replacing the rigid FK pose.
 
 Deliverables:
 
@@ -230,7 +232,9 @@ links. Support-foot IK now balances toe, heel, and center sole clearances so
 the rendered foot reads as planted on terrain slopes instead of only matching a
 single contact point. IK correction is phase-weighted through lift-off and
 pre-contact release so landing alignment is prepared smoothly instead of being
-applied as a one-frame push-back at the support switch.
+applied as a one-frame push-back at the support switch. The preview now runs a
+zero-relief preservation sweep through the same FK/IK path before trusting the
+non-flat terrain response.
 
 Deliverables:
 
@@ -241,7 +245,7 @@ Deliverables:
 - full foot world-motion continuity evidence
 - swing-foot clearance evidence
 - saturation evidence
-- flat-terrain preservation tests
+- flat-terrain preservation tests and browser-facing evidence
 
 Acceptance:
 
