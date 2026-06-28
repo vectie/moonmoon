@@ -389,20 +389,15 @@ fn link_world_position_for_review(
   frame : NoetixMoonWalkFrame,
   transform : @moonphys.Transform3,
 ) -> @moonphys.Vec3 {
-  if link.role == "foot" {
-    contact_position(frame, link.side)
-  } else {
-    transform.translation
-  }
+  let _ = frame
+  let _ = link
+  transform.translation
 }
 
 ///|
 fn link_pose_source_status(link : NoetixReferenceLink) -> String {
-  if link.role == "foot" {
-    "walk-contact-probe-attached"
-  } else {
-    "urdf-forward-kinematics"
-  }
+  let _ = link
+  "urdf-forward-kinematics"
 }
 
 ///|
@@ -531,7 +526,7 @@ pub fn noetix_link_pose_trace(
       "urdf-rigid-visual-contract-incomplete"
     },
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, non-foot link world positions stay FK-authored, and foot link endpoints are attached to the walk contact probes so the review overlay foot dots stay connected to the rendered leg endpoints. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay and must preserve FK link lengths. Moonphys evaluates the generic articulated pose tree, every link world position stays FK-authored, and foot contact probes are separate review annotations so gait contact targets cannot stretch URDF links. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 

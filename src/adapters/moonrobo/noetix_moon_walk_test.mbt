@@ -982,7 +982,7 @@ test "noetix robot rig exposes urdf nodes visuals and motion frames" {
 }
 
 ///|
-test "noetix link pose trace binds feet to walk contact probes" {
+test "noetix link pose trace keeps FK feet separate from contact probes" {
   let walk = first_trusted_square_noetix_walk_trace(frame_count=12)
   let poses = noetix_link_pose_trace(walk)
   assert_eq(poses.frame_count, walk.frame_count)
@@ -1033,9 +1033,9 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("RobotRig visual instances"))
   assert_true(poses.note.contains("OBJ vertices/faces"))
   assert_true(
-    poses.note.contains("non-foot link world positions stay FK-authored"),
+    poses.note.contains("every link world position stays FK-authored"),
   )
-  assert_true(poses.note.contains("foot link endpoints are attached"))
+  assert_true(poses.note.contains("foot contact probes are separate"))
   assert_true(poses.note.contains("Debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
   assert_eq(first.robot_rig_id, poses.robot_rig_id)
@@ -1068,8 +1068,8 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(
     first.links.any(fn(link) {
       link.link_name == "left_foot" &&
-      link.world_position == walk.frames[0].left_foot.position &&
-      link.source_status == "walk-contact-probe-attached" &&
+      link.world_position != walk.frames[0].left_foot.position &&
+      link.source_status == "urdf-forward-kinematics" &&
       !link.visual_geometry.has_visual_geometry &&
       link.visual_geometry.source_status == "urdf-visual-geometry-missing"
     }),
@@ -1079,8 +1079,8 @@ test "noetix link pose trace binds feet to walk contact probes" {
       probe.link_name == "left_foot" &&
       probe.side == "left" &&
       probe.contact_probe_position == walk.frames[0].left_foot.position &&
-      probe.link_world_position == probe.contact_probe_position &&
-      probe.position_error_m == 0.0 &&
+      probe.link_world_position != probe.contact_probe_position &&
+      probe.position_error_m > 0.0 &&
       probe.source_status == "walk-contact-probe-review-annotation"
     }),
   )
@@ -1112,20 +1112,20 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(
     first.links.any(fn(link) {
       link.link_name == "right_foot" &&
-      link.world_position == walk.frames[0].right_foot.position &&
-      link.source_status == "walk-contact-probe-attached"
+      link.world_position != walk.frames[0].right_foot.position &&
+      link.source_status == "urdf-forward-kinematics"
     }),
   )
   assert_true(
     first.contact_probes.any(fn(probe) {
       probe.link_name == "right_foot" &&
       probe.contact_probe_position == walk.frames[0].right_foot.position &&
-      probe.link_world_position == probe.contact_probe_position &&
-      probe.position_error_m == 0.0
+      probe.link_world_position != probe.contact_probe_position &&
+      probe.position_error_m > 0.0
     }),
   )
   assert_true(
-    first.contact_probes.all(fn(probe) { probe.position_error_m == 0.0 }),
+    first.contact_probes.all(fn(probe) { probe.position_error_m > 0.0 }),
   )
 }
 
@@ -1161,4 +1161,39 @@ test "noetix link pose trace carries URDF forward kinematics" {
   assert_true(leg5_x != leg0_x)
   assert_true(arm5_x != arm0_x)
   assert_true(poses.note.contains("forward-kinematics"))
+  let expected_foot_offset_squared = 0.04 * 0.04 + 0.08 * 0.08
+  for frame in poses.frames {
+    let mut left_leg_5 = @moonphys.vec3(0.0, 0.0, 0.0)
+    let mut left_foot = @moonphys.vec3(0.0, 0.0, 0.0)
+    let mut right_leg_5 = @moonphys.vec3(0.0, 0.0, 0.0)
+    let mut right_foot = @moonphys.vec3(0.0, 0.0, 0.0)
+    for link in frame.links {
+      if link.link_name == "left_leg_5" {
+        left_leg_5 = link.world_position
+      }
+      if link.link_name == "left_foot" {
+        left_foot = link.world_position
+        assert_eq(link.source_status, "urdf-forward-kinematics")
+      }
+      if link.link_name == "right_leg_5" {
+        right_leg_5 = link.world_position
+      }
+      if link.link_name == "right_foot" {
+        right_foot = link.world_position
+        assert_eq(link.source_status, "urdf-forward-kinematics")
+      }
+    }
+    assert_true(
+      nearly_equal_double(
+        left_foot.sub(left_leg_5).length_squared(),
+        expected_foot_offset_squared,
+      ),
+    )
+    assert_true(
+      nearly_equal_double(
+        right_foot.sub(right_leg_5).length_squared(),
+        expected_foot_offset_squared,
+      ),
+    )
+  }
 }

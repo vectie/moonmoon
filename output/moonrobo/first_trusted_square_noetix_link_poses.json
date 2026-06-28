@@ -671,32 +671,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": -0.03907662119713624,
+            "y": 0.09432405350115253,
+            "z": 337.04059254729486
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.21943681462039794,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.15023888296337679,
+            "y": -0.0656759464988475,
+            "z": 337.05501257108324
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.2019237544867761,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -1583,9 +1583,9 @@
           },
           "joint_position_rad": -0.09985124701130701,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": -0.03907662119713624,
+            "y": 0.09432405350115253,
+            "z": 337.04059254729486
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -1611,7 +1611,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -1871,9 +1871,9 @@
           },
           "joint_position_rad": 0.1581490246682185,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.15023888296337679,
+            "y": -0.0656759464988475,
+            "z": 337.05501257108324
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -1899,7 +1899,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -2220,32 +2220,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": -0.016148392034381516,
+            "y": 0.09335215609431143,
+            "z": 337.0364776849498
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.19755008103812735,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.17476406593885443,
+            "y": -0.06664784390568858,
+            "z": 337.05410573410825
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.2248552971855601,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -3132,9 +3132,9 @@
           },
           "joint_position_rad": -0.08499192599495906,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": -0.016148392034381516,
+            "y": 0.09335215609431143,
+            "z": 337.0364776849498
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -3160,7 +3160,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -3420,9 +3420,9 @@
           },
           "joint_position_rad": 0.17542812839757127,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.17476406593885443,
+            "y": -0.06664784390568858,
+            "z": 337.05410573410825
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -3448,7 +3448,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -3769,32 +3769,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.006820207228703565,
+            "y": 0.0907368497758654,
+            "z": 337.0312851075177
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.1752865914368858,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.19952016159708302,
+            "y": -0.06926315022413461,
+            "z": 337.05222880917626
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.24799552274831352,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -4681,9 +4681,9 @@
           },
           "joint_position_rad": -0.07006318439249101,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.006820207228703565,
+            "y": 0.0907368497758654,
+            "z": 337.0312851075177
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -4709,7 +4709,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -4969,9 +4969,9 @@
           },
           "joint_position_rad": 0.1929503318063982,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.19952016159708302,
+            "y": -0.06926315022413461,
+            "z": 337.05222880917626
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -4997,7 +4997,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -5318,32 +5318,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.029900285494044894,
+            "y": 0.08692839542620241,
+            "z": 337.02547252615454
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.15293143164926168,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.22446243136391159,
+            "y": -0.07307160457379759,
+            "z": 337.04984971881424
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.2714941521280169,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -6230,9 +6230,9 @@
           },
           "joint_position_rad": -0.05501857816258287,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.029900285494044894,
+            "y": 0.08692839542620241,
+            "z": 337.02547252615454
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -6258,7 +6258,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -6518,9 +6518,9 @@
           },
           "joint_position_rad": 0.21075430740085116,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.22446243136391159,
+            "y": -0.07307160457379759,
+            "z": 337.04984971881424
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -6546,7 +6546,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -6867,32 +6867,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.05313701782696803,
+            "y": 0.08239132205901081,
+            "z": 337.0194712531554
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.13093960001453492,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.24952248104718922,
+            "y": -0.07760867794098919,
+            "z": 337.04740257247335
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.2953931765617879,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -7779,9 +7779,9 @@
           },
           "joint_position_rad": -0.03981178137519897,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.05313701782696803,
+            "y": 0.08239132205901081,
+            "z": 337.0194712531554
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -7807,7 +7807,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -8067,9 +8067,9 @@
           },
           "joint_position_rad": 0.2288725408018077,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.24952248104718922,
+            "y": -0.07760867794098919,
+            "z": 337.04740257247335
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -8095,7 +8095,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -8416,32 +8416,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.07649643087764695,
+            "y": 0.07760867794098919,
+            "z": 337.012807751292
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.10941991878812232,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.27479379997651315,
+            "y": -0.08239132205901081,
+            "z": 337.04446070464155
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.31967664607241486,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -9328,9 +9328,9 @@
           },
           "joint_position_rad": -0.024469723426166178,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.07649643087764695,
+            "y": 0.07760867794098919,
+            "z": 337.012807751292
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -9356,7 +9356,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -9616,9 +9616,9 @@
           },
           "joint_position_rad": 0.24754812608760424,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.27479379997651315,
+            "y": -0.08239132205901081,
+            "z": 337.04446070464155
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -9644,7 +9644,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -9965,32 +9965,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.10002201523571397,
+            "y": 0.0730716045737976,
+            "z": 337.00566458998037
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.08908452608359409,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.3002720069261161,
+            "y": -0.0869283954262024,
+            "z": 337.0412239478859
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.34434842648615704,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -10877,9 +10877,9 @@
           },
           "joint_position_rad": -0.008896565751742164,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.10002201523571397,
+            "y": 0.0730716045737976,
+            "z": 337.00566458998037
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -10905,7 +10905,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -11165,9 +11165,9 @@
           },
           "joint_position_rad": 0.26683194857603354,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.3002720069261161,
+            "y": -0.0869283954262024,
+            "z": 337.0412239478859
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -11193,7 +11193,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -11514,32 +11514,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.12378776675779737,
+            "y": 0.06926315022413461,
+            "z": 336.9988841301187
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.07188127308721232,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.3257918703023178,
+            "y": -0.09073684977586538,
+            "z": 337.03848139091497
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.3692993725029245,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -12426,9 +12426,9 @@
           },
           "joint_position_rad": 0.007041363319819548,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.12378776675779737,
+            "y": 0.06926315022413461,
+            "z": 336.9988841301187
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -12454,7 +12454,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -12714,9 +12714,9 @@
           },
           "joint_position_rad": 0.28645997789551847,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.3257918703023178,
+            "y": -0.09073684977586538,
+            "z": 337.03848139091497
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -12742,7 +12742,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -13063,32 +13063,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.1478046397453786,
+            "y": 0.06664784390568858,
+            "z": 336.99241265698316
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.060407989739137996,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.35136456118545556,
+            "y": -0.09335215609431143,
+            "z": 337.0361623789026
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.39443979335401846,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -13975,9 +13975,9 @@
           },
           "joint_position_rad": 0.023368838155694856,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.1478046397453786,
+            "y": 0.06664784390568858,
+            "z": 336.99241265698316
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -14003,7 +14003,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -14263,9 +14263,9 @@
           },
           "joint_position_rad": 0.3063232253054784,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.35136456118545556,
+            "y": -0.09335215609431143,
+            "z": 337.0361623789026
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -14291,7 +14291,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -14612,32 +14612,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.17208891295974088,
+            "y": 0.0656759464988475,
+            "z": 336.9861838324416
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.05804067661716999,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.37701063423307984,
+            "y": -0.09432405350115253,
+            "z": 337.03417490270965
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 336.98885222399997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.4197108442458931,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -15524,9 +15524,9 @@
           },
           "joint_position_rad": 0.0400830950047606,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.17208891295974088,
+            "y": 0.0656759464988475,
+            "z": 336.9861838324416
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -15552,7 +15552,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -15812,9 +15812,9 @@
           },
           "joint_position_rad": 0.3262623433210259,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 336.98885222399997
+            "x": 0.37701063423307984,
+            "y": -0.09432405350115253,
+            "z": 337.03417490270965
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -15840,7 +15840,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -16161,32 +16161,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.1966333079971927,
+            "y": 0.0656759464988475,
+            "z": 336.97988164789314
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.06583941664730691,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 337.02085222399995
+            "x": 0.4847432470343118,
+            "y": -0.09396304608713825,
+            "z": 337.0768984679486
           },
           "contact_probe_position": {
             "x": -0.03999999999999998,
             "y": -0.08,
             "z": 337.02085222399995
           },
-          "position_error_m": 0,
+          "position_error_m": 0.5279125149349024,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -17073,9 +17073,9 @@
           },
           "joint_position_rad": 0.05716006642314803,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.1966333079971927,
+            "y": 0.0656759464988475,
+            "z": 336.97988164789314
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -17101,7 +17101,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -17361,9 +17361,9 @@
           },
           "joint_position_rad": 0.4941514813594221,
           "world_position": {
-            "x": -0.03999999999999998,
-            "y": -0.08,
-            "z": 337.02085222399995
+            "x": 0.4847432470343118,
+            "y": -0.09396304608713825,
+            "z": 337.0768984679486
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -17389,7 +17389,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -17710,32 +17710,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.22143948728765928,
+            "y": 0.0656759464988475,
+            "z": 336.9732320054553
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.08120275182744767,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.03680000000000003,
-            "y": -0.08,
-            "z": 337.05610771103994
+            "x": 0.5535816630404992,
+            "y": -0.09213881400010597,
+            "z": 337.122690079879
           },
           "contact_probe_position": {
             "x": 0.03680000000000003,
             "y": -0.08,
             "z": 337.05610771103994
           },
-          "position_error_m": 0,
+          "position_error_m": 0.5211946372522037,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -18622,9 +18622,9 @@
           },
           "joint_position_rad": 0.07462491615572453,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.22143948728765928,
+            "y": 0.0656759464988475,
+            "z": 336.9732320054553
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -18650,7 +18650,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -18910,9 +18910,9 @@
           },
           "joint_position_rad": 0.6328898156592353,
           "world_position": {
-            "x": 0.03680000000000003,
-            "y": -0.08,
-            "z": 337.05610771103994
+            "x": 0.5535816630404992,
+            "y": -0.09213881400010597,
+            "z": 337.122690079879
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -18938,7 +18938,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -19259,32 +19259,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.24653282038241997,
+            "y": 0.0656759464988475,
+            "z": 336.96633829152745
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.10104585641326493,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.11360000000000003,
-            "y": -0.08,
-            "z": 337.0274444773133
+            "x": 0.4844370180496509,
+            "y": -0.09240425376599654,
+            "z": 337.0609794160618
           },
           "contact_probe_position": {
             "x": 0.11360000000000003,
             "y": -0.08,
             "z": 337.0274444773133
           },
-          "position_error_m": 0,
+          "position_error_m": 0.37255677632317347,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -20171,9 +20171,9 @@
           },
           "joint_position_rad": 0.09252001707616447,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.24653282038241997,
+            "y": 0.0656759464988475,
+            "z": 336.96633829152745
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -20199,7 +20199,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -20459,9 +20459,9 @@
           },
           "joint_position_rad": 0.49487213656895696,
           "world_position": {
-            "x": 0.11360000000000003,
-            "y": -0.08,
-            "z": 337.0274444773133
+            "x": 0.4844370180496509,
+            "y": -0.09240425376599654,
+            "z": 337.0609794160618
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -20487,7 +20487,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -20808,32 +20808,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.271931813421272,
+            "y": 0.0656759464988475,
+            "z": 336.9593277595203
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.12348380702073727,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.1904,
-            "y": -0.08,
-            "z": 336.9879837003533
+            "x": 0.3770166928882554,
+            "y": -0.09322379610073911,
+            "z": 336.9946201109802
           },
           "contact_probe_position": {
             "x": 0.1904,
             "y": -0.08,
             "z": 336.9879837003533
           },
-          "position_error_m": 0,
+          "position_error_m": 0.18720229911481256,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -21720,9 +21720,9 @@
           },
           "joint_position_rad": 0.11087956222645914,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.271931813421272,
+            "y": 0.0656759464988475,
+            "z": 336.9593277595203
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -21748,7 +21748,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -22008,9 +22008,9 @@
           },
           "joint_position_rad": 0.2996002939447399,
           "world_position": {
-            "x": 0.1904,
-            "y": -0.08,
-            "z": 336.9879837003533
+            "x": 0.3770166928882554,
+            "y": -0.09322379610073911,
+            "z": 336.9946201109802
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -22036,7 +22036,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -22357,32 +22357,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.297645456763462,
+            "y": 0.0656759464988475,
+            "z": 336.9523459344578
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.1475377150216329,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.26720000000000005,
-            "y": -0.08,
-            "z": 336.93772538016
+            "x": 0.170434057827624,
+            "y": -0.09432405350115253,
+            "z": 336.94087243694406
           },
           "contact_probe_position": {
             "x": 0.26720000000000005,
             "y": -0.08,
             "z": 336.93772538016
           },
-          "position_error_m": 0,
+          "position_error_m": 0.09787098671012658,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -23269,9 +23269,9 @@
           },
           "joint_position_rad": 0.12972599565781245,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.297645456763462,
+            "y": 0.0656759464988475,
+            "z": 336.9523459344578
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -23297,7 +23297,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -23557,9 +23557,9 @@
           },
           "joint_position_rad": -0.04357517954801839,
           "world_position": {
-            "x": 0.26720000000000005,
-            "y": -0.08,
-            "z": 336.93772538016
+            "x": 0.170434057827624,
+            "y": -0.09432405350115253,
+            "z": 336.94087243694406
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -23585,7 +23585,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -23906,32 +23906,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.32367088154239787,
+            "y": 0.0656759464988475,
+            "z": 336.9455499526617
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.17267807704168242,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8982646032
+            "x": 0.11740673085993485,
+            "y": -0.09432405350115253,
+            "z": 336.93408866957714
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8982646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.2298544144889956,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -24818,9 +24818,9 @@
           },
           "joint_position_rad": 0.1490667592383293,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.32367088154239787,
+            "y": 0.0656759464988475,
+            "z": 336.9455499526617
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -24846,7 +24846,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -25106,9 +25106,9 @@
           },
           "joint_position_rad": -0.13179600798470203,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8982646032
+            "x": 0.11740673085993485,
+            "y": -0.09432405350115253,
+            "z": 336.93408866957714
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -25134,7 +25134,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -25455,32 +25455,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.3864594491166513,
+            "y": 0.06577223351380826,
+            "z": 336.9527862017608
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.23566909024405022,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.14601424337464358,
+            "y": -0.09432405350115253,
+            "z": 336.92669896265875
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.20749903647584758,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -26367,9 +26367,9 @@
           },
           "joint_position_rad": 0.2301235422373188,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.3864594491166513,
+            "y": 0.06577223351380826,
+            "z": 336.9527862017608
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -26395,7 +26395,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -26655,9 +26655,9 @@
           },
           "joint_position_rad": -0.10922946687107793,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.14601424337464358,
+            "y": -0.09432405350115253,
+            "z": 336.92669896265875
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -26683,7 +26683,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -27004,32 +27004,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.41509828330374593,
+            "y": 0.06675168358909996,
+            "z": 336.95516868016347
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.26430919260585645,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.16974479958532582,
+            "y": -0.09335215609431143,
+            "z": 336.92351637581123
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.18390465032470163,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -27916,9 +27916,9 @@
           },
           "joint_position_rad": 0.2544543557288211,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.41509828330374593,
+            "y": 0.06675168358909996,
+            "z": 336.95516868016347
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -27944,7 +27944,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -28204,9 +28204,9 @@
           },
           "joint_position_rad": -0.09327082227250186,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.16974479958532582,
+            "y": -0.09335215609431143,
+            "z": 336.92351637581123
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -28232,7 +28232,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -28553,32 +28553,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.4367665522560118,
+            "y": 0.06933455036699704,
+            "z": 336.95592433382086
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.28583554831333086,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.19371894183772828,
+            "y": -0.0907368497758654,
+            "z": 336.92107293417763
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.16032351521231242,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -29465,9 +29465,9 @@
           },
           "joint_position_rad": 0.2668230891921521,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.4367665522560118,
+            "y": 0.06933455036699704,
+            "z": 336.95592433382086
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -29493,7 +29493,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -29753,9 +29753,9 @@
           },
           "joint_position_rad": -0.07696760914608572,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.19371894183772828,
+            "y": -0.0907368497758654,
+            "z": 336.92107293417763
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -29781,7 +29781,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -30102,32 +30102,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.45325760400342874,
+            "y": 0.07310123120413023,
+            "z": 336.95540277130675
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.3021208234283127,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.21787184958197606,
+            "y": -0.08692839542620241,
+            "z": 336.91932337773204
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.13700929364788775,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -31014,9 +31014,9 @@
           },
           "joint_position_rad": 0.27037566174782274,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.45325760400342874,
+            "y": 0.07310123120413023,
+            "z": 336.95540277130675
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -31042,7 +31042,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -31302,9 +31302,9 @@
           },
           "joint_position_rad": -0.060463029778555465,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.21787184958197606,
+            "y": -0.08692839542620241,
+            "z": 336.91932337773204
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -31330,7 +31330,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -31651,32 +31651,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.465341171822206,
+            "y": 0.07761263780477126,
+            "z": 336.95379320392453
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.3139971412443371,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.24213978521642696,
+            "y": -0.08239132205901081,
+            "z": 336.91818785057194
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.11435578426380909,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -32563,9 +32563,9 @@
           },
           "joint_position_rad": 0.2666128790654598,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.465341171822206,
+            "y": 0.07761263780477126,
+            "z": 336.95379320392453
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -32591,7 +32591,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -32851,9 +32851,9 @@
           },
           "joint_position_rad": -0.04385943288701671,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.24213978521642696,
+            "y": -0.08239132205901081,
+            "z": 336.91818785057194
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -32879,7 +32879,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -33200,32 +33200,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.48219974066202054,
+            "y": 0.08238996331713129,
+            "z": 336.9534387838724
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.3308009099769934,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.26640544328011284,
+            "y": -0.07760867794098919,
+            "z": 336.9166854699275
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.09256833937849888,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -34112,9 +34112,9 @@
           },
           "joint_position_rad": 0.2712225807343941,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.48219974066202054,
+            "y": 0.08238996331713129,
+            "z": 336.9534387838724
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -34140,7 +34140,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -34400,9 +34400,9 @@
           },
           "joint_position_rad": -0.027294104474364804,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.26640544328011284,
+            "y": -0.07760867794098919,
+            "z": 336.9166854699275
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -34428,7 +34428,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -34749,32 +34749,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5107463329631234,
+            "y": 0.0869215117145776,
+            "z": 336.9566741733192
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.3595511471367794,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.2906688701528855,
+            "y": -0.0730716045737976,
+            "z": 336.9144766122028
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.07222610252558243,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -35661,9 +35661,9 @@
           },
           "joint_position_rad": 0.2960757426847547,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5107463329631234,
+            "y": 0.0869215117145776,
+            "z": 336.9566741733192
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -35689,7 +35689,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -35949,9 +35949,9 @@
           },
           "joint_position_rad": -0.010726486237371179,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.2906688701528855,
+            "y": -0.0730716045737976,
+            "z": 336.9144766122028
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -35977,7 +35977,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -36298,32 +36298,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5443965566383163,
+            "y": 0.09071093732965885,
+            "z": 336.9619668359773
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.393562852218953,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3149936331111023,
+            "y": -0.06926315022413461,
+            "z": 336.9118699428238
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.05510441239502996,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -37210,9 +37210,9 @@
           },
           "joint_position_rad": 0.33026513377185623,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5443965566383163,
+            "y": 0.09071093732965885,
+            "z": 336.9619668359773
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -37238,7 +37238,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -37498,9 +37498,9 @@
           },
           "joint_position_rad": 0.005965380855620116,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3149936331111023,
+            "y": -0.06926315022413461,
+            "z": 336.9118699428238
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -37526,7 +37526,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -37847,32 +37847,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5819455596708277,
+            "y": 0.09327974723697491,
+            "z": 336.9688178872762
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.4315859503233515,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3394106851144201,
+            "y": -0.06664784390568858,
+            "z": 336.90828966264206
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.044333367846271454,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -38759,9 +38759,9 @@
           },
           "joint_position_rad": 0.3719338211709817,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.5819455596708277,
+            "y": 0.09327974723697491,
+            "z": 336.9688178872762
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -38787,7 +38787,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -39047,9 +39047,9 @@
           },
           "joint_position_rad": 0.02283393083226399,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3394106851144201,
+            "y": -0.06664784390568858,
+            "z": 336.90828966264206
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -39075,7 +39075,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -39396,32 +39396,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.6221189966851913,
+            "y": 0.09417298520178526,
+            "z": 336.9765832746254
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9336483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.4722882091973551,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3639950113538108,
+            "y": -0.0656759464988475,
+            "z": 336.9031520780689
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.04433581836331564,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -40308,9 +40308,9 @@
           },
           "joint_position_rad": 0.41895930386127656,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9336483472
+            "x": 0.6221189966851913,
+            "y": 0.09417298520178526,
+            "z": 336.9765832746254
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -40336,7 +40336,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -40596,9 +40596,9 @@
           },
           "joint_position_rad": 0.03995536667702082,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.3639950113538108,
+            "y": -0.0656759464988475,
+            "z": 336.9031520780689
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -40624,7 +40624,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -40945,32 +40945,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9656483472
+            "x": 0.7430834330052465,
+            "y": 0.09316974152172745,
+            "z": 337.0448736929321
           },
           "contact_probe_position": {
             "x": 0.15200000000000002,
             "y": 0.08,
             "z": 336.9656483472
           },
-          "position_error_m": 0,
+          "position_error_m": 0.5965146454793755,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.38882489348358384,
+            "y": -0.0656759464988475,
+            "z": 336.8968760575275
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.05613831775678099,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -41857,9 +41857,9 @@
           },
           "joint_position_rad": 0.6263203122767971,
           "world_position": {
-            "x": 0.15200000000000002,
-            "y": 0.08,
-            "z": 336.9656483472
+            "x": 0.7430834330052465,
+            "y": 0.09316974152172745,
+            "z": 337.0448736929321
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -41885,7 +41885,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -42145,9 +42145,9 @@
           },
           "joint_position_rad": 0.0574210995130452,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.38882489348358384,
+            "y": -0.0656759464988475,
+            "z": 336.8968760575275
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -42173,7 +42173,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -42494,32 +42494,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.22880000000000003,
-            "y": 0.08,
-            "z": 336.92621374367997
+            "x": 0.6601634416101269,
+            "y": 0.09355943592338632,
+            "z": 336.97409266487324
           },
           "contact_probe_position": {
             "x": 0.22880000000000003,
             "y": 0.08,
             "z": 336.92621374367997
           },
-          "position_error_m": 0,
+          "position_error_m": 0.43422421415085255,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4139285894160966,
+            "y": -0.0656759464988475,
+            "z": 336.8902642265142
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.07530715799744099,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -43406,9 +43406,9 @@
           },
           "joint_position_rad": 0.4626698598477643,
           "world_position": {
-            "x": 0.22880000000000003,
-            "y": 0.08,
-            "z": 336.92621374367997
+            "x": 0.6601634416101269,
+            "y": 0.09355943592338632,
+            "z": 336.97409266487324
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -43434,7 +43434,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -43694,9 +43694,9 @@
           },
           "joint_position_rad": 0.0752926498763691,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4139285894160966,
+            "y": -0.0656759464988475,
+            "z": 336.8902642265142
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -43722,7 +43722,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -44043,32 +44043,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.30560000000000004,
-            "y": 0.08,
-            "z": 336.8975766833933
+            "x": 0.5772097771733231,
+            "y": 0.09383554900745338,
+            "z": 336.92206459194364
           },
           "contact_probe_position": {
             "x": 0.30560000000000004,
             "y": 0.08,
             "z": 336.8975766833933
           },
-          "position_error_m": 0,
+          "position_error_m": 0.27306217449080905,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4393325474084524,
+            "y": -0.0656759464988475,
+            "z": 336.88342123349986
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.09791742984440507,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -44955,9 +44955,9 @@
           },
           "joint_position_rad": 0.31322288719577485,
           "world_position": {
-            "x": 0.30560000000000004,
-            "y": 0.08,
-            "z": 336.8975766833933
+            "x": 0.5772097771733231,
+            "y": 0.09383554900745338,
+            "z": 336.92206459194364
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -44983,7 +44983,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -45243,9 +45243,9 @@
           },
           "joint_position_rad": 0.09361442904421818,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4393325474084524,
+            "y": -0.0656759464988475,
+            "z": 336.88342123349986
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -45271,7 +45271,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -45592,32 +45592,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.3824,
-            "y": 0.08,
-            "z": 336.85814207987323
+            "x": 0.4224101144015389,
+            "y": 0.09432405350115253,
+            "z": 336.87089378882973
           },
           "contact_probe_position": {
             "x": 0.3824,
             "y": 0.08,
             "z": 336.85814207987323
           },
-          "position_error_m": 0,
+          "position_error_m": 0.044368838664533485,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4650560148438408,
+            "y": -0.0656759464988475,
+            "z": 336.8764757274148
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.12232744702766293,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -46504,9 +46504,9 @@
           },
           "joint_position_rad": 0.0541315054465727,
           "world_position": {
-            "x": 0.3824,
-            "y": 0.08,
-            "z": 336.85814207987323
+            "x": 0.4224101144015389,
+            "y": 0.09432405350115253,
+            "z": 336.87089378882973
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -46532,7 +46532,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -46792,9 +46792,9 @@
           },
           "joint_position_rad": 0.11242231628529104,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.4650560148438408,
+            "y": -0.0656759464988475,
+            "z": 336.8764757274148
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -46820,7 +46820,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -47141,32 +47141,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.45920000000000005,
-            "y": 0.08,
-            "z": 336.80790993311996
+            "x": 0.36676867038322974,
+            "y": 0.09432405350115253,
+            "z": 336.8578656669105
           },
           "contact_probe_position": {
             "x": 0.45920000000000005,
             "y": 0.08,
             "z": 336.80790993311996
           },
-          "position_error_m": 0,
+          "position_error_m": 0.10603916513242674,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.5417609014132094,
+            "y": -0.06583818455195081,
+            "z": 336.8827253083764
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.1989494557907941,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -48053,9 +48053,9 @@
           },
           "joint_position_rad": -0.03770120648718311,
           "world_position": {
-            "x": 0.45920000000000005,
-            "y": 0.08,
-            "z": 336.80790993311996
+            "x": 0.36676867038322974,
+            "y": 0.09432405350115253,
+            "z": 336.8578656669105
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -48081,7 +48081,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -48341,9 +48341,9 @@
           },
           "joint_position_rad": 0.21607565980023138,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.5417609014132094,
+            "y": -0.06583818455195081,
+            "z": 336.8827253083764
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -48369,7 +48369,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -48690,32 +48690,32 @@
           "link_name": "left_foot",
           "side": "left",
           "link_world_position": {
-            "x": 0.536,
-            "y": 0.08,
-            "z": 336.76847532959994
+            "x": 0.3175245822996776,
+            "y": 0.09432405350115253,
+            "z": 336.8504068723067
           },
           "contact_probe_position": {
             "x": 0.536,
             "y": 0.08,
             "z": 336.76847532959994
           },
-          "position_error_m": 0,
+          "position_error_m": 0.23377224886273548,
           "source_status": "walk-contact-probe-review-annotation"
         },
         {
           "link_name": "right_foot",
           "side": "right",
           "link_world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.5999915718201503,
+            "y": -0.06606896435123676,
+            "z": 336.88896519390113
           },
           "contact_probe_position": {
             "x": 0.34400000000000003,
             "y": -0.08,
             "z": 336.8662646032
           },
-          "position_error_m": 0,
+          "position_error_m": 0.257373416295035,
           "source_status": "walk-contact-probe-review-annotation"
         }
       ],
@@ -49602,9 +49602,9 @@
           },
           "joint_position_rad": -0.12076064861422184,
           "world_position": {
-            "x": 0.536,
-            "y": 0.08,
-            "z": 336.76847532959994
+            "x": 0.3175245822996776,
+            "y": 0.09432405350115253,
+            "z": 336.8504068723067
           },
           "visual_geometry": {
             "link_name": "left_foot",
@@ -49630,7 +49630,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         },
         {
           "link_name": "right_leg_1",
@@ -49890,9 +49890,9 @@
           },
           "joint_position_rad": 0.2910600789941209,
           "world_position": {
-            "x": 0.34400000000000003,
-            "y": -0.08,
-            "z": 336.8662646032
+            "x": 0.5999915718201503,
+            "y": -0.06606896435123676,
+            "z": 336.88896519390113
           },
           "visual_geometry": {
             "link_name": "right_foot",
@@ -49918,7 +49918,7 @@
             },
             "source_status": "urdf-visual-geometry-missing"
           },
-          "source_status": "walk-contact-probe-attached"
+          "source_status": "urdf-forward-kinematics"
         }
       ],
       "status": "review-only-urdf-fk"
@@ -49926,5 +49926,5 @@
   ],
   "rig_render_contract_status": "urdf-rigid-visual-contract-ready",
   "status": "review-only",
-  "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, non-foot link world positions stay FK-authored, and foot link endpoints are attached to the walk contact probes so the review overlay foot dots stay connected to the rendered leg endpoints. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
+  "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay and must preserve FK link lengths. Moonphys evaluates the generic articulated pose tree, every link world position stays FK-authored, and foot contact probes are separate review annotations so gait contact targets cannot stretch URDF links. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
 }
