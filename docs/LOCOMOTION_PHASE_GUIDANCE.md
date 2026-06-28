@@ -149,22 +149,26 @@ authored motor frames with per-joint position, velocity, torque, work, limit,
 and review status fields for the Moonphys hinge replay.
 Moonmoon regenerates durable suite metadata from that contract through
 `ui/rabbita-moon/export-moonrobo-contract.mjs`, which now also emits
-`ui/rabbita-moon/generated-moonrobo-noetix-clip.js`. The Rabbita runtime imports
-that generated JS bridge for cycle rate, root speed, stride, foot phase
-sequence, foot roles, support windows, curve metadata, authored joint samples,
-authored motion samples, authored contact frames, and authored motor frames.
-Rabbita now interpolates
-the generated sample tables instead of owning the leg/arm, root bob/sway,
-torso, foot-roll, authored foot-target, or hinge motor target formulas. The
+`ui/rabbita-moon/generated-moonrobo-noetix-clip.js` as the committed
+suite-preview snapshot. Rabbita runtime now imports
+`ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, which is produced by
+`ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` from live Moonrobo typed
+adapter commands before dev, build, export, and gait checks. That live runtime
+bridge carries cycle rate, root speed, stride, foot phase sequence, foot roles,
+support windows, curve metadata, authored joint samples, authored motion
+samples, authored contact frames, authored motor frames, and the live suite
+evidence summary. Rabbita now interpolates the live-generated sample tables
+instead of owning the leg/arm, root bob/sway, torso, foot-roll, authored
+foot-target, or hinge motor target formulas. The
 compiled Moonphys review now consumes Moonrobo-authored contact frames and
 Moonrobo-authored motor frames directly; Rabbita's generated evidence remains a
-browser/UI freshness gate. The remaining Phase 5 feature is live adapter
-regeneration as the runtime data path instead of generated snapshots. The first
-live gate now exists:
+browser/UI freshness gate. The Phase 5 runtime data path is now live-generated
+from Moonrobo rather than committed snapshots. The first live gate now exists:
 `../moonrobo/cmd/moonmoon_suite_evidence` exports
 `noetix_e1_moonmoon_live_suite_evidence()` directly from Moonrobo's typed
 adapter, and `ui/rabbita-moon/check-live-moonrobo-suite.mjs` compares that live
-authority against the generated Moonmoon bridge.
+authority against both the live runtime bridge and the committed Moonmoon
+suite-preview snapshot.
 
 Deliverables:
 
@@ -349,19 +353,21 @@ consumption.
 `../moonrobo/cmd/moonmoon_contract` exports that typed contract as JSON, and
 `ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
 `src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
-`ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it. The Moonmoon
-payload consumes those generated source-contract and walk-clip fields, the
-Rabbita runtime consumes the generated JS clip bridge including authored joint,
-motion, contact-frame, and motor-frame samples. The compiled Moonphys bridge
-uses the Moonrobo contact and motor frames directly, while the Rabbita artifact
-is checked as the visual/browser evidence gate.
+`ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it as committed
+suite-preview snapshots. The Moonmoon payload consumes those generated
+source-contract and walk-clip fields, while Rabbita runtime consumes the live
+runtime bridge generated at `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`.
+The compiled Moonphys bridge uses the Moonrobo contact and motor frames
+directly, while the Rabbita artifact is checked as the visual/browser evidence
+gate.
 `../moonrobo/cmd/moonmoon_suite_evidence` now provides a live typed adapter
 summary with sample counts, contact load counts, motor drive counts, review
 counts, blockers, readiness, and regeneration mode. `npm run check:gait`
 invokes `ui/rabbita-moon/check-live-moonrobo-suite.mjs`, which runs that command
-and compares the live authority with the generated Moonmoon bridge. The
-remaining Phase 10 feature is to make Rabbita/Moonmoon consume this live output
-directly at runtime rather than through generated snapshots.
+and compares the live authority with the live runtime bridge and generated
+Moonmoon suite-preview bridge. The remaining Phase 10 feature is to move the
+MoonBit suite-preview payload itself off committed generated snapshots and onto
+a live adapter ingestion path.
 
 Acceptance:
 

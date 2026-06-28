@@ -9,3 +9,4 @@ tmp/
 output/
 node_modules/
 dist/
+ui/rabbita-moon/.generated/

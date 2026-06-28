@@ -1,6 +1,10 @@
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { MOONROBO_NOETIX_WALK_CLIP } from './generated-moonrobo-noetix-clip.js'
+import { MOONROBO_NOETIX_WALK_CLIP as GENERATED_MOONROBO_NOETIX_WALK_CLIP } from './generated-moonrobo-noetix-clip.js'
+import {
+  MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE,
+  MOONROBO_NOETIX_WALK_CLIP as LIVE_MOONROBO_NOETIX_WALK_CLIP,
+} from './.generated/live-moonrobo-noetix-clip.js'
 
 const moonroboRoot = fileURLToPath(new URL('../../../moonrobo', import.meta.url))
 const moonBin = process.env.MOON_BIN ?? 'moon'
@@ -98,26 +102,51 @@ function validateLiveEvidence(evidence) {
   }
 }
 
+function validateAgainstRuntimeBridge(evidence) {
+  if (MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE.regeneration_mode !== 'live-moonrobo-typed-adapter') {
+    throw new Error('runtime Moonrobo bridge did not carry live suite evidence')
+  }
+  if (evidence.walk_clip_id !== LIVE_MOONROBO_NOETIX_WALK_CLIP.clip_id) {
+    throw new Error('runtime Moonrobo clip id does not match live suite evidence')
+  }
+  if (!LIVE_MOONROBO_NOETIX_WALK_CLIP.source.endsWith('#live-runtime')) {
+    throw new Error('runtime Moonrobo clip source does not mark live runtime generation')
+  }
+  if (evidence.sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.sample_count) {
+    throw new Error('runtime Moonrobo sample count does not match live suite evidence')
+  }
+  if (evidence.required_motion_joint_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.required_joint_ids.length) {
+    throw new Error('runtime Moonrobo required joint count does not match live suite evidence')
+  }
+  if (evidence.authored_joint_sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples.length ||
+    evidence.authored_motion_sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples.length ||
+    evidence.authored_contact_frame_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
+    evidence.authored_motor_frame_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
+    throw new Error('runtime Moonrobo authored sample tables do not match live suite evidence')
+  }
+}
+
 function validateAgainstGeneratedBridge(evidence) {
-  if (evidence.walk_clip_id !== MOONROBO_NOETIX_WALK_CLIP.clip_id) {
+  if (evidence.walk_clip_id !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.clip_id) {
     throw new Error('generated Moonrobo clip id does not match live suite evidence')
   }
-  if (evidence.sample_count !== MOONROBO_NOETIX_WALK_CLIP.sample_count) {
+  if (evidence.sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.sample_count) {
     throw new Error('generated Moonrobo sample count does not match live suite evidence')
   }
-  if (evidence.required_motion_joint_count !== MOONROBO_NOETIX_WALK_CLIP.required_joint_ids.length) {
+  if (evidence.required_motion_joint_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.required_joint_ids.length) {
     throw new Error('generated Moonrobo required joint count does not match live suite evidence')
   }
-  if (evidence.authored_joint_sample_count !== MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples.length ||
-    evidence.authored_motion_sample_count !== MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples.length ||
-    evidence.authored_contact_frame_count !== MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
-    evidence.authored_motor_frame_count !== MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
+  if (evidence.authored_joint_sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples.length ||
+    evidence.authored_motion_sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples.length ||
+    evidence.authored_contact_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
+    evidence.authored_motor_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
     throw new Error('generated Moonrobo authored sample tables do not match live suite evidence')
   }
 }
 
 const evidence = runLiveEvidence()
 validateLiveEvidence(evidence)
+validateAgainstRuntimeBridge(evidence)
 validateAgainstGeneratedBridge(evidence)
 
 console.log(

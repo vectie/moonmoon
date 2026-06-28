@@ -5,9 +5,11 @@ import { fileURLToPath } from 'node:url'
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
+const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
-const gaitRuntimeSource = `${generatedClip}\n${gaitClip}\n${scene}`
+const gaitRuntimeSource = `${liveRuntimeClip}\n${gaitClip}\n${scene}`
+const generatedSnapshotSource = generatedClip
 
 const sceneContracts = [
   'walkPipeline',
@@ -64,7 +66,8 @@ const sceneContracts = [
   'authored_joint_samples',
   'authored_motion_samples',
   'authored_motor_frames',
-  'generated-moonrobo-noetix-clip.js',
+  'live-moonrobo-noetix-clip.js',
+  'MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE',
 ]
 
 const planContracts = [
@@ -97,6 +100,8 @@ function requireText(source, token, label) {
 for (const token of sceneContracts) {
   requireText(gaitRuntimeSource, token, 'gait runtime source')
 }
+
+requireText(generatedSnapshotSource, 'export const MOONROBO_NOETIX_WALK_CLIP', 'generated Moonrobo snapshot source')
 
 for (const token of planContracts) {
   requireText(plan, token, 'ANIMATION_FIRST_LOCOMOTION_PLAN.md')

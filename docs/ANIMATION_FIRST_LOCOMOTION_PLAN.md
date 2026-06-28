@@ -424,6 +424,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    consumption, Moonrobo-authored contact and hinge motor trace consumption,
    live Moonrobo typed adapter evidence, and Rabbita UI evidence freshness. The
    first live regeneration gate is `../moonrobo/cmd/moonmoon_suite_evidence`,
-   checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`; the next Phase
-   10 target is making Rabbita/Moonmoon consume that live output directly at
-   runtime instead of through generated snapshots.
+   checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`.
+   `ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` now writes the live runtime
+   bridge at `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, and
+   Rabbita imports that bridge for runtime gait data. The next Phase 10 target
+   is moving the MoonBit suite-preview payload itself from committed generated
+   snapshots to live adapter ingestion.
