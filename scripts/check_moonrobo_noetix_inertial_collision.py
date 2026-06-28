@@ -87,26 +87,30 @@ def main(argv: list[str]) -> int:
     "missing world body contact response note",
   )
   require(
+    "adjacent URDF-link self-collision exclusions" in report["note"],
+    "missing adjacent-link exclusion note",
+  )
+  require(
     "kinetic-energy accounting" in report["note"],
     "missing wrench energy note",
   )
   require(report["max_support_contact_torque_nm"] > 0, "missing support torque")
-  require(report["max_self_penetration_m"] >= 0, "bad self penetration")
+  require(report["max_self_penetration_m"] == 0, "self penetration should clear")
   require(
-    report["max_self_contact_correction_m"] >= 0,
-    "bad self-contact correction",
+    report["max_self_contact_correction_m"] == 0,
+    "self-contact correction should clear",
   )
   require(
-    report["max_self_contact_world_correction_m"] > 0,
-    "missing self-contact world correction",
+    report["max_self_contact_world_correction_m"] == 0,
+    "self-contact world correction should clear",
   )
   require(
-    report["max_self_contact_normal_impulse_ns"] >= 0,
-    "bad self-contact normal impulse",
+    report["max_self_contact_normal_impulse_ns"] == 0,
+    "self-contact normal impulse should clear",
   )
   require(
-    report["max_self_contact_friction_impulse_ns"] > 0,
-    "missing self-contact friction impulse",
+    report["max_self_contact_friction_impulse_ns"] == 0,
+    "self-contact friction impulse should clear",
   )
   require("impulse accounting" in report["note"], "missing impulse note")
 
@@ -213,7 +217,15 @@ def main(argv: list[str]) -> int:
   )
   require(
     first["self_contact_manifold"]["contacts"],
-    "missing self-contact contact set",
+    "missing filtered self-contact pair set",
+  )
+  require(
+    first["self_contact_manifold"]["contact_count"] == 0,
+    "filtered self-contact manifold should clear",
+  )
+  require(
+    first["self_contact_manifold"]["max_penetration_m"] == 0,
+    "filtered self-contact penetration should clear",
   )
   contact_statuses = {
     contact["status"]
@@ -226,13 +238,21 @@ def main(argv: list[str]) -> int:
     "self-contact manifold fell back to conservative pair statuses",
   )
   require(
-    "box-capsule-contact" in contact_statuses
-    or "capsule-box-contact" in contact_statuses,
-    "missing narrow-phase box/capsule contact",
+    "box-capsule-clear" in contact_statuses
+    or "capsule-box-clear" in contact_statuses,
+    "missing narrow-phase box/capsule clear evidence",
   )
   require(
     "box-box-clear" in contact_statuses,
     "missing narrow-phase box/box clear evidence",
+  )
+  require(
+    all(
+      not contact["in_contact"]
+      for frame in frames
+      for contact in frame["self_contact_manifold"]["contacts"]
+    ),
+    "filtered self-contact pairs should not be in contact",
   )
   require(
     first["self_contact_resolution"]["manifold_id"]
@@ -258,48 +278,34 @@ def main(argv: list[str]) -> int:
     "missing self-contact velocity delta",
   )
   require(
-    first["self_contact_resolution"]["status"]
-    in {"single-contact-resolved", "multi-contact-resolved", "no-contact"},
+    first["self_contact_resolution"]["status"] == "no-contact",
     "bad self-contact resolution status",
   )
   world_resolution = first.get("self_contact_world_response", {})
   require(
-    world_resolution.get("status") == "world-contact-resolved",
-    "missing self-contact world response",
+    world_resolution.get("status") == "world-contact-no-resolution",
+    "self-contact world response should not resolve filtered adjacent contacts",
   )
   require(
-    world_resolution.get("contact_count", 0)
-    == world_resolution.get("resolved_contact_count", -1),
-    "self-contact world response count mismatch",
+    world_resolution.get("contact_count", -1) == 0,
+    "self-contact world contacts should clear",
   )
   require(
-    first.get("self_contact_world_correction_m", 0) > 0,
-    "missing frame self-contact world correction",
+    world_resolution.get("resolved_contact_count", -1) == 0,
+    "self-contact world resolution count should clear",
   )
   require(
-    any(
-      pair.get("status") == "world-pair-resolved"
-      and (
-        pair.get("correction_a_m", 0) > 0
-        or pair.get("correction_b_m", 0) > 0
-      )
-      for pair in world_resolution.get("resolved_pairs", [])
-    ),
-    "missing resolved world-pair correction",
+    first.get("self_contact_world_correction_m", -1) == 0,
+    "frame self-contact world correction should clear",
   )
   require(
-    any(
-      frame["self_contact_resolution"]["status"] == "multi-contact-resolved"
-      and frame["self_contact_correction_m"] > 0
-      and frame["self_contact_resolution"]["friction_impulse_ns"] > 0
-      for frame in frames
-    ),
-    "missing resolved multi-contact impulse frame",
+    world_resolution.get("resolved_pairs", []) == [],
+    "filtered self-contact world response should not resolve pairs",
   )
   require(
-    report["self_contact_frame_count"] >= 0
-    and report["terrain_review_frame_count"] >= 0,
-    "bad review counts",
+    report["self_contact_frame_count"] == 0
+    and report["terrain_review_frame_count"] == 0,
+    "filtered self-contact and terrain review counts should clear",
   )
   return 0
 

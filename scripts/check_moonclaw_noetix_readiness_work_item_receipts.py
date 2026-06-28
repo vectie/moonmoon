@@ -69,8 +69,8 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_item_receipts.py RECEIPTS_JSON")
 
     receipts = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(receipts, list) or len(receipts) != 3:
-        fail("expected three Noetix readiness work item receipts")
+    if not isinstance(receipts, list) or len(receipts) != 2:
+        fail("expected two Noetix readiness work item receipts")
 
     for receipt in receipts:
         if receipt.get("source_decision_id") != "moonclaw/first-trusted-square/noetix-simulation-readiness-decision":
@@ -99,22 +99,11 @@ def main() -> None:
         for receipt in receipts
     ):
         fail("world replay receipt should be omitted after replay blockers clear")
-    require_receipt(
-        receipt_by_domain(receipts, "review-artifacts"),
-        1,
-        "noetix-inertial-collision-review",
-        "check_moonclaw_noetix_review_task",
-    )
-    review = receipt_by_domain(receipts, "review-artifacts")
-    ids = review.get("work_item_result", {}).get("blocker_ids", [])
-    if "noetix-inertial-collision-review" not in ids:
-        fail("review artifact receipt should keep inertial/collision blocker")
-    if "noetix-joint-control-review" in ids:
-        fail("review artifact receipt should omit cleared joint-control replay")
-    if "noetix-static-support-review" in ids:
-        fail("review artifact receipt should omit cleared static support margin")
-    if "noetix-dynamic-stability-review" in ids:
-        fail("review artifact receipt should omit cleared dynamic stability margin")
+    if any(
+        receipt.get("work_item_result", {}).get("blocker_domain") == "review-artifacts"
+        for receipt in receipts
+    ):
+        fail("review artifact receipt should be omitted after all review artifacts clear")
 
 
 if __name__ == "__main__":

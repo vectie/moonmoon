@@ -268,14 +268,27 @@ fn noetix_joint_control_artifact(
 fn noetix_inertial_collision_artifact(
   report : @moonrobo.NoetixInertialCollisionReport,
 ) -> MoonClawTaskArtifact {
+  let ready = report.frame_count > 0 &&
+    report.shapes_per_frame > 0 &&
+    report.terrain_review_frame_count == 0 &&
+    report.self_contact_frame_count == 0 &&
+    report.max_self_penetration_m == 0.0 &&
+    report.max_self_contact_correction_m == 0.0 &&
+    report.max_self_contact_world_correction_m == 0.0 &&
+    report.max_support_contact_torque_nm > 0.0 &&
+    report.status == "inertial-collision-assumption-review"
   task_artifact(
     "noetix-inertial-collision-review",
     "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
     "moon run cmd/main -- moonrobo noetix collision json",
-    "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and conservative self-collision manifolds are present for review",
-    "\{report.frame_count} frames; \{report.shapes_per_frame} shapes per frame; self-contact review frames \{report.self_contact_frame_count}; terrain-review frames \{report.terrain_review_frame_count}; status \{report.status}",
-    false,
-    "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
+    "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and filtered self-collision manifolds are present for review",
+    "\{report.frame_count} frames; \{report.shapes_per_frame} shapes per frame; self-contact review frames \{report.self_contact_frame_count}; terrain-review frames \{report.terrain_review_frame_count}; max self penetration \{report.max_self_penetration_m} m; max world correction \{report.max_self_contact_world_correction_m} m; status \{report.status}",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "inertial/collision review must clear terrain and filtered self-collision review frames while preserving support-wrench evidence"
+    },
     "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
   )
 }
@@ -355,7 +368,8 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     joint_control_max_capture_recovery_shift_m: control.hinge_motor_world_trace.max_capture_recovery_shift_m,
     joint_control_world_replay_blocker_count: control.hinge_motor_world_trace.world_review_blocker_count,
     joint_control_world_replay_blockers: control.hinge_motor_world_trace.world_review_blockers,
-    inertial_collision_review_frame_count: collision.self_contact_frame_count,
+    inertial_collision_review_frame_count: collision.self_contact_frame_count +
+    collision.terrain_review_frame_count,
     link_pose_count_per_frame: poses.links_per_frame,
     walk_command_segment_count: command.segment_count,
     hardware_state: @moonrobo.MoonroboExecutionState::HardwareDenied,
@@ -476,7 +490,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "dry-run-walk-command-preserved", "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.",
       ),
       criterion(
-        "review-only-inertial-collision-preserved", "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.",
+        "inertial-collision-review-ready", "Inertial/collision terrain and filtered self-contact replay checks are accepted separately from source/physical-model provenance blockers.",
       ),
       criterion(
         "hardware-denial-preserved", "MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.",

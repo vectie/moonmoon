@@ -264,7 +264,7 @@
     "joint_control_max_capture_recovery_shift_m": 0,
     "joint_control_world_replay_blocker_count": 0,
     "joint_control_world_replay_blockers": [],
-    "inertial_collision_review_frame_count": 32,
+    "inertial_collision_review_frame_count": 0,
     "link_pose_count_per_frame": 25,
     "walk_command_segment_count": 3,
     "hardware_state": "HardwareDenied",
@@ -427,10 +427,10 @@
         "artifact_id": "noetix-inertial-collision-review",
         "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
         "producer": "moon run cmd/main -- moonrobo noetix collision json",
-        "required_state": "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and conservative self-collision manifolds are present for review",
-        "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
-        "ready": false,
-        "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
+        "required_state": "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and filtered self-collision manifolds are present for review",
+        "current_state": "32 frames; 8 shapes per frame; self-contact review frames 0; terrain-review frames 0; max self penetration 0 m; max world correction 0 m; status inertial-collision-assumption-review",
+        "ready": true,
+        "blocking_reason": "none",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json"
       },
       {
@@ -493,8 +493,8 @@
         "description": "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority."
       },
       {
-        "criterion_id": "review-only-inertial-collision-preserved",
-        "description": "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available."
+        "criterion_id": "inertial-collision-review-ready",
+        "description": "Inertial/collision terrain and filtered self-contact replay checks are accepted separately from source/physical-model provenance blockers."
       },
       {
         "criterion_id": "hardware-denial-preserved",

@@ -36,9 +36,9 @@ def main() -> None:
         fail("Noetix simulation must not be consumable yet")
     if decision.get("decision") != "NoetixSimulationBlocked":
         fail("decision must remain blocked")
-    if decision.get("ready_artifact_count") != 10:
+    if decision.get("ready_artifact_count") != 11:
         fail("unexpected ready artifact count")
-    if decision.get("blocked_artifact_count") != 1:
+    if decision.get("blocked_artifact_count") != 0:
         fail("unexpected blocked artifact count")
     if decision.get("metadata_blocker_count") != 50:
         fail("unexpected metadata blocker count")
@@ -98,10 +98,11 @@ def main() -> None:
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",
         "joint_control_review_frame_count",
-        "inertial_collision_review_frame_count",
     ]:
         if decision.get(field, 0) <= 0:
             fail(f"{field} must be explicit")
+    if decision.get("inertial_collision_review_frame_count") != 0:
+        fail("inertial_collision_review_frame_count should clear")
     if decision.get("joint_control_world_support_review_frame_count") != 0:
         fail("joint_control_world_support_review_frame_count should be cleared")
     if decision.get("joint_control_world_capture_review_frame_count") != 0:
@@ -140,17 +141,17 @@ def main() -> None:
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
+        "noetix-inertial-collision-review",
         "noetix-rabbita-playback",
     ]:
         require_contains(ready_artifacts, expected, "ready artifacts")
-    for expected in [
-        "noetix-inertial-collision-review",
-    ]:
-        require_contains(blocked_artifacts, expected, "blocked artifacts")
+    if blocked_artifacts:
+        fail(f"review artifacts should all be ready: {blocked_artifacts}")
     for cleared in [
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
+        "noetix-inertial-collision-review",
     ]:
         if cleared in blocked_artifacts:
             fail(f"blocked artifacts should not retain cleared margin artifact {cleared}")

@@ -50,10 +50,10 @@ def main() -> None:
         fail("usage: check_moonclaw_noetix_readiness_work_items.py WORK_ITEMS_JSON")
 
     items = json.loads(Path(sys.argv[1]).read_text())
-    if not isinstance(items, list) or len(items) != 3:
-        fail("expected three Noetix readiness work items")
+    if not isinstance(items, list) or len(items) != 2:
+        fail("expected two Noetix readiness work items")
 
-    expected_ranks = [1, 2, 4]
+    expected_ranks = [1, 2]
     for index, item in enumerate(items):
         if item.get("rank") != expected_ranks[index]:
             fail("work item ranks must preserve source priority")
@@ -80,22 +80,8 @@ def main() -> None:
     )
     if any(item.get("blocker_domain") == "world-replay" for item in items):
         fail("world replay item should be omitted after replay blockers clear")
-    require_item(
-        item_by_domain(items, "review-artifacts"),
-        1,
-        "noetix-inertial-collision-review",
-        "check_moonclaw_noetix_review_task",
-    )
-    review = item_by_domain(items, "review-artifacts")
-    ids = review.get("blocker_ids", [])
-    if "noetix-inertial-collision-review" not in ids:
-        fail("review artifact work item should keep inertial/collision blocker")
-    if "noetix-joint-control-review" in ids:
-        fail("review artifact work item should omit cleared joint-control replay")
-    if "noetix-static-support-review" in ids:
-        fail("review artifact work item should omit cleared static support margin")
-    if "noetix-dynamic-stability-review" in ids:
-        fail("review artifact work item should omit cleared dynamic stability margin")
+    if any(item.get("blocker_domain") == "review-artifacts" for item in items):
+        fail("review artifact item should be omitted after all review artifacts clear")
 
 
 if __name__ == "__main__":

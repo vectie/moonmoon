@@ -124,8 +124,8 @@ def main() -> None:
         fail("joint control world replay blockers must not retain cleared support review")
     if "world-dynamic-support-review" in replay_blockers:
         fail("joint control world replay blockers must clear dynamic support review")
-    if task.get("inertial_collision_review_frame_count", 0) <= 0:
-        fail("inertial collision review blocker should be explicit")
+    if task.get("inertial_collision_review_frame_count") != 0:
+        fail("inertial collision terrain/self-contact review frames should clear")
     if not task.get("source_walk_command_plan_id", "").startswith(
         "moonrobo/noetix-e1/high-control-walk-plan/"
     ):
@@ -244,10 +244,17 @@ def main() -> None:
         fail("joint control artifact must expose world replay blockers")
     if "world-replay-review" not in joint_control_state:
         fail("joint control artifact must expose Moonphys world replay review")
-    if artifacts["noetix-inertial-collision-review"].get("ready"):
-        fail("inertial collision artifact must remain review-blocked")
-    if "review-only" not in artifacts["noetix-inertial-collision-review"].get("blocking_reason", ""):
-        fail("inertial collision blocker must explain review-only state")
+    if not artifacts["noetix-inertial-collision-review"].get("ready"):
+        fail("inertial collision artifact should be ready after filtered self-contact checks clear")
+    if artifacts["noetix-inertial-collision-review"].get("blocking_reason") != "none":
+        fail("inertial collision artifact should keep source/physical authority blockers outside artifact readiness")
+    inertial_state = artifacts["noetix-inertial-collision-review"].get("current_state", "")
+    if "self-contact review frames 0" not in inertial_state:
+        fail("inertial collision artifact must expose cleared self-contact frames")
+    if "terrain-review frames 0" not in inertial_state:
+        fail("inertial collision artifact must expose cleared terrain-review frames")
+    if "max self penetration 0" not in inertial_state:
+        fail("inertial collision artifact must expose cleared self penetration")
 
     commands = "\n".join(task.get("commands", []))
     for expected in [

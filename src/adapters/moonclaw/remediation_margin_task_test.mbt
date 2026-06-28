@@ -1574,13 +1574,13 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
       "world-dynamic-support-review",
     ),
   )
-  assert_true(task.inertial_collision_review_frame_count > 0)
+  assert_eq(task.inertial_collision_review_frame_count, 0)
   assert_true(task.walk_command_segment_count > 0)
   assert_true(task.hardware_denied)
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
   assert_eq(task.inputs.length(), 10)
   assert_eq(task.artifacts.length(), 11)
-  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 1)
+  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 0)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-source-model-audit" &&
@@ -1664,10 +1664,14 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-inertial-collision-review" &&
-      !artifact.ready &&
+      artifact.ready &&
       artifact.validation_gate.contains(
         "check_moonrobo_noetix_inertial_collision",
-      )
+      ) &&
+      artifact.blocking_reason == "none" &&
+      artifact.current_state.contains("self-contact review frames 0") &&
+      artifact.current_state.contains("terrain-review frames 0") &&
+      artifact.current_state.contains("max self penetration 0")
     }),
   )
   assert_true(
@@ -1751,8 +1755,8 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
     decision.decision ==
     @moonclaw.NoetixSimulationReadinessDecisionStatus::NoetixSimulationBlocked,
   )
-  assert_eq(decision.ready_artifact_count, 10)
-  assert_eq(decision.blocked_artifact_count, 1)
+  assert_eq(decision.ready_artifact_count, 11)
+  assert_eq(decision.blocked_artifact_count, 0)
   assert_eq(decision.metadata_blocker_count, 50)
   assert_eq(
     decision.metadata_blocker_ids.length(),
@@ -1819,7 +1823,10 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
     !decision.blocked_artifacts.contains("noetix-joint-control-review"),
   )
   assert_true(
-    decision.blocked_artifacts.contains("noetix-inertial-collision-review"),
+    decision.ready_artifacts.contains("noetix-inertial-collision-review"),
+  )
+  assert_true(
+    !decision.blocked_artifacts.contains("noetix-inertial-collision-review"),
   )
   assert_true(
     decision.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied,
@@ -1867,7 +1874,7 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
 ///|
 test "MoonClaw Noetix readiness work items convert blockers into bounded followup" {
   let items = @moonclaw.first_trusted_square_noetix_readiness_work_items()
-  assert_eq(items.length(), 3)
+  assert_eq(items.length(), 2)
   assert_true(
     items.any(fn(item) {
       item.blocker_domain == "source-metadata" &&
@@ -1886,15 +1893,7 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
   )
   assert_true(!items.any(fn(item) { item.blocker_domain == "world-replay" }))
   assert_true(
-    items.any(fn(item) {
-      item.blocker_domain == "review-artifacts" &&
-      item.blocker_count == 1 &&
-      item.blocker_ids.contains("noetix-inertial-collision-review") &&
-      !item.blocker_ids.contains("noetix-joint-control-review") &&
-      !item.blocker_ids.contains("noetix-static-support-review") &&
-      !item.blocker_ids.contains("noetix-dynamic-stability-review") &&
-      item.acceptance_check.contains("check_moonclaw_noetix_review_task")
-    }),
+    !items.any(fn(item) { item.blocker_domain == "review-artifacts" }),
   )
   for item in items {
     assert_true(item.state == @moonclaw.MoonClawReceiptStatus::NeedsReview)
@@ -1912,7 +1911,7 @@ test "MoonClaw Noetix readiness work items render markdown and json" {
   assert_true(markdown.contains("source-metadata"))
   assert_true(markdown.contains("physical-model"))
   assert_true(!markdown.contains("world-replay"))
-  assert_true(markdown.contains("review-artifacts"))
+  assert_true(!markdown.contains("review-artifacts"))
   assert_true(markdown.contains("missing-collision-shape:left_foot"))
   assert_true(markdown.contains("assumed:mass"))
   let json = @moonclaw.first_trusted_square_noetix_readiness_work_items_json().stringify(
@@ -1926,7 +1925,7 @@ test "MoonClaw Noetix readiness work items render markdown and json" {
 ///|
 test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
   let receipts = @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts()
-  assert_eq(receipts.length(), 3)
+  assert_eq(receipts.length(), 2)
   assert_true(
     receipts.all(fn(receipt) {
       receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted &&
@@ -1972,18 +1971,8 @@ test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
     }),
   )
   assert_true(
-    receipts.any(fn(receipt) {
-      receipt.work_item_result.blocker_domain == "review-artifacts" &&
-      receipt.work_item_result.blocker_count == 1 &&
-      receipt.work_item_result.blocker_ids.contains(
-        "noetix-inertial-collision-review",
-      ) &&
-      !receipt.work_item_result.blocker_ids.contains(
-        "noetix-joint-control-review",
-      ) &&
-      receipt.work_item_result.acceptance_check.contains(
-        "check_moonclaw_noetix_review_task",
-      )
+    !receipts.any(fn(receipt) {
+      receipt.work_item_result.blocker_domain == "review-artifacts"
     }),
   )
 }

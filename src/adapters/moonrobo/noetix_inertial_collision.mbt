@@ -329,6 +329,22 @@ fn support_wrench_motion_step(
 }
 
 ///|
+fn noetix_direct_reference_link_pair(link_a : String, link_b : String) -> Bool {
+  for link in noetix_reference_links() {
+    if (link.link_name == link_a && link.parent_link == link_b) ||
+      (link.link_name == link_b && link.parent_link == link_a) {
+      return true
+    }
+  }
+  false
+}
+
+///|
+fn noetix_self_collision_pair_enabled(link_a : String, link_b : String) -> Bool {
+  link_a != link_b && !noetix_direct_reference_link_pair(link_a, link_b)
+}
+
+///|
 fn self_contact_manifold(
   frame_index : Int,
   shapes : Array[NoetixCollisionShapeEvidence],
@@ -336,14 +352,19 @@ fn self_contact_manifold(
   let contacts : Array[@moonphys.CollisionContact] = []
   for i in 0..<shapes.length() {
     for j in (i + 1)..<shapes.length() {
-      contacts.push(
-        @moonphys.collision_pair_contact(
-          shapes[i].shape,
-          shapes[i].transform,
-          shapes[j].shape,
-          shapes[j].transform,
-        ),
-      )
+      if noetix_self_collision_pair_enabled(
+          shapes[i].link_name,
+          shapes[j].link_name,
+        ) {
+        contacts.push(
+          @moonphys.collision_pair_contact(
+            shapes[i].shape,
+            shapes[i].transform,
+            shapes[j].shape,
+            shapes[j].transform,
+          ),
+        )
+      }
     }
   }
   @moonphys.collision_contact_manifold(
@@ -370,6 +391,84 @@ fn self_contact_resolution(
     manifold,
     @moonphys.lunar_regolith_contact_model(),
   )
+}
+
+///|
+fn body_id_matches_link(body_id : String, link_name : String) -> Bool {
+  body_id.contains("/\{link_name}/")
+}
+
+///|
+fn body_id_link_name(
+  profile : NoetixPhysicsProfile,
+  body_id : String,
+) -> String {
+  for shape in profile.collision_shapes {
+    if body_id_matches_link(body_id, shape.link_name) {
+      return shape.link_name
+    }
+  }
+  ""
+}
+
+///|
+fn noetix_world_pair_enabled(
+  profile : NoetixPhysicsProfile,
+  pair : @moonphys.RigidBodyWorldPairContact,
+) -> Bool {
+  noetix_self_collision_pair_enabled(
+    body_id_link_name(profile, pair.body_a_id),
+    body_id_link_name(profile, pair.body_b_id),
+  )
+}
+
+///|
+fn noetix_world_schedule_status(
+  overlap_count : Int,
+  contact_count : Int,
+) -> String {
+  if contact_count > 0 {
+    "world-contact-scheduled"
+  } else if overlap_count > 0 {
+    "world-contact-narrowphase-clear"
+  } else {
+    "world-contact-clear"
+  }
+}
+
+///|
+fn noetix_filtered_self_contact_world_schedule(
+  profile : NoetixPhysicsProfile,
+  schedule : @moonphys.RigidBodyWorldContactSchedule,
+) -> @moonphys.RigidBodyWorldContactSchedule {
+  let pairs : Array[@moonphys.RigidBodyWorldPairContact] = []
+  let contacts : Array[@moonphys.CollisionContact] = []
+  let mut overlap_count = 0
+  let mut contact_count = 0
+  for pair in schedule.pairs {
+    if noetix_world_pair_enabled(profile, pair) {
+      if pair.broadphase.overlapping {
+        overlap_count += 1
+      }
+      if pair.contact.in_contact {
+        contact_count += 1
+      }
+      pairs.push(pair)
+      contacts.push(pair.contact)
+    }
+  }
+  {
+    world_id: schedule.world_id,
+    pair_count: pairs.length(),
+    broadphase_overlap_count: overlap_count,
+    contact_count,
+    pairs,
+    manifold: @moonphys.collision_contact_manifold(
+      "\{schedule.world_id}/filtered-body-pairs",
+      contacts,
+    ),
+    status: noetix_world_schedule_status(overlap_count, contact_count),
+  }
 }
 
 ///|
@@ -427,7 +526,10 @@ fn self_contact_world_resolution(
   )
   @moonphys.rigid_body_world_resolve_contacts(
     world,
-    @moonphys.rigid_body_world_contact_schedule(world),
+    noetix_filtered_self_contact_world_schedule(
+      profile,
+      @moonphys.rigid_body_world_contact_schedule(world),
+    ),
   )
 }
 
@@ -675,7 +777,7 @@ pub fn noetix_inertial_collision_report(
     } else {
       "inertial-collision-assumption-review"
     },
-    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, generic manifold resolution, Moonphys world body-pair contact response, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
+    note: "Inertial/collision evidence maps the Noetix review profile onto Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, patch-load contact wrench torque, support-wrench motion preview with impulse and kinetic-energy accounting, narrow-phase self-collision manifolds, adjacent URDF-link self-collision exclusions, generic manifold resolution, Moonphys world body-pair contact response, and impulse accounting. It remains review evidence only because mass, inertia, and collision geometry are not authoritative Moonrobo URDF tags yet.",
   }
 }
 

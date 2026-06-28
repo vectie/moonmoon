@@ -149,6 +149,13 @@ evidence.
   velocity/torque limits, saturation, support/capture replay, and Moonphys
   world replay blockers are clear; servo/inertia authority remains blocked by
   the physical-model gate.
+- Moonrobo now filters adjacent URDF parent/child links out of the
+  Noetix self-collision review, removing false self-contact corrections from
+  visual proxy geometry. MoonClaw marks the inertial/collision artifact ready
+  once terrain and filtered self-contact checks are clear, while source
+  metadata and physical-model gates still block simulation consumption until
+  authoritative mass, inertia, collision, sole, damping, stiffness, servo, and
+  friction inputs are present.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.
@@ -581,8 +588,9 @@ Noetix inertial/collision review evidence maps the assumed profile onto
 Moonphys composite primitive-shape mass properties, collision bounds, terrain
 collision probes, per-foot patch-load contact wrenches, narrow-phase
 self-collision manifolds, support-wrench motion preview with impulse and
-kinetic-energy accounting, generic manifold resolution, Moonphys world
-body-pair contact response, impulse accounting, and traction margin review.
+kinetic-energy accounting, adjacent-link self-collision exclusion, generic
+manifold resolution, Moonphys world body-pair contact response, impulse
+accounting, and traction margin review.
 Mass, inertia, and authoritative collision tags are still absent from every
 referenced link, so the evidence remains review-only and the source-model audit
 exports the exact missing-link blocker sets.
@@ -736,9 +744,10 @@ or as a data artifact beside the Noetix model.
    Static-support and dynamic-stability margin artifacts clear as artifacts
    once all frames pass.
    Joint-control replay checks now clear as an artifact once limit, saturation,
-   support/capture, and world replay blockers are absent, leaving authoritative
-   source/physical metadata and inertial/collision evidence as the remaining
-   gates.
+   support/capture, and world replay blockers are absent.
+   Inertial/collision checks now clear as an artifact once terrain and filtered
+   self-contact replay blockers are absent, leaving authoritative source and
+   physical metadata as the remaining gates.
 
 ### Phase 1 Gate Added: Noetix Readiness Receipts
 

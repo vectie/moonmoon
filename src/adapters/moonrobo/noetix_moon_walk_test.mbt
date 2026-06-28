@@ -632,10 +632,10 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   assert_eq(report.hardware_authority, "moonmoon-safety-gate-only")
   assert_true(report.shapes_per_frame >= 6)
   assert_true(report.max_support_contact_torque_nm > 0.0)
-  assert_true(report.max_self_contact_correction_m >= 0.0)
-  assert_true(report.max_self_contact_world_correction_m > 0.0)
-  assert_true(report.max_self_contact_normal_impulse_ns >= 0.0)
-  assert_true(report.max_self_contact_friction_impulse_ns > 0.0)
+  assert_eq(report.max_self_contact_correction_m, 0.0)
+  assert_eq(report.max_self_contact_world_correction_m, 0.0)
+  assert_eq(report.max_self_contact_normal_impulse_ns, 0.0)
+  assert_eq(report.max_self_contact_friction_impulse_ns, 0.0)
   assert_eq(report.frames[0].support_contact_wrenches.length(), 2)
   assert_true(
     report.frames[0].support_contact_wrenches.any(fn(wrench) {
@@ -679,23 +679,24 @@ test "noetix inertial collision report maps profile shapes onto moonphys" {
   )
   assert_eq(
     report.frames[0].self_contact_world_response.status,
-    "world-contact-resolved",
+    "world-contact-no-resolution",
   )
+  assert_eq(report.frames[0].self_contact_world_response.contact_count, 0)
   assert_eq(
-    report.frames[0].self_contact_world_response.contact_count,
     report.frames[0].self_contact_world_response.resolved_contact_count,
+    0,
   )
-  assert_true(report.frames[0].self_contact_world_correction_m > 0.0)
-  assert_true(
-    report.frames[0].self_contact_world_response.resolved_pairs.any(fn(pair) {
-      pair.status == "world-pair-resolved" &&
-      pair.correction_a_m > 0.0 &&
-      pair.correction_b_m > 0.0
-    }),
+  assert_eq(report.frames[0].self_contact_world_correction_m, 0.0)
+  assert_eq(
+    report.frames[0].self_contact_world_response.resolved_pairs.length(),
+    0,
   )
   assert_true(report.note.contains("patch-load contact wrench torque"))
   assert_true(report.note.contains("support-wrench motion preview"))
   assert_true(report.note.contains("world body-pair contact response"))
+  assert_true(
+    report.note.contains("adjacent URDF-link self-collision exclusions"),
+  )
   assert_true(report.note.contains("kinetic-energy accounting"))
   assert_true(report.note.contains("impulse accounting"))
   assert_true(report.note.contains("not authoritative"))
@@ -724,14 +725,16 @@ test "noetix inertial collision report checks terrain and self contacts" {
       })
     }),
   )
-  assert_true(report.self_contact_frame_count > 0)
-  assert_true(report.max_self_penetration_m >= 0.0)
+  assert_eq(report.self_contact_frame_count, 0)
+  assert_eq(report.terrain_review_frame_count, 0)
+  assert_eq(report.max_self_penetration_m, 0.0)
   assert_true(report.frames[0].self_contact_manifold.contacts.length() > 0)
   assert_true(
-    report.frames.any(fn(frame) {
-      frame.self_contact_resolution.status == "multi-contact-resolved" &&
-      frame.self_contact_correction_m > 0.0 &&
-      frame.self_contact_resolution.friction_impulse_ns > 0.0
+    report.frames.all(fn(frame) {
+      frame.self_contact_manifold.contact_count == 0 &&
+      frame.self_contact_resolution.status == "no-contact" &&
+      frame.self_contact_correction_m == 0.0 &&
+      frame.self_contact_world_response.contact_count == 0
     }),
   )
 }

@@ -6,7 +6,7 @@
     "claim_kind": "Derived",
     "confidence": 0.57,
     "path": "moonclaw/first-trusted-square/noetix-readiness-work-item-receipts.json",
-    "summary": "3 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
+    "summary": "2 Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied"
   },
   "payload": {
     "receipts": [
@@ -248,97 +248,6 @@
         "hardware_authority_change": false,
         "hardware_denied": true,
         "next_action": "Attach fresh Noetix evidence via moon run cmd/main -- moonrobo noetix stability json, verify python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json && python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json, regenerate readiness work item receipts, and keep hardware denied."
-      },
-      {
-        "receipt": {
-          "receipt_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts/receipt",
-          "proposal_id": "moonclaw/first-trusted-square/noetix-review-task",
-          "status": "Accepted",
-          "accepted_outputs": [
-            "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
-            "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
-            "output/moonclaw/first_trusted_square_noetix_review_task.json"
-          ],
-          "validation_notes": [
-            "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-            "blocker-accounting-preserved: pass - work item review-artifacts preserves 1 named blockers",
-            "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
-            "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
-            "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for review-artifacts",
-            "hardware-denial-preserved: pass - hardware remains hardware-denied under moonmoon-safety-gate-only",
-            "fresh-evidence-still-pending: pass - Noetix readiness work item remains pending until python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json passes"
-          ]
-        },
-        "site_id": "first-trusted-square",
-        "robot_id": "noetix-e1-lab-01",
-        "source_work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts",
-        "source_decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
-        "source_work_item_state": "NeedsReview",
-        "may_consume_simulation": false,
-        "may_consume_moonrobo_simulation": false,
-        "simulation_state": "SimulationBlocked",
-        "result_state": "NoetixReadinessWorkItemsCarriedForward",
-        "work_item_result": {
-          "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts",
-          "rank": 4,
-          "robot_id": "noetix-e1-lab-01",
-          "blocker_domain": "review-artifacts",
-          "blocker_count": 1,
-          "blocker_ids": [
-            "noetix-inertial-collision-review"
-          ],
-          "required_evidence": "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
-          "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
-          "command": "moon run cmd/main -- moonclaw noetix review task json",
-          "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
-          "status": "NoetixReadinessWorkItemPendingEvidence",
-          "evidence_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
-          "current_state": "Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.",
-          "next_action": "Resolve review-only Noetix artifacts, regenerate the review task and readiness decision, and keep hardware denied."
-        },
-        "validation_checks": [
-          {
-            "validation_id": "source-work-item-needs-review",
-            "passed": true,
-            "note": "receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision"
-          },
-          {
-            "validation_id": "blocker-accounting-preserved",
-            "passed": true,
-            "note": "work item review-artifacts preserves 1 named blockers"
-          },
-          {
-            "validation_id": "result-paths-present",
-            "passed": true,
-            "note": "Noetix readiness result carries required evidence, target, command, check, and evidence paths"
-          },
-          {
-            "validation_id": "readiness-decision-blocked",
-            "passed": true,
-            "note": "source decision remains blocked for MoonRobo simulation consumption"
-          },
-          {
-            "validation_id": "simulation-consumption-blocked",
-            "passed": true,
-            "note": "MoonRobo simulation consumption remains false for review-artifacts"
-          },
-          {
-            "validation_id": "hardware-denial-preserved",
-            "passed": true,
-            "note": "hardware remains hardware-denied under moonmoon-safety-gate-only"
-          },
-          {
-            "validation_id": "fresh-evidence-still-pending",
-            "passed": true,
-            "note": "Noetix readiness work item remains pending until python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json passes"
-          }
-        ],
-        "hardware_state": "HardwareDenied",
-        "hardware_authority": "moonmoon-safety-gate-only",
-        "hardware_authority_change": false,
-        "hardware_denied": true,
-        "next_action": "Attach fresh Noetix evidence via moon run cmd/main -- moonclaw noetix review task json, verify python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json, regenerate readiness work item receipts, and keep hardware denied."
       }
     ],
     "source_work_items": [
@@ -446,30 +355,6 @@
         "hardware_denied": true,
         "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
         "next_action": "Replace Noetix physical-model assumptions with Moonrobo model data, regenerate stability and inertial/collision evidence, and keep hardware denied."
-      },
-      {
-        "work_item_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts",
-        "decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "source_task_id": "moonclaw/first-trusted-square/noetix-review-task",
-        "site_id": "first-trusted-square",
-        "robot_id": "noetix-e1-lab-01",
-        "rank": 4,
-        "state": "NeedsReview",
-        "blocker_domain": "review-artifacts",
-        "blocker_count": 1,
-        "blocker_ids": [
-          "noetix-inertial-collision-review"
-        ],
-        "required_evidence": "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
-        "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
-        "command": "moon run cmd/main -- moonclaw noetix review task json",
-        "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
-        "may_consume_moonrobo_simulation": false,
-        "hardware_state": "HardwareDenied",
-        "hardware_authority": "moonmoon-safety-gate-only",
-        "hardware_denied": true,
-        "safety_gate": "Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.",
-        "next_action": "Resolve review-only Noetix artifacts, regenerate the review task and readiness decision, and keep hardware denied."
       }
     ],
     "source_decision": {
@@ -479,9 +364,9 @@
       "robot_id": "noetix-e1-lab-01",
       "may_consume_moonrobo_simulation": false,
       "decision": "NoetixSimulationBlocked",
-      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 1 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
-      "ready_artifact_count": 10,
-      "blocked_artifact_count": 1,
+      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 0 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
+      "ready_artifact_count": 11,
+      "blocked_artifact_count": 0,
       "metadata_blocker_count": 50,
       "metadata_blocker_ids": [
         "missing-collision-shape:base_link",
@@ -727,7 +612,7 @@
       "joint_control_max_capture_recovery_shift_m": 0,
       "joint_control_world_replay_blocker_count": 0,
       "joint_control_world_replay_blockers": [],
-      "inertial_collision_review_frame_count": 32,
+      "inertial_collision_review_frame_count": 0,
       "ready_artifacts": [
         "noetix-source-model-audit",
         "noetix-moonrobo-source-sync",
@@ -738,11 +623,10 @@
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
         "noetix-joint-control-review",
+        "noetix-inertial-collision-review",
         "noetix-rabbita-playback"
       ],
-      "blocked_artifacts": [
-        "noetix-inertial-collision-review"
-      ],
+      "blocked_artifacts": [],
       "hardware_state": "HardwareDenied",
       "hardware_authority": "moonmoon-safety-gate-only",
       "hardware_denied": true,
@@ -1019,7 +903,7 @@
       "joint_control_max_capture_recovery_shift_m": 0,
       "joint_control_world_replay_blocker_count": 0,
       "joint_control_world_replay_blockers": [],
-      "inertial_collision_review_frame_count": 32,
+      "inertial_collision_review_frame_count": 0,
       "link_pose_count_per_frame": 25,
       "walk_command_segment_count": 3,
       "hardware_state": "HardwareDenied",
@@ -1182,10 +1066,10 @@
           "artifact_id": "noetix-inertial-collision-review",
           "path": "output/moonrobo/first_trusted_square_noetix_inertial_collision.json",
           "producer": "moon run cmd/main -- moonrobo noetix collision json",
-          "required_state": "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and conservative self-collision manifolds are present for review",
-          "current_state": "32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review",
-          "ready": false,
-          "blocking_reason": "inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags",
+          "required_state": "Moonphys composite primitive-shape mass properties, collision bounds, terrain collisions, contact torque, support-wrench motion preview, and filtered self-collision manifolds are present for review",
+          "current_state": "32 frames; 8 shapes per frame; self-contact review frames 0; terrain-review frames 0; max self penetration 0 m; max world correction 0 m; status inertial-collision-assumption-review",
+          "ready": true,
+          "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json"
         },
         {
@@ -1248,8 +1132,8 @@
           "description": "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority."
         },
         {
-          "criterion_id": "review-only-inertial-collision-preserved",
-          "description": "Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available."
+          "criterion_id": "inertial-collision-review-ready",
+          "description": "Inertial/collision terrain and filtered self-contact replay checks are accepted separately from source/physical-model provenance blockers."
         },
         {
           "criterion_id": "hardware-denial-preserved",

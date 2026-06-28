@@ -88,7 +88,7 @@
   - joint-control max capture recovery shift: 0 m
   - joint-control world replay blockers: 0
   - joint-control world replay blocker ids:
-  - inertial-collision review frames: 32
+  - inertial-collision review frames: 0
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
   - safety gate: Do not convert the Noetix source-model audit, endless gait evidence, walk trace, high-control command plan, link poses, static support, dynamic stability, joint-control report, or inertial/collision report into hardware authority. Authoritative Moonrobo mass, inertia, collision tags, and an approved dry-run/hardware handoff must replace assumptions before any claim beyond simulation review.
@@ -151,9 +151,9 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json
     - noetix-inertial-collision-review: output/moonrobo/first_trusted_square_noetix_inertial_collision.json
-      - current: 32 frames; 8 shapes per frame; self-contact review frames 32; terrain-review frames 0; status inertial-collision-self-review
-      - ready: false
-      - blocking: inertial/collision evidence is review-only until Moonrobo provides authoritative mass, inertia, and collision tags
+      - current: 32 frames; 8 shapes per frame; self-contact review frames 0; terrain-review frames 0; max self penetration 0 m; max world correction 0 m; status inertial-collision-assumption-review
+      - ready: true
+      - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_inertial_collision.py output/moonrobo/first_trusted_square_noetix_inertial_collision.json
     - noetix-rabbita-playback: output/ui/rabbita/first_trusted_square.html
       - current: Noetix panel consumes walk and link-pose JSON with skeleton playback
@@ -183,6 +183,6 @@
     - dynamic-stability-margin-ready: Capture-stable frames are accepted separately from source/physical-model provenance blockers.
     - joint-control-replay-ready: Joint-control limit, saturation, support, capture, and Moonphys world replay checks are accepted separately from source/physical-model provenance blockers.
     - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
-    - review-only-inertial-collision-preserved: Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.
+    - inertial-collision-review-ready: Inertial/collision terrain and filtered self-contact replay checks are accepted separately from source/physical-model provenance blockers.
     - hardware-denial-preserved: MoonRobo hardware_state remains HardwareDenied and authority remains moonmoon-safety-gate-only.
     - next-physics-step-clear: Task names authoritative Moonrobo mass, inertia, and collision tags as the next requirement before stronger simulation claims.
