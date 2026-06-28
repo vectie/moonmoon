@@ -148,6 +148,12 @@ Acceptance:
 
 Robot rendering must use rigid link transforms, not stretchy debug sticks.
 
+Status: active in the Rabbita 3D view as a standalone preview. The current
+`ui/rabbita-moon` renderer uses a Noetix-shaped rigid visual adapter with fixed
+link dimensions and FK-derived foot endpoints. Full Moonrobo URDF import and
+mesh attachment remain adapter work; Moonmoon core still does not depend on
+Moonrobo.
+
 Deliverables:
 
 - URDF joint tree or equivalent rigid model contract
@@ -165,6 +171,11 @@ Acceptance:
 ## Phase 7: Visualization Diagnostics
 
 Visualization should make wrong motion diagnosable.
+
+Status: active in the Rabbita 3D view. The robot canvas now exposes data
+attributes for robot source, root link, phase label, support foot, swing foot,
+FK foot endpoints, root distance, and link-length status so browser checks can
+separate gait timing issues from rendering or FK issues.
 
 Deliverables:
 

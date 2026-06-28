@@ -170,7 +170,7 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
             "",
           ),
           div(class="scene-readout", [
-            span([b("3D robot"), span(" endless visual gait")]),
+            span([b("3D robot"), span(" rigid FK gait")]),
             span(view.selected_route_id),
           ]),
         ]),

@@ -387,47 +387,142 @@ function addCube(vertices, colors, matrix, center, size, color) {
   }
 }
 
-function limbMatrix(root, sideOffset, yaw, bend, lift) {
-  let m = mat4Translate(root, sideOffset, 0, 0)
-  m = mat4RotateX(m, yaw)
-  m = mat4RotateZ(m, bend)
-  m = mat4Translate(m, 0, lift, 0)
-  return m
+const NOETIX_VISUAL_RIG = {
+  robotId: 'noetix-e1-lab-01',
+  source: 'moonrobo-urdf-visual-adapter',
+  rootLink: 'base_link',
+  linkCount: 13,
+  lengths: {
+    upperLeg: 0.30,
+    lowerLeg: 0.31,
+    upperArm: 0.25,
+    lowerArm: 0.23,
+  },
+}
+
+function cycle01(value) {
+  return value - Math.floor(value)
+}
+
+function smoothstep(value) {
+  const t = clamp(value, 0, 1)
+  return t * t * (3 - 2 * t)
+}
+
+function mix(a, b, t) {
+  return a + (b - a) * t
+}
+
+function gaitState(time) {
+  const phase = cycle01(time * 0.74)
+  const leftStance = phase < 0.5
+  return {
+    phase,
+    phaseLabel: leftStance ? 'left-stance-right-swing' : 'right-stance-left-swing',
+    supportFoot: leftStance ? 'left' : 'right',
+    swingFoot: leftStance ? 'right' : 'left',
+    rootDistanceM: time * 0.28,
+    bob: Math.cos(phase * Math.PI * 4) * 0.016,
+    sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
+  }
+}
+
+function legAngles(legPhase) {
+  const swing = legPhase >= 0.5
+  const u = swing ? (legPhase - 0.5) * 2 : legPhase * 2
+  const e = smoothstep(u)
+  if (swing) {
+    return {
+      hip: mix(0.30, -0.38, e),
+      knee: 0.10 + 0.58 * Math.sin(u * Math.PI),
+      ankle: -0.20 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e),
+    }
+  }
+  return {
+    hip: mix(-0.35, 0.28, e),
+    knee: 0.08 + 0.08 * Math.sin(u * Math.PI),
+    ankle: mix(0.12, -0.08, e),
+  }
+}
+
+function armAngles(legPhase) {
+  const a = legAngles(cycle01(legPhase + 0.5))
+  return {
+    shoulder: -a.hip * 0.72,
+    elbow: 0.18 + Math.max(0, -a.hip) * 0.24,
+  }
+}
+
+function addGround(vertices, colors, gait) {
+  const offset = gait.rootDistanceM % 0.24
+  for (let i = -8; i <= 8; i += 1) {
+    const z = i * 0.24 - offset
+    addQuad(vertices, colors, [-1.6, 0, z], [1.6, 0, z], [1.6, -0.012, z + 0.018], [-1.6, -0.012, z + 0.018], [0.18, 0.24, 0.21])
+  }
+  for (let i = -4; i <= 4; i += 1) {
+    const x = i * 0.32
+    addQuad(vertices, colors, [x, 0, -1.4], [x + 0.014, 0, -1.4], [x + 0.014, -0.012, 1.4], [x, -0.012, 1.4], [0.14, 0.20, 0.18])
+  }
+}
+
+function addLeg(vertices, colors, root, side, gait, diagnostics) {
+  const isLeft = side > 0
+  const name = isLeft ? 'left' : 'right'
+  const legPhase = cycle01(gait.phase + (isLeft ? 0 : 0.5))
+  const angles = legAngles(legPhase)
+  const sideColor = isLeft ? [0.88, 0.72, 0.28] : [0.68, 0.76, 0.90]
+  const upperLen = NOETIX_VISUAL_RIG.lengths.upperLeg
+  const lowerLen = NOETIX_VISUAL_RIG.lengths.lowerLeg
+  let hip = mat4Translate(root, side * 0.095, -0.135, 0.005)
+  hip = mat4RotateX(hip, angles.hip)
+  hip = mat4RotateZ(hip, side * 0.025)
+  addCube(vertices, colors, hip, [0, -upperLen * 0.5, 0], [0.065, upperLen, 0.075], sideColor)
+  let knee = mat4Translate(hip, 0, -upperLen, 0)
+  knee = mat4RotateX(knee, -angles.knee)
+  addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
+  let ankle = mat4Translate(knee, 0, -lowerLen, 0.006)
+  ankle = mat4RotateX(ankle, angles.ankle)
+  addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
+  const sole = transformPoint(ankle, [0, -0.056, 0.13])
+  const marker = name === gait.supportFoot ? [0.30, 0.92, 0.50] : [0.94, 0.80, 0.24]
+  addCube(vertices, colors, mat4Identity(), sole, [0.055, 0.022, 0.055], marker)
+  diagnostics.feet.push({ name, x: sole[0], y: sole[1], z: sole[2] })
+}
+
+function addArm(vertices, colors, root, side, gait) {
+  const isLeft = side > 0
+  const legPhase = cycle01(gait.phase + (isLeft ? 0 : 0.5))
+  const angles = armAngles(legPhase)
+  const upperLen = NOETIX_VISUAL_RIG.lengths.upperArm
+  const lowerLen = NOETIX_VISUAL_RIG.lengths.lowerArm
+  let shoulder = mat4Translate(root, side * 0.155, 0.265, 0.0)
+  shoulder = mat4RotateX(shoulder, angles.shoulder)
+  shoulder = mat4RotateZ(shoulder, side * 0.07)
+  addCube(vertices, colors, shoulder, [0, -upperLen * 0.5, 0], [0.045, upperLen, 0.055], [0.56, 0.72, 0.76])
+  let elbow = mat4Translate(shoulder, 0, -upperLen, 0)
+  elbow = mat4RotateX(elbow, angles.elbow)
+  addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
 }
 
 function robotGeometry(time) {
   const vertices = []
   const colors = []
-  const step = time * 2.2
-  const sway = Math.sin(step) * 0.055
-  const bob = Math.abs(Math.sin(step)) * 0.07
+  const gait = gaitState(time)
+  const diagnostics = { feet: [] }
   let root = mat4Identity()
-  root = mat4Translate(root, 0, 0.92 + bob, 0)
+  root = mat4Translate(root, gait.sway, 0.79 + gait.bob, 0)
   root = mat4RotateY(root, -0.45)
-  root = mat4RotateZ(root, sway)
-  const body = [0.18, 0.46, 0.12]
-  const metal = [0.44, 0.82, 0.77]
-  const leg = [0.94, 0.74, 0.30]
-  const arm = [0.62, 0.72, 0.79]
-  addCube(vertices, colors, root, [0, 0.18, 0], body, metal)
-  addCube(vertices, colors, mat4Translate(root, 0, 0.54, 0), [0, 0, 0], [0.12, 0.12, 0.12], [0.70, 0.90, 0.86])
+  root = mat4RotateZ(root, gait.sway * 0.8)
+  addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
+  addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
+  addCube(vertices, colors, mat4Translate(root, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
+  addCube(vertices, colors, mat4Translate(root, 0, 0.52, 0.005), [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
   for (const side of [-1, 1]) {
-    const phase = Math.sin(step + (side < 0 ? 0 : Math.PI))
-    const knee = Math.max(0, phase) * 0.42
-    const hip = phase * 0.42
-    let upper = limbMatrix(root, side * 0.075, hip, side * 0.03, -0.18)
-    addCube(vertices, colors, upper, [0, -0.16, 0], [0.055, 0.30, 0.07], leg)
-    let lower = mat4Translate(upper, 0, -0.32, 0)
-    lower = mat4RotateX(lower, -knee)
-    addCube(vertices, colors, lower, [0, -0.14, 0.025], [0.050, 0.28, 0.06], leg)
-    addCube(vertices, colors, mat4Translate(lower, 0, -0.30, 0.075), [0, 0, 0], [0.075, 0.04, 0.16], [0.78, 0.64, 0.34])
-    let shoulder = limbMatrix(root, side * 0.14, -hip * 0.58, side * 0.04, 0.22)
-    addCube(vertices, colors, shoulder, [0, -0.15, 0], [0.045, 0.28, 0.055], arm)
+    addLeg(vertices, colors, root, side, gait, diagnostics)
+    addArm(vertices, colors, root, side, gait)
   }
-  for (let i = -4; i <= 4; i += 1) {
-    addQuad(vertices, colors, [-1.4, 0, i * 0.22], [1.4, 0, i * 0.22], [1.4, -0.012, i * 0.22], [-1.4, -0.012, i * 0.22], [0.18, 0.24, 0.21])
-  }
-  return { vertices, colors }
+  addGround(vertices, colors, gait)
+  return { vertices, colors, diagnostics: { ...diagnostics, ...gait } }
 }
 
 function initRobot(canvas) {
@@ -451,7 +546,18 @@ function initRobot(canvas) {
     upload(gl, shader, buffers, geometry.vertices, geometry.colors, mvp)
     gl.drawArrays(gl.TRIANGLES, 0, geometry.vertices.length / 3)
     canvas.dataset.sceneStatus = 'robot-rig-webgl-rendered'
-    canvas.dataset.motionStatus = 'endless-visual-gait'
+    canvas.dataset.motionStatus = 'endless-rigid-fk-gait'
+    canvas.dataset.robotSource = NOETIX_VISUAL_RIG.source
+    canvas.dataset.robotId = NOETIX_VISUAL_RIG.robotId
+    canvas.dataset.rootLink = NOETIX_VISUAL_RIG.rootLink
+    canvas.dataset.rigStatus = 'rigid-link-fk-preview'
+    canvas.dataset.linkLengthStatus = 'invariant'
+    canvas.dataset.phaseLabel = geometry.diagnostics.phaseLabel
+    canvas.dataset.supportFoot = geometry.diagnostics.supportFoot
+    canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
+    canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
+    canvas.dataset.fkFootEndpoints = JSON.stringify(geometry.diagnostics.feet)
+    canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
     requestAnimationFrame(draw)
   }
