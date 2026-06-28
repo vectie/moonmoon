@@ -44,9 +44,11 @@
   `ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` from Moonrobo live typed
   adapter commands before dev, build, export, and gait checks. The MoonBit
   suite-preview payload now ingests that live evidence summary as typed payload
-  data and uses it as a readiness blocker. The next implementation target is
-  moving the full MoonBit motion/contact/motor tables from committed generated
-  snapshots to live adapter ingestion.
+  data and uses it as a readiness blocker. Moonmoon now also has a native
+  suite-preview live-contract ingestion path that decodes full Moonrobo contract
+  JSON and reviews the parsed motion/contact/motor tables through Moonphys. The
+  next implementation target is making that path the default command/build path
+  and deleting the committed generated MoonBit table snapshot.
 
 ## Non-Goals
 

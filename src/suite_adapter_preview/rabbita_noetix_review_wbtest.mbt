@@ -291,3 +291,64 @@ test "Moonrobo Noetix suite payload records durable source refs" {
     }),
   )
 }
+
+///|
+test "Moonrobo live contract JSON ingests full suite payload" {
+  let payload = try
+    moonrobo_noetix_suite_adapter_payload_from_generated_live_contract()
+  catch {
+    _ => {
+      assert_true(false)
+      moonrobo_noetix_suite_adapter_payload()
+    }
+  } noraise {
+    payload => payload
+  }
+  assert_true(payload.ready)
+  assert_eq(payload.status, "moonrobo-noetix-live-suite-payload-ready")
+  assert_eq(payload.review_status, "moonrobo-noetix-live-review-ready")
+  assert_eq(payload.walk_clip_id, "noetix-e1-lab-01/endless-forward-walk")
+  assert_eq(payload.motion_trace_id, "noetix-e1-lab-01/live-motion-trace")
+  assert_eq(payload.hinge_trace_id, "noetix-e1-lab-01/live-hinge-trace")
+  assert_eq(
+    payload.combined_review_id,
+    "noetix-e1-lab-01/live-motion-hinge-review",
+  )
+  assert_eq(payload.walk_sample_count, 24)
+  assert_eq(payload.frame_count, 24)
+  assert_eq(payload.authored_joint_samples.length(), 24)
+  assert_eq(payload.authored_motion_samples.length(), 24)
+  assert_eq(payload.authored_motor_frames.length(), 24)
+  assert_true(payload.live_suite_evidence.ready)
+  assert_eq(
+    payload.live_suite_evidence.regeneration_mode,
+    "live-moonrobo-typed-adapter",
+  )
+  assert_eq(payload.live_suite_evidence.sample_count, payload.walk_sample_count)
+  assert_eq(payload.live_suite_evidence.authored_contact_frame_count, 24)
+  assert_eq(payload.live_suite_evidence.authored_motor_frame_count, 24)
+  assert_eq(payload.live_suite_evidence.active_contact_frame_count, 24)
+  assert_eq(payload.live_suite_evidence.loaded_contact_count, 38)
+  assert_eq(payload.live_suite_evidence.driven_motor_frame_count, 24)
+  assert_eq(payload.live_suite_evidence.motor_review_count, 0)
+  assert_eq(payload.live_suite_evidence.contact_review_count, 0)
+  assert_eq(payload.live_suite_evidence.blocker_count, 0)
+  assert_eq(payload.source_refs.length(), 6)
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonrobo.moonmoon-adapter-contract" &&
+      source.status == "live-typed-source"
+    }),
+  )
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonrobo.moonmoon-adapter-contact-evidence" &&
+      source.status == "live-typed-source"
+    }),
+  )
+  assert_true(
+    !payload.source_refs.any(fn(source) {
+      source.source_family == "moonmoon.rabbita.generated-evidence"
+    }),
+  )
+}

@@ -371,9 +371,14 @@ and compares the live authority with the live runtime bridge and generated
 Moonmoon suite-preview bridge. The MoonBit suite-preview payload now ingests the
 live summary in its typed evidence entry, so stale or blocked live Moonrobo
 adapter output becomes a payload blocker instead of only an external script
-failure. The remaining Phase 10 feature is to move the full MoonBit
-suite-preview motion/contact/motor tables off committed generated snapshots and
-onto a live adapter ingestion API.
+failure. `src/suite_adapter_preview/moonrobo_live_ingestion.mbt` now defines a
+native MoonBit live-contract ingestion path that decodes the full Moonrobo
+contract JSON, converts parsed contact frames into the compiled Moonphys review
+shape, and builds a live suite payload from parsed joint, motion, contact, and
+motor tables. `npm run check:gait` covers this path through the
+`src/suite_adapter_preview` MoonBit gate. The remaining Phase 10 feature is to
+make that live contract ingestion path the default command/build path and then
+remove the committed generated MoonBit table snapshot.
 
 Acceptance:
 

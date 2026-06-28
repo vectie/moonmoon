@@ -430,6 +430,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    Rabbita imports that bridge for runtime gait data. The MoonBit suite-preview
    payload also carries the live Moonrobo evidence summary, records its typed
    source, and blocks readiness when the live summary diverges from the
-   generated bridge. The next Phase 10 target is moving the full MoonBit
-   motion/contact/motor tables from committed generated snapshots to a live
-   adapter ingestion API.
+   generated bridge. `src/suite_adapter_preview/moonrobo_live_ingestion.mbt`
+   now accepts a full live Moonrobo contract JSON value, decodes the authored
+   joint, motion, contact, and motor tables, and runs the compiled Moonphys
+   review from the parsed contact/motor frames. The next Phase 10 target is to
+   wire that live ingestion path as the default suite-preview command/build path
+   and remove the committed generated MoonBit motion/contact/motor table
+   snapshot.

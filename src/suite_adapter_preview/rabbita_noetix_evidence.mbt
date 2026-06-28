@@ -214,14 +214,22 @@ fn generated_motion_frame_to_moonphys(
 
 ///|
 fn rabbita_noetix_generated_motion_trace_review() -> @moonphys.MotionFrameTraceReview {
+  rabbita_noetix_motion_trace_review_from_contact_frames(
+    generated_rabbita_noetix_motion_trace_id(),
+    generated_moonrobo_noetix_contact_frames(),
+  )
+}
+
+///|
+fn rabbita_noetix_motion_trace_review_from_contact_frames(
+  trace_id : String,
+  contact_frames : Array[RabbitaNoetixGeneratedMotionFrame],
+) -> @moonphys.MotionFrameTraceReview {
   let frames : Array[@moonphys.MotionFrameReview] = []
-  for frame in generated_moonrobo_noetix_contact_frames() {
+  for frame in contact_frames {
     frames.push(generated_motion_frame_to_moonphys(frame))
   }
-  @moonphys.motion_frame_trace_review(
-    generated_rabbita_noetix_motion_trace_id(),
-    frames,
-  )
+  @moonphys.motion_frame_trace_review(trace_id, frames)
 }
 
 ///|
@@ -244,13 +252,14 @@ fn generated_motion_body(
 }
 
 ///|
-fn moonrobo_noetix_generated_hinge_world(
+fn moonrobo_noetix_hinge_world_from_motor_frames(
   field : @moonphys.Heightfield,
+  motor_frames : Array[SuiteAdapterMotorFrameSample],
 ) -> @moonphys.RigidBodyHeightfieldWorld {
   let bodies : Array[@moonphys.RigidBodyWorldBody] = []
   let motion_bodies : Array[@moonphys.RigidBodyJointFrameBody] = []
   let hinges : Array[@moonphys.RigidBodyHingeJointConstraint] = []
-  let first_frame = generated_moonrobo_noetix_authored_motor_frames()[0]
+  let first_frame = motor_frames[0]
   for index, step in first_frame.steps {
     let x = index.to_double() * 0.1
     let parent_id = "\{step.joint_id}/parent"
@@ -336,16 +345,31 @@ fn generated_moonrobo_motor_frame(
 fn rabbita_noetix_generated_hinge_trace(
   field : @moonphys.Heightfield,
 ) -> @moonphys.RigidBodyHeightfieldWorldHingeMotorTrace {
+  rabbita_noetix_hinge_trace_from_motor_frames(
+    generated_rabbita_noetix_hinge_trace_id(),
+    field,
+    generated_moonrobo_noetix_authored_motor_frames(),
+    generated_moonrobo_noetix_contact_frame_source(),
+  )
+}
+
+///|
+fn rabbita_noetix_hinge_trace_from_motor_frames(
+  trace_id : String,
+  field : @moonphys.Heightfield,
+  motor_frames_source : Array[SuiteAdapterMotorFrameSample],
+  note : String,
+) -> @moonphys.RigidBodyHeightfieldWorldHingeMotorTrace {
   let motor_frames : Array[@moonphys.JointMotorFrame] = []
-  for frame in generated_moonrobo_noetix_authored_motor_frames() {
+  for frame in motor_frames_source {
     motor_frames.push(generated_moonrobo_motor_frame(frame))
   }
   @moonphys.rigid_body_heightfield_world_hinge_motor_trace(
-    generated_rabbita_noetix_hinge_trace_id(),
-    moonrobo_noetix_generated_hinge_world(field),
+    trace_id,
+    moonrobo_noetix_hinge_world_from_motor_frames(field, motor_frames_source),
     field,
     motor_frames,
-    note=generated_moonrobo_noetix_contact_frame_source(),
+    note~,
   )
 }
 
@@ -366,9 +390,20 @@ fn generated_active_footprints(
 fn rabbita_noetix_generated_replay_review(
   trace : @moonphys.RigidBodyHeightfieldWorldHingeMotorTrace,
 ) -> @moonphys.RigidBodyWorldReplayReview {
+  rabbita_noetix_replay_review_from_contact_frames(
+    trace,
+    generated_moonrobo_noetix_contact_frames(),
+  )
+}
+
+///|
+fn rabbita_noetix_replay_review_from_contact_frames(
+  trace : @moonphys.RigidBodyHeightfieldWorldHingeMotorTrace,
+  contact_frames : Array[RabbitaNoetixGeneratedMotionFrame],
+) -> @moonphys.RigidBodyWorldReplayReview {
   let footprint_frames : Array[Array[@moonphys.SupportFootprint]] = []
   let targets : Array[@moonphys.RigidBodyWorldCenterOfMassTarget] = []
-  for frame in generated_moonrobo_noetix_contact_frames() {
+  for frame in contact_frames {
     let center_of_mass = generated_vec3_to_moonphys(frame.center_of_mass)
     footprint_frames.push(generated_active_footprints(frame))
     targets.push(
