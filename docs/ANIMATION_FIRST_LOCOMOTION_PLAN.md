@@ -332,6 +332,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `moonphysHingeMotorTrace` from corrected FK joint samples and a
    `moonphysMotionHingeReview` that checks frame alignment, driven joints,
    motor limit status, torque, velocity, and work envelopes against the
-   motion-frame trace. The remaining Phase F suite work is to replace the
-   preview joint table with authoritative Moonrobo/URDF actuator limits and
-   feed the resulting trace through the compiled Moonphys combined review.
+   motion-frame trace. The hinge replay table now cites the Moonrobo Noetix
+   profile and URDF sources, uses URDF joint ids such as `leg_l1_joint`,
+   `leg_l4_joint`, `leg_l6_joint`, `arm_l1_joint`, and `arm_l4_joint`, and
+   verifies velocity and effort against those URDF limits. The remaining Phase F
+   suite work is to feed this suite trace through the compiled Moonphys combined
+   review instead of only the Rabbita JSON-side mirror.

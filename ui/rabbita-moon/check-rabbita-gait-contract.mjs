@@ -17,6 +17,9 @@ const sceneContracts = [
   'moonphysReviewTrace',
   'moonphysHingeMotorTrace',
   'moonphysMotionHingeReview',
+  'NOETIX_URDF_LIMIT_SOURCE',
+  'leg_l1_joint',
+  'arm_l1_joint',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -108,11 +111,23 @@ if (hingeTrace.environment_id !== 'moon/lunar-surface') {
 if (hingeTrace.sample_source !== 'corrected-fk-joint-samples') {
   throw new Error('Moonphys hinge motor trace did not use corrected FK joint samples')
 }
+if (hingeTrace.limit_source?.urdf_path !== '../moonrobo/examples/noetix-e1/model/robot.urdf') {
+  throw new Error('Moonphys hinge motor trace did not cite the Moonrobo Noetix URDF limit source')
+}
+if (hingeTrace.limit_source?.robot_profile_path !== '../moonrobo/examples/noetix-e1/robot.json') {
+  throw new Error('Moonphys hinge motor trace did not cite the Moonrobo Noetix robot profile')
+}
 if (hingeTrace.frame_count !== sampleTimes.length || hingeTrace.motor_frame_count !== sampleTimes.length) {
   throw new Error('Moonphys hinge motor trace frame count did not match runtime sampling')
 }
 if (hingeTrace.frames.length !== sampleTimes.length) {
   throw new Error('Moonphys hinge motor trace frame list did not match runtime sampling')
+}
+const hingeJointIds = new Set(hingeTrace.frames.flatMap(frame => frame.steps.map(step => step.joint_id)))
+for (const jointId of ['leg_l1_joint', 'leg_l4_joint', 'leg_l6_joint', 'leg_r1_joint', 'leg_r4_joint', 'leg_r6_joint', 'arm_l1_joint', 'arm_l4_joint', 'arm_r1_joint', 'arm_r4_joint']) {
+  if (!hingeJointIds.has(jointId)) {
+    throw new Error(`Moonphys hinge motor trace did not include URDF joint ${jointId}`)
+  }
 }
 if (hingeTrace.joint_count < 10) {
   throw new Error('Moonphys hinge motor trace did not include the expected biped joints')
@@ -131,6 +146,12 @@ if (hingeTrace.max_abs_commanded_torque_nm <= 0 || hingeTrace.total_absolute_wor
 }
 if (hingeTrace.frames.some(frame => frame.steps.some(step => step.status !== 'joint-commanded'))) {
   throw new Error('Moonphys hinge motor trace contains a joint command review')
+}
+if (hingeTrace.frames.some(frame => frame.steps.some(step => Math.abs(step.target_velocity_rad_s) > step.limit.max_velocity_rad_s + 0.000001))) {
+  throw new Error('Moonphys hinge motor trace exceeded a URDF joint velocity limit')
+}
+if (hingeTrace.frames.some(frame => frame.steps.some(step => Math.abs(step.commanded_torque_nm) > step.limit.max_torque_nm + 0.000001))) {
+  throw new Error('Moonphys hinge motor trace exceeded a URDF joint effort limit')
 }
 if (motionHingeReview.status !== 'motion-hinge-replay-review-ready' || !motionHingeReview.ready) {
   throw new Error(`Moonphys motion hinge review was not ready: ${motionHingeReview.status}`)

@@ -418,17 +418,24 @@ const NOETIX_VISUAL_RIG = {
   },
 }
 
+const NOETIX_URDF_LIMIT_SOURCE = {
+  robot_profile_path: '../moonrobo/examples/noetix-e1/robot.json',
+  urdf_path: '../moonrobo/examples/noetix-e1/model/robot.urdf',
+  robot_name: 'noetix_e1_lab_01',
+  imported_by: 'moonrobo-urdf-model',
+}
+
 const NOETIX_HINGE_MOTOR_JOINTS = [
-  { joint_id: 'left_hip_pitch', side: 'left', field: 'hip', parent_link: 'base_link', child_link: 'left_upper_leg', min: -0.9, max: 0.8, max_velocity: 5.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
-  { joint_id: 'left_knee_pitch', side: 'left', field: 'knee', parent_link: 'left_upper_leg', child_link: 'left_lower_leg', min: -0.1, max: 1.1, max_velocity: 8.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
-  { joint_id: 'left_ankle_pitch', side: 'left', field: 'ankle', parent_link: 'left_lower_leg', child_link: 'left_foot', min: -0.6, max: 0.55, max_velocity: 5.0, max_torque: 55.0, stiffness: 14.0, damping: 0.6 },
-  { joint_id: 'right_hip_pitch', side: 'right', field: 'hip', parent_link: 'base_link', child_link: 'right_upper_leg', min: -0.9, max: 0.8, max_velocity: 5.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
-  { joint_id: 'right_knee_pitch', side: 'right', field: 'knee', parent_link: 'right_upper_leg', child_link: 'right_lower_leg', min: -0.1, max: 1.1, max_velocity: 8.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
-  { joint_id: 'right_ankle_pitch', side: 'right', field: 'ankle', parent_link: 'right_lower_leg', child_link: 'right_foot', min: -0.6, max: 0.55, max_velocity: 5.0, max_torque: 55.0, stiffness: 14.0, damping: 0.6 },
-  { joint_id: 'left_shoulder_pitch', side: 'left', field: 'shoulder', parent_link: 'torso_link', child_link: 'left_upper_arm', min: -0.7, max: 0.7, max_velocity: 4.0, max_torque: 35.0, stiffness: 8.0, damping: 0.4 },
-  { joint_id: 'left_elbow_pitch', side: 'left', field: 'elbow', parent_link: 'left_upper_arm', child_link: 'left_lower_arm', min: 0.0, max: 0.8, max_velocity: 4.0, max_torque: 25.0, stiffness: 8.0, damping: 0.4 },
-  { joint_id: 'right_shoulder_pitch', side: 'right', field: 'shoulder', parent_link: 'torso_link', child_link: 'right_upper_arm', min: -0.7, max: 0.7, max_velocity: 4.0, max_torque: 35.0, stiffness: 8.0, damping: 0.4 },
-  { joint_id: 'right_elbow_pitch', side: 'right', field: 'elbow', parent_link: 'right_upper_arm', child_link: 'right_lower_arm', min: 0.0, max: 0.8, max_velocity: 4.0, max_torque: 25.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'leg_l1_joint', side: 'left', field: 'hip', parent_link: 'base_link', child_link: 'left_leg_1', axis: '0 1 0', min: -1.2, max: 1.2, max_velocity: 3.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'leg_l4_joint', side: 'left', field: 'knee', parent_link: 'left_leg_3', child_link: 'left_leg_4', axis: '0 1 0', min: -1.8, max: 1.8, max_velocity: 3.0, max_torque: 100.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'leg_l6_joint', side: 'left', field: 'ankle', parent_link: 'left_leg_5', child_link: 'left_foot', axis: '0 1 0', min: -0.8, max: 0.8, max_velocity: 3.0, max_torque: 80.0, stiffness: 14.0, damping: 0.6 },
+  { joint_id: 'leg_r1_joint', side: 'right', field: 'hip', parent_link: 'base_link', child_link: 'right_leg_1', axis: '0 1 0', min: -1.2, max: 1.2, max_velocity: 3.0, max_torque: 90.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'leg_r4_joint', side: 'right', field: 'knee', parent_link: 'right_leg_3', child_link: 'right_leg_4', axis: '0 1 0', min: -1.8, max: 1.8, max_velocity: 3.0, max_torque: 100.0, stiffness: 18.0, damping: 0.8 },
+  { joint_id: 'leg_r6_joint', side: 'right', field: 'ankle', parent_link: 'right_leg_5', child_link: 'right_foot', axis: '0 1 0', min: -0.8, max: 0.8, max_velocity: 3.0, max_torque: 80.0, stiffness: 14.0, damping: 0.6 },
+  { joint_id: 'arm_l1_joint', side: 'left', field: 'shoulder', parent_link: 'chest_link', child_link: 'left_arm_1', axis: '0 1 0', min: -1.8, max: 1.8, max_velocity: 3.0, max_torque: 45.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'arm_l4_joint', side: 'left', field: 'elbow', parent_link: 'left_arm_3', child_link: 'left_arm_4', axis: '0 1 0', min: -1.6, max: 1.6, max_velocity: 3.0, max_torque: 30.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'arm_r1_joint', side: 'right', field: 'shoulder', parent_link: 'chest_link', child_link: 'right_arm_1', axis: '0 1 0', min: -1.8, max: 1.8, max_velocity: 3.0, max_torque: 45.0, stiffness: 8.0, damping: 0.4 },
+  { joint_id: 'arm_r4_joint', side: 'right', field: 'elbow', parent_link: 'right_arm_3', child_link: 'right_arm_4', axis: '0 1 0', min: -1.6, max: 1.6, max_velocity: 3.0, max_torque: 30.0, stiffness: 8.0, damping: 0.4 },
 ]
 
 function cycle01(value) {
@@ -503,7 +510,7 @@ function footRole(footPhase) {
 }
 
 function footLock(footPhase) {
-  return footPhase < 0.50 || footPhase >= 0.92
+  return footPhase < 0.50
 }
 
 function walkClipSample(time) {
@@ -549,9 +556,10 @@ function legAngles(legPhase) {
   const u = swing ? (legPhase - 0.5) * 2 : legPhase * 2
   const e = smoothstep(u)
   if (swing) {
+    const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
     return {
-      hip: mix(0.30, -0.38, e),
-      knee: 0.10 + 0.58 * Math.sin(u * Math.PI),
+      hip: mix(0.30, -0.36, e),
+      knee: 0.08 + 0.58 * Math.sin(u * Math.PI) * landing,
       ankle: -0.20 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e),
     }
   }
@@ -1075,6 +1083,7 @@ function moonphysJointMotorStep(spec, before, after, dt_s) {
       max_position_rad: spec.max,
       max_velocity_rad_s: spec.max_velocity,
       max_torque_nm: spec.max_torque,
+      source: NOETIX_URDF_LIMIT_SOURCE.urdf_path,
     },
     position_within_limits: positionWithinLimits,
     velocity_within_limits: velocityWithinLimits,
@@ -1136,6 +1145,7 @@ function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
   return {
     trace_id: `${NOETIX_VISUAL_RIG.robotId}/walk-cycle/hinge-motor-replay`,
     source: NOETIX_VISUAL_RIG.source,
+    limit_source: NOETIX_URDF_LIMIT_SOURCE,
     environment_id: 'moon/lunar-surface',
     sample_source: 'corrected-fk-joint-samples',
     frame_count: frames.length,
