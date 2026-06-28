@@ -467,9 +467,10 @@ real FK tree and approximate source shapes without claiming full dynamics.
 
 ## Phase 5: Rabbita Visualization
 
-Status: first trace scrubber, link-pose playback, and endless-gait loop
-playback implemented in Rabbita; the current debug pose is not yet a correct
-robot walking animation. Full rigid URDF-link rendering remains future work.
+Status: first trace scrubber, link-pose playback, endless-gait loop playback,
+and rigid URDF visual rendering implemented in Rabbita. The current viewer is a
+standalone canvas/WebGL rig renderer over Moonrobo `RobotRigVisualInstance`
+records, with debug sticks kept as an overlay.
 
 Add a viewer surface after the data contract is stable.
 
@@ -511,9 +512,9 @@ Do not connect this to hardware controls.
 Status: active. Moonrobo now exposes a first-class `RobotRig`,
 `RobotMotionFrame`, and FK `RobotRigPoseFrame` contract for Noetix. Rabbita
 uses `RobotRigVisualInstance` render frames as the primary robot body, with
-Rabbita's canvas rig viewport drawing those visual instances as the primary
-surface and debug sticks separated as a link-tree SVG overlay. Continue
-prioritizing this visual/rig slice before new MoonClaw orchestration.
+Rabbita's standalone WebGL/canvas rig viewport drawing those visual instances
+as the primary surface and debug sticks separated as a link-tree SVG overlay.
+Continue prioritizing this visual/rig slice before new MoonClaw orchestration.
 
 The current Rabbita pose uses URDF-reference FK plus contact-bound foot
 correction. That is useful evidence, but it is not the same as how a walking
@@ -589,12 +590,13 @@ Immediate Phase 5A deliverables:
   assets but its loader path is STL-focused, while Noetix currently references
   an OBJ mesh. (partially implemented: render instances carry extension and
   loader status, `RobotRigMeshAsset` carries the Moonrobo Noetix base OBJ's
-  vertices/faces, and Rabbita's canvas viewport projects those OBJ faces through
-  the FK link transform; actual Three.js OBJ/STL loader integration remains)
+  vertices/faces, and Rabbita's standalone WebGL/canvas viewport projects those
+  OBJ faces through the FK link transform; actual Three.js OBJ/STL loader
+  integration remains)
 - Render URDF primitive boxes and cylinders directly in Three.js so the current
   Noetix source can show more than the one base mesh even before full per-link
-  meshes exist. (implemented in the current canvas/SVG rig renderer; future
-  Three.js renderer should keep the same contract)
+  meshes exist. (implemented in the current standalone WebGL/canvas rig
+  renderer; future Three.js renderer should keep the same contract)
 - Keep the endless gait loop source-backed by the existing Noetix walk command
   or simulated joint trajectory, with explicit `simulation evidence only` and
   `hardware denied` labels.

@@ -533,7 +533,7 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   ]);
   const stage = el('div', {
     className: 'noetix-stage',
-    'data-viewer-kind': 'canvas-rig-with-svg-overlay',
+    'data-viewer-kind': 'webgl-rig-with-canvas-fallback-and-svg-overlay',
     'data-render-source': 'robot-rig-visual-instances'
   }, [canvas, svg]);
   document.getElementById('noetix-walk-viewer').replaceChildren(stage);
@@ -617,7 +617,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['mesh assets', `${noetixLinkPoseTrace.mesh_asset_count || 0} resolved OBJ mesh assets`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
     ['render source', noetixLinkPoseTrace.primary_render_source || 'robot-rig-visual-instances'],
-    ['viewer', 'canvas-rig-with-svg-overlay'],
+    ['viewer', 'webgl-rig-with-canvas-fallback-and-svg-overlay'],
     ['motion', noetixLinkPoseTrace.motion_frame_source || 'planned-gait-joint-samples'],
     ['rig motion', noetixLinkPoseTrace.rig_motion_contract_status || 'robot-rig-motion-contract-review'],
     ['pose status', poseFrame.rig_render_status || poseFrame.status || noetixLinkPoseTrace.status],

@@ -2,12 +2,20 @@
   const VIEW_WIDTH = 420;
   const VIEW_HEIGHT = 170;
   const SCALE = 2;
+  const WEBGL_SCALE = 2;
 
   function roleColor(role, kind) {
     if (kind === 'mesh') return { stroke: '#75d1c5', fill: 'rgba(117, 209, 197, 0.50)' };
     if (role === 'leg') return { stroke: '#f0c45d', fill: 'rgba(240, 196, 93, 0.46)' };
     if (role === 'arm') return { stroke: '#b7cfdb', fill: 'rgba(183, 207, 219, 0.44)' };
     return { stroke: '#8ee0d2', fill: 'rgba(142, 224, 210, 0.42)' };
+  }
+
+  function roleRgba(role, kind) {
+    if (kind === 'mesh') return [0.46, 0.82, 0.77, 0.82];
+    if (role === 'leg') return [0.94, 0.77, 0.36, 0.76];
+    if (role === 'arm') return [0.72, 0.81, 0.86, 0.72];
+    return [0.56, 0.88, 0.82, 0.76];
   }
 
   function projectedSpan(origin, xMeters, zMeters, project) {
@@ -68,6 +76,199 @@
       y: (vertex.y ?? 0) + (origin.y ?? 0),
       z: (vertex.z ?? 0) + (origin.z ?? 0),
     });
+  }
+
+  function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      throw new Error(gl.getShaderInfoLog(shader) || 'Noetix rig shader compile failed');
+    }
+    return shader;
+  }
+
+  function createProgram(gl) {
+    const vertex = createShader(gl, gl.VERTEX_SHADER, `
+      attribute vec3 a_position;
+      attribute vec4 a_color;
+      varying vec4 v_color;
+      void main() {
+        gl_Position = vec4(a_position, 1.0);
+        v_color = a_color;
+      }
+    `);
+    const fragment = createShader(gl, gl.FRAGMENT_SHADER, `
+      precision mediump float;
+      varying vec4 v_color;
+      void main() {
+        gl_FragColor = v_color;
+      }
+    `);
+    const program = gl.createProgram();
+    gl.attachShader(program, vertex);
+    gl.attachShader(program, fragment);
+    gl.linkProgram(program);
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      throw new Error(gl.getProgramInfoLog(program) || 'Noetix rig WebGL link failed');
+    }
+    return program;
+  }
+
+  function clipPoint(point, depth) {
+    return {
+      x: (point.x / VIEW_WIDTH) * 2 - 1,
+      y: 1 - (point.y / VIEW_HEIGHT) * 2,
+      z: Math.max(-0.95, Math.min(0.95, depth || 0)),
+    };
+  }
+
+  function addVertex(vertices, colors, point, color, depth) {
+    const clip = clipPoint(point, depth);
+    vertices.push(clip.x, clip.y, clip.z);
+    colors.push(color[0], color[1], color[2], color[3]);
+  }
+
+  function addTriangle(vertices, colors, a, b, c, color, depth) {
+    addVertex(vertices, colors, a, color, depth);
+    addVertex(vertices, colors, b, color, depth);
+    addVertex(vertices, colors, c, color, depth);
+  }
+
+  function addRectTriangles(vertices, colors, x, y, width, height, color, depth) {
+    const a = { x, y };
+    const b = { x: x + width, y };
+    const c = { x: x + width, y: y + height };
+    const d = { x, y: y + height };
+    addTriangle(vertices, colors, a, b, c, color, depth);
+    addTriangle(vertices, colors, a, c, d, color, depth);
+  }
+
+  function addMeshTriangles(vertices, colors, instance, asset, project) {
+    const meshVertices = asset && asset.vertices ? asset.vertices : [];
+    const faces = asset && asset.faces ? asset.faces : [];
+    if (meshVertices.length === 0 || faces.length === 0) return 0;
+    const color = roleRgba(instance.role, instance.render_kind);
+    let triangleCount = 0;
+    for (const face of faces) {
+      const points = [];
+      let depth = 0;
+      for (const index of face.vertex_indices || []) {
+        const vertex = meshVertices[index];
+        if (!vertex) continue;
+        const world = meshVertexWorld(instance, vertex);
+        depth += world.y || 0;
+        points.push(project(world));
+      }
+      if (points.length >= 3) {
+        const normalizedDepth = -0.2 + (depth / points.length) * 0.08;
+        for (let index = 1; index < points.length - 1; index += 1) {
+          addTriangle(vertices, colors, points[0], points[index], points[index + 1], color, normalizedDepth);
+          triangleCount += 1;
+        }
+      }
+    }
+    return triangleCount;
+  }
+
+  function addBoxTriangles(vertices, colors, instance, project) {
+    const origin = instance.world_origin_xyz_m;
+    const span = projectedSpan(origin, instance.size_m.x, instance.size_m.z, project);
+    const color = roleRgba(instance.role, instance.render_kind);
+    addRectTriangles(
+      vertices,
+      colors,
+      span.center.x - span.width * 0.5,
+      span.center.y - span.height * 0.5,
+      span.width,
+      span.height,
+      color,
+      0.0
+    );
+    return 2;
+  }
+
+  function addCylinderTriangles(vertices, colors, instance, project) {
+    const origin = instance.world_origin_xyz_m;
+    const span = projectedSpan(origin, instance.radius_m * 2, instance.length_m, project);
+    const color = roleRgba(instance.role, instance.render_kind);
+    const steps = 18;
+    let triangleCount = 0;
+    for (let index = 0; index < steps; index += 1) {
+      const a = (index / steps) * Math.PI * 2;
+      const b = ((index + 1) / steps) * Math.PI * 2;
+      addTriangle(
+        vertices,
+        colors,
+        span.center,
+        {
+          x: span.center.x + Math.cos(a) * span.width * 0.5,
+          y: span.center.y + Math.sin(a) * span.height * 0.5,
+        },
+        {
+          x: span.center.x + Math.cos(b) * span.width * 0.5,
+          y: span.center.y + Math.sin(b) * span.height * 0.5,
+        },
+        color,
+        0.05
+      );
+      triangleCount += 1;
+    }
+    return triangleCount;
+  }
+
+  function webglBuffers(poseFrame, meshAssetsById, project) {
+    const vertices = [];
+    const colors = [];
+    let meshTriangles = 0;
+    let primitiveTriangles = 0;
+    for (const instance of poseFrame.visual_instances || []) {
+      if (!instance.world_origin_xyz_m) continue;
+      if (instance.render_kind === 'mesh') {
+        const asset = meshAssetsById[instance.mesh_asset_id] || null;
+        meshTriangles += addMeshTriangles(vertices, colors, instance, asset, project);
+      } else if (instance.render_kind === 'cylinder') {
+        primitiveTriangles += addCylinderTriangles(vertices, colors, instance, project);
+      } else {
+        primitiveTriangles += addBoxTriangles(vertices, colors, instance, project);
+      }
+    }
+    return { vertices, colors, meshTriangles, primitiveTriangles };
+  }
+
+  function drawWebgl(canvas, poseFrame, meshAssetsById, project) {
+    if (typeof canvas.getContext !== 'function') return false;
+    const gl = canvas.getContext('webgl', { antialias: true, alpha: false });
+    if (!gl) return false;
+    const buffers = webglBuffers(poseFrame, meshAssetsById, project);
+    if (buffers.vertices.length === 0) return false;
+    canvas.width = VIEW_WIDTH * WEBGL_SCALE;
+    canvas.height = VIEW_HEIGHT * WEBGL_SCALE;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.clearColor(0.067, 0.094, 0.098, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    const program = createProgram(gl);
+    gl.useProgram(program);
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buffers.vertices), gl.STATIC_DRAW);
+    const positionLocation = gl.getAttribLocation(program, 'a_position');
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+    const colorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buffers.colors), gl.STATIC_DRAW);
+    const colorLocation = gl.getAttribLocation(program, 'a_color');
+    gl.enableVertexAttribArray(colorLocation);
+    gl.vertexAttribPointer(colorLocation, 4, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, buffers.vertices.length / 3);
+    canvas.setAttribute('data-webgl-status', 'webgl-rigid-rendered');
+    canvas.setAttribute('data-webgl-triangles', String(buffers.vertices.length / 9));
+    canvas.setAttribute('data-webgl-mesh-triangles', String(buffers.meshTriangles));
+    canvas.setAttribute('data-webgl-primitive-triangles', String(buffers.primitiveTriangles));
+    return true;
   }
 
   function drawRoundedRect(ctx, x, y, width, height, radius) {
@@ -220,6 +421,8 @@
     canvas.setAttribute('data-render-source', 'robot-rig-visual-instances');
     canvas.setAttribute('data-rendered-visuals', String(instances.length));
     canvas.setAttribute('data-render-status', 'robot-rig-canvas-ready');
+    canvas.setAttribute('data-rig-renderer-intent', 'webgl-rigid-link-renderer');
+    canvas.setAttribute('data-webgl-status', 'webgl-not-attempted');
     canvas.setAttribute('data-mesh-loader', 'obj');
     canvas.setAttribute('data-mesh-asset-count', String(meshAssets.length));
     canvas.setAttribute('data-mesh-vertex-count', String(totals.vertices));
@@ -229,6 +432,16 @@
       meshAssets.length > 0 ? 'obj-face-projection' : 'bounds-fallback'
     );
     canvas.setAttribute('data-primitive-renderer', 'box-cylinder');
+    try {
+      if (drawWebgl(canvas, poseFrame, meshAssetsById, project)) {
+        canvas.setAttribute('data-render-status', 'robot-rig-canvas-rendered');
+        return;
+      }
+      canvas.setAttribute('data-webgl-status', 'webgl-context-unavailable');
+    } catch (error) {
+      canvas.setAttribute('data-webgl-status', 'webgl-render-failed');
+      canvas.setAttribute('data-webgl-error', String(error && error.message ? error.message : error).slice(0, 96));
+    }
     if (typeof canvas.getContext !== 'function') return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
