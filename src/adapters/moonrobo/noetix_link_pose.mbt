@@ -45,10 +45,18 @@ pub(all) struct NoetixLinkPose {
   nominal_parent_offset_m : @moonphys.Vec3
   joint_axis : @moonphys.Vec3
   joint_position_rad : Double
-  fk_world_position : @moonphys.Vec3
   world_position : @moonphys.Vec3
-  contact_error_m : Double
   visual_geometry : NoetixLinkVisualGeometryEvidence
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct NoetixContactProbeEvidence {
+  link_name : String
+  side : String
+  link_world_position : @moonphys.Vec3
+  contact_probe_position : @moonphys.Vec3
+  position_error_m : Double
   source_status : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -64,6 +72,8 @@ pub(all) struct NoetixLinkPoseFrame {
   rig_render_status : String
   visual_instance_count : Int
   visual_instances : Array[RobotRigVisualInstance]
+  contact_probe_count : Int
+  contact_probes : Array[NoetixContactProbeEvidence]
   links : Array[NoetixLinkPose]
   status : String
 } derive(Debug, Eq, ToJson, FromJson)
@@ -355,9 +365,7 @@ fn link_pose(
   link : NoetixReferenceLink,
   joint_position : Double,
   transform : @moonphys.Transform3,
-  fk_world_position : @moonphys.Vec3,
   world_position : @moonphys.Vec3,
-  contact_error_m : Double,
 ) -> NoetixLinkPose {
   {
     link_name: link.link_name,
@@ -368,15 +376,28 @@ fn link_pose(
     nominal_parent_offset_m: link.nominal_parent_offset_m,
     joint_axis: link.joint_axis,
     joint_position_rad: joint_position,
-    fk_world_position,
     world_position,
-    contact_error_m,
     visual_geometry: link_visual_geometry_evidence(link, transform),
-    source_status: if link.role == "foot" {
-      "urdf-fk-contact-bound"
-    } else {
-      "urdf-forward-kinematics"
-    },
+    source_status: "urdf-forward-kinematics",
+  }
+}
+
+///|
+fn contact_probe_evidence(
+  link : NoetixReferenceLink,
+  frame : NoetixMoonWalkFrame,
+  link_world_position : @moonphys.Vec3,
+) -> NoetixContactProbeEvidence {
+  let contact_probe_position = contact_position(frame, link.side)
+  {
+    link_name: link.link_name,
+    side: link.side,
+    link_world_position,
+    contact_probe_position,
+    position_error_m: position_error_m(
+      link_world_position, contact_probe_position,
+    ),
+    source_status: "walk-contact-probe-review-annotation",
   }
 }
 
@@ -386,6 +407,7 @@ pub fn noetix_link_pose_frame(
 ) -> NoetixLinkPoseFrame {
   let reference_links = noetix_reference_links()
   let links : Array[NoetixLinkPose] = []
+  let contact_probes : Array[NoetixContactProbeEvidence] = []
   let rig = noetix_robot_rig()
   let motion = noetix_robot_motion_frame(frame)
   let rig_pose = robot_rig_pose_frame(rig, motion)
@@ -396,22 +418,11 @@ pub fn noetix_link_pose_frame(
       link.link_name,
     )
     let transform = robot_rig_pose_link_transform(rig_pose, link.link_name)
-    let fk_position = transform.translation
-    let world_position = if link.role == "foot" {
-      contact_position(frame, link.side)
-    } else {
-      fk_position
+    let world_position = transform.translation
+    if link.role == "foot" {
+      contact_probes.push(contact_probe_evidence(link, frame, world_position))
     }
-    let contact_error = if link.role == "foot" {
-      position_error_m(fk_position, world_position)
-    } else {
-      0.0
-    }
-    links.push(
-      link_pose(
-        link, joint_position, transform, fk_position, world_position, contact_error,
-      ),
-    )
+    links.push(link_pose(link, joint_position, transform, world_position))
   }
   {
     frame_index: frame.frame_index,
@@ -424,6 +435,8 @@ pub fn noetix_link_pose_frame(
     rig_render_status: rig_render.status,
     visual_instance_count: rig_render.visual_instance_count,
     visual_instances: rig_render.visual_instances,
+    contact_probe_count: contact_probes.length(),
+    contact_probes,
     links,
     status: "review-only-urdf-fk",
   }
@@ -487,7 +500,7 @@ pub fn noetix_link_pose_trace(
       "urdf-rigid-visual-contract-incomplete"
     },
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree, then contact probes are recorded as review annotations with FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit. Moonrobo now exposes this through a RobotRig plus RobotMotionFrame contract, mirroring the useful separation in Piccolo-style animation while keeping Noetix links rigid and robot-authored. The primary render source is RobotRig visual instances: one mesh visual backed by OBJ vertices/faces from the Moonrobo Noetix base mesh plus primitive box/cylinder visuals attached to FK link transforms. Debug sticks are only a link-tree overlay. Moonphys evaluates the generic articulated pose tree and all link world positions stay FK-authored; foot contact probes are recorded separately in per-frame review annotations with contact-probe error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 

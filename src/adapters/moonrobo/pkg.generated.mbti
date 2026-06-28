@@ -376,6 +376,15 @@ pub(all) struct NoetixCollisionShapeProfile {
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixContactProbeEvidence {
+  link_name : String
+  side : String
+  link_world_position : @moonphys.Vec3
+  contact_probe_position : @moonphys.Vec3
+  position_error_m : Double
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixDynamicStabilityFrame {
   frame_index : Int
   time_s : Double
@@ -698,9 +707,7 @@ pub(all) struct NoetixLinkPose {
   nominal_parent_offset_m : @moonphys.Vec3
   joint_axis : @moonphys.Vec3
   joint_position_rad : Double
-  fk_world_position : @moonphys.Vec3
   world_position : @moonphys.Vec3
-  contact_error_m : Double
   visual_geometry : NoetixLinkVisualGeometryEvidence
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -716,6 +723,8 @@ pub(all) struct NoetixLinkPoseFrame {
   rig_render_status : String
   visual_instance_count : Int
   visual_instances : Array[RobotRigVisualInstance]
+  contact_probe_count : Int
+  contact_probes : Array[NoetixContactProbeEvidence]
   links : Array[NoetixLinkPose]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)

@@ -997,6 +997,8 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("RobotRig plus RobotMotionFrame"))
   assert_true(poses.note.contains("RobotRig visual instances"))
   assert_true(poses.note.contains("OBJ vertices/faces"))
+  assert_true(poses.note.contains("all link world positions stay FK-authored"))
+  assert_true(poses.note.contains("contact-probe error"))
   assert_true(poses.note.contains("Debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
   assert_eq(first.robot_rig_id, poses.robot_rig_id)
@@ -1005,6 +1007,8 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_eq(first.rig_render_status, "robot-rig-render-frame-ready")
   assert_eq(first.visual_instance_count, 6)
   assert_eq(first.visual_instances.length(), 6)
+  assert_eq(first.contact_probe_count, 2)
+  assert_eq(first.contact_probes.length(), 2)
   assert_true(
     first.visual_instances.any(fn(instance) {
       instance.link_name == "base_link" &&
@@ -1027,11 +1031,20 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(
     first.links.any(fn(link) {
       link.link_name == "left_foot" &&
-      link.world_position == walk.frames[0].left_foot.position &&
-      link.source_status == "urdf-fk-contact-bound" &&
+      link.world_position != walk.frames[0].left_foot.position &&
+      link.source_status == "urdf-forward-kinematics" &&
       !link.visual_geometry.has_visual_geometry &&
-      link.visual_geometry.source_status == "urdf-visual-geometry-missing" &&
-      link.contact_error_m >= 0.0
+      link.visual_geometry.source_status == "urdf-visual-geometry-missing"
+    }),
+  )
+  assert_true(
+    first.contact_probes.any(fn(probe) {
+      probe.link_name == "left_foot" &&
+      probe.side == "left" &&
+      probe.contact_probe_position == walk.frames[0].left_foot.position &&
+      probe.link_world_position != probe.contact_probe_position &&
+      probe.position_error_m >= 0.0 &&
+      probe.source_status == "walk-contact-probe-review-annotation"
     }),
   )
   assert_true(
@@ -1062,13 +1075,17 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(
     first.links.any(fn(link) {
       link.link_name == "right_foot" &&
-      link.world_position == walk.frames[0].right_foot.position
+      link.world_position != walk.frames[0].right_foot.position
     }),
   )
   assert_true(
-    first.links.any(fn(link) {
-      link.role == "foot" && link.contact_error_m > 0.0
+    first.contact_probes.any(fn(probe) {
+      probe.link_name == "right_foot" &&
+      probe.contact_probe_position == walk.frames[0].right_foot.position
     }),
+  )
+  assert_true(
+    first.contact_probes.any(fn(probe) { probe.position_error_m > 0.0 }),
   )
 }
 
@@ -1084,7 +1101,7 @@ test "noetix link pose trace carries URDF forward kinematics" {
   let mut arm5_x = 0.0
   for link in frame0.links {
     if link.link_name == "right_leg_3" {
-      leg0_x = link.fk_world_position.x
+      leg0_x = link.world_position.x
     }
     if link.link_name == "right_arm_1" {
       arm0_x = link.world_position.x
@@ -1095,7 +1112,7 @@ test "noetix link pose trace carries URDF forward kinematics" {
   }
   for link in frame5.links {
     if link.link_name == "right_leg_3" {
-      leg5_x = link.fk_world_position.x
+      leg5_x = link.world_position.x
     }
     if link.link_name == "right_arm_1" {
       arm5_x = link.world_position.x

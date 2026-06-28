@@ -576,11 +576,13 @@ Immediate Phase 5A deliverables:
   - existing URDF cylinder visuals for arm/leg links
   - explicit missing-visual status for links without a visual block
 - Rework the Rabbita Noetix viewer to render rigid link visuals from FK link
-  transforms instead of the current contact-corrected stick pose. (partially
-  implemented: current primary render uses `RobotRigVisualInstance` records
-  derived from FK link transforms and draws them in a dedicated canvas rig
-  viewport with the SVG path/contact/debug layer as overlay; links without
-  visual blocks remain absent except debug overlay)
+  transforms instead of the current contact-corrected stick pose. (implemented
+  for the current Noetix source: primary render uses `RobotRigVisualInstance`
+  records derived from FK link transforms and draws them in a dedicated canvas
+  rig viewport with the SVG path/contact/debug layer as overlay; link
+  `world_position` is FK-authored, foot contact probes are separate review
+  annotations, and links without visual blocks remain absent except debug
+  overlay)
 - Support mesh assets by extension instead of assuming STL-only rendering:
   `OBJLoader` for `.obj`, `STLLoader` for `.stl`, and a clear unsupported-asset
   status for anything else. Moonrobo's current Three viewer resolves mesh

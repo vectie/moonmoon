@@ -334,6 +334,7 @@ def assert_noetix_walk_panel(
     ),
     "joints": "24 phases, URDF leg IK",
     "links": f"{len(pose_frames[0]['links'])} URDF-reference poses",
+    "pose authority": "FK link transforms, contact annotations",
     "visuals": (
       f"{expected_visuals} rigid URDF visuals "
       f"({noetix_link_poses['mesh_visual_geometry_link_count']} mesh, "

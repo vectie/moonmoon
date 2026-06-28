@@ -612,6 +612,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['right foot', `${frame.right_foot.status}, ${frame.right_foot.clearance_m.toFixed(3)} m`],
     ['joints', `${jointCount} phases, URDF leg IK`],
     ['links', `${linkCount} URDF-reference poses`],
+    ['pose authority', 'FK link transforms, contact annotations'],
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
     ['mesh assets', `${noetixLinkPoseTrace.mesh_asset_count || 0} resolved OBJ mesh assets`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
