@@ -62,8 +62,8 @@ def main() -> None:
         fail("capture point omega should be positive")
     if assessment.get("capture_point", {}).get("x", 0) <= first.get("com_position", {}).get("x", 0):
         fail("forward walking capture point should lead COM")
-    if assessment.get("support_assessment", {}).get("support_count") != 1:
-        fail("first frame should have one active support foot")
+    if assessment.get("support_assessment", {}).get("support_count") != 2:
+        fail("first frame should have two active support feet during transfer")
     if assessment.get("support_assessment", {}).get("stable") is not True:
         fail("support-aware body shift should stabilize the first capture point")
     if assessment.get("capture_margin_m", 0) <= 0:

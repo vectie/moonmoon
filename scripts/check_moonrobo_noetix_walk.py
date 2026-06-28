@@ -45,6 +45,10 @@ def main() -> None:
         fail("default walk should start at terrain origin")
     if config.get("foot_radius_m", 0) <= 0:
         fail("foot radius must be explicit")
+    if config.get("support_forward_lead_m", 0) <= 0:
+        fail("support forward lead must be explicit")
+    if config.get("double_support_frames", 0) <= 0:
+        fail("double-support transfer frames must be explicit")
     if abs(
         config.get("speed_mps", 0)
         - config.get("step_length_m", 0) * config.get("stride_frequency_hz", 0)
@@ -61,18 +65,20 @@ def main() -> None:
     last_x = frames[-1]["body_position"]["x"]
     if not last_x > first_x:
         fail("body does not progress in +x")
-    if frames[0].get("support_phase") != "left-support":
-        fail("first frame should start in left support")
-    if frames[10].get("support_phase") != "right-support":
-        fail("frame 10 should switch to right support")
+    if frames[0].get("support_phase") != "double-support-left-transfer":
+        fail("first frame should start in left double-support transfer")
+    if frames[10].get("support_phase") != "double-support-right-transfer":
+        fail("frame 10 should switch to right double-support transfer")
     if not frames[0]["left_foot"]["in_contact"]:
         fail("left foot should support frame 0")
-    if frames[0]["right_foot"]["in_contact"]:
-        fail("right foot should swing frame 0")
-    if frames[10]["left_foot"]["in_contact"]:
-        fail("left foot should swing frame 10")
+    if not frames[0]["right_foot"]["in_contact"]:
+        fail("right foot should share double support at frame 0")
+    if not frames[10]["left_foot"]["in_contact"]:
+        fail("left foot should share double support at frame 10")
     if not frames[10]["right_foot"]["in_contact"]:
         fail("right foot should support frame 10")
+    if frames[6]["right_foot"]["in_contact"]:
+        fail("right foot should swing after the left transfer window")
     left_plant = frames[0]["left_foot"]["position"]
     for index in range(0, 10):
         if not frames[index]["left_foot"]["in_contact"]:

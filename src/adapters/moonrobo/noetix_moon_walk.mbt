@@ -23,6 +23,8 @@ pub(all) struct NoetixMoonWalkConfig {
   cycle_frames : Int
   lateral_foot_offset_m : Double
   support_lateral_shift_m : Double
+  support_forward_lead_m : Double
+  double_support_frames : Int
   min_swing_clearance_m : Double
   foot_radius_m : Double
   caution_grade : Double
@@ -126,6 +128,8 @@ pub fn default_noetix_moon_walk_config() -> NoetixMoonWalkConfig {
     cycle_frames: 20,
     lateral_foot_offset_m: 0.08,
     support_lateral_shift_m: 0.04,
+    support_forward_lead_m: 0.11,
+    double_support_frames: 6,
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
@@ -186,7 +190,7 @@ fn planted_foot_forward_m(
   block : Int,
 ) -> Double {
   let span = half_cycle_forward_span_m(config, half_cycle)
-  block.to_double() * span - span * 0.25
+  block.to_double() * span - span * 0.25 + config.support_forward_lead_m
 }
 
 ///|
@@ -199,6 +203,58 @@ fn swing_foot_forward_m(
   let start = planted_foot_forward_m(config, half_cycle, block - 1)
   let finish = planted_foot_forward_m(config, half_cycle, block + 1)
   start + (finish - start) * progress
+}
+
+///|
+fn double_support_frame_count(
+  config : NoetixMoonWalkConfig,
+  half_cycle : Int,
+) -> Int {
+  if config.double_support_frames < 0 {
+    0
+  } else if config.double_support_frames > half_cycle {
+    half_cycle
+  } else {
+    config.double_support_frames
+  }
+}
+
+///|
+fn support_transfer_progress(
+  local_phase : Int,
+  transfer_frames : Int,
+) -> Double {
+  if transfer_frames <= 1 {
+    1.0
+  } else if local_phase <= 0 {
+    0.0
+  } else if local_phase >= transfer_frames - 1 {
+    1.0
+  } else {
+    let t = local_phase.to_double() / (transfer_frames - 1).to_double()
+    t * t * (3.0 - 2.0 * t)
+  }
+}
+
+///|
+fn swing_progress_after_transfer(
+  local_phase : Int,
+  half_cycle : Int,
+  transfer_frames : Int,
+) -> Double {
+  let swing_frames = half_cycle - transfer_frames
+  if swing_frames <= 1 {
+    phase_progress(local_phase, half_cycle)
+  } else if local_phase < transfer_frames {
+    0.0
+  } else {
+    let swing_phase = local_phase - transfer_frames
+    if swing_phase >= swing_frames - 1 {
+      1.0
+    } else {
+      swing_phase.to_double() / (swing_frames - 1).to_double()
+    }
+  }
 }
 
 ///|
@@ -248,12 +304,17 @@ fn noetix_endless_axis(config : NoetixMoonWalkConfig) -> String {
 fn noetix_support_body_lateral_m(
   config : NoetixMoonWalkConfig,
   left_support : Bool,
+  local_phase : Int,
+  transfer_frames : Int,
 ) -> Double {
-  if left_support {
+  let target = if left_support {
     config.support_lateral_shift_m
   } else {
     0.0 - config.support_lateral_shift_m
   }
+  let previous = 0.0 - target
+  let progress = support_transfer_progress(local_phase, transfer_frames)
+  previous + (target - previous) * progress
 }
 
 ///|
@@ -562,15 +623,21 @@ pub fn noetix_moon_walk_frame(
   let phase = phase_index(frame_index, cycle_frames)
   let left_support = phase < half_cycle
   let local_phase = if left_support { phase } else { phase - half_cycle }
-  let progress = phase_progress(local_phase, half_cycle)
+  let transfer_frames = double_support_frame_count(config, half_cycle)
+  let progress = swing_progress_after_transfer(
+    local_phase, half_cycle, transfer_frames,
+  )
   let block = half_cycle_block(frame_index, half_cycle)
   let body_forward = frame_index.to_double() * config.speed_mps * config.dt_s
-  let body_lateral = noetix_support_body_lateral_m(config, left_support)
+  let body_lateral = noetix_support_body_lateral_m(
+    config, left_support, local_phase, transfer_frames,
+  )
   let body_xy = noetix_walk_xy(config, body_forward, body_lateral)
   let body_sample = @moonphys.sample_heightfield(field, body_xy.x, body_xy.y)
   let body_z = body_sample.elevation_m +
     config.body_height_m +
     config.start_position.z
+  let in_double_support = local_phase < transfer_frames
   let left = if left_support {
     let foot_xy = noetix_walk_xy(
       config,
@@ -588,8 +655,12 @@ pub fn noetix_moon_walk_frame(
       "left-foot",
       foot_xy.x,
       foot_xy.y,
-      swing_lift(config, progress),
-      false,
+      if in_double_support {
+        0.0
+      } else {
+        swing_lift(config, progress)
+      },
+      in_double_support,
       field,
       config,
     )
@@ -604,8 +675,12 @@ pub fn noetix_moon_walk_frame(
       "right-foot",
       foot_xy.x,
       foot_xy.y,
-      swing_lift(config, progress),
-      false,
+      if in_double_support {
+        0.0
+      } else {
+        swing_lift(config, progress)
+      },
+      in_double_support,
       field,
       config,
     )
@@ -621,7 +696,13 @@ pub fn noetix_moon_walk_frame(
     frame_index,
     time_s: frame_index.to_double() * config.dt_s,
     body_position: @moonphys.vec3(body_xy.x, body_xy.y, body_z),
-    support_phase: if left_support {
+    support_phase: if in_double_support {
+      if left_support {
+        "double-support-left-transfer"
+      } else {
+        "double-support-right-transfer"
+      }
+    } else if left_support {
       "left-support"
     } else {
       "right-support"

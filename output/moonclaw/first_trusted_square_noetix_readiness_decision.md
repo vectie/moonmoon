@@ -80,9 +80,9 @@
 - joint-control review frames: 32
 - joint-control world-support review frames: 11
 - joint-control world-capture review frames: 32
-- joint-control max support recovery shift: 0.14552269298463164 m
-- joint-control worst capture support margin: -1.9654486632510992 m
-- joint-control max capture recovery shift: 1.9657610190466694 m
+- joint-control max support recovery shift: 0.0840700568617839 m
+- joint-control worst capture support margin: -1.934598811021556 m
+- joint-control max capture recovery shift: 1.9959229138955459 m
 - joint-control world replay blockers: 2
 - joint-control world replay blocker ids:
   - world-support-review

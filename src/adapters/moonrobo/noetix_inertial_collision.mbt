@@ -472,14 +472,14 @@ fn noetix_review_body_velocity(
   config : NoetixMoonWalkConfig,
   frame : NoetixMoonWalkFrame,
 ) -> @moonphys.Vec3 {
-  let lateral_direction = if frame.support_phase == "left-support" {
+  let lateral_direction = if frame.support_phase.contains("left") {
     1.0
   } else {
     0.0 - 1.0
   }
-  let half_cycle_s = config.dt_s * config.cycle_frames.to_double() * 0.5
-  let lateral_speed = if half_cycle_s > 0.0 {
-    config.lateral_foot_offset_m / half_cycle_s
+  let transfer_s = config.dt_s * config.double_support_frames.to_double()
+  let lateral_speed = if transfer_s > 0.0 {
+    config.support_lateral_shift_m * 2.0 / transfer_s
   } else {
     0.0
   }

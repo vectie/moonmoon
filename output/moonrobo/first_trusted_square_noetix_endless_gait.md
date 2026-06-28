@@ -9,8 +9,8 @@
 - cycle frames: 20
 - expected forward offset: 0.24 m
 - observed forward offset: 0.24 m
-- reference support: left-support
-- repeated support: left-support
+- reference support: double-support-left-transfer
+- repeated support: double-support-left-transfer
 - phase repeat verified: true
 - contact repeat verified: true
 - monotonic forward verified: true

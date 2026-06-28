@@ -399,9 +399,9 @@ fn support_count_for_frame(frame : NoetixMoonWalkFrame) -> Int {
 
 ///|
 fn noetix_lateral_speed(config : NoetixMoonWalkConfig) -> Double {
-  let half_cycle_s = config.dt_s * config.cycle_frames.to_double() * 0.5
-  if half_cycle_s > 0.0 {
-    config.support_lateral_shift_m / half_cycle_s
+  let transfer_s = config.dt_s * config.double_support_frames.to_double()
+  if transfer_s > 0.0 {
+    config.support_lateral_shift_m * 2.0 / transfer_s
   } else {
     0.0
   }
@@ -419,7 +419,7 @@ fn noetix_review_total_tangential_force_vector(
   } else {
     let cycle_s = config.dt_s * config.cycle_frames.to_double()
     if cycle_s > 0.0 {
-      let lateral_direction = if frame.support_phase == "left-support" {
+      let lateral_direction = if frame.support_phase.contains("left") {
         1.0
       } else {
         0.0 - 1.0

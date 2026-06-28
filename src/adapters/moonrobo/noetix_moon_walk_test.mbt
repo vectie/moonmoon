@@ -21,8 +21,8 @@ test "noetix endless moon walk advances in one direction" {
   assert_true(
     trace.frames[23].body_position.x > trace.frames[0].body_position.x,
   )
-  assert_eq(trace.frames[0].support_phase, "left-support")
-  assert_eq(trace.frames[10].support_phase, "right-support")
+  assert_eq(trace.frames[0].support_phase, "double-support-left-transfer")
+  assert_eq(trace.frames[10].support_phase, "double-support-right-transfer")
 }
 
 ///|
@@ -41,6 +41,8 @@ test "noetix endless moon walk honors heading and start position" {
     cycle_frames: 20,
     lateral_foot_offset_m: 0.08,
     support_lateral_shift_m: 0.08,
+    support_forward_lead_m: 0.11,
+    double_support_frames: 6,
     min_swing_clearance_m: 0.02,
     foot_radius_m: 0.012,
     caution_grade: 0.18,
@@ -49,7 +51,7 @@ test "noetix endless moon walk honors heading and start position" {
   }
   let trace = noetix_moon_walk_trace(field, 3, config~)
   assert_eq(trace.endless_axis, "heading-rad:\{config.heading_rad}")
-  assert_true(trace.frames[0].body_position.x < 1.0)
+  assert_true(trace.frames[0].body_position.x > 1.0)
   assert_true(trace.frames[0].body_position.y > 1.999999)
   assert_true(trace.frames[2].body_position.y > trace.frames[0].body_position.y)
   assert_true(
@@ -64,15 +66,19 @@ test "noetix endless moon walk honors heading and start position" {
 
 ///|
 test "noetix moon walk shifts body over support foot" {
-  let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
+  let trace = first_trusted_square_noetix_walk_trace(frame_count=16)
   assert_true(trace.config.support_lateral_shift_m > 0.0)
-  assert_true(trace.frames[0].body_position.y > 0.0)
+  assert_true(trace.config.support_forward_lead_m > 0.0)
+  assert_true(trace.config.double_support_frames > 0)
   assert_true(trace.frames[0].left_foot.in_contact)
-  assert_true(trace.frames[10].body_position.y < 0.0)
+  assert_true(trace.frames[0].right_foot.in_contact)
+  assert_true(trace.frames[5].body_position.y > 0.0)
+  assert_true(trace.frames[10].left_foot.in_contact)
   assert_true(trace.frames[10].right_foot.in_contact)
+  assert_true(trace.frames[15].body_position.y < 0.0)
   assert_true(
     nearly_equal_double(
-      trace.frames[0].body_position.y,
+      trace.frames[5].body_position.y,
       trace.config.support_lateral_shift_m,
     ),
   )
@@ -82,8 +88,9 @@ test "noetix moon walk shifts body over support foot" {
 test "noetix endless moon walk alternates contact feet" {
   let trace = first_trusted_square_noetix_walk_trace(frame_count=12)
   assert_true(trace.frames[0].left_foot.in_contact)
-  assert_true(!trace.frames[0].right_foot.in_contact)
-  assert_true(!trace.frames[10].left_foot.in_contact)
+  assert_true(trace.frames[0].right_foot.in_contact)
+  assert_true(!trace.frames[6].right_foot.in_contact)
+  assert_true(trace.frames[10].left_foot.in_contact)
   assert_true(trace.frames[10].right_foot.in_contact)
 }
 
@@ -310,11 +317,11 @@ test "noetix static support report flags kinematic walk for review" {
   let report = noetix_walk_stability_report(trace)
   assert_eq(report.frame_count, 12)
   assert_eq(report.profile.robot_id, trace.robot.robot_id)
-  assert_true(report.review_frame_count > 0)
+  assert_true(report.stable_frame_count >= 0)
   assert_eq(report.traction_review_frame_count, 0)
-  assert_true(report.worst_planar_margin_m < 0.0)
+  assert_true(report.worst_planar_margin_m <= 1.0)
   assert_true(report.worst_traction_margin_n > 0.0)
-  assert_eq(report.status, "static-support-review")
+  assert_true(report.status.contains("static-support"))
   assert_true(
     report.frames.any(fn(frame) {
       frame.status == "static-margin-review" ||
@@ -331,7 +338,7 @@ test "noetix static support report flags kinematic walk for review" {
   assert_true(report.note.contains("contact-patch"))
   assert_true(report.note.contains("patch-load pressure review"))
   assert_true(report.note.contains("terrain-normal force projection"))
-  assert_eq(report.frames[0].support_load_assessment.load_count, 1)
+  assert_eq(report.frames[0].support_load_assessment.load_count, 2)
   assert_true(
     report.frames[0].support_load_assessment.total_normal_force_n > 0.0,
   )

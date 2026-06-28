@@ -114,8 +114,8 @@ def main() -> None:
         fail("expected traction to remain within assumed friction margin")
     if report.get("stable_frame_count", -1) + report.get("review_frame_count", -1) != len(frames):
         fail("stable/review counts do not sum to frame count")
-    if report.get("worst_planar_margin_m", 0) >= 0:
-        fail("expected negative static support margin")
+    if report.get("worst_planar_margin_m", -1) < 0:
+        fail("support-aware gait should clear negative static support margin")
     if report.get("worst_traction_margin_n", -1) < 0:
         fail("expected nonnegative traction margin")
     if not any(frame.get("status") == "static-margin-review" for frame in frames):
@@ -125,8 +125,8 @@ def main() -> None:
         fail("expected contact patch review evidence")
     first = frames[0]
     first_support = first.get("support_assessment", {})
-    if first_support.get("support_count") != 1:
-        fail("first frame should have one active support foot")
+    if first_support.get("support_count") != 2:
+        fail("first frame should have two active support feet during transfer")
     polygon_vertices = first_support.get("support_polygon_vertices", [])
     if first_support.get("support_polygon_vertex_count", 0) < 3:
         fail("support assessment must expose a convex support polygon")
