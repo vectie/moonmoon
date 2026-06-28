@@ -128,6 +128,21 @@ test "Moonrobo Noetix suite payload records durable source refs" {
       anchor.joint_id == "arm_r4_joint" && anchor.field == "elbow"
     }),
   )
+  assert_true(
+    payload.joint_curve_params.any(fn(param) {
+      param.name == "knee_swing_lift_rad" && param.value > 0.7
+    }),
+  )
+  assert_true(
+    payload.joint_curve_params.any(fn(param) {
+      param.name == "arm_phase_lag" && param.value == 0.44
+    }),
+  )
+  assert_true(
+    payload.joint_curve_params.any(fn(param) {
+      param.name == "shoulder_hip_scale" && param.value == 0.76
+    }),
+  )
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
   assert_eq(

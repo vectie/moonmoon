@@ -121,6 +121,19 @@ if (clipZero.strideM !== gaitModule.NOETIX_WALK_CLIP.stride_m) {
 if (clipZero.footChannels.left.role !== gaitModule.NOETIX_WALK_CLIP.foot_phase_specs[0].role) {
   throw new Error('Rabbita foot role did not resolve through the generated Moonrobo foot phase specs')
 }
+const curveParams = new Map(gaitModule.NOETIX_WALK_CLIP.joint_curve_params.map(param => [param.name, param.value]))
+for (const paramName of ['knee_swing_lift_rad', 'arm_phase_lag', 'shoulder_hip_scale', 'elbow_base_rad']) {
+  if (!curveParams.has(paramName)) {
+    throw new Error(`generated Moonrobo walk clip omitted runtime curve parameter: ${paramName}`)
+  }
+}
+const swingJoints = gaitModule.jointSamples(gaitModule.walkClipSample(0.25))
+if (Math.abs(swingJoints.left.knee) <= curveParams.get('knee_base_rad')) {
+  throw new Error('Rabbita joint sampling did not apply generated Moonrobo knee swing curve parameters')
+}
+if (Math.abs(swingJoints.left.shoulder) <= 0.001) {
+  throw new Error('Rabbita joint sampling did not apply generated Moonrobo shoulder curve parameters')
+}
 
 await import(new URL('./scene3d.js', import.meta.url).href)
 

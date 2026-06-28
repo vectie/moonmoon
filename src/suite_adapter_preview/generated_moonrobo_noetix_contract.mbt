@@ -150,6 +150,36 @@ fn generated_moonrobo_noetix_joint_anchors() -> Array[SuiteAdapterJointAnchor] {
 }
 
 ///|
+fn generated_moonrobo_noetix_joint_curve_params() -> Array[
+  SuiteAdapterJointCurveParam,
+] {
+  [
+    noetix_suite_joint_curve_param("hip_swing_start_rad", 0.28),
+    noetix_suite_joint_curve_param("hip_swing_end_rad", -0.36),
+    noetix_suite_joint_curve_param("hip_stance_start_rad", -0.35),
+    noetix_suite_joint_curve_param("hip_stance_end_rad", 0.28),
+    noetix_suite_joint_curve_param("stance_mid_progress", 0.42),
+    noetix_suite_joint_curve_param("stance_late_progress", 0.56),
+    noetix_suite_joint_curve_param("knee_base_rad", 0.08),
+    noetix_suite_joint_curve_param("knee_toe_off_lift_rad", 0.16),
+    noetix_suite_joint_curve_param("knee_swing_lift_rad", 0.74),
+    noetix_suite_joint_curve_param("knee_stance_lift_rad", 0.08),
+    noetix_suite_joint_curve_param("ankle_swing_wave_rad", -0.42),
+    noetix_suite_joint_curve_param("ankle_swing_start_rad", -0.08),
+    noetix_suite_joint_curve_param("ankle_swing_end_rad", 0.1),
+    noetix_suite_joint_curve_param("ankle_late_landing_rad", 0.04),
+    noetix_suite_joint_curve_param("ankle_stance_start_rad", 0.12),
+    noetix_suite_joint_curve_param("ankle_stance_end_rad", -0.08),
+    noetix_suite_joint_curve_param("arm_phase_lag", 0.44),
+    noetix_suite_joint_curve_param("shoulder_hip_scale", 0.76),
+    noetix_suite_joint_curve_param("shoulder_lag_wave_rad", 0.035),
+    noetix_suite_joint_curve_param("elbow_base_rad", 0.18),
+    noetix_suite_joint_curve_param("elbow_hip_scale", 0.24),
+    noetix_suite_joint_curve_param("elbow_lag_wave_rad", 0.045),
+  ]
+}
+
+///|
 fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
   []
 }

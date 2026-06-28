@@ -191,6 +191,96 @@ export const MOONROBO_NOETIX_WALK_CLIP = {
       "position_rad": 0.25
     }
   ],
+  "joint_curve_params": [
+    {
+      "name": "hip_swing_start_rad",
+      "value": 0.28
+    },
+    {
+      "name": "hip_swing_end_rad",
+      "value": -0.36
+    },
+    {
+      "name": "hip_stance_start_rad",
+      "value": -0.35
+    },
+    {
+      "name": "hip_stance_end_rad",
+      "value": 0.28
+    },
+    {
+      "name": "stance_mid_progress",
+      "value": 0.42
+    },
+    {
+      "name": "stance_late_progress",
+      "value": 0.56
+    },
+    {
+      "name": "knee_base_rad",
+      "value": 0.08
+    },
+    {
+      "name": "knee_toe_off_lift_rad",
+      "value": 0.16
+    },
+    {
+      "name": "knee_swing_lift_rad",
+      "value": 0.74
+    },
+    {
+      "name": "knee_stance_lift_rad",
+      "value": 0.08
+    },
+    {
+      "name": "ankle_swing_wave_rad",
+      "value": -0.42
+    },
+    {
+      "name": "ankle_swing_start_rad",
+      "value": -0.08
+    },
+    {
+      "name": "ankle_swing_end_rad",
+      "value": 0.1
+    },
+    {
+      "name": "ankle_late_landing_rad",
+      "value": 0.04
+    },
+    {
+      "name": "ankle_stance_start_rad",
+      "value": 0.12
+    },
+    {
+      "name": "ankle_stance_end_rad",
+      "value": -0.08
+    },
+    {
+      "name": "arm_phase_lag",
+      "value": 0.44
+    },
+    {
+      "name": "shoulder_hip_scale",
+      "value": 0.76
+    },
+    {
+      "name": "shoulder_lag_wave_rad",
+      "value": 0.035
+    },
+    {
+      "name": "elbow_base_rad",
+      "value": 0.18
+    },
+    {
+      "name": "elbow_hip_scale",
+      "value": 0.24
+    },
+    {
+      "name": "elbow_lag_wave_rad",
+      "value": 0.045
+    }
+  ],
   "ready": true,
   "status": "moonmoon-noetix-walk-clip-ready"
 }

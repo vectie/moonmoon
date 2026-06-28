@@ -109,6 +109,7 @@ function validateWalkClip(clip, requiredJointIds) {
     'foot_phase_specs',
     'required_joint_ids',
     'joint_anchors',
+    'joint_curve_params',
     'blockers',
   ]) {
     requireArray(clip, field)
@@ -143,6 +144,25 @@ function validateWalkClip(clip, requiredJointIds) {
     }
     for (const field of ['phase', 'position_rad']) {
       requireField(anchor, field, 'number')
+    }
+  }
+  for (const param of clip.joint_curve_params) {
+    requireField(param, 'name', 'string')
+    requireField(param, 'value', 'number')
+  }
+  for (const required of [
+    'hip_swing_start_rad',
+    'hip_swing_end_rad',
+    'knee_base_rad',
+    'knee_swing_lift_rad',
+    'ankle_stance_start_rad',
+    'ankle_stance_end_rad',
+    'arm_phase_lag',
+    'shoulder_hip_scale',
+    'elbow_base_rad',
+  ]) {
+    if (!clip.joint_curve_params.some(param => param.name === required)) {
+      throw new Error(`Moonrobo walk clip omits joint curve parameter ${required}`)
     }
   }
 }
@@ -216,6 +236,13 @@ function mbJointAnchor(anchor) {
   ${mbString(anchor.field)},
   ${mbDouble(anchor.phase)},
   ${mbDouble(anchor.position_rad)},
+)`
+}
+
+function mbJointCurveParam(param) {
+  return `noetix_suite_joint_curve_param(
+  ${mbString(param.name)},
+  ${mbDouble(param.value)},
 )`
 }
 
@@ -340,6 +367,13 @@ fn generated_moonrobo_noetix_joint_anchors() -> Array[
 }
 
 ///|
+fn generated_moonrobo_noetix_joint_curve_params() -> Array[
+  SuiteAdapterJointCurveParam,
+] {
+  ${indent(mbArray(clip.joint_curve_params, mbJointCurveParam), 2).trimStart()}
+}
+
+///|
 fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
   ${indent(mbStringArray(clip.blockers), 2).trimStart()}
 }
@@ -401,6 +435,7 @@ function generatedJsContent(contract) {
     foot_phase_specs: clip.foot_phase_specs,
     required_joint_ids: clip.required_joint_ids,
     joint_anchors: clip.joint_anchors,
+    joint_curve_params: clip.joint_curve_params,
     ready: clip.ready,
     status: clip.status,
   }

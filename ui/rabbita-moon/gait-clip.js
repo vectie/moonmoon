@@ -87,6 +87,17 @@ function mix(a, b, t) {
   return a + (b - a) * t
 }
 
+const JOINT_CURVE_PARAMS = Object.fromEntries(
+  MOONROBO_NOETIX_WALK_CLIP.joint_curve_params.map((param) => [param.name, param.value]),
+)
+
+function curveParam(name) {
+  if (!(name in JOINT_CURVE_PARAMS)) {
+    throw new Error(`Moonrobo Noetix walk clip is missing joint curve parameter: ${name}`)
+  }
+  return JOINT_CURVE_PARAMS[name]
+}
+
 export function near(a, b, tolerance) {
   return Math.abs(a - b) <= tolerance
 }
@@ -206,32 +217,38 @@ function legAngles(legPhase) {
     const lateLanding = smoothstep((u - 0.70) / 0.30)
     const toeOffLift = smoothstep(u / 0.12) * (1 - smoothstep((u - 0.12) / 0.18))
     const swingLift = Math.sin(u * Math.PI)
-    const kneeLift = 0.16 * toeOffLift + 0.74 * swingLift * landing
+    const kneeLift = curveParam('knee_toe_off_lift_rad') * toeOffLift +
+      curveParam('knee_swing_lift_rad') * swingLift * landing
     return {
-      hip: mix(0.28, -0.36, e),
-      knee: -(0.08 + kneeLift),
-      ankle: -0.42 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
+      hip: mix(curveParam('hip_swing_start_rad'), curveParam('hip_swing_end_rad'), e),
+      knee: -(curveParam('knee_base_rad') + kneeLift),
+      ankle: curveParam('ankle_swing_wave_rad') * Math.sin(u * Math.PI) +
+        mix(curveParam('ankle_swing_start_rad'), curveParam('ankle_swing_end_rad'), e) +
+        curveParam('ankle_late_landing_rad') * lateLanding,
     }
   }
   const stanceProgress = u < 0.48
-    ? mix(0, 0.42, smoothstep(u / 0.48))
+    ? mix(0, curveParam('stance_mid_progress'), smoothstep(u / 0.48))
     : u < 0.74
-      ? mix(0.42, 0.56, smoothstep((u - 0.48) / 0.26))
-      : mix(0.56, 1, smoothstep((u - 0.74) / 0.26))
+      ? mix(curveParam('stance_mid_progress'), curveParam('stance_late_progress'), smoothstep((u - 0.48) / 0.26))
+      : mix(curveParam('stance_late_progress'), 1, smoothstep((u - 0.74) / 0.26))
   return {
-    hip: mix(-0.35, 0.28, stanceProgress),
-    knee: -(0.08 + 0.08 * Math.sin(u * Math.PI)),
-    ankle: mix(0.12, -0.08, stanceProgress),
+    hip: mix(curveParam('hip_stance_start_rad'), curveParam('hip_stance_end_rad'), stanceProgress),
+    knee: -(curveParam('knee_base_rad') + curveParam('knee_stance_lift_rad') * Math.sin(u * Math.PI)),
+    ankle: mix(curveParam('ankle_stance_start_rad'), curveParam('ankle_stance_end_rad'), stanceProgress),
   }
 }
 
 function armAngles(legPhase) {
-  const laggedOppositePhase = cycle01(legPhase + 0.44)
+  const laggedOppositePhase = cycle01(legPhase + curveParam('arm_phase_lag'))
   const a = legAngles(laggedOppositePhase)
   const lagWave = Math.sin(laggedOppositePhase * Math.PI * 2)
   return {
-    shoulder: -a.hip * 0.76 + lagWave * 0.035,
-    elbow: 0.18 + Math.max(0, -a.hip) * 0.24 + Math.max(0, lagWave) * 0.045,
+    shoulder: -a.hip * curveParam('shoulder_hip_scale') +
+      lagWave * curveParam('shoulder_lag_wave_rad'),
+    elbow: curveParam('elbow_base_rad') +
+      Math.max(0, -a.hip) * curveParam('elbow_hip_scale') +
+      Math.max(0, lagWave) * curveParam('elbow_lag_wave_rad'),
   }
 }
 

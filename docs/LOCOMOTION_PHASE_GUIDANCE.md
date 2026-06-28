@@ -138,14 +138,16 @@ Status: active. The preview still executes through
 source-side walk-clip authority in
 `../moonrobo/src/moonmoon_adapter/noetix_walk_clip.mbt`. That contract records
 the endless forward walk clip id, cycle rate, root speed, stride, sample count,
-phase labels, foot phase specs, required motion joints, and joint anchors.
+phase labels, foot phase specs, required motion joints, joint anchors, and
+joint curve parameters.
 Moonmoon regenerates durable suite metadata from that contract through
 `ui/rabbita-moon/export-moonrobo-contract.mjs`, which now also emits
 `ui/rabbita-moon/generated-moonrobo-noetix-clip.js`. The Rabbita runtime imports
 that generated JS bridge for cycle rate, root speed, stride, foot phase
-sequence, foot roles, and support windows instead of mirroring those clip
-fields by hand. The remaining Phase 5 feature is to move the procedural joint
-curve sampling itself behind the typed Moonrobo clip authority.
+sequence, foot roles, support windows, and hip/knee/ankle/shoulder/elbow curve
+parameters instead of mirroring those clip fields by hand. The remaining Phase
+5 feature is to move the curve evaluator and authored joint targets themselves
+into the typed Moonrobo adapter.
 
 Deliverables:
 

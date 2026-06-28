@@ -26,6 +26,12 @@ pub(all) struct SuiteAdapterJointAnchor {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterJointCurveParam {
+  name : String
+  value : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSuiteAdapterPayload {
   payload_id : String
   robot_id : String
@@ -48,6 +54,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   walk_phase_labels : Array[String]
   foot_phase_specs : Array[SuiteAdapterFootPhaseSpec]
   joint_anchors : Array[SuiteAdapterJointAnchor]
+  joint_curve_params : Array[SuiteAdapterJointCurveParam]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -90,6 +97,14 @@ fn noetix_suite_joint_anchor(
   position_rad : Double,
 ) -> SuiteAdapterJointAnchor {
   { joint_id, side, field, phase, position_rad }
+}
+
+///|
+fn noetix_suite_joint_curve_param(
+  name : String,
+  value : Double,
+) -> SuiteAdapterJointCurveParam {
+  { name, value }
 }
 
 ///|
@@ -180,6 +195,18 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       blockers.push("moonrobo-walk-clip-missing-anchor:\{joint_id}")
     }
   }
+  for
+    required in [
+      "hip_swing_start_rad", "hip_swing_end_rad", "knee_base_rad", "knee_swing_lift_rad",
+      "ankle_stance_start_rad", "ankle_stance_end_rad", "arm_phase_lag", "shoulder_hip_scale",
+      "elbow_base_rad",
+    ] {
+    if !generated_moonrobo_noetix_joint_curve_params().any(fn(param) {
+        param.name == required
+      }) {
+      blockers.push("moonrobo-walk-clip-missing-curve-param:\{required}")
+    }
+  }
   blockers
 }
 
@@ -262,6 +289,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     walk_phase_labels: generated_moonrobo_noetix_walk_phase_labels(),
     foot_phase_specs: generated_moonrobo_noetix_foot_phase_specs(),
     joint_anchors: generated_moonrobo_noetix_joint_anchors(),
+    joint_curve_params: generated_moonrobo_noetix_joint_curve_params(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),
     driven_joint_ids,
     frame_count,

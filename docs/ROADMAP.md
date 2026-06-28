@@ -32,10 +32,10 @@
   `../moonrobo/cmd/moonmoon_contract` and regenerates Moonmoon suite-preview
   source metadata plus a Rabbita JS clip bridge without importing Moonrobo into
   standalone core packages. Runtime sampling now consumes that generated clip
-  bridge for timing, stride, phase roles, and support windows. The next
-  implementation target is moving procedural joint curve sampling behind the
-  typed Moonrobo clip, then live Moonrobo adapter regeneration for the remaining
-  sampled motion evidence.
+  bridge for timing, stride, phase roles, support windows, and joint curve
+  parameters. The next implementation target is moving the curve evaluator and
+  authored joint targets into the typed Moonrobo adapter, then live Moonrobo
+  adapter regeneration for the remaining sampled motion evidence.
 
 ## Non-Goals
 

@@ -40,6 +40,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   walk_phase_labels : Array[String]
   foot_phase_specs : Array[SuiteAdapterFootPhaseSpec]
   joint_anchors : Array[SuiteAdapterJointAnchor]
+  joint_curve_params : Array[SuiteAdapterJointCurveParam]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -65,6 +66,11 @@ pub(all) struct SuiteAdapterJointAnchor {
   field : String
   phase : Double
   position_rad : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterJointCurveParam {
+  name : String
+  value : Double
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SuiteAdapterSourceRef {
