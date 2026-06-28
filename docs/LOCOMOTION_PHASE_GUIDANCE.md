@@ -139,15 +139,18 @@ source-side walk-clip authority in
 `../moonrobo/src/moonmoon_adapter/noetix_walk_clip.mbt`. That contract records
 the endless forward walk clip id, cycle rate, root speed, stride, sample count,
 phase labels, foot phase specs, required motion joints, joint anchors, and
-joint curve parameters.
+joint curve parameters. It now also evaluates those curve parameters into a
+typed 24-frame authored joint sample table for hip, knee, ankle, shoulder, and
+elbow targets on both sides.
 Moonmoon regenerates durable suite metadata from that contract through
 `ui/rabbita-moon/export-moonrobo-contract.mjs`, which now also emits
 `ui/rabbita-moon/generated-moonrobo-noetix-clip.js`. The Rabbita runtime imports
 that generated JS bridge for cycle rate, root speed, stride, foot phase
-sequence, foot roles, support windows, and hip/knee/ankle/shoulder/elbow curve
-parameters instead of mirroring those clip fields by hand. The remaining Phase
-5 feature is to move the curve evaluator and authored joint targets themselves
-into the typed Moonrobo adapter.
+sequence, foot roles, support windows, curve metadata, and authored joint
+samples. Rabbita now interpolates the generated sample table instead of owning
+the leg and arm curve formulas. The remaining Phase 5 feature is to replace
+the remaining preview-only foot/root evidence with typed Moonrobo adapter
+output.
 
 Deliverables:
 
@@ -332,11 +335,11 @@ consumption.
 `src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
 `ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it. The Moonmoon
 payload consumes those generated source-contract and walk-clip fields, the
-Rabbita runtime consumes the generated JS clip bridge, and the payload includes
-the typed Moonrobo adapter contract as a durable source ref. This still uses
-Rabbita for sampled FK/contact/motor evidence; the remaining Phase
-10 feature is to replace that preview motion evidence with live Moonrobo
-adapter regeneration.
+Rabbita runtime consumes the generated JS clip bridge including authored joint
+samples, and the payload includes the typed Moonrobo adapter contract as a
+durable source ref. This still uses Rabbita for sampled FK/contact/motor
+evidence; the remaining Phase 10 feature is to replace that preview motion
+evidence with live Moonrobo adapter regeneration.
 
 Acceptance:
 

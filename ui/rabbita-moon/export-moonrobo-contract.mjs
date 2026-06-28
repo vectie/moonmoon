@@ -110,6 +110,7 @@ function validateWalkClip(clip, requiredJointIds) {
     'required_joint_ids',
     'joint_anchors',
     'joint_curve_params',
+    'authored_joint_samples',
     'blockers',
   ]) {
     requireArray(clip, field)
@@ -149,6 +150,29 @@ function validateWalkClip(clip, requiredJointIds) {
   for (const param of clip.joint_curve_params) {
     requireField(param, 'name', 'string')
     requireField(param, 'value', 'number')
+  }
+  if (clip.authored_joint_samples.length !== clip.sample_count) {
+    throw new Error('Moonrobo walk clip authored_joint_samples length must match sample_count')
+  }
+  for (const sample of clip.authored_joint_samples) {
+    for (const field of [
+      'phase',
+      'left_hip_rad',
+      'left_knee_rad',
+      'left_ankle_rad',
+      'left_shoulder_rad',
+      'left_elbow_rad',
+      'right_hip_rad',
+      'right_knee_rad',
+      'right_ankle_rad',
+      'right_shoulder_rad',
+      'right_elbow_rad',
+    ]) {
+      requireField(sample, field, 'number')
+    }
+    if (sample.left_knee_rad > 0 || sample.right_knee_rad > 0) {
+      throw new Error(`Moonrobo walk clip authored sample has backward knee sign at phase ${sample.phase}`)
+    }
   }
   for (const required of [
     'hip_swing_start_rad',
@@ -243,6 +267,22 @@ function mbJointCurveParam(param) {
   return `noetix_suite_joint_curve_param(
   ${mbString(param.name)},
   ${mbDouble(param.value)},
+)`
+}
+
+function mbAuthoredJointSample(sample) {
+  return `noetix_suite_authored_joint_sample(
+  ${mbDouble(sample.phase)},
+  ${mbDouble(sample.left_hip_rad)},
+  ${mbDouble(sample.left_knee_rad)},
+  ${mbDouble(sample.left_ankle_rad)},
+  ${mbDouble(sample.left_shoulder_rad)},
+  ${mbDouble(sample.left_elbow_rad)},
+  ${mbDouble(sample.right_hip_rad)},
+  ${mbDouble(sample.right_knee_rad)},
+  ${mbDouble(sample.right_ankle_rad)},
+  ${mbDouble(sample.right_shoulder_rad)},
+  ${mbDouble(sample.right_elbow_rad)},
 )`
 }
 
@@ -374,6 +414,13 @@ fn generated_moonrobo_noetix_joint_curve_params() -> Array[
 }
 
 ///|
+fn generated_moonrobo_noetix_authored_joint_samples() -> Array[
+  SuiteAdapterAuthoredJointSample,
+] {
+  ${indent(mbArray(clip.authored_joint_samples, mbAuthoredJointSample), 2).trimStart()}
+}
+
+///|
 fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
   ${indent(mbStringArray(clip.blockers), 2).trimStart()}
 }
@@ -436,6 +483,7 @@ function generatedJsContent(contract) {
     required_joint_ids: clip.required_joint_ids,
     joint_anchors: clip.joint_anchors,
     joint_curve_params: clip.joint_curve_params,
+    authored_joint_samples: clip.authored_joint_samples,
     ready: clip.ready,
     status: clip.status,
   }

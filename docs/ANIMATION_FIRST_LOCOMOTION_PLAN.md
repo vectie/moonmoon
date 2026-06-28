@@ -411,10 +411,11 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    package. The suite payload now consumes those generated Moonrobo contract and
    walk-clip fields, the Rabbita runtime imports the generated JS clip for
    cycle rate, root speed, stride, foot phase sequence, foot roles, and support
-   windows, and hip/knee/ankle/shoulder/elbow curve parameters. `npm run
-   check:gait` verifies the contract bridge freshness and runtime curve-param
-   consumption beside the Rabbita gait evidence freshness. The next Phase 5/D
-   target is moving the curve evaluator and authored joint targets themselves
-   into the typed Moonrobo adapter; the next Phase 10 target is replacing the
-   remaining Rabbita preview motion evidence with live Moonrobo adapter
-   regeneration.
+   windows, curve metadata, and the typed Moonrobo-authored joint sample table.
+   Rabbita interpolates those generated samples instead of owning the leg and
+   arm curve formulas in `gait-clip.js`. `npm run check:gait` verifies the
+   contract bridge freshness, runtime authored-sample consumption, and Rabbita
+   gait evidence freshness. The next Phase 5/D target is replacing the
+   remaining preview-only root/foot motion evidence with typed Moonrobo adapter
+   output; the next Phase 10 target is replacing the remaining Rabbita preview
+   motion evidence with live Moonrobo adapter regeneration.

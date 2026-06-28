@@ -143,6 +143,17 @@ test "Moonrobo Noetix suite payload records durable source refs" {
       param.name == "shoulder_hip_scale" && param.value == 0.76
     }),
   )
+  assert_eq(payload.authored_joint_samples.length(), payload.walk_sample_count)
+  assert_eq(payload.authored_joint_samples[0].phase, 0.0)
+  assert_true(
+    payload.authored_joint_samples.any(fn(sample) {
+      sample.left_knee_rad < -0.75 || sample.right_knee_rad < -0.75
+    }),
+  )
+  for sample in payload.authored_joint_samples {
+    assert_true(sample.left_knee_rad <= 0.0)
+    assert_true(sample.right_knee_rad <= 0.0)
+  }
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
   assert_eq(

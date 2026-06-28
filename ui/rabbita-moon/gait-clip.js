@@ -87,17 +87,6 @@ function mix(a, b, t) {
   return a + (b - a) * t
 }
 
-const JOINT_CURVE_PARAMS = Object.fromEntries(
-  MOONROBO_NOETIX_WALK_CLIP.joint_curve_params.map((param) => [param.name, param.value]),
-)
-
-function curveParam(name) {
-  if (!(name in JOINT_CURVE_PARAMS)) {
-    throw new Error(`Moonrobo Noetix walk clip is missing joint curve parameter: ${name}`)
-  }
-  return JOINT_CURVE_PARAMS[name]
-}
-
 export function near(a, b, tolerance) {
   return Math.abs(a - b) <= tolerance
 }
@@ -208,58 +197,52 @@ export function walkClipSample(time, options = {}) {
   }
 }
 
-function legAngles(legPhase) {
-  const swing = legPhase >= 0.5
-  const u = swing ? (legPhase - 0.5) * 2 : legPhase * 2
-  const e = smoothstep(u)
-  if (swing) {
-    const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
-    const lateLanding = smoothstep((u - 0.70) / 0.30)
-    const toeOffLift = smoothstep(u / 0.12) * (1 - smoothstep((u - 0.12) / 0.18))
-    const swingLift = Math.sin(u * Math.PI)
-    const kneeLift = curveParam('knee_toe_off_lift_rad') * toeOffLift +
-      curveParam('knee_swing_lift_rad') * swingLift * landing
-    return {
-      hip: mix(curveParam('hip_swing_start_rad'), curveParam('hip_swing_end_rad'), e),
-      knee: -(curveParam('knee_base_rad') + kneeLift),
-      ankle: curveParam('ankle_swing_wave_rad') * Math.sin(u * Math.PI) +
-        mix(curveParam('ankle_swing_start_rad'), curveParam('ankle_swing_end_rad'), e) +
-        curveParam('ankle_late_landing_rad') * lateLanding,
-    }
+function interp(a, b, t) {
+  return a + (b - a) * t
+}
+
+function authoredSampleAtPhase(phase) {
+  const samples = MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples
+  if (!Array.isArray(samples) || samples.length === 0) {
+    throw new Error('Moonrobo Noetix walk clip is missing authored joint samples')
   }
-  const stanceProgress = u < 0.48
-    ? mix(0, curveParam('stance_mid_progress'), smoothstep(u / 0.48))
-    : u < 0.74
-      ? mix(curveParam('stance_mid_progress'), curveParam('stance_late_progress'), smoothstep((u - 0.48) / 0.26))
-      : mix(curveParam('stance_late_progress'), 1, smoothstep((u - 0.74) / 0.26))
+  const normalized = cycle01(phase)
+  const scaled = normalized * samples.length
+  const baseIndex = Math.floor(scaled)
+  const nextIndex = (baseIndex + 1) % samples.length
+  const t = scaled - baseIndex
+  const a = samples[baseIndex % samples.length]
+  const b = samples[nextIndex]
   return {
-    hip: mix(curveParam('hip_stance_start_rad'), curveParam('hip_stance_end_rad'), stanceProgress),
-    knee: -(curveParam('knee_base_rad') + curveParam('knee_stance_lift_rad') * Math.sin(u * Math.PI)),
-    ankle: mix(curveParam('ankle_stance_start_rad'), curveParam('ankle_stance_end_rad'), stanceProgress),
+    phase: normalized,
+    left_hip_rad: interp(a.left_hip_rad, b.left_hip_rad, t),
+    left_knee_rad: interp(a.left_knee_rad, b.left_knee_rad, t),
+    left_ankle_rad: interp(a.left_ankle_rad, b.left_ankle_rad, t),
+    left_shoulder_rad: interp(a.left_shoulder_rad, b.left_shoulder_rad, t),
+    left_elbow_rad: interp(a.left_elbow_rad, b.left_elbow_rad, t),
+    right_hip_rad: interp(a.right_hip_rad, b.right_hip_rad, t),
+    right_knee_rad: interp(a.right_knee_rad, b.right_knee_rad, t),
+    right_ankle_rad: interp(a.right_ankle_rad, b.right_ankle_rad, t),
+    right_shoulder_rad: interp(a.right_shoulder_rad, b.right_shoulder_rad, t),
+    right_elbow_rad: interp(a.right_elbow_rad, b.right_elbow_rad, t),
   }
 }
 
-function armAngles(legPhase) {
-  const laggedOppositePhase = cycle01(legPhase + curveParam('arm_phase_lag'))
-  const a = legAngles(laggedOppositePhase)
-  const lagWave = Math.sin(laggedOppositePhase * Math.PI * 2)
+function sideJointSample(sample, side) {
   return {
-    shoulder: -a.hip * curveParam('shoulder_hip_scale') +
-      lagWave * curveParam('shoulder_lag_wave_rad'),
-    elbow: curveParam('elbow_base_rad') +
-      Math.max(0, -a.hip) * curveParam('elbow_hip_scale') +
-      Math.max(0, lagWave) * curveParam('elbow_lag_wave_rad'),
+    hip: sample[`${side}_hip_rad`],
+    knee: sample[`${side}_knee_rad`],
+    ankle: sample[`${side}_ankle_rad`],
+    shoulder: sample[`${side}_shoulder_rad`],
+    elbow: sample[`${side}_elbow_rad`],
   }
 }
 
 export function jointSamples(clip) {
-  const leftLeg = legAngles(clip.leftPhase)
-  const rightLeg = legAngles(clip.rightPhase)
-  const leftArm = armAngles(clip.leftPhase)
-  const rightArm = armAngles(clip.rightPhase)
+  const sample = authoredSampleAtPhase(clip.phase)
   return {
-    left: { ...leftLeg, ...leftArm },
-    right: { ...rightLeg, ...rightArm },
+    left: sideJointSample(sample, 'left'),
+    right: sideJointSample(sample, 'right'),
   }
 }
 
