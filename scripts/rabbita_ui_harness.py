@@ -85,6 +85,9 @@ return {
   rig_box_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-primitive-kind'] === 'box').length,
   rig_cylinder_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-primitive-kind'] === 'cylinder').length,
   obj_mesh_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-mesh-extension'] === 'obj').length,
+  obj_loader_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-loader-status'] === 'mesh-loader-obj-ready').length,
+  primitive_loader_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-loader-status'] === 'primitive-renderer-ready').length,
+  visual_instance_source_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual' && node.attributes['data-render-source'] === 'robot-rig-visual-instances').length,
   base_mesh_paths: svgNodes.filter(node => node.attributes['data-link-name'] === 'base_link' && node.attributes['data-rig-role'] === 'primary-rigid-visual').map(node => node.attributes['data-mesh-path'] || ''),
   debug_segment_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-debug-segment')).length,
   debug_joint_count: svgNodes.filter(node => String(node.attributes.class || '').includes('noetix-debug-joint')).length,
@@ -245,13 +248,11 @@ def assert_noetix_walk_panel(
     raise AssertionError(rendered)
   if rendered["debug_joint_count"] < noetix_link_poses["links_per_frame"]:
     raise AssertionError(rendered)
-  expected_visuals = sum(
-    1
-    for link in pose_frames[0]["links"]
-    if link.get("visual_geometry", {}).get("has_visual_geometry")
-  )
+  expected_visuals = pose_frames[0]["visual_instance_count"]
   if rendered["rig_visual_count"] != expected_visuals:
     raise AssertionError({"rendered": rendered, "expected_visuals": expected_visuals})
+  if rendered["visual_instance_source_count"] != expected_visuals:
+    raise AssertionError(rendered)
   if rendered["rig_mesh_count"] != noetix_link_poses["mesh_visual_geometry_link_count"]:
     raise AssertionError(rendered)
   if rendered["rig_box_count"] < 2:
@@ -259,6 +260,10 @@ def assert_noetix_walk_panel(
   if rendered["rig_cylinder_count"] < 3:
     raise AssertionError(rendered)
   if rendered["obj_mesh_count"] != 1:
+    raise AssertionError(rendered)
+  if rendered["obj_loader_count"] != 1:
+    raise AssertionError(rendered)
+  if rendered["primitive_loader_count"] != noetix_link_poses["primitive_visual_geometry_link_count"]:
     raise AssertionError(rendered)
   if not rendered["base_mesh_paths"] or not rendered["base_mesh_paths"][0].endswith("base.obj"):
     raise AssertionError(rendered)
@@ -300,9 +305,10 @@ def assert_noetix_walk_panel(
       f"{noetix_link_poses['primitive_visual_geometry_link_count']} primitives)"
     ),
     "rig contract": "urdf-rigid-visual-contract-ready",
+    "render source": "robot-rig-visual-instances",
     "motion": "planned-gait-joint-samples",
     "rig motion": "robot-rig-motion-contract-ready",
-    "pose status": "review-only-urdf-fk",
+    "pose status": "robot-rig-render-frame-ready",
   }
   for key, value in expected.items():
     if facts.get(key) != value:

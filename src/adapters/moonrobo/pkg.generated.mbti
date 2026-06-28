@@ -306,6 +306,8 @@ pub fn render_simulation_review_packet_markdown(SimulationReviewPacket) -> Strin
 
 pub fn robot_rig_pose_frame(RobotRig, RobotMotionFrame) -> RobotRigPoseFrame
 
+pub fn robot_rig_render_frame(RobotRig, RobotRigPoseFrame) -> RobotRigRenderFrame
+
 pub fn route_handoff(@site.SiteDossier, @mission.RouteCandidate) -> MoonroboTaskHandoff
 
 pub fn route_handoff_with_clearance_transitions(@site.SiteDossier, @mission.RouteCandidate, Array[@mission.MissionClearanceTransition]) -> MoonroboTaskHandoff
@@ -711,6 +713,9 @@ pub(all) struct NoetixLinkPoseFrame {
   robot_rig_id : String
   motion_id : String
   rig_pose_status : String
+  rig_render_status : String
+  visual_instance_count : Int
+  visual_instances : Array[RobotRigVisualInstance]
   links : Array[NoetixLinkPose]
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
@@ -724,8 +729,10 @@ pub(all) struct NoetixLinkPoseTrace {
   robot_rig_status : String
   motion_frame_source : String
   rig_motion_contract_status : String
+  primary_render_source : String
   frame_count : Int
   links_per_frame : Int
+  visual_instances_per_frame : Int
   visual_geometry_link_count : Int
   mesh_visual_geometry_link_count : Int
   primitive_visual_geometry_link_count : Int
@@ -1541,6 +1548,20 @@ pub(all) struct RobotRigPoseFrame {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RobotRigRenderFrame {
+  rig_id : String
+  motion_id : String
+  frame_index : Int
+  time_s : Double
+  visual_instance_count : Int
+  mesh_instance_count : Int
+  primitive_instance_count : Int
+  missing_pose_count : Int
+  visual_instances : Array[RobotRigVisualInstance]
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RobotRigVisual {
   visual_index : Int
   link_name : String
@@ -1550,6 +1571,26 @@ pub(all) struct RobotRigVisual {
   length_m : Double
   mesh_path : String
   local_origin_xyz_m : @moonphys.Vec3
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRigVisualInstance {
+  visual_index : Int
+  link_name : String
+  parent_link : String
+  role : String
+  side : String
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  mesh_extension : String
+  local_origin_xyz_m : @moonphys.Vec3
+  world_origin_xyz_m : @moonphys.Vec3
+  world_transform : @moonphys.Transform3
+  render_kind : String
+  loader_status : String
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

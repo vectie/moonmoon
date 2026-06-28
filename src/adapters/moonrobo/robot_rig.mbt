@@ -87,6 +87,42 @@ pub(all) struct RobotRigPoseFrame {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RobotRigVisualInstance {
+  visual_index : Int
+  link_name : String
+  parent_link : String
+  role : String
+  side : String
+  kind : NoetixSourceGeometryKind
+  size_m : @moonphys.Vec3
+  radius_m : Double
+  length_m : Double
+  mesh_path : String
+  mesh_extension : String
+  local_origin_xyz_m : @moonphys.Vec3
+  world_origin_xyz_m : @moonphys.Vec3
+  world_transform : @moonphys.Transform3
+  render_kind : String
+  loader_status : String
+  source_status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RobotRigRenderFrame {
+  rig_id : String
+  motion_id : String
+  frame_index : Int
+  time_s : Double
+  visual_instance_count : Int
+  mesh_instance_count : Int
+  primitive_instance_count : Int
+  missing_pose_count : Int
+  visual_instances : Array[RobotRigVisualInstance]
+  status : String
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn robot_rig_visual_count_for_link(link_name : String) -> Int {
   let mut count = 0
   for geometry in noetix_source_visual_geometries() {
@@ -375,6 +411,16 @@ fn robot_rig_pose_link(
 }
 
 ///|
+fn robot_rig_node_for_link(rig : RobotRig, link_name : String) -> RobotRigNode? {
+  for node in rig.nodes {
+    if node.link_name == link_name {
+      return Some(node)
+    }
+  }
+  None
+}
+
+///|
 fn robot_rig_pose_link_transform(
   frame : RobotRigPoseFrame,
   link_name : String,
@@ -393,5 +439,144 @@ fn robot_rig_pose_link_joint_position(
   match robot_rig_pose_link(frame, link_name) {
     Some(link) => link.joint_position_rad
     None => 0.0
+  }
+}
+
+///|
+fn robot_rig_mesh_extension(visual : RobotRigVisual) -> String {
+  if visual.kind != SourceMeshGeometry {
+    ""
+  } else if visual.mesh_path.contains(".obj") {
+    "obj"
+  } else if visual.mesh_path.contains(".stl") {
+    "stl"
+  } else {
+    "unsupported"
+  }
+}
+
+///|
+fn robot_rig_visual_render_kind(visual : RobotRigVisual) -> String {
+  match visual.kind {
+    SourceMeshGeometry => "mesh"
+    SourceBoxGeometry => "box"
+    SourceCylinderGeometry => "cylinder"
+  }
+}
+
+///|
+fn robot_rig_visual_loader_status(visual : RobotRigVisual) -> String {
+  match visual.kind {
+    SourceMeshGeometry =>
+      match robot_rig_mesh_extension(visual) {
+        "obj" => "mesh-loader-obj-ready"
+        "stl" => "mesh-loader-stl-ready"
+        _ => "mesh-loader-unsupported"
+      }
+    SourceBoxGeometry | SourceCylinderGeometry => "primitive-renderer-ready"
+  }
+}
+
+///|
+fn robot_rig_visual_instance(
+  rig : RobotRig,
+  pose_frame : RobotRigPoseFrame,
+  visual : RobotRigVisual,
+) -> RobotRigVisualInstance {
+  let node = match robot_rig_node_for_link(rig, visual.link_name) {
+    Some(node) => node
+    None =>
+      {
+        link_name: visual.link_name,
+        parent_link: "",
+        joint_name: "",
+        role: "unknown",
+        side: "unknown",
+        parent_offset_m: @moonphys.vec3(0.0, 0.0, 0.0),
+        joint_axis: @moonphys.vec3(0.0, 0.0, 1.0),
+        visual_count: 0,
+        source_status: "urdf-link-node-missing",
+      }
+  }
+  let transform = robot_rig_pose_link_transform(pose_frame, visual.link_name)
+  {
+    visual_index: visual.visual_index,
+    link_name: visual.link_name,
+    parent_link: node.parent_link,
+    role: node.role,
+    side: node.side,
+    kind: visual.kind,
+    size_m: visual.size_m,
+    radius_m: visual.radius_m,
+    length_m: visual.length_m,
+    mesh_path: visual.mesh_path,
+    mesh_extension: robot_rig_mesh_extension(visual),
+    local_origin_xyz_m: visual.local_origin_xyz_m,
+    world_origin_xyz_m: transform.transform_point(visual.local_origin_xyz_m),
+    world_transform: transform,
+    render_kind: robot_rig_visual_render_kind(visual),
+    loader_status: robot_rig_visual_loader_status(visual),
+    source_status: visual.source_status,
+  }
+}
+
+///|
+fn robot_rig_render_mesh_count(
+  instances : Array[RobotRigVisualInstance],
+) -> Int {
+  let mut count = 0
+  for instance in instances {
+    if instance.render_kind == "mesh" {
+      count += 1
+    }
+  }
+  count
+}
+
+///|
+fn robot_rig_render_missing_pose_count(
+  pose_frame : RobotRigPoseFrame,
+  instances : Array[RobotRigVisualInstance],
+) -> Int {
+  let mut count = 0
+  for instance in instances {
+    if robot_rig_pose_link(pose_frame, instance.link_name) is None {
+      count += 1
+    }
+  }
+  count
+}
+
+///|
+pub fn robot_rig_render_frame(
+  rig : RobotRig,
+  pose_frame : RobotRigPoseFrame,
+) -> RobotRigRenderFrame {
+  let instances : Array[RobotRigVisualInstance] = []
+  for visual in rig.visuals {
+    instances.push(robot_rig_visual_instance(rig, pose_frame, visual))
+  }
+  let mesh_count = robot_rig_render_mesh_count(instances)
+  let missing_pose_count = robot_rig_render_missing_pose_count(
+    pose_frame, instances,
+  )
+  {
+    rig_id: rig.rig_id,
+    motion_id: pose_frame.motion_id,
+    frame_index: pose_frame.frame_index,
+    time_s: pose_frame.time_s,
+    visual_instance_count: instances.length(),
+    mesh_instance_count: mesh_count,
+    primitive_instance_count: instances.length() - mesh_count,
+    missing_pose_count,
+    visual_instances: instances,
+    status: if rig.status == "urdf-rigid-rig-ready" &&
+      pose_frame.status == "robot-rig-pose-ready" &&
+      missing_pose_count == 0 {
+      "robot-rig-render-frame-ready"
+    } else {
+      "robot-rig-render-frame-review"
+    },
+    note: "Renderable URDF visual instances derived from the RobotRig and FK pose. This mirrors Piccolo's separation between animation results and mesh render parts, but Noetix uses rigid robot links and source visual geometry rather than skinned character bones.",
   }
 }

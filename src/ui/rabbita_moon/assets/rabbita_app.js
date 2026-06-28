@@ -406,48 +406,42 @@ function noetixProjectedSpan(origin, xMeters, zMeters, project) {
   };
 }
 
-function noetixMeshExtension(path) {
-  const clean = String(path || '').toLowerCase().split(/[?#]/)[0];
-  const index = clean.lastIndexOf('.');
-  return index >= 0 ? clean.slice(index + 1) : '';
-}
-
-function noetixRigVisualAttributes(link, geometry, role, kindClass) {
-  const meshPath = geometry.mesh_path || '';
+function noetixRigVisualAttributes(instance, role, kindClass) {
+  const meshPath = instance.mesh_path || '';
   return {
     class: `noetix-rig-visual noetix-rig-${kindClass} noetix-link-${role}`,
     'data-rig-role': 'primary-rigid-visual',
-    'data-link-name': link.link_name,
-    'data-parent-link': link.parent_link || '',
-    'data-geometry-kind': geometry.kind,
-    'data-source-status': geometry.source_status || '',
+    'data-render-source': 'robot-rig-visual-instances',
+    'data-link-name': instance.link_name,
+    'data-parent-link': instance.parent_link || '',
+    'data-geometry-kind': instance.kind,
+    'data-source-status': instance.source_status || '',
     'data-mesh-path': meshPath,
-    'data-mesh-extension': noetixMeshExtension(meshPath),
-    'data-primitive-kind': geometry.kind === 'SourceBoxGeometry' ? 'box' : geometry.kind === 'SourceCylinderGeometry' ? 'cylinder' : ''
+    'data-mesh-extension': instance.mesh_extension || '',
+    'data-loader-status': instance.loader_status || '',
+    'data-primitive-kind': instance.render_kind === 'box' ? 'box' : instance.render_kind === 'cylinder' ? 'cylinder' : ''
   };
 }
 
 function noetixRigVisuals(poseFrame, project) {
-  return (poseFrame.links || [])
-    .filter(link => link.visual_geometry && link.visual_geometry.has_visual_geometry)
-    .map(link => {
-      const geometry = link.visual_geometry;
-      const origin = geometry.world_origin_xyz_m || link.world_position;
-      const role = noetixLinkRoleClass(link.role);
-      if (geometry.kind === 'SourceCylinderGeometry') {
-        const span = noetixProjectedSpan(origin, geometry.radius_m * 2, geometry.length_m, project);
+  return (poseFrame.visual_instances || [])
+    .map(instance => {
+      const origin = instance.world_origin_xyz_m;
+      const role = noetixLinkRoleClass(instance.role);
+      if (instance.render_kind === 'cylinder') {
+        const span = noetixProjectedSpan(origin, instance.radius_m * 2, instance.length_m, project);
         return svgEl('ellipse', {
-          ...noetixRigVisualAttributes(link, geometry, role, 'cylinder'),
+          ...noetixRigVisualAttributes(instance, role, 'cylinder'),
           cx: span.center.x.toFixed(2),
           cy: span.center.y.toFixed(2),
           rx: (span.width * 0.5).toFixed(2),
           ry: (span.height * 0.5).toFixed(2)
         });
       }
-      const span = noetixProjectedSpan(origin, geometry.size_m.x, geometry.size_m.z, project);
-      const kindClass = geometry.kind === 'SourceMeshGeometry' ? 'mesh' : 'box';
+      const span = noetixProjectedSpan(origin, instance.size_m.x, instance.size_m.z, project);
+      const kindClass = instance.render_kind === 'mesh' ? 'mesh' : 'box';
       return svgEl('rect', {
-        ...noetixRigVisualAttributes(link, geometry, role, kindClass),
+        ...noetixRigVisualAttributes(instance, role, kindClass),
         x: (span.center.x - span.width * 0.5).toFixed(2),
         y: (span.center.y - span.height * 0.5).toFixed(2),
         width: span.width.toFixed(2),
@@ -586,11 +580,9 @@ function renderNoetixWalkControls(frames) {
 function renderNoetixWalkFacts(frame, poseFrame) {
   const jointCount = frame.joint_phases.length;
   const linkCount = (poseFrame.links || []).length;
-  const visualCount = (poseFrame.links || []).filter(link =>
-    link.visual_geometry && link.visual_geometry.has_visual_geometry
-  ).length;
-  const meshCount = noetixLinkPoseTrace.mesh_visual_geometry_link_count ?? (poseFrame.links || []).filter(link =>
-    link.visual_geometry && link.visual_geometry.kind === 'SourceMeshGeometry'
+  const visualCount = poseFrame.visual_instance_count ?? (poseFrame.visual_instances || []).length;
+  const meshCount = noetixLinkPoseTrace.mesh_visual_geometry_link_count ?? (poseFrame.visual_instances || []).filter(instance =>
+    instance.render_kind === 'mesh'
   ).length;
   const primitiveCount = noetixLinkPoseTrace.primitive_visual_geometry_link_count ?? Math.max(0, visualCount - meshCount);
   const facts = [
@@ -604,9 +596,10 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['links', `${linkCount} URDF-reference poses`],
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
+    ['render source', noetixLinkPoseTrace.primary_render_source || 'robot-rig-visual-instances'],
     ['motion', noetixLinkPoseTrace.motion_frame_source || 'planned-gait-joint-samples'],
     ['rig motion', noetixLinkPoseTrace.rig_motion_contract_status || 'robot-rig-motion-contract-review'],
-    ['pose status', poseFrame.status || noetixLinkPoseTrace.status],
+    ['pose status', poseFrame.rig_render_status || poseFrame.status || noetixLinkPoseTrace.status],
   ];
   document.getElementById('noetix-walk-facts').replaceChildren(...facts.map(([label, value]) =>
     el('div', { className: 'noetix-fact' }, [

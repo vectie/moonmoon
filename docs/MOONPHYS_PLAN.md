@@ -509,9 +509,9 @@ Do not connect this to hardware controls.
 
 Status: active. Moonrobo now exposes a first-class `RobotRig`,
 `RobotMotionFrame`, and FK `RobotRigPoseFrame` contract for Noetix. Rabbita
-uses the rigid visual contract as the primary robot body, with debug sticks
-separated as a link-tree overlay. Continue prioritizing this visual/rig slice
-before new MoonClaw orchestration.
+uses `RobotRigVisualInstance` render frames as the primary robot body, with
+debug sticks separated as a link-tree overlay. Continue prioritizing this
+visual/rig slice before new MoonClaw orchestration.
 
 The current Rabbita pose uses URDF-reference FK plus contact-bound foot
 correction. That is useful evidence, but it is not the same as how a walking
@@ -542,6 +542,7 @@ Noetix URDF
        joint_name -> position_rad
        source = planned | simulated | telemetry
     -> FK link transforms
+    -> RobotRig visual instances
     -> Rabbita rigid-link renderer
 ```
 
@@ -573,8 +574,9 @@ Immediate Phase 5A deliverables:
   - explicit missing-visual status for links without a visual block
 - Rework the Rabbita Noetix viewer to render rigid link visuals from FK link
   transforms instead of the current contact-corrected stick pose. (partially
-  implemented: current primary render uses available rigid visuals; links
-  without visual blocks remain absent except debug overlay)
+  implemented: current primary render uses `RobotRigVisualInstance` records
+  derived from FK link transforms; links without visual blocks remain absent
+  except debug overlay)
 - Support mesh assets by extension instead of assuming STL-only rendering:
   `OBJLoader` for `.obj`, `STLLoader` for `.stl`, and a clear unsupported-asset
   status for anything else. Moonrobo's current Three viewer resolves mesh
@@ -591,8 +593,8 @@ Immediate Phase 5A deliverables:
   from the FK tree, if the viewer presents debug sticks as the primary robot,
   if the resolved OBJ base mesh is not represented in the render contract, or if
   URDF box/cylinder primitives disappear from the visual instance contract.
-  (implemented for current contract/renderer; still strengthen when full
-  per-link visuals or Three.js mesh loaders land)
+  (implemented for current `RobotRigVisualInstance` contract/renderer; still
+  strengthen when full per-link visuals or Three.js mesh loaders land)
 
 ## Phase 6: Evidence Export
 

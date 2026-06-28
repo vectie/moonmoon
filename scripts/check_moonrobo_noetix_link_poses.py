@@ -39,8 +39,12 @@ def main() -> None:
         fail("motion frame source should come from planned robot joint samples")
     if trace.get("rig_motion_contract_status") != "robot-rig-motion-contract-ready":
         fail("rig motion contract should be ready")
+    if trace.get("primary_render_source") != "robot-rig-visual-instances":
+        fail("primary render source should be robot rig visual instances")
     if trace.get("links_per_frame") != 25:
         fail("expected 25 URDF-reference links per frame")
+    if trace.get("visual_instances_per_frame") != 6:
+        fail("expected six renderable visual instances per frame")
     if trace.get("visual_geometry_link_count") != 6:
         fail("expected six URDF visual geometry links")
     if trace.get("mesh_visual_geometry_link_count") != 1:
@@ -71,7 +75,9 @@ def main() -> None:
         fail("trace note must preserve missing collision/inertial metadata")
     if "RobotRig plus RobotMotionFrame" not in trace.get("note", ""):
         fail("trace note must name the robot rig and motion frame contract")
-    if "debug sticks are only a link-tree overlay" not in trace.get("note", ""):
+    if "RobotRig visual instances" not in trace.get("note", ""):
+        fail("trace note must name robot rig visual instances as primary render source")
+    if "Debug sticks are only a link-tree overlay" not in trace.get("note", ""):
         fail("trace note must keep sticks as debug overlay only")
     physical_metadata = {
         item.get("link_name"): item for item in trace.get("physical_metadata", [])
@@ -105,6 +111,40 @@ def main() -> None:
         fail("first frame should carry motion frame id")
     if first_frame.get("rig_pose_status") != "robot-rig-pose-ready":
         fail("first frame should be produced by ready rig pose sampling")
+    if first_frame.get("rig_render_status") != "robot-rig-render-frame-ready":
+        fail("first frame should carry ready rig render status")
+    visual_instances = first_frame.get("visual_instances", [])
+    if first_frame.get("visual_instance_count") != 6 or len(visual_instances) != 6:
+        fail("first frame should carry six robot rig visual instances")
+    visual_by_link = {item.get("link_name"): item for item in visual_instances}
+    if set(visual_by_link) != {
+        "base_link",
+        "torso_link",
+        "chest_link",
+        "left_arm_1",
+        "right_arm_1",
+        "left_leg_1",
+    }:
+        fail("visual instances should mirror current URDF visual links")
+    base_instance = visual_by_link.get("base_link", {})
+    if base_instance.get("render_kind") != "mesh":
+        fail("base visual instance should render as mesh")
+    if base_instance.get("mesh_extension") != "obj":
+        fail("base visual instance should preserve OBJ extension")
+    if base_instance.get("loader_status") != "mesh-loader-obj-ready":
+        fail("base visual instance should be OBJ-loader ready")
+    if not base_instance.get("mesh_path", "").endswith("base.obj"):
+        fail("base visual instance should preserve mesh path")
+    if visual_by_link.get("chest_link", {}).get("render_kind") != "box":
+        fail("chest visual instance should render as box")
+    if visual_by_link.get("left_arm_1", {}).get("render_kind") != "cylinder":
+        fail("left arm visual instance should render as cylinder")
+    if any(
+        item.get("loader_status") != "primitive-renderer-ready"
+        for item in visual_instances
+        if item.get("render_kind") != "mesh"
+    ):
+        fail("primitive visual instances should be primitive-renderer ready")
     if first["left_foot"].get("source_status") != "urdf-fk-contact-bound":
         fail("left foot must be bound to contact evidence")
     if first["left_foot"].get("visual_geometry", {}).get("source_status") != "urdf-visual-geometry-missing":

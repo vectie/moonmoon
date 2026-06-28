@@ -897,6 +897,31 @@ test "noetix robot rig exposes urdf nodes visuals and motion frames" {
       link.link_name == "chest_link" && link.parent_link == "torso_link"
     }),
   )
+  let render = robot_rig_render_frame(rig, pose)
+  assert_eq(render.rig_id, rig.rig_id)
+  assert_eq(render.motion_id, motion.motion_id)
+  assert_eq(render.visual_instance_count, 6)
+  assert_eq(render.mesh_instance_count, 1)
+  assert_eq(render.primitive_instance_count, 5)
+  assert_eq(render.missing_pose_count, 0)
+  assert_eq(render.status, "robot-rig-render-frame-ready")
+  assert_true(render.note.contains("animation results and mesh render parts"))
+  assert_true(
+    render.visual_instances.any(fn(instance) {
+      instance.link_name == "base_link" &&
+      instance.render_kind == "mesh" &&
+      instance.mesh_extension == "obj" &&
+      instance.loader_status == "mesh-loader-obj-ready" &&
+      instance.mesh_path.contains("base.obj")
+    }),
+  )
+  assert_true(
+    render.visual_instances.any(fn(instance) {
+      instance.link_name == "left_arm_1" &&
+      instance.render_kind == "cylinder" &&
+      instance.loader_status == "primitive-renderer-ready"
+    }),
+  )
 }
 
 ///|
@@ -910,6 +935,8 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_eq(poses.robot_rig_status, "urdf-rigid-rig-ready")
   assert_eq(poses.motion_frame_source, "planned-gait-joint-samples")
   assert_eq(poses.rig_motion_contract_status, "robot-rig-motion-contract-ready")
+  assert_eq(poses.primary_render_source, "robot-rig-visual-instances")
+  assert_eq(poses.visual_instances_per_frame, 6)
   assert_eq(poses.visual_geometry_link_count, 6)
   assert_eq(poses.mesh_visual_geometry_link_count, 1)
   assert_eq(poses.primitive_visual_geometry_link_count, 5)
@@ -942,11 +969,32 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_true(poses.note.contains("not full dynamics"))
   assert_true(poses.note.contains("missing collision/inertial metadata"))
   assert_true(poses.note.contains("RobotRig plus RobotMotionFrame"))
-  assert_true(poses.note.contains("debug sticks are only a link-tree overlay"))
+  assert_true(poses.note.contains("RobotRig visual instances"))
+  assert_true(poses.note.contains("Debug sticks are only a link-tree overlay"))
   let first = poses.frames[0]
   assert_eq(first.robot_rig_id, poses.robot_rig_id)
   assert_true(first.motion_id.contains("robot-motion-frame/0"))
   assert_eq(first.rig_pose_status, "robot-rig-pose-ready")
+  assert_eq(first.rig_render_status, "robot-rig-render-frame-ready")
+  assert_eq(first.visual_instance_count, 6)
+  assert_eq(first.visual_instances.length(), 6)
+  assert_true(
+    first.visual_instances.any(fn(instance) {
+      instance.link_name == "base_link" &&
+      instance.kind == SourceMeshGeometry &&
+      instance.render_kind == "mesh" &&
+      instance.mesh_extension == "obj" &&
+      instance.loader_status == "mesh-loader-obj-ready"
+    }),
+  )
+  assert_true(
+    first.visual_instances.any(fn(instance) {
+      instance.link_name == "chest_link" &&
+      instance.kind == SourceBoxGeometry &&
+      instance.render_kind == "box" &&
+      instance.loader_status == "primitive-renderer-ready"
+    }),
+  )
   assert_eq(first.links.length(), 25)
   assert_true(
     first.links.any(fn(link) {
