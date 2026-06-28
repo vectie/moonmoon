@@ -400,8 +400,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    overlays. `src/suite_adapter_preview` now wraps the generated review in a
    typed `NoetixSuiteAdapterPayload` that records Moonrobo source references
    for the Noetix robot profile, URDF, mesh asset, generated evidence source,
-   driven joint ids, compiled review status, and blockers. The next Phase 10
-   target is replacing this generated preview payload with the same contract
-   regenerated from typed Moonrobo adapter packages; the next Phase D/E target
-   remains visual readability of the same walk cycle before adding another
-   fixture mirror.
+   driven joint ids, compiled review status, and blockers. Moonrobo now has a
+   typed source-side `src/moonmoon_adapter` contract for the same Noetix
+   profile, URDF, mesh, required motion joints, blockers, and readiness fields.
+   The next Phase 10 target is the generator/consumer bridge that replaces the
+   generated preview payload with evidence regenerated from that typed Moonrobo
+   package; the next Phase D/E target remains visual readability of the same
+   walk cycle before adding another fixture mirror.

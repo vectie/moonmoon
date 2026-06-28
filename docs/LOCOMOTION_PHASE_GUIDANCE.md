@@ -309,9 +309,14 @@ Status: started. `src/suite_adapter_preview/noetix_suite_payload.mbt` defines
 the first durable suite evidence entry for the Rabbita/Moonrobo Noetix walk
 cycle. It records robot id, platform, Moonrobo profile path, URDF path, mesh
 refs, generated motion/hinge/review ids, driven joint ids, compiled review
-status, blockers, and readiness. This is still a suite preview payload; the
-remaining Phase 10 feature is to generate the same contract from typed
-Moonrobo packages instead of the Rabbita preview exporter.
+status, blockers, and readiness. The Moonrobo source-side package
+`../moonrobo/src/moonmoon_adapter` now exposes a typed
+`MoonmoonNoetixLocomotionContract` with Noetix profile, URDF, mesh, required
+motion-joint, blocker, and readiness fields for Moonmoon consumption. This is
+still split between a Moonmoon preview payload and a Moonrobo source contract;
+the remaining Phase 10 feature is the generator/consumer bridge that
+regenerates Moonmoon's durable suite payload from the typed Moonrobo package
+instead of the Rabbita preview exporter.
 
 Acceptance:
 
