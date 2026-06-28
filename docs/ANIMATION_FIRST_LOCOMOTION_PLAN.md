@@ -297,12 +297,18 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
 ## Current Next Slice
 
 1. Strengthen Rabbita diagnostics for phase, root motion, lock state, authored
-   target, FK endpoint, and contact separation. Status: active in the Rabbita
-   preview.
+   target, FK endpoint, contact separation, and selected joint samples. Status:
+   active in the Rabbita preview.
 2. Tune the flat-ground clip until the rigid body reads like a biped walk.
 3. Add tests or browser checks for cycle repeat, FK link-length invariance, and
    target/render detachment. Status: browser-facing runtime checks now expose
    cycle repeat, root motion, mirror timing, target/FK attachment, support-foot
-   lock, and link-length invariant statuses.
-4. Add terrain IK only after the base walk is readable.
-5. Feed corrected FK poses into Moonphys review.
+   lock, knee role contrast, arm counter-swing, and link-length invariant
+   statuses.
+4. Add terrain IK only after the base walk is readable. Status: the Rabbita
+   preview now has a flat-terrain contact probe, bounded support-pelvis
+   correction, terrain-corrected foot targets, and browser-facing IK/contact
+   status datasets. Hip, knee, ankle, and non-flat terrain correction remain the
+   next solver step.
+5. Feed corrected FK poses into Moonphys review once the terrain solver updates
+   joint targets instead of only the bounded pelvis preview.
