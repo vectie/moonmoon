@@ -179,7 +179,10 @@ Visualization should make wrong motion diagnosable.
 Status: active in the Rabbita 3D view. The robot canvas now exposes data
 attributes for robot source, root link, phase label, support foot, swing foot,
 FK foot endpoints, root distance, and link-length status so browser checks can
-separate gait timing issues from rendering or FK issues.
+separate gait timing issues from rendering or FK issues. The Rabbita 3D scene
+also exposes semantic `footPhaseChannels`, `gaitPhaseLabel`, and
+`footPhaseCoverageStatus`, and renders root/phase timing rails beside the robot
+so clip timing is visible without replacing the rigid FK pose.
 
 Deliverables:
 

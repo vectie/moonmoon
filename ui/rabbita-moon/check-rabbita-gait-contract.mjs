@@ -23,6 +23,10 @@ const sceneContracts = [
   'NOETIX_URDF_LIMIT_SOURCE',
   'leg_l1_joint',
   'arm_l1_joint',
+  'FOOT_PHASE_SEQUENCE',
+  'gaitPhaseLabel',
+  'footPhaseChannels',
+  'footPhaseCoverageStatus',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -43,6 +47,7 @@ const planContracts = [
   'terrain-corrected target',
   'FK endpoint',
   'hip/knee/ankle correction',
+  'phase labels: `contact`, `loading`, `stance`, `passing`, `swing`, `release`',
   'foot lock',
   'toe-off/contact ankle curve',
   'arm lag and counter-swing',
@@ -177,6 +182,7 @@ let maxTerrainRange = 0
 let maxPatchRange = 0
 let maxToeRoll = 0
 let maxTorsoCounterRotation = 0
+const expectedFootRoles = new Set(['contact', 'loading', 'stance', 'passing', 'swing', 'release'])
 for (const time of sampleTimes) {
   const frame = diagnostics.sampleRobotGeometry(time).diagnostics
   const moonphysFrame = diagnostics.moonphysReviewFrameEvidence(frame)
@@ -206,6 +212,18 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.torsoCounterRotation !== 'pass') {
     throw new Error(`torso counter-rotation failed at ${time}s`)
+  }
+  if (frame.quality.statuses.footPhaseCoverage !== 'pass') {
+    throw new Error(`foot phase coverage failed at ${time}s: ${JSON.stringify(frame.quality.footPhaseCoverage.missing)}`)
+  }
+  if (!frame.gaitPhaseLabel.includes(frame.supportFoot) || !frame.gaitPhaseLabel.includes(frame.swingFoot)) {
+    throw new Error(`gait phase label did not cite support/swing feet at ${time}s`)
+  }
+  for (const footName of ['left', 'right']) {
+    const foot = frame.footChannels[footName]
+    if (!expectedFootRoles.has(foot.role)) {
+      throw new Error(`unexpected ${footName} foot role at ${time}s: ${foot.role}`)
+    }
   }
   if (moonphysFrame.environment.environment_id !== 'moon/lunar-surface') {
     throw new Error(`Moonphys review frame used unexpected environment at ${time}s`)

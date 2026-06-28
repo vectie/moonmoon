@@ -440,6 +440,8 @@ const NOETIX_HINGE_MOTOR_JOINTS = [
   { joint_id: 'arm_r4_joint', side: 'right', field: 'elbow', parent_link: 'right_arm_3', child_link: 'right_arm_4', axis: '0 1 0', min: -1.6, max: 1.6, max_velocity: 3.0, max_torque: 30.0, stiffness: 8.0, damping: 0.4 },
 ]
 
+const FOOT_PHASE_SEQUENCE = ['contact', 'loading', 'stance', 'passing', 'swing', 'release']
+
 function cycle01(value) {
   return value - Math.floor(value)
 }
@@ -511,6 +513,15 @@ function footRole(footPhase) {
   return 'release'
 }
 
+function footRoleColor(role) {
+  if (role === 'contact') return [0.38, 0.92, 0.70]
+  if (role === 'loading') return [0.78, 0.86, 0.44]
+  if (role === 'stance') return [0.42, 0.68, 0.92]
+  if (role === 'passing') return [0.88, 0.62, 0.34]
+  if (role === 'swing') return [0.86, 0.50, 0.78]
+  return [0.92, 0.78, 0.38]
+}
+
 function footLock(footPhase) {
   return footPhase < 0.50
 }
@@ -548,34 +559,38 @@ function walkClipSample(time) {
   const leftStance = phase < 0.5
   const leftPhase = phase
   const rightPhase = cycle01(phase + 0.5)
+  const footChannels = {
+    left: {
+      phase: leftPhase,
+      role: footRole(leftPhase),
+      locked: footLock(leftPhase),
+      supporting: footSupport(leftPhase),
+      rollPitch: footRollPitch(leftPhase),
+    },
+    right: {
+      phase: rightPhase,
+      role: footRole(rightPhase),
+      locked: footLock(rightPhase),
+      supporting: footSupport(rightPhase),
+      rollPitch: footRollPitch(rightPhase),
+    },
+  }
+  const supportFoot = leftStance ? 'left' : 'right'
+  const swingFoot = leftStance ? 'right' : 'left'
   return {
     phase,
     leftPhase,
     rightPhase,
     phaseLabel: leftStance ? 'left-stance-right-swing' : 'right-stance-left-swing',
-    supportFoot: leftStance ? 'left' : 'right',
-    swingFoot: leftStance ? 'right' : 'left',
+    gaitPhaseLabel: `${supportFoot}-${footChannels[supportFoot].role}/${swingFoot}-${footChannels[swingFoot].role}`,
+    supportFoot,
+    swingFoot,
     rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
     strideM: 0.38,
     bob: Math.cos(phase * Math.PI * 4) * 0.016,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
     torsoCounterRotation: torsoCounterRotation(phase),
-    footChannels: {
-      left: {
-        phase: leftPhase,
-        role: footRole(leftPhase),
-        locked: footLock(leftPhase),
-        supporting: footSupport(leftPhase),
-        rollPitch: footRollPitch(leftPhase),
-      },
-      right: {
-        phase: rightPhase,
-        role: footRole(rightPhase),
-        locked: footLock(rightPhase),
-        supporting: footSupport(rightPhase),
-        rollPitch: footRollPitch(rightPhase),
-      },
-    },
+    footChannels,
   }
 }
 
@@ -657,6 +672,32 @@ function addGround(vertices, colors, clip) {
     const c = terrainSampleAt(x + 0.014, 1.4, clip).heightM
     const d = terrainSampleAt(x, 1.4, clip).heightM
     addQuad(vertices, colors, [x, a, -1.4], [x + 0.014, b, -1.4], [x + 0.014, c - 0.012, 1.4], [x, d - 0.012, 1.4], [0.14, 0.20, 0.18])
+  }
+}
+
+function addGaitTimingRails(vertices, colors, clip) {
+  for (let i = -6; i <= 6; i += 1) {
+    const z = i * 0.18
+    const terrain = terrainSampleAt(0, z, clip)
+    const size = i === 0 ? [0.050, 0.020, 0.050] : [0.030, 0.012, 0.030]
+    const color = i === 0 ? [0.74, 0.96, 0.88] : [0.26, 0.48, 0.42]
+    addCube(vertices, colors, mat4Identity(), [0, terrain.heightM + 0.018, z], size, color)
+  }
+  for (const [footIndex, footName] of ['left', 'right'].entries()) {
+    const foot = clip.footChannels[footName]
+    for (const [roleIndex, role] of FOOT_PHASE_SEQUENCE.entries()) {
+      const x = footName === 'left' ? -0.78 : -0.66
+      const z = -0.54 + roleIndex * 0.18
+      const terrain = terrainSampleAt(x, z, clip)
+      const active = foot.role === role
+      const size = active ? [0.062, 0.032, 0.062] : [0.034, 0.016, 0.034]
+      const baseColor = footRoleColor(role)
+      const dim = footIndex === 0 ? 1 : 0.82
+      const color = active
+        ? baseColor
+        : baseColor.map(channel => channel * 0.44 * dim)
+      addCube(vertices, colors, mat4Identity(), [x, terrain.heightM + 0.020, z], size, color)
+    }
   }
 }
 
@@ -765,6 +806,7 @@ function robotGeometry(time) {
     addArm(vertices, colors, torsoRoot, side, joints)
   }
   addGround(vertices, colors, clip)
+  addGaitTimingRails(vertices, colors, clip)
   const gait = { ...diagnostics, ...clip }
   return { vertices, colors, diagnostics: { ...gait, quality: gaitQuality(time, gait) } }
 }
@@ -782,6 +824,7 @@ function gaitQuality(time, diagnostics) {
   const maxLockedTargetFkDelta = lockedDeltas.length > 0 ? Math.max(...lockedDeltas) : Infinity
   const supportFoot = diagnostics.feet.find(foot => foot.name === diagnostics.supportFoot)
   const cycle = cycleJointQuality(time, cycleSeconds)
+  const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
@@ -802,6 +845,7 @@ function gaitQuality(time, diagnostics) {
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
     torsoCounterRotation: cycle.torsoCounterRotation >= NOETIX_VISUAL_RIG.torsoCounterRotationMinRad ? 'pass' : 'fail',
+    footPhaseCoverage: phaseCoverage.missing.length === 0 ? 'pass' : 'fail',
     linkLengthInvariant: 'pass',
   }
   const status = Object.values(statuses).every(value => value === 'pass') ? 'pass' : 'fail'
@@ -822,9 +866,26 @@ function gaitQuality(time, diagnostics) {
     armCounterSwing: cycle.armCounterSwing,
     toeRoll: cycle.toeRoll,
     torsoCounterRotation: cycle.torsoCounterRotation,
+    footPhaseCoverage: phaseCoverage,
     authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
   }
+}
+
+function cycleFootPhaseCoverage(time, cycleSeconds) {
+  const seen = { left: new Set(), right: new Set() }
+  for (let i = 0; i < 24; i += 1) {
+    const clip = walkClipSample(time + (i / 24) * cycleSeconds)
+    seen.left.add(clip.footChannels.left.role)
+    seen.right.add(clip.footChannels.right.role)
+  }
+  const left = FOOT_PHASE_SEQUENCE.filter(role => seen.left.has(role))
+  const right = FOOT_PHASE_SEQUENCE.filter(role => seen.right.has(role))
+  const missing = [
+    ...FOOT_PHASE_SEQUENCE.filter(role => !seen.left.has(role)).map(role => `left:${role}`),
+    ...FOOT_PHASE_SEQUENCE.filter(role => !seen.right.has(role)).map(role => `right:${role}`),
+  ]
+  return { required: FOOT_PHASE_SEQUENCE, left, right, missing }
 }
 
 function cycleJointQuality(time, cycleSeconds) {
@@ -1396,7 +1457,7 @@ function updateRobotDebug(debug, diagnostics) {
   while (debug.children.length < 3) {
     debug.appendChild(document.createElement('span'))
   }
-  debug.children[0].textContent = `phase ${diagnostics.phaseLabel}`
+  debug.children[0].textContent = `phase ${diagnostics.gaitPhaseLabel}`
   debug.children[1].textContent = `support ${diagnostics.supportFoot} swing ${diagnostics.swingFoot} lock ${locked}`
   debug.children[2].textContent = `quality ${diagnostics.quality.status} IK ${diagnostics.ik.pelvisCorrectionM.toFixed(3)}m target/FK ${maxDelta.toFixed(3)}m`
 }
@@ -1433,10 +1494,27 @@ function initRobot(canvas) {
     canvas.dataset.rigStatus = 'rigid-link-fk-preview'
     canvas.dataset.linkLengthStatus = 'invariant'
     canvas.dataset.phaseLabel = geometry.diagnostics.phaseLabel
+    canvas.dataset.gaitPhaseLabel = geometry.diagnostics.gaitPhaseLabel
     canvas.dataset.supportFoot = geometry.diagnostics.supportFoot
     canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
     canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
     canvas.dataset.walkPipeline = 'clip-targets-to-rigid-fk'
+    canvas.dataset.footPhaseChannels = JSON.stringify({
+      left: {
+        phase: Number(geometry.diagnostics.footChannels.left.phase.toFixed(4)),
+        role: geometry.diagnostics.footChannels.left.role,
+        locked: geometry.diagnostics.footChannels.left.locked,
+        supporting: geometry.diagnostics.footChannels.left.supporting,
+        rollPitch: Number(geometry.diagnostics.footChannels.left.rollPitch.toFixed(4)),
+      },
+      right: {
+        phase: Number(geometry.diagnostics.footChannels.right.phase.toFixed(4)),
+        role: geometry.diagnostics.footChannels.right.role,
+        locked: geometry.diagnostics.footChannels.right.locked,
+        supporting: geometry.diagnostics.footChannels.right.supporting,
+        rollPitch: Number(geometry.diagnostics.footChannels.right.rollPitch.toFixed(4)),
+      },
+    })
     canvas.dataset.lockedFeet = geometry.diagnostics.feet
       .filter(foot => foot.locked)
       .map(foot => foot.name)
@@ -1537,8 +1615,10 @@ function initRobot(canvas) {
     canvas.dataset.armCounterSwingStatus = geometry.diagnostics.quality.statuses.armCounterSwing
     canvas.dataset.toeRollStatus = geometry.diagnostics.quality.statuses.toeRoll
     canvas.dataset.torsoCounterRotationStatus = geometry.diagnostics.quality.statuses.torsoCounterRotation
+    canvas.dataset.footPhaseCoverageStatus = geometry.diagnostics.quality.statuses.footPhaseCoverage
     canvas.dataset.toeRollRad = geometry.diagnostics.quality.toeRoll.toFixed(4)
     canvas.dataset.torsoCounterRotationRad = geometry.diagnostics.quality.torsoCounterRotation.toFixed(4)
+    canvas.dataset.footPhaseCoverage = JSON.stringify(geometry.diagnostics.quality.footPhaseCoverage)
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)

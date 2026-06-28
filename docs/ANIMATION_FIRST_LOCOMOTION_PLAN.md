@@ -353,5 +353,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    Moonrobo Noetix proportions. The browser contract exposes `toeRollStatus`,
    `toeRollRad`, `torsoCounterRotationStatus`, and
    `torsoCounterRotationRad`, so this slice is measured as live motion, not as
-   a separate fixture mirror. The next Phase D/E target is still visual
-   readability of the same walk cycle before adding another fixture mirror.
+   a separate fixture mirror. The Rabbita preview also promotes the six
+   animation subphases (`contact`, `loading`, `stance`, `passing`, `swing`,
+   `release`) into `footPhaseChannels`, `gaitPhaseLabel`, and
+   `footPhaseCoverageStatus`, and renders root/phase timing rails in the 3D
+   scene so the walk can be inspected like an animation asset. The next Phase
+   D/E target is still visual readability of the same walk cycle before adding
+   another fixture mirror.
