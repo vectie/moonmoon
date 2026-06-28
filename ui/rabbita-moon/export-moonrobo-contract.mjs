@@ -112,6 +112,7 @@ function validateWalkClip(clip, requiredJointIds) {
     'joint_curve_params',
     'authored_joint_samples',
     'authored_motion_samples',
+    'authored_motor_frames',
     'blockers',
   ]) {
     requireArray(clip, field)
@@ -158,6 +159,9 @@ function validateWalkClip(clip, requiredJointIds) {
   if (clip.authored_motion_samples.length !== clip.sample_count) {
     throw new Error('Moonrobo walk clip authored_motion_samples length must match sample_count')
   }
+  if (clip.authored_motor_frames.length !== clip.sample_count) {
+    throw new Error('Moonrobo walk clip authored_motor_frames length must match sample_count')
+  }
   for (const sample of clip.authored_joint_samples) {
     for (const field of [
       'phase',
@@ -198,6 +202,61 @@ function validateWalkClip(clip, requiredJointIds) {
     }
     if (sample.left_foot_x_m < 0 || sample.right_foot_x_m > 0) {
       throw new Error(`Moonrobo walk clip authored foot sample has wrong side sign at phase ${sample.phase}`)
+    }
+  }
+  for (const frame of clip.authored_motor_frames) {
+    for (const field of ['frame_index', 'joint_count', 'driven_joint_count', 'review_count']) {
+      requireField(frame, field, 'number')
+    }
+    for (const field of [
+      'time_s',
+      'dt_s',
+      'phase_start',
+      'phase_end',
+      'max_abs_angle_delta_rad',
+      'max_abs_velocity_rad_s',
+      'max_abs_commanded_torque_nm',
+      'total_absolute_work_j',
+    ]) {
+      requireField(frame, field, 'number')
+    }
+    for (const field of ['phase_label', 'support_foot', 'status']) {
+      requireField(frame, field, 'string')
+    }
+    requireArray(frame, 'steps')
+    if (frame.steps.length !== requiredJointIds.length) {
+      throw new Error(`Moonrobo motor frame ${frame.frame_index} has wrong step count`)
+    }
+    if (frame.review_count !== 0 || frame.status.includes('review')) {
+      throw new Error(`Moonrobo motor frame ${frame.frame_index} is not command-ready: ${frame.status}`)
+    }
+    for (const step of frame.steps) {
+      for (const field of ['joint_id', 'parent_link', 'child_link', 'side', 'field', 'status']) {
+        requireField(step, field, 'string')
+      }
+      for (const field of [
+        'before_position_rad',
+        'target_position_rad',
+        'target_velocity_rad_s',
+        'bounded_velocity_rad_s',
+        'angle_delta_rad',
+        'commanded_torque_nm',
+        'work_j',
+        'min_position_rad',
+        'max_position_rad',
+        'max_velocity_rad_s',
+        'max_torque_nm',
+        'stiffness_nm_per_rad',
+        'damping_nm_s_per_rad',
+      ]) {
+        requireField(step, field, 'number')
+      }
+      for (const field of ['position_within_limits', 'velocity_within_limits', 'torque_saturated']) {
+        requireField(step, field, 'boolean')
+      }
+      if (!step.position_within_limits || !step.velocity_within_limits || step.torque_saturated) {
+        throw new Error(`Moonrobo motor step ${step.joint_id} failed limits at frame ${frame.frame_index}`)
+      }
     }
   }
   for (const required of [
@@ -327,6 +386,54 @@ function mbAuthoredMotionSample(sample) {
   ${mbDouble(sample.right_foot_y_m)},
   ${mbDouble(sample.right_foot_z_m)},
   ${mbDouble(sample.right_foot_roll_pitch_rad)},
+)`
+}
+
+function mbMotorTargetStep(step) {
+  return `noetix_suite_motor_target_step(
+  ${mbString(step.joint_id)},
+  ${mbString(step.parent_link)},
+  ${mbString(step.child_link)},
+  ${mbString(step.side)},
+  ${mbString(step.field)},
+  ${mbDouble(step.before_position_rad)},
+  ${mbDouble(step.target_position_rad)},
+  ${mbDouble(step.target_velocity_rad_s)},
+  ${mbDouble(step.bounded_velocity_rad_s)},
+  ${mbDouble(step.angle_delta_rad)},
+  ${mbDouble(step.commanded_torque_nm)},
+  ${mbDouble(step.work_j)},
+  ${mbDouble(step.min_position_rad)},
+  ${mbDouble(step.max_position_rad)},
+  ${mbDouble(step.max_velocity_rad_s)},
+  ${mbDouble(step.max_torque_nm)},
+  ${mbDouble(step.stiffness_nm_per_rad)},
+  ${mbDouble(step.damping_nm_s_per_rad)},
+  ${mbBool(step.position_within_limits)},
+  ${mbBool(step.velocity_within_limits)},
+  ${mbBool(step.torque_saturated)},
+  ${mbString(step.status)},
+)`
+}
+
+function mbMotorFrame(frame) {
+  return `noetix_suite_motor_frame_sample(
+  ${frame.frame_index},
+  ${mbDouble(frame.time_s)},
+  ${mbDouble(frame.dt_s)},
+  ${mbDouble(frame.phase_start)},
+  ${mbDouble(frame.phase_end)},
+  ${mbString(frame.phase_label)},
+  ${mbString(frame.support_foot)},
+  ${frame.joint_count},
+  ${frame.driven_joint_count},
+  ${frame.review_count},
+  ${mbDouble(frame.max_abs_angle_delta_rad)},
+  ${mbDouble(frame.max_abs_velocity_rad_s)},
+  ${mbDouble(frame.max_abs_commanded_torque_nm)},
+  ${mbDouble(frame.total_absolute_work_j)},
+  ${indent(mbArray(frame.steps, mbMotorTargetStep), 2).trimStart()},
+  ${mbString(frame.status)},
 )`
 }
 
@@ -472,6 +579,13 @@ fn generated_moonrobo_noetix_authored_motion_samples() -> Array[
 }
 
 ///|
+fn generated_moonrobo_noetix_authored_motor_frames() -> Array[
+  SuiteAdapterMotorFrameSample,
+] {
+  ${indent(mbArray(clip.authored_motor_frames, mbMotorFrame), 2).trimStart()}
+}
+
+///|
 fn generated_moonrobo_noetix_walk_clip_blockers() -> Array[String] {
   ${indent(mbStringArray(clip.blockers), 2).trimStart()}
 }
@@ -536,6 +650,7 @@ function generatedJsContent(contract) {
     joint_curve_params: clip.joint_curve_params,
     authored_joint_samples: clip.authored_joint_samples,
     authored_motion_samples: clip.authored_motion_samples,
+    authored_motor_frames: clip.authored_motor_frames,
     ready: clip.ready,
     status: clip.status,
   }

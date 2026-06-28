@@ -43,6 +43,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   joint_curve_params : Array[SuiteAdapterJointCurveParam]
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
+  authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -103,6 +104,50 @@ pub(all) struct SuiteAdapterJointAnchor {
 pub(all) struct SuiteAdapterJointCurveParam {
   name : String
   value : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterMotorFrameSample {
+  frame_index : Int
+  time_s : Double
+  dt_s : Double
+  phase_start : Double
+  phase_end : Double
+  phase_label : String
+  support_foot : String
+  joint_count : Int
+  driven_joint_count : Int
+  review_count : Int
+  max_abs_angle_delta_rad : Double
+  max_abs_velocity_rad_s : Double
+  max_abs_commanded_torque_nm : Double
+  total_absolute_work_j : Double
+  steps : Array[SuiteAdapterMotorTargetStep]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SuiteAdapterMotorTargetStep {
+  joint_id : String
+  parent_link : String
+  child_link : String
+  side : String
+  field : String
+  before_position_rad : Double
+  target_position_rad : Double
+  target_velocity_rad_s : Double
+  bounded_velocity_rad_s : Double
+  angle_delta_rad : Double
+  commanded_torque_nm : Double
+  work_j : Double
+  min_position_rad : Double
+  max_position_rad : Double
+  max_velocity_rad_s : Double
+  max_torque_nm : Double
+  stiffness_nm_per_rad : Double
+  damping_nm_s_per_rad : Double
+  position_within_limits : Bool
+  velocity_within_limits : Bool
+  torque_saturated : Bool
+  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct SuiteAdapterSourceRef {

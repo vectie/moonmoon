@@ -64,6 +64,52 @@ pub(all) struct SuiteAdapterAuthoredMotionSample {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SuiteAdapterMotorTargetStep {
+  joint_id : String
+  parent_link : String
+  child_link : String
+  side : String
+  field : String
+  before_position_rad : Double
+  target_position_rad : Double
+  target_velocity_rad_s : Double
+  bounded_velocity_rad_s : Double
+  angle_delta_rad : Double
+  commanded_torque_nm : Double
+  work_j : Double
+  min_position_rad : Double
+  max_position_rad : Double
+  max_velocity_rad_s : Double
+  max_torque_nm : Double
+  stiffness_nm_per_rad : Double
+  damping_nm_s_per_rad : Double
+  position_within_limits : Bool
+  velocity_within_limits : Bool
+  torque_saturated : Bool
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct SuiteAdapterMotorFrameSample {
+  frame_index : Int
+  time_s : Double
+  dt_s : Double
+  phase_start : Double
+  phase_end : Double
+  phase_label : String
+  support_foot : String
+  joint_count : Int
+  driven_joint_count : Int
+  review_count : Int
+  max_abs_angle_delta_rad : Double
+  max_abs_velocity_rad_s : Double
+  max_abs_commanded_torque_nm : Double
+  total_absolute_work_j : Double
+  steps : Array[SuiteAdapterMotorTargetStep]
+  status : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSuiteAdapterPayload {
   payload_id : String
   robot_id : String
@@ -89,6 +135,7 @@ pub(all) struct NoetixSuiteAdapterPayload {
   joint_curve_params : Array[SuiteAdapterJointCurveParam]
   authored_joint_samples : Array[SuiteAdapterAuthoredJointSample]
   authored_motion_samples : Array[SuiteAdapterAuthoredMotionSample]
+  authored_motor_frames : Array[SuiteAdapterMotorFrameSample]
   expected_profile_joint_count : Int
   driven_joint_ids : Array[String]
   frame_count : Int
@@ -204,6 +251,96 @@ fn noetix_suite_authored_motion_sample(
 }
 
 ///|
+fn noetix_suite_motor_target_step(
+  joint_id : String,
+  parent_link : String,
+  child_link : String,
+  side : String,
+  field : String,
+  before_position_rad : Double,
+  target_position_rad : Double,
+  target_velocity_rad_s : Double,
+  bounded_velocity_rad_s : Double,
+  angle_delta_rad : Double,
+  commanded_torque_nm : Double,
+  work_j : Double,
+  min_position_rad : Double,
+  max_position_rad : Double,
+  max_velocity_rad_s : Double,
+  max_torque_nm : Double,
+  stiffness_nm_per_rad : Double,
+  damping_nm_s_per_rad : Double,
+  position_within_limits : Bool,
+  velocity_within_limits : Bool,
+  torque_saturated : Bool,
+  status : String,
+) -> SuiteAdapterMotorTargetStep {
+  {
+    joint_id,
+    parent_link,
+    child_link,
+    side,
+    field,
+    before_position_rad,
+    target_position_rad,
+    target_velocity_rad_s,
+    bounded_velocity_rad_s,
+    angle_delta_rad,
+    commanded_torque_nm,
+    work_j,
+    min_position_rad,
+    max_position_rad,
+    max_velocity_rad_s,
+    max_torque_nm,
+    stiffness_nm_per_rad,
+    damping_nm_s_per_rad,
+    position_within_limits,
+    velocity_within_limits,
+    torque_saturated,
+    status,
+  }
+}
+
+///|
+fn noetix_suite_motor_frame_sample(
+  frame_index : Int,
+  time_s : Double,
+  dt_s : Double,
+  phase_start : Double,
+  phase_end : Double,
+  phase_label : String,
+  support_foot : String,
+  joint_count : Int,
+  driven_joint_count : Int,
+  review_count : Int,
+  max_abs_angle_delta_rad : Double,
+  max_abs_velocity_rad_s : Double,
+  max_abs_commanded_torque_nm : Double,
+  total_absolute_work_j : Double,
+  steps : Array[SuiteAdapterMotorTargetStep],
+  status : String,
+) -> SuiteAdapterMotorFrameSample {
+  {
+    frame_index,
+    time_s,
+    dt_s,
+    phase_start,
+    phase_end,
+    phase_label,
+    support_foot,
+    joint_count,
+    driven_joint_count,
+    review_count,
+    max_abs_angle_delta_rad,
+    max_abs_velocity_rad_s,
+    max_abs_commanded_torque_nm,
+    total_absolute_work_j,
+    steps,
+    status,
+  }
+}
+
+///|
 fn noetix_expected_profile_joint_count() -> Int {
   generated_moonrobo_noetix_expected_profile_joint_count()
 }
@@ -291,6 +428,12 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
       "moonrobo-walk-clip-authored-motion-sample-count:\{generated_moonrobo_noetix_authored_motion_samples().length()}",
     )
   }
+  if generated_moonrobo_noetix_authored_motor_frames().length() !=
+    generated_moonrobo_noetix_walk_sample_count() {
+    blockers.push(
+      "moonrobo-walk-clip-authored-motor-frame-count:\{generated_moonrobo_noetix_authored_motor_frames().length()}",
+    )
+  }
   if generated_moonrobo_noetix_foot_phase_sequence().length() != 6 {
     blockers.push(
       "moonrobo-walk-clip-foot-phase-count:\{generated_moonrobo_noetix_foot_phase_sequence().length()}",
@@ -323,6 +466,27 @@ fn moonrobo_noetix_source_contract_bridge_blockers() -> Array[String] {
   for sample in generated_moonrobo_noetix_authored_motion_samples() {
     if sample.left_foot_x_m < 0.0 || sample.right_foot_x_m > 0.0 {
       blockers.push("moonrobo-walk-clip-authored-foot-side:\{sample.phase}")
+    }
+  }
+  for frame in generated_moonrobo_noetix_authored_motor_frames() {
+    if frame.joint_count != noetix_required_driven_joint_ids().length() {
+      blockers.push(
+        "moonrobo-walk-clip-authored-motor-joint-count:\{frame.frame_index}",
+      )
+    }
+    if frame.review_count > 0 || frame.status.contains("review") {
+      blockers.push(
+        "moonrobo-walk-clip-authored-motor-review:\{frame.frame_index}",
+      )
+    }
+    for step in frame.steps {
+      if !step.position_within_limits ||
+        !step.velocity_within_limits ||
+        step.torque_saturated {
+        blockers.push(
+          "moonrobo-walk-clip-authored-motor-step-review:\{frame.frame_index}:\{step.joint_id}",
+        )
+      }
     }
   }
   blockers
@@ -410,6 +574,7 @@ pub fn moonrobo_noetix_suite_adapter_payload() -> NoetixSuiteAdapterPayload {
     joint_curve_params: generated_moonrobo_noetix_joint_curve_params(),
     authored_joint_samples: generated_moonrobo_noetix_authored_joint_samples(),
     authored_motion_samples: generated_moonrobo_noetix_authored_motion_samples(),
+    authored_motor_frames: generated_moonrobo_noetix_authored_motor_frames(),
     expected_profile_joint_count: noetix_expected_profile_joint_count(),
     driven_joint_ids,
     frame_count,

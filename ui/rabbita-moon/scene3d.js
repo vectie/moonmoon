@@ -1,8 +1,8 @@
 import {
   FOOT_PHASE_SEQUENCE,
-  NOETIX_HINGE_MOTOR_JOINTS,
   NOETIX_URDF_LIMIT_SOURCE,
   NOETIX_VISUAL_RIG,
+  NOETIX_WALK_CLIP,
   authoredMotionSample,
   cloneJointSamples,
   cycle01,
@@ -1647,99 +1647,12 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
   }
 }
 
-function hingeJointPosition(joints, spec) {
-  return joints[spec.side][spec.field]
-}
-
-function moonphysJointMotorStep(spec, before, after, dt_s) {
-  const beforePosition = hingeJointPosition(before.diagnostics.joints, spec)
-  const afterPosition = hingeJointPosition(after.diagnostics.joints, spec)
-  const angleDelta = afterPosition - beforePosition
-  const targetVelocity = dt_s > 0 ? angleDelta / dt_s : 0
-  const boundedVelocity = clamp(targetVelocity, -spec.max_velocity, spec.max_velocity)
-  const rawTorque = spec.stiffness * angleDelta + spec.damping * boundedVelocity
-  const commandedTorque = clamp(rawTorque, -spec.max_torque, spec.max_torque)
-  const positionWithinLimits = afterPosition >= spec.min && afterPosition <= spec.max
-  const velocityWithinLimits = Math.abs(targetVelocity) <= spec.max_velocity + 0.000001
-  const torqueSaturated = Math.abs(rawTorque - commandedTorque) > 0.000001
-  const workJ = commandedTorque * angleDelta
-  const status = !positionWithinLimits || !velocityWithinLimits
-    ? 'joint-limit-review'
-    : torqueSaturated
-      ? 'joint-torque-review'
-      : 'joint-commanded'
-  return {
-    joint_id: spec.joint_id,
-    parent_link: spec.parent_link,
-    child_link: spec.child_link,
-    axis: { x: 1, y: 0, z: 0 },
-    before_position_rad: Number(beforePosition.toFixed(4)),
-    target_position_rad: Number(afterPosition.toFixed(4)),
-    target_velocity_rad_s: Number(targetVelocity.toFixed(4)),
-    bounded_velocity_rad_s: Number(boundedVelocity.toFixed(4)),
-    angle_delta_rad: Number(angleDelta.toFixed(4)),
-    commanded_torque_nm: Number(commandedTorque.toFixed(4)),
-    work_j: Number(workJ.toFixed(4)),
-    stiffness_nm_per_rad: spec.stiffness,
-    damping_nm_s_per_rad: spec.damping,
-    limit: {
-      min_position_rad: spec.min,
-      max_position_rad: spec.max,
-      max_velocity_rad_s: spec.max_velocity,
-      max_torque_nm: spec.max_torque,
-      source: NOETIX_URDF_LIMIT_SOURCE.urdf_path,
-    },
-    position_within_limits: positionWithinLimits,
-    velocity_within_limits: velocityWithinLimits,
-    torque_saturated: torqueSaturated,
-    status,
-  }
-}
-
-function moonphysHingeMotorFrameEvidence(before, after, frameIndex, dt_s) {
-  const steps = NOETIX_HINGE_MOTOR_JOINTS.map(spec => moonphysJointMotorStep(spec, before, after, dt_s))
-  const drivenSteps = steps.filter(step => Math.abs(step.angle_delta_rad) > 0.0001)
-  const reviewSteps = steps.filter(step => step.status !== 'joint-commanded')
-  const totalAbsoluteWorkJ = steps.reduce((sum, step) => sum + Math.abs(step.work_j), 0)
-  const maxAbsTorque = Math.max(...steps.map(step => Math.abs(step.commanded_torque_nm)))
-  const maxAbsVelocity = Math.max(...steps.map(step => Math.abs(step.target_velocity_rad_s)))
-  const maxAbsAngleDelta = Math.max(...steps.map(step => Math.abs(step.angle_delta_rad)))
-  return {
-    frame_index: frameIndex,
-    time_s: before.time_s,
-    dt_s: Number(dt_s.toFixed(4)),
-    source: 'corrected-fk-joint-samples',
-    phase_label: before.diagnostics.phaseLabel,
-    support_foot: before.diagnostics.supportFoot,
-    joint_count: steps.length,
-    driven_joint_count: drivenSteps.length,
-    review_count: reviewSteps.length,
-    max_abs_angle_delta_rad: Number(maxAbsAngleDelta.toFixed(4)),
-    max_abs_velocity_rad_s: Number(maxAbsVelocity.toFixed(4)),
-    max_abs_commanded_torque_nm: Number(maxAbsTorque.toFixed(4)),
-    total_absolute_work_j: Number(totalAbsoluteWorkJ.toFixed(4)),
-    steps,
-    status: reviewSteps.length > 0
-      ? 'world-heightfield-hinge-motor-review'
-      : drivenSteps.length > 0
-        ? 'world-heightfield-hinge-motor-driven'
-        : 'world-heightfield-hinge-motor-idle',
-  }
-}
-
 function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
-  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
-  const dt_s = cycleSeconds / sampleCount
-  const samples = Array.from({ length: sampleCount + 1 }, (_, index) => {
-    const time_s = index * dt_s
-    return {
-      time_s: Number(time_s.toFixed(4)),
-      diagnostics: robotGeometry(time_s, { quality: false }).diagnostics,
-    }
-  })
-  const frames = Array.from({ length: sampleCount }, (_, index) => (
-    moonphysHingeMotorFrameEvidence(samples[index], samples[index + 1], index, dt_s)
-  ))
+  const moonroboFrames = NOETIX_WALK_CLIP.authored_motor_frames
+  if (!Array.isArray(moonroboFrames) || moonroboFrames.length !== sampleCount) {
+    throw new Error(`Moonrobo authored motor frames must match requested sample count ${sampleCount}`)
+  }
+  const frames = moonroboFrames.map(moonroboMotorFrameEvidence)
   const drivenJointCount = frames.reduce((sum, frame) => sum + frame.driven_joint_count, 0)
   const reviewCount = frames.reduce((sum, frame) => sum + frame.review_count, 0)
   const maxAbsAngleDelta = Math.max(...frames.map(frame => frame.max_abs_angle_delta_rad))
@@ -1751,10 +1664,10 @@ function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
     source: NOETIX_VISUAL_RIG.source,
     limit_source: NOETIX_URDF_LIMIT_SOURCE,
     environment_id: 'moon/lunar-surface',
-    sample_source: 'corrected-fk-joint-samples',
+    sample_source: 'moonrobo-authored-motor-frames',
     frame_count: frames.length,
     motor_frame_count: frames.length,
-    joint_count: NOETIX_HINGE_MOTOR_JOINTS.length,
+    joint_count: frames[0]?.joint_count ?? NOETIX_WALK_CLIP.required_joint_ids.length,
     driven_joint_count: drivenJointCount,
     review_count: reviewCount,
     max_abs_angle_delta_rad: Number(maxAbsAngleDelta.toFixed(4)),
@@ -1767,6 +1680,55 @@ function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
       : drivenJointCount > 0
         ? 'world-heightfield-hinge-motor-trace-driven'
         : 'world-heightfield-hinge-motor-trace-idle',
+  }
+}
+
+function moonroboMotorFrameEvidence(frame) {
+  return {
+    frame_index: frame.frame_index,
+    time_s: Number(frame.time_s.toFixed(4)),
+    dt_s: Number(frame.dt_s.toFixed(4)),
+    source: 'moonrobo-authored-motor-frames',
+    phase_label: frame.phase_label,
+    support_foot: frame.support_foot,
+    joint_count: frame.joint_count,
+    driven_joint_count: frame.driven_joint_count,
+    review_count: frame.review_count,
+    max_abs_angle_delta_rad: Number(frame.max_abs_angle_delta_rad.toFixed(4)),
+    max_abs_velocity_rad_s: Number(frame.max_abs_velocity_rad_s.toFixed(4)),
+    max_abs_commanded_torque_nm: Number(frame.max_abs_commanded_torque_nm.toFixed(4)),
+    total_absolute_work_j: Number(frame.total_absolute_work_j.toFixed(4)),
+    steps: frame.steps.map(moonroboMotorStepEvidence),
+    status: frame.status,
+  }
+}
+
+function moonroboMotorStepEvidence(step) {
+  return {
+    joint_id: step.joint_id,
+    parent_link: step.parent_link,
+    child_link: step.child_link,
+    axis: { x: 1, y: 0, z: 0 },
+    before_position_rad: Number(step.before_position_rad.toFixed(4)),
+    target_position_rad: Number(step.target_position_rad.toFixed(4)),
+    target_velocity_rad_s: Number(step.target_velocity_rad_s.toFixed(4)),
+    bounded_velocity_rad_s: Number(step.bounded_velocity_rad_s.toFixed(4)),
+    angle_delta_rad: Number(step.angle_delta_rad.toFixed(4)),
+    commanded_torque_nm: Number(step.commanded_torque_nm.toFixed(4)),
+    work_j: Number(step.work_j.toFixed(4)),
+    stiffness_nm_per_rad: step.stiffness_nm_per_rad,
+    damping_nm_s_per_rad: step.damping_nm_s_per_rad,
+    limit: {
+      min_position_rad: step.min_position_rad,
+      max_position_rad: step.max_position_rad,
+      max_velocity_rad_s: step.max_velocity_rad_s,
+      max_torque_nm: step.max_torque_nm,
+      source: NOETIX_URDF_LIMIT_SOURCE.urdf_path,
+    },
+    position_within_limits: step.position_within_limits,
+    velocity_within_limits: step.velocity_within_limits,
+    torque_saturated: step.torque_saturated,
+    status: step.status,
   }
 }
 

@@ -171,6 +171,18 @@ test "Moonrobo Noetix suite payload records durable source refs" {
     assert_true(sample.left_foot_x_m > 0.0)
     assert_true(sample.right_foot_x_m < 0.0)
   }
+  assert_eq(payload.authored_motor_frames.length(), payload.walk_sample_count)
+  assert_true(
+    payload.authored_motor_frames.any(fn(frame) {
+      frame.driven_joint_count > 0 &&
+      frame.status == "world-heightfield-hinge-motor-driven"
+    }),
+  )
+  for frame in payload.authored_motor_frames {
+    assert_eq(frame.joint_count, payload.driven_joint_ids.length())
+    assert_eq(frame.review_count, 0)
+    assert_true(frame.max_abs_velocity_rad_s <= 3.0)
+  }
   assert_eq(payload.frame_count, 24)
   assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
   assert_eq(

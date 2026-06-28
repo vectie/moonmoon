@@ -63,6 +63,7 @@ const sceneContracts = [
   'NOETIX_WALK_CLIP',
   'authored_joint_samples',
   'authored_motion_samples',
+  'authored_motor_frames',
   'generated-moonrobo-noetix-clip.js',
 ]
 
@@ -135,6 +136,9 @@ if (gaitModule.NOETIX_WALK_CLIP.authored_joint_samples.length !== gaitModule.NOE
 }
 if (gaitModule.NOETIX_WALK_CLIP.authored_motion_samples.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
   throw new Error('generated Moonrobo authored motion samples do not match sample_count')
+}
+if (gaitModule.NOETIX_WALK_CLIP.authored_motor_frames.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
+  throw new Error('generated Moonrobo authored motor frames do not match sample_count')
 }
 const firstAuthoredSample = gaitModule.NOETIX_WALK_CLIP.authored_joint_samples[0]
 const firstMotionSample = gaitModule.NOETIX_WALK_CLIP.authored_motion_samples[0]
@@ -224,8 +228,8 @@ if (moonphysTrace.envelope.max_friction_utilization <= 0 || moonphysTrace.envelo
 if (hingeTrace.environment_id !== 'moon/lunar-surface') {
   throw new Error('Moonphys hinge motor trace used an unexpected environment')
 }
-if (hingeTrace.sample_source !== 'corrected-fk-joint-samples') {
-  throw new Error('Moonphys hinge motor trace did not use corrected FK joint samples')
+if (hingeTrace.sample_source !== 'moonrobo-authored-motor-frames') {
+  throw new Error('Moonphys hinge motor trace did not use Moonrobo authored motor frames')
 }
 if (hingeTrace.limit_source?.urdf_path !== '../moonrobo/examples/noetix-e1/model/robot.urdf') {
   throw new Error('Moonphys hinge motor trace did not cite the Moonrobo Noetix URDF limit source')
