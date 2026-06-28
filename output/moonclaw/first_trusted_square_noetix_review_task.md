@@ -79,14 +79,13 @@
   - static-support review frames: 32
   - dynamic-stability review frames: 32
   - joint-control review frames: 32
-  - joint-control world-support review frames: 12
-  - joint-control world-capture review frames: 31
-  - joint-control max support recovery shift: 0.006668399545292702 m
-  - joint-control worst capture support margin: -3.19693415142415 m
-  - joint-control max capture recovery shift: 3.625660454440404 m
-  - joint-control world replay blockers: 2
+  - joint-control world-support review frames: 0
+  - joint-control world-capture review frames: 6
+  - joint-control max support recovery shift: 0 m
+  - joint-control worst capture support margin: -0.04446360775936132 m
+  - joint-control max capture recovery shift: 0.04446360775936131 m
+  - joint-control world replay blockers: 1
   - joint-control world replay blocker ids:
-    - world-support-review
     - world-dynamic-support-review
   - inertial-collision review frames: 32
   - hardware state: hardware-denied
@@ -146,7 +145,7 @@
       - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
     - noetix-joint-control-review: output/moonrobo/first_trusted_square_noetix_control.json
-      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; heightfield motor contacts 24; support-review frames 12; capture-review frames 31; max support recovery shift 0.006668399545292702 m; worst capture support margin -3.19693415142415 m; max capture recovery shift 3.625660454440404 m; world replay blockers 2; resolved world hinges 1463; body samples 825; max world speed 1.4838116787271107 m/s; max world energy 1.6732897944244947 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review
+      - current: 32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 52; center-of-mass target frames 32; heightfield motor contacts 24; support-review frames 0; capture-review frames 6; max support recovery shift 0 m; worst capture support margin -0.04446360775936132 m; max capture recovery shift 0.04446360775936131 m; world replay blockers 1; resolved world hinges 1463; body samples 825; max world speed 1.4838116787271107 m/s; max world energy 1.6732897944244947 J; envelope world-trace-envelope-bounded; world review world-replay-review-blocked; max power 31.870902877062505 W; absolute work 151.62707673085032 J; status joint-control-assumption-review
       - ready: false
       - blocking: joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated
       - gate: python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json

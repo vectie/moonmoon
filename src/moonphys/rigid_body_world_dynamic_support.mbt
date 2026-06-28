@@ -65,16 +65,32 @@ pub fn rigid_body_world_dynamic_support_frame_with_footprints(
   step : RigidBodyHeightfieldWorldStep,
   footprints : Array[SupportFootprint],
 ) -> RigidBodyWorldDynamicSupportFrame {
-  let support_frame = rigid_body_world_support_frame_with_footprints(
-    step, footprints,
+  rigid_body_world_dynamic_support_frame_with_targets(step, footprints, None)
+}
+
+///|
+pub fn rigid_body_world_dynamic_support_frame_with_targets(
+  step : RigidBodyHeightfieldWorldStep,
+  footprints : Array[SupportFootprint],
+  center_of_mass_target : RigidBodyWorldCenterOfMassTarget?,
+) -> RigidBodyWorldDynamicSupportFrame {
+  let target = rigid_body_world_center_of_mass_target_or_world(
+    step.after,
+    center_of_mass_target,
   )
-  let center = rigid_body_world_center_of_mass(step.after)
-  let velocity = rigid_body_world_center_of_mass_velocity(step.after)
+  let support_frame = rigid_body_world_support_frame_with_targets(
+    step,
+    footprints,
+    Some(target),
+  )
+  let center = target.center_of_mass
+  let velocity = target.center_of_mass_velocity
   let assessment = capture_point_assessment(
     step.after.environment,
     center,
     velocity,
     support_frame.footprints,
+    nominal_com_height_m=target.nominal_com_height_m,
   )
   let recovery = support_recovery_correction(
     assessment.capture_point,
@@ -157,6 +173,7 @@ fn rigid_body_world_dynamic_support_trace_from_footprint_frames(
   body_count : Int,
   steps : Array[RigidBodyHeightfieldWorldStep],
   footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets? : Array[RigidBodyWorldCenterOfMassTarget] = [],
 ) -> RigidBodyWorldDynamicSupportTrace {
   let frames : Array[RigidBodyWorldDynamicSupportFrame] = []
   let mut contact_count = 0
@@ -171,8 +188,12 @@ fn rigid_body_world_dynamic_support_trace_from_footprint_frames(
     let frame = if target_footprints.is_empty() {
       rigid_body_world_dynamic_support_frame(step)
     } else {
-      rigid_body_world_dynamic_support_frame_with_footprints(
-        step, target_footprints,
+      rigid_body_world_dynamic_support_frame_with_targets(
+        step,
+        target_footprints,
+        rigid_body_world_center_of_mass_target_frame(
+          center_of_mass_targets, index,
+        ),
       )
     }
     contact_count += frame.contact_count
@@ -232,6 +253,21 @@ pub fn rigid_body_heightfield_world_dynamic_support_trace_with_footprints(
 }
 
 ///|
+pub fn rigid_body_heightfield_world_dynamic_support_trace_with_targets(
+  trace : RigidBodyHeightfieldWorldTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldDynamicSupportTrace {
+  rigid_body_world_dynamic_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    trace.frames,
+    footprint_frames,
+    center_of_mass_targets~,
+  )
+}
+
+///|
 pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(
   trace : RigidBodyHeightfieldWorldHingeMotorTrace,
 ) -> RigidBodyWorldDynamicSupportTrace {
@@ -260,5 +296,24 @@ pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_footp
     trace.final_world.bodies.length(),
     steps,
     footprint_frames,
+  )
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_targets(
+  trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldDynamicSupportTrace {
+  let steps : Array[RigidBodyHeightfieldWorldStep] = []
+  for frame in trace.frames {
+    steps.push(frame.world_step)
+  }
+  rigid_body_world_dynamic_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    steps,
+    footprint_frames,
+    center_of_mass_targets~,
   )
 }

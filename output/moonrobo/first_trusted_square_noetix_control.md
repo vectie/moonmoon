@@ -20,12 +20,13 @@
 - hinge motor world trace body targets: 800
 - hinge motor world trace support-target frames: 32
 - hinge motor world trace support targets: 52
+- hinge motor world trace center-of-mass-target frames: 32
 - hinge motor world trace contacts: 24
 - hinge motor world trace support contacts: 52
-- hinge motor world trace stable support frames: 20
-- hinge motor world trace support-review frames: 12
-- hinge motor world trace capture-stable support frames: 1
-- hinge motor world trace capture-review support frames: 31
+- hinge motor world trace stable support frames: 32
+- hinge motor world trace support-review frames: 0
+- hinge motor world trace capture-stable support frames: 26
+- hinge motor world trace capture-review support frames: 6
 - hinge motor world trace resolved hinges: 1463
 - hinge motor world trace body samples: 825
 - hinge motor world trace max speed: 1.4838116787271107 m/s
@@ -33,17 +34,17 @@
 - hinge motor world trace total mass: 38.00000000000001 kg
 - hinge motor world trace center of mass x: 0.45737180877201283 m
 - hinge motor world trace max center-of-mass speed: 0.2689052811794542 m/s
-- hinge motor world trace min support margin: -0.006668399545292702 m
-- hinge motor world trace max support recovery shift: 0.006668399545292702 m
-- hinge motor world trace worst capture support margin: -3.19693415142415 m
-- hinge motor world trace max capture recovery shift: 3.625660454440404 m
-- hinge motor world trace max center-of-pressure error: 0.12237483789135715 m
+- hinge motor world trace min support margin: 0.0049999999999999975 m
+- hinge motor world trace max support recovery shift: 0 m
+- hinge motor world trace worst capture support margin: -0.04446360775936132 m
+- hinge motor world trace max capture recovery shift: 0.04446360775936131 m
+- hinge motor world trace max center-of-pressure error: 0.048826222462934825 m
 - hinge motor world trace max body momentum: 2.2553937516652085 kg*m/s
 - hinge motor world trace max world momentum: 10.218400684819263 kg*m/s
 - hinge motor world trace max frame energy delta: 4.1865838105950015 J
 - hinge motor world trace envelope: world-trace-envelope-bounded
 - hinge motor world trace review: world-replay-review-blocked
-- hinge motor world trace review blockers: 2
+- hinge motor world trace review blockers: 1
 - hinge motor world trace status: world-heightfield-hinge-motor-trace-driven
 - max position error: 0.24829338743491552 rad
 - max target velocity: 2.6231195783590526 rad/s

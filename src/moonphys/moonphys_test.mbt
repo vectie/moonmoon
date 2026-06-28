@@ -1353,6 +1353,56 @@ test "hinge motor replay review can use explicit support footprints" {
 }
 
 ///|
+test "hinge motor replay review can use center-of-mass targets" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let body = rigid_body_state(
+    "body",
+    1.0,
+    0.05,
+    vec3(1.0, 0.0, 0.1),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "support-com-target-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [rigid_body_world_body(body)],
+  )
+  let motor = integrate_joint_motor_frame("idle", [], [], [], [], [], 0.1)
+  let trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "support-com-target-trace",
+    world,
+    field,
+    [motor],
+  )
+  let footprints = [
+    [support_footprint("left-foot", vec3(0.0, 0.0, 0.0), 0.2, 0.1)],
+  ]
+  let footprint_review = rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(
+    trace, footprints,
+  )
+  assert_true(footprint_review.blockers.contains("world-support-review"))
+  let targets = [
+    rigid_body_world_center_of_mass_target(
+      vec3(0.0, 0.0, 0.1),
+      vec3(0.0, 0.0, 0.0),
+      total_mass_kg=1.0,
+      nominal_com_height_m=0.72,
+    ),
+  ]
+  let targeted_review = rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(
+    trace, footprints, targets,
+  )
+  assert_true(!targeted_review.blockers.contains("world-support-review"))
+  assert_true(
+    !targeted_review.blockers.contains("world-dynamic-support-review"),
+  )
+  assert_eq(targeted_review.support_review_frame_count, 0)
+  assert_eq(targeted_review.capture_review_frame_count, 0)
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(

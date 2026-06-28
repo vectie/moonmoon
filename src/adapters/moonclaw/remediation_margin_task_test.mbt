@@ -1557,9 +1557,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.static_support_review_frame_count > 0)
   assert_true(task.dynamic_stability_review_frame_count > 0)
   assert_true(task.joint_control_review_frame_count > 0)
-  assert_true(task.joint_control_world_support_review_frame_count > 0)
+  assert_eq(task.joint_control_world_support_review_frame_count, 0)
   assert_true(task.joint_control_world_capture_review_frame_count > 0)
-  assert_true(task.joint_control_max_support_recovery_shift_m >= 0.0)
+  assert_eq(task.joint_control_max_support_recovery_shift_m, 0.0)
   assert_true(task.joint_control_worst_capture_support_margin_m < 0.0)
   assert_true(task.joint_control_max_capture_recovery_shift_m >= 0.0)
   assert_true(task.joint_control_world_replay_blocker_count > 0)
@@ -1759,9 +1759,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(
     decision.physical_model_blocker_ids.contains("missing:joint-damping"),
   )
-  assert_true(decision.joint_control_world_support_review_frame_count > 0)
+  assert_eq(decision.joint_control_world_support_review_frame_count, 0)
   assert_true(decision.joint_control_world_capture_review_frame_count > 0)
-  assert_true(decision.joint_control_max_support_recovery_shift_m >= 0.0)
+  assert_eq(decision.joint_control_max_support_recovery_shift_m, 0.0)
   assert_true(decision.joint_control_worst_capture_support_margin_m < 0.0)
   assert_true(decision.joint_control_max_capture_recovery_shift_m >= 0.0)
   assert_true(decision.joint_control_world_replay_blocker_count > 0)
@@ -1850,8 +1850,8 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
   assert_true(
     items.any(fn(item) {
       item.blocker_domain == "world-replay" &&
-      item.blocker_count == 2 &&
-      item.blocker_ids.contains("world-support-review") &&
+      item.blocker_count == 1 &&
+      !item.blocker_ids.contains("world-support-review") &&
       item.blocker_ids.contains("world-dynamic-support-review") &&
       item.acceptance_check.contains("check_moonrobo_noetix_control")
     }),
@@ -1937,8 +1937,11 @@ test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
   assert_true(
     receipts.any(fn(receipt) {
       receipt.work_item_result.blocker_domain == "world-replay" &&
-      receipt.work_item_result.blocker_count == 2 &&
-      receipt.work_item_result.blocker_ids.contains("world-support-review") &&
+      receipt.work_item_result.blocker_count == 1 &&
+      !receipt.work_item_result.blocker_ids.contains("world-support-review") &&
+      receipt.work_item_result.blocker_ids.contains(
+        "world-dynamic-support-review",
+      ) &&
       receipt.work_item_result.acceptance_check.contains(
         "check_moonrobo_noetix_control",
       )

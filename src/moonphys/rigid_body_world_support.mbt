@@ -102,10 +102,27 @@ pub fn rigid_body_world_support_frame_with_footprints(
   step : RigidBodyHeightfieldWorldStep,
   footprints : Array[SupportFootprint],
 ) -> RigidBodyWorldSupportFrame {
-  let center = rigid_body_world_center_of_mass(step.after)
+  rigid_body_world_support_frame_with_targets(step, footprints, None)
+}
+
+///|
+pub fn rigid_body_world_support_frame_with_targets(
+  step : RigidBodyHeightfieldWorldStep,
+  footprints : Array[SupportFootprint],
+  center_of_mass_target : RigidBodyWorldCenterOfMassTarget?,
+) -> RigidBodyWorldSupportFrame {
+  let target = rigid_body_world_center_of_mass_target_or_world(
+    step.after,
+    center_of_mass_target,
+  )
+  let center = target.center_of_mass
   let support = support_assessment(center, footprints)
   let recovery = support_recovery_correction(center, footprints)
-  let total_mass = rigid_body_world_total_mass(step.after)
+  let total_mass = if target.total_mass_kg > 0.0 {
+    target.total_mass_kg
+  } else {
+    rigid_body_world_total_mass(step.after)
+  }
   let load = support_load_assessment(
     center,
     footprints,
@@ -205,6 +222,7 @@ fn rigid_body_world_support_trace_from_footprint_frames(
   body_count : Int,
   steps : Array[RigidBodyHeightfieldWorldStep],
   footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets? : Array[RigidBodyWorldCenterOfMassTarget] = [],
 ) -> RigidBodyWorldSupportTrace {
   let frames : Array[RigidBodyWorldSupportFrame] = []
   let mut contact_count = 0
@@ -221,7 +239,13 @@ fn rigid_body_world_support_trace_from_footprint_frames(
     let frame = if target_footprints.is_empty() {
       rigid_body_world_support_frame(step)
     } else {
-      rigid_body_world_support_frame_with_footprints(step, target_footprints)
+      rigid_body_world_support_frame_with_targets(
+        step,
+        target_footprints,
+        rigid_body_world_center_of_mass_target_frame(
+          center_of_mass_targets, index,
+        ),
+      )
     }
     contact_count += frame.contact_count
     if frame.support.stable {
@@ -283,6 +307,21 @@ pub fn rigid_body_heightfield_world_support_trace_with_footprints(
 }
 
 ///|
+pub fn rigid_body_heightfield_world_support_trace_with_targets(
+  trace : RigidBodyHeightfieldWorldTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldSupportTrace {
+  rigid_body_world_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    trace.frames,
+    footprint_frames,
+    center_of_mass_targets~,
+  )
+}
+
+///|
 pub fn rigid_body_heightfield_world_hinge_motor_support_trace(
   trace : RigidBodyHeightfieldWorldHingeMotorTrace,
 ) -> RigidBodyWorldSupportTrace {
@@ -311,5 +350,24 @@ pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(
     trace.final_world.bodies.length(),
     steps,
     footprint_frames,
+  )
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_targets(
+  trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldSupportTrace {
+  let steps : Array[RigidBodyHeightfieldWorldStep] = []
+  for frame in trace.frames {
+    steps.push(frame.world_step)
+  }
+  rigid_body_world_support_trace_from_footprint_frames(
+    trace.trace_id,
+    trace.final_world.bodies.length(),
+    steps,
+    footprint_frames,
+    center_of_mass_targets~,
   )
 }

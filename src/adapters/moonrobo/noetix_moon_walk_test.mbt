@@ -416,13 +416,20 @@ test "noetix joint control report replays gait phases through moonphys" {
   assert_eq(report.hinge_motor_world_trace.support_target_frame_count, 12)
   assert_true(report.hinge_motor_world_trace.support_target_count > 0)
   assert_eq(
+    report.hinge_motor_world_trace.center_of_mass_target_frame_count,
+    12,
+  )
+  assert_eq(
     report.hinge_motor_world_trace.driven_joint_count,
     report.hinge_motor_driven_joint_count,
   )
   assert_true(report.hinge_motor_world_trace.contact_count > 0)
   assert_true(report.hinge_motor_world_trace.support_contact_count > 0)
-  assert_true(report.hinge_motor_world_trace.stable_support_frame_count >= 0)
-  assert_true(report.hinge_motor_world_trace.support_review_frame_count >= 0)
+  assert_eq(
+    report.hinge_motor_world_trace.stable_support_frame_count,
+    report.hinge_motor_world_trace.frame_count,
+  )
+  assert_eq(report.hinge_motor_world_trace.support_review_frame_count, 0)
   assert_eq(
     report.hinge_motor_world_trace.capture_stable_support_frame_count +
     report.hinge_motor_world_trace.capture_support_review_frame_count,
@@ -491,14 +498,14 @@ test "noetix joint control report replays gait phases through moonphys" {
     ),
   )
   assert_true(!report.hinge_motor_world_trace.world_review_ready)
-  assert_eq(report.hinge_motor_world_trace.world_review_blocker_count, 2)
+  assert_eq(report.hinge_motor_world_trace.world_review_blocker_count, 1)
   assert_true(
     !report.hinge_motor_world_trace.world_review_blockers.contains(
       "world-envelope-review",
     ),
   )
   assert_true(
-    report.hinge_motor_world_trace.world_review_blockers.contains(
+    !report.hinge_motor_world_trace.world_review_blockers.contains(
       "world-support-review",
     ),
   )

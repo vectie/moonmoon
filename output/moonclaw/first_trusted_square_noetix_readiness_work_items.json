@@ -113,9 +113,8 @@
     "rank": 3,
     "state": "NeedsReview",
     "blocker_domain": "world-replay",
-    "blocker_count": 2,
+    "blocker_count": 1,
     "blocker_ids": [
-      "world-support-review",
       "world-dynamic-support-review"
     ],
     "required_evidence": "Moonphys world replay review with envelope, support, and dynamic-support blockers cleared",

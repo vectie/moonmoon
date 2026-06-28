@@ -250,7 +250,7 @@
       ],
       "validation_notes": [
         "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-3-world-replay from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-        "blocker-accounting-preserved: pass - work item world-replay preserves 2 named blockers",
+        "blocker-accounting-preserved: pass - work item world-replay preserves 1 named blockers",
         "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
         "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
         "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for world-replay",
@@ -273,9 +273,8 @@
       "rank": 3,
       "robot_id": "noetix-e1-lab-01",
       "blocker_domain": "world-replay",
-      "blocker_count": 2,
+      "blocker_count": 1,
       "blocker_ids": [
-        "world-support-review",
         "world-dynamic-support-review"
       ],
       "required_evidence": "Moonphys world replay review with envelope, support, and dynamic-support blockers cleared",
@@ -296,7 +295,7 @@
       {
         "validation_id": "blocker-accounting-preserved",
         "passed": true,
-        "note": "work item world-replay preserves 2 named blockers"
+        "note": "work item world-replay preserves 1 named blockers"
       },
       {
         "validation_id": "result-paths-present",

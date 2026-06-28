@@ -95,8 +95,8 @@ def main() -> None:
         fail("dynamic stability review blocker should be explicit")
     if task.get("joint_control_review_frame_count", 0) <= 0:
         fail("joint control review blocker should be explicit")
-    if task.get("joint_control_world_support_review_frame_count", 0) <= 0:
-        fail("joint control world-support review blocker should be explicit")
+    if task.get("joint_control_world_support_review_frame_count") != 0:
+        fail("joint control world-support review should be cleared")
     if task.get("joint_control_world_capture_review_frame_count", 0) <= 0:
         fail("joint control world-capture review blocker should be explicit")
     if task.get("joint_control_max_support_recovery_shift_m", -1) < 0:
@@ -105,8 +105,8 @@ def main() -> None:
         fail("joint control worst capture support margin should remain a blocker")
     if task.get("joint_control_max_capture_recovery_shift_m", -1) < 0:
         fail("joint control max capture recovery shift should be explicit")
-    if task.get("joint_control_world_replay_blocker_count") != 2:
-        fail("joint control world replay blockers should contain support and dynamic-support blockers")
+    if task.get("joint_control_world_replay_blocker_count") != 1:
+        fail("joint control world replay blockers should contain only dynamic-support blocker")
     replay_blockers = task.get("joint_control_world_replay_blockers")
     if not isinstance(replay_blockers, list):
         fail("joint control world replay blocker ids must be listed")
@@ -114,8 +114,8 @@ def main() -> None:
         fail("joint control world replay blocker count must match listed ids")
     if "world-envelope-review" in replay_blockers:
         fail("joint control world replay blockers must not retain cleared envelope review")
-    if "world-support-review" not in replay_blockers:
-        fail("joint control world replay blockers must name support review")
+    if "world-support-review" in replay_blockers:
+        fail("joint control world replay blockers must not retain cleared support review")
     if "world-dynamic-support-review" not in replay_blockers:
         fail("joint control world replay blockers must name dynamic support review")
     if task.get("inertial_collision_review_frame_count", 0) <= 0:

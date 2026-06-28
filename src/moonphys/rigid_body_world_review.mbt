@@ -156,6 +156,23 @@ pub fn rigid_body_heightfield_world_replay_review_with_footprints(
 }
 
 ///|
+pub fn rigid_body_heightfield_world_replay_review_with_targets(
+  trace : RigidBodyHeightfieldWorldTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldReplayReview {
+  rigid_body_world_replay_review(
+    rigid_body_heightfield_world_trace_envelope(trace),
+    rigid_body_heightfield_world_support_trace_with_targets(
+      trace, footprint_frames, center_of_mass_targets,
+    ),
+    rigid_body_heightfield_world_dynamic_support_trace_with_targets(
+      trace, footprint_frames, center_of_mass_targets,
+    ),
+  )
+}
+
+///|
 pub fn rigid_body_heightfield_world_hinge_motor_replay_review(
   trace : RigidBodyHeightfieldWorldHingeMotorTrace,
 ) -> RigidBodyWorldReplayReview {
@@ -163,6 +180,23 @@ pub fn rigid_body_heightfield_world_hinge_motor_replay_review(
     rigid_body_heightfield_world_hinge_motor_trace_envelope(trace),
     rigid_body_heightfield_world_hinge_motor_support_trace(trace),
     rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(trace),
+  )
+}
+
+///|
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(
+  trace : RigidBodyHeightfieldWorldHingeMotorTrace,
+  footprint_frames : Array[Array[SupportFootprint]],
+  center_of_mass_targets : Array[RigidBodyWorldCenterOfMassTarget],
+) -> RigidBodyWorldReplayReview {
+  rigid_body_world_replay_review(
+    rigid_body_heightfield_world_hinge_motor_trace_envelope(trace),
+    rigid_body_heightfield_world_hinge_motor_support_trace_with_targets(
+      trace, footprint_frames, center_of_mass_targets,
+    ),
+    rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_targets(
+      trace, footprint_frames, center_of_mass_targets,
+    ),
   )
 }
 

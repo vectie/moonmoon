@@ -78,14 +78,13 @@
 - static-support review frames: 32
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
-- joint-control world-support review frames: 12
-- joint-control world-capture review frames: 31
-- joint-control max support recovery shift: 0.006668399545292702 m
-- joint-control worst capture support margin: -3.19693415142415 m
-- joint-control max capture recovery shift: 3.625660454440404 m
-- joint-control world replay blockers: 2
+- joint-control world-support review frames: 0
+- joint-control world-capture review frames: 6
+- joint-control max support recovery shift: 0 m
+- joint-control worst capture support margin: -0.04446360775936132 m
+- joint-control max capture recovery shift: 0.04446360775936131 m
+- joint-control world replay blockers: 1
 - joint-control world replay blocker ids:
-  - world-support-review
   - world-dynamic-support-review
 - inertial-collision review frames: 32
 - hardware state: hardware-denied

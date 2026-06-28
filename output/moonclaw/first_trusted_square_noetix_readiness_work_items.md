@@ -104,9 +104,8 @@
   - robot: noetix-e1-lab-01
   - rank: 3
   - blocker domain: world-replay
-  - blockers: 2
+  - blockers: 1
   - blocker ids:
-    - world-support-review
     - world-dynamic-support-review
   - required evidence: Moonphys world replay review with envelope, support, and dynamic-support blockers cleared
   - target: output/moonrobo/first_trusted_square_noetix_control.json
