@@ -459,7 +459,8 @@ real FK tree and approximate source shapes without claiming full dynamics.
 ## Phase 5: Rabbita Visualization
 
 Status: first trace scrubber, link-pose playback, and endless-gait loop
-playback implemented in Rabbita; full mesh/URDF rendering remains future work.
+playback implemented in Rabbita; the current debug pose is not yet a correct
+robot walking animation. Full rigid URDF-link rendering remains future work.
 
 Add a viewer surface after the data contract is stable.
 
@@ -481,6 +482,11 @@ Viewer needs:
 - body marker
 - left/right foot markers
 - frame scrubber and autoplay loop backed by endless-gait evidence
+- rigid URDF robot rig rendering:
+  - one node per URDF link
+  - one transform per URDF joint
+  - visual geometry attached to the owning link's local frame
+  - sticks/bones shown only as a debug overlay, not as the primary robot body
 - status badges:
   - `walking`
   - `walking-needs-review`
@@ -488,6 +494,63 @@ Viewer needs:
 - explicit simulation-evidence-only label
 
 Do not connect this to hardware controls.
+
+### Phase 5A: URDF Robot Rig Animation
+
+Status: planned next; prioritize before more MoonClaw orchestration.
+
+The current Rabbita pose uses URDF-reference FK plus contact-bound foot
+correction. That is useful evidence, but it is not the same as how a walking
+robot should be visualized. Games such as Piccolo animate by advancing a
+normalized animation clip, sampling channels, applying them through a skeleton,
+and rendering the resulting bone matrices. For Noetix, the equivalent skeleton
+is the URDF link/joint tree, but the motion authority must be robot data rather
+than an artist-authored random animation.
+
+Robot animation bridge:
+
+```text
+Noetix URDF
+  links + joints + origins + axes + limits
+    -> Moonrobo RobotRig
+       one rigid node per link
+       one revolute transform per joint
+       visual geometry attached to link-local frames
+    -> RobotMotionFrame
+       time
+       floating base pose
+       joint_name -> position_rad
+       source = planned | simulated | telemetry
+    -> FK link transforms
+    -> Rabbita rigid-link renderer
+```
+
+Rules:
+
+- Do not create a game-character skeleton with arbitrary bones.
+- Do not skin or deform Noetix visual geometry; robot links are rigid.
+- Do not pull foot link positions directly to terrain contact after FK for the
+  primary render. Contact should influence the gait/controller that produces
+  joint positions; FK should then render the resulting robot.
+- Keep sticks/bones as an optional debug overlay for link-tree inspection.
+- Keep this outside core `moonphys`. Moonphys may provide generic transform,
+  interpolation, and FK helpers, but Noetix rig construction, joint trajectory
+  selection, and robot-motion authority live in Moonrobo.
+- Keep MoonClaw aside until the Moonrobo/Rabbita rig visual is credible. Review
+  gates should consume the improved evidence later, not drive this slice.
+
+Immediate Phase 5A deliverables:
+
+- Add a Moonrobo `RobotRig`/`RobotMotionFrame` contract for URDF-backed rigid
+  robot animation.
+- Convert the Noetix URDF-reference link tree into that contract.
+- Rework the Rabbita Noetix viewer to render rigid link visuals from FK link
+  transforms instead of the current contact-corrected stick pose.
+- Keep the endless gait loop source-backed by the existing Noetix walk command
+  or simulated joint trajectory, with explicit `simulation evidence only` and
+  `hardware denied` labels.
+- Add verifier coverage that fails if rendered foot links are manually detached
+  from the FK tree or if the viewer presents debug sticks as the primary robot.
 
 ## Phase 6: Evidence Export
 
@@ -754,17 +817,22 @@ or as a data artifact beside the Noetix model.
 
 ## Immediate Next Steps
 
-1. Replace assumed mass/sole/friction profile with Moonrobo inertial and
+1. Pause new MoonClaw orchestration work and fix the Moonrobo/Rabbita Noetix
+   rig visual first. The next implementation slice is Phase 5A: bridge the URDF
+   link/joint tree into a rigid robot animation rig, render rigid link visuals
+   from FK transforms, and keep sticks as debug overlay only.
+2. Replace assumed mass/sole/friction profile with Moonrobo inertial and
    authoritative collision metadata when available.
-2. Replace review-only inertial/collision evidence with authoritative Moonrobo
+3. Replace review-only inertial/collision evidence with authoritative Moonrobo
    collision/inertia tags once the source model exposes them.
-3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
+4. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
    it.
    Current FK output carries available visual mesh/shape metadata plus explicit
    missing collision/inertial metadata status from the source-model audit;
    authoritative tags still require Moonrobo source data.
-4. Continue feeding accepted Noetix review outcomes into downstream
-   Moonrobo/MoonClaw gates; the Moonphys world-replay blocker is already
+5. Later, after the robot visual is credible, continue feeding accepted Noetix
+   review outcomes into downstream Moonrobo/MoonClaw gates. The Moonphys
+   world-replay blocker is already
    cleared and no longer appears as a readiness work item.
    The next gate slice has started by separating support-stable and
    capture-stable counts from review-only blocker counts in MoonClaw task and
