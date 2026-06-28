@@ -340,6 +340,9 @@ generated asset bridge and `check:gait:heavy`; the live browser viewport only
 reports indexed source-triangle metadata and must not parse full STL geometry
 while walking. Full-detail mesh inspection should remain a separate mode so the
 endless walking preview stays responsive.
+The primary Rabbita scene is now `moonmoon-third-person-3d`: a combined
+Three.js view where the reduced E1 mesh walks across the lunar heightfield used
+by contact probes while a third-person camera follows from behind the robot.
 `npm run check:gait` now stays fast for Rabbita viewport contracts, runtime
 authored-sample consumption, gait phases, foot lock, terrain IK, motion
 continuity, and mesh-reduction metadata. `npm run check:gait:heavy` runs the

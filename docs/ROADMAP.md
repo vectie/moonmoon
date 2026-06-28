@@ -59,6 +59,8 @@
   generated bridge and contract checks, not by browser-side parsing during the
   animation loop. `npm run check:gait` is now the fast viewport/runtime gate;
   `npm run check:gait:heavy` runs the full Moonrobo/Moonphys integration chain.
+  Rabbita now also has a primary third-person Three.js viewport combining the
+  reduced E1 robot and the lunar heightfield terrain in one walking scene.
   The next
   implementation targets are visual gait polish, terrain IK completion, and
   durable evidence consumers.

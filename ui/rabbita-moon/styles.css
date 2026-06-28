@@ -202,6 +202,7 @@ h2 {
 
 .moon-viewport,
 .robot-viewport,
+.third-person-viewport,
 .terrain-panel-mini {
   position: relative;
   min-height: 320px;
@@ -209,6 +210,10 @@ h2 {
   border-radius: 5px;
   overflow: hidden;
   background: #0c1210;
+}
+
+.third-person-viewport {
+  min-height: 520px;
 }
 
 .moon-viewport {
@@ -224,6 +229,10 @@ h2 {
   width: 100%;
   height: 420px;
   touch-action: none;
+}
+
+.third-person-canvas {
+  height: 520px;
 }
 
 .scene-readout {
@@ -386,8 +395,13 @@ ul {
     height: 270px;
   }
 
+  .third-person-canvas {
+    height: 340px;
+  }
+
   .moon-viewport,
-  .robot-viewport {
+  .robot-viewport,
+  .third-person-viewport {
     min-height: 270px;
   }
 

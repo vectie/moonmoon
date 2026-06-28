@@ -25,6 +25,10 @@ const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
 const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
+const THIRD_PERSON_TERRAIN_COLS = 48
+const THIRD_PERSON_TERRAIN_ROWS = 64
+const THIRD_PERSON_TERRAIN_WIDTH_M = 4.8
+const THIRD_PERSON_TERRAIN_DEPTH_M = 8.8
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -543,6 +547,184 @@ function reportE1SourceReadiness(visuals, canvas) {
   canvas.dataset.e1FullStlSourceTriangles = String(sourceTriangles)
   canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
   canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
+}
+
+function createThirdPersonTerrain() {
+  const cols = THIRD_PERSON_TERRAIN_COLS
+  const rows = THIRD_PERSON_TERRAIN_ROWS
+  const positions = new Float32Array((cols + 1) * (rows + 1) * 3)
+  const uvs = new Float32Array((cols + 1) * (rows + 1) * 2)
+  const indices = []
+  for (let row = 0; row <= rows; row += 1) {
+    for (let col = 0; col <= cols; col += 1) {
+      const vertex = row * (cols + 1) + col
+      uvs[vertex * 2] = col / cols
+      uvs[vertex * 2 + 1] = row / rows
+    }
+  }
+  for (let row = 0; row < rows; row += 1) {
+    for (let col = 0; col < cols; col += 1) {
+      const a = row * (cols + 1) + col
+      const b = a + 1
+      const c = a + cols + 1
+      const d = c + 1
+      indices.push(a, c, b, b, c, d)
+    }
+  }
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+  geometry.setIndex(indices)
+  const texture = new THREE.TextureLoader().load(LUNAR_TEXTURE_URL)
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(8, 14)
+  texture.colorSpace = THREE.SRGBColorSpace
+  const material = new THREE.MeshStandardMaterial({
+    map: texture,
+    color: 0x9d9a8f,
+    roughness: 0.92,
+    metalness: 0.0,
+  })
+  const mesh = new THREE.Mesh(geometry, material)
+  mesh.receiveShadow = true
+  mesh.userData = { cols, rows }
+  return mesh
+}
+
+function updateThirdPersonTerrain(mesh, followZ, clip) {
+  const position = mesh.geometry.getAttribute('position')
+  const cols = mesh.userData.cols
+  const rows = mesh.userData.rows
+  let index = 0
+  for (let row = 0; row <= rows; row += 1) {
+    const zLocal = ((row / rows) - 0.42) * THIRD_PERSON_TERRAIN_DEPTH_M
+    const worldZ = followZ + zLocal
+    for (let col = 0; col <= cols; col += 1) {
+      const x = ((col / cols) - 0.5) * THIRD_PERSON_TERRAIN_WIDTH_M
+      const terrain = terrainSampleAt(x, worldZ - followZ, clip)
+      position.array[index] = x
+      position.array[index + 1] = terrain.heightM - 0.006
+      position.array[index + 2] = worldZ
+      index += 3
+    }
+  }
+  position.needsUpdate = true
+  mesh.geometry.computeVertexNormals()
+  mesh.geometry.computeBoundingSphere()
+}
+
+function createThirdPersonGrid() {
+  const helper = new THREE.GridHelper(THIRD_PERSON_TERRAIN_DEPTH_M, 22, 0x7a7568, 0x3e413b)
+  helper.material.transparent = true
+  helper.material.opacity = 0.22
+  helper.position.y = 0.002
+  return helper
+}
+
+function initThirdPersonMoonWalk(canvas) {
+  let renderer
+  try {
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      preserveDrawingBuffer: true,
+    })
+  } catch (_error) {
+    canvas.dataset.sceneStatus = 'three-webgl-unavailable'
+    return
+  }
+  renderer.shadowMap.enabled = true
+  const scene = new THREE.Scene()
+  scene.background = new THREE.Color(0x070908)
+  scene.fog = new THREE.Fog(0x070908, 4.2, 12.5)
+  scene.add(new THREE.HemisphereLight(0xf4f8ef, 0x30332e, 1.25))
+  const sun = new THREE.DirectionalLight(0xffffff, 2.6)
+  sun.position.set(-2.8, 5.6, -3.2)
+  sun.castShadow = true
+  scene.add(sun)
+  const fill = new THREE.DirectionalLight(0xb8d7ff, 0.42)
+  fill.position.set(3.5, 1.8, 3.4)
+  scene.add(fill)
+  const camera = new THREE.PerspectiveCamera(46, 1, 0.03, 40)
+  const controls = new OrbitControls(camera, renderer.domElement)
+  controls.enableDamping = true
+  controls.dampingFactor = 0.08
+  controls.enablePan = false
+  controls.enableZoom = true
+  controls.minDistance = 1.1
+  controls.maxDistance = 6.2
+  const terrain = createThirdPersonTerrain()
+  scene.add(terrain)
+  const grid = createThirdPersonGrid()
+  scene.add(grid)
+  const e1Visuals = createE1ThreeVisuals()
+  for (const entry of e1Visuals.visuals.values()) {
+    entry.mesh.castShadow = true
+  }
+  scene.add(e1Visuals.group)
+  reportE1SourceReadiness(e1Visuals.visuals, canvas)
+  let cachedQuality = null
+  let lastQualityRefreshMs = -Infinity
+  function draw(now) {
+    const ratio = Math.min(2, window.devicePixelRatio || 1)
+    const rect = canvas.getBoundingClientRect()
+    const width = Math.max(420, Math.floor(rect.width * ratio))
+    const height = Math.max(320, Math.floor(rect.height * ratio))
+    if (canvas.width !== width || canvas.height !== height) {
+      renderer.setSize(width, height, false)
+    }
+    camera.aspect = canvas.width / Math.max(1, canvas.height)
+    camera.updateProjectionMatrix()
+    const time = now * 0.001
+    const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
+    if (!cachedQuality || now - lastQualityRefreshMs >= ROBOT_QUALITY_REFRESH_MS) {
+      cachedQuality = gaitQuality(time, geometry.diagnostics, {
+        footLockSamples: 8,
+        cycleSamples: 12,
+        swingSamples: 12,
+      })
+      lastQualityRefreshMs = now
+    }
+    geometry.diagnostics = { ...geometry.diagnostics, quality: cachedQuality }
+    const root = robotRoot(
+      geometry.diagnostics,
+      geometry.diagnostics.ik.pelvisCorrectionM,
+      geometry.diagnostics.footLock,
+    )
+    const followZ = geometry.diagnostics.visualRootWorldZ
+    updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics)
+    grid.position.z = followZ + 0.28
+    updateE1ThreeVisuals(
+      root,
+      geometry.diagnostics,
+      geometry.diagnostics.joints,
+      e1Visuals.visuals,
+      followZ,
+    )
+    const target = new THREE.Vector3(0.18, 0.58, followZ + 0.26)
+    const desired = new THREE.Vector3(0.82, 1.28, followZ - 2.15)
+    camera.position.lerp(desired, 0.12)
+    controls.target.lerp(target, 0.18)
+    controls.update()
+    renderer.render(scene, camera)
+    canvas.dataset.sceneStatus = 'third-person-moon-walk-rendered'
+    canvas.dataset.renderer = 'three-third-person-moon-terrain'
+    canvas.dataset.motionStatus = 'endless-e1-on-lunar-heightfield'
+    canvas.dataset.gaitQualityStatus = geometry.diagnostics.quality.status === 'pass'
+      ? 'pass'
+      : 'viewport-sampled'
+    canvas.dataset.supportFoot = geometry.diagnostics.supportFoot
+    canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
+    canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
+    canvas.dataset.terrainHeightRangeM = geometry.diagnostics.terrain.heightRangeM.toFixed(4)
+    canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
+    canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
+    canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
+    canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
+    requestAnimationFrame(draw)
+  }
+  requestAnimationFrame(draw)
 }
 
 function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
@@ -2657,8 +2839,13 @@ function initRobot(canvas) {
 
 globalThis.__moonmoonRenderScene3d = modelJson => {
   const view = JSON.parse(modelJson)
+  const thirdPerson = document.getElementById('moonmoon-third-person-3d')
   const moon = document.getElementById('moonmoon-globe-3d')
   const robot = document.getElementById('moonmoon-robot-3d')
+  if (thirdPerson && thirdPerson.dataset.sceneBooted !== 'true') {
+    thirdPerson.dataset.sceneBooted = 'true'
+    initThirdPersonMoonWalk(thirdPerson)
+  }
   if (moon && moon.dataset.sceneBooted !== 'true') {
     moon.dataset.sceneBooted = 'true'
     initMoon(moon, view)

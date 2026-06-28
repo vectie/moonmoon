@@ -149,6 +149,18 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
     class="scene-panel panel",
     attrs=@html.Attrs::build().aria_label("3D Moon and robot view"),
     [
+      div(class="third-person-viewport", [
+        canvas(
+          id="moonmoon-third-person-3d",
+          class="scene-canvas third-person-canvas",
+          attrs=@html.Attrs::build().width(1280).height(620),
+          "",
+        ),
+        div(class="scene-readout", [
+          span([b("third-person moon walk"), span(" lunar terrain + Noetix E1")]),
+          span(view.selected_route_id),
+        ]),
+      ]),
       div(class="scene-grid", [
         div(class="moon-viewport", [
           canvas(

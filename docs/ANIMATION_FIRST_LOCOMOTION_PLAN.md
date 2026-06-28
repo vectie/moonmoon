@@ -455,6 +455,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    live browser viewport only reports indexed source-triangle metadata and must
    not parse full STL geometry while walking. Full-detail inspection can be added as
    a separate mode; the endless walking viewport must stay smooth.
+   Rabbita now also exposes `moonmoon-third-person-3d`, a combined Three.js
+   viewport where the reduced E1 assembly walks across the same lunar
+   heightfield used by terrain contact probes, with a follow camera behind the
+   robot.
    The boxed walker remains the gait diagnostic body; the duplicate mesh body is
    the Noetix E1 visual authority. The next target returns to motion quality:
    richer animation layers, terrain IK completion, and durable evidence
