@@ -245,8 +245,11 @@ Acceptance:
 - Moonphys remains robot-agnostic
 
 Status: active in `src/suite_adapter_preview` as a suite-side compiled
-Moonphys review of the Rabbita/Moonrobo Noetix evidence fixture. The remaining
-work is to replace the fixture mirror with live suite adapter payloads.
+Moonphys review of a generated Rabbita/Moonrobo Noetix evidence artifact.
+`npm run check:gait` verifies that artifact is fresh. The current generated
+walk now clears the compiled Moonphys motion, hinge, replay, support, capture,
+contact, torque, pressure, velocity, and effort review gate. The next work is
+visual walk-cycle polish and eventual live Moonrobo adapter payloads.
 
 ## Phase 10: Durable Suite Evidence
 

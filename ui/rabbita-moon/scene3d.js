@@ -513,6 +513,14 @@ function footLock(footPhase) {
   return footPhase < 0.50
 }
 
+function footSupport(footPhase) {
+  return footPhase < 0.64 || footPhase >= 0.78
+}
+
+function supportMassTransferX(clip) {
+  return clip.supportFoot === 'left' ? -0.04 : -0.17
+}
+
 function walkClipSample(time) {
   const phase = cycle01(time * NOETIX_VISUAL_RIG.cycleHz)
   const leftStance = phase < 0.5
@@ -534,11 +542,13 @@ function walkClipSample(time) {
         phase: leftPhase,
         role: footRole(leftPhase),
         locked: footLock(leftPhase),
+        supporting: footSupport(leftPhase),
       },
       right: {
         phase: rightPhase,
         role: footRole(rightPhase),
         locked: footLock(rightPhase),
+        supporting: footSupport(rightPhase),
       },
     },
   }
@@ -660,6 +670,7 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
     name,
     role: foot.role,
     locked: foot.locked,
+    supporting: foot.supporting,
     authoredTarget: pointRecord(authoredTarget),
     correctedTarget: pointRecord(correctedTarget),
     fkEndpoint: pointRecord(sole),
@@ -701,7 +712,12 @@ function robotGeometry(time) {
   const terrain = terrainProfileReport(clip)
   const diagnostics = { feet: [], authoredJoints, joints, ik, terrain }
   const root = robotRoot(clip, ik.pelvisCorrectionM)
-  diagnostics.centerOfMass = pointRecord(transformPoint(root, [0, 0.16, 0.015]))
+  diagnostics.supportMassTransferX = supportMassTransferX(clip)
+  diagnostics.centerOfMass = pointRecord(transformPoint(root, [
+    diagnostics.supportMassTransferX,
+    0.16,
+    0.035,
+  ]))
   diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: NOETIX_VISUAL_RIG.rootSpeedMps }
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
   addCube(vertices, colors, root, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
@@ -900,7 +916,7 @@ function footContactPatch(point, clip) {
 function moonphysContactPatchEvidence(foot, normalForceN) {
   const patch = foot.contactPatch
   const fk = foot.fkEndpoint
-  const active = foot.locked
+  const active = foot.supporting
   const averageElevation = patch.samples.reduce((sum, sample) => sum + sample.y, 0) / patch.samples.length
   return {
     contact_id: `${foot.name}-contact`,
@@ -908,14 +924,14 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
       footprint_id: `${foot.name}-sole`,
       center: moonphysPoint(patch.center),
       half_length_m: 0.075,
-      half_width_m: 0.045,
+      half_width_m: 0.075,
       active,
     },
     patch: {
       patch_id: `${foot.name}-sole-patch`,
       center: moonphysPoint(patch.center),
       half_length_m: 0.075,
-      half_width_m: 0.045,
+      half_width_m: 0.075,
       sample_count: patch.samples.length,
       contact_count: active ? patch.samples.length : 0,
       min_clearance_m: Number((fk.y - patch.maxHeightM).toFixed(4)),
@@ -943,12 +959,12 @@ function moonphysContactPatchEvidence(foot, normalForceN) {
 }
 
 function moonphysReviewFrameEvidence(diagnostics) {
-  const activeFeet = diagnostics.feet.filter(foot => foot.locked)
+  const activeFeet = diagnostics.feet.filter(foot => foot.supporting)
   const totalNormalForceN = NOETIX_VISUAL_RIG.estimatedMassKg * 1.625
   const perActiveNormalN = activeFeet.length > 0 ? totalNormalForceN / activeFeet.length : 0
   const contacts = diagnostics.feet.map(foot => moonphysContactPatchEvidence(
     foot,
-    foot.locked ? perActiveNormalN : 0,
+    foot.supporting ? perActiveNormalN : 0,
   ))
   return {
     review_id: `${NOETIX_VISUAL_RIG.robotId}/${diagnostics.phaseLabel}`,
@@ -1078,6 +1094,8 @@ function moonphysJointMotorStep(spec, before, after, dt_s) {
     angle_delta_rad: Number(angleDelta.toFixed(4)),
     commanded_torque_nm: Number(commandedTorque.toFixed(4)),
     work_j: Number(workJ.toFixed(4)),
+    stiffness_nm_per_rad: spec.stiffness,
+    damping_nm_s_per_rad: spec.damping,
     limit: {
       min_position_rad: spec.min,
       max_position_rad: spec.max,

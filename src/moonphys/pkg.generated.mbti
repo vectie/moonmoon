@@ -109,7 +109,7 @@ pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
 pub fn motion_contact_evidence(String, SupportFootprint, HeightfieldContactPatch, Vec3) -> MotionContactEvidence
 
-pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec3, Vec3, Array[MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double) -> MotionFrameReview
+pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec3, Vec3, Array[MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double, allow_dynamic_support? : Bool) -> MotionFrameReview
 
 pub fn motion_frame_trace_review(String, Array[MotionFrameReview]) -> MotionFrameTraceReview
 

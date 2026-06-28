@@ -229,6 +229,29 @@ if (maxPatchRange <= 0) {
   throw new Error('sampled contact patches did not report terrain height range')
 }
 
+const generatedEvidenceGate = spawnSync(
+  process.execPath,
+  ['export-rabbita-gait-evidence.mjs', '--check'],
+  {
+    cwd: fileURLToPath(new URL('.', import.meta.url)),
+    encoding: 'utf8',
+  },
+)
+
+if (generatedEvidenceGate.error) {
+  throw generatedEvidenceGate.error
+}
+
+if (generatedEvidenceGate.status !== 0) {
+  throw new Error(
+    [
+      'generated Rabbita gait evidence is stale',
+      generatedEvidenceGate.stdout,
+      generatedEvidenceGate.stderr,
+    ].filter(Boolean).join('\n'),
+  )
+}
+
 const compiledMoonphysGate = spawnSync(
   process.env.MOON_BIN ?? 'moon',
   ['test', 'src/suite_adapter_preview', '--target', 'js'],
@@ -253,5 +276,5 @@ if (compiledMoonphysGate.status !== 0) {
 }
 
 console.log(
-  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples, compiled Moonphys gate`,
+  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, compiled Moonphys gate`,
 )

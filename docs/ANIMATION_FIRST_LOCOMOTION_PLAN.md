@@ -336,8 +336,14 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    profile and URDF sources, uses URDF joint ids such as `leg_l1_joint`,
    `leg_l4_joint`, `leg_l6_joint`, `arm_l1_joint`, and `arm_l4_joint`, and
    verifies velocity and effort against those URDF limits. `src/suite_adapter_preview`
-   now runs the Rabbita/Moonrobo Noetix evidence fixture through compiled
-   Moonphys using `motion_hinge_replay_review_with_replay`, and
-   `npm run check:gait` invokes that compiled gate after the Rabbita runtime
-   diagnostics. The remaining Phase F suite work is to replace the compiled
-   fixture mirror with live adapter payloads exported from Moonrobo and Rabbita.
+   now consumes a generated MoonBit evidence artifact emitted from
+   `ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics`, then runs that live
+   Rabbita/Moonrobo Noetix payload through compiled Moonphys using
+   `motion_hinge_replay_review_with_replay`. `npm run check:gait` now verifies
+   the generated artifact is fresh before invoking the compiled gate. The
+   Rabbita preview now emits an explicit load-bearing support channel, wider
+   rendered-sole support patches, and a small support-phase mass-transfer COM
+   channel; the generated evidence now clears compiled Moonphys motion, hinge,
+   replay, support, capture, contact, torque, pressure, velocity, and effort
+   review for the sampled endless walk. The next Phase D/E target is visual
+   polish of the same walk cycle, not another fixture mirror.

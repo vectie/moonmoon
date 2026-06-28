@@ -51,9 +51,11 @@ fn rigid_body_world_replay_review_blockers(
   } else if envelope.status.contains("review") {
     blockers.push("world-envelope-review")
   }
+  let dynamic_support_ready = !dynamic_support.status.contains("empty") &&
+    dynamic_support.review_frame_count == 0
   if support.status.contains("empty") {
     blockers.push("world-support-empty")
-  } else if support.review_frame_count > 0 {
+  } else if support.review_frame_count > 0 && !dynamic_support_ready {
     blockers.push("world-support-review")
   }
   if dynamic_support.status.contains("empty") {

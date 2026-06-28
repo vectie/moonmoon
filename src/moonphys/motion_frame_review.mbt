@@ -227,12 +227,14 @@ fn motion_frame_review_blockers(
   support : SupportAssessment,
   support_load : SupportLoadAssessment,
   capture : CapturePointAssessment,
+  allow_dynamic_support : Bool,
 ) -> Array[String] {
   let blockers : Array[String] = []
-  if !support.stable {
+  let dynamic_support_ok = allow_dynamic_support && capture.stable
+  if !support.stable && !dynamic_support_ok {
     blockers.push("support:\{support.status}")
   }
-  if !support_load.balanced {
+  if !support_load.balanced && !dynamic_support_ok {
     blockers.push("support-load:\{support_load.status}")
   }
   if !capture.stable {
@@ -368,6 +370,7 @@ pub fn motion_frame_review(
     material, contacts,
   ),
   nominal_com_height_m? : Double = center_of_mass.z,
+  allow_dynamic_support? : Bool = false,
 ) -> MotionFrameReview {
   let footprints = motion_active_footprints(contacts)
   let support = support_assessment(center_of_mass, footprints)
@@ -403,7 +406,7 @@ pub fn motion_frame_review(
     contact_reviews.push(review)
   }
   let blockers = motion_frame_review_blockers(
-    contact_reviews, support, support_load, capture,
+    contact_reviews, support, support_load, capture, allow_dynamic_support,
   )
   {
     review_id,

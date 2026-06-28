@@ -1349,6 +1349,58 @@ test "hinge motor replay review can use center-of-mass targets" {
 }
 
 ///|
+test "replay review accepts walking frames when dynamic support is clear" {
+  let field = heightfield("flat", 1, 1, 1.0, [0.0])
+  let body = rigid_body_state(
+    "body",
+    1.0,
+    0.05,
+    vec3(1.0, 0.0, 0.1),
+    vec3(0.0, 0.0, 0.0),
+  )
+  let world = rigid_body_heightfield_world(
+    "dynamic-walk-world",
+    field,
+    lunar_regolith_contact_model(),
+    lunar_environment(),
+    [rigid_body_world_body(body)],
+  )
+  let motor = integrate_joint_motor_frame("idle", [], [], [], [], [], 0.1)
+  let trace = rigid_body_heightfield_world_hinge_motor_trace(
+    "dynamic-walk-trace",
+    world,
+    field,
+    [motor],
+  )
+  let footprints = [
+    [support_footprint("left-foot", vec3(0.0, 0.0, 0.0), 0.2, 0.1)],
+  ]
+  let targets = [
+    rigid_body_world_center_of_mass_target(
+      vec3(0.0, 0.0, 0.1),
+      vec3(0.0, 0.0, 0.0),
+      total_mass_kg=1.0,
+      nominal_com_height_m=0.72,
+    ),
+  ]
+  let envelope = rigid_body_heightfield_world_hinge_motor_trace_envelope(trace)
+  let static_support = rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(
+    trace, footprints,
+  )
+  let dynamic_support = rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_targets(
+    trace, footprints, targets,
+  )
+  let review = rigid_body_world_replay_review(
+    envelope, static_support, dynamic_support,
+  )
+  assert_true(static_support.review_frame_count > 0)
+  assert_eq(dynamic_support.review_frame_count, 0)
+  assert_true(review.ready)
+  assert_eq(review.status, "world-replay-review-ready")
+  assert_true(!review.blockers.contains("world-support-review"))
+}
+
+///|
 test "rigid body heightfield world trace is deterministic" {
   let field = heightfield("flat", 1, 1, 1.0, [0.0])
   let world = rigid_body_heightfield_world(
@@ -2746,6 +2798,46 @@ test "motion frame trace review envelopes contact force and torque" {
   assert_true(trace.max_contact_torque_nm > 0.0)
   assert_true(trace.max_friction_utilization > 0.0)
   assert_true(trace.max_pressure_pa > 0.0)
+}
+
+///|
+test "motion frame review can allow capture-stable dynamic support" {
+  let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
+  let patch = heightfield_contact_patch(
+    field,
+    "left-sole",
+    vec3(0.2, 0.0, 0.0),
+    0.05,
+    0.1,
+  )
+  let contact = motion_contact_evidence(
+    "left-contact",
+    support_footprint("left", vec3(0.2, 0.0, 0.0), 0.05, 0.1),
+    patch,
+    vec3(0.0, 0.0, 80.0),
+  )
+  let static_review = motion_frame_review(
+    "static-single-stance",
+    lunar_environment(),
+    material_contact_model("test", 0.8, 0.0),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.305, 0.0, 0.0),
+    [contact],
+  )
+  let dynamic_review = motion_frame_review(
+    "dynamic-single-stance",
+    lunar_environment(),
+    material_contact_model("test", 0.8, 0.0),
+    vec3(0.0, 0.0, 0.7),
+    vec3(0.305, 0.0, 0.0),
+    [contact],
+    allow_dynamic_support=true,
+  )
+  assert_true(!static_review.ready)
+  assert_eq(static_review.support_status, "outside-support")
+  assert_true(dynamic_review.ready)
+  assert_eq(dynamic_review.support_status, "outside-support")
+  assert_eq(dynamic_review.capture_status, "capture-point-inside-support")
 }
 
 ///|
