@@ -1,4 +1,5 @@
 const DEG = Math.PI / 180
+const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -103,10 +104,69 @@ function createProgram(gl) {
   }
 }
 
+function createMoonProgram(gl) {
+  const vertex = gl.createShader(gl.VERTEX_SHADER)
+  gl.shaderSource(vertex, `
+    attribute vec3 a_position;
+    attribute vec2 a_uv;
+    uniform mat4 u_mvp;
+    varying vec2 v_uv;
+    varying vec3 v_normal;
+    void main() {
+      gl_Position = u_mvp * vec4(a_position, 1.0);
+      v_uv = a_uv;
+      v_normal = normalize(a_position);
+    }
+  `)
+  gl.compileShader(vertex)
+  if (!gl.getShaderParameter(vertex, gl.COMPILE_STATUS)) {
+    throw new Error(gl.getShaderInfoLog(vertex) || 'moon vertex shader failed')
+  }
+  const fragment = gl.createShader(gl.FRAGMENT_SHADER)
+  gl.shaderSource(fragment, `
+    precision mediump float;
+    uniform sampler2D u_texture;
+    varying vec2 v_uv;
+    varying vec3 v_normal;
+    void main() {
+      vec3 tex = texture2D(u_texture, v_uv).rgb;
+      vec3 light = normalize(vec3(-0.35, 0.42, 0.84));
+      float shade = 0.32 + max(dot(normalize(v_normal), light), 0.0) * 0.78;
+      float polar = pow(abs(v_normal.y), 3.0) * 0.10;
+      gl_FragColor = vec4(tex * shade + vec3(polar), 1.0);
+    }
+  `)
+  gl.compileShader(fragment)
+  if (!gl.getShaderParameter(fragment, gl.COMPILE_STATUS)) {
+    throw new Error(gl.getShaderInfoLog(fragment) || 'moon fragment shader failed')
+  }
+  const program = gl.createProgram()
+  gl.attachShader(program, vertex)
+  gl.attachShader(program, fragment)
+  gl.linkProgram(program)
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    throw new Error(gl.getProgramInfoLog(program) || 'moon program failed')
+  }
+  return {
+    program,
+    position: gl.getAttribLocation(program, 'a_position'),
+    uv: gl.getAttribLocation(program, 'a_uv'),
+    mvp: gl.getUniformLocation(program, 'u_mvp'),
+    texture: gl.getUniformLocation(program, 'u_texture'),
+  }
+}
+
 function createBuffers(gl) {
   return {
     positions: gl.createBuffer(),
     colors: gl.createBuffer(),
+  }
+}
+
+function createMoonBuffers(gl) {
+  return {
+    positions: gl.createBuffer(),
+    uvs: gl.createBuffer(),
   }
 }
 
@@ -121,6 +181,22 @@ function upload(gl, shader, buffers, vertices, colors, mvp) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW)
   gl.enableVertexAttribArray(shader.color)
   gl.vertexAttribPointer(shader.color, 3, gl.FLOAT, false, 0, 0)
+}
+
+function uploadMoon(gl, shader, buffers, mesh, texture, mvp) {
+  gl.useProgram(shader.program)
+  gl.uniformMatrix4fv(shader.mvp, false, new Float32Array(mvp))
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.uniform1i(shader.texture, 0)
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.positions)
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertices), gl.STATIC_DRAW)
+  gl.enableVertexAttribArray(shader.position)
+  gl.vertexAttribPointer(shader.position, 3, gl.FLOAT, false, 0, 0)
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.uvs)
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.uvs), gl.STATIC_DRAW)
+  gl.enableVertexAttribArray(shader.uv)
+  gl.vertexAttribPointer(shader.uv, 2, gl.FLOAT, false, 0, 0)
 }
 
 function resizeCanvas(canvas, gl) {
@@ -147,7 +223,11 @@ function addQuad(vertices, colors, a, b, c, d, color) {
 
 function sphereMesh(latBands, lonBands) {
   const vertices = []
-  const colors = []
+  const uvs = []
+  function push(point, u, v) {
+    vertices.push(...point)
+    uvs.push(u, v)
+  }
   for (let lat = 0; lat < latBands; lat += 1) {
     const t0 = -Math.PI / 2 + (lat / latBands) * Math.PI
     const t1 = -Math.PI / 2 + ((lat + 1) / latBands) * Math.PI
@@ -158,13 +238,19 @@ function sphereMesh(latBands, lonBands) {
       const b = spherePoint(t1, p0)
       const c = spherePoint(t1, p1)
       const d = spherePoint(t0, p1)
-      const shade = 0.46 + Math.max(0, Math.cos(p0 - 0.8) * Math.cos(t0)) * 0.38
-      const polar = Math.abs(Math.sin((t0 + t1) * 0.5))
-      const color = [0.42 * shade + polar * 0.16, 0.43 * shade + polar * 0.15, 0.39 * shade + polar * 0.12]
-      addQuad(vertices, colors, a, b, c, d, color)
+      const u0 = 1 - lon / lonBands
+      const u1 = 1 - (lon + 1) / lonBands
+      const v0 = 1 - lat / latBands
+      const v1 = 1 - (lat + 1) / latBands
+      push(a, u0, v0)
+      push(b, u0, v1)
+      push(c, u1, v1)
+      push(a, u0, v0)
+      push(c, u1, v1)
+      push(d, u1, v0)
     }
   }
-  return { vertices, colors }
+  return { vertices, uvs }
 }
 
 function spherePoint(theta, phi) {
@@ -179,14 +265,50 @@ function latLonPoint(latDeg, lonDeg, radius = 1.025) {
   return [radius * cl * Math.cos(lon), radius * Math.sin(lat), radius * cl * Math.sin(lon)]
 }
 
+function loadMoonTexture(gl, canvas) {
+  const texture = gl.createTexture()
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    1,
+    1,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([86, 84, 78, 255]),
+  )
+  const image = new Image()
+  image.onload = () => {
+    gl.bindTexture(gl.TEXTURE_2D, texture)
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
+    canvas.dataset.textureStatus = 'lunar-global-texture-loaded'
+  }
+  image.onerror = () => {
+    canvas.dataset.textureStatus = 'lunar-global-texture-unavailable'
+  }
+  image.src = LUNAR_TEXTURE_URL
+  canvas.dataset.textureStatus = 'lunar-global-texture-loading'
+  return texture
+}
+
 function initMoon(canvas, view) {
   const gl = canvas.getContext('webgl', { antialias: true })
   if (!gl) {
     canvas.dataset.sceneStatus = 'webgl-unavailable'
     return
   }
-  const shader = createProgram(gl)
-  const buffers = createBuffers(gl)
+  const moonShader = createMoonProgram(gl)
+  const moonBuffers = createMoonBuffers(gl)
+  const pointShader = createProgram(gl)
+  const pointBuffers = createBuffers(gl)
+  const texture = loadMoonTexture(gl, canvas)
   const mesh = sphereMesh(44, 88)
   const site = {
     lat: Number(view.site_latitude_deg || -89.88),
@@ -225,11 +347,11 @@ function initMoon(canvas, view) {
     model = mat4RotateY(model, yaw)
     const viewMat = mat4Translate(mat4Identity(), 0, 0, -3.35)
     const mvp = mat4Multiply(mat4Perspective(44 * DEG, aspect, 0.1, 20), mat4Multiply(viewMat, model))
-    upload(gl, shader, buffers, mesh.vertices, mesh.colors, mvp)
+    uploadMoon(gl, moonShader, moonBuffers, mesh, texture, mvp)
     gl.drawArrays(gl.TRIANGLES, 0, mesh.vertices.length / 3)
 
     const point = latLonPoint(site.lat, site.lon)
-    upload(gl, shader, buffers, point, [0.94, 0.76, 0.25], mvp)
+    upload(gl, pointShader, pointBuffers, point, [0.94, 0.76, 0.25], mvp)
     gl.drawArrays(gl.POINTS, 0, 1)
     canvas.dataset.sceneStatus = 'moon-globe-webgl-rendered'
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
