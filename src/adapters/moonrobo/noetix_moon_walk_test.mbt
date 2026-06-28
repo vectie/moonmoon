@@ -123,6 +123,26 @@ test "noetix endless gait evidence verifies periodic phase and forward offset" {
   assert_true(evidence.contact_repeat_verified)
   assert_true(evidence.monotonic_forward_verified)
   assert_true(evidence.observed_forward_offset_m > 0.0)
+  assert_eq(evidence.sample_count, 4)
+  assert_eq(evidence.sample_cycle_count, 4)
+  assert_true(evidence.multi_cycle_verified)
+  assert_eq(evidence.cycle_forward_offset_m, evidence.expected_forward_offset_m)
+  assert_true(
+    evidence.samples.all(fn(sample) {
+      sample.phase_index == evidence.reference_frame_index &&
+      sample.support_phase == evidence.reference_support_phase &&
+      sample.phase_matches_reference &&
+      sample.contact_matches_reference &&
+      sample.forward_offset_matches_expected &&
+      sample.body_forward_offset_m > 0.0
+    }),
+  )
+  assert_true(
+    nearly_equal_double(
+      evidence.samples[3].body_forward_offset_m,
+      evidence.expected_forward_offset_m * 4.0,
+    ),
+  )
   let offset_error = evidence.observed_forward_offset_m -
     evidence.expected_forward_offset_m
   assert_true(offset_error < 0.000001 && offset_error > -0.000001)

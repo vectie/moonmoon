@@ -23,8 +23,9 @@ evidence.
   profile limits; it is review evidence only and never hardware authority.
 - Moonrobo exports explicit Noetix endless-gait evidence: frame `N + cycle`
   repeats support/contact phase while the body advances by the configured
-  forward offset, proving finite trace exports are windows over a one-direction
-  gait.
+  forward offset. The evidence now also carries sampled future cycles with
+  per-sample phase/contact/forward-offset checks, proving finite trace exports
+  are windows over a one-direction gait.
 - The Noetix gait keeps support feet planted while in contact; swing feet move
   between plant anchors, eliminating the earlier sliding-contact artifact.
 - MoonBook materializes the trace as a durable workspace entry.
@@ -363,6 +364,8 @@ Current version already has the first shape:
 - finite trace prefix represents an endless periodic gait
 - explicit endless-gait evidence verifies frame `N + cycle` repeats support and
   contact phase while moving forward by the configured cycle offset
+  and records sampled future cycles that preserve phase/contact while advancing
+  by integer multiples of the cycle offset
 - configurable heading, start position, stride frequency, body height, foot
   radius, and terrain source provenance
 

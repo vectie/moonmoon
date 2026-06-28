@@ -78,6 +78,21 @@ pub(all) struct NoetixMoonWalkTrace {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixEndlessGaitSample {
+  frame_index : Int
+  cycle_index : Int
+  phase_index : Int
+  support_phase : String
+  body_forward_offset_m : Double
+  expected_forward_offset_m : Double
+  left_contact : Bool
+  right_contact : Bool
+  phase_matches_reference : Bool
+  contact_matches_reference : Bool
+  forward_offset_matches_expected : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixEndlessGaitEvidence {
   evidence_id : String
   trace_id : String
@@ -95,6 +110,11 @@ pub(all) struct NoetixEndlessGaitEvidence {
   phase_repeat_verified : Bool
   contact_repeat_verified : Bool
   monotonic_forward_verified : Bool
+  cycle_forward_offset_m : Double
+  sample_count : Int
+  sample_cycle_count : Int
+  samples : Array[NoetixEndlessGaitSample]
+  multi_cycle_verified : Bool
   hardware_authority : String
   status : String
   note : String
@@ -771,13 +791,22 @@ pub fn noetix_endless_gait_evidence(
   let expected_offset = cycle_frames.to_double() *
     config.dt_s *
     config.speed_mps
+  let samples = noetix_endless_gait_samples(
+    field, config, reference, reference_index, cycle_frames, expected_offset,
+  )
   let phase_repeat = reference.support_phase == repeated.support_phase
   let contact_repeat = reference.left_foot.in_contact ==
     repeated.left_foot.in_contact &&
     reference.right_foot.in_contact == repeated.right_foot.in_contact
   let monotonic = observed_offset > 0.0 &&
     abs_double(observed_offset - expected_offset) < 0.000001
-  let ready = phase_repeat && contact_repeat && monotonic
+  let multi_cycle = samples.length() > 0 &&
+    samples.all(fn(sample) {
+      sample.phase_matches_reference &&
+      sample.contact_matches_reference &&
+      sample.forward_offset_matches_expected
+    })
+  let ready = phase_repeat && contact_repeat && monotonic && multi_cycle
   {
     evidence_id: "moonrobo/noetix-e1/endless-gait/\{field.field_id}",
     trace_id: "moonrobo/noetix-e1/endless-forward-moon-walk/\{field.field_id}",
@@ -795,14 +824,81 @@ pub fn noetix_endless_gait_evidence(
     phase_repeat_verified: phase_repeat,
     contact_repeat_verified: contact_repeat,
     monotonic_forward_verified: monotonic,
+    cycle_forward_offset_m: expected_offset,
+    sample_count: samples.length(),
+    sample_cycle_count: 4,
+    samples,
+    multi_cycle_verified: multi_cycle,
     hardware_authority: "moonmoon-safety-gate-only",
     status: if ready {
       "endless-gait-window-verified"
     } else {
       "endless-gait-window-review"
     },
-    note: "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only.",
+    note: "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. Sampled future cycles repeat the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only.",
   }
+}
+
+///|
+fn noetix_endless_gait_sample(
+  field : @moonphys.Heightfield,
+  config : NoetixMoonWalkConfig,
+  reference : NoetixMoonWalkFrame,
+  reference_frame_index : Int,
+  relative_cycle : Int,
+  cycle_frames : Int,
+  expected_cycle_offset_m : Double,
+) -> NoetixEndlessGaitSample {
+  let frame_index = reference_frame_index + relative_cycle * cycle_frames
+  let frame = noetix_moon_walk_frame(field, config, frame_index)
+  let forward = noetix_heading_forward(config)
+  let observed_offset = frame.body_position
+    .sub(reference.body_position)
+    .dot(forward)
+  let expected_offset = relative_cycle.to_double() * expected_cycle_offset_m
+  {
+    frame_index,
+    cycle_index: relative_cycle,
+    phase_index: phase_index(frame_index, cycle_frames),
+    support_phase: frame.support_phase,
+    body_forward_offset_m: observed_offset,
+    expected_forward_offset_m: expected_offset,
+    left_contact: frame.left_foot.in_contact,
+    right_contact: frame.right_foot.in_contact,
+    phase_matches_reference: frame.support_phase == reference.support_phase,
+    contact_matches_reference: frame.left_foot.in_contact ==
+    reference.left_foot.in_contact &&
+    frame.right_foot.in_contact == reference.right_foot.in_contact,
+    forward_offset_matches_expected: abs_double(
+      observed_offset - expected_offset,
+    ) <
+    0.000001,
+  }
+}
+
+///|
+fn noetix_endless_gait_samples(
+  field : @moonphys.Heightfield,
+  config : NoetixMoonWalkConfig,
+  reference : NoetixMoonWalkFrame,
+  reference_frame_index : Int,
+  cycle_frames : Int,
+  expected_cycle_offset_m : Double,
+) -> Array[NoetixEndlessGaitSample] {
+  [
+    noetix_endless_gait_sample(
+      field, config, reference, reference_frame_index, 1, cycle_frames, expected_cycle_offset_m,
+    ),
+    noetix_endless_gait_sample(
+      field, config, reference, reference_frame_index, 2, cycle_frames, expected_cycle_offset_m,
+    ),
+    noetix_endless_gait_sample(
+      field, config, reference, reference_frame_index, 3, cycle_frames, expected_cycle_offset_m,
+    ),
+    noetix_endless_gait_sample(
+      field, config, reference, reference_frame_index, 4, cycle_frames, expected_cycle_offset_m,
+    ),
+  ]
 }
 
 ///|
@@ -841,11 +937,18 @@ pub fn render_noetix_endless_gait_markdown(
   text += "- cycle frames: \{evidence.cycle_frames}\n"
   text += "- expected forward offset: \{evidence.expected_forward_offset_m} m\n"
   text += "- observed forward offset: \{evidence.observed_forward_offset_m} m\n"
+  text += "- cycle forward offset: \{evidence.cycle_forward_offset_m} m\n"
   text += "- reference support: \{evidence.reference_support_phase}\n"
   text += "- repeated support: \{evidence.repeated_support_phase}\n"
   text += "- phase repeat verified: \{evidence.phase_repeat_verified}\n"
   text += "- contact repeat verified: \{evidence.contact_repeat_verified}\n"
   text += "- monotonic forward verified: \{evidence.monotonic_forward_verified}\n"
+  text += "- multi-cycle verified: \{evidence.multi_cycle_verified}\n"
+  text += "- sampled cycles: \{evidence.sample_cycle_count}\n"
+  text += "- samples:\n"
+  for sample in evidence.samples {
+    text += "  - frame \{sample.frame_index}: cycle=\{sample.cycle_index} phase=\{sample.phase_index} offset=\{sample.body_forward_offset_m} expected=\{sample.expected_forward_offset_m} phase-ok=\{sample.phase_matches_reference} contact-ok=\{sample.contact_matches_reference}\n"
+  }
   text += "- hardware authority: \{evidence.hardware_authority}\n"
   text += "- status: \{evidence.status}\n"
   text += "- note: \{evidence.note}"

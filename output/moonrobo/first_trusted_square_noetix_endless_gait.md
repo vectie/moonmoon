@@ -9,11 +9,19 @@
 - cycle frames: 32
 - expected forward offset: 0.384 m
 - observed forward offset: 0.384 m
+- cycle forward offset: 0.384 m
 - reference support: double-support-left-transfer
 - repeated support: double-support-left-transfer
 - phase repeat verified: true
 - contact repeat verified: true
 - monotonic forward verified: true
+- multi-cycle verified: true
+- sampled cycles: 4
+- samples:
+  - frame 32: cycle=1 phase=0 offset=0.384 expected=0.384 phase-ok=true contact-ok=true
+  - frame 64: cycle=2 phase=0 offset=0.768 expected=0.768 phase-ok=true contact-ok=true
+  - frame 96: cycle=3 phase=0 offset=1.152 expected=1.1520000000000001 phase-ok=true contact-ok=true
+  - frame 128: cycle=4 phase=0 offset=1.536 expected=1.536 phase-ok=true contact-ok=true
 - hardware authority: moonmoon-safety-gate-only
 - status: endless-gait-window-verified
-- note: Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only.
+- note: Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. Sampled future cycles repeat the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only.

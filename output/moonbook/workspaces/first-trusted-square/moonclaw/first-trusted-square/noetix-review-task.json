@@ -3272,9 +3272,67 @@
       "phase_repeat_verified": true,
       "contact_repeat_verified": true,
       "monotonic_forward_verified": true,
+      "cycle_forward_offset_m": 0.384,
+      "sample_count": 4,
+      "sample_cycle_count": 4,
+      "samples": [
+        {
+          "frame_index": 32,
+          "cycle_index": 1,
+          "phase_index": 0,
+          "support_phase": "double-support-left-transfer",
+          "body_forward_offset_m": 0.384,
+          "expected_forward_offset_m": 0.384,
+          "left_contact": true,
+          "right_contact": true,
+          "phase_matches_reference": true,
+          "contact_matches_reference": true,
+          "forward_offset_matches_expected": true
+        },
+        {
+          "frame_index": 64,
+          "cycle_index": 2,
+          "phase_index": 0,
+          "support_phase": "double-support-left-transfer",
+          "body_forward_offset_m": 0.768,
+          "expected_forward_offset_m": 0.768,
+          "left_contact": true,
+          "right_contact": true,
+          "phase_matches_reference": true,
+          "contact_matches_reference": true,
+          "forward_offset_matches_expected": true
+        },
+        {
+          "frame_index": 96,
+          "cycle_index": 3,
+          "phase_index": 0,
+          "support_phase": "double-support-left-transfer",
+          "body_forward_offset_m": 1.152,
+          "expected_forward_offset_m": 1.1520000000000001,
+          "left_contact": true,
+          "right_contact": true,
+          "phase_matches_reference": true,
+          "contact_matches_reference": true,
+          "forward_offset_matches_expected": true
+        },
+        {
+          "frame_index": 128,
+          "cycle_index": 4,
+          "phase_index": 0,
+          "support_phase": "double-support-left-transfer",
+          "body_forward_offset_m": 1.536,
+          "expected_forward_offset_m": 1.536,
+          "left_contact": true,
+          "right_contact": true,
+          "phase_matches_reference": true,
+          "contact_matches_reference": true,
+          "forward_offset_matches_expected": true
+        }
+      ],
+      "multi_cycle_verified": true,
       "hardware_authority": "moonmoon-safety-gate-only",
       "status": "endless-gait-window-verified",
-      "note": "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. A frame one cycle later repeats the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only."
+      "note": "Finite Noetix walk exports are replay windows over this mathematically endless Moonrobo gait. Sampled future cycles repeat the support/contact phase while the body advances by the configured forward offset. This is simulation evidence only."
     },
     "source_walk": {
       "trace_id": "moonrobo/noetix-e1/endless-forward-moon-walk/first-trusted-square-northeast-stepout-lola",

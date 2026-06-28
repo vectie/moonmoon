@@ -408,9 +408,28 @@ pub(all) struct NoetixEndlessGaitEvidence {
   phase_repeat_verified : Bool
   contact_repeat_verified : Bool
   monotonic_forward_verified : Bool
+  cycle_forward_offset_m : Double
+  sample_count : Int
+  sample_cycle_count : Int
+  samples : Array[NoetixEndlessGaitSample]
+  multi_cycle_verified : Bool
   hardware_authority : String
   status : String
   note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixEndlessGaitSample {
+  frame_index : Int
+  cycle_index : Int
+  phase_index : Int
+  support_phase : String
+  body_forward_offset_m : Double
+  expected_forward_offset_m : Double
+  left_contact : Bool
+  right_contact : Bool
+  phase_matches_reference : Bool
+  contact_matches_reference : Bool
+  forward_offset_matches_expected : Bool
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct NoetixFootContactProbe {
