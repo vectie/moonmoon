@@ -53,6 +53,12 @@ evidence.
   collision tags, and high-control limits cannot silently drift from the source.
   It also verifies visual geometry kind, origin, dimensions, mesh path, and
   placeholder mesh bounds from the referenced OBJ vertices.
+- Sibling Moonrobo is already mesh-aware, not just stick-aware: its cockpit
+  projection exports URDF `visuals` and `visual_instances`, resolves mesh asset
+  paths, and records primitive box/cylinder visuals. The current Noetix source
+  has one resolved OBJ mesh on `base_link` plus primitive torso/chest/limb
+  visuals, so Rabbita should render rigid mesh and primitive link visuals as
+  the primary robot body.
 - Moonphys exports a generic capture-point assessment for dynamic-stability
   review, and Moonrobo exports a Noetix dynamic-stability report backed by it.
 - Moonrobo exports URDF-reference Noetix link-pose evidence: body/limb links
@@ -421,6 +427,8 @@ Input from sibling Moonrobo:
 - `../moonrobo/examples/noetix-e1/robot.json`
 - `../moonrobo/examples/noetix-e1/model/robot.urdf`
 - Moonrobo's existing URDF parser and viewport simulation as reference material
+- Moonrobo Cockpit's URDF viewport contract: `visuals`, `visual_instances`,
+  resolved mesh paths, and primitive visual geometry
 
 In this repo, initially avoid copying full URDF parsing. Instead:
 
@@ -486,6 +494,8 @@ Viewer needs:
   - one node per URDF link
   - one transform per URDF joint
   - visual geometry attached to the owning link's local frame
+  - mesh visuals rendered from resolved URDF assets
+  - box/cylinder primitive visuals rendered from URDF dimensions
   - sticks/bones shown only as a debug overlay, not as the primary robot body
 - status badges:
   - `walking`
@@ -512,6 +522,7 @@ Robot animation bridge:
 ```text
 Noetix URDF
   links + joints + origins + axes + limits
+  visual meshes + visual primitives + visual origins
     -> Moonrobo RobotRig
        one rigid node per link
        one revolute transform per joint
@@ -529,6 +540,8 @@ Rules:
 
 - Do not create a game-character skeleton with arbitrary bones.
 - Do not skin or deform Noetix visual geometry; robot links are rigid.
+- Do not reduce Moonrobo's model to sticks. Sticks are a link-tree diagnostic;
+  the primary Rabbita body should be the rigid URDF visual geometry.
 - Do not pull foot link positions directly to terrain contact after FK for the
   primary render. Contact should influence the gait/controller that produces
   joint positions; FK should then render the resulting robot.
@@ -543,14 +556,29 @@ Immediate Phase 5A deliverables:
 
 - Add a Moonrobo `RobotRig`/`RobotMotionFrame` contract for URDF-backed rigid
   robot animation.
-- Convert the Noetix URDF-reference link tree into that contract.
+- Convert the Noetix URDF-reference link tree and visual geometry into that
+  contract:
+  - one resolved `base_link` OBJ mesh from `meshes/base.obj`
+  - existing URDF box visuals for torso/chest links
+  - existing URDF cylinder visuals for arm/leg links
+  - explicit missing-visual status for links without a visual block
 - Rework the Rabbita Noetix viewer to render rigid link visuals from FK link
   transforms instead of the current contact-corrected stick pose.
+- Support mesh assets by extension instead of assuming STL-only rendering:
+  `OBJLoader` for `.obj`, `STLLoader` for `.stl`, and a clear unsupported-asset
+  status for anything else. Moonrobo's current Three viewer resolves mesh
+  assets but its loader path is STL-focused, while Noetix currently references
+  an OBJ mesh.
+- Render URDF primitive boxes and cylinders directly in Three.js so the current
+  Noetix source can show more than the one base mesh even before full per-link
+  meshes exist.
 - Keep the endless gait loop source-backed by the existing Noetix walk command
   or simulated joint trajectory, with explicit `simulation evidence only` and
   `hardware denied` labels.
 - Add verifier coverage that fails if rendered foot links are manually detached
-  from the FK tree or if the viewer presents debug sticks as the primary robot.
+  from the FK tree, if the viewer presents debug sticks as the primary robot,
+  if the resolved OBJ base mesh is not represented in the render contract, or if
+  URDF box/cylinder primitives disappear from the visual instance contract.
 
 ## Phase 6: Evidence Export
 
