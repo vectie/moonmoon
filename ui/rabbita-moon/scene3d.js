@@ -411,6 +411,23 @@ function addCube(vertices, colors, matrix, center, size, color) {
   }
 }
 
+function addVisualLink(vertices, colors, diagnostics, linkId, matrix, center, size, color, source) {
+  addCube(vertices, colors, matrix, center, size, color)
+  diagnostics.visualLinks.push({
+    linkId,
+    geometry: 'box',
+    source,
+    origin: matrixOrigin(matrix),
+    center: pointRecord(transformPoint(matrix, center)),
+    sizeM: {
+      x: size[0],
+      y: size[1],
+      z: size[2],
+    },
+    attached: true,
+  })
+}
+
 function vec3Length(v) {
   return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
 }
@@ -509,14 +526,17 @@ function pointRecordDistance(a, b) {
 }
 
 function addGround(vertices, colors, clip) {
-  const offset = clip.rootDistanceM % 0.24
-  for (let i = -8; i <= 8; i += 1) {
-    const z = i * 0.24 - offset
+  const spacing = 0.24
+  const startWorldZ = Math.floor((clip.rootDistanceM - 1.92) / spacing) * spacing
+  for (let i = 0; i <= 17; i += 1) {
+    const worldZ = startWorldZ + i * spacing
+    const z = worldZ - clip.rootDistanceM
+    const nextZ = z + 0.018
     const a = terrainSampleAt(-1.6, z, clip).heightM
     const b = terrainSampleAt(1.6, z, clip).heightM
-    const c = terrainSampleAt(1.6, z + 0.018, clip).heightM
-    const d = terrainSampleAt(-1.6, z + 0.018, clip).heightM
-    addQuad(vertices, colors, [-1.6, a, z], [1.6, b, z], [1.6, c - 0.012, z + 0.018], [-1.6, d - 0.012, z + 0.018], [0.18, 0.24, 0.21])
+    const c = terrainSampleAt(1.6, nextZ, clip).heightM
+    const d = terrainSampleAt(-1.6, nextZ, clip).heightM
+    addQuad(vertices, colors, [-1.6, a, z], [1.6, b, z], [1.6, c - 0.012, nextZ], [-1.6, d - 0.012, nextZ], [0.18, 0.24, 0.21])
   }
   for (let i = -4; i <= 4; i += 1) {
     const x = i * 0.32
@@ -588,10 +608,40 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
     z: (hipPoint.z + anklePoint.z) * 0.5,
   }
   const kneeForwardM = vec3Dot(vec3Sub(kneePoint, chainMidpoint), forward)
-  addCube(vertices, colors, hip, [0, -upperLen * 0.5, 0], [0.065, upperLen, 0.075], sideColor)
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_leg_1`,
+    hip,
+    [0, -upperLen * 0.5, 0],
+    [0.065, upperLen, 0.075],
+    sideColor,
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_leg_1`,
+  )
   addCube(vertices, colors, knee, [0, 0.006, 0.055], [0.076, 0.034, 0.040], [0.96, 0.84, 0.42])
-  addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
-  addCube(vertices, colors, ankle, [0, -0.026, 0.075], [0.095, 0.052, 0.215], [0.50, 0.55, 0.50])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_leg_4`,
+    knee,
+    [0, -lowerLen * 0.5, 0.008],
+    [0.055, lowerLen, 0.065],
+    [0.78, 0.70, 0.34],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_leg_4`,
+  )
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_foot`,
+    ankle,
+    [0, -0.026, 0.075],
+    [0.095, 0.052, 0.215],
+    [0.50, 0.55, 0.50],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_foot`,
+  )
   let toe = mat4Translate(ankle, 0, -0.035, 0.172)
   toe = mat4RotateX(toe, foot.rollPitch)
   addCube(vertices, colors, toe, [0, -0.002, 0.042], [0.105, 0.030, 0.095], [0.62, 0.64, 0.54])
@@ -637,12 +687,42 @@ function addArm(vertices, colors, root, side, joints, diagnostics) {
   let shoulder = mat4Translate(root, side * 0.155, 0.265, 0.0)
   shoulder = mat4RotateX(shoulder, angles.shoulder)
   shoulder = mat4RotateZ(shoulder, side * 0.07)
-  addCube(vertices, colors, shoulder, [0, -upperLen * 0.5, 0], [0.045, upperLen, 0.055], [0.56, 0.72, 0.76])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_arm_1`,
+    shoulder,
+    [0, -upperLen * 0.5, 0],
+    [0.045, upperLen, 0.055],
+    [0.56, 0.72, 0.76],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_arm_1`,
+  )
   let elbow = mat4Translate(shoulder, 0, -upperLen, 0)
   elbow = mat4RotateX(elbow, -angles.elbow)
   addCube(vertices, colors, elbow, [0, 0.004, 0.042], [0.052, 0.030, 0.034], [0.70, 0.86, 0.90])
-  addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
-  addCube(vertices, colors, elbow, [0, -lowerLen - 0.030, 0.040], [0.050, 0.060, 0.055], [0.40, 0.54, 0.58])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_arm_4`,
+    elbow,
+    [0, -lowerLen * 0.5, 0.015],
+    [0.040, lowerLen, 0.050],
+    [0.48, 0.64, 0.68],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_arm_4`,
+  )
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    `${name}_hand`,
+    elbow,
+    [0, -lowerLen - 0.030, 0.040],
+    [0.050, 0.060, 0.055],
+    [0.40, 0.54, 0.58],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#${name}_hand`,
+  )
   const forward = matrixForward(shoulder)
   const elbowPoint = matrixOrigin(elbow)
   const handPoint = pointRecord(transformPoint(elbow, [0, -lowerLen, 0]))
@@ -680,15 +760,45 @@ function robotGeometry(time, options = { quality: true }) {
   }
   const joints = ik.correctedJoints
   const terrain = terrainProfileReport(clip)
-  const diagnostics = { feet: [], arms: [], authoredJoints, joints, ik, terrain, footLock }
+  const diagnostics = { feet: [], arms: [], visualLinks: [], authoredJoints, joints, ik, terrain, footLock }
   const root = robotRoot(clip, ik.pelvisCorrectionM, footLock)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
-  addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    'base_link',
+    root,
+    [0, -0.025, 0],
+    [0.24, 0.18, 0.18],
+    [0.40, 0.72, 0.70],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#base_link mesh meshes/base.obj`,
+  )
   let torsoRoot = mat4RotateY(root, clip.torsoCounterRotation)
   torsoRoot = mat4RotateZ(torsoRoot, -clip.sway * 1.6)
-  addCube(vertices, colors, torsoRoot, [0, 0.185, 0.01], [0.22, 0.18, 0.16], [0.46, 0.80, 0.76])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    'torso_link',
+    torsoRoot,
+    [0, 0.185, 0.01],
+    [0.22, 0.18, 0.16],
+    [0.46, 0.80, 0.76],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#torso_link box`,
+  )
   addCube(vertices, colors, torsoRoot, [0, 0.205, 0.098], [0.125, 0.050, 0.018], [0.12, 0.20, 0.22])
-  addCube(vertices, colors, mat4Translate(torsoRoot, 0, 0.37, 0.015), [0, 0, 0], [0.24, 0.20, 0.15], [0.54, 0.86, 0.80])
+  addVisualLink(
+    vertices,
+    colors,
+    diagnostics,
+    'chest_link',
+    mat4Translate(torsoRoot, 0, 0.37, 0.015),
+    [0, 0, 0],
+    [0.24, 0.20, 0.15],
+    [0.54, 0.86, 0.80],
+    `${NOETIX_URDF_LIMIT_SOURCE.urdf_path}#chest_link box`,
+  )
   const headRoot = mat4Translate(torsoRoot, 0, 0.52, 0.005)
   addCube(vertices, colors, headRoot, [0, 0, 0], [0.13, 0.12, 0.12], [0.72, 0.92, 0.86])
   addCube(vertices, colors, headRoot, [0, 0.012, 0.068], [0.080, 0.030, 0.016], [0.08, 0.14, 0.16])
@@ -724,6 +834,7 @@ function gaitQuality(time, diagnostics) {
   const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds)
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
+  const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
@@ -752,6 +863,7 @@ function gaitQuality(time, diagnostics) {
     stanceFootWorldLock: footLockDrift.maxStepM <= NOETIX_VISUAL_RIG.stanceFootWorldStepMaxM ? 'pass' : 'fail',
     rootCorrectionContinuity: rootCorrectionContinuity.maxStepM <= NOETIX_VISUAL_RIG.rootCorrectionStepMaxM ? 'pass' : 'fail',
     swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
+    visualLinkAttachments: visualLinkAttachments.status,
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
@@ -779,6 +891,7 @@ function gaitQuality(time, diagnostics) {
     footLockDrift,
     rootCorrectionContinuity,
     swingFootClearance,
+    visualLinkAttachments,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
     toeRoll: cycle.toeRoll,
@@ -792,6 +905,32 @@ function gaitQuality(time, diagnostics) {
     },
     authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
+  }
+}
+
+function visualLinkAttachmentReport(visualLinks) {
+  const ids = new Set(visualLinks.map(link => link.linkId))
+  const duplicateIds = visualLinks
+    .map(link => link.linkId)
+    .filter((id, index, list) => list.indexOf(id) !== index)
+  const missingCount = Math.max(0, NOETIX_VISUAL_RIG.linkCount - ids.size)
+  const status = ids.size === NOETIX_VISUAL_RIG.linkCount &&
+    duplicateIds.length === 0 &&
+    visualLinks.every(link => link.attached)
+    ? 'pass'
+    : 'fail'
+  return {
+    status,
+    expectedCount: NOETIX_VISUAL_RIG.linkCount,
+    attachedCount: ids.size,
+    missingCount,
+    duplicateIds,
+    links: visualLinks.map(link => ({
+      linkId: link.linkId,
+      geometry: link.geometry,
+      source: link.source,
+      attached: link.attached,
+    })),
   }
 }
 
@@ -833,6 +972,7 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
     right: { maxStepM: 0, sampleCount: 0 },
   }
   let maxStepM = 0
+  let maxFrame = null
   for (let i = 0; i <= 48; i += 1) {
     const sampleTime = time + (i / 48) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
@@ -842,14 +982,26 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
         continue
       }
       const world = {
-        x: foot.fkEndpoint.x + diagnostics.footLock.x,
+        x: foot.fkEndpoint.x + (diagnostics.footLock.visibleX ?? 0),
         y: foot.fkEndpoint.y,
-        z: foot.fkEndpoint.z + diagnostics.rootDistanceM,
+        z: foot.fkEndpoint.z + diagnostics.rootDistanceM + (diagnostics.footLock.visibleZ ?? 0),
       }
       if (previous[foot.name]) {
-        const stepM = Math.abs(world.x - previous[foot.name].x)
+        const stepM = Math.hypot(
+          world.x - previous[foot.name].x,
+          world.z - previous[foot.name].z,
+        )
         perFoot[foot.name].maxStepM = Math.max(perFoot[foot.name].maxStepM, stepM)
-        maxStepM = Math.max(maxStepM, stepM)
+        if (stepM > maxStepM) {
+          maxStepM = stepM
+          maxFrame = {
+            phase: diagnostics.phase,
+            foot: foot.name,
+            role: foot.role,
+            previous: previous[foot.name],
+            current: world,
+          }
+        }
       }
       previous[foot.name] = world
       perFoot[foot.name].sampleCount += 1
@@ -857,6 +1009,7 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
   }
   return {
     maxStepM,
+    maxFrame,
     perFoot,
     sampleCount: perFoot.left.sampleCount + perFoot.right.sampleCount,
   }
@@ -1447,7 +1600,10 @@ function supportJointIk(root, clip, joints) {
   const epsilon = 0.01
   let saturated = false
   let totalIterations = 0
-  const lockedNames = ['left', 'right'].filter(name => clip.footChannels[name].lockWeight > 0.05)
+  const supportFoot = clip.supportFoot
+  const lockedNames = ['left', 'right'].filter(name =>
+    name === supportFoot || clip.footChannels[name].lockWeight > 0.05
+  )
   const supportSide = clip.supportFoot === 'left' ? 1 : -1
   const supportPreProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
   const solveLockedFoot = footName => {
@@ -1529,7 +1685,7 @@ function swingClearanceIk(root, clip, correctedJoints, jointCorrections) {
       saturated: false,
     }
   }
-  const fields = ['ankle']
+  const fields = ['knee', 'ankle']
   const epsilon = 0.01
   let denom = 0
   const derivatives = {}
@@ -1825,6 +1981,14 @@ function initRobot(canvas) {
       minClearanceM: Number(geometry.diagnostics.quality.swingFootClearance.minClearanceM.toFixed(4)),
       minFrame: geometry.diagnostics.quality.swingFootClearance.minFrame,
       sampleCount: geometry.diagnostics.quality.swingFootClearance.sampleCount,
+    })
+    canvas.dataset.visualAttachmentStatus = geometry.diagnostics.quality.statuses.visualLinkAttachments
+    canvas.dataset.visualLinkAttachments = JSON.stringify({
+      expectedCount: geometry.diagnostics.quality.visualLinkAttachments.expectedCount,
+      attachedCount: geometry.diagnostics.quality.visualLinkAttachments.attachedCount,
+      missingCount: geometry.diagnostics.quality.visualLinkAttachments.missingCount,
+      duplicateIds: geometry.diagnostics.quality.visualLinkAttachments.duplicateIds,
+      links: geometry.diagnostics.quality.visualLinkAttachments.links,
     })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)

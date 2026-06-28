@@ -2,10 +2,10 @@ export const NOETIX_VISUAL_RIG = {
   robotId: 'noetix-e1-lab-01',
   source: 'moonrobo-urdf-visual-adapter',
   rootLink: 'base_link',
-  linkCount: 13,
+  linkCount: 15,
   estimatedMassKg: 54.0,
-  cycleHz: 0.74,
-  rootSpeedMps: 0.28,
+  cycleHz: 0.46,
+  rootSpeedMps: 0.18,
   targetFkMaxM: 0.025,
   lockedTargetFkMaxM: 0.010,
   stanceFootWorldStepMaxM: 0.030,
@@ -191,17 +191,22 @@ function legAngles(legPhase) {
     const lateLanding = smoothstep((u - 0.70) / 0.30)
     const toeOffLift = 1 - smoothstep(u / 0.18)
     const swingLift = Math.sin(u * Math.PI)
-    const kneeLift = 0.16 * toeOffLift + 0.58 * swingLift * landing
+    const kneeLift = 0.16 * toeOffLift + 0.74 * swingLift * landing
     return {
       hip: mix(0.435, -0.36, e),
       knee: -(0.08 + kneeLift),
       ankle: -0.42 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
     }
   }
+  const stanceProgress = u < 0.48
+    ? mix(0, 0.42, smoothstep(u / 0.48))
+    : u < 0.74
+      ? mix(0.42, 0.56, smoothstep((u - 0.48) / 0.26))
+      : mix(0.56, 1, smoothstep((u - 0.74) / 0.26))
   return {
-    hip: mix(-0.35, 0.28, e),
+    hip: mix(-0.35, 0.28, stanceProgress),
     knee: -(0.08 + 0.08 * Math.sin(u * Math.PI)),
-    ankle: mix(0.12, -0.08, e),
+    ankle: mix(0.12, -0.08, stanceProgress),
   }
 }
 

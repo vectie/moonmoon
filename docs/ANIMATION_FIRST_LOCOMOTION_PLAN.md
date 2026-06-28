@@ -73,6 +73,9 @@ the rig:
 - each joint defines parent, child, origin, axis, and limits
 - link lengths and local offsets remain invariant during animation
 - visual geometry comes from primitives or mesh references
+- visual mesh or primitive attachment per link is a required render contract
+- visual attachments are named by link id and reported separately from debug
+  markers
 - sticks and foot dots are debug overlays only
 
 The bridge from sticks to bones is rigid FK:
@@ -142,14 +145,14 @@ Acceptance:
 Foot locking is the first guard against skating.
 
 Current status: active in the Rabbita preview. Support feet now get a
-root-space lateral correction against their stance-start anchor, and
-`check:gait` requires lateral stance stability without feeding forward/back
-anchor correction into the visible root.
+visible-space planted-foot stability check against their stance-start anchor,
+and `check:gait` requires stance stability without feeding forward/back anchor
+correction into the visible root.
 
 Required behavior:
 
 - each foot has an explicit `locked` channel
-- stance foot lateral delta stays near zero
+- visible stance foot world delta stays near zero
 - swing foot is unlocked and follows an arc
 - double-support windows are explicit
 - lock and release markers are emitted
@@ -375,6 +378,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    animation subphases (`contact`, `loading`, `stance`, `passing`, `swing`,
    `release`) into `footPhaseChannels`, `gaitPhaseLabel`, and
    `footPhaseCoverageStatus`, and renders root/phase timing rails in the 3D
-   scene so the walk can be inspected like an animation asset. The next Phase
+   scene so the walk can be inspected like an animation asset. The renderer
+   now reports named rigid visual attachments through `visualLinkAttachments`
+   and `visualAttachmentStatus`, separating Noetix link visuals from foot
+   markers, target cubes, terrain rails, and other debug overlays. The next Phase
    D/E target is still visual readability of the same walk cycle before adding
    another fixture mirror.

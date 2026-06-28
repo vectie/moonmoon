@@ -162,13 +162,15 @@ Status: active in the Rabbita 3D view as a standalone preview. The current
 `ui/rabbita-moon` renderer uses a Noetix-shaped rigid visual adapter with fixed
 link dimensions and FK-derived foot endpoints. Full Moonrobo URDF import and
 mesh attachment remain adapter work; Moonmoon core still does not depend on
-Moonrobo.
+Moonrobo. The preview now emits named `visualLinkAttachments` for each rendered
+link fallback so link visuals can be audited separately from debug markers.
 
 Deliverables:
 
 - URDF joint tree or equivalent rigid model contract
 - forward-kinematics link poses
 - visual mesh or primitive attachment per link
+- browser-facing visual attachment status
 - debug skeleton as an overlay only
 - tests that catch link-length changes
 
