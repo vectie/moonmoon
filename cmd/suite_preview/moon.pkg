@@ -1,0 +1,9 @@
+import {
+  "moonbitlang/core/env",
+  "moonbitlang/x/fs" @fsx,
+  "vectie/moonmoon/src/suite_adapter_preview",
+}
+
+options(
+  "is-main": true,
+)

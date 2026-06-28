@@ -435,7 +435,10 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    generated bridge. `src/suite_adapter_preview/moonrobo_live_ingestion.mbt`
    now accepts a full live Moonrobo contract JSON value, decodes the authored
    joint, motion, contact, and motor tables, and runs the compiled Moonphys
-   review from the parsed contact/motor frames. The next Phase 10 target is to
-   move the plain build/test fixture behind a live suite-preview command/build
-   step and remove the committed generated MoonBit motion/contact/motor table
-   snapshot.
+   review from the parsed contact/motor frames. `cmd/suite_preview` now exposes
+   that ingestion as a native command, and
+   `ui/rabbita-moon/check-live-suite-payload.mjs` runs Moonrobo's live contract
+   exporter through that command before validating the emitted suite payload.
+   The next Phase 10 target is to move the plain build/test fixture behind this
+   live suite-preview command/build step and remove the committed generated
+   MoonBit motion/contact/motor table snapshot.

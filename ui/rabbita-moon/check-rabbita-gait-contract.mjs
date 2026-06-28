@@ -481,6 +481,29 @@ if (liveMoonroboSuiteGate.status !== 0) {
   )
 }
 
+const liveSuitePayloadGate = spawnSync(
+  process.execPath,
+  ['check-live-suite-payload.mjs'],
+  {
+    cwd: fileURLToPath(new URL('.', import.meta.url)),
+    encoding: 'utf8',
+  },
+)
+
+if (liveSuitePayloadGate.error) {
+  throw liveSuitePayloadGate.error
+}
+
+if (liveSuitePayloadGate.status !== 0) {
+  throw new Error(
+    [
+      'live suite payload command gate failed',
+      liveSuitePayloadGate.stdout,
+      liveSuitePayloadGate.stderr,
+    ].filter(Boolean).join('\n'),
+  )
+}
+
 const compiledMoonphysGate = spawnSync(
   process.env.MOON_BIN ?? 'moon',
   ['test', 'src/suite_adapter_preview', '--target', 'js'],
@@ -505,5 +528,5 @@ if (compiledMoonphysGate.status !== 0) {
 }
 
 console.log(
-  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, Moonrobo contract gate, live Moonrobo suite gate, compiled Moonphys gate`,
+  `Rabbita gait contract check passed: ${sceneContracts.length + planContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, Moonrobo contract gate, live Moonrobo suite gate, live suite payload command gate, compiled Moonphys gate`,
 )

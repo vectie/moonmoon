@@ -376,10 +376,14 @@ failure. `src/suite_adapter_preview/moonrobo_live_ingestion.mbt` now defines a
 native MoonBit live-contract ingestion path that decodes the full Moonrobo
 contract JSON, converts parsed contact frames into the compiled Moonphys review
 shape, and builds a live suite payload from parsed joint, motion, contact, and
-motor tables. `npm run check:gait` covers this path through the
-`src/suite_adapter_preview` MoonBit gate. The remaining Phase 10 feature is to
-move the plain build/test fixture behind a live suite-preview command/build
-step and then remove the committed generated MoonBit table snapshot.
+motor tables. `cmd/suite_preview` is the current native command path for that
+ingestion: it reads live `../moonrobo/cmd/moonmoon_contract` JSON and emits the
+Moonmoon suite-preview payload without using Rabbita-generated evidence.
+`ui/rabbita-moon/check-live-suite-payload.mjs` gates that command path, and
+`npm run check:gait` now requires it alongside the live Moonrobo suite evidence
+gate and compiled Moonphys gate. The remaining Phase 10 feature is to move the
+plain build/test fixture behind this live suite-preview command/build step and
+then remove the committed generated MoonBit table snapshot.
 
 Acceptance:
 

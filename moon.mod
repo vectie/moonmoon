@@ -22,3 +22,7 @@ license = "Apache-2.0"
 keywords = [ "moonbit", "lunar", "terrain", "mission-planning", "robotics" ]
 
 description = "MoonBit-native lunar world model for measured terrain evidence, mission constraints, and robot-facing MoonSuite boundaries."
+
+import {
+  "moonbitlang/x@0.4.46",
+}

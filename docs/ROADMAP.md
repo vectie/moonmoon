@@ -47,10 +47,12 @@
   data and uses it as a readiness blocker. Moonmoon now also has a native
   suite-preview live-contract ingestion path that decodes full Moonrobo contract
   JSON, carries authored contact frames in the default suite payload, and
-  reviews the parsed motion/contact/motor tables through Moonphys. The next
-  implementation target is moving the plain build/test fixture behind a live
-  suite-preview command/build step and deleting the committed generated MoonBit
-  table snapshot.
+  reviews the parsed motion/contact/motor tables through Moonphys. The
+  `cmd/suite_preview` command and Rabbita `check:live-suite-payload` gate now
+  exercise that path from live Moonrobo JSON. The next implementation target is
+  moving the plain build/test fixture behind that live suite-preview
+  command/build step and deleting the committed generated MoonBit table
+  snapshot.
 
 ## Non-Goals
 
