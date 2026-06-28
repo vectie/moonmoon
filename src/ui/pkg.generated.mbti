@@ -14,6 +14,10 @@ pub fn first_trusted_square_json() -> Json
 
 pub fn first_trusted_square_markdown() -> String
 
+pub fn first_trusted_square_motion_contract() -> TraverseMotionContract
+
+pub fn first_trusted_square_motion_contract_json() -> Json
+
 pub fn first_trusted_square_view_model() -> TrustedSquareViewModel
 
 pub fn first_trusted_square_view_model_at(Int, Int) -> TrustedSquareViewModel
@@ -27,6 +31,8 @@ pub fn render_html(TrustedSquareViewModel) -> String
 pub fn render_json(TrustedSquareViewModel) -> Json
 
 pub fn render_markdown(TrustedSquareViewModel) -> String
+
+pub fn traverse_motion_contract(TrustedSquareViewModel) -> TraverseMotionContract
 
 pub fn view_layer_kind_label(ViewLayerKind) -> String
 
@@ -198,6 +204,19 @@ pub(all) struct TileInspector {
   confidence : Double
   layer_values : Array[CellLayerValue]
   notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TraverseMotionContract {
+  contract_id : String
+  site_id : String
+  selected_route_id : String
+  physics_core_package : String
+  motion_owner_package : String
+  preview_kind : String
+  gait_asset_status : String
+  simulation_status : String
+  status : String
+  next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct TrustedSquareViewModel {

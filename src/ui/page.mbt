@@ -1,6 +1,6 @@
 ///|
 fn status_class(value : String) -> String {
-  if value.contains("block") {
+  if value.contains("block") || value.contains("gated") {
     "is-blocked"
   } else if value.contains("review") || value.contains("caution") {
     "is-review"
@@ -76,6 +76,13 @@ fn blocker_list(view : TrustedSquareViewModel) -> String {
 }
 
 ///|
+fn motion_contract_panel(contract : TraverseMotionContract) -> String {
+  let html =
+    $|<section class="card panel motion-contract"><h2>motion contract</h2><article class="row \{status_class(contract.status)}"><div><b>\{html_escape(contract.preview_kind)}</b><span>\{html_escape(contract.contract_id)}</span></div><strong>\{html_escape(contract.status)}</strong></article><article class="row"><div><b>physics core</b><span>\{html_escape(contract.physics_core_package)}</span></div><strong>generic</strong></article><article class="row"><div><b>motion owner</b><span>\{html_escape(contract.motion_owner_package)}</span></div><strong>\{html_escape(contract.gait_asset_status)}</strong></article><article class="row \{status_class(contract.simulation_status)}"><div><b>simulation</b><span>\{html_escape(contract.next_action)}</span></div><strong>\{html_escape(contract.simulation_status)}</strong></article></section>
+  html
+}
+
+///|
 fn app_styles() -> String {
   let css =
     #|<style>
@@ -133,6 +140,8 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
   let source_path = html_escape(view.source_panel.local_source_path)
   let source_review = html_escape(view.source_panel.review_status)
   let view_json = render_json(view).stringify(indent=2)
+  let motion_contract = traverse_motion_contract(view)
+  let motion_contract_json = motion_contract.to_json().stringify(indent=2)
   let html =
     $|<!doctype html>
     $|<html lang="en">
@@ -146,6 +155,9 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
     $|<script id="moonmoon-view-model" type="application/json">
     $|\{view_json}
     $|</script>
+    $|<script id="moonmoon-motion-contract" type="application/json">
+    $|\{motion_contract_json}
+    $|</script>
     $|<main class="shell">
     $|  <section class="workspace">
     $|    <header class="topbar"><div><h1>\{title}</h1><p class="summary">\{next_action}</p></div><strong class="badge">mission \{decision}</strong></header>
@@ -157,6 +169,7 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
     $|    <section class="card panel"><h2>selected cell</h2><article class="row"><div><b>\{html_escape(view.selected_tile.cell_id)}</b><span>\{html_escape(view.selected_tile.hazard)}</span></div><strong>\{view.selected_tile.elevation_m} m</strong></article></section>
     $|    <section class="card panel"><h2>routes</h2>\{route_list(view)}</section>
     $|    <section class="card panel"><h2>source</h2><article class="row"><div><b>\{source_title}</b><span>\{source_path}</span></div><strong>\{source_review}</strong></article></section>
+    $|    \{motion_contract_panel(motion_contract)}
     $|    <section class="card panel"><h2>facts</h2>\{fact_list(view)}</section>
     $|    <section class="card panel"><h2>blockers</h2><ul>\{blocker_list(view)}</ul></section>
     $|  </aside>
