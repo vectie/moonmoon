@@ -23,9 +23,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_missing_inertial_link_count : Int
   source_model_metadata_blocker_count : Int
   source_model_metadata_blocker_ids : Array[String]
-  source_model_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_model_metadata_inventory : @review.ModelMetadataInventory
   source_model_metadata_gaps : Array[@moonrobo.NoetixSourceMetadataGap]
-  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_readiness : @review.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
   static_support_stable_frame_count : Int

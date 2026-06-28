@@ -6,6 +6,7 @@ import {
   "moonbitlang/core/json",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/moonphys",
+  "vectie/moonmoon/src/moonphys/review",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/terrain",
 }
@@ -817,7 +818,7 @@ pub(all) struct NoetixPhysicsProfile {
   foot_geometry : Array[NoetixFootGeometry]
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
-  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_readiness : @review.PhysicalModelReadiness
   physical_model_gaps : Array[NoetixPhysicalModelGap]
   material_model : String
   hardware_authority : String
@@ -903,7 +904,7 @@ pub(all) struct NoetixSourceModelReport {
   missing_inertial_link_count : Int
   source_metadata_blocker_count : Int
   source_metadata_blocker_ids : Array[String]
-  source_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_metadata_inventory : @review.ModelMetadataInventory
   source_metadata_gaps : Array[NoetixSourceMetadataGap]
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool

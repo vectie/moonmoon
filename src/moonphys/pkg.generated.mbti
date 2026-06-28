@@ -107,10 +107,6 @@ pub fn mass_property_element(String, Double, Vec3, RigidBodyInertia) -> MassProp
 
 pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
 
-pub fn model_metadata_inventory(String, Array[String], Array[String], Array[String]) -> ModelMetadataInventory
-
-pub fn physical_model_readiness(String, Array[String], Array[String], Array[String]) -> PhysicalModelReadiness
-
 pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
 
 pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
@@ -622,35 +618,6 @@ pub(all) struct MaterialContactModel {
   material_id : String
   friction_coefficient : Double
   restitution_coefficient : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ModelMetadataInventory {
-  model_id : String
-  link_count : Int
-  collision_shape_link_count : Int
-  inertial_link_count : Int
-  missing_collision_shape_links : Array[String]
-  missing_inertial_links : Array[String]
-  blocker_count : Int
-  blocker_ids : Array[String]
-  ready : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct PhysicalModelReadiness {
-  readiness_id : String
-  required_item_count : Int
-  authoritative_item_count : Int
-  assumed_item_count : Int
-  missing_item_count : Int
-  blocker_count : Int
-  blocker_ids : Array[String]
-  ready : Bool
-  required_items : Array[String]
-  authoritative_items : Array[String]
-  assumed_items : Array[String]
-  missing_items : Array[String]
-  status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct PhysicsEnvironment {

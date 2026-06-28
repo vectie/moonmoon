@@ -30,8 +30,9 @@ evidence.
   between plant anchors, eliminating the earlier sliding-contact artifact.
 - MoonBook materializes the trace as a durable workspace entry.
 - Moonrobo exports a Noetix physics-assumption profile with a generic
-  Moonphys physical-model readiness inventory, plus a static COM/support report
-  backed by generic Moonphys convex support-polygon and support-load assessment.
+  `moonphys/review` physical-model readiness inventory, plus a static
+  COM/support report backed by generic Moonphys convex support-polygon and
+  support-load assessment.
   The physical-model readiness inventory now exposes stable blocker IDs for
   assumed and missing inputs, and the Noetix profile now carries a
   `physical_model_gaps` inventory that maps each blocker to required evidence,
@@ -41,9 +42,9 @@ evidence.
   Moonrobo URDF/profile paths, 25 links, 24 joints, 24 joint limits, six visual
   geometries, one placeholder mesh asset, zero authoritative collision or
   inertial tags, and explicit per-link collision/inertial metadata blockers.
-  The blocker count is now backed by a generic Moonphys model-metadata
-  inventory contract with stable blocker IDs, keeping readiness semantics
-  reusable and robot-agnostic. The Moonrobo source-model report now also
+  The blocker count is now backed by a generic `moonphys/review`
+  model-metadata inventory contract with stable blocker IDs, keeping readiness
+  semantics reusable and robot-agnostic. The Moonrobo source-model report now also
   carries a `source_metadata_gaps` inventory that maps every missing
   collision/inertial blocker to its link, source path, required evidence,
   target artifact, acceptance check, and next action.
@@ -132,12 +133,12 @@ evidence.
   link poses, static support report, dynamic-stability report, joint-control
   report, inertial/collision report, and Rabbita playback into a
   hardware-denied review packet. The review task carries the generic Moonphys
-  metadata inventory, source-metadata blocker IDs, physical-model blocker IDs,
-  and world-replay blocker IDs through to MoonClaw.
+  `moonphys/review` metadata inventory, source-metadata blocker IDs,
+  physical-model blocker IDs, and world-replay blocker IDs through to MoonClaw.
 - MoonClaw exports a Noetix simulation readiness decision that blocks MoonRobo
   simulation consumption until all review artifacts are ready, the generic
-  Moonphys metadata inventory and physical-model readiness are ready, named
-  world-replay blockers are resolved, and hardware remains denied.
+  `moonphys/review` metadata inventory and physical-model readiness are ready,
+  named world-replay blockers are resolved, and hardware remains denied.
 - MoonClaw exports Noetix readiness work items that convert source metadata,
   physical-model, and review-artifact blockers into bounded follow-up evidence
   tasks while keeping MoonRobo simulation consumption and hardware authority
@@ -206,6 +207,14 @@ Moonphys owns:
 - no Moonrobo robot dependency
 - no Noetix names
 - no walk behavior
+- no source-model or readiness audit contracts
+
+Moonphys review owns:
+
+- reusable model-metadata inventories
+- reusable physical-model readiness inventories
+- blocker IDs for missing or assumed simulation inputs
+- no solver, terrain, gait, or robot-specific behavior
 
 Moonmoon owns:
 
@@ -586,15 +595,17 @@ summaries, multi-contact manifold resolution, generic traction/friction-cone
   and correction estimates, generic hinge-joint assessment over rigid body
   motion states, generic hinge-joint frame assessment over multi-body joint
   sets, and joint mechanical power/work accounting implemented;
-generic source-model metadata inventory/readiness with missing collision-shape
-and inertial-link blocker accounting implemented; generic physical-model
-readiness for authoritative, assumed, and missing dynamics inputs implemented;
+generic `moonphys/review` source-model metadata inventory/readiness with
+missing collision-shape and inertial-link blocker accounting implemented;
+generic `moonphys/review` physical-model readiness for authoritative,
+assumed, and missing dynamics inputs implemented;
 Noetix static support, dynamic-stability, joint-control, and
 inertial/collision review reports implemented; full multi-body simulation
 remains future work. Moonrobo's Noetix source-model audit now records
 URDF/profile paths, visual geometry, concrete joint-limit records, and the
-absence of authoritative collision/inertial tags through the generic Moonphys
-metadata inventory. Moonrobo's Noetix URDF joint limits are carried from the
+absence of authoritative collision/inertial tags through the generic
+`moonphys/review` metadata inventory. Moonrobo's Noetix URDF joint limits are
+carried from the
 source audit into the robot-specific profile as Moonphys joint limits. Noetix
 joint-control review evidence replays the gait
 phases through Moonphys joint-frame motor integration, servo, torque, velocity,
@@ -714,10 +725,10 @@ Next `moonphys` capabilities:
   (implemented)
 - deterministic rigid-body heightfield replay (implemented)
 - generic source-model metadata inventory/readiness for collision and inertial
-  blockers with stable blocker IDs (implemented)
+  blockers with stable blocker IDs (implemented in `moonphys/review`)
 - generic physical-model readiness for authoritative, assumed, and missing
   mass/inertia/collision/contact/friction/actuator inputs with stable blocker
-  IDs (implemented)
+  IDs (implemented in `moonphys/review`)
 
 Robot-specific missing metadata:
 

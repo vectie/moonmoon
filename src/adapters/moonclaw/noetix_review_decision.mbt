@@ -18,9 +18,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   metadata_blocker_count : Int
   metadata_blocker_ids : Array[String]
   source_metadata_ready : Bool
-  source_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_metadata_inventory : @review.ModelMetadataInventory
   physical_model_ready : Bool
-  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_readiness : @review.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
   static_support_stable_frame_count : Int

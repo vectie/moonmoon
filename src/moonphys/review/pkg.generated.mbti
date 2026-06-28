@@ -1,0 +1,49 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/moonphys/review"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn model_metadata_inventory(String, Array[String], Array[String], Array[String]) -> ModelMetadataInventory
+
+pub fn physical_model_readiness(String, Array[String], Array[String], Array[String]) -> PhysicalModelReadiness
+
+// Errors
+
+// Types and methods
+pub(all) struct ModelMetadataInventory {
+  model_id : String
+  link_count : Int
+  collision_shape_link_count : Int
+  inertial_link_count : Int
+  missing_collision_shape_links : Array[String]
+  missing_inertial_links : Array[String]
+  blocker_count : Int
+  blocker_ids : Array[String]
+  ready : Bool
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PhysicalModelReadiness {
+  readiness_id : String
+  required_item_count : Int
+  authoritative_item_count : Int
+  assumed_item_count : Int
+  missing_item_count : Int
+  blocker_count : Int
+  blocker_ids : Array[String]
+  ready : Bool
+  required_items : Array[String]
+  authoritative_items : Array[String]
+  assumed_items : Array[String]
+  missing_items : Array[String]
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

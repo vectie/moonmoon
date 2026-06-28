@@ -57,7 +57,7 @@ pub(all) struct NoetixSourceModelReport {
   missing_inertial_link_count : Int
   source_metadata_blocker_count : Int
   source_metadata_blocker_ids : Array[String]
-  source_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_metadata_inventory : @review.ModelMetadataInventory
   source_metadata_gaps : Array[NoetixSourceMetadataGap]
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
@@ -292,7 +292,7 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     missing_collision_links.push(link.link_name)
     missing_inertial_links.push(link.link_name)
   }
-  let metadata_inventory = @moonphys.model_metadata_inventory(
+  let metadata_inventory = @review.model_metadata_inventory(
     "noetix-e1-source-model",
     link_names,
     [],

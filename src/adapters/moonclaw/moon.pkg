@@ -1,7 +1,7 @@
 import {
   "vectie/moonmoon/src/core",
   "vectie/moonmoon/src/dataset",
-  "vectie/moonmoon/src/moonphys",
+  "vectie/moonmoon/src/moonphys/review",
   "vectie/moonmoon/src/adapters/moonrobo",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",

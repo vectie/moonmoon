@@ -58,7 +58,7 @@ pub(all) struct NoetixPhysicsProfile {
   foot_geometry : Array[NoetixFootGeometry]
   actuator_profiles : Array[NoetixJointActuatorProfile]
   collision_shapes : Array[NoetixCollisionShapeProfile]
-  physical_model_readiness : @moonphys.PhysicalModelReadiness
+  physical_model_readiness : @review.PhysicalModelReadiness
   physical_model_gaps : Array[NoetixPhysicalModelGap]
   material_model : String
   hardware_authority : String
@@ -234,8 +234,8 @@ fn noetix_collision_shape_profiles(
 }
 
 ///|
-fn noetix_physical_model_readiness() -> @moonphys.PhysicalModelReadiness {
-  @moonphys.physical_model_readiness(
+fn noetix_physical_model_readiness() -> @review.PhysicalModelReadiness {
+  @review.physical_model_readiness(
     "moonrobo/noetix-e1/physical-model-readiness-v0",
     [
       "mass", "center-of-mass", "link-inertia", "collision-shapes", "foot-sole-geometry",
