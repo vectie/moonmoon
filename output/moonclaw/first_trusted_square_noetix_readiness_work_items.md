@@ -104,11 +104,10 @@
   - robot: noetix-e1-lab-01
   - rank: 4
   - blocker domain: review-artifacts
-  - blockers: 2
+  - blockers: 1
   - blocker ids:
-    - noetix-joint-control-review
     - noetix-inertial-collision-review
-  - required evidence: ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared
+  - required evidence: ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared
   - target: output/moonclaw/first_trusted_square_noetix_review_task.json
   - command: moon run cmd/main -- moonclaw noetix review task json
   - check: python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json

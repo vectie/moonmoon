@@ -239,14 +239,27 @@ fn noetix_dynamic_stability_artifact(
 fn noetix_joint_control_artifact(
   report : @moonrobo.NoetixJointControlReport,
 ) -> MoonClawTaskArtifact {
+  let world = report.hinge_motor_world_trace
+  let ready = report.frame_count > 0 &&
+    report.joint_count_per_frame == 24 &&
+    report.saturated_frame_count == 0 &&
+    report.limit_review_frame_count == 0 &&
+    world.world_review_blocker_count == 0 &&
+    world.support_review_frame_count == 0 &&
+    world.capture_support_review_frame_count == 0 &&
+    world.worst_capture_support_margin_m > 0.0
   task_artifact(
     "noetix-joint-control-review",
     "output/moonrobo/first_trusted_square_noetix_control.json",
     "moon run cmd/main -- moonrobo noetix control json",
     "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
     "\{report.frame_count} frames; \{report.joint_count_per_frame} joints per frame; saturated frames \{report.saturated_frame_count}; limit-review frames \{report.limit_review_frame_count}; heightfield body targets \{report.hinge_motor_world_trace.body_target_count}; heightfield support targets \{report.hinge_motor_world_trace.support_target_count}; center-of-mass target frames \{report.hinge_motor_world_trace.center_of_mass_target_frame_count}; heightfield motor contacts \{report.hinge_motor_world_trace.contact_count}; support-review frames \{report.hinge_motor_world_trace.support_review_frame_count}; capture-review frames \{report.hinge_motor_world_trace.capture_support_review_frame_count}; max support recovery shift \{report.hinge_motor_world_trace.max_support_recovery_shift_m} m; worst capture support margin \{report.hinge_motor_world_trace.worst_capture_support_margin_m} m; max capture recovery shift \{report.hinge_motor_world_trace.max_capture_recovery_shift_m} m; world replay blockers \{report.hinge_motor_world_trace.world_review_blocker_count}; resolved world hinges \{report.hinge_motor_world_trace.resolved_hinge_constraint_count}; body samples \{report.hinge_motor_world_trace.body_sample_count}; max world speed \{report.hinge_motor_world_trace.max_speed_mps} m/s; max world energy \{report.hinge_motor_world_trace.max_kinetic_energy_j} J; envelope \{report.hinge_motor_world_trace.envelope_status}; world review \{report.hinge_motor_world_trace.world_review_status}; max power \{report.max_abs_mechanical_power_w} W; absolute work \{report.total_absolute_work_j} J; status \{report.status}",
-    false,
-    "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
+    ready,
+    if ready {
+      "none"
+    } else {
+      "joint-control replay must clear limit, saturation, support, capture, and Moonphys world replay blockers"
+    },
     "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json",
   )
 }
@@ -457,7 +470,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "dynamic-stability-margin-ready", "Capture-stable frames are accepted separately from source/physical-model provenance blockers.",
       ),
       criterion(
-        "review-only-joint-control-preserved", "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.",
+        "joint-control-replay-ready", "Joint-control limit, saturation, support, capture, and Moonphys world replay checks are accepted separately from source/physical-model provenance blockers.",
       ),
       criterion(
         "dry-run-walk-command-preserved", "High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.",

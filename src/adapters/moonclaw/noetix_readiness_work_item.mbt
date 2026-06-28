@@ -120,7 +120,7 @@ pub fn noetix_readiness_work_items_from_decision(
         "review-artifacts",
         decision.blocked_artifact_count,
         decision.blocked_artifacts,
-        "ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared",
+        "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
         "output/moonclaw/first_trusted_square_noetix_review_task.json",
         "moon run cmd/main -- moonclaw noetix review task json",
         "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",

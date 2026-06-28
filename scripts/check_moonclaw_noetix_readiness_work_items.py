@@ -82,14 +82,16 @@ def main() -> None:
         fail("world replay item should be omitted after replay blockers clear")
     require_item(
         item_by_domain(items, "review-artifacts"),
-        2,
-        "noetix-joint-control-review",
+        1,
+        "noetix-inertial-collision-review",
         "check_moonclaw_noetix_review_task",
     )
     review = item_by_domain(items, "review-artifacts")
     ids = review.get("blocker_ids", [])
     if "noetix-inertial-collision-review" not in ids:
         fail("review artifact work item should keep inertial/collision blocker")
+    if "noetix-joint-control-review" in ids:
+        fail("review artifact work item should omit cleared joint-control replay")
     if "noetix-static-support-review" in ids:
         fail("review artifact work item should omit cleared static support margin")
     if "noetix-dynamic-stability-review" in ids:

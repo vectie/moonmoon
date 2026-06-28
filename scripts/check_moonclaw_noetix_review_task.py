@@ -231,10 +231,10 @@ def main() -> None:
         fail("dynamic stability artifact must expose capture-stable frame count")
     if "dynamic review frames from model/provenance blockers" not in dynamic_state:
         fail("dynamic stability artifact must separate review provenance blockers")
-    if artifacts["noetix-joint-control-review"].get("ready"):
-        fail("joint control artifact must remain review-blocked")
-    if "review-only" not in artifacts["noetix-joint-control-review"].get("blocking_reason", ""):
-        fail("joint control blocker must explain review-only state")
+    if not artifacts["noetix-joint-control-review"].get("ready"):
+        fail("joint control artifact should be ready after replay blockers clear")
+    if artifacts["noetix-joint-control-review"].get("blocking_reason") != "none":
+        fail("joint control artifact should keep servo/inertia authority blockers outside artifact readiness")
     joint_control_state = artifacts["noetix-joint-control-review"].get("current_state", "")
     if "capture-review frames" not in joint_control_state:
         fail("joint control artifact must expose world capture-review frames")

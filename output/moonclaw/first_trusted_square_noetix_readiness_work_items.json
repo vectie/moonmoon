@@ -113,12 +113,11 @@
     "rank": 4,
     "state": "NeedsReview",
     "blocker_domain": "review-artifacts",
-    "blocker_count": 2,
+    "blocker_count": 1,
     "blocker_ids": [
-      "noetix-joint-control-review",
       "noetix-inertial-collision-review"
     ],
-    "required_evidence": "ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared",
+    "required_evidence": "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
     "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
     "command": "moon run cmd/main -- moonclaw noetix review task json",
     "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",

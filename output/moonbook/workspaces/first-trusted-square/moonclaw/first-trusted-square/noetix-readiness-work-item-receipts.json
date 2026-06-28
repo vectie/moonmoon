@@ -261,7 +261,7 @@
           ],
           "validation_notes": [
             "source-work-item-needs-review: pass - receipt carries pending Noetix work item moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-4-review-artifacts from decision moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
-            "blocker-accounting-preserved: pass - work item review-artifacts preserves 2 named blockers",
+            "blocker-accounting-preserved: pass - work item review-artifacts preserves 1 named blockers",
             "result-paths-present: pass - Noetix readiness result carries required evidence, target, command, check, and evidence paths",
             "readiness-decision-blocked: pass - source decision remains blocked for MoonRobo simulation consumption",
             "simulation-consumption-blocked: pass - MoonRobo simulation consumption remains false for review-artifacts",
@@ -284,12 +284,11 @@
           "rank": 4,
           "robot_id": "noetix-e1-lab-01",
           "blocker_domain": "review-artifacts",
-          "blocker_count": 2,
+          "blocker_count": 1,
           "blocker_ids": [
-            "noetix-joint-control-review",
             "noetix-inertial-collision-review"
           ],
-          "required_evidence": "ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared",
+          "required_evidence": "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
           "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
           "command": "moon run cmd/main -- moonclaw noetix review task json",
           "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
@@ -307,7 +306,7 @@
           {
             "validation_id": "blocker-accounting-preserved",
             "passed": true,
-            "note": "work item review-artifacts preserves 2 named blockers"
+            "note": "work item review-artifacts preserves 1 named blockers"
           },
           {
             "validation_id": "result-paths-present",
@@ -457,12 +456,11 @@
         "rank": 4,
         "state": "NeedsReview",
         "blocker_domain": "review-artifacts",
-        "blocker_count": 2,
+        "blocker_count": 1,
         "blocker_ids": [
-          "noetix-joint-control-review",
           "noetix-inertial-collision-review"
         ],
-        "required_evidence": "ready remaining Noetix review artifacts after static-support and dynamic-stability margins have cleared",
+        "required_evidence": "ready remaining Noetix review artifacts after static-support, dynamic-stability, and joint-control replay checks have cleared",
         "target_artifact_path": "output/moonclaw/first_trusted_square_noetix_review_task.json",
         "command": "moon run cmd/main -- moonclaw noetix review task json",
         "acceptance_check": "python3 scripts/check_moonclaw_noetix_review_task.py output/moonclaw/first_trusted_square_noetix_review_task.json",
@@ -481,9 +479,9 @@
       "robot_id": "noetix-e1-lab-01",
       "may_consume_moonrobo_simulation": false,
       "decision": "NoetixSimulationBlocked",
-      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 2 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
-      "ready_artifact_count": 9,
-      "blocked_artifact_count": 2,
+      "reason": "Noetix simulation remains blocked for MoonRobo consumption: 1 review artifacts are blocked, 50 source metadata blockers remain with status model-metadata-blocked, and 9 physical model blockers remain with status physical-model-assumption-review; hardware authority remains moonmoon-safety-gate-only",
+      "ready_artifact_count": 10,
+      "blocked_artifact_count": 1,
       "metadata_blocker_count": 50,
       "metadata_blocker_ids": [
         "missing-collision-shape:base_link",
@@ -739,10 +737,10 @@
         "noetix-urdf-reference-link-poses",
         "noetix-static-support-review",
         "noetix-dynamic-stability-review",
+        "noetix-joint-control-review",
         "noetix-rabbita-playback"
       ],
       "blocked_artifacts": [
-        "noetix-joint-control-review",
         "noetix-inertial-collision-review"
       ],
       "hardware_state": "HardwareDenied",
@@ -1176,8 +1174,8 @@
           "producer": "moon run cmd/main -- moonrobo noetix control json",
           "required_state": "Moonphys joint servo replay checks the Noetix gait phases against URDF limits and actuator power/work accounting",
           "current_state": "32 frames; 24 joints per frame; saturated frames 0; limit-review frames 0; heightfield body targets 800; heightfield support targets 56; center-of-mass target frames 32; heightfield motor contacts 41; support-review frames 0; capture-review frames 0; max support recovery shift 0 m; worst capture support margin 0.0021231717435670205 m; max capture recovery shift 0 m; world replay blockers 0; resolved world hinges 1400; body samples 825; max world speed 2.974277324316787 m/s; max world energy 6.723207457478219 J; envelope world-trace-envelope-bounded; world review world-replay-review-ready; max power 40.50000000000002 W; absolute work 130.134946778545 J; status joint-control-assumption-review",
-          "ready": false,
-          "blocking_reason": "joint-control evidence is review-only until servo gains, inertia, and hardware authority are validated",
+          "ready": true,
+          "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_control.py output/moonrobo/first_trusted_square_noetix_control.json"
         },
         {
@@ -1242,8 +1240,8 @@
           "description": "Capture-stable frames are accepted separately from source/physical-model provenance blockers."
         },
         {
-          "criterion_id": "review-only-joint-control-preserved",
-          "description": "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated."
+          "criterion_id": "joint-control-replay-ready",
+          "description": "Joint-control limit, saturation, support, capture, and Moonphys world replay checks are accepted separately from source/physical-model provenance blockers."
         },
         {
           "criterion_id": "dry-run-walk-command-preserved",

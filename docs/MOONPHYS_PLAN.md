@@ -145,6 +145,10 @@ evidence.
   ready when every frame is support-stable/capture-stable, while the source
   metadata and physical-model readiness gates continue to block simulation
   consumption until authoritative metadata replaces assumptions.
+- MoonClaw now also marks the joint-control replay artifact ready when
+  velocity/torque limits, saturation, support/capture replay, and Moonphys
+  world replay blockers are clear; servo/inertia authority remains blocked by
+  the physical-model gate.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.
@@ -729,9 +733,12 @@ or as a data artifact beside the Noetix model.
    The next gate slice has started by separating support-stable and
    capture-stable counts from review-only blocker counts in MoonClaw task and
    readiness artifacts.
-   Static-support and dynamic-stability margin artifacts now clear as artifacts
-   once all frames pass, leaving source metadata, physical-model, joint-control,
-   and inertial/collision evidence as the remaining gates.
+   Static-support and dynamic-stability margin artifacts clear as artifacts
+   once all frames pass.
+   Joint-control replay checks now clear as an artifact once limit, saturation,
+   support/capture, and world replay blockers are absent, leaving authoritative
+   source/physical metadata and inertial/collision evidence as the remaining
+   gates.
 
 ### Phase 1 Gate Added: Noetix Readiness Receipts
 

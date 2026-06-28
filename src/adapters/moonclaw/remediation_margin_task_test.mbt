@@ -1580,7 +1580,7 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_eq(task.hardware_authority, "moonmoon-safety-gate-only")
   assert_eq(task.inputs.length(), 10)
   assert_eq(task.artifacts.length(), 11)
-  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 2)
+  assert_eq(@moonclaw.noetix_review_task_blocked_artifact_count(task), 1)
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-source-model-audit" &&
@@ -1647,8 +1647,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-joint-control-review" &&
-      !artifact.ready &&
+      artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_control") &&
+      artifact.blocking_reason == "none" &&
       artifact.current_state.contains("heightfield motor contacts") &&
       artifact.current_state.contains("support-review frames") &&
       artifact.current_state.contains("capture-review frames") &&
@@ -1750,8 +1751,8 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
     decision.decision ==
     @moonclaw.NoetixSimulationReadinessDecisionStatus::NoetixSimulationBlocked,
   )
-  assert_eq(decision.ready_artifact_count, 9)
-  assert_eq(decision.blocked_artifact_count, 2)
+  assert_eq(decision.ready_artifact_count, 10)
+  assert_eq(decision.blocked_artifact_count, 1)
   assert_eq(decision.metadata_blocker_count, 50)
   assert_eq(
     decision.metadata_blocker_ids.length(),
@@ -1813,8 +1814,9 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(
     !decision.blocked_artifacts.contains("noetix-dynamic-stability-review"),
   )
+  assert_true(decision.ready_artifacts.contains("noetix-joint-control-review"))
   assert_true(
-    decision.blocked_artifacts.contains("noetix-joint-control-review"),
+    !decision.blocked_artifacts.contains("noetix-joint-control-review"),
   )
   assert_true(
     decision.blocked_artifacts.contains("noetix-inertial-collision-review"),
@@ -1886,9 +1888,9 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
   assert_true(
     items.any(fn(item) {
       item.blocker_domain == "review-artifacts" &&
-      item.blocker_count == 2 &&
-      item.blocker_ids.contains("noetix-joint-control-review") &&
+      item.blocker_count == 1 &&
       item.blocker_ids.contains("noetix-inertial-collision-review") &&
+      !item.blocker_ids.contains("noetix-joint-control-review") &&
       !item.blocker_ids.contains("noetix-static-support-review") &&
       !item.blocker_ids.contains("noetix-dynamic-stability-review") &&
       item.acceptance_check.contains("check_moonclaw_noetix_review_task")
@@ -1972,12 +1974,12 @@ test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
   assert_true(
     receipts.any(fn(receipt) {
       receipt.work_item_result.blocker_domain == "review-artifacts" &&
-      receipt.work_item_result.blocker_count == 2 &&
-      receipt.work_item_result.blocker_ids.contains(
-        "noetix-joint-control-review",
-      ) &&
+      receipt.work_item_result.blocker_count == 1 &&
       receipt.work_item_result.blocker_ids.contains(
         "noetix-inertial-collision-review",
+      ) &&
+      !receipt.work_item_result.blocker_ids.contains(
+        "noetix-joint-control-review",
       ) &&
       receipt.work_item_result.acceptance_check.contains(
         "check_moonclaw_noetix_review_task",
