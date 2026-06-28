@@ -857,6 +857,18 @@ pub(all) struct NoetixSourceJointLimit {
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixSourceMetadataGap {
+  blocker_id : String
+  link_name : String
+  metadata_kind : String
+  current_status : String
+  source_path : String
+  required_evidence : String
+  target_artifact_path : String
+  acceptance_check : String
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixSourceModelReport {
   report_id : String
   robot_id : String
@@ -873,6 +885,7 @@ pub(all) struct NoetixSourceModelReport {
   source_metadata_blocker_count : Int
   source_metadata_blocker_ids : Array[String]
   source_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_metadata_gaps : Array[NoetixSourceMetadataGap]
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool

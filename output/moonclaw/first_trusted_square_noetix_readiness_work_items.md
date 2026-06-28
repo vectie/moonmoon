@@ -59,7 +59,7 @@
     - missing-inertial:right_leg_4
     - missing-inertial:right_leg_5
     - missing-inertial:right_foot
-  - required evidence: authoritative collision and inertial metadata for every Noetix source link
+  - required evidence: authoritative collision and inertial metadata for every Noetix source_metadata_gaps entry
   - target: output/moonrobo/first_trusted_square_noetix_source_model.json
   - command: moon run cmd/main -- moonrobo noetix model json
   - check: python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json && python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json
@@ -67,7 +67,7 @@
   - hardware state: hardware-denied
   - hardware authority: moonmoon-safety-gate-only
   - safety gate: Noetix readiness work items may only replace simulation-review blockers; they must not issue hardware authority or consume MoonRobo simulation until the readiness decision becomes consumable.
-  - next action: Replace missing source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied.
+  - next action: Replace each Noetix source_metadata_gaps entry with Moonrobo source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied.
 
 - moonclaw/first-trusted-square/noetix-simulation-readiness-decision/work-item-2-physical-model
   - state: needs-review

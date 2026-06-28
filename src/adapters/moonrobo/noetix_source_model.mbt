@@ -29,6 +29,19 @@ pub(all) struct NoetixSourceJointLimit {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixSourceMetadataGap {
+  blocker_id : String
+  link_name : String
+  metadata_kind : String
+  current_status : String
+  source_path : String
+  required_evidence : String
+  target_artifact_path : String
+  acceptance_check : String
+  next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixSourceModelReport {
   report_id : String
   robot_id : String
@@ -45,6 +58,7 @@ pub(all) struct NoetixSourceModelReport {
   source_metadata_blocker_count : Int
   source_metadata_blocker_ids : Array[String]
   source_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_metadata_gaps : Array[NoetixSourceMetadataGap]
   joint_limit_count : Int
   low_level_joint_control_enabled : Bool
   high_level_walk_requires_approval : Bool
@@ -204,6 +218,68 @@ pub fn noetix_source_joint_limits() -> Array[NoetixSourceJointLimit] {
 }
 
 ///|
+fn source_metadata_gap(
+  blocker_id : String,
+  link_name : String,
+  metadata_kind : String,
+  source_path : String,
+  required_evidence : String,
+  target_artifact_path : String,
+  acceptance_check : String,
+  next_action : String,
+) -> NoetixSourceMetadataGap {
+  {
+    blocker_id,
+    link_name,
+    metadata_kind,
+    current_status: "missing",
+    source_path,
+    required_evidence,
+    target_artifact_path,
+    acceptance_check,
+    next_action,
+  }
+}
+
+///|
+fn noetix_source_metadata_gaps(
+  robot : NoetixMoonWalkRobotProfile,
+  missing_collision_links : Array[String],
+  missing_inertial_links : Array[String],
+) -> Array[NoetixSourceMetadataGap] {
+  let gaps : Array[NoetixSourceMetadataGap] = []
+  for link in missing_collision_links {
+    gaps.push(
+      source_metadata_gap(
+        "missing-collision-shape:\{link}",
+        link,
+        "collision-shape",
+        robot.source_model_path,
+        "URDF <collision> geometry or an authoritative Moonrobo collision-shape manifest for link \{link}",
+        "output/moonrobo/first_trusted_square_noetix_source_model.json",
+        "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json && python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "Add source collision metadata for \{link}, regenerate the Noetix source-model audit, and keep hardware denied.",
+      ),
+    )
+  }
+  for link in missing_inertial_links {
+    gaps.push(
+      source_metadata_gap(
+        "missing-inertial:\{link}",
+        link,
+        "inertial",
+        robot.source_model_path,
+        "URDF <inertial> mass, origin, and inertia tensor or an authoritative Moonrobo inertial manifest for link \{link}",
+        "output/moonrobo/first_trusted_square_noetix_source_model.json",
+        "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json && python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
+        "Add source inertial metadata for \{link}, regenerate the Noetix source-model audit, and keep hardware denied.",
+      ),
+    )
+  }
+  gaps
+}
+
+///|
 pub fn noetix_source_model_report() -> NoetixSourceModelReport {
   let robot = noetix_moon_walk_robot_profile()
   let visuals = noetix_source_visual_geometries()
@@ -222,6 +298,9 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     [],
     [],
   )
+  let source_metadata_gaps = noetix_source_metadata_gaps(
+    robot, missing_collision_links, missing_inertial_links,
+  )
   {
     report_id: "moonrobo/noetix-e1/source-model/audit-v0",
     robot_id: robot.robot_id,
@@ -238,6 +317,7 @@ pub fn noetix_source_model_report() -> NoetixSourceModelReport {
     source_metadata_blocker_count: metadata_inventory.blocker_count,
     source_metadata_blocker_ids: metadata_inventory.blocker_ids,
     source_metadata_inventory: metadata_inventory,
+    source_metadata_gaps,
     joint_limit_count: joint_limits.length(),
     low_level_joint_control_enabled: false,
     high_level_walk_requires_approval: true,
@@ -279,6 +359,7 @@ pub fn render_noetix_source_model_markdown(
   text += "- missing inertial links: \{report.missing_inertial_link_count}\n"
   text += "- source metadata blockers: \{report.source_metadata_blocker_count}\n"
   text += "- source metadata inventory: \{report.source_metadata_inventory.status}\n"
+  text += "- source metadata gaps: \{report.source_metadata_gaps.length()}\n"
   text += "- joint limits: \{report.joint_limit_count}\n"
   text += "- low-level joint control enabled: \{report.low_level_joint_control_enabled}\n"
   text += "- high-level walk requires approval: \{report.high_level_walk_requires_approval}\n"

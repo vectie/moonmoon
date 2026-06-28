@@ -88,6 +88,11 @@ def main() -> None:
         "missing-collision-shape:left_foot",
         "check_moonrobo_noetix_source_sync",
     )
+    source = receipt_by_domain(receipts, "source-metadata").get("work_item_result", {})
+    if "source_metadata_gaps" not in source.get("required_evidence", ""):
+        fail("source-metadata receipt must target the source_metadata_gaps inventory")
+    if "source_metadata_gaps" not in source.get("next_action", ""):
+        fail("source-metadata receipt next action must name the gap inventory")
     require_receipt(
         receipt_by_domain(receipts, "physical-model"),
         9,

@@ -72,11 +72,11 @@ pub fn noetix_readiness_work_items_from_decision(
         "source-metadata",
         decision.metadata_blocker_count,
         decision.metadata_blocker_ids,
-        "authoritative collision and inertial metadata for every Noetix source link",
+        "authoritative collision and inertial metadata for every Noetix source_metadata_gaps entry",
         "output/moonrobo/first_trusted_square_noetix_source_model.json",
         "moon run cmd/main -- moonrobo noetix model json",
         "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json && python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
-        "Replace missing source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied.",
+        "Replace each Noetix source_metadata_gaps entry with Moonrobo source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied.",
       ),
     )
   }

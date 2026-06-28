@@ -72,6 +72,11 @@ def main() -> None:
         "missing-collision-shape:left_foot",
         "check_moonrobo_noetix_source_sync",
     )
+    source = item_by_domain(items, "source-metadata")
+    if "source_metadata_gaps" not in source.get("required_evidence", ""):
+        fail("source-metadata item must target the source_metadata_gaps inventory")
+    if "source_metadata_gaps" not in source.get("next_action", ""):
+        fail("source-metadata next action must name the gap inventory")
     require_item(
         item_by_domain(items, "physical-model"),
         9,

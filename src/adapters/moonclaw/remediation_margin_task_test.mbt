@@ -1526,6 +1526,10 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     task.source_model_metadata_inventory.blocker_ids.length(),
     task.source_model_metadata_blocker_count,
   )
+  assert_eq(
+    task.source_model_metadata_gaps.length(),
+    task.source_model_metadata_blocker_count,
+  )
   assert_true(!task.source_model_metadata_inventory.ready)
   assert_eq(
     task.source_model_metadata_inventory.status,
@@ -1540,6 +1544,22 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     task.source_model_metadata_blocker_ids.contains(
       "missing-inertial:right_foot",
     ),
+  )
+  assert_true(
+    task.source_model_metadata_gaps.any(fn(gap) {
+      gap.blocker_id == "missing-collision-shape:left_foot" &&
+      gap.metadata_kind == "collision-shape" &&
+      gap.required_evidence.contains("URDF <collision>") &&
+      gap.next_action.contains("source collision metadata")
+    }),
+  )
+  assert_true(
+    task.source_model_metadata_gaps.any(fn(gap) {
+      gap.blocker_id == "missing-inertial:right_foot" &&
+      gap.metadata_kind == "inertial" &&
+      gap.required_evidence.contains("URDF <inertial>") &&
+      gap.next_action.contains("source inertial metadata")
+    }),
   )
   assert_eq(task.physical_model_blocker_count, 9)
   assert_eq(
@@ -1884,6 +1904,8 @@ test "MoonClaw Noetix readiness work items convert blockers into bounded followu
       item.blocker_domain == "source-metadata" &&
       item.blocker_count == 50 &&
       item.blocker_ids.contains("missing-collision-shape:left_foot") &&
+      item.required_evidence.contains("source_metadata_gaps") &&
+      item.next_action.contains("source_metadata_gaps") &&
       item.acceptance_check.contains("check_moonrobo_noetix_source_sync")
     }),
   )

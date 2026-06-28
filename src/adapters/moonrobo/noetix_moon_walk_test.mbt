@@ -290,6 +290,10 @@ test "noetix source model audit records moonrobo urdf metadata gaps" {
     report.source_metadata_inventory.blocker_ids.length(),
     report.source_metadata_blocker_count,
   )
+  assert_eq(
+    report.source_metadata_gaps.length(),
+    report.source_metadata_blocker_count,
+  )
   assert_eq(report.missing_collision_links.length(), 25)
   assert_eq(report.missing_inertial_links.length(), 25)
   assert_true(report.missing_collision_links.contains("left_foot"))
@@ -301,6 +305,28 @@ test "noetix source model audit records moonrobo urdf metadata gaps" {
   )
   assert_true(
     report.source_metadata_blocker_ids.contains("missing-inertial:right_foot"),
+  )
+  assert_true(
+    report.source_metadata_gaps.any(fn(gap) {
+      gap.blocker_id == "missing-collision-shape:left_foot" &&
+      gap.link_name == "left_foot" &&
+      gap.metadata_kind == "collision-shape" &&
+      gap.current_status == "missing" &&
+      gap.source_path == report.source_model_path &&
+      gap.required_evidence.contains("URDF <collision>") &&
+      gap.target_artifact_path.contains("noetix_source_model") &&
+      gap.next_action.contains("source collision metadata")
+    }),
+  )
+  assert_true(
+    report.source_metadata_gaps.any(fn(gap) {
+      gap.blocker_id == "missing-inertial:right_foot" &&
+      gap.link_name == "right_foot" &&
+      gap.metadata_kind == "inertial" &&
+      gap.current_status == "missing" &&
+      gap.required_evidence.contains("URDF <inertial>") &&
+      gap.next_action.contains("source inertial metadata")
+    }),
   )
   assert_eq(report.status, "source-model-metadata-blocked")
   assert_true(!report.low_level_joint_control_enabled)

@@ -87,14 +87,14 @@
         "missing-inertial:right_leg_5",
         "missing-inertial:right_foot"
       ],
-      "required_evidence": "authoritative collision and inertial metadata for every Noetix source link",
+      "required_evidence": "authoritative collision and inertial metadata for every Noetix source_metadata_gaps entry",
       "target_artifact_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
       "command": "moon run cmd/main -- moonrobo noetix model json",
       "acceptance_check": "python3 scripts/check_moonrobo_noetix_source_model.py output/moonrobo/first_trusted_square_noetix_source_model.json && python3 scripts/check_moonrobo_noetix_source_sync.py output/moonrobo/first_trusted_square_noetix_source_model.json output/moonrobo/first_trusted_square_noetix_walk_command.json",
       "status": "NoetixReadinessWorkItemPendingEvidence",
       "evidence_path": "output/moonrobo/first_trusted_square_noetix_source_model.json",
       "current_state": "Noetix readiness work item is carried forward as pending evidence before any downstream MoonRobo simulation consumption.",
-      "next_action": "Replace missing source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied."
+      "next_action": "Replace each Noetix source_metadata_gaps entry with Moonrobo source collision/inertial metadata, regenerate the Noetix source-model audit, and keep hardware denied."
     },
     "validation_checks": [
       {

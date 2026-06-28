@@ -69,6 +69,28 @@ def main(argv: list[str]) -> int:
   require("right_foot" in report["missing_inertial_links"], "right foot inertial blocker")
   require("missing-collision-shape:left_foot" in blocker_ids, "left foot collision blocker id")
   require("missing-inertial:right_foot" in blocker_ids, "right foot inertial blocker id")
+  gaps = report.get("source_metadata_gaps")
+  require(isinstance(gaps, list), "source metadata gap inventory must be listed")
+  require(len(gaps) == report["source_metadata_blocker_count"], "source metadata gap count")
+  gaps_by_id = {gap.get("blocker_id"): gap for gap in gaps}
+  for blocker_id in blocker_ids:
+    require(blocker_id in gaps_by_id, f"missing source metadata gap {blocker_id}")
+  left_collision_gap = gaps_by_id["missing-collision-shape:left_foot"]
+  require(left_collision_gap["link_name"] == "left_foot", "left foot collision gap link")
+  require(left_collision_gap["metadata_kind"] == "collision-shape", "left foot collision gap kind")
+  require(left_collision_gap["current_status"] == "missing", "left foot collision gap status")
+  require(left_collision_gap["source_path"] == report["source_model_path"], "collision gap source path")
+  require("URDF <collision>" in left_collision_gap["required_evidence"], "collision gap evidence")
+  require("noetix_source_model" in left_collision_gap["target_artifact_path"], "collision gap target")
+  require("check_moonrobo_noetix_source_model" in left_collision_gap["acceptance_check"], "collision gap check")
+  require("source collision metadata" in left_collision_gap["next_action"], "collision gap next action")
+  right_inertial_gap = gaps_by_id["missing-inertial:right_foot"]
+  require(right_inertial_gap["link_name"] == "right_foot", "right foot inertial gap link")
+  require(right_inertial_gap["metadata_kind"] == "inertial", "right foot inertial gap kind")
+  require(right_inertial_gap["current_status"] == "missing", "right foot inertial gap status")
+  require(right_inertial_gap["source_path"] == report["source_model_path"], "inertial gap source path")
+  require("URDF <inertial>" in right_inertial_gap["required_evidence"], "inertial gap evidence")
+  require("source inertial metadata" in right_inertial_gap["next_action"], "inertial gap next action")
   require(report["status"] == "source-model-metadata-blocked", "metadata blocker status")
   require(not report["low_level_joint_control_enabled"], "low control must remain disabled")
   require(report["high_level_walk_requires_approval"], "walk must require approval")

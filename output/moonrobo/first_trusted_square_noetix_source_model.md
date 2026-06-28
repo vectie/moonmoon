@@ -13,6 +13,7 @@
 - missing inertial links: 25
 - source metadata blockers: 50
 - source metadata inventory: model-metadata-blocked
+- source metadata gaps: 50
 - joint limits: 24
 - low-level joint control enabled: false
 - high-level walk requires approval: true

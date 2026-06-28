@@ -65,6 +65,33 @@ def main() -> None:
         fail("source metadata blockers must name left foot collision metadata")
     if "missing-inertial:right_foot" not in metadata_blockers:
         fail("source metadata blockers must name right foot inertial metadata")
+    metadata_gaps = task.get("source_model_metadata_gaps")
+    if not isinstance(metadata_gaps, list):
+        fail("source metadata gap inventory must be listed")
+    if len(metadata_gaps) != task.get("source_model_metadata_blocker_count"):
+        fail("source metadata gap count must match blocker count")
+    metadata_gaps_by_id = {gap.get("blocker_id"): gap for gap in metadata_gaps}
+    for blocker_id in metadata_blockers:
+        if blocker_id not in metadata_gaps_by_id:
+            fail(f"source metadata gap inventory missing {blocker_id}")
+    left_collision_gap = metadata_gaps_by_id.get("missing-collision-shape:left_foot", {})
+    if (
+        left_collision_gap.get("link_name") != "left_foot"
+        or left_collision_gap.get("metadata_kind") != "collision-shape"
+        or left_collision_gap.get("current_status") != "missing"
+        or "URDF <collision>" not in left_collision_gap.get("required_evidence", "")
+        or "source collision metadata" not in left_collision_gap.get("next_action", "")
+    ):
+        fail("left foot collision source metadata gap must be actionable")
+    right_inertial_gap = metadata_gaps_by_id.get("missing-inertial:right_foot", {})
+    if (
+        right_inertial_gap.get("link_name") != "right_foot"
+        or right_inertial_gap.get("metadata_kind") != "inertial"
+        or right_inertial_gap.get("current_status") != "missing"
+        or "URDF <inertial>" not in right_inertial_gap.get("required_evidence", "")
+        or "source inertial metadata" not in right_inertial_gap.get("next_action", "")
+    ):
+        fail("right foot inertial source metadata gap must be actionable")
     physical = task.get("physical_model_readiness", {})
     if physical.get("readiness_id") != "moonrobo/noetix-e1/physical-model-readiness-v0":
         fail("physical readiness must identify the Noetix model")

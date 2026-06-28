@@ -63,6 +63,7 @@
     - missing-inertial:right_leg_5
     - missing-inertial:right_foot
   - source metadata inventory: model-metadata-blocked
+  - source metadata gaps: 50
   - physical model blockers: 9
   - physical model blocker ids:
     - assumed:mass

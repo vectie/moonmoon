@@ -24,6 +24,7 @@ pub(all) struct MoonClawNoetixReviewTask {
   source_model_metadata_blocker_count : Int
   source_model_metadata_blocker_ids : Array[String]
   source_model_metadata_inventory : @moonphys.ModelMetadataInventory
+  source_model_metadata_gaps : Array[@moonrobo.NoetixSourceMetadataGap]
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
@@ -353,6 +354,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     source_model_metadata_blocker_count: source_model.source_metadata_blocker_count,
     source_model_metadata_blocker_ids: source_model.source_metadata_blocker_ids,
     source_model_metadata_inventory: source_model.source_metadata_inventory,
+    source_model_metadata_gaps: source_model.source_metadata_gaps,
     physical_model_readiness: physical_readiness,
     physical_model_blocker_count: physical_readiness.blocker_count,
     physical_model_blocker_ids: physical_readiness.blocker_ids,
@@ -533,6 +535,7 @@ pub fn render_noetix_review_tasks_markdown(
       text += "    - \{blocker}\n"
     }
     text += "  - source metadata inventory: \{task.source_model_metadata_inventory.status}\n"
+    text += "  - source metadata gaps: \{task.source_model_metadata_gaps.length()}\n"
     text += "  - physical model blockers: \{task.physical_model_blocker_count}\n"
     text += "  - physical model blocker ids:\n"
     for blocker in task.physical_model_blocker_ids {

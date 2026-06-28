@@ -42,7 +42,10 @@ evidence.
   inertial tags, and explicit per-link collision/inertial metadata blockers.
   The blocker count is now backed by a generic Moonphys model-metadata
   inventory contract with stable blocker IDs, keeping readiness semantics
-  reusable and robot-agnostic.
+  reusable and robot-agnostic. The Moonrobo source-model report now also
+  carries a `source_metadata_gaps` inventory that maps every missing
+  collision/inertial blocker to its link, source path, required evidence,
+  target artifact, acceptance check, and next action.
 - A source-sync verifier parses sibling Moonrobo `robot.json` and
   `model/robot.urdf` so Noetix joint limits, visual links, missing inertial/
   collision tags, and high-control limits cannot silently drift from the source.
@@ -139,7 +142,9 @@ evidence.
   tasks while keeping MoonRobo simulation consumption and hardware authority
   denied. The previous world-replay work item is omitted after the Moonphys
   replay blocker inventory clears. The physical-model work item now targets the
-  Moonrobo `physical_model_gaps` inventory instead of a flat blocker list.
+  Moonrobo `physical_model_gaps` inventory instead of a flat blocker list, and
+  the source-metadata work item targets the Moonrobo `source_metadata_gaps`
+  inventory.
 - MoonClaw review-task and readiness-decision evidence carries static
   support-stable frames and dynamic capture-stable frames separately from
   review-frame blockers, so downstream gates can distinguish passing Moonphys

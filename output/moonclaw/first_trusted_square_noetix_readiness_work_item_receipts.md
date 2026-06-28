@@ -27,7 +27,7 @@
   - work item result:
     - 1. source-metadata: NoetixReadinessWorkItemPendingEvidence
       - blockers: 50
-      - required evidence: authoritative collision and inertial metadata for every Noetix source link
+      - required evidence: authoritative collision and inertial metadata for every Noetix source_metadata_gaps entry
       - target: output/moonrobo/first_trusted_square_noetix_source_model.json
       - evidence: output/moonrobo/first_trusted_square_noetix_source_model.json
       - command: moon run cmd/main -- moonrobo noetix model json
