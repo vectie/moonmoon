@@ -20,6 +20,7 @@ committed as source.
 - `src/site`: the assembled first trusted square dossier.
 - `src/ui`: renderer-neutral view models plus a standalone MoonBit-rendered
   HTML inspection page.
+- `ui/rabbita-moon`: Rabbita-native browser app for the live 3D terrain view.
 - `src/kernel`: the compact product kernel, evidence gates, and near-term build
   queue.
 - `cmd/main`: the native CLI.
@@ -39,6 +40,17 @@ moon run cmd/main -- ui json
 moon run cmd/main -- ui html
 ```
 
+Run the live browser view through Rabbita, not through generated `output/`
+artifacts:
+
+```bash
+cd ui/rabbita-moon
+npm install
+npm run dev
+```
+
+Open `http://127.0.0.1:8766/first_trusted_square.html`.
+
 ## Develop
 
 ```bash
@@ -56,6 +68,5 @@ public API signal.
 Moonmoon owns lunar world claims. It may later export evidence to other Moon
 suite products, but those adapters should be explicit boundary packages or
 separate tools. The core repository should stay MoonBit-first and should not
-grow around Python check scripts, committed `output/` trees, or stale browser
-asset bundles.
-
+grow around Python check scripts, committed `output/` trees, generated browser
+asset bundles, or compatibility launch paths.

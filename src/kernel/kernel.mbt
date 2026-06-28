@@ -265,11 +265,11 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       task_id: "moonmoon-ui-package",
       priority: 50,
       lane: ViewerLane,
-      title: "Move the standalone page into a Moonmoon UI package when needed",
-      outcome: "Moonmoon keeps browser behavior in an explicit UI package without hiding assets in domain packages",
-      depends_on: ["src/ui/page.mbt"],
-      evidence: ["moon run cmd/main -- ui html"],
-      done_when: "a future ui/moonmoon/main package owns live browser behavior and src/ui remains data-only",
+      title: "Keep the live terrain viewer in the Rabbita UI package",
+      outcome: "Moonmoon keeps browser behavior in an explicit Rabbita package without hiding assets in domain packages",
+      depends_on: ["src/ui", "ui/rabbita-moon/main"],
+      evidence: ["cd ui/rabbita-moon && moon build --target js"],
+      done_when: "ui/rabbita-moon owns live browser behavior and src/ui remains renderer-neutral data",
     },
   ]
 }

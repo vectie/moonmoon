@@ -1,0 +1,300 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f7f7f4;
+  color: #151917;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f7f7f4;
+}
+
+button {
+  font: inherit;
+}
+
+.boot-shell,
+.moon-shell {
+  min-height: 100vh;
+}
+
+.boot-shell {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.moon-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+.workspace {
+  padding: 24px;
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.inspector {
+  border-left: 1px solid #d8d8d0;
+  background: #fbfbf8;
+  padding: 20px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.topbar,
+.panel-heading,
+.row,
+.terrain-readout {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: #535b55;
+}
+
+.summary {
+  color: #555d57;
+  max-width: 760px;
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.badge,
+.seg {
+  border: 1px solid #c9c9bf;
+  background: #fff;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.badge.ready,
+.seg.active {
+  background: #236f5c;
+  color: #fff;
+  border-color: #236f5c;
+}
+
+.hero {
+  min-height: 200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.surface,
+.panel {
+  border: 1px solid #d8d8d0;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.surface {
+  padding: 18px;
+  display: grid;
+  align-content: end;
+  background: linear-gradient(155deg, #20251f, #515d54 56%, #d6d2c4);
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.surface::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, .26);
+  border-radius: 50%;
+  transform: translateX(28%);
+}
+
+.surface h2 {
+  color: rgba(255, 255, 255, .72);
+}
+
+.surface strong {
+  font-size: 42px;
+  line-height: 1;
+  position: relative;
+}
+
+.surface span {
+  color: rgba(255, 255, 255, .78);
+  position: relative;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+}
+
+.metric,
+.card {
+  border: 1px solid #e2e2dc;
+  border-radius: 5px;
+  background: #fdfdfb;
+}
+
+.metric {
+  padding: 12px;
+}
+
+.metric b {
+  display: block;
+  font-size: 20px;
+  margin-top: 4px;
+}
+
+.metric span,
+.row span {
+  color: #626a64;
+  font-size: 12px;
+}
+
+.terrain-panel {
+  background: #101714;
+  overflow: hidden;
+  position: relative;
+  min-height: 380px;
+}
+
+.terrain-canvas {
+  display: block;
+  width: 100%;
+  height: 380px;
+  touch-action: none;
+}
+
+.terrain-readout {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  color: rgba(247, 251, 249, .84);
+  font-size: 12px;
+}
+
+.terrain-readout b {
+  color: #f7fbf9;
+}
+
+.toolbar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(80px, 1fr));
+  gap: 8px;
+}
+
+.tile {
+  min-height: 78px;
+  border: 1px solid #d2d2ca;
+  background: #f9faf6;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: left;
+  display: grid;
+  align-content: space-between;
+}
+
+.tile.selected {
+  outline: 3px solid #236f5c;
+}
+
+.tile b {
+  font-size: 18px;
+}
+
+.is-blocked {
+  border-color: #c45f4c;
+  background: #fff4ef;
+}
+
+.is-review {
+  border-color: #bd9c30;
+  background: #fff9e7;
+}
+
+.is-ready {
+  border-color: #6ca38f;
+}
+
+.card {
+  padding: 14px;
+}
+
+.row {
+  border: 1px solid #dfdfd8;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 8px;
+}
+
+.row span {
+  display: block;
+  margin-top: 3px;
+}
+
+.row strong {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #4e5750;
+  line-height: 1.45;
+}
+
+@media (max-width: 920px) {
+  .moon-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .inspector {
+    border-left: 0;
+    border-top: 1px solid #d8d8d0;
+  }
+
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}

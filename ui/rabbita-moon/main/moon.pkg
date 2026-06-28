@@ -1,0 +1,12 @@
+import {
+  "moonbit-community/rabbita",
+  "moonbit-community/rabbita/cmd",
+  "moonbit-community/rabbita/html",
+  "vectie/moonmoon/src/ui",
+}
+
+supported_targets = "js"
+
+options(
+  "is-main": true,
+)
