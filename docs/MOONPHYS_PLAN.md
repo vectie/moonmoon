@@ -751,7 +751,7 @@ or as a data artifact beside the Noetix model.
 
 ### Phase 1 Gate Added: Noetix Readiness Receipts
 
-MoonClaw now emits Noetix readiness work item receipts that carry the three
+MoonClaw now emits Noetix readiness work item receipts that carry the two
 remaining blocked readiness domains forward as accepted audit receipts while
 keeping the underlying work item result pending fresh evidence. These receipts preserve
 named blockers, target evidence paths, command/check pairs, `SimulationBlocked`,
@@ -770,13 +770,13 @@ uses it before Noetix joint-control replay so terrain-normal IK targets that
 would require more than a URDF joint's velocity limit are converted into
 reachable per-frame commands. This clears the previous Noetix limit-review
 frame and turns the hinge motor trace from review to driven, while keeping the
-joint-control packet review-only because servo gains, joint inertias, support
-stability, source metadata, and hardware authority are still unresolved.
+joint-control packet review-only because servo gains, joint inertias, source
+metadata, and hardware authority are still unresolved.
 
 The world replay blocker inventory has now dropped from
 envelope/support/dynamic-support to empty. That keeps downstream MoonClaw work
-items focused on remaining source metadata, physical-model, and review-artifact
-problems instead of stale replay artifacts.
+items focused on remaining source metadata and physical-model problems instead
+of stale replay or review-artifact blockers.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

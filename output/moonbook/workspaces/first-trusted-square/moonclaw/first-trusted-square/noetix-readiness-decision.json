@@ -288,7 +288,7 @@
         "Noetix review decision must never issue hardware authority",
         "MoonRobo simulation consumption requires all review artifacts ready, source metadata inventory ready, and physical model readiness clear"
       ],
-      "next_action": "keep Noetix evidence in MoonClaw review; replace assumed source and physical model metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied"
+      "next_action": "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied"
     },
     "source_task": {
       "task_id": "moonclaw/first-trusted-square/noetix-review-task",

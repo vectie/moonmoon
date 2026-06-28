@@ -180,8 +180,12 @@ def main() -> None:
     if "physical-model-assumption-review" not in reason:
         fail("reason must name physical readiness status")
     next_action = decision.get("next_action", "")
+    if "all review artifacts are ready" not in next_action:
+        fail("next action must acknowledge cleared review artifacts")
     if "physical model metadata" not in next_action:
         fail("next action must name physical model metadata")
+    if "clear blocked review artifacts" in next_action:
+        fail("next action must not reference stale blocked review artifacts")
     if "keep hardware denied" not in next_action:
         fail("next action must preserve hardware denial")
 

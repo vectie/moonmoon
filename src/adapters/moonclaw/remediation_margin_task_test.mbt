@@ -1836,6 +1836,10 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(decision.reason.contains("Noetix simulation remains blocked"))
   assert_true(decision.reason.contains("50 source metadata blockers"))
   assert_true(decision.reason.contains("model-metadata-blocked"))
+  assert_true(decision.next_action.contains("all review artifacts are ready"))
+  assert_true(decision.next_action.contains("source metadata"))
+  assert_true(decision.next_action.contains("physical model metadata"))
+  assert_true(!decision.next_action.contains("clear blocked review artifacts"))
   assert_true(decision.next_action.contains("keep hardware denied"))
   assert_true(
     decision.hardware_denial_invariants.contains(

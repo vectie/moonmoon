@@ -103,11 +103,24 @@ fn noetix_readiness_reason(
 }
 
 ///|
-fn noetix_readiness_next_action(may_consume : Bool) -> String {
+fn noetix_readiness_next_action(
+  may_consume : Bool,
+  blocked_artifact_count : Int,
+  metadata_blocker_count : Int,
+  physical_blocker_count : Int,
+) -> String {
   if may_consume {
     "route Noetix evidence to MoonRobo simulation-only consumption while keeping hardware denied"
+  } else if blocked_artifact_count == 0 &&
+    metadata_blocker_count > 0 &&
+    physical_blocker_count > 0 {
+    "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied"
+  } else if blocked_artifact_count == 0 && metadata_blocker_count > 0 {
+    "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata, regenerate the decision, and keep hardware denied"
+  } else if blocked_artifact_count == 0 && physical_blocker_count > 0 {
+    "keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative physical model metadata, regenerate the decision, and keep hardware denied"
   } else {
-    "keep Noetix evidence in MoonClaw review; replace assumed source and physical model metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied"
+    "keep Noetix evidence in MoonClaw review; clear \{blocked_artifact_count} blocked review artifacts, replace source and physical model metadata, regenerate the decision, and keep hardware denied"
   }
 }
 
@@ -174,7 +187,12 @@ pub fn noetix_simulation_readiness_decision(
     hardware_authority: task.hardware_authority,
     hardware_denied: task.hardware_denied,
     hardware_denial_invariants: noetix_hardware_denial_invariants(),
-    next_action: noetix_readiness_next_action(may_consume),
+    next_action: noetix_readiness_next_action(
+      may_consume,
+      blocked_artifacts.length(),
+      metadata_blockers,
+      physical_readiness.blocker_count,
+    ),
   }
 }
 

@@ -91,7 +91,7 @@
 - hardware state: hardware-denied
 - hardware authority: moonmoon-safety-gate-only
 - hardware denied: true
-- next action: keep Noetix evidence in MoonClaw review; replace assumed source and physical model metadata, clear blocked review artifacts, regenerate the decision, and keep hardware denied
+- next action: keep Noetix evidence in MoonClaw review; all review artifacts are ready, so replace authoritative source metadata and physical model metadata, regenerate the decision, and keep hardware denied
 
 ## Blocked Artifacts
 
