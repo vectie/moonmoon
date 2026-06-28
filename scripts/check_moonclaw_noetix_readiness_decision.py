@@ -90,6 +90,10 @@ def main() -> None:
         fail("physical blockers must name assumed mass")
     if "missing:joint-damping" not in physical_blockers:
         fail("physical blockers must name missing joint damping")
+    if decision.get("static_support_stable_frame_count") != 32:
+        fail("static support should report all frames support-stable")
+    if decision.get("dynamic_stability_capture_stable_frame_count") != 32:
+        fail("dynamic stability should report all frames capture-stable")
     for field in [
         "static_support_review_frame_count",
         "dynamic_stability_review_frame_count",

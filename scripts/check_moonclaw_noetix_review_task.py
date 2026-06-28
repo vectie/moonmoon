@@ -89,10 +89,16 @@ def main() -> None:
         fail("physical blockers must name missing joint damping")
     if task.get("link_pose_count_per_frame") != 25:
         fail("expected compact Noetix URDF-reference link count")
+    if task.get("static_support_stable_frame_count") != task.get("frame_count"):
+        fail("static support should report every frame support-stable")
     if task.get("static_support_review_frame_count", 0) <= 0:
-        fail("static support review blocker should be explicit")
+        fail("static support provenance review blocker should be explicit")
+    if task.get("dynamic_stability_capture_stable_frame_count") != task.get(
+        "frame_count"
+    ):
+        fail("dynamic stability should report every frame capture-stable")
     if task.get("dynamic_stability_review_frame_count", 0) <= 0:
-        fail("dynamic stability review blocker should be explicit")
+        fail("dynamic stability provenance review blocker should be explicit")
     if task.get("joint_control_review_frame_count", 0) <= 0:
         fail("joint control review blocker should be explicit")
     if task.get("joint_control_world_support_review_frame_count") != 0:
@@ -198,10 +204,20 @@ def main() -> None:
         fail("static support artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-static-support-review"].get("blocking_reason", ""):
         fail("static support blocker must explain review-only state")
+    static_state = artifacts["noetix-static-support-review"].get("current_state", "")
+    if "frames support-stable" not in static_state:
+        fail("static support artifact must expose support-stable frame count")
+    if "review frames from contact/model provenance" not in static_state:
+        fail("static support artifact must separate review provenance blockers")
     if artifacts["noetix-dynamic-stability-review"].get("ready"):
         fail("dynamic stability artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-dynamic-stability-review"].get("blocking_reason", ""):
         fail("dynamic stability blocker must explain review-only state")
+    dynamic_state = artifacts["noetix-dynamic-stability-review"].get("current_state", "")
+    if "frames capture-stable" not in dynamic_state:
+        fail("dynamic stability artifact must expose capture-stable frame count")
+    if "dynamic review frames from model/provenance blockers" not in dynamic_state:
+        fail("dynamic stability artifact must separate review provenance blockers")
     if artifacts["noetix-joint-control-review"].get("ready"):
         fail("joint control artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-joint-control-review"].get("blocking_reason", ""):

@@ -76,7 +76,9 @@
     - missing:joint-stiffness
   - link poses per frame: 25
   - walk command segments: 3
+  - static-support stable frames: 32
   - static-support review frames: 32
+  - dynamic-stability capture-stable frames: 32
   - dynamic-stability review frames: 32
   - joint-control review frames: 32
   - joint-control world-support review frames: 0
@@ -134,12 +136,12 @@
       - blocking: none
       - gate: python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json
     - noetix-static-support-review: output/moonrobo/first_trusted_square_noetix_stability.json
-      - current: 32/32 frames require support review; worst planar margin 0.004999999999999998 m; status static-support-review
+      - current: 32/32 frames support-stable; 32 review frames from contact/model provenance; worst planar margin 0.004999999999999998 m; status static-support-review
       - ready: false
-      - blocking: static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear
+      - blocking: static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json
     - noetix-dynamic-stability-review: output/moonrobo/first_trusted_square_noetix_dynamics.json
-      - current: 32/32 frames require dynamic review; capture-stable frames 32; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review
+      - current: 32/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review
       - ready: false
       - blocking: capture-point evidence is review-only until joint-control, inertia, and collision evidence clear
       - gate: python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json
@@ -177,7 +179,7 @@
     - source-model-gaps-preserved: Source model audit records zero authoritative collision and inertial tags, keeping physics evidence in review.
     - moonrobo-source-sync-preserved: Noetix source-model and command-plan evidence must stay synchronized with sibling Moonrobo robot.json and URDF facts.
     - endless-gait-window-preserved: Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.
-    - review-only-static-support-preserved: Static support review frames remain explicit blockers for dynamic walking evidence.
+    - review-only-static-support-preserved: Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence.
     - review-only-joint-control-preserved: Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.
     - dry-run-walk-command-preserved: High-control walk command plan remains dry-run review evidence and never becomes executable hardware authority.
     - review-only-inertial-collision-preserved: Inertial/collision evidence remains review-only until authoritative Moonrobo mass, inertia, and collision tags are available.

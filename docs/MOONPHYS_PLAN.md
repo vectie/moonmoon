@@ -134,6 +134,10 @@ evidence.
   tasks while keeping MoonRobo simulation consumption and hardware authority
   denied. The previous world-replay work item is omitted after the Moonphys
   replay blocker inventory clears.
+- MoonClaw review-task and readiness-decision evidence carries static
+  support-stable frames and dynamic capture-stable frames separately from
+  review-frame blockers, so downstream gates can distinguish passing Moonphys
+  margins from unresolved provenance/model authority.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.
@@ -712,6 +716,9 @@ or as a data artifact beside the Noetix model.
 4. Continue feeding accepted Noetix review outcomes into downstream
    Moonrobo/MoonClaw gates; the Moonphys world-replay blocker is already
    cleared and no longer appears as a readiness work item.
+   The next gate slice has started by separating support-stable and
+   capture-stable counts from review-only blocker counts in MoonClaw task and
+   readiness artifacts.
 
 ### Phase 1 Gate Added: Noetix Readiness Receipts
 

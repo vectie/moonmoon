@@ -27,7 +27,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
+  static_support_stable_frame_count : Int
   static_support_review_frame_count : Int
+  dynamic_stability_capture_stable_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
@@ -198,9 +200,9 @@ fn noetix_static_support_artifact(
     "output/moonrobo/first_trusted_square_noetix_stability.json",
     "moon run cmd/main -- moonrobo noetix stability json",
     "static support evidence is reviewed before any dynamic-walk or hardware claim",
-    "\{report.review_frame_count}/\{report.frame_count} frames require support review; worst planar margin \{report.worst_planar_margin_m} m; status \{report.status}",
+    "\{report.stable_frame_count}/\{report.frame_count} frames support-stable; \{report.review_frame_count} review frames from contact/model provenance; worst planar margin \{report.worst_planar_margin_m} m; status \{report.status}",
     report.review_frame_count == 0 && report.status == "static-support-ok",
-    "static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear",
+    "static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear",
     "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json",
   )
 }
@@ -214,7 +216,7 @@ fn noetix_dynamic_stability_artifact(
     "output/moonrobo/first_trusted_square_noetix_dynamics.json",
     "moon run cmd/main -- moonrobo noetix dynamics json",
     "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
-    "\{report.review_frame_count}/\{report.frame_count} frames require dynamic review; capture-stable frames \{report.capture_stable_frame_count}; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
+    "\{report.capture_stable_frame_count}/\{report.frame_count} frames capture-stable; \{report.review_frame_count} dynamic review frames from model/provenance blockers; worst capture margin \{report.worst_capture_margin_m} m; status \{report.status}",
     report.review_frame_count == 0 && report.status == "dynamic-stability-ok",
     "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
     "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json",
@@ -316,7 +318,9 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
     physical_model_readiness: physical_readiness,
     physical_model_blocker_count: physical_readiness.blocker_count,
     physical_model_blocker_ids: physical_readiness.blocker_ids,
+    static_support_stable_frame_count: support.stable_frame_count,
     static_support_review_frame_count: support.review_frame_count,
+    dynamic_stability_capture_stable_frame_count: dynamic.capture_stable_frame_count,
     dynamic_stability_review_frame_count: dynamic.review_frame_count,
     joint_control_review_frame_count: control.frame_count,
     joint_control_world_support_review_frame_count: control.hinge_motor_world_trace.support_review_frame_count,
@@ -435,7 +439,7 @@ pub fn first_trusted_square_noetix_review_task() -> MoonClawNoetixReviewTask {
         "endless-gait-window-preserved", "Finite Noetix trace exports remain verified windows over a cyclic one-direction gait.",
       ),
       criterion(
-        "review-only-static-support-preserved", "Static support review frames remain explicit blockers for dynamic walking evidence.",
+        "review-only-static-support-preserved", "Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence.",
       ),
       criterion(
         "review-only-joint-control-preserved", "Joint-control evidence remains review-only until servo gains, inertia, and hardware authority are validated.",
@@ -494,7 +498,9 @@ pub fn render_noetix_review_tasks_markdown(
     }
     text += "  - link poses per frame: \{task.link_pose_count_per_frame}\n"
     text += "  - walk command segments: \{task.walk_command_segment_count}\n"
+    text += "  - static-support stable frames: \{task.static_support_stable_frame_count}\n"
     text += "  - static-support review frames: \{task.static_support_review_frame_count}\n"
+    text += "  - dynamic-stability capture-stable frames: \{task.dynamic_stability_capture_stable_frame_count}\n"
     text += "  - dynamic-stability review frames: \{task.dynamic_stability_review_frame_count}\n"
     text += "  - joint-control review frames: \{task.joint_control_review_frame_count}\n"
     text += "  - joint-control world-support review frames: \{task.joint_control_world_support_review_frame_count}\n"

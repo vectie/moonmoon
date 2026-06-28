@@ -1554,7 +1554,9 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   assert_true(task.physical_model_blocker_ids.contains("assumed:mass"))
   assert_true(task.physical_model_blocker_ids.contains("missing:joint-damping"))
   assert_eq(task.link_pose_count_per_frame, 25)
+  assert_eq(task.static_support_stable_frame_count, task.frame_count)
   assert_true(task.static_support_review_frame_count > 0)
+  assert_eq(task.dynamic_stability_capture_stable_frame_count, task.frame_count)
   assert_true(task.dynamic_stability_review_frame_count > 0)
   assert_true(task.joint_control_review_frame_count > 0)
   assert_eq(task.joint_control_world_support_review_frame_count, 0)
@@ -1611,14 +1613,22 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-static-support-review" &&
       !artifact.ready &&
-      artifact.validation_gate.contains("check_moonrobo_noetix_stability")
+      artifact.validation_gate.contains("check_moonrobo_noetix_stability") &&
+      artifact.current_state.contains("frames support-stable") &&
+      artifact.current_state.contains(
+        "review frames from contact/model provenance",
+      )
     }),
   )
   assert_true(
     task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-dynamic-stability-review" &&
       !artifact.ready &&
-      artifact.validation_gate.contains("check_moonrobo_noetix_dynamics")
+      artifact.validation_gate.contains("check_moonrobo_noetix_dynamics") &&
+      artifact.current_state.contains("frames capture-stable") &&
+      artifact.current_state.contains(
+        "dynamic review frames from model/provenance blockers",
+      )
     }),
   )
   assert_true(
@@ -1684,6 +1694,8 @@ test "MoonClaw Noetix review task renderers expose safety gate" {
   assert_true(markdown.contains("physical model blockers"))
   assert_true(markdown.contains("assumed:mass"))
   assert_true(markdown.contains("missing:joint-damping"))
+  assert_true(markdown.contains("static-support stable frames"))
+  assert_true(markdown.contains("dynamic-stability capture-stable frames"))
   assert_true(markdown.contains("endless gait cycle frames"))
   assert_true(markdown.contains("walk command segments"))
   assert_true(markdown.contains("joint-control review frames"))
@@ -1759,6 +1771,10 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(
     decision.physical_model_blocker_ids.contains("missing:joint-damping"),
   )
+  assert_eq(decision.static_support_stable_frame_count, 32)
+  assert_true(decision.static_support_review_frame_count > 0)
+  assert_eq(decision.dynamic_stability_capture_stable_frame_count, 32)
+  assert_true(decision.dynamic_stability_review_frame_count > 0)
   assert_eq(decision.joint_control_world_support_review_frame_count, 0)
   assert_eq(decision.joint_control_world_capture_review_frame_count, 0)
   assert_eq(decision.joint_control_max_support_recovery_shift_m, 0.0)
@@ -1815,6 +1831,8 @@ test "MoonClaw Noetix simulation readiness decision blocks MoonRobo consumption"
   assert_true(markdown.contains("physical model blockers"))
   assert_true(markdown.contains("assumed:mass"))
   assert_true(markdown.contains("missing:joint-damping"))
+  assert_true(markdown.contains("static-support stable frames"))
+  assert_true(markdown.contains("dynamic-stability capture-stable frames"))
   assert_true(markdown.contains("joint-control world-capture review frames"))
   assert_true(markdown.contains("joint-control worst capture support margin"))
   assert_true(markdown.contains("joint-control world replay blockers"))

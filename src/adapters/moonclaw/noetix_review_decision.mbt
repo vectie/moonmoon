@@ -23,7 +23,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
+  static_support_stable_frame_count : Int
   static_support_review_frame_count : Int
+  dynamic_stability_capture_stable_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
@@ -153,7 +155,9 @@ pub fn noetix_simulation_readiness_decision(
     physical_model_readiness: physical_readiness,
     physical_model_blocker_count: physical_readiness.blocker_count,
     physical_model_blocker_ids: physical_readiness.blocker_ids,
+    static_support_stable_frame_count: task.static_support_stable_frame_count,
     static_support_review_frame_count: task.static_support_review_frame_count,
+    dynamic_stability_capture_stable_frame_count: task.dynamic_stability_capture_stable_frame_count,
     dynamic_stability_review_frame_count: task.dynamic_stability_review_frame_count,
     joint_control_review_frame_count: task.joint_control_review_frame_count,
     joint_control_world_support_review_frame_count: task.joint_control_world_support_review_frame_count,
@@ -213,7 +217,9 @@ pub fn render_noetix_simulation_readiness_decision_markdown(
   for blocker in decision.physical_model_blocker_ids {
     text += "  - \{blocker}\n"
   }
+  text += "- static-support stable frames: \{decision.static_support_stable_frame_count}\n"
   text += "- static-support review frames: \{decision.static_support_review_frame_count}\n"
+  text += "- dynamic-stability capture-stable frames: \{decision.dynamic_stability_capture_stable_frame_count}\n"
   text += "- dynamic-stability review frames: \{decision.dynamic_stability_review_frame_count}\n"
   text += "- joint-control review frames: \{decision.joint_control_review_frame_count}\n"
   text += "- joint-control world-support review frames: \{decision.joint_control_world_support_review_frame_count}\n"

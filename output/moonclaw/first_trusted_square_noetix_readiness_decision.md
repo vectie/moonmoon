@@ -75,7 +75,9 @@
   - assumed:friction
   - missing:joint-damping
   - missing:joint-stiffness
+- static-support stable frames: 32
 - static-support review frames: 32
+- dynamic-stability capture-stable frames: 32
 - dynamic-stability review frames: 32
 - joint-control review frames: 32
 - joint-control world-support review frames: 0

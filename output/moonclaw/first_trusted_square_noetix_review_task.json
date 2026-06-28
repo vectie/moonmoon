@@ -252,7 +252,9 @@
       "missing:joint-damping",
       "missing:joint-stiffness"
     ],
+    "static_support_stable_frame_count": 32,
     "static_support_review_frame_count": 32,
+    "dynamic_stability_capture_stable_frame_count": 32,
     "dynamic_stability_review_frame_count": 32,
     "joint_control_review_frame_count": 32,
     "joint_control_world_support_review_frame_count": 0,
@@ -396,9 +398,9 @@
         "path": "output/moonrobo/first_trusted_square_noetix_stability.json",
         "producer": "moon run cmd/main -- moonrobo noetix stability json",
         "required_state": "static support evidence is reviewed before any dynamic-walk or hardware claim",
-        "current_state": "32/32 frames require support review; worst planar margin 0.004999999999999998 m; status static-support-review",
+        "current_state": "32/32 frames support-stable; 32 review frames from contact/model provenance; worst planar margin 0.004999999999999998 m; status static-support-review",
         "ready": false,
-        "blocking_reason": "static COM support is review-only until dynamic stability, joint-control, inertia, and collision evidence clear",
+        "blocking_reason": "static support margins pass but remain review-only until contact provenance, dynamic stability, joint-control, inertia, and collision evidence clear",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_stability.py output/moonrobo/first_trusted_square_noetix_stability.json"
       },
       {
@@ -406,7 +408,7 @@
         "path": "output/moonrobo/first_trusted_square_noetix_dynamics.json",
         "producer": "moon run cmd/main -- moonrobo noetix dynamics json",
         "required_state": "capture-point dynamic stability evidence is reviewed before any stronger walking claim",
-        "current_state": "32/32 frames require dynamic review; capture-stable frames 32; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review",
+        "current_state": "32/32 frames capture-stable; 32 dynamic review frames from model/provenance blockers; worst capture margin 0.0021231717435670205 m; status dynamic-stability-review",
         "ready": false,
         "blocking_reason": "capture-point evidence is review-only until joint-control, inertia, and collision evidence clear",
         "validation_gate": "python3 scripts/check_moonrobo_noetix_dynamics.py output/moonrobo/first_trusted_square_noetix_dynamics.json"
@@ -476,7 +478,7 @@
       },
       {
         "criterion_id": "review-only-static-support-preserved",
-        "description": "Static support review frames remain explicit blockers for dynamic walking evidence."
+        "description": "Static support-stable frames and review-only provenance blockers remain explicit for dynamic walking evidence."
       },
       {
         "criterion_id": "review-only-joint-control-preserved",

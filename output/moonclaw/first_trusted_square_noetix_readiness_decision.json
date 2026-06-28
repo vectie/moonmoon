@@ -241,7 +241,9 @@
     "missing:joint-damping",
     "missing:joint-stiffness"
   ],
+  "static_support_stable_frame_count": 32,
   "static_support_review_frame_count": 32,
+  "dynamic_stability_capture_stable_frame_count": 32,
   "dynamic_stability_review_frame_count": 32,
   "joint_control_review_frame_count": 32,
   "joint_control_world_support_review_frame_count": 0,

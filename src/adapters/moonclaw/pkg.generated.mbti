@@ -598,7 +598,9 @@ pub(all) struct MoonClawNoetixReviewTask {
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
+  static_support_stable_frame_count : Int
   static_support_review_frame_count : Int
+  dynamic_stability_capture_stable_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
@@ -1330,7 +1332,9 @@ pub(all) struct NoetixSimulationReadinessDecision {
   physical_model_readiness : @moonphys.PhysicalModelReadiness
   physical_model_blocker_count : Int
   physical_model_blocker_ids : Array[String]
+  static_support_stable_frame_count : Int
   static_support_review_frame_count : Int
+  dynamic_stability_capture_stable_frame_count : Int
   dynamic_stability_review_frame_count : Int
   joint_control_review_frame_count : Int
   joint_control_world_support_review_frame_count : Int
