@@ -410,6 +410,10 @@ function vec3Sub(a, b) {
   return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z }
 }
 
+function vec3Dot(a, b) {
+  return a.x * b.x + a.y * b.y + a.z * b.z
+}
+
 function vec3Cross(a, b) {
   return {
     x: a.y * b.z - a.z * b.y,
@@ -429,6 +433,17 @@ function compactPoint(point) {
     y: Number(point.y.toFixed(4)),
     z: Number(point.z.toFixed(4)),
   }
+}
+
+function matrixOrigin(matrix) {
+  return pointRecord(transformPoint(matrix, [0, 0, 0]))
+}
+
+function matrixForward(matrix) {
+  return normalizeVec3(vec3Sub(
+    pointRecord(transformPoint(matrix, [0, 0, 1])),
+    matrixOrigin(matrix),
+  ))
 }
 
 function moonphysPoint(point) {
@@ -552,6 +567,10 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
   const lowerLen = NOETIX_VISUAL_RIG.lengths.lowerLeg
   const pose = legPose(root, side, joints)
   const { hip, knee, ankle, sole } = pose
+  const forward = matrixForward(hip)
+  const kneePoint = matrixOrigin(knee)
+  const anklePoint = matrixOrigin(ankle)
+  const lowerLegForwardM = vec3Dot(vec3Sub(anklePoint, kneePoint), forward)
   addCube(vertices, colors, hip, [0, -upperLen * 0.5, 0], [0.065, upperLen, 0.075], sideColor)
   addCube(vertices, colors, knee, [0, 0.006, 0.055], [0.076, 0.034, 0.040], [0.96, 0.84, 0.42])
   addCube(vertices, colors, knee, [0, -lowerLen * 0.5, 0.008], [0.055, lowerLen, 0.065], [0.78, 0.70, 0.34])
@@ -581,13 +600,18 @@ function addLeg(vertices, colors, root, side, clip, joints, authoredTargets, dia
     fkEndpoint: pointRecord(sole),
     terrainProbe,
     contactPatch,
+    limbBend: {
+      active: (foot.role === 'passing' || foot.role === 'swing') && Math.abs(joints[name].knee) > 0.18,
+      lowerLegForwardM,
+      minForwardM: NOETIX_VISUAL_RIG.legForwardBendMinM,
+    },
     targetFkDeltaM: pointDistance(correctedTarget, sole),
     authoredTargetDeltaM: pointDistance(authoredTarget, sole),
     ikCorrectionDeltaM: pointDistance(authoredTarget, correctedTarget),
   })
 }
 
-function addArm(vertices, colors, root, side, joints) {
+function addArm(vertices, colors, root, side, joints, diagnostics) {
   const isLeft = side > 0
   const name = isLeft ? 'left' : 'right'
   const angles = joints[name]
@@ -602,6 +626,17 @@ function addArm(vertices, colors, root, side, joints) {
   addCube(vertices, colors, elbow, [0, 0.004, 0.042], [0.052, 0.030, 0.034], [0.70, 0.86, 0.90])
   addCube(vertices, colors, elbow, [0, -lowerLen * 0.5, 0.015], [0.040, lowerLen, 0.050], [0.48, 0.64, 0.68])
   addCube(vertices, colors, elbow, [0, -lowerLen - 0.030, 0.040], [0.050, 0.060, 0.055], [0.40, 0.54, 0.58])
+  const forward = matrixForward(shoulder)
+  const elbowPoint = matrixOrigin(elbow)
+  const handPoint = pointRecord(transformPoint(elbow, [0, -lowerLen, 0]))
+  diagnostics.arms.push({
+    name,
+    limbBend: {
+      active: Math.abs(angles.elbow) > 0.16,
+      lowerArmForwardM: vec3Dot(vec3Sub(handPoint, elbowPoint), forward),
+      minForwardM: NOETIX_VISUAL_RIG.armForwardBendMinM,
+    },
+  })
 }
 
 function robotGeometry(time, options = { quality: true }) {
@@ -628,7 +663,7 @@ function robotGeometry(time, options = { quality: true }) {
   }
   const joints = ik.correctedJoints
   const terrain = terrainProfileReport(clip)
-  const diagnostics = { feet: [], authoredJoints, joints, ik, terrain, footLock }
+  const diagnostics = { feet: [], arms: [], authoredJoints, joints, ik, terrain, footLock }
   const root = robotRoot(clip, ik.pelvisCorrectionM, footLock)
   diagnostics.supportMassTransferX = supportMassTransferX(clip)
   addCube(vertices, colors, root, [0, -0.025, 0], [0.24, 0.18, 0.18], [0.40, 0.72, 0.70])
@@ -642,7 +677,7 @@ function robotGeometry(time, options = { quality: true }) {
   addCube(vertices, colors, headRoot, [0, 0.012, 0.068], [0.080, 0.030, 0.016], [0.08, 0.14, 0.16])
   for (const side of [-1, 1]) {
     addLeg(vertices, colors, root, side, clip, joints, authoredTargets, diagnostics)
-    addArm(vertices, colors, torsoRoot, side, joints)
+    addArm(vertices, colors, torsoRoot, side, joints, diagnostics)
   }
   diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics)
   diagnostics.centerOfMassVelocity = { x: 0, y: 0, z: 0 }
@@ -674,6 +709,24 @@ function gaitQuality(time, diagnostics) {
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
   const maxContactPatchRange = Math.max(...diagnostics.feet.map(foot => foot.contactPatch.heightRangeM))
+  const activeLegBends = diagnostics.feet
+    .map(foot => foot.limbBend)
+    .filter(bend => bend.active)
+  const activeArmBends = diagnostics.arms
+    .map(arm => arm.limbBend)
+    .filter(bend => bend.active)
+  const minObservedLegForwardBendM = Math.min(
+    ...diagnostics.feet.map(foot => foot.limbBend.lowerLegForwardM),
+  )
+  const minObservedArmForwardBendM = Math.min(
+    ...diagnostics.arms.map(arm => arm.limbBend.lowerArmForwardM),
+  )
+  const minLegForwardBendM = activeLegBends.length > 0
+    ? Math.min(...activeLegBends.map(bend => bend.lowerLegForwardM))
+    : Infinity
+  const minArmForwardBendM = activeArmBends.length > 0
+    ? Math.min(...activeArmBends.map(bend => bend.lowerArmForwardM))
+    : Infinity
   const statuses = {
     cycleRepeat: near(now.phase, repeated.phase, 0.000001) ? 'pass' : 'fail',
     rootMotion: near(rootAdvance, expectedStride, 0.003) ? 'pass' : 'fail',
@@ -692,6 +745,11 @@ function gaitQuality(time, diagnostics) {
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
     torsoCounterRotation: cycle.torsoCounterRotation >= NOETIX_VISUAL_RIG.torsoCounterRotationMinRad ? 'pass' : 'fail',
     footPhaseCoverage: phaseCoverage.missing.length === 0 ? 'pass' : 'fail',
+    limbForwardBend:
+      minObservedLegForwardBendM >= NOETIX_VISUAL_RIG.limbBackFoldToleranceM &&
+      minObservedArmForwardBendM >= NOETIX_VISUAL_RIG.limbBackFoldToleranceM &&
+      minLegForwardBendM >= NOETIX_VISUAL_RIG.legForwardBendMinM &&
+      minArmForwardBendM >= NOETIX_VISUAL_RIG.armForwardBendMinM ? 'pass' : 'fail',
     linkLengthInvariant: 'pass',
   }
   const status = Object.values(statuses).every(value => value === 'pass') ? 'pass' : 'fail'
@@ -714,6 +772,14 @@ function gaitQuality(time, diagnostics) {
     toeRoll: cycle.toeRoll,
     torsoCounterRotation: cycle.torsoCounterRotation,
     footPhaseCoverage: phaseCoverage,
+    limbForwardBend: {
+      minObservedLegForwardBendM,
+      minObservedArmForwardBendM,
+      minLegForwardBendM,
+      minArmForwardBendM,
+      legs: diagnostics.feet.map(foot => ({ name: foot.name, ...foot.limbBend })),
+      arms: diagnostics.arms.map(arm => ({ name: arm.name, ...arm.limbBend })),
+    },
     authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
   }
@@ -835,7 +901,7 @@ function legPose(root, side, joints) {
   hip = mat4RotateX(hip, angles.hip)
   hip = mat4RotateZ(hip, side * 0.025)
   let knee = mat4Translate(hip, 0, -upperLen, 0)
-  knee = mat4RotateX(knee, -angles.knee)
+  knee = mat4RotateX(knee, angles.knee)
   let ankle = mat4Translate(knee, 0, -lowerLen, 0.006)
   ankle = mat4RotateX(ankle, angles.ankle)
   return {
@@ -1322,8 +1388,11 @@ function supportJointIk(root, clip, joints) {
       }
       for (const field of fields) {
         const limit = NOETIX_VISUAL_RIG.jointCorrectionMaxRad[field]
+        const maxFieldCorrection = field === 'knee'
+          ? Math.min(limit, Math.max(0, -joints[footName].knee))
+          : limit
         const proposed = jointCorrections[footName][field] + error * derivatives[field] / denom * 0.85
-        const bounded = clamp(proposed, -limit, limit)
+        const bounded = clamp(proposed, -limit, maxFieldCorrection)
         const delta = bounded - jointCorrections[footName][field]
         correctedJoints[footName][field] += delta
         jointCorrections[footName][field] = bounded
@@ -1512,6 +1581,24 @@ function initRobot(canvas) {
       anchor: compactPoint(geometry.diagnostics.footLock.anchor),
       current: compactPoint(geometry.diagnostics.footLock.current),
     })
+    canvas.dataset.limbForwardBend = JSON.stringify({
+      minObservedLegForwardBendM: Number(geometry.diagnostics.quality.limbForwardBend.minObservedLegForwardBendM.toFixed(4)),
+      minObservedArmForwardBendM: Number(geometry.diagnostics.quality.limbForwardBend.minObservedArmForwardBendM.toFixed(4)),
+      minLegForwardBendM: Number(geometry.diagnostics.quality.limbForwardBend.minLegForwardBendM.toFixed(4)),
+      minArmForwardBendM: Number(geometry.diagnostics.quality.limbForwardBend.minArmForwardBendM.toFixed(4)),
+      legs: geometry.diagnostics.quality.limbForwardBend.legs.map(bend => ({
+        name: bend.name,
+        active: bend.active,
+        lowerLegForwardM: Number(bend.lowerLegForwardM.toFixed(4)),
+        minForwardM: Number(bend.minForwardM.toFixed(4)),
+      })),
+      arms: geometry.diagnostics.quality.limbForwardBend.arms.map(bend => ({
+        name: bend.name,
+        active: bend.active,
+        lowerArmForwardM: Number(bend.lowerArmForwardM.toFixed(4)),
+        minForwardM: Number(bend.minForwardM.toFixed(4)),
+      })),
+    })
     canvas.dataset.stanceFootWorldDrift = JSON.stringify({
       maxStepM: Number(geometry.diagnostics.quality.footLockDrift.maxStepM.toFixed(4)),
       leftMaxStepM: Number(geometry.diagnostics.quality.footLockDrift.perFoot.left.maxStepM.toFixed(4)),
@@ -1556,6 +1643,7 @@ function initRobot(canvas) {
     canvas.dataset.toeRollStatus = geometry.diagnostics.quality.statuses.toeRoll
     canvas.dataset.torsoCounterRotationStatus = geometry.diagnostics.quality.statuses.torsoCounterRotation
     canvas.dataset.footPhaseCoverageStatus = geometry.diagnostics.quality.statuses.footPhaseCoverage
+    canvas.dataset.limbForwardBendStatus = geometry.diagnostics.quality.statuses.limbForwardBend
     canvas.dataset.toeRollRad = geometry.diagnostics.quality.toeRoll.toFixed(4)
     canvas.dataset.torsoCounterRotationRad = geometry.diagnostics.quality.torsoCounterRotation.toFixed(4)
     canvas.dataset.footPhaseCoverage = JSON.stringify(geometry.diagnostics.quality.footPhaseCoverage)

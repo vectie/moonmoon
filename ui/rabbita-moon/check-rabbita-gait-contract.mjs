@@ -32,6 +32,8 @@ const sceneContracts = [
   'stanceFootWorldLockStatus',
   'stanceFootWorldDrift',
   'footLockRootCorrection',
+  'limbForwardBendStatus',
+  'limbForwardBend',
   'ikCorrectionReport',
   'terrainContactStatus',
   'contactPatchStatus',
@@ -58,6 +60,7 @@ const planContracts = [
   'toe-off/contact ankle curve',
   'arm lag and counter-swing',
   'torso/waist counter-rotation',
+  'forward-bend convention',
 ]
 
 function requireText(source, token, label) {
@@ -224,6 +227,9 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.stanceFootWorldLock !== 'pass') {
     throw new Error(`stance foot world lock failed at ${time}s: ${JSON.stringify(frame.quality.footLockDrift)}`)
+  }
+  if (frame.quality.statuses.limbForwardBend !== 'pass') {
+    throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)
   }
   if (!frame.gaitPhaseLabel.includes(frame.supportFoot) || !frame.gaitPhaseLabel.includes(frame.swingFoot)) {
     throw new Error(`gait phase label did not cite support/swing feet at ${time}s`)
