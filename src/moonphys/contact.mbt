@@ -94,18 +94,33 @@ pub fn heightfield_contact_probe(
 }
 
 ///|
-fn contact_patch_sample(
+fn normalized_patch_axis(axis : Vec3, fallback : Vec3) -> Vec3 {
+  let length = axis.length()
+  if length > 0.0 {
+    axis.scale(1.0 / length)
+  } else {
+    fallback
+  }
+}
+
+///|
+fn contact_patch_oriented_sample(
   field : Heightfield,
   patch_id : String,
   center : Vec3,
-  offset_x : Double,
-  offset_y : Double,
+  length_axis : Vec3,
+  width_axis : Vec3,
+  offset_length : Double,
+  offset_width : Double,
   contact_tolerance_m : Double,
 ) -> ContactProbe {
+  let position = center
+    .add(length_axis.scale(offset_length))
+    .add(width_axis.scale(offset_width))
   heightfield_contact_probe(
     field,
-    "\{patch_id}/sample/\{offset_x}/\{offset_y}",
-    vec3(center.x + offset_x, center.y + offset_y, center.z),
+    "\{patch_id}/sample/\{offset_length}/\{offset_width}",
+    position,
     contact_tolerance_m~,
   )
 }
@@ -352,31 +367,65 @@ pub fn heightfield_contact_patch(
   half_width_m : Double,
   contact_tolerance_m? : Double = 0.001,
 ) -> HeightfieldContactPatch {
+  heightfield_oriented_contact_patch(
+    field,
+    patch_id,
+    center,
+    vec3(1.0, 0.0, 0.0),
+    vec3(0.0, 1.0, 0.0),
+    half_length_m,
+    half_width_m,
+    contact_tolerance_m~,
+  )
+}
+
+///|
+pub fn heightfield_oriented_contact_patch(
+  field : Heightfield,
+  patch_id : String,
+  center : Vec3,
+  length_axis : Vec3,
+  width_axis : Vec3,
+  half_length_m : Double,
+  half_width_m : Double,
+  contact_tolerance_m? : Double = 0.001,
+) -> HeightfieldContactPatch {
+  let length_basis = normalized_patch_axis(length_axis, vec3(1.0, 0.0, 0.0))
+  let width_basis = normalized_patch_axis(width_axis, vec3(0.0, 1.0, 0.0))
   let samples = [
-    contact_patch_sample(field, patch_id, center, 0.0, 0.0, contact_tolerance_m),
-    contact_patch_sample(
-      field, patch_id, center, half_length_m, half_width_m, contact_tolerance_m,
+    contact_patch_oriented_sample(
+      field, patch_id, center, length_basis, width_basis, 0.0, 0.0, contact_tolerance_m,
     ),
-    contact_patch_sample(
+    contact_patch_oriented_sample(
+      field, patch_id, center, length_basis, width_basis, half_length_m, half_width_m,
+      contact_tolerance_m,
+    ),
+    contact_patch_oriented_sample(
       field,
       patch_id,
       center,
+      length_basis,
+      width_basis,
       half_length_m,
       0.0 - half_width_m,
       contact_tolerance_m,
     ),
-    contact_patch_sample(
+    contact_patch_oriented_sample(
       field,
       patch_id,
       center,
+      length_basis,
+      width_basis,
       0.0 - half_length_m,
       half_width_m,
       contact_tolerance_m,
     ),
-    contact_patch_sample(
+    contact_patch_oriented_sample(
       field,
       patch_id,
       center,
+      length_basis,
+      width_basis,
       0.0 - half_length_m,
       0.0 - half_width_m,
       contact_tolerance_m,

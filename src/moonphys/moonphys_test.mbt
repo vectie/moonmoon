@@ -70,6 +70,25 @@ test "heightfield contact patch samples rectangular sole" {
 }
 
 ///|
+test "heightfield oriented contact patch follows sloped terrain" {
+  let field = heightfield("x-slope-field", 2, 2, 1.0, [0.0, 1.0, 0.0, 1.0])
+  let patch = heightfield_oriented_contact_patch(
+    field,
+    "sole",
+    vec3(0.5, -0.5, 0.5),
+    vec3(1.0, 0.0, 1.0),
+    vec3(0.0, 1.0, 0.0),
+    0.25,
+    0.1,
+  )
+  assert_eq(patch.sample_count, 5)
+  assert_eq(patch.contact_count, 5)
+  assert_eq(patch.status, "patch-contact")
+  assert_true(nearly_equal(patch.min_clearance_m, 0.0))
+  assert_true(nearly_equal(patch.max_clearance_m, 0.0))
+}
+
+///|
 test "contact patch load distributes normal force over samples" {
   let field = heightfield("flat-field", 1, 1, 1.0, [0.0])
   let patch = heightfield_contact_patch(

@@ -65,6 +65,8 @@ pub fn heightfield_contact_patch(Heightfield, String, Vec3, Double, Double, cont
 
 pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
 
+pub fn heightfield_oriented_contact_patch(Heightfield, String, Vec3, Vec3, Vec3, Double, Double, contact_tolerance_m? : Double) -> HeightfieldContactPatch
+
 pub fn identity_basis3() -> Basis3
 
 pub fn integrate_angular_rigid_body(RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularStep) -> RigidBodyAngularState

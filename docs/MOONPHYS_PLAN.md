@@ -85,7 +85,9 @@ evidence.
   review.
   Generic world replay reviews compose envelope, static support, and dynamic
   support traces into one deterministic status surface with explicit ready,
-  blocker-count, and blocker-id fields for downstream gates.
+  blocker-count, and blocker-id fields for downstream gates. The current
+  Noetix gait clears the Moonphys world replay envelope, support, and
+  dynamic-support blockers.
   Generic hinge-joint assessment composes anchor-position and hinge-axis
   correction evidence from rigid body motion states, and generic hinge-joint
   frame assessment aggregates multi-joint body graphs. Full rotational
@@ -107,12 +109,12 @@ evidence.
   delta, plus a generic world-support trace summary for contact-derived support
   margins and capture-point margins. A generic Moonphys world replay review
   status and blocker inventory now consolidate those evidence streams; the
-  envelope is bounded and the remaining world replay blockers are support and
-  dynamic-support review.
-- Moonphys exports generic rectangular heightfield contact-patch sampling and
-  patch-load pressure review; Moonrobo Noetix static-support evidence records
-  per-foot sole patch samples, clearance ranges, averaged terrain normals, and
-  sample-level pressure from assumed foot geometry.
+  envelope is bounded and the replay blocker inventory is clear.
+- Moonphys exports generic horizontal and oriented rectangular heightfield
+  contact-patch sampling plus patch-load pressure review; Moonrobo Noetix
+  static-support evidence records terrain-aligned per-foot sole patch samples,
+  clearance ranges, averaged terrain normals, and sample-level pressure from
+  assumed foot geometry.
 - MoonClaw exports a Noetix simulation review task that ties endless-gait
   evidence, the walk trace, high-control dry-run command plan, URDF-reference
   link poses, static support report, dynamic-stability report, joint-control
@@ -125,9 +127,10 @@ evidence.
   Moonphys metadata inventory and physical-model readiness are ready, named
   world-replay blockers are resolved, and hardware remains denied.
 - MoonClaw exports Noetix readiness work items that convert source metadata,
-  physical-model, world-replay, and review-artifact blockers into bounded
-  follow-up evidence tasks while keeping MoonRobo simulation consumption and
-  hardware authority denied.
+  physical-model, and review-artifact blockers into bounded follow-up evidence
+  tasks while keeping MoonRobo simulation consumption and hardware authority
+  denied. The previous world-replay work item is omitted after the Moonphys
+  replay blocker inventory clears.
 - `scripts/check_moonrobo_noetix_walk.py` verifies trace invariants.
 - `scripts/check_moonrobo_noetix_endless_gait.py` verifies endless-gait window
   invariants.
@@ -663,7 +666,8 @@ Next `moonphys` capabilities:
 - material/friction model (implemented)
 - bilinear heightfield collision and terrain-normal contact response
   (implemented)
-- rectangular heightfield contact-patch sampling over center/corner probes
+- rectangular heightfield contact-patch sampling over center/corner probes,
+  including oriented patch sampling over caller-provided surface bases
   (implemented)
 - deterministic rigid-body heightfield replay (implemented)
 - generic source-model metadata inventory/readiness for collision and inertial
@@ -702,13 +706,15 @@ or as a data artifact beside the Noetix model.
    collision/inertia tags once the source model exposes them.
 3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
    it.
-4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
+4. Continue feeding accepted Noetix review outcomes into downstream
+   Moonrobo/MoonClaw gates; the Moonphys world-replay blocker is already
+   cleared and no longer appears as a readiness work item.
 
 ### Phase 1 Gate Added: Noetix Readiness Receipts
 
-MoonClaw now emits Noetix readiness work item receipts that carry the four
-blocked readiness domains forward as accepted audit receipts while keeping the
-underlying work item result pending fresh evidence. These receipts preserve
+MoonClaw now emits Noetix readiness work item receipts that carry the three
+remaining blocked readiness domains forward as accepted audit receipts while
+keeping the underlying work item result pending fresh evidence. These receipts preserve
 named blockers, target evidence paths, command/check pairs, `SimulationBlocked`,
 `may_consume_simulation = false`, and `HardwareDenied` under
 `moonmoon-safety-gate-only`.
@@ -728,10 +734,10 @@ frame and turns the hinge motor trace from review to driven, while keeping the
 joint-control packet review-only because servo gains, joint inertias, support
 stability, source metadata, and hardware authority are still unresolved.
 
-The world replay blocker inventory drops from envelope/support/dynamic-support
-to support/dynamic-support. That keeps downstream MoonClaw work items focused
-on the remaining physical interaction problems instead of a stale command-limit
-artifact.
+The world replay blocker inventory has now dropped from
+envelope/support/dynamic-support to empty. That keeps downstream MoonClaw work
+items focused on remaining source metadata, physical-model, and review-artifact
+problems instead of stale replay artifacts.
 
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

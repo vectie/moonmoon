@@ -240,6 +240,7 @@ fn support_contact_wrenches(
   frame : NoetixMoonWalkFrame,
   profile : NoetixPhysicsProfile,
   center_of_mass : @moonphys.Vec3,
+  config : NoetixMoonWalkConfig,
 ) -> Array[@moonphys.ContactPatchWrenchAssessment] {
   let left_geometry = foot_geometry(profile, "left-foot")
   let right_geometry = foot_geometry(profile, "right-foot")
@@ -251,8 +252,13 @@ fn support_contact_wrenches(
     ],
     profile.mass_model.mass_kg * @moonphys.lunar_environment().gravity_mps2,
   )
-  let left_patch = contact_patch(field, frame.left_foot, left_geometry)
-  let right_patch = contact_patch(field, frame.right_foot, right_geometry)
+  let left_patch = contact_patch(field, frame.left_foot, left_geometry, config)
+  let right_patch = contact_patch(
+    field,
+    frame.right_foot,
+    right_geometry,
+    config,
+  )
   let left_wrench = @moonphys.contact_patch_wrench_assessment(
     @moonphys.contact_patch_load_assessment(
       left_patch,
@@ -514,6 +520,7 @@ pub fn noetix_inertial_collision_frame(
     0.0,
   ),
   dt_s? : Double = default_noetix_moon_walk_config().dt_s,
+  config? : NoetixMoonWalkConfig = default_noetix_moon_walk_config(),
 ) -> NoetixInertialCollisionFrame {
   let shapes : Array[NoetixCollisionShapeEvidence] = []
   for collision in profile.collision_shapes {
@@ -553,7 +560,7 @@ pub fn noetix_inertial_collision_frame(
   let world_response = noetix_self_contact_world_response(world_resolution)
   let world_correction = world_response.max_pair_correction_m
   let support_wrenches = support_contact_wrenches(
-    field, walk_frame, profile, center_of_mass,
+    field, walk_frame, profile, center_of_mass, config,
   )
   let motion_step = support_wrench_motion_step(
     profile, center_of_mass, body_velocity, inertia, support_wrenches, dt_s,
@@ -610,6 +617,7 @@ pub fn noetix_inertial_collision_report(
       profile,
       body_velocity=noetix_review_body_velocity(trace.config, frame),
       dt_s=trace.config.dt_s,
+      config=trace.config,
     )
     if evidence.self_contact_manifold.contact_count > 0 {
       self_contact_frame_count += 1

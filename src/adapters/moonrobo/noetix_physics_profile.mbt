@@ -339,15 +339,51 @@ fn contact_footprint(
 }
 
 ///|
+fn normalized_axis(
+  axis : @moonphys.Vec3,
+  fallback : @moonphys.Vec3,
+) -> @moonphys.Vec3 {
+  let length = axis.length()
+  if length > 0.0 {
+    axis.scale(1.0 / length)
+  } else {
+    fallback
+  }
+}
+
+///|
+fn terrain_tangent_axis(
+  axis : @moonphys.Vec3,
+  normal : @moonphys.Vec3,
+  fallback : @moonphys.Vec3,
+) -> @moonphys.Vec3 {
+  normalized_axis(axis.sub(normal.scale(axis.dot(normal))), fallback)
+}
+
+///|
 fn contact_patch(
   field : @moonphys.Heightfield,
   foot : NoetixFootContactProbe,
   geometry : NoetixFootGeometry,
+  config : NoetixMoonWalkConfig,
 ) -> @moonphys.HeightfieldContactPatch {
-  @moonphys.heightfield_contact_patch(
+  let sample = @moonphys.sample_heightfield(
+    field,
+    foot.position.x,
+    foot.position.y,
+  )
+  let normal = normalized_axis(
+    sample.surface_normal,
+    @moonphys.vec3(0.0, 0.0, 1.0),
+  )
+  let forward = noetix_heading_forward(config)
+  let lateral = noetix_heading_lateral(config)
+  @moonphys.heightfield_oriented_contact_patch(
     field,
     geometry.foot_id,
     foot.position,
+    terrain_tangent_axis(forward, normal, forward),
+    terrain_tangent_axis(lateral, normal, lateral),
     geometry.half_length_m,
     geometry.half_width_m,
   )
@@ -570,8 +606,8 @@ pub fn noetix_walk_stability_frame(
     profile.mass_model.mass_kg * @moonphys.lunar_environment().gravity_mps2,
   )
   let patches = [
-    contact_patch(field, frame.left_foot, left_geometry),
-    contact_patch(field, frame.right_foot, right_geometry),
+    contact_patch(field, frame.left_foot, left_geometry, config),
+    contact_patch(field, frame.right_foot, right_geometry, config),
   ]
   let contact_patch_status = contact_patch_status(patches)
   let contact_patch_loads = contact_patch_loads_for_frame(

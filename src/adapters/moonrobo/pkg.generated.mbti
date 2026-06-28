@@ -155,7 +155,7 @@ pub fn noetix_high_control_limits() -> NoetixHighControlLimits
 
 pub fn noetix_hinge_joint_frame_evidence(NoetixMoonWalkTrace, Int, NoetixPhysicsProfile, @moonphys.JointMotorFrame) -> NoetixHingeJointFrameEvidence
 
-pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3, dt_s? : Double) -> NoetixInertialCollisionFrame
+pub fn noetix_inertial_collision_frame(@moonphys.Heightfield, NoetixMoonWalkFrame, NoetixLinkPoseFrame, NoetixPhysicsProfile, body_velocity? : @moonphys.Vec3, dt_s? : Double, config? : NoetixMoonWalkConfig) -> NoetixInertialCollisionFrame
 
 pub fn noetix_inertial_collision_report(NoetixMoonWalkTrace, @moonphys.Heightfield, profile? : NoetixPhysicsProfile) -> NoetixInertialCollisionReport
 
