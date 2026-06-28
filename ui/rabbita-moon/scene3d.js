@@ -803,7 +803,7 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
         continue
       }
       const world = {
-        x: foot.fkEndpoint.x,
+        x: foot.fkEndpoint.x + diagnostics.footLock.x,
         y: foot.fkEndpoint.y,
         z: foot.fkEndpoint.z + diagnostics.rootDistanceM,
       }
@@ -830,7 +830,10 @@ function cycleRootCorrectionContinuity(time, cycleSeconds) {
   for (let i = 0; i <= 96; i += 1) {
     const sampleTime = time + (i / 96) * cycleSeconds
     const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
-    const correction = diagnostics.footLock
+    const correction = {
+      x: diagnostics.footLock.visibleX ?? diagnostics.footLock.x,
+      z: diagnostics.footLock.visibleZ ?? diagnostics.footLock.z,
+    }
     if (previous) {
       const stepM = Math.hypot(correction.x - previous.x, correction.z - previous.z)
       if (stepM > maxStepM) {
@@ -913,13 +916,15 @@ function compactJointSample(sample) {
   }
 }
 
-function robotRoot(clip, pelvisCorrectionM, footLockCorrection = { x: 0, z: 0 }) {
+function robotRoot(clip, pelvisCorrectionM, footLockCorrection = { x: 0, z: 0, visibleX: 0, visibleZ: 0 }) {
+  const visibleX = footLockCorrection.visibleX ?? footLockCorrection.x
+  const visibleZ = footLockCorrection.visibleZ ?? footLockCorrection.z
   let root = mat4Identity()
   root = mat4Translate(
     root,
-    clip.sway + footLockCorrection.x,
+    clip.sway + visibleX,
     0.79 + clip.bob + pelvisCorrectionM,
-    footLockCorrection.z,
+    visibleZ,
   )
   root = mat4RotateY(root, -0.45)
   root = mat4RotateZ(root, clip.sway * 0.8)
@@ -1002,6 +1007,8 @@ function footLockRootCorrection(time, clip, joints, pelvisCorrectionM = 0, seed 
   return {
     x: rawX * lockWeight,
     z: 0,
+    visibleX: 0,
+    visibleZ: 0,
     rawX,
     rawZ,
     lockWeight,
@@ -1620,6 +1627,8 @@ function initRobot(canvas) {
       z: Number(geometry.diagnostics.footLock.z.toFixed(4)),
       rawX: Number(geometry.diagnostics.footLock.rawX.toFixed(4)),
       rawZ: Number(geometry.diagnostics.footLock.rawZ.toFixed(4)),
+      visibleX: Number((geometry.diagnostics.footLock.visibleX ?? geometry.diagnostics.footLock.x).toFixed(4)),
+      visibleZ: Number((geometry.diagnostics.footLock.visibleZ ?? geometry.diagnostics.footLock.z).toFixed(4)),
       lockWeight: Number(geometry.diagnostics.footLock.lockWeight.toFixed(4)),
       anchor: compactPoint(geometry.diagnostics.footLock.anchor),
       current: compactPoint(geometry.diagnostics.footLock.current),
