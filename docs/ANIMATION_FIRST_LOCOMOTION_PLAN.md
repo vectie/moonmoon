@@ -108,6 +108,7 @@ The first clip exposes:
 - elbow lag rather than rigid pendulum arms
 - stance knee nearly straight but not locked
 - swing knee flexion peaking near passing
+- swing hip/ankle arc keeps the visible foot from dragging through terrain
 - forward-bend convention: knee flexion places the knee forward of the
   hip-to-ankle chain, never visually back-folding the leg
 - ankle/toe pitch across contact, foot-flat, and toe-off

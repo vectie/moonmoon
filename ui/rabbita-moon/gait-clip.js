@@ -173,7 +173,7 @@ export function walkClipSample(time) {
     swingFoot,
     rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
     strideM: 0.38,
-    bob: Math.cos(phase * Math.PI * 4) * 0.016,
+    bob: Math.cos(phase * Math.PI * 4) * 0.032,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
     torsoCounterRotation: torsoCounterRotation(phase),
     footChannels,
@@ -187,10 +187,12 @@ function legAngles(legPhase) {
   if (swing) {
     const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
     const lateLanding = smoothstep((u - 0.70) / 0.30)
+    const toeOffLift = 1 - smoothstep(u / 0.18)
+    const kneeLift = 0.16 * toeOffLift + 0.58 * Math.sin(u * Math.PI) * landing
     return {
-      hip: mix(0.30, -0.36, e),
-      knee: -(0.08 + 0.58 * Math.sin(u * Math.PI) * landing),
-      ankle: -0.20 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
+      hip: mix(0.43, -0.36, e),
+      knee: -(0.08 + kneeLift),
+      ankle: -0.26 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
     }
   }
   return {
