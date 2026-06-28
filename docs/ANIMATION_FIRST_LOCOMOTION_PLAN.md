@@ -109,6 +109,8 @@ The first clip exposes:
 - stance knee nearly straight but not locked
 - swing knee flexion peaking near passing
 - swing hip/ankle arc keeps the visible foot from dragging through terrain
+- swing foot clearance remains visible after toe-off through passing, swing,
+  and release
 - forward-bend convention: knee flexion places the knee forward of the
   hip-to-ankle chain, never visually back-folding the leg
 - ankle/toe pitch across contact, foot-flat, and toe-off
@@ -274,12 +276,14 @@ Deliverables:
 - toe-off/contact ankle curve
 - arm lag and counter-swing
 - torso/waist counter-rotation
+- swing foot clearance
 - loop continuity checks
 
 Acceptance:
 
 - the walk looks intentional without terrain correction
 - swing and stance knees have clearly different roles
+- after toe-off, the swing foot does not visibly drag through terrain
 - knees keep the forward-bend convention throughout the cycle
 - link lengths remain invariant
 

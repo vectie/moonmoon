@@ -15,6 +15,8 @@ export const NOETIX_VISUAL_RIG = {
   armCounterSwingMin: 0.08,
   toeRollMinRad: 0.22,
   torsoCounterRotationMinRad: 0.10,
+  swingFootClearanceMinM: 0.0,
+  swingFootClearancePhaseMin: 0.54,
   legForwardBendMinM: 0.025,
   armForwardBendMinM: 0.015,
   limbBackFoldToleranceM: -0.004,
@@ -188,11 +190,12 @@ function legAngles(legPhase) {
     const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
     const lateLanding = smoothstep((u - 0.70) / 0.30)
     const toeOffLift = 1 - smoothstep(u / 0.18)
-    const kneeLift = 0.16 * toeOffLift + 0.58 * Math.sin(u * Math.PI) * landing
+    const swingLift = Math.sin(u * Math.PI)
+    const kneeLift = 0.16 * toeOffLift + 0.58 * swingLift * landing
     return {
-      hip: mix(0.43, -0.36, e),
+      hip: mix(0.435, -0.36, e),
       knee: -(0.08 + kneeLift),
-      ankle: -0.26 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
+      ankle: -0.42 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
     }
   }
   return {

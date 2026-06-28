@@ -34,6 +34,8 @@ const sceneContracts = [
   'footLockRootCorrection',
   'rootCorrectionContinuityStatus',
   'rootCorrectionContinuity',
+  'swingFootClearanceStatus',
+  'swingFootClearance',
   'limbForwardBendStatus',
   'limbForwardBend',
   'ikCorrectionReport',
@@ -60,6 +62,7 @@ const planContracts = [
   'foot lock',
   'stance foot lateral delta stays near zero',
   'root correction remains continuous through support transfer',
+  'swing foot clearance',
   'toe-off/contact ankle curve',
   'arm lag and counter-swing',
   'torso/waist counter-rotation',
@@ -233,6 +236,9 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.rootCorrectionContinuity !== 'pass') {
     throw new Error(`root correction continuity failed at ${time}s: ${JSON.stringify(frame.quality.rootCorrectionContinuity)}`)
+  }
+  if (frame.quality.statuses.swingFootClearance !== 'pass') {
+    throw new Error(`swing foot clearance failed at ${time}s: ${JSON.stringify(frame.quality.swingFootClearance)}`)
   }
   if (frame.quality.statuses.limbForwardBend !== 'pass') {
     throw new Error(`limb forward-bend convention failed at ${time}s: ${JSON.stringify(frame.quality.limbForwardBend)}`)

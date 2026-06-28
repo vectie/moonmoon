@@ -24,6 +24,11 @@ function mix(a, b, t) {
   return a + (b - a) * t
 }
 
+function smoothstep(value) {
+  const t = clamp(value, 0, 1)
+  return t * t * (3 - 2 * t)
+}
+
 function mat4Identity() {
   return [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
 }
@@ -657,7 +662,7 @@ function robotGeometry(time, options = { quality: true }) {
   const clip = walkClipSample(time)
   const authoredJoints = jointSamples(clip)
   let footLock = footLockRootCorrection(time, clip, authoredJoints)
-  let ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints)
+  let ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints, footLock)
   for (let i = 0; i < 3; i += 1) {
     footLock = footLockRootCorrection(
       time,
@@ -666,7 +671,7 @@ function robotGeometry(time, options = { quality: true }) {
       ik.pelvisCorrectionM,
       footLock,
     )
-    ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints)
+    ik = terrainIkCorrection(robotRoot(clip, 0, footLock), clip, authoredJoints, footLock)
   }
   const ikRoot = robotRoot(clip, 0, footLock)
   const authoredTargets = {
@@ -718,6 +723,7 @@ function gaitQuality(time, diagnostics) {
   const footLockDrift = cycleFootLockWorldDrift(time, cycleSeconds)
   const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds)
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
+  const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
@@ -745,6 +751,7 @@ function gaitQuality(time, diagnostics) {
     jointIkCorrection: supportClearanceError <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     stanceFootWorldLock: footLockDrift.maxStepM <= NOETIX_VISUAL_RIG.stanceFootWorldStepMaxM ? 'pass' : 'fail',
     rootCorrectionContinuity: rootCorrectionContinuity.maxStepM <= NOETIX_VISUAL_RIG.rootCorrectionStepMaxM ? 'pass' : 'fail',
+    swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
     kneeRoleContrast: cycle.kneeRoleContrast >= NOETIX_VISUAL_RIG.kneeContrastMin ? 'pass' : 'fail',
     armCounterSwing: cycle.armCounterSwing >= NOETIX_VISUAL_RIG.armCounterSwingMin ? 'pass' : 'fail',
     toeRoll: cycle.toeRoll >= NOETIX_VISUAL_RIG.toeRollMinRad ? 'pass' : 'fail',
@@ -771,6 +778,7 @@ function gaitQuality(time, diagnostics) {
     ik: diagnostics.ik,
     footLockDrift,
     rootCorrectionContinuity,
+    swingFootClearance,
     kneeRoleContrast: cycle.kneeRoleContrast,
     armCounterSwing: cycle.armCounterSwing,
     toeRoll: cycle.toeRoll,
@@ -785,6 +793,37 @@ function gaitQuality(time, diagnostics) {
     authoredJointSamples: diagnostics.authoredJoints,
     jointSamples: diagnostics.joints,
   }
+}
+
+function cycleSwingFootClearance(time, cycleSeconds) {
+  let minClearanceM = Infinity
+  let minFrame = null
+  let sampleCount = 0
+  for (let i = 0; i <= 96; i += 1) {
+    const sampleTime = time + (i / 96) * cycleSeconds
+    const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
+    for (const foot of diagnostics.feet) {
+      const channel = diagnostics.footChannels[foot.name]
+      if (channel.role !== 'passing' && channel.role !== 'swing' && channel.role !== 'release') {
+        continue
+      }
+      if (channel.phase < NOETIX_VISUAL_RIG.swingFootClearancePhaseMin) {
+        continue
+      }
+      sampleCount += 1
+      const clearanceM = foot.terrainProbe.clearanceM
+      if (clearanceM < minClearanceM) {
+        minClearanceM = clearanceM
+        minFrame = {
+          phase: diagnostics.phase,
+          foot: foot.name,
+          role: channel.role,
+          clearanceM,
+        }
+      }
+    }
+  }
+  return { minClearanceM, minFrame, sampleCount }
 }
 
 function cycleFootLockWorldDrift(time, cycleSeconds) {
@@ -1467,7 +1506,68 @@ function supportJointIk(root, clip, joints) {
   }
 }
 
-function terrainIkCorrection(root, clip, joints) {
+function swingClearanceIk(root, clip, correctedJoints, jointCorrections) {
+  const footName = clip.swingFoot
+  const channel = clip.footChannels[footName]
+  const phaseWeight = smoothstep(
+    (channel.phase - (NOETIX_VISUAL_RIG.swingFootClearancePhaseMin - 0.04)) / 0.08,
+  )
+  const side = footName === 'left' ? 1 : -1
+  const preProbe = terrainContactProbe(legPose(root, side, correctedJoints).sole, clip)
+  const targetClearanceM = Math.max(
+    NOETIX_VISUAL_RIG.swingFootClearanceMinM,
+    NOETIX_VISUAL_RIG.supportTargetClearanceM,
+  )
+  if (phaseWeight <= 0 || preProbe.clearanceM >= targetClearanceM) {
+    return {
+      foot: footName,
+      active: false,
+      phaseWeight,
+      targetClearanceM,
+      preClearanceM: preProbe.clearanceM,
+      finalClearanceM: preProbe.clearanceM,
+      saturated: false,
+    }
+  }
+  const fields = ['ankle']
+  const epsilon = 0.01
+  let denom = 0
+  const derivatives = {}
+  for (const field of fields) {
+    const trial = cloneJointSamples(correctedJoints)
+    trial[footName][field] += epsilon
+    const trialProbe = terrainContactProbe(legPose(root, side, trial).sole, clip)
+    const derivative = (trialProbe.clearanceM - preProbe.clearanceM) / epsilon
+    derivatives[field] = derivative
+    denom += derivative * derivative
+  }
+  let saturated = false
+  if (denom > 0.000001) {
+    const error = targetClearanceM - preProbe.clearanceM
+    for (const field of fields) {
+      const limit = NOETIX_VISUAL_RIG.jointCorrectionMaxRad[field]
+      const proposed = jointCorrections[footName][field] +
+        error * derivatives[field] / denom * 1.35 * phaseWeight
+      const bounded = clamp(proposed, -limit, limit)
+      const delta = bounded - jointCorrections[footName][field]
+      correctedJoints[footName][field] += delta
+      jointCorrections[footName][field] = bounded
+      saturated = saturated || Math.abs(proposed - bounded) > 0.000001
+    }
+  }
+  const finalProbe = terrainContactProbe(legPose(root, side, correctedJoints).sole, clip)
+  return {
+    foot: footName,
+    active: true,
+    phaseWeight,
+    targetClearanceM,
+    preClearanceM: preProbe.clearanceM,
+    finalClearanceM: finalProbe.clearanceM,
+    saturated,
+  }
+}
+
+function terrainIkCorrection(root, clip, joints, footLockCorrection) {
   const supportSide = clip.supportFoot === 'left' ? 1 : -1
   const jointIk = supportJointIk(root, clip, joints)
   const supportPose = legPose(root, supportSide, jointIk.correctedJoints)
@@ -1478,11 +1578,19 @@ function terrainIkCorrection(root, clip, joints) {
     -NOETIX_VISUAL_RIG.pelvisCorrectionMaxM,
     NOETIX_VISUAL_RIG.pelvisCorrectionMaxM,
   )
+  const pelvisRoot = robotRoot(clip, pelvisCorrectionM, footLockCorrection)
+  const swingClearance = swingClearanceIk(
+    pelvisRoot,
+    clip,
+    jointIk.correctedJoints,
+    jointIk.jointCorrections,
+  )
   return {
     supportFoot: clip.supportFoot,
     correctedJoints: jointIk.correctedJoints,
     jointCorrections: jointIk.jointCorrections,
     jointIk: jointIk.report,
+    swingClearance,
     rawPelvisCorrectionM,
     pelvisCorrectionM,
     saturated: Math.abs(rawPelvisCorrectionM - pelvisCorrectionM) > 0.000001,
@@ -1621,6 +1729,15 @@ function initRobot(canvas) {
       pelvisCorrectionM: Number(geometry.diagnostics.ik.pelvisCorrectionM.toFixed(4)),
       saturated: geometry.diagnostics.ik.saturated,
       supportClearanceError: Number(geometry.diagnostics.quality.supportClearanceError.toFixed(4)),
+      swingClearance: {
+        foot: geometry.diagnostics.ik.swingClearance.foot,
+        active: geometry.diagnostics.ik.swingClearance.active,
+        phaseWeight: Number(geometry.diagnostics.ik.swingClearance.phaseWeight.toFixed(4)),
+        targetClearanceM: Number(geometry.diagnostics.ik.swingClearance.targetClearanceM.toFixed(4)),
+        preClearanceM: Number(geometry.diagnostics.ik.swingClearance.preClearanceM.toFixed(4)),
+        finalClearanceM: Number(geometry.diagnostics.ik.swingClearance.finalClearanceM.toFixed(4)),
+        saturated: geometry.diagnostics.ik.swingClearance.saturated,
+      },
     })
     canvas.dataset.footLockRootCorrection = JSON.stringify({
       x: Number(geometry.diagnostics.footLock.x.toFixed(4)),
@@ -1689,6 +1806,7 @@ function initRobot(canvas) {
     canvas.dataset.supportFootLockedStatus = geometry.diagnostics.quality.statuses.supportFootLocked
     canvas.dataset.stanceFootWorldLockStatus = geometry.diagnostics.quality.statuses.stanceFootWorldLock
     canvas.dataset.rootCorrectionContinuityStatus = geometry.diagnostics.quality.statuses.rootCorrectionContinuity
+    canvas.dataset.swingFootClearanceStatus = geometry.diagnostics.quality.statuses.swingFootClearance
     canvas.dataset.terrainContactStatus = geometry.diagnostics.quality.statuses.terrainContact
     canvas.dataset.contactPatchStatus = geometry.diagnostics.quality.statuses.contactPatch
     canvas.dataset.nonFlatTerrainStatus = geometry.diagnostics.quality.statuses.nonFlatTerrain
@@ -1703,6 +1821,11 @@ function initRobot(canvas) {
     canvas.dataset.toeRollRad = geometry.diagnostics.quality.toeRoll.toFixed(4)
     canvas.dataset.torsoCounterRotationRad = geometry.diagnostics.quality.torsoCounterRotation.toFixed(4)
     canvas.dataset.footPhaseCoverage = JSON.stringify(geometry.diagnostics.quality.footPhaseCoverage)
+    canvas.dataset.swingFootClearance = JSON.stringify({
+      minClearanceM: Number(geometry.diagnostics.quality.swingFootClearance.minClearanceM.toFixed(4)),
+      minFrame: geometry.diagnostics.quality.swingFootClearance.minFrame,
+      sampleCount: geometry.diagnostics.quality.swingFootClearance.sampleCount,
+    })
     canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
     canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)

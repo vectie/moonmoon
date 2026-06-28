@@ -219,12 +219,16 @@ Terrain adaptation comes after the flat-ground gait reads correctly.
 Status: active preview. Terrain IK now runs after root-space stance-foot
 locking, so support soles are corrected to terrain while their world drift
 stays bounded by the gait contract.
+The Rabbita adapter also applies a bounded swing-foot clearance correction
+after toe-off so the airborne foot clears non-flat terrain without stretching
+links.
 
 Deliverables:
 
 - bounded foot target correction
 - bounded pelvis/base height correction
 - hip, knee, and ankle correction evidence
+- swing-foot clearance evidence
 - saturation evidence
 - flat-terrain preservation tests
 
