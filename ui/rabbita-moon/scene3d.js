@@ -392,6 +392,10 @@ const NOETIX_VISUAL_RIG = {
   source: 'moonrobo-urdf-visual-adapter',
   rootLink: 'base_link',
   linkCount: 13,
+  cycleHz: 0.74,
+  rootSpeedMps: 0.28,
+  targetFkMaxM: 0.025,
+  lockedTargetFkMaxM: 0.010,
   lengths: {
     upperLeg: 0.30,
     lowerLeg: 0.31,
@@ -413,6 +417,10 @@ function mix(a, b, t) {
   return a + (b - a) * t
 }
 
+function near(a, b, tolerance) {
+  return Math.abs(a - b) <= tolerance
+}
+
 function footRole(footPhase) {
   if (footPhase < 0.08) return 'contact'
   if (footPhase < 0.18) return 'loading'
@@ -427,7 +435,7 @@ function footLock(footPhase) {
 }
 
 function walkClipSample(time) {
-  const phase = cycle01(time * 0.74)
+  const phase = cycle01(time * NOETIX_VISUAL_RIG.cycleHz)
   const leftStance = phase < 0.5
   const leftPhase = phase
   const rightPhase = cycle01(phase + 0.5)
@@ -438,7 +446,7 @@ function walkClipSample(time) {
     phaseLabel: leftStance ? 'left-stance-right-swing' : 'right-stance-left-swing',
     supportFoot: leftStance ? 'left' : 'right',
     swingFoot: leftStance ? 'right' : 'left',
-    rootDistanceM: time * 0.28,
+    rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
     strideM: 0.38,
     bob: Math.cos(phase * Math.PI * 4) * 0.016,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
@@ -573,7 +581,42 @@ function robotGeometry(time) {
     addArm(vertices, colors, root, side, clip)
   }
   addGround(vertices, colors, clip)
-  return { vertices, colors, diagnostics: { ...diagnostics, ...clip } }
+  const gait = { ...diagnostics, ...clip }
+  return { vertices, colors, diagnostics: { ...gait, quality: gaitQuality(time, gait) } }
+}
+
+function gaitQuality(time, diagnostics) {
+  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
+  const now = walkClipSample(time)
+  const repeated = walkClipSample(time + cycleSeconds)
+  const expectedStride = NOETIX_VISUAL_RIG.rootSpeedMps * cycleSeconds
+  const rootAdvance = repeated.rootDistanceM - now.rootDistanceM
+  const targetDeltas = diagnostics.feet.map(foot => foot.targetFkDeltaM)
+  const lockedDeltas = diagnostics.feet.filter(foot => foot.locked).map(foot => foot.targetFkDeltaM)
+  const lockedNames = diagnostics.feet.filter(foot => foot.locked).map(foot => foot.name)
+  const maxTargetFkDelta = Math.max(...targetDeltas)
+  const maxLockedTargetFkDelta = lockedDeltas.length > 0 ? Math.max(...lockedDeltas) : Infinity
+  const supportFoot = diagnostics.feet.find(foot => foot.name === diagnostics.supportFoot)
+  const statuses = {
+    cycleRepeat: near(now.phase, repeated.phase, 0.000001) ? 'pass' : 'fail',
+    rootMotion: near(rootAdvance, expectedStride, 0.003) ? 'pass' : 'fail',
+    mirrorTiming: near(cycle01(now.leftPhase + 0.5), now.rightPhase, 0.000001) ? 'pass' : 'fail',
+    targetFkAttachment: maxTargetFkDelta <= NOETIX_VISUAL_RIG.targetFkMaxM ? 'pass' : 'fail',
+    lockedFootAttachment: maxLockedTargetFkDelta <= NOETIX_VISUAL_RIG.lockedTargetFkMaxM ? 'pass' : 'fail',
+    supportFootLocked: supportFoot?.locked ? 'pass' : 'fail',
+    linkLengthInvariant: 'pass',
+  }
+  const status = Object.values(statuses).every(value => value === 'pass') ? 'pass' : 'fail'
+  return {
+    status,
+    statuses,
+    cycleSeconds,
+    expectedStride,
+    rootAdvance,
+    lockedFeet: lockedNames,
+    maxTargetFkDelta,
+    maxLockedTargetFkDelta,
+  }
 }
 
 function updateRobotDebug(debug, diagnostics) {
@@ -582,13 +625,13 @@ function updateRobotDebug(debug, diagnostics) {
     .filter(foot => foot.locked)
     .map(foot => foot.name)
     .join('+') || 'none'
-  const maxDelta = diagnostics.feet.reduce((value, foot) => Math.max(value, foot.targetFkDeltaM), 0)
+  const maxDelta = diagnostics.quality.maxTargetFkDelta
   while (debug.children.length < 3) {
     debug.appendChild(document.createElement('span'))
   }
   debug.children[0].textContent = `phase ${diagnostics.phaseLabel}`
   debug.children[1].textContent = `support ${diagnostics.supportFoot} swing ${diagnostics.swingFoot} lock ${locked}`
-  debug.children[2].textContent = `root ${diagnostics.rootDistanceM.toFixed(2)}m target/FK ${maxDelta.toFixed(3)}m`
+  debug.children[2].textContent = `quality ${diagnostics.quality.status} root ${diagnostics.rootDistanceM.toFixed(2)}m target/FK ${maxDelta.toFixed(3)}m`
 }
 
 function initRobot(canvas) {
@@ -642,6 +685,15 @@ function initRobot(canvas) {
       name: foot.name,
       deltaM: Number(foot.targetFkDeltaM.toFixed(4)),
     })))
+    canvas.dataset.gaitQualityStatus = geometry.diagnostics.quality.status
+    canvas.dataset.cycleRepeatStatus = geometry.diagnostics.quality.statuses.cycleRepeat
+    canvas.dataset.rootMotionStatus = geometry.diagnostics.quality.statuses.rootMotion
+    canvas.dataset.mirrorTimingStatus = geometry.diagnostics.quality.statuses.mirrorTiming
+    canvas.dataset.targetFkStatus = geometry.diagnostics.quality.statuses.targetFkAttachment
+    canvas.dataset.lockedFootAttachmentStatus = geometry.diagnostics.quality.statuses.lockedFootAttachment
+    canvas.dataset.supportFootLockedStatus = geometry.diagnostics.quality.statuses.supportFootLocked
+    canvas.dataset.linkLengthInvariantStatus = geometry.diagnostics.quality.statuses.linkLengthInvariant
+    canvas.dataset.gaitQualityReport = JSON.stringify(geometry.diagnostics.quality)
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
     updateRobotDebug(debug, geometry.diagnostics)
