@@ -620,6 +620,233 @@ Immediate Phase 5A deliverables:
   contract/renderer; still strengthen when full per-link visuals or Three.js
   mesh loaders land)
 
+### Phase 5B: Animation-First Noetix Locomotion
+
+Status: planned. The current `urdf-gait-clip` is a useful correction over the
+previous IK-looking pose, but it is still a compact procedural clip embedded in
+the walk trace generator. The next step is to make Noetix locomotion follow the
+same layering used by credible game characters: animation intent first, URDF/FK
+rigidity second, terrain IK as a correction layer, and Moonphys as validation
+and constraint feedback. Physics must not be used to excuse motion that does
+not read as walking.
+
+Target mental model:
+
+```text
+Noetix walk clip
+  phase markers + root motion + joint curves + foot-lock curves
+    -> URDF joint samples bounded by source joint limits
+    -> RobotMotionFrame
+    -> FK rigid link poses
+    -> terrain foot IK corrections
+    -> Moonphys review/constraint evidence
+    -> Rabbita visual/debug overlays
+```
+
+Ownership boundaries:
+
+- Moonrobo owns Noetix walk clips, phase markers, gait style, root-motion
+  scaling, foot locking, and robot-specific terrain adaptation.
+- Rabbita owns visual inspection: primary rigid-link rendering plus overlays for
+  phase, locked feet, root path, contact probes, and correction deltas.
+- Moonphys owns generic math/physics primitives, terrain sampling, contact
+  probes, joint limits, motor replay, support/capture review, and future
+  constraint solving.
+- Moonphys must not contain Noetix-specific gait phases, walk style, or
+  animation-asset decisions.
+- MoonClaw should consume evidence after the walk is visually credible; it
+  should not drive this slice.
+
+#### Phase 5B.1: Data-Driven Walk Clip
+
+Create a Moonrobo-side Noetix walk-clip module, likely
+`src/adapters/moonrobo/noetix_walk_clip.mbt`, instead of keeping all gait
+curves inline in `noetix_moon_walk.mbt`.
+
+The clip should expose:
+
+- normalized cycle time `0.0..1.0`
+- phase markers:
+  - `contact`
+  - `loading`
+  - `stance`
+  - `passing`
+  - `swing`
+  - `release`
+- left/right phase mirroring
+- root-motion delta per cycle
+- per-joint curve samples for:
+  - hip pitch/roll
+  - knee upper/lower
+  - ankle pitch/roll
+  - waist yaw/pitch
+  - shoulder/elbow swing with arm lag
+- foot-lock channels:
+  - stance foot id
+  - lock start/end
+  - release frame
+  - expected contact frame
+
+Acceptance:
+
+- the walk cycle is inspectable as data, not hidden formulas
+- one full cycle advances exactly the configured stride distance
+- left and right sides mirror correctly
+- joint samples are bounded by Moonrobo's source URDF joint limits
+- no new Moonphys dependency is introduced for robot-specific clip data
+
+#### Phase 5B.2: Root Motion Owns Body Advance
+
+Replace arbitrary body advance with root motion derived from the walk clip. The
+program should request playback rate and stride scale; the clip should own how
+far one cycle moves.
+
+Acceptance:
+
+- repeating frame `N + cycle` remains phase-consistent
+- body/root advances monotonically along the configured endless axis
+- cycle forward offset equals clip root-motion stride
+- speed changes scale playback or stride explicitly, not by moving the body
+  independently from the feet
+
+#### Phase 5B.3: Foot Locking
+
+Add explicit world-space foot locking for stance phases. A support foot must
+stay locked in world space until the clip enters release/swing. This is the
+main guard against skating.
+
+Acceptance:
+
+- support foot world-position delta is near zero throughout stance
+- swing foot is unlocked and follows the clip arc
+- lock and release frames are visible in Rabbita overlays
+- tests fail if FK foot links are manually detached from the URDF tree to fake a
+  contact point
+
+#### Phase 5B.4: Human-Readable Motion Curves
+
+Tune the clip using character-animation principles before adding more physics.
+The robot is not a human body, but a biped still needs readable locomotion:
+weight transfer, contact, passing, swing, and release must be visible.
+
+Required motion channels:
+
+- pelvis/base lateral transfer over the support foot
+- small vertical bob tied to stance and passing phases
+- torso/waist counter-rotation against pelvis motion
+- shoulder/arm counter-swing against the opposite leg
+- elbow lag rather than rigid pendulum arms
+- stance knee nearly straight but not locked
+- swing knee flexion peaking around passing/swing
+- ankle/toe pitch across heel-contact, foot-flat, and toe-off
+
+Acceptance:
+
+- right leg forward implies left arm forward, with a small lag
+- pelvis and torso counter-rotate
+- swing knee flexion is measurably higher than stance knee flexion
+- ankle/toe pitch changes across contact/release
+- the walk still loops seamlessly over the 32-frame Rabbita demo window
+
+#### Phase 5B.5: Terrain Foot IK Correction
+
+Only after the base walk reads correctly on flat terrain, add terrain
+adaptation as a bounded correction layer.
+
+Inputs:
+
+- clip foot target
+- FK foot pose
+- sampled Moonphys terrain height/normal
+- current phase and foot-lock state
+
+Outputs:
+
+- ankle pitch/roll correction
+- knee/hip correction
+- pelvis height correction
+- correction-status evidence for Rabbita/Moonrobo reports
+
+Acceptance:
+
+- flat terrain preserves the authored clip closely
+- uneven terrain adjusts foot placement without changing link lengths
+- corrections remain bounded by URDF joint limits
+- Rabbita can display authored target, corrected target, FK foot, and contact
+  probe separately
+
+#### Phase 5B.6: Physics Validation After Motion
+
+Moonphys should validate and constrain a visually plausible walk; it should not
+be the first system responsible for making the robot look like it is walking.
+
+Moonphys review remains responsible for:
+
+- joint limits
+- hinge motors
+- support/capture review
+- contact constraints
+- force/torque envelopes
+- energy and momentum accounting
+
+Acceptance:
+
+- Moonphys reports consume `RobotMotionFrame`/FK evidence generated from the
+  animation-first walk
+- a physics failure marks review evidence, not a silent mutation of the walk
+  clip
+- Moonphys core remains free of Noetix-specific gait code
+
+#### Phase 5B.7: Rabbita Debug Overlays
+
+Rabbita should make locomotion quality inspectable, not just pretty.
+
+Add or strengthen overlays for:
+
+- current gait phase
+- root-motion path
+- locked foot marker
+- swing foot marker
+- contact/release markers
+- authored foot target
+- terrain-corrected target
+- FK foot position
+- Moonphys contact probe
+- pelvis/COM path
+- selected joint curve values
+
+Acceptance:
+
+- a wrong-looking frame can be diagnosed from the browser
+- visual debug does not replace the primary rigid URDF render
+- the browser labels the output as simulation evidence only
+
+#### Phase 5B.8: Tests And Verifiers
+
+Add targeted tests before tuning by eye.
+
+Required checks:
+
+- cycle repeats exactly
+- root motion advances by the configured stride
+- stance foot remains locked
+- swing foot clears terrain
+- knee pair bends coherently
+- arm swing opposes leg swing
+- pelvis transfers over support foot
+- FK link lengths remain invariant
+- Rabbita output exposes gait phase and lock/debug fields
+- Moonphys core boundary remains clean
+
+Recommended next implementation slice:
+
+1. Add `noetix_walk_clip.mbt` with phase markers, root-motion stride, and
+   inspectable joint curves.
+2. Make `noetix_moon_walk.mbt` sample that clip instead of owning the curve
+   formulas inline.
+3. Add foot-lock metadata to the walk frames without changing Moonphys core.
+4. Regenerate Rabbita output and expose phase/lock fields in the Noetix panel.
+
 ## Phase 6: Evidence Export
 
 Status: first source-model audit, endless-gait evidence, walk, high-control
