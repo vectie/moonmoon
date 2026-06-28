@@ -1280,3 +1280,81 @@ test "noetix link pose trace carries URDF forward kinematics" {
     )
   }
 }
+
+///|
+test "noetix locomotion diagnostics separate clip target fk and contact" {
+  let field = first_trusted_square_noetix_heightfield()
+  let walk = first_trusted_square_noetix_walk_trace(frame_count=32)
+  let poses = noetix_link_pose_trace(walk)
+  let diagnostics = noetix_locomotion_diagnostic_trace(field, walk, poses)
+  assert_eq(
+    diagnostics.diagnostic_contract_status,
+    "walk-clip-fk-contact-diagnostics-ready",
+  )
+  assert_eq(diagnostics.frame_count, walk.frame_count)
+  assert_eq(diagnostics.source_walk_trace_id, walk.trace_id)
+  assert_eq(diagnostics.source_link_pose_trace_id, poses.trace_id)
+  assert_true(diagnostics.note.contains("walk-clip authored target"))
+  assert_true(diagnostics.note.contains("URDF FK foot endpoint"))
+  assert_true(diagnostics.note.contains("Moonphys contact probe"))
+  assert_true(
+    diagnostics.note.contains("without giving Rabbita pose authority"),
+  )
+  assert_true(
+    diagnostics.note.contains(
+      "without putting Noetix gait semantics into Moonphys",
+    ),
+  )
+  let first = diagnostics.frames[0]
+  assert_eq(first.gait_phase, walk.frames[0].gait_phase)
+  assert_eq(first.support_phase, walk.frames[0].support_phase)
+  assert_eq(first.root_motion_forward_m, walk.frames[0].root_motion_forward_m)
+  assert_eq(
+    first.root_motion_cycle_stride_m,
+    walk.frames[0].root_motion_cycle_stride_m,
+  )
+  assert_true(first.root_motion_position.x <= first.body_position.x)
+  assert_eq(first.left_foot.foot_id, "left-foot")
+  assert_eq(first.left_foot.link_name, "left_foot")
+  assert_eq(first.left_foot.side, "left")
+  assert_true(first.left_foot.locked)
+  assert_true(first.left_foot.contact_expected)
+  assert_true(
+    first.left_foot.contact_probe_position == walk.frames[0].left_foot.position,
+  )
+  assert_true(
+    first.left_foot.fk_foot_position != first.left_foot.contact_probe_position,
+  )
+  assert_true(first.left_foot.fk_to_contact_probe_delta_m > 0.0)
+  assert_true(first.left_foot.fk_to_authored_target_delta_m > 0.0)
+  assert_true(
+    nearly_equal_double(
+      first.left_foot.authored_target_to_contact_probe_delta_m,
+      0.0,
+    ),
+  )
+  assert_eq(first.right_foot.foot_id, "right-foot")
+  assert_eq(first.right_foot.link_name, "right_foot")
+  assert_true(!first.right_foot.locked)
+  assert_true(first.right_foot.contact_expected)
+  assert_true(first.right_foot.fk_to_contact_probe_delta_m > 0.0)
+  assert_eq(
+    first.right_foot.source_status,
+    "walk-clip-target-fk-contact-diagnostic",
+  )
+}
+
+///|
+test "first trusted square noetix locomotion diagnostics are exported as json" {
+  let diagnostics = first_trusted_square_noetix_locomotion_diagnostic_trace()
+  assert_eq(diagnostics.robot_id, "noetix-e1-lab-01")
+  assert_eq(diagnostics.status, "review-only")
+  assert_eq(diagnostics.frames.length(), diagnostics.frame_count)
+  assert_true(diagnostics.frame_count >= 32)
+  let json = first_trusted_square_noetix_locomotion_diagnostic_json()
+  let text = json.stringify()
+  assert_true(text.contains("locomotion-diagnostics"))
+  assert_true(text.contains("walk-clip-fk-contact-diagnostics-ready"))
+  assert_true(text.contains("fk_to_contact_probe_delta_m"))
+  assert_true(text.contains("authored_target_to_contact_probe_delta_m"))
+}

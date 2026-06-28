@@ -289,6 +289,12 @@ Acceptance:
   or terrain correction
 - overlay never replaces rigid URDF rendering
 
+Status: in progress. Rabbita now renders first-pass diagnostic overlays for
+root motion, foot lock/swing state, walk targets, FK foot endpoints, Moonphys
+contact probes, and FK/contact deltas. Moonrobo also exposes a
+`NoetixLocomotionDiagnosticTrace` contract so this separation is testable as
+robot evidence instead of being only a browser-side convention.
+
 ### Phase D: Motion-Curve Tuning
 
 Tune for readable biped motion on flat terrain before adding terrain IK.
@@ -364,4 +370,3 @@ The highest-leverage next work is Rabbita visualization and clip tuning:
 3. Add tests that catch link-length changes and foot-marker/render detachment.
 4. Only then add terrain IK correction.
 5. Feed the corrected FK pose into Moonphys review.
-

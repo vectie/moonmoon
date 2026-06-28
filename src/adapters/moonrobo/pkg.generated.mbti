@@ -56,6 +56,10 @@ pub fn first_trusted_square_noetix_link_pose_markdown() -> String
 
 pub fn first_trusted_square_noetix_link_pose_trace() -> NoetixLinkPoseTrace
 
+pub fn first_trusted_square_noetix_locomotion_diagnostic_json() -> Json
+
+pub fn first_trusted_square_noetix_locomotion_diagnostic_trace() -> NoetixLocomotionDiagnosticTrace
+
 pub fn first_trusted_square_noetix_source_model_json() -> Json
 
 pub fn first_trusted_square_noetix_source_model_markdown() -> String
@@ -171,6 +175,8 @@ pub fn noetix_joint_control_report(NoetixMoonWalkTrace, profile? : NoetixPhysics
 pub fn noetix_link_pose_frame(NoetixMoonWalkFrame) -> NoetixLinkPoseFrame
 
 pub fn noetix_link_pose_trace(NoetixMoonWalkTrace) -> NoetixLinkPoseTrace
+
+pub fn noetix_locomotion_diagnostic_trace(@moonphys.Heightfield, NoetixMoonWalkTrace, NoetixLinkPoseTrace) -> NoetixLocomotionDiagnosticTrace
 
 pub fn noetix_moon_walk_frame(@moonphys.Heightfield, NoetixMoonWalkConfig, Int) -> NoetixMoonWalkFrame
 
@@ -770,6 +776,49 @@ pub(all) struct NoetixLinkVisualGeometryEvidence {
   mesh_path : String
   local_origin_xyz_m : @moonphys.Vec3
   world_origin_xyz_m : @moonphys.Vec3
+  source_status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixLocomotionDiagnosticFrame {
+  frame_index : Int
+  time_s : Double
+  support_phase : String
+  gait_phase : String
+  root_motion_forward_m : Double
+  root_motion_cycle_stride_m : Double
+  root_motion_position : @moonphys.Vec3
+  body_position : @moonphys.Vec3
+  left_foot : NoetixLocomotionFootDiagnostic
+  right_foot : NoetixLocomotionFootDiagnostic
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixLocomotionDiagnosticTrace {
+  trace_id : String
+  source_walk_trace_id : String
+  source_link_pose_trace_id : String
+  robot_id : String
+  terrain_tile_id : String
+  frame_count : Int
+  diagnostic_contract_status : String
+  frames : Array[NoetixLocomotionDiagnosticFrame]
+  status : String
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NoetixLocomotionFootDiagnostic {
+  foot_id : String
+  link_name : String
+  side : String
+  gait_phase : String
+  locked : Bool
+  contact_expected : Bool
+  authored_target_position : @moonphys.Vec3
+  fk_foot_position : @moonphys.Vec3
+  contact_probe_position : @moonphys.Vec3
+  fk_to_authored_target_delta_m : Double
+  fk_to_contact_probe_delta_m : Double
+  authored_target_to_contact_probe_delta_m : Double
   source_status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
