@@ -10,6 +10,7 @@ RABBITA_ASSETS=(
   "lunar_global_texture.source.json"
   "rabbita_moon.css"
   "rabbita_evidence.js"
+  "noetix_rig_viewer.js"
   "rabbita_app.js"
   "moon_globe.js"
 )

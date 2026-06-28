@@ -22,6 +22,7 @@ test "Rabbita Moon page links local presentation assets" {
   let html = @rabbita_moon.first_trusted_square_html()
   assert_true(html.contains("assets/rabbita_moon.css"))
   assert_true(html.contains("assets/rabbita_evidence.js"))
+  assert_true(html.contains("assets/noetix_rig_viewer.js"))
   assert_true(html.contains("assets/rabbita_app.js"))
   assert_true(html.contains("assets/moon_globe.js"))
   assert_true(html.contains("assets/lunar_global_texture.jpg"))

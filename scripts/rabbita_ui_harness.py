@@ -76,8 +76,12 @@ return {
   summary,
   authority,
   viewer_children: viewer.children.length,
-  stage_class: viewer.children[0].attributes.class,
+  stage_class: viewer.children[0].attributes.class || viewer.children[0].className,
   rig_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-visuals').length,
+  canvas_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').length,
+  canvas_render_source_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas' && node.attributes['data-render-source'] === 'robot-rig-visual-instances').length,
+  canvas_rendered_visuals: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-rendered-visuals'] || ''),
+  canvas_render_status: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'primary-rigid-canvas').map(node => node.attributes['data-render-status'] || ''),
   debug_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'debug-link-tree').length,
   annotation_layer_count: svgNodes.filter(node => node.attributes['data-rig-layer'] === 'review-annotations').length,
   rig_visual_count: svgNodes.filter(node => node.attributes['data-rig-role'] === 'primary-rigid-visual').length,
@@ -126,6 +130,7 @@ def rabbita_app_script() -> str:
   """Return the browser app scripts in page load order for VM harnesses."""
   scripts = [
     RABBITA_ASSETS / "rabbita_evidence.js",
+    RABBITA_ASSETS / "noetix_rig_viewer.js",
     RABBITA_ASSETS / "rabbita_app.js",
   ]
   missing = [path for path in scripts if not path.exists()]
@@ -240,6 +245,10 @@ def assert_noetix_walk_panel(
     raise AssertionError(rendered)
   if rendered["rig_layer_count"] != 1:
     raise AssertionError(rendered)
+  if rendered["canvas_layer_count"] != 1:
+    raise AssertionError(rendered)
+  if rendered["canvas_render_source_count"] != 1:
+    raise AssertionError(rendered)
   if rendered["debug_layer_count"] != 1:
     raise AssertionError(rendered)
   if rendered["annotation_layer_count"] != 1:
@@ -249,6 +258,10 @@ def assert_noetix_walk_panel(
   if rendered["debug_joint_count"] < noetix_link_poses["links_per_frame"]:
     raise AssertionError(rendered)
   expected_visuals = pose_frames[0]["visual_instance_count"]
+  if rendered["canvas_rendered_visuals"] != [str(expected_visuals)]:
+    raise AssertionError(rendered)
+  if rendered["canvas_render_status"] not in (["robot-rig-canvas-ready"], ["robot-rig-canvas-rendered"]):
+    raise AssertionError(rendered)
   if rendered["rig_visual_count"] != expected_visuals:
     raise AssertionError({"rendered": rendered, "expected_visuals": expected_visuals})
   if rendered["visual_instance_source_count"] != expected_visuals:
@@ -306,6 +319,7 @@ def assert_noetix_walk_panel(
     ),
     "rig contract": "urdf-rigid-visual-contract-ready",
     "render source": "robot-rig-visual-instances",
+    "viewer": "canvas-rig-with-svg-overlay",
     "motion": "planned-gait-joint-samples",
     "rig motion": "robot-rig-motion-contract-ready",
     "pose status": "robot-rig-render-frame-ready",

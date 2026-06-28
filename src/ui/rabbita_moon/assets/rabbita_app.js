@@ -459,11 +459,21 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
   const rigVisuals = noetixRigVisuals(poseFrame, project);
   const debugSegments = noetixDebugLinkSegments(poseFrame, project);
   const debugJoints = noetixDebugLinkJoints(poseFrame, project);
+  const canvas = el('canvas', {
+    className: 'noetix-rig-canvas',
+    width: '840',
+    height: '340',
+    'aria-label': `Noetix rigid visual instances frame ${frame.frame_index}`,
+    'data-rig-layer': 'primary-rigid-canvas',
+    'data-render-source': 'robot-rig-visual-instances',
+    'data-rendered-visuals': String(poseFrame.visual_instance_count || (poseFrame.visual_instances || []).length),
+    'data-render-status': 'robot-rig-canvas-pending'
+  });
   const svg = svgEl('svg', {
-    class: 'noetix-stage',
+    class: 'noetix-stage-overlay',
     viewBox: '0 0 420 170',
     role: 'img',
-    'aria-label': `Noetix frame ${frame.frame_index} ${frame.support_phase}`
+    'aria-label': `Noetix frame ${frame.frame_index} ${frame.support_phase} overlay`
   }, [
     svgEl('rect', { class: 'noetix-stage-bg', x: '0', y: '0', width: '420', height: '170' }),
     svgEl('line', { class: 'noetix-ground', x1: '28', y1: '138', x2: '392', y2: '138' }),
@@ -521,7 +531,15 @@ function renderNoetixWalkViewer(frames, frame, poseFrame, project) {
     svgEl('text', { class: 'noetix-axis-label', x: '28', y: '158', text: noetixTrace.endless_axis }),
     svgEl('text', { class: 'noetix-frame-label', x: '318', y: '24', text: `frame ${frame.frame_index}` })
   ]);
-  document.getElementById('noetix-walk-viewer').replaceChildren(svg);
+  const stage = el('div', {
+    className: 'noetix-stage',
+    'data-viewer-kind': 'canvas-rig-with-svg-overlay',
+    'data-render-source': 'robot-rig-visual-instances'
+  }, [canvas, svg]);
+  document.getElementById('noetix-walk-viewer').replaceChildren(stage);
+  if (window.RabbitaNoetixRig && window.RabbitaNoetixRig.draw) {
+    window.RabbitaNoetixRig.draw(canvas, poseFrame, project);
+  }
 }
 
 function renderNoetixWalkControls(frames) {
@@ -597,6 +615,7 @@ function renderNoetixWalkFacts(frame, poseFrame) {
     ['visuals', `${visualCount} rigid URDF visuals (${meshCount} mesh, ${primitiveCount} primitives)`],
     ['rig contract', noetixLinkPoseTrace.rig_render_contract_status || 'urdf-rigid-visual-contract-review'],
     ['render source', noetixLinkPoseTrace.primary_render_source || 'robot-rig-visual-instances'],
+    ['viewer', 'canvas-rig-with-svg-overlay'],
     ['motion', noetixLinkPoseTrace.motion_frame_source || 'planned-gait-joint-samples'],
     ['rig motion', noetixLinkPoseTrace.rig_motion_contract_status || 'robot-rig-motion-contract-review'],
     ['pose status', poseFrame.rig_render_status || poseFrame.status || noetixLinkPoseTrace.status],

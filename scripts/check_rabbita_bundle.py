@@ -21,6 +21,7 @@ REQUIRED_ASSETS = {
   "lunar_global_texture.source.json",
   "rabbita_moon.css",
   "rabbita_evidence.js",
+  "noetix_rig_viewer.js",
   "rabbita_app.js",
   "moon_globe.js",
 }
@@ -51,12 +52,13 @@ def main() -> None:
 
   script_order = [
     'assets/rabbita_evidence.js',
+    'assets/noetix_rig_viewer.js',
     'assets/rabbita_app.js',
     'assets/moon_globe.js',
   ]
   script_positions = [html.find(f'src="{script}"') for script in script_order]
   if any(pos < 0 for pos in script_positions) or script_positions != sorted(script_positions):
-    raise AssertionError("Rabbita scripts must load evidence, app, then globe")
+    raise AssertionError("Rabbita scripts must load evidence, Noetix rig viewer, app, then globe")
 
   globe_source = (SOURCE_ASSETS / "moon_globe.js").read_text(encoding="utf-8")
   if "quatMultiply(dragRotation, state.rotation)" not in globe_source:

@@ -51,6 +51,7 @@ fn app_styles() -> String {
 ///|
 fn app_script() -> String {
   let script =
+    #|<script src="assets/noetix_rig_viewer.js"></script>
     #|<script src="assets/rabbita_app.js"></script>
     #|
   script
