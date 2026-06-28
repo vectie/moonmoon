@@ -33,6 +33,14 @@ def main() -> None:
         fail("unexpected robot id")
     if trace.get("links_per_frame") != 25:
         fail("expected 25 URDF-reference links per frame")
+    if trace.get("collision_metadata_link_count") != 0:
+        fail("link pose trace should not claim authoritative collision metadata")
+    if trace.get("inertial_metadata_link_count") != 0:
+        fail("link pose trace should not claim authoritative inertial metadata")
+    if trace.get("missing_collision_link_count") != 25:
+        fail("link pose trace should preserve missing collision link count")
+    if trace.get("missing_inertial_link_count") != 25:
+        fail("link pose trace should preserve missing inertial link count")
     if trace.get("frame_count") != len(frames) or len(frames) < 24:
         fail("frame count is inconsistent or too small")
     if trace.get("status") != "review-only":
@@ -43,6 +51,27 @@ def main() -> None:
         "note", ""
     ):
         fail("trace note must preserve Moonphys articulated-tree provenance")
+    if "missing collision/inertial metadata" not in trace.get("note", ""):
+        fail("trace note must preserve missing collision/inertial metadata")
+    physical_metadata = {
+        item.get("link_name"): item for item in trace.get("physical_metadata", [])
+    }
+    if len(physical_metadata) != 25:
+        fail("trace should carry one physical metadata record per reference link")
+    left_physical = physical_metadata.get("left_foot", {})
+    if left_physical.get("has_collision_metadata"):
+        fail("left foot should not claim collision metadata")
+    if left_physical.get("has_inertial_metadata"):
+        fail("left foot should not claim inertial metadata")
+    if left_physical.get("collision_blocker_id") != "missing-collision-shape:left_foot":
+        fail("left foot should name its collision metadata blocker")
+    if left_physical.get("inertial_blocker_id") != "missing-inertial:left_foot":
+        fail("left foot should name its inertial metadata blocker")
+    base_physical = physical_metadata.get("base_link", {})
+    if base_physical.get("collision_source_status") != "urdf-collision-metadata-missing":
+        fail("base link should preserve missing collision metadata status")
+    if base_physical.get("inertial_source_status") != "urdf-inertial-metadata-missing":
+        fail("base link should preserve missing inertial metadata status")
 
     first = by_link(frames[0])
     fifth = by_link(frames[5])

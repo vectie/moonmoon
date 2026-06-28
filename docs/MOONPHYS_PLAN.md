@@ -54,6 +54,9 @@ evidence.
   with FK contact error. Each link-pose entry now also carries source
   visual-geometry evidence from the Noetix source-model audit, or an explicit
   missing-visual-geometry status when the URDF link has no visual block.
+  Link poses also carry per-link collision/inertial source metadata status and
+  blocker IDs, making the current missing authoritative physical metadata
+  visible at the FK artifact boundary.
 - Moonrobo exports Noetix inertial/collision review evidence backed by
   Moonphys composite primitive-shape mass properties, collision bounds,
   terrain collision probes, per-foot patch-load contact wrenches, narrow-phase
@@ -713,6 +716,9 @@ or as a data artifact beside the Noetix model.
    collision/inertia tags once the source model exposes them.
 3. Add mesh/collision/inertial metadata to the FK output when Moonrobo exposes
    it.
+   Current FK output carries available visual mesh/shape metadata plus explicit
+   missing collision/inertial metadata status from the source-model audit;
+   authoritative tags still require Moonrobo source data.
 4. Continue feeding accepted Noetix review outcomes into downstream
    Moonrobo/MoonClaw gates; the Moonphys world-replay blocker is already
    cleared and no longer appears as a readiness work item.

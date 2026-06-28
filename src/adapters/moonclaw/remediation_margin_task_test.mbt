@@ -1611,6 +1611,17 @@ test "MoonClaw Noetix review task links walk pose and support evidence" {
   )
   assert_true(
     task.artifacts.any(fn(artifact) {
+      artifact.artifact_id == "noetix-urdf-reference-link-poses" &&
+      artifact.ready &&
+      artifact.validation_gate.contains("check_moonrobo_noetix_link_poses") &&
+      artifact.current_state.contains("collision metadata links 0") &&
+      artifact.current_state.contains("inertial metadata links 0") &&
+      artifact.current_state.contains("missing collision links 25") &&
+      artifact.current_state.contains("missing inertial links 25")
+    }),
+  )
+  assert_true(
+    task.artifacts.any(fn(artifact) {
       artifact.artifact_id == "noetix-static-support-review" &&
       !artifact.ready &&
       artifact.validation_gate.contains("check_moonrobo_noetix_stability") &&

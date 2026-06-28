@@ -649,6 +649,16 @@ pub(all) struct NoetixJointPhase {
   status : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct NoetixLinkPhysicalMetadataEvidence {
+  link_name : String
+  has_collision_metadata : Bool
+  has_inertial_metadata : Bool
+  collision_source_status : String
+  inertial_source_status : String
+  collision_blocker_id : String
+  inertial_blocker_id : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct NoetixLinkPose {
   link_name : String
   parent_link : String
@@ -681,6 +691,11 @@ pub(all) struct NoetixLinkPoseTrace {
   source_model_path : String
   frame_count : Int
   links_per_frame : Int
+  collision_metadata_link_count : Int
+  inertial_metadata_link_count : Int
+  missing_collision_link_count : Int
+  missing_inertial_link_count : Int
+  physical_metadata : Array[NoetixLinkPhysicalMetadataEvidence]
   frames : Array[NoetixLinkPoseFrame]
   status : String
   note : String

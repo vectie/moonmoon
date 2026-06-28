@@ -200,6 +200,19 @@ def main() -> None:
         fail("walk command plan should not be blocked")
     if "check_moonrobo_noetix_walk_command" not in artifacts["noetix-high-control-walk-command-plan"].get("validation_gate", ""):
         fail("walk command plan must have validator")
+    if not artifacts["noetix-urdf-reference-link-poses"].get("ready"):
+        fail("link pose artifact should be ready evidence")
+    link_pose_state = artifacts["noetix-urdf-reference-link-poses"].get(
+        "current_state", ""
+    )
+    if "collision metadata links 0" not in link_pose_state:
+        fail("link pose artifact must expose missing collision metadata")
+    if "inertial metadata links 0" not in link_pose_state:
+        fail("link pose artifact must expose missing inertial metadata")
+    if "missing collision links 25" not in link_pose_state:
+        fail("link pose artifact must preserve missing collision link count")
+    if "missing inertial links 25" not in link_pose_state:
+        fail("link pose artifact must preserve missing inertial link count")
     if artifacts["noetix-static-support-review"].get("ready"):
         fail("static support artifact must remain review-blocked")
     if "review-only" not in artifacts["noetix-static-support-review"].get("blocking_reason", ""):

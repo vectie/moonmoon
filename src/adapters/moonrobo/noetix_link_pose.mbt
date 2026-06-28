@@ -25,6 +25,17 @@ pub(all) struct NoetixLinkVisualGeometryEvidence {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct NoetixLinkPhysicalMetadataEvidence {
+  link_name : String
+  has_collision_metadata : Bool
+  has_inertial_metadata : Bool
+  collision_source_status : String
+  inertial_source_status : String
+  collision_blocker_id : String
+  inertial_blocker_id : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct NoetixLinkPose {
   link_name : String
   parent_link : String
@@ -59,6 +70,11 @@ pub(all) struct NoetixLinkPoseTrace {
   source_model_path : String
   frame_count : Int
   links_per_frame : Int
+  collision_metadata_link_count : Int
+  inertial_metadata_link_count : Int
+  missing_collision_link_count : Int
+  missing_inertial_link_count : Int
+  physical_metadata : Array[NoetixLinkPhysicalMetadataEvidence]
   frames : Array[NoetixLinkPoseFrame]
   status : String
   note : String
@@ -275,6 +291,52 @@ fn source_visual_geometry_for_link(
 }
 
 ///|
+fn link_physical_metadata_evidence(
+  link_name : String,
+  report : NoetixSourceModelReport,
+) -> NoetixLinkPhysicalMetadataEvidence {
+  let missing_collision = report.missing_collision_links.contains(link_name)
+  let missing_inertial = report.missing_inertial_links.contains(link_name)
+  {
+    link_name,
+    has_collision_metadata: !missing_collision,
+    has_inertial_metadata: !missing_inertial,
+    collision_source_status: if missing_collision {
+      "urdf-collision-metadata-missing"
+    } else {
+      "urdf-collision-metadata-present"
+    },
+    inertial_source_status: if missing_inertial {
+      "urdf-inertial-metadata-missing"
+    } else {
+      "urdf-inertial-metadata-present"
+    },
+    collision_blocker_id: if missing_collision {
+      "missing-collision-shape:\{link_name}"
+    } else {
+      ""
+    },
+    inertial_blocker_id: if missing_inertial {
+      "missing-inertial:\{link_name}"
+    } else {
+      ""
+    },
+  }
+}
+
+///|
+fn source_physical_metadata_evidence(
+  links : Array[NoetixReferenceLink],
+  report : NoetixSourceModelReport,
+) -> Array[NoetixLinkPhysicalMetadataEvidence] {
+  let metadata : Array[NoetixLinkPhysicalMetadataEvidence] = []
+  for link in links {
+    metadata.push(link_physical_metadata_evidence(link.link_name, report))
+  }
+  metadata
+}
+
+///|
 fn link_visual_geometry_evidence(
   link : NoetixReferenceLink,
   transform : @moonphys.Transform3,
@@ -389,6 +451,8 @@ pub fn noetix_link_pose_trace(
   trace : NoetixMoonWalkTrace,
 ) -> NoetixLinkPoseTrace {
   let frames : Array[NoetixLinkPoseFrame] = []
+  let source_model = noetix_source_model_report()
+  let reference_links = noetix_reference_links()
   for frame in trace.frames {
     frames.push(noetix_link_pose_frame(frame))
   }
@@ -398,10 +462,17 @@ pub fn noetix_link_pose_trace(
     robot_id: trace.robot.robot_id,
     source_model_path: trace.robot.source_model_path,
     frame_count: frames.length(),
-    links_per_frame: noetix_reference_links().length(),
+    links_per_frame: reference_links.length(),
+    collision_metadata_link_count: source_model.source_metadata_inventory.collision_shape_link_count,
+    inertial_metadata_link_count: source_model.source_metadata_inventory.inertial_link_count,
+    missing_collision_link_count: source_model.missing_collision_link_count,
+    missing_inertial_link_count: source_model.missing_inertial_link_count,
+    physical_metadata: source_physical_metadata_evidence(
+      reference_links, source_model,
+    ),
     frames,
     status: "review-only",
-    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
+    note: "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority.",
   }
 }
 
@@ -424,6 +495,10 @@ pub fn render_noetix_link_pose_markdown(trace : NoetixLinkPoseTrace) -> String {
   text += "- source model: \{trace.source_model_path}\n"
   text += "- frames: \{trace.frame_count}\n"
   text += "- links per frame: \{trace.links_per_frame}\n"
+  text += "- collision metadata links: \{trace.collision_metadata_link_count}\n"
+  text += "- inertial metadata links: \{trace.inertial_metadata_link_count}\n"
+  text += "- missing collision links: \{trace.missing_collision_link_count}\n"
+  text += "- missing inertial links: \{trace.missing_inertial_link_count}\n"
   text += "- status: \{trace.status}\n"
   text += "- note: \{trace.note}\n\n"
   text += "## Frame Prefix\n\n"

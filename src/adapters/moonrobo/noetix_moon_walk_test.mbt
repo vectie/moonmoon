@@ -766,8 +766,30 @@ test "noetix link pose trace binds feet to walk contact probes" {
   assert_eq(poses.frame_count, walk.frame_count)
   assert_eq(poses.links_per_frame, 25)
   assert_eq(poses.robot_id, walk.robot.robot_id)
+  assert_eq(poses.collision_metadata_link_count, 0)
+  assert_eq(poses.inertial_metadata_link_count, 0)
+  assert_eq(poses.missing_collision_link_count, 25)
+  assert_eq(poses.missing_inertial_link_count, 25)
+  assert_eq(poses.physical_metadata.length(), 25)
+  assert_true(
+    poses.physical_metadata.any(fn(metadata) {
+      metadata.link_name == "left_foot" &&
+      !metadata.has_collision_metadata &&
+      !metadata.has_inertial_metadata &&
+      metadata.collision_blocker_id == "missing-collision-shape:left_foot" &&
+      metadata.inertial_blocker_id == "missing-inertial:left_foot"
+    }),
+  )
+  assert_true(
+    poses.physical_metadata.any(fn(metadata) {
+      metadata.link_name == "base_link" &&
+      metadata.collision_source_status == "urdf-collision-metadata-missing" &&
+      metadata.inertial_source_status == "urdf-inertial-metadata-missing"
+    }),
+  )
   assert_true(poses.note.contains("hardware authority"))
   assert_true(poses.note.contains("not full dynamics"))
+  assert_true(poses.note.contains("missing collision/inertial metadata"))
   let first = poses.frames[0]
   assert_eq(first.links.length(), 25)
   assert_true(

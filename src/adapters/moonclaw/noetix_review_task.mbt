@@ -180,7 +180,7 @@ fn noetix_link_pose_artifact(
     "output/moonrobo/first_trusted_square_noetix_link_poses.json",
     "moon run cmd/main -- moonrobo noetix poses json",
     "URDF-reference link poses are present for each Noetix walk frame",
-    "\{trace.frame_count} frames; \{trace.links_per_frame} links per frame; status \{trace.status}",
+    "\{trace.frame_count} frames; \{trace.links_per_frame} links per frame; collision metadata links \{trace.collision_metadata_link_count}; inertial metadata links \{trace.inertial_metadata_link_count}; missing collision links \{trace.missing_collision_link_count}; missing inertial links \{trace.missing_inertial_link_count}; status \{trace.status}",
     ready,
     if ready {
       "none"

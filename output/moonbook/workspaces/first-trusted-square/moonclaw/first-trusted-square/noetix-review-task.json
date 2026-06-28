@@ -398,7 +398,7 @@
           "path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
           "producer": "moon run cmd/main -- moonrobo noetix poses json",
           "required_state": "URDF-reference link poses are present for each Noetix walk frame",
-          "current_state": "32 frames; 25 links per frame; status review-only",
+          "current_state": "32 frames; 25 links per frame; collision metadata links 0; inertial metadata links 0; missing collision links 25; missing inertial links 25; status review-only",
           "ready": true,
           "blocking_reason": "none",
           "validation_gate": "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json"
@@ -904,7 +904,7 @@
             "path": "output/moonrobo/first_trusted_square_noetix_link_poses.json",
             "producer": "moon run cmd/main -- moonrobo noetix poses json",
             "required_state": "URDF-reference link poses are present for each Noetix walk frame",
-            "current_state": "32 frames; 25 links per frame; status review-only",
+            "current_state": "32 frames; 25 links per frame; collision metadata links 0; inertial metadata links 0; missing collision links 25; missing inertial links 25; status review-only",
             "ready": true,
             "blocking_reason": "none",
             "validation_gate": "python3 scripts/check_moonrobo_noetix_link_poses.py output/moonrobo/first_trusted_square_noetix_link_poses.json"
@@ -108484,6 +108484,237 @@
       "source_model_path": "../moonrobo/examples/noetix-e1/model/robot.urdf",
       "frame_count": 32,
       "links_per_frame": 25,
+      "collision_metadata_link_count": 0,
+      "inertial_metadata_link_count": 0,
+      "missing_collision_link_count": 25,
+      "missing_inertial_link_count": 25,
+      "physical_metadata": [
+        {
+          "link_name": "base_link",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:base_link",
+          "inertial_blocker_id": "missing-inertial:base_link"
+        },
+        {
+          "link_name": "torso_link",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:torso_link",
+          "inertial_blocker_id": "missing-inertial:torso_link"
+        },
+        {
+          "link_name": "chest_link",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:chest_link",
+          "inertial_blocker_id": "missing-inertial:chest_link"
+        },
+        {
+          "link_name": "left_arm_1",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_arm_1",
+          "inertial_blocker_id": "missing-inertial:left_arm_1"
+        },
+        {
+          "link_name": "left_arm_2",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_arm_2",
+          "inertial_blocker_id": "missing-inertial:left_arm_2"
+        },
+        {
+          "link_name": "left_arm_3",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_arm_3",
+          "inertial_blocker_id": "missing-inertial:left_arm_3"
+        },
+        {
+          "link_name": "left_arm_4",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_arm_4",
+          "inertial_blocker_id": "missing-inertial:left_arm_4"
+        },
+        {
+          "link_name": "left_hand",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_hand",
+          "inertial_blocker_id": "missing-inertial:left_hand"
+        },
+        {
+          "link_name": "right_arm_1",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_arm_1",
+          "inertial_blocker_id": "missing-inertial:right_arm_1"
+        },
+        {
+          "link_name": "right_arm_2",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_arm_2",
+          "inertial_blocker_id": "missing-inertial:right_arm_2"
+        },
+        {
+          "link_name": "right_arm_3",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_arm_3",
+          "inertial_blocker_id": "missing-inertial:right_arm_3"
+        },
+        {
+          "link_name": "right_arm_4",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_arm_4",
+          "inertial_blocker_id": "missing-inertial:right_arm_4"
+        },
+        {
+          "link_name": "right_hand",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_hand",
+          "inertial_blocker_id": "missing-inertial:right_hand"
+        },
+        {
+          "link_name": "left_leg_1",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_leg_1",
+          "inertial_blocker_id": "missing-inertial:left_leg_1"
+        },
+        {
+          "link_name": "left_leg_2",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_leg_2",
+          "inertial_blocker_id": "missing-inertial:left_leg_2"
+        },
+        {
+          "link_name": "left_leg_3",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_leg_3",
+          "inertial_blocker_id": "missing-inertial:left_leg_3"
+        },
+        {
+          "link_name": "left_leg_4",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_leg_4",
+          "inertial_blocker_id": "missing-inertial:left_leg_4"
+        },
+        {
+          "link_name": "left_leg_5",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_leg_5",
+          "inertial_blocker_id": "missing-inertial:left_leg_5"
+        },
+        {
+          "link_name": "left_foot",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:left_foot",
+          "inertial_blocker_id": "missing-inertial:left_foot"
+        },
+        {
+          "link_name": "right_leg_1",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_leg_1",
+          "inertial_blocker_id": "missing-inertial:right_leg_1"
+        },
+        {
+          "link_name": "right_leg_2",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_leg_2",
+          "inertial_blocker_id": "missing-inertial:right_leg_2"
+        },
+        {
+          "link_name": "right_leg_3",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_leg_3",
+          "inertial_blocker_id": "missing-inertial:right_leg_3"
+        },
+        {
+          "link_name": "right_leg_4",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_leg_4",
+          "inertial_blocker_id": "missing-inertial:right_leg_4"
+        },
+        {
+          "link_name": "right_leg_5",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_leg_5",
+          "inertial_blocker_id": "missing-inertial:right_leg_5"
+        },
+        {
+          "link_name": "right_foot",
+          "has_collision_metadata": false,
+          "has_inertial_metadata": false,
+          "collision_source_status": "urdf-collision-metadata-missing",
+          "inertial_source_status": "urdf-inertial-metadata-missing",
+          "collision_blocker_id": "missing-collision-shape:right_foot",
+          "inertial_blocker_id": "missing-inertial:right_foot"
+        }
+      ],
       "frames": [
         {
           "frame_index": 0,
@@ -152103,7 +152334,7 @@
         }
       ],
       "status": "review-only",
-      "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, and available source visual geometry come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
+      "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
     }
   },
   "workspace": "moonbook://moonmoon/first-trusted-square",
