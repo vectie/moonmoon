@@ -397,5 +397,11 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    renderer now reports named rigid visual attachments through
    `visualLinkAttachments` and `visualAttachmentStatus`, separating Noetix link
    visuals from foot markers, target cubes, terrain rails, and other debug
-   overlays. The next Phase D/E target is still visual readability of the same
-   walk cycle before adding another fixture mirror.
+   overlays. `src/suite_adapter_preview` now wraps the generated review in a
+   typed `NoetixSuiteAdapterPayload` that records Moonrobo source references
+   for the Noetix robot profile, URDF, mesh asset, generated evidence source,
+   driven joint ids, compiled review status, and blockers. The next Phase 10
+   target is replacing this generated preview payload with the same contract
+   regenerated from typed Moonrobo adapter packages; the next Phase D/E target
+   remains visual readability of the same walk cycle before adding another
+   fixture mirror.

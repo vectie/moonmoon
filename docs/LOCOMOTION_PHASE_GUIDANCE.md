@@ -286,8 +286,12 @@ Moonphys review of a generated Rabbita/Moonrobo Noetix evidence artifact.
 `npm run check:gait` verifies that artifact is fresh. The current generated
 walk now clears the compiled Moonphys motion, hinge, replay, support, capture,
 contact, torque, pressure, velocity, effort, motion-side momentum, and
-motion-side kinetic-energy review gate. The next work is visual walk-cycle
-polish and eventual live Moonrobo adapter payloads.
+motion-side kinetic-energy review gate. The preview now also exposes a typed
+`NoetixSuiteAdapterPayload` that binds the compiled review to Moonrobo source
+references for `../moonrobo/examples/noetix-e1/robot.json`,
+`../moonrobo/examples/noetix-e1/model/robot.urdf`, and the base mesh. The next
+work is visual walk-cycle polish and replacing this generated preview payload
+with live Moonrobo adapter regeneration.
 
 ## Phase 10: Durable Suite Evidence
 
@@ -300,6 +304,14 @@ Deliverables:
 - explicit source references
 - review status
 - blocker and next-action records
+
+Status: started. `src/suite_adapter_preview/noetix_suite_payload.mbt` defines
+the first durable suite evidence entry for the Rabbita/Moonrobo Noetix walk
+cycle. It records robot id, platform, Moonrobo profile path, URDF path, mesh
+refs, generated motion/hinge/review ids, driven joint ids, compiled review
+status, blockers, and readiness. This is still a suite preview payload; the
+remaining Phase 10 feature is to generate the same contract from typed
+Moonrobo packages instead of the Rabbita preview exporter.
 
 Acceptance:
 

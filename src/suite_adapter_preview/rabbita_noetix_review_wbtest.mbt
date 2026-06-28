@@ -62,3 +62,53 @@ test "generated Rabbita Noetix evidence feeds compiled Moonphys review" {
   assert_true(review.max_motion_linear_kinetic_energy_j > 0.0)
   assert_true(review.max_replay_kinetic_energy_j >= 0.0)
 }
+
+///|
+test "Moonrobo Noetix suite payload records durable source refs" {
+  let payload = moonrobo_noetix_suite_adapter_payload()
+  assert_true(payload.ready)
+  assert_eq(payload.status, "moonrobo-noetix-suite-payload-ready")
+  assert_eq(payload.robot_id, "noetix-e1-lab-01")
+  assert_eq(payload.platform, "noetix-e1")
+  assert_eq(payload.expected_profile_joint_count, 24)
+  assert_eq(payload.frame_count, 24)
+  assert_eq(payload.review_status, "rabbita-noetix-generated-review-ready")
+  assert_eq(
+    payload.evidence_source,
+    "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics",
+  )
+  assert_eq(payload.profile_path, "../moonrobo/examples/noetix-e1/robot.json")
+  assert_eq(
+    payload.urdf_path,
+    "../moonrobo/examples/noetix-e1/model/robot.urdf",
+  )
+  assert_true(
+    payload.mesh_paths.contains(
+      "../moonrobo/examples/noetix-e1/model/meshes/base.obj",
+    ),
+  )
+  assert_true(payload.driven_joint_ids.contains("leg_l1_joint"))
+  assert_true(payload.driven_joint_ids.contains("leg_r4_joint"))
+  assert_true(payload.driven_joint_ids.contains("arm_l1_joint"))
+  assert_true(payload.driven_joint_ids.contains("arm_r4_joint"))
+  assert_eq(payload.source_refs.length(), 4)
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonrobo.robot-profile" &&
+      source.local_path == "../moonrobo/examples/noetix-e1/robot.json"
+    }),
+  )
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonrobo.urdf" &&
+      source.local_path == "../moonrobo/examples/noetix-e1/model/robot.urdf"
+    }),
+  )
+  assert_true(
+    payload.source_refs.any(fn(source) {
+      source.source_family == "moonmoon.rabbita.generated-evidence" &&
+      source.local_path ==
+      "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics"
+    }),
+  )
+}

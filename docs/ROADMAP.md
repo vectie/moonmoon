@@ -25,7 +25,10 @@
   standalone generated page.
 - Add explicit suite adapters later. Moonrobo can provide Noetix/URDF gait and
   Rabbita visualization there, but adapters stay out of the standalone domain
-  packages.
+  packages. The current first step is the typed suite preview payload in
+  `src/suite_adapter_preview`, which records Moonrobo Noetix profile, URDF, mesh,
+  generated evidence, and compiled Moonphys review references without importing
+  Moonrobo into standalone core packages.
 
 ## Non-Goals
 
