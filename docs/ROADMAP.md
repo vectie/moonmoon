@@ -10,6 +10,8 @@
 5. Keep `src/ui/motion_contract.mbt` as the current locomotion handoff: it
    exposes route-motion readiness without placing robot gait primitives in
    Moonphys.
+6. Follow `docs/LOCOMOTION_PHASE_GUIDANCE.md` for the route-motion to robot
+   gait adapter phases.
 
 ## Next
 

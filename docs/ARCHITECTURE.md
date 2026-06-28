@@ -42,5 +42,8 @@ primitive. When Moonrobo returns as a suite adapter, it should consume the
 route-motion contract and provide robot gait assets outside the standalone
 domain packages.
 
+The phased implementation path is documented in
+`docs/LOCOMOTION_PHASE_GUIDANCE.md`.
+
 Generated artifacts belong outside source control. If a future workflow needs
 durable exports, generate them from the CLI into an ignored directory.
