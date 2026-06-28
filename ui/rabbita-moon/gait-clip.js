@@ -1,11 +1,13 @@
+import { MOONROBO_NOETIX_WALK_CLIP } from './generated-moonrobo-noetix-clip.js'
+
 export const NOETIX_VISUAL_RIG = {
   robotId: 'noetix-e1-lab-01',
-  source: 'moonrobo-urdf-visual-adapter',
+  source: MOONROBO_NOETIX_WALK_CLIP.source,
   rootLink: 'base_link',
   linkCount: 15,
   estimatedMassKg: 54.0,
-  cycleHz: 0.46,
-  rootSpeedMps: 0.18,
+  cycleHz: MOONROBO_NOETIX_WALK_CLIP.cycle_hz,
+  rootSpeedMps: MOONROBO_NOETIX_WALK_CLIP.root_speed_mps,
   targetFkMaxM: 0.025,
   lockedTargetFkMaxM: 0.010,
   stanceFootWorldStepMaxM: 0.030,
@@ -65,7 +67,8 @@ export const NOETIX_HINGE_MOTOR_JOINTS = [
   { joint_id: 'arm_r4_joint', side: 'right', field: 'elbow', parent_link: 'right_arm_3', child_link: 'right_arm_4', axis: '0 1 0', min: -1.6, max: 1.6, max_velocity: 3.0, max_torque: 30.0, stiffness: 8.0, damping: 0.4 },
 ]
 
-export const FOOT_PHASE_SEQUENCE = ['contact', 'loading', 'stance', 'passing', 'swing', 'release']
+export const NOETIX_WALK_CLIP = MOONROBO_NOETIX_WALK_CLIP
+export const FOOT_PHASE_SEQUENCE = MOONROBO_NOETIX_WALK_CLIP.foot_phase_sequence
 
 export function cycle01(value) {
   return value - Math.floor(value)
@@ -89,12 +92,7 @@ export function near(a, b, tolerance) {
 }
 
 function footRole(footPhase) {
-  if (footPhase < 0.08) return 'contact'
-  if (footPhase < 0.18) return 'loading'
-  if (footPhase < 0.50) return 'stance'
-  if (footPhase < 0.72) return 'passing'
-  if (footPhase < 0.92) return 'swing'
-  return 'release'
+  return footPhaseSpec(footPhase).role
 }
 
 export function footRoleColor(role) {
@@ -119,7 +117,17 @@ function footLockWeight(footPhase) {
 }
 
 function footSupport(footPhase) {
-  return footPhase < 0.58 || footPhase >= 0.92
+  return footPhaseSpec(footPhase).support
+}
+
+function footPhaseSpec(footPhase) {
+  const phase = cycle01(footPhase)
+  return MOONROBO_NOETIX_WALK_CLIP.foot_phase_specs.find((spec) => {
+    if (spec.phase_end >= 1) {
+      return phase >= spec.phase_start && phase <= spec.phase_end
+    }
+    return phase >= spec.phase_start && phase < spec.phase_end
+  }) ?? MOONROBO_NOETIX_WALK_CLIP.foot_phase_specs[0]
 }
 
 export function supportMassTransferX(clip) {
@@ -181,7 +189,7 @@ export function walkClipSample(time, options = {}) {
     swingFoot,
     rootDistanceM: time * NOETIX_VISUAL_RIG.rootSpeedMps,
     terrainReliefScale: options.terrainReliefScale ?? 1,
-    strideM: 0.38,
+    strideM: MOONROBO_NOETIX_WALK_CLIP.stride_m,
     bob: Math.cos(phase * Math.PI * 4) * 0.032,
     sway: (leftStance ? 1 : -1) * 0.018 * Math.sin(cycle01(phase * 2) * Math.PI),
     torsoCounterRotation: torsoCounterRotation(phase),

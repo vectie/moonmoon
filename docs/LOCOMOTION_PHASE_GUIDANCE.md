@@ -140,9 +140,12 @@ source-side walk-clip authority in
 the endless forward walk clip id, cycle rate, root speed, stride, sample count,
 phase labels, foot phase specs, required motion joints, and joint anchors.
 Moonmoon regenerates durable suite metadata from that contract through
-`ui/rabbita-moon/export-moonrobo-contract.mjs`. The remaining Phase 5 feature
-is to make the runtime motion sampler consume those typed clip fields directly
-instead of mirroring them in JS.
+`ui/rabbita-moon/export-moonrobo-contract.mjs`, which now also emits
+`ui/rabbita-moon/generated-moonrobo-noetix-clip.js`. The Rabbita runtime imports
+that generated JS bridge for cycle rate, root speed, stride, foot phase
+sequence, foot roles, and support windows instead of mirroring those clip
+fields by hand. The remaining Phase 5 feature is to move the procedural joint
+curve sampling itself behind the typed Moonrobo clip authority.
 
 Deliverables:
 
@@ -324,10 +327,12 @@ motion-joint, blocker, readiness, and typed walk-clip fields for Moonmoon
 consumption.
 `../moonrobo/cmd/moonmoon_contract` exports that typed contract as JSON, and
 `ui/rabbita-moon/export-moonrobo-contract.mjs` regenerates
-`src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` from it. The
-Moonmoon payload consumes those generated source-contract and walk-clip fields
-and includes the typed Moonrobo adapter contract as a durable source ref. This
-still uses Rabbita for sampled FK/contact/motor evidence; the remaining Phase
+`src/suite_adapter_preview/generated_moonrobo_noetix_contract.mbt` and
+`ui/rabbita-moon/generated-moonrobo-noetix-clip.js` from it. The Moonmoon
+payload consumes those generated source-contract and walk-clip fields, the
+Rabbita runtime consumes the generated JS clip bridge, and the payload includes
+the typed Moonrobo adapter contract as a durable source ref. This still uses
+Rabbita for sampled FK/contact/motor evidence; the remaining Phase
 10 feature is to replace that preview motion evidence with live Moonrobo
 adapter regeneration.
 

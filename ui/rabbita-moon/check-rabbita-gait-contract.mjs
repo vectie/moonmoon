@@ -4,9 +4,10 @@ import { fileURLToPath } from 'node:url'
 
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
+const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
-const gaitRuntimeSource = `${gaitClip}\n${scene}`
+const gaitRuntimeSource = `${generatedClip}\n${gaitClip}\n${scene}`
 
 const sceneContracts = [
   'walkPipeline',
@@ -57,6 +58,9 @@ const sceneContracts = [
   'torsoCounterRotationStatus',
   'rollPitch',
   'torsoCounterRotation',
+  'MOONROBO_NOETIX_WALK_CLIP',
+  'NOETIX_WALK_CLIP',
+  'generated-moonrobo-noetix-clip.js',
 ]
 
 const planContracts = [
@@ -92,6 +96,30 @@ for (const token of sceneContracts) {
 
 for (const token of planContracts) {
   requireText(plan, token, 'ANIMATION_FIRST_LOCOMOTION_PLAN.md')
+}
+
+const gaitModule = await import(new URL('./gait-clip.js', import.meta.url).href)
+if (!gaitModule.NOETIX_WALK_CLIP?.ready) {
+  throw new Error(`generated Moonrobo walk clip was not ready: ${gaitModule.NOETIX_WALK_CLIP?.status}`)
+}
+if (gaitModule.NOETIX_VISUAL_RIG.source !== gaitModule.NOETIX_WALK_CLIP.source) {
+  throw new Error('Rabbita visual rig source does not come from the generated Moonrobo walk clip')
+}
+if (gaitModule.NOETIX_VISUAL_RIG.cycleHz !== gaitModule.NOETIX_WALK_CLIP.cycle_hz) {
+  throw new Error('Rabbita visual rig cycle rate does not come from the generated Moonrobo walk clip')
+}
+if (gaitModule.NOETIX_VISUAL_RIG.rootSpeedMps !== gaitModule.NOETIX_WALK_CLIP.root_speed_mps) {
+  throw new Error('Rabbita visual rig root speed does not come from the generated Moonrobo walk clip')
+}
+if (JSON.stringify(gaitModule.FOOT_PHASE_SEQUENCE) !== JSON.stringify(gaitModule.NOETIX_WALK_CLIP.foot_phase_sequence)) {
+  throw new Error('Rabbita foot phase sequence does not come from the generated Moonrobo walk clip')
+}
+const clipZero = gaitModule.walkClipSample(0)
+if (clipZero.strideM !== gaitModule.NOETIX_WALK_CLIP.stride_m) {
+  throw new Error('Rabbita walk sample stride does not come from the generated Moonrobo walk clip')
+}
+if (clipZero.footChannels.left.role !== gaitModule.NOETIX_WALK_CLIP.foot_phase_specs[0].role) {
+  throw new Error('Rabbita foot role did not resolve through the generated Moonrobo foot phase specs')
 }
 
 await import(new URL('./scene3d.js', import.meta.url).href)

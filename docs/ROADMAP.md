@@ -30,9 +30,11 @@
   contract in `../moonrobo/src/moonmoon_adapter`. The current bridge exports the
   typed Moonrobo contract and Noetix walk-clip authority through
   `../moonrobo/cmd/moonmoon_contract` and regenerates Moonmoon suite-preview
-  source and clip metadata without importing Moonrobo into standalone core
-  packages. The next implementation target is making runtime sampling consume
-  that typed clip, then live Moonrobo adapter regeneration for the remaining
+  source metadata plus a Rabbita JS clip bridge without importing Moonrobo into
+  standalone core packages. Runtime sampling now consumes that generated clip
+  bridge for timing, stride, phase roles, and support windows. The next
+  implementation target is moving procedural joint curve sampling behind the
+  typed Moonrobo clip, then live Moonrobo adapter regeneration for the remaining
   sampled motion evidence.
 
 ## Non-Goals
