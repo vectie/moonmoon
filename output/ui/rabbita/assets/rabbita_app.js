@@ -3,6 +3,7 @@ const book = JSON.parse(document.getElementById('moonmoon-moonbook').textContent
 const noetixTrace = JSON.parse(document.getElementById('moonmoon-noetix-walk').textContent);
 const noetixEndlessGait = JSON.parse(document.getElementById('moonmoon-noetix-endless-gait').textContent);
 const noetixLinkPoseTrace = JSON.parse(document.getElementById('moonmoon-noetix-link-poses').textContent);
+const noetixSimulationGates = JSON.parse(document.getElementById('moonmoon-noetix-simulation-gates').textContent);
 const evidence = window.RabbitaEvidence.create(book);
 let activeLayer = view.active_layer_id;
 let selectedCellId = view.selected_cell_id;
@@ -578,6 +579,31 @@ function renderNoetixWalkFacts(frame, poseFrame) {
   ));
 }
 
+function renderNoetixSimulationGates() {
+  const target = document.getElementById('noetix-simulation-gates');
+  const gates = noetixSimulationGates || [];
+  target.replaceChildren(...gates.map(gate =>
+    el('article', {
+      className: `noetix-gate noetix-gate-${noetixStatusClass(gate.status)}`,
+      'data-gate-id': gate.gate_id,
+      'data-gate-status': gate.status,
+      'data-may-consume': String(gate.may_consume_simulation)
+    }, [
+      el('div', { className: 'noetix-gate-head' }, [
+        el('b', { text: gate.robot_id }),
+        el('span', { className: 'status-pill', text: gate.may_consume_simulation ? 'simulation consumable' : 'simulation blocked' })
+      ]),
+      el('div', { className: 'noetix-gate-grid' }, [
+        el('span', { text: `${gate.source_metadata_blocker_count} source metadata blockers` }),
+        el('span', { text: `${gate.physical_model_blocker_count} physical model blockers` }),
+        el('span', { text: `${gate.active_work_item_count} active work items` })
+      ]),
+      el('p', { text: gate.next_action }),
+      el('span', { className: 'source-path', text: gate.source_decision_path })
+    ])
+  ));
+}
+
 function renderNoetixWalk() {
   const frames = noetixFrames();
   if (!frames.length) return;
@@ -592,6 +618,7 @@ function renderNoetixWalk() {
   renderNoetixWalkViewer(frames, frame, poseFrame, project);
   renderNoetixWalkControls(frames);
   renderNoetixWalkFacts(frame, poseFrame);
+  renderNoetixSimulationGates();
   noetixSyncPlayback(frames);
 }
 

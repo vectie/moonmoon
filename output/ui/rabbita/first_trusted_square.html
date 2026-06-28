@@ -55672,6 +55672,25 @@
   "note": "URDF-reference forward-kinematics evidence for visualization and review: link names, joint origins, joint axes, available source visual geometry, and explicit missing collision/inertial metadata come from the Noetix URDF/source audit; Moonphys evaluates the generic articulated pose tree, then feet are bound to Moonphys contact probes and carry FK contact error. This is not full dynamics, collision, inertia, controller evidence, or hardware authority."
 }
 </script>
+<script id="moonmoon-noetix-simulation-gates" type="application/json">
+[
+  {
+    "gate_id": "robot-simulation:noetix-e1-lab-01",
+    "robot_id": "noetix-e1-lab-01",
+    "source_decision_id": "moonclaw/first-trusted-square/noetix-simulation-readiness-decision",
+    "source_decision_path": "output/moonclaw/first_trusted_square_noetix_readiness_decision.json",
+    "work_item_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_items.json",
+    "receipt_path": "output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json",
+    "may_consume_simulation": false,
+    "simulation_state": "SimulationBlocked",
+    "source_metadata_blocker_count": 50,
+    "physical_model_blocker_count": 9,
+    "active_work_item_count": 2,
+    "status": "NoetixSimulationBlocked",
+    "next_action": "keep Noetix robot simulation blocked; resolve source_metadata_gaps and physical_model_gaps, regenerate MoonClaw readiness, and keep hardware denied"
+  }
+]
+</script>
 
 <main class="shell">
   <section class="map-pane" aria-label="Lunar terrain inspection">
@@ -55762,6 +55781,7 @@
       <div id="noetix-walk-viewer" class="noetix-viewer"></div>
       <div id="noetix-walk-controls" class="noetix-controls" aria-label="Noetix trace frame controls"></div>
       <div id="noetix-walk-facts" class="noetix-facts"></div>
+      <div id="noetix-simulation-gates" class="noetix-gates" aria-label="Noetix simulation gates"></div>
     </section>
   </section>
   <aside class="side-pane" aria-label="Inspection details">

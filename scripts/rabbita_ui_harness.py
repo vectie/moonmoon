@@ -21,6 +21,9 @@ NOETIX_ENDLESS_GAIT_PATH = (
 NOETIX_LINK_POSES_PATH = (
   ROOT / "output/moonrobo/first_trusted_square_noetix_link_poses.json"
 )
+SIMULATION_REVIEW_PACKET_PATH = (
+  ROOT / "output/moonrobo/first_trusted_square_simulation_review_packet.json"
+)
 
 MISSION_EVIDENCE_SNAPSHOT_JS = r"""
 const rows = document.getElementById('mission-evidence-queue').children.map(row => ({
@@ -46,6 +49,7 @@ NOETIX_WALK_SNAPSHOT_JS = r"""
 const viewer = document.getElementById('noetix-walk-viewer');
 const controls = document.getElementById('noetix-walk-controls');
 const facts = document.getElementById('noetix-walk-facts');
+const gates = document.getElementById('noetix-simulation-gates');
 const summary = document.getElementById('noetix-walk-summary').textContent;
 const authority = document.getElementById('noetix-walk-authority').textContent;
 const svgNodes = [];
@@ -57,6 +61,16 @@ visit(viewer);
 const factRows = facts.children.map(row => ({
   label: row.children[0].textContent,
   value: row.children[1].textContent
+}));
+const gateRows = gates.children.map(row => ({
+  gate_id: row.attributes['data-gate-id'],
+  status: row.attributes['data-gate-status'],
+  may_consume: row.attributes['data-may-consume'],
+  title: row.children[0].children[0].textContent,
+  pill: row.children[0].children[1].textContent,
+  metrics: row.children[1].children.map(item => item.textContent),
+  next_action: row.children[2].textContent,
+  decision_path: row.children[3].textContent
 }));
 return {
   summary,
@@ -72,7 +86,8 @@ return {
   playback_pressed: controls.children[0].attributes['aria-pressed'],
   scrubber_max: controls.children[2].attributes.max,
   scrubber_value: controls.children[2].value,
-  facts: factRows
+  facts: factRows,
+  gates: gateRows
 };
 """
 
@@ -119,6 +134,10 @@ def read_noetix_endless_gait() -> Any:
 
 def read_noetix_link_poses() -> Any:
   return json.loads(NOETIX_LINK_POSES_PATH.read_text(encoding="utf-8"))
+
+
+def read_simulation_review_packet() -> Any:
+  return json.loads(SIMULATION_REVIEW_PACKET_PATH.read_text(encoding="utf-8"))
 
 
 def is_mission_evidence_entry(entry: dict[str, Any]) -> bool:
@@ -180,6 +199,7 @@ def render_noetix_walk_panel(
   noetix_trace: Any,
   noetix_endless_gait: Any,
   noetix_link_poses: Any,
+  simulation_review_packet: Any,
   *,
   prefix: str = "moonmoon-rabbita-noetix-walk-",
 ) -> dict[str, Any]:
@@ -191,6 +211,7 @@ def render_noetix_walk_panel(
     noetix_trace=noetix_trace,
     noetix_endless_gait=noetix_endless_gait,
     noetix_link_poses=noetix_link_poses,
+    simulation_review_packet=simulation_review_packet,
   )
 
 
@@ -199,6 +220,7 @@ def assert_noetix_walk_panel(
   noetix_trace: dict[str, Any],
   noetix_endless_gait: dict[str, Any],
   noetix_link_poses: dict[str, Any],
+  simulation_review_packet: dict[str, Any],
 ) -> None:
   frames = noetix_trace["frames"]
   pose_frames = noetix_link_poses["frames"]
@@ -261,6 +283,34 @@ def assert_noetix_walk_panel(
     raise AssertionError(facts)
   if "terrain-grade-review" not in facts.get("right foot", ""):
     raise AssertionError(facts)
+  gates = rendered["gates"]
+  packet_gates = simulation_review_packet.get("robot_simulation_gates", [])
+  if len(gates) != len(packet_gates):
+    raise AssertionError({"rendered": gates, "packet": packet_gates})
+  if not gates:
+    raise AssertionError(rendered)
+  gate = gates[0]
+  packet_gate = packet_gates[0]
+  if gate["gate_id"] != packet_gate["gate_id"]:
+    raise AssertionError(gate)
+  if gate["status"] != "NoetixSimulationBlocked":
+    raise AssertionError(gate)
+  if gate["may_consume"] != "false":
+    raise AssertionError(gate)
+  if gate["pill"] != "simulation blocked":
+    raise AssertionError(gate)
+  if gate["metrics"] != [
+    "50 source metadata blockers",
+    "9 physical model blockers",
+    "2 active work items",
+  ]:
+    raise AssertionError(gate)
+  if "source_metadata_gaps" not in gate["next_action"]:
+    raise AssertionError(gate)
+  if "physical_model_gaps" not in gate["next_action"]:
+    raise AssertionError(gate)
+  if not gate["decision_path"].endswith("first_trusted_square_noetix_readiness_decision.json"):
+    raise AssertionError(gate)
 
 
 def assert_mission_evidence_queue(rendered: dict[str, Any], book: dict[str, Any]) -> None:
@@ -317,6 +367,7 @@ def run_rabbita_vm(
   noetix_trace: Any | None = None,
   noetix_endless_gait: Any | None = None,
   noetix_link_poses: Any | None = None,
+  simulation_review_packet: Any | None = None,
 ) -> dict[str, Any]:
   """Execute Rabbita assets in a minimal DOM and return a JSON snapshot."""
   harness = r"""
@@ -358,6 +409,7 @@ document.getElementById('moonmoon-moonbook').textContent = JSON.stringify(input.
 document.getElementById('moonmoon-noetix-walk').textContent = JSON.stringify(input.noetix_trace);
 document.getElementById('moonmoon-noetix-endless-gait').textContent = JSON.stringify(input.noetix_endless_gait);
 document.getElementById('moonmoon-noetix-link-poses').textContent = JSON.stringify(input.noetix_link_poses);
+document.getElementById('moonmoon-noetix-simulation-gates').textContent = JSON.stringify(input.simulation_review_packet.robot_simulation_gates);
 
 const downloads = [];
 const context = {
@@ -397,6 +449,9 @@ console.log(JSON.stringify(snapshot, null, 2));
           "noetix_link_poses": noetix_link_poses
           if noetix_link_poses is not None
           else read_noetix_link_poses(),
+          "simulation_review_packet": simulation_review_packet
+          if simulation_review_packet is not None
+          else read_simulation_review_packet(),
           "script": rabbita_app_script(),
           "snapshot_js": snapshot_js,
         },

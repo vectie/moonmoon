@@ -722,6 +722,44 @@ p { margin: 0; color: var(--muted); line-height: 1.45; }
   line-height: 1.25;
   overflow-wrap: anywhere;
 }
+.noetix-gates {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.noetix-gate {
+  border: 1px solid var(--line);
+  background: #ffffff;
+  padding: 10px;
+}
+.noetix-gate-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.noetix-gate-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.noetix-gate-grid span {
+  border: 1px solid var(--line);
+  background: #f7faf9;
+  padding: 6px;
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.noetix-gate p {
+  margin: 8px 0;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.noetix-gate-blocked {
+  border-color: rgba(178,54,46,0.38);
+}
 .route-list, .fact-list, .review-list {
   display: grid;
   gap: 8px;

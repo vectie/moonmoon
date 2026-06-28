@@ -142,6 +142,8 @@ pub fn first_trusted_square_remediation_margin_regenerated_receipt_readiness_jso
 
 pub fn first_trusted_square_remediation_margin_regenerated_receipt_readiness_markdown() -> String
 
+pub fn first_trusted_square_robot_simulation_gates() -> Array[SimulationReviewRobotGate]
+
 pub fn from_site_dossier(@site.SiteDossier) -> Array[MoonroboTaskHandoff]
 
 pub fn handoff_status_label(MoonroboTaskHandoff) -> String

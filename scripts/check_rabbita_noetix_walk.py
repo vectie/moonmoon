@@ -20,8 +20,12 @@ def assert_page_source(html: str) -> None:
     raise AssertionError("missing embedded Noetix endless-gait evidence")
   if "moonmoon-noetix-link-poses" not in html:
     raise AssertionError("missing embedded Noetix link-pose trace")
+  if "moonmoon-noetix-simulation-gates" not in html:
+    raise AssertionError("missing embedded Noetix simulation gates")
   if "noetix-walk-viewer" not in html:
     raise AssertionError("missing Noetix viewer anchor")
+  if "noetix-simulation-gates" not in html:
+    raise AssertionError("missing Noetix simulation gate anchor")
   if "hardware" in html.split("noetix-walk-viewer", 1)[0].split("Noetix Walk", 1)[-1].lower():
     raise AssertionError("Noetix section must not expose hardware controls")
 
@@ -31,12 +35,28 @@ def main() -> int:
   noetix_trace = extract_json_script(html, "moonmoon-noetix-walk")
   noetix_endless_gait = extract_json_script(html, "moonmoon-noetix-endless-gait")
   noetix_link_poses = extract_json_script(html, "moonmoon-noetix-link-poses")
+  noetix_simulation_gates = extract_json_script(
+    html,
+    "moonmoon-noetix-simulation-gates",
+  )
+  simulation_review_packet = {
+    "robot_simulation_gates": noetix_simulation_gates,
+  }
   assert_page_source(html)
   rendered = render_noetix_walk_panel(
-    view, book, noetix_trace, noetix_endless_gait, noetix_link_poses,
+    view,
+    book,
+    noetix_trace,
+    noetix_endless_gait,
+    noetix_link_poses,
+    simulation_review_packet,
   )
   assert_noetix_walk_panel(
-    rendered, noetix_trace, noetix_endless_gait, noetix_link_poses,
+    rendered,
+    noetix_trace,
+    noetix_endless_gait,
+    noetix_link_poses,
+    simulation_review_packet,
   )
   print("checked Rabbita Noetix walk")
   return 0

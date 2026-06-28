@@ -279,6 +279,13 @@ pub fn simulation_review_packet(
 }
 
 ///|
+pub fn first_trusted_square_robot_simulation_gates() -> Array[
+  SimulationReviewRobotGate,
+] {
+  robot_simulation_gates()
+}
+
+///|
 pub fn render_simulation_review_packet_markdown(
   packet : SimulationReviewPacket,
 ) -> String {

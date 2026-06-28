@@ -5,6 +5,7 @@ fn app_data_script(
   noetix_walk : @moonrobo.NoetixMoonWalkTrace,
   noetix_endless_gait : @moonrobo.NoetixEndlessGaitEvidence,
   noetix_link_poses : @moonrobo.NoetixLinkPoseTrace,
+  robot_simulation_gates : Array[@moonrobo.SimulationReviewRobotGate],
 ) -> String {
   let view_json = @ui.render_json(view).stringify(indent=2)
   let book_json = @moonbook.render_json(book).stringify(indent=2)
@@ -13,6 +14,9 @@ fn app_data_script(
     .to_json()
     .stringify(indent=2)
   let noetix_link_poses_json = noetix_link_poses.to_json().stringify(indent=2)
+  let robot_simulation_gates_json = robot_simulation_gates
+    .to_json()
+    .stringify(indent=2)
   let html =
     $|<script id="moonmoon-view-model" type="application/json">
     $|\{view_json}
@@ -28,6 +32,9 @@ fn app_data_script(
     $|</script>
     $|<script id="moonmoon-noetix-link-poses" type="application/json">
     $|\{noetix_link_poses_json}
+    $|</script>
+    $|<script id="moonmoon-noetix-simulation-gates" type="application/json">
+    $|\{robot_simulation_gates_json}
     $|</script>
     $|
   html
@@ -86,7 +93,7 @@ pub fn render_html(
     $|\{app_styles()}
     $|</head>
     $|<body>
-    $|\{app_data_script(view, book, @moonrobo.first_trusted_square_noetix_walk_trace(), @moonrobo.first_trusted_square_noetix_endless_gait_evidence(), @moonrobo.first_trusted_square_noetix_link_pose_trace())}
+    $|\{app_data_script(view, book, @moonrobo.first_trusted_square_noetix_walk_trace(), @moonrobo.first_trusted_square_noetix_endless_gait_evidence(), @moonrobo.first_trusted_square_noetix_link_pose_trace(), @moonrobo.first_trusted_square_robot_simulation_gates())}
     $|<main class="shell">
     $|  <section class="map-pane" aria-label="Lunar terrain inspection">
     $|    <div class="topline">
@@ -176,6 +183,7 @@ pub fn render_html(
     $|      <div id="noetix-walk-viewer" class="noetix-viewer"></div>
     $|      <div id="noetix-walk-controls" class="noetix-controls" aria-label="Noetix trace frame controls"></div>
     $|      <div id="noetix-walk-facts" class="noetix-facts"></div>
+    $|      <div id="noetix-simulation-gates" class="noetix-gates" aria-label="Noetix simulation gates"></div>
     $|    </section>
     $|  </section>
     $|  <aside class="side-pane" aria-label="Inspection details">
