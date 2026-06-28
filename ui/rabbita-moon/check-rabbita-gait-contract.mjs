@@ -31,6 +31,8 @@ const sceneContracts = [
   'footPhaseCoverageStatus',
   'stanceFootWorldLockStatus',
   'stanceFootWorldDrift',
+  'footWorldMotionContinuityStatus',
+  'footWorldMotionContinuity',
   'footLockRootCorrection',
   'rootCorrectionContinuityStatus',
   'rootCorrectionContinuity',
@@ -46,6 +48,7 @@ const sceneContracts = [
   'nonFlatTerrainStatus',
   'ikCorrectionStatus',
   'jointIkStatus',
+  'supportSoleAlignmentStatus',
   'kneeRoleContrastStatus',
   'armCounterSwingStatus',
   'toeRollStatus',
@@ -60,9 +63,11 @@ const planContracts = [
   'terrain-corrected target',
   'FK endpoint',
   'hip/knee/ankle correction',
+  'support sole alignment',
   'phase labels: `contact`, `loading`, `stance`, `passing`, `swing`, `release`',
   'foot lock',
   'visible stance foot world delta stays near zero',
+  'full foot world motion remains continuous through lift-off, release, and loop wrap',
   'root correction remains continuous through support transfer',
   'swing foot clearance',
   'visual mesh or primitive attachment per link',
@@ -225,6 +230,9 @@ for (const time of sampleTimes) {
   if (frame.quality.statuses.jointIkCorrection !== 'pass') {
     throw new Error(`joint IK correction failed at ${time}s`)
   }
+  if (frame.quality.statuses.supportSoleAlignment !== 'pass') {
+    throw new Error(`support sole alignment failed at ${time}s: ${JSON.stringify(frame.quality.supportSoleAlignment)}`)
+  }
   if (frame.quality.statuses.toeRoll !== 'pass') {
     throw new Error(`toe roll failed at ${time}s`)
   }
@@ -236,6 +244,9 @@ for (const time of sampleTimes) {
   }
   if (frame.quality.statuses.stanceFootWorldLock !== 'pass') {
     throw new Error(`visible stance foot stability failed at ${time}s: ${JSON.stringify(frame.quality.footLockDrift)}`)
+  }
+  if (frame.quality.statuses.footWorldMotionContinuity !== 'pass') {
+    throw new Error(`foot world motion continuity failed at ${time}s: ${JSON.stringify(frame.quality.footWorldMotionContinuity)}`)
   }
   if (frame.quality.statuses.rootCorrectionContinuity !== 'pass') {
     throw new Error(`root correction continuity failed at ${time}s: ${JSON.stringify(frame.quality.rootCorrectionContinuity)}`)

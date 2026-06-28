@@ -114,6 +114,7 @@ The first clip exposes:
 - swing hip/ankle arc keeps the visible foot from dragging through terrain
 - swing foot clearance remains visible after toe-off through passing, swing,
   and release
+- full foot world motion remains continuous through lift-off, release, and loop wrap
 - forward-bend convention: knee flexion places the knee forward of the
   hip-to-ankle chain, never visually back-folding the leg
 - ankle/toe pitch across contact, foot-flat, and toe-off
@@ -138,6 +139,8 @@ Acceptance:
 - root motion advances monotonically along the configured heading
 - feet are authored relative to root motion
 - the loop is seamless over the Rabbita demo window
+- full foot world motion does not jump backward when support changes or the
+  cycle wraps
 - root path and phase labels are visible
 
 ## Layer 3: Foot Locking
@@ -183,6 +186,7 @@ Outputs:
 
 - bounded ankle pitch/roll correction
 - bounded knee/hip correction
+- support sole alignment
 - bounded pelvis height correction
 - correction status for reports and overlays
 
@@ -335,6 +339,7 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
 4. Add terrain IK only after the base walk is readable. Status: the Rabbita
    preview now has a flat-terrain contact probe, bounded support-leg
    hip/knee/ankle correction, bounded support-pelvis fallback correction,
+   support sole alignment across toe, heel, and center contact probes,
    terrain-corrected foot targets, authored/corrected joint samples, and
    browser-facing IK/contact status datasets. Non-flat terrain height/normal
    response and per-foot contact patches are active in the preview.
@@ -378,9 +383,12 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    animation subphases (`contact`, `loading`, `stance`, `passing`, `swing`,
    `release`) into `footPhaseChannels`, `gaitPhaseLabel`, and
    `footPhaseCoverageStatus`, and renders root/phase timing rails in the 3D
-   scene so the walk can be inspected like an animation asset. The renderer
-   now reports named rigid visual attachments through `visualLinkAttachments`
-   and `visualAttachmentStatus`, separating Noetix link visuals from foot
-   markers, target cubes, terrain rails, and other debug overlays. The next Phase
-   D/E target is still visual readability of the same walk cycle before adding
-   another fixture mirror.
+   scene so the walk can be inspected like an animation asset. The preview now
+   also blends terrain IK across lift-off and pre-contact release, and exposes
+   `footWorldMotionContinuityStatus` plus `footWorldMotionContinuity` so sudden
+   forward-then-backward foot pops are caught at the world-motion layer. The
+   renderer now reports named rigid visual attachments through
+   `visualLinkAttachments` and `visualAttachmentStatus`, separating Noetix link
+   visuals from foot markers, target cubes, terrain rails, and other debug
+   overlays. The next Phase D/E target is still visual readability of the same
+   walk cycle before adding another fixture mirror.

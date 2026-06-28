@@ -9,6 +9,7 @@ export const NOETIX_VISUAL_RIG = {
   targetFkMaxM: 0.025,
   lockedTargetFkMaxM: 0.010,
   stanceFootWorldStepMaxM: 0.030,
+  footWorldStepMaxM: 0.035,
   rootCorrectionStepMaxM: 0.050,
   footLockRootCorrectionMaxM: 0.22,
   kneeContrastMin: 0.25,
@@ -21,6 +22,7 @@ export const NOETIX_VISUAL_RIG = {
   armForwardBendMinM: 0.015,
   limbBackFoldToleranceM: -0.004,
   supportTargetClearanceM: 0.006,
+  supportSolePitchToleranceM: 0.020,
   jointClearanceToleranceM: 0.0025,
   pelvisCorrectionMaxM: 0.18,
   supportClearanceMaxM: 0.014,
@@ -29,7 +31,7 @@ export const NOETIX_VISUAL_RIG = {
   jointCorrectionMaxRad: {
     hip: 0.04,
     knee: 0.14,
-    ankle: 0.12,
+    ankle: 0.18,
   },
   lengths: {
     upperLeg: 0.30,
@@ -189,11 +191,11 @@ function legAngles(legPhase) {
   if (swing) {
     const landing = u > 0.45 ? 1 - smoothstep((u - 0.45) / 0.55) : 1
     const lateLanding = smoothstep((u - 0.70) / 0.30)
-    const toeOffLift = 1 - smoothstep(u / 0.18)
+    const toeOffLift = smoothstep(u / 0.12) * (1 - smoothstep((u - 0.12) / 0.18))
     const swingLift = Math.sin(u * Math.PI)
     const kneeLift = 0.16 * toeOffLift + 0.74 * swingLift * landing
     return {
-      hip: mix(0.435, -0.36, e),
+      hip: mix(0.28, -0.36, e),
       knee: -(0.08 + kneeLift),
       ankle: -0.42 * Math.sin(u * Math.PI) + mix(-0.08, 0.10, e) + 0.04 * lateLanding,
     }

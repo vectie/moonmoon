@@ -831,10 +831,12 @@ function gaitQuality(time, diagnostics) {
   const supportFoot = diagnostics.feet.find(foot => foot.name === diagnostics.supportFoot)
   const cycle = cycleJointQuality(time, cycleSeconds)
   const footLockDrift = cycleFootLockWorldDrift(time, cycleSeconds)
+  const footWorldMotionContinuity = cycleFootWorldMotionContinuity(time, cycleSeconds)
   const rootCorrectionContinuity = cycleRootCorrectionContinuity(time, cycleSeconds)
   const phaseCoverage = cycleFootPhaseCoverage(time, cycleSeconds)
   const swingFootClearance = cycleSwingFootClearance(time, cycleSeconds)
   const visualLinkAttachments = visualLinkAttachmentReport(diagnostics.visualLinks)
+  const supportSoleAlignment = diagnostics.ik.supportSoleAlignment
   const supportClearanceError = Math.abs(
     (supportFoot?.terrainProbe.clearanceM ?? Infinity) - NOETIX_VISUAL_RIG.supportTargetClearanceM,
   )
@@ -860,7 +862,11 @@ function gaitQuality(time, diagnostics) {
     nonFlatTerrain: diagnostics.terrain.heightRangeM > 0.010 ? 'pass' : 'fail',
     ikCorrectionBounded: diagnostics.ik.saturated ? 'fail' : 'pass',
     jointIkCorrection: supportClearanceError <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
+    supportSoleAlignment:
+      Math.abs(supportSoleAlignment.spreadM) <= NOETIX_VISUAL_RIG.supportSolePitchToleranceM &&
+      supportSoleAlignment.maxClearanceErrorM <= NOETIX_VISUAL_RIG.supportClearanceMaxM ? 'pass' : 'fail',
     stanceFootWorldLock: footLockDrift.maxStepM <= NOETIX_VISUAL_RIG.stanceFootWorldStepMaxM ? 'pass' : 'fail',
+    footWorldMotionContinuity: footWorldMotionContinuity.maxStepM <= NOETIX_VISUAL_RIG.footWorldStepMaxM ? 'pass' : 'fail',
     rootCorrectionContinuity: rootCorrectionContinuity.maxStepM <= NOETIX_VISUAL_RIG.rootCorrectionStepMaxM ? 'pass' : 'fail',
     swingFootClearance: swingFootClearance.minClearanceM >= NOETIX_VISUAL_RIG.swingFootClearanceMinM ? 'pass' : 'fail',
     visualLinkAttachments: visualLinkAttachments.status,
@@ -885,10 +891,12 @@ function gaitQuality(time, diagnostics) {
     maxTargetFkDelta,
     maxLockedTargetFkDelta,
     supportClearanceError,
+    supportSoleAlignment,
     maxContactPatchRange,
     terrain: diagnostics.terrain,
     ik: diagnostics.ik,
     footLockDrift,
+    footWorldMotionContinuity,
     rootCorrectionContinuity,
     swingFootClearance,
     visualLinkAttachments,
@@ -981,6 +989,52 @@ function cycleFootLockWorldDrift(time, cycleSeconds) {
         previous[foot.name] = undefined
         continue
       }
+      const world = {
+        x: foot.fkEndpoint.x + (diagnostics.footLock.visibleX ?? 0),
+        y: foot.fkEndpoint.y,
+        z: foot.fkEndpoint.z + diagnostics.rootDistanceM + (diagnostics.footLock.visibleZ ?? 0),
+      }
+      if (previous[foot.name]) {
+        const stepM = Math.hypot(
+          world.x - previous[foot.name].x,
+          world.z - previous[foot.name].z,
+        )
+        perFoot[foot.name].maxStepM = Math.max(perFoot[foot.name].maxStepM, stepM)
+        if (stepM > maxStepM) {
+          maxStepM = stepM
+          maxFrame = {
+            phase: diagnostics.phase,
+            foot: foot.name,
+            role: foot.role,
+            previous: previous[foot.name],
+            current: world,
+          }
+        }
+      }
+      previous[foot.name] = world
+      perFoot[foot.name].sampleCount += 1
+    }
+  }
+  return {
+    maxStepM,
+    maxFrame,
+    perFoot,
+    sampleCount: perFoot.left.sampleCount + perFoot.right.sampleCount,
+  }
+}
+
+function cycleFootWorldMotionContinuity(time, cycleSeconds) {
+  const previous = {}
+  const perFoot = {
+    left: { maxStepM: 0, sampleCount: 0 },
+    right: { maxStepM: 0, sampleCount: 0 },
+  }
+  let maxStepM = 0
+  let maxFrame = null
+  for (let i = 0; i <= 96; i += 1) {
+    const sampleTime = time + (i / 96) * cycleSeconds
+    const diagnostics = robotGeometry(sampleTime, { quality: false }).diagnostics
+    for (const foot of diagnostics.feet) {
       const world = {
         x: foot.fkEndpoint.x + (diagnostics.footLock.visibleX ?? 0),
         y: foot.fkEndpoint.y,
@@ -1140,6 +1194,39 @@ function legPose(root, side, joints) {
     knee,
     ankle,
     sole: transformPoint(ankle, [0, -0.056, 0.13]),
+  }
+}
+
+function footSoleContactPoints(pose) {
+  return {
+    heel: transformPoint(pose.ankle, [0, -0.056, -0.018]),
+    center: pose.sole,
+    toe: transformPoint(pose.ankle, [0, -0.056, 0.178]),
+  }
+}
+
+function footSoleAlignmentProbe(root, side, joints, clip) {
+  const pose = legPose(root, side, joints)
+  const points = footSoleContactPoints(pose)
+  const heel = terrainContactProbe(points.heel, clip)
+  const center = terrainContactProbe(points.center, clip)
+  const toe = terrainContactProbe(points.toe, clip)
+  const target = NOETIX_VISUAL_RIG.supportTargetClearanceM
+  const heelErrorM = heel.clearanceM - target
+  const centerErrorM = center.clearanceM - target
+  const toeErrorM = toe.clearanceM - target
+  const spreadM = toe.clearanceM - heel.clearanceM
+  return {
+    heel,
+    center,
+    toe,
+    spreadM,
+    maxClearanceErrorM: Math.max(
+      Math.abs(heelErrorM),
+      Math.abs(centerErrorM),
+      Math.abs(toeErrorM),
+    ),
+    targetClearanceM: target,
   }
 }
 
@@ -1598,21 +1685,33 @@ function supportJointIk(root, clip, joints) {
   const jointCorrections = emptyJointCorrections()
   const fields = ['hip', 'knee', 'ankle']
   const epsilon = 0.01
+  const pitchWeight = 1.8
   let saturated = false
   let totalIterations = 0
   const supportFoot = clip.supportFoot
-  const lockedNames = ['left', 'right'].filter(name =>
-    name === supportFoot || clip.footChannels[name].lockWeight > 0.05
-  )
+  const footIkWeight = footName => {
+    const foot = clip.footChannels[footName]
+    if (footName === supportFoot || foot.supporting) return 1
+    if (foot.role === 'passing') return 1 - smoothstep((foot.phase - 0.50) / 0.10)
+    if (foot.role === 'release') return smoothstep((foot.phase - 0.92) / 0.08)
+    return foot.lockWeight
+  }
+  const lockedNames = ['left', 'right'].filter(name => footIkWeight(name) > 0.001)
   const supportSide = clip.supportFoot === 'left' ? 1 : -1
   const supportPreProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
+  const supportPreSoleAlignment = footSoleAlignmentProbe(root, supportSide, correctedJoints, clip)
   const solveLockedFoot = footName => {
     const side = footName === 'left' ? 1 : -1
+    const solveWeight = footIkWeight(footName)
     let iterations = 0
-    for (let i = 0; i < 5; i += 1) {
-      const probe = terrainContactProbe(legPose(root, side, correctedJoints).sole, clip)
-      const error = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.clearanceM
-      if (Math.abs(error) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM) {
+    for (let i = 0; i < 7; i += 1) {
+      const probe = footSoleAlignmentProbe(root, side, correctedJoints, clip)
+      const clearanceError = NOETIX_VISUAL_RIG.supportTargetClearanceM - probe.center.clearanceM
+      const pitchError = -probe.spreadM
+      if (
+        Math.abs(clearanceError) <= NOETIX_VISUAL_RIG.jointClearanceToleranceM &&
+        Math.abs(probe.spreadM) <= NOETIX_VISUAL_RIG.supportSolePitchToleranceM
+      ) {
         break
       }
       let denom = 0
@@ -1620,10 +1719,11 @@ function supportJointIk(root, clip, joints) {
       for (const field of fields) {
         const trial = cloneJointSamples(correctedJoints)
         trial[footName][field] += epsilon
-        const trialProbe = terrainContactProbe(legPose(root, side, trial).sole, clip)
-        const derivative = (trialProbe.clearanceM - probe.clearanceM) / epsilon
-        derivatives[field] = derivative
-        denom += derivative * derivative
+        const trialProbe = footSoleAlignmentProbe(root, side, trial, clip)
+        const clearanceDerivative = (trialProbe.center.clearanceM - probe.center.clearanceM) / epsilon
+        const pitchDerivative = (trialProbe.spreadM - probe.spreadM) / epsilon
+        derivatives[field] = { clearance: clearanceDerivative, pitch: pitchDerivative }
+        denom += clearanceDerivative * clearanceDerivative + pitchWeight * pitchDerivative * pitchDerivative
       }
       if (denom <= 0.000001) {
         break
@@ -1633,7 +1733,11 @@ function supportJointIk(root, clip, joints) {
         const maxFieldCorrection = field === 'knee'
           ? Math.min(limit, Math.max(0, -joints[footName].knee))
           : limit
-        const proposed = jointCorrections[footName][field] + error * derivatives[field] / denom * 0.85
+        const proposed = jointCorrections[footName][field] +
+          (
+            clearanceError * derivatives[field].clearance +
+            pitchWeight * pitchError * derivatives[field].pitch
+          ) / denom * 0.85 * solveWeight
         const bounded = clamp(proposed, -limit, maxFieldCorrection)
         const delta = bounded - jointCorrections[footName][field]
         correctedJoints[footName][field] += delta
@@ -1648,6 +1752,7 @@ function supportJointIk(root, clip, joints) {
     solveLockedFoot(footName)
   }
   const supportFinalProbe = terrainContactProbe(legPose(root, supportSide, correctedJoints).sole, clip)
+  const supportFinalSoleAlignment = footSoleAlignmentProbe(root, supportSide, correctedJoints, clip)
   return {
     correctedJoints,
     jointCorrections,
@@ -1657,6 +1762,8 @@ function supportJointIk(root, clip, joints) {
       preClearanceM: supportPreProbe.clearanceM,
       finalClearanceM: supportFinalProbe.clearanceM,
       finalErrorM: NOETIX_VISUAL_RIG.supportTargetClearanceM - supportFinalProbe.clearanceM,
+      preSoleAlignment: supportPreSoleAlignment,
+      finalSoleAlignment: supportFinalSoleAlignment,
       saturated,
     },
   }
@@ -1735,6 +1842,12 @@ function terrainIkCorrection(root, clip, joints, footLockCorrection) {
     NOETIX_VISUAL_RIG.pelvisCorrectionMaxM,
   )
   const pelvisRoot = robotRoot(clip, pelvisCorrectionM, footLockCorrection)
+  const supportSoleAlignment = footSoleAlignmentProbe(
+    pelvisRoot,
+    supportSide,
+    jointIk.correctedJoints,
+    clip,
+  )
   const swingClearance = swingClearanceIk(
     pelvisRoot,
     clip,
@@ -1746,6 +1859,7 @@ function terrainIkCorrection(root, clip, joints, footLockCorrection) {
     correctedJoints: jointIk.correctedJoints,
     jointCorrections: jointIk.jointCorrections,
     jointIk: jointIk.report,
+    supportSoleAlignment,
     swingClearance,
     rawPelvisCorrectionM,
     pelvisCorrectionM,
@@ -1885,6 +1999,14 @@ function initRobot(canvas) {
       pelvisCorrectionM: Number(geometry.diagnostics.ik.pelvisCorrectionM.toFixed(4)),
       saturated: geometry.diagnostics.ik.saturated,
       supportClearanceError: Number(geometry.diagnostics.quality.supportClearanceError.toFixed(4)),
+      supportSoleAlignment: {
+        spreadM: Number(geometry.diagnostics.quality.supportSoleAlignment.spreadM.toFixed(4)),
+        maxClearanceErrorM: Number(geometry.diagnostics.quality.supportSoleAlignment.maxClearanceErrorM.toFixed(4)),
+        targetClearanceM: Number(geometry.diagnostics.quality.supportSoleAlignment.targetClearanceM.toFixed(4)),
+        heelClearanceM: Number(geometry.diagnostics.quality.supportSoleAlignment.heel.clearanceM.toFixed(4)),
+        centerClearanceM: Number(geometry.diagnostics.quality.supportSoleAlignment.center.clearanceM.toFixed(4)),
+        toeClearanceM: Number(geometry.diagnostics.quality.supportSoleAlignment.toe.clearanceM.toFixed(4)),
+      },
       swingClearance: {
         foot: geometry.diagnostics.ik.swingClearance.foot,
         active: geometry.diagnostics.ik.swingClearance.active,
@@ -1928,6 +2050,12 @@ function initRobot(canvas) {
       rightMaxStepM: Number(geometry.diagnostics.quality.footLockDrift.perFoot.right.maxStepM.toFixed(4)),
       sampleCount: geometry.diagnostics.quality.footLockDrift.sampleCount,
     })
+    canvas.dataset.footWorldMotionContinuity = JSON.stringify({
+      maxStepM: Number(geometry.diagnostics.quality.footWorldMotionContinuity.maxStepM.toFixed(4)),
+      leftMaxStepM: Number(geometry.diagnostics.quality.footWorldMotionContinuity.perFoot.left.maxStepM.toFixed(4)),
+      rightMaxStepM: Number(geometry.diagnostics.quality.footWorldMotionContinuity.perFoot.right.maxStepM.toFixed(4)),
+      sampleCount: geometry.diagnostics.quality.footWorldMotionContinuity.sampleCount,
+    })
     canvas.dataset.rootCorrectionContinuity = JSON.stringify({
       maxStepM: Number(geometry.diagnostics.quality.rootCorrectionContinuity.maxStepM.toFixed(4)),
       maxFrame: geometry.diagnostics.quality.rootCorrectionContinuity.maxFrame,
@@ -1961,6 +2089,7 @@ function initRobot(canvas) {
     canvas.dataset.lockedFootAttachmentStatus = geometry.diagnostics.quality.statuses.lockedFootAttachment
     canvas.dataset.supportFootLockedStatus = geometry.diagnostics.quality.statuses.supportFootLocked
     canvas.dataset.stanceFootWorldLockStatus = geometry.diagnostics.quality.statuses.stanceFootWorldLock
+    canvas.dataset.footWorldMotionContinuityStatus = geometry.diagnostics.quality.statuses.footWorldMotionContinuity
     canvas.dataset.rootCorrectionContinuityStatus = geometry.diagnostics.quality.statuses.rootCorrectionContinuity
     canvas.dataset.swingFootClearanceStatus = geometry.diagnostics.quality.statuses.swingFootClearance
     canvas.dataset.terrainContactStatus = geometry.diagnostics.quality.statuses.terrainContact
@@ -1968,6 +2097,7 @@ function initRobot(canvas) {
     canvas.dataset.nonFlatTerrainStatus = geometry.diagnostics.quality.statuses.nonFlatTerrain
     canvas.dataset.ikCorrectionStatus = geometry.diagnostics.quality.statuses.ikCorrectionBounded
     canvas.dataset.jointIkStatus = geometry.diagnostics.quality.statuses.jointIkCorrection
+    canvas.dataset.supportSoleAlignmentStatus = geometry.diagnostics.quality.statuses.supportSoleAlignment
     canvas.dataset.kneeRoleContrastStatus = geometry.diagnostics.quality.statuses.kneeRoleContrast
     canvas.dataset.armCounterSwingStatus = geometry.diagnostics.quality.statuses.armCounterSwing
     canvas.dataset.toeRollStatus = geometry.diagnostics.quality.statuses.toeRoll

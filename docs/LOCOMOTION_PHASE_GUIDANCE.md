@@ -194,8 +194,11 @@ stance-foot world drift. It also exposes `limbForwardBendStatus` so knee sign
 mistakes are caught as FK convention failures instead of being hidden by a
 passing knee-contrast metric. It also exposes
 `rootCorrectionContinuityStatus` so support-transfer snaps are caught directly.
-It renders root/phase timing rails beside the robot so clip timing is visible
-without replacing the rigid FK pose.
+It exposes `footWorldMotionContinuityStatus` and
+`footWorldMotionContinuity` so sudden forward-then-backward foot pops across
+lift-off, release, or loop wrap are caught directly. It renders root/phase
+timing rails beside the robot so clip timing is visible without replacing the
+rigid FK pose.
 
 Deliverables:
 
@@ -223,13 +226,19 @@ locking, so support soles are corrected to terrain while their world drift
 stays bounded by the gait contract.
 The Rabbita adapter also applies a bounded swing-foot clearance correction
 after toe-off so the airborne foot clears non-flat terrain without stretching
-links.
+links. Support-foot IK now balances toe, heel, and center sole clearances so
+the rendered foot reads as planted on terrain slopes instead of only matching a
+single contact point. IK correction is phase-weighted through lift-off and
+pre-contact release so landing alignment is prepared smoothly instead of being
+applied as a one-frame push-back at the support switch.
 
 Deliverables:
 
 - bounded foot target correction
 - bounded pelvis/base height correction
 - hip, knee, and ankle correction evidence
+- support sole alignment evidence
+- full foot world-motion continuity evidence
 - swing-foot clearance evidence
 - saturation evidence
 - flat-terrain preservation tests
