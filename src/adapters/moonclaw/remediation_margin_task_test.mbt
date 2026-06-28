@@ -1885,3 +1885,87 @@ test "MoonClaw Noetix readiness work items render markdown and json" {
   assert_true(json.contains("\"may_consume_moonrobo_simulation\": false"))
   assert_true(json.contains("\"hardware_denied\": true"))
 }
+
+///|
+test "MoonClaw Noetix readiness work item receipts carry blockers forward" {
+  let receipts = @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts()
+  assert_eq(receipts.length(), 4)
+  assert_true(
+    receipts.all(fn(receipt) {
+      receipt.receipt.status == @moonclaw.MoonClawReceiptStatus::Accepted &&
+      receipt.source_task_id ==
+      "moonclaw/first-trusted-square/noetix-review-task" &&
+      receipt.source_decision_id ==
+      "moonclaw/first-trusted-square/noetix-simulation-readiness-decision" &&
+      receipt.source_work_item_state ==
+      @moonclaw.MoonClawReceiptStatus::NeedsReview &&
+      receipt.result_state ==
+      @moonclaw.MoonClawNoetixReadinessWorkItemReceiptState::NoetixReadinessWorkItemsCarriedForward &&
+      receipt.work_item_result.status ==
+      @moonclaw.MoonClawNoetixReadinessWorkItemResultStatus::NoetixReadinessWorkItemPendingEvidence &&
+      !receipt.may_consume_simulation &&
+      !receipt.may_consume_moonrobo_simulation &&
+      receipt.simulation_state ==
+      @moonrobo.MoonroboExecutionState::SimulationBlocked &&
+      !receipt.hardware_authority_change &&
+      receipt.hardware_denied &&
+      receipt.hardware_state == @moonrobo.MoonroboExecutionState::HardwareDenied &&
+      receipt.validation_checks.all(fn(check) { check.passed })
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.blocker_domain == "source-metadata" &&
+      receipt.work_item_result.blocker_count == 50 &&
+      receipt.work_item_result.blocker_ids.contains(
+        "missing-collision-shape:left_foot",
+      )
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.blocker_domain == "physical-model" &&
+      receipt.work_item_result.blocker_count == 9 &&
+      receipt.work_item_result.blocker_ids.contains("assumed:mass")
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.blocker_domain == "world-replay" &&
+      receipt.work_item_result.blocker_count == 3 &&
+      receipt.work_item_result.acceptance_check.contains(
+        "check_moonrobo_noetix_control",
+      )
+    }),
+  )
+  assert_true(
+    receipts.any(fn(receipt) {
+      receipt.work_item_result.blocker_domain == "review-artifacts" &&
+      receipt.work_item_result.blocker_count == 4 &&
+      receipt.work_item_result.acceptance_check.contains(
+        "check_moonclaw_noetix_review_task",
+      )
+    }),
+  )
+}
+
+///|
+test "MoonClaw Noetix readiness work item receipt renderers expose gates" {
+  let markdown = @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts_markdown()
+  assert_true(markdown.contains("MoonClaw Noetix Readiness Work Item Receipts"))
+  assert_true(markdown.contains("source-work-item-needs-review"))
+  assert_true(markdown.contains("readiness-decision-blocked"))
+  assert_true(markdown.contains("NoetixReadinessWorkItemsCarriedForward"))
+  let json = @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts_json().stringify(
+    indent=2,
+  )
+  assert_true(
+    json.contains(
+      "\"result_state\": \"NoetixReadinessWorkItemsCarriedForward\"",
+    ),
+  )
+  assert_true(json.contains("\"simulation_state\": \"SimulationBlocked\""))
+  assert_true(json.contains("\"may_consume_simulation\": false"))
+  assert_true(json.contains("\"may_consume_moonrobo_simulation\": false"))
+  assert_true(json.contains("\"hardware_authority_change\": false"))
+}

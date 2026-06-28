@@ -10,6 +10,7 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source MoonClaw Noetix review task: `output/moonclaw/first_trusted_square_noetix_review_task.json`
 - Source MoonClaw Noetix readiness decision: `output/moonclaw/first_trusted_square_noetix_readiness_decision.json`
 - Source MoonClaw Noetix readiness work items: `output/moonclaw/first_trusted_square_noetix_readiness_work_items.json`
+- Source MoonClaw Noetix readiness work item receipts: `output/moonclaw/first_trusted_square_noetix_readiness_work_item_receipts.json`
 - Source MoonClaw remediation-margin task: `output/moonclaw/first_trusted_square_remediation_margin_task.json`
 - Source MoonClaw remediation-margin refresh task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_task.json`
 - Source MoonClaw remediation-margin refresh follow-up task: `output/moonclaw/first_trusted_square_remediation_margin_refresh_followup_task.json`
@@ -55,6 +56,6 @@ This directory is generated. It materializes the MoonBook entry index, per-entry
 - Source selected-route horizon: `output/mission/first_trusted_square_northeast_stepout_horizon.json`
 - Source selected-route terrain remediation: `output/mission/first_trusted_square_northeast_stepout_terrain_remediation.json`
 - Source selected-route energy remediation: `output/mission/first_trusted_square_energy_remediation.json`
-- Entries: 87
+- Entries: 88
 - Review queue items: 29
 - Review transitions: 29

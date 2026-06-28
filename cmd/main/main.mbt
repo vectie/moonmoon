@@ -148,6 +148,23 @@ fn main {
     args.contains("noetix") &&
     args.contains("review") &&
     args.contains("work") &&
+    args.contains("item") &&
+    args.contains("receipts") {
+    if output_json {
+      println(
+        @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts_json().stringify(
+          indent=2,
+        ),
+      )
+    } else {
+      println(
+        @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts_markdown(),
+      )
+    }
+  } else if args.contains("moonclaw") &&
+    args.contains("noetix") &&
+    args.contains("review") &&
+    args.contains("work") &&
     args.contains("items") {
     if output_json {
       println(

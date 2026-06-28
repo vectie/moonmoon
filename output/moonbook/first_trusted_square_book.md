@@ -440,6 +440,11 @@
   - claim: derived
   - confidence: 0.57
   - path: moonclaw/first-trusted-square/noetix-readiness-work-items.json
+- moonclaw/first-trusted-square/noetix-readiness-work-item-receipts: MoonClaw Noetix readiness work item receipts for First Trusted Square / Shackleton Rim rehearsal tile
+  - kind: moonclaw-noetix-readiness-work-item-receipts
+  - claim: derived
+  - confidence: 0.57
+  - path: moonclaw/first-trusted-square/noetix-readiness-work-item-receipts.json
 
 ## Review Queue
 

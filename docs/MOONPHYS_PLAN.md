@@ -698,5 +698,19 @@ or as a data artifact beside the Noetix model.
    it.
 4. Feed accepted Noetix review outcomes into downstream Moonrobo/MoonClaw gates.
 
+### Phase 1 Gate Added: Noetix Readiness Receipts
+
+MoonClaw now emits Noetix readiness work item receipts that carry the four
+blocked readiness domains forward as accepted audit receipts while keeping the
+underlying work item result pending fresh evidence. These receipts preserve
+named blockers, target evidence paths, command/check pairs, `SimulationBlocked`,
+`may_consume_simulation = false`, and `HardwareDenied` under
+`moonmoon-safety-gate-only`.
+
+The receipt gate lives in MoonClaw instead of Moonrobo so Moonrobo remains a
+clean producer of robot simulation evidence. MoonBook materializes the receipts
+as a first-class workspace entry, and the dossier build validates the generated
+JSON before any downstream MoonRobo simulation consumption can be claimed.
+
 This gives the project a clean physics library plus a credible first Noetix
 walking-on-the-Moon demo without mixing product layers.

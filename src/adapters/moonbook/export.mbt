@@ -43,6 +43,7 @@ pub(all) enum BookEntryKind {
   MoonClawNoetixReviewTask
   MoonClawNoetixReadinessDecision
   MoonClawNoetixReadinessWorkItems
+  MoonClawNoetixReadinessWorkItemReceipts
   MoonClawRemediationMarginRefreshTask
   MoonClawRemediationMarginRefreshFollowupTask
   MoonClawRemediationMarginCloseoutActionTask
@@ -188,6 +189,8 @@ pub fn book_entry_kind_label(kind : BookEntryKind) -> String {
     MoonClawNoetixReviewTask => "moonclaw-noetix-review-task"
     MoonClawNoetixReadinessDecision => "moonclaw-noetix-readiness-decision"
     MoonClawNoetixReadinessWorkItems => "moonclaw-noetix-readiness-work-items"
+    MoonClawNoetixReadinessWorkItemReceipts =>
+      "moonclaw-noetix-readiness-work-item-receipts"
     MoonClawRemediationMarginRefreshTask =>
       "moonclaw-remediation-margin-refresh-task"
     MoonClawRemediationMarginRefreshFollowupTask =>
@@ -1157,6 +1160,22 @@ fn moonclaw_noetix_readiness_work_items_entry(
 }
 
 ///|
+fn moonclaw_noetix_readiness_work_item_receipts_entry(
+  dossier : @site.SiteDossier,
+) -> BookEntry {
+  let receipts = @moonclaw.first_trusted_square_noetix_readiness_work_item_receipts()
+  {
+    entry_id: "moonclaw/\{dossier.site.site_id}/noetix-readiness-work-item-receipts",
+    title: "MoonClaw Noetix readiness work item receipts for \{dossier.site.name}",
+    kind: MoonClawNoetixReadinessWorkItemReceipts,
+    claim_kind: @core.ClaimKind::Derived,
+    confidence: 0.57,
+    path: "moonclaw/\{dossier.site.site_id}/noetix-readiness-work-item-receipts.json",
+    summary: "\{receipts.length()} Noetix readiness work item receipts carry pending blocker domains forward with MoonRobo simulation consumption false and hardware denied",
+  }
+}
+
+///|
 fn selected_route_clearance_entry(
   dossier : @site.SiteDossier,
   clearance_transitions : Array[@mission.MissionClearanceTransition],
@@ -2068,6 +2087,7 @@ fn book_entries(
   entries.push(moonclaw_noetix_review_task_entry(dossier))
   entries.push(moonclaw_noetix_readiness_decision_entry(dossier))
   entries.push(moonclaw_noetix_readiness_work_items_entry(dossier))
+  entries.push(moonclaw_noetix_readiness_work_item_receipts_entry(dossier))
   entries
 }
 
