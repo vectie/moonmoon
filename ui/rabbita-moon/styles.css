@@ -352,7 +352,7 @@ h2 {
 .mission-command-bar {
   position: absolute;
   left: 50%;
-  top: 134px;
+  top: 184px;
   transform: translateX(-50%);
   width: min(520px, calc(100% - 48px));
   height: 50px;
@@ -388,7 +388,7 @@ h2 {
 
 .mission-hud-top {
   left: 50%;
-  top: 196px;
+  top: 246px;
   transform: translateX(-50%);
   display: flex;
   justify-content: center;
@@ -578,7 +578,7 @@ h2 {
   position: fixed;
   z-index: 20;
   right: 24px;
-  top: 228px;
+  top: 118px;
   width: auto;
   margin: 0;
   border: 0;
@@ -590,7 +590,7 @@ h2 {
   position: fixed;
   z-index: 20;
   left: 24px;
-  top: 228px;
+  top: 118px;
   width: auto;
   margin: 0;
   border: 0;
@@ -600,7 +600,7 @@ h2 {
 
 .robot-drawer[open],
 .mission-drawer[open] {
-  top: 78px;
+  top: 118px;
   bottom: 24px;
   border: 1px solid rgba(247, 251, 249, .14);
   border-radius: 8px;
@@ -849,7 +849,7 @@ ul {
   }
 
   .mission-hud-top {
-    top: 184px;
+    top: 246px;
   }
 
   .mission-left-panel {
@@ -888,7 +888,7 @@ ul {
   }
 
   .mission-command-bar {
-    top: 118px;
+    top: 180px;
   }
 
   .mission-hud-top {
@@ -915,15 +915,40 @@ ul {
 
   .robot-drawer,
   .mission-drawer {
-    left: 12px;
-    right: 12px;
-    top: 188px;
+    top: 114px;
     width: auto;
+  }
+
+  .robot-drawer-toggle,
+  .mission-drawer-toggle {
+    gap: 10px;
+    padding: 9px 10px;
+  }
+
+  .robot-drawer-toggle span span,
+  .mission-drawer-toggle span span {
+    display: none;
+  }
+
+  .robot-drawer-toggle strong,
+  .mission-drawer-toggle strong {
+    padding: 7px 8px;
+    font-size: 10px;
+  }
+
+  .robot-drawer {
+    right: 12px;
+  }
+
+  .mission-drawer {
+    left: 12px;
   }
 
   .robot-drawer[open],
   .mission-drawer[open] {
-    top: 12px;
+    top: 114px;
+    left: 12px;
+    right: 12px;
     width: auto;
   }
 
