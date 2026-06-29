@@ -102,6 +102,17 @@ const sceneContracts = [
   'EARTHRISE_TEXTURE_SOURCE',
   'earth-atmos-2048-real-texture',
   'earthriseTextureSource',
+  'EARTHRISE_LIGHTING_MODEL',
+  'utc-subsolar-terminator-v1',
+  'EARTHRISE_NIGHT_FILL',
+  'EARTHRISE_DAY_BOOST',
+  'earthUtcLightingState',
+  'createEarthMaterial',
+  'updateEarthriseLighting',
+  'earthriseLightingModel',
+  'earthriseUtcLightingIso',
+  'earthriseSubsolarLongitudeDeg',
+  'earthriseSubsolarLatitudeDeg',
   'LUNAR_SURFACE_VISUAL_MODEL',
   'curved-lunar-cap',
   'lunarSurfaceVisualModel',
@@ -301,6 +312,10 @@ if (diagnostics.terrainTextureSource !== 'lola-dem-moonsand-regolith-texture') {
 
 if (diagnostics.regolithMaterialModel !== 'lola-hillshade-moonsand-microcrater-pebbles-v1') {
   throw new Error('scene3d.js did not expose the expected moonsand regolith material model')
+}
+
+if (diagnostics.earthriseLightingModel !== 'utc-subsolar-terminator-v1') {
+  throw new Error('scene3d.js did not expose the expected time-based Earthrise lighting model')
 }
 
 if (!diagnostics?.moonphysReviewFrameEvidence) {

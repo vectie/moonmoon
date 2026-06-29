@@ -42,6 +42,9 @@ const LOLA_TERRAIN_BUMP_REPEAT = 26
 const LOLA_REGOLITH_MATERIAL_MODEL = 'lola-hillshade-moonsand-microcrater-pebbles-v1'
 const LOLA_DISTANT_RIDGE_SAMPLES = 96
 const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
+const EARTHRISE_LIGHTING_MODEL = 'utc-subsolar-terminator-v1'
+const EARTHRISE_NIGHT_FILL = 0.34
+const EARTHRISE_DAY_BOOST = 1.36
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
 
 function clamp(value, min, max) {
@@ -981,24 +984,115 @@ function createEarthTexture() {
   return texture
 }
 
+function dayOfYearUtc(date) {
+  const start = Date.UTC(date.getUTCFullYear(), 0, 0)
+  const current = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
+  return Math.floor((current - start) / 86400000)
+}
+
+function earthUtcLightingState(date = new Date()) {
+  const utcHours =
+    date.getUTCHours() +
+    date.getUTCMinutes() / 60 +
+    date.getUTCSeconds() / 3600 +
+    date.getUTCMilliseconds() / 3600000
+  const yearDay = dayOfYearUtc(date)
+  const subsolarLatitudeRad = 23.44 * DEG * Math.sin(((yearDay - 80) / 365.2422) * Math.PI * 2)
+  const subsolarLongitudeRad = (12 - utcHours) / 24 * Math.PI * 2
+  return {
+    subsolarLongitudeRad,
+    subsolarLatitudeRad,
+    rotationOffset: ((utcHours / 24) + 1) % 1,
+    iso: date.toISOString(),
+  }
+}
+
+function createEarthMaterial() {
+  const lighting = earthUtcLightingState()
+  return new THREE.ShaderMaterial({
+    uniforms: {
+      earthMap: { value: createEarthTexture() },
+      subsolarLongitude: { value: lighting.subsolarLongitudeRad },
+      subsolarLatitude: { value: lighting.subsolarLatitudeRad },
+      earthRotationOffset: { value: lighting.rotationOffset },
+      nightFill: { value: EARTHRISE_NIGHT_FILL },
+      dayBoost: { value: EARTHRISE_DAY_BOOST },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      varying vec3 vNormal;
+
+      void main() {
+        vUv = uv;
+        vNormal = normalize(normalMatrix * normal);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      uniform sampler2D earthMap;
+      uniform float subsolarLongitude;
+      uniform float subsolarLatitude;
+      uniform float earthRotationOffset;
+      uniform float nightFill;
+      uniform float dayBoost;
+      varying vec2 vUv;
+      varying vec3 vNormal;
+
+      const float PI = 3.141592653589793;
+
+      vec3 surfaceDirection(vec2 uv) {
+        float lon = (uv.x - 0.5) * PI * 2.0;
+        float lat = (0.5 - uv.y) * PI;
+        return normalize(vec3(cos(lat) * sin(lon), sin(lat), cos(lat) * cos(lon)));
+      }
+
+      void main() {
+        vec2 sampleUv = vec2(fract(vUv.x + earthRotationOffset), vUv.y);
+        vec3 tex = texture2D(earthMap, sampleUv).rgb;
+        vec3 surface = surfaceDirection(sampleUv);
+        vec3 sun = normalize(vec3(
+          cos(subsolarLatitude) * sin(subsolarLongitude),
+          sin(subsolarLatitude),
+          cos(subsolarLatitude) * cos(subsolarLongitude)
+        ));
+        float daylight = smoothstep(-0.07, 0.18, dot(surface, sun));
+        float limb = smoothstep(-0.18, 0.58, vNormal.z);
+        vec3 nightTint = vec3(0.055, 0.10, 0.16);
+        vec3 dayColor = tex * dayBoost;
+        vec3 nightColor = tex * nightFill + nightTint;
+        vec3 color = mix(nightColor, dayColor, daylight);
+        color += vec3(0.10, 0.18, 0.25) * (1.0 - abs(daylight - 0.5) * 2.0) * 0.28;
+        color *= mix(0.76, 1.0, limb);
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `,
+  })
+}
+
+function updateEarthriseLighting(group, date = new Date()) {
+  const earth = group.userData.earthMesh
+  if (!earth?.material?.uniforms) return
+  const lighting = earthUtcLightingState(date)
+  earth.material.uniforms.subsolarLongitude.value = lighting.subsolarLongitudeRad
+  earth.material.uniforms.subsolarLatitude.value = lighting.subsolarLatitudeRad
+  earth.material.uniforms.earthRotationOffset.value = lighting.rotationOffset
+  group.userData.utcLightingIso = lighting.iso
+  group.userData.subsolarLongitudeDeg = lighting.subsolarLongitudeRad / DEG
+  group.userData.subsolarLatitudeDeg = lighting.subsolarLatitudeRad / DEG
+}
+
 function createEarthrise() {
   const group = new THREE.Group()
   const earth = new THREE.Mesh(
     new THREE.SphereGeometry(4.8, 64, 32),
-    new THREE.MeshStandardMaterial({
-      map: createEarthTexture(),
-      roughness: 0.8,
-      metalness: 0,
-      emissive: new THREE.Color(0x07131f),
-      emissiveIntensity: 0.18,
-    }),
+    createEarthMaterial(),
   )
   const atmosphere = new THREE.Mesh(
     new THREE.SphereGeometry(5.06, 64, 32),
     new THREE.MeshBasicMaterial({
       color: 0x9ed5ff,
       transparent: true,
-      opacity: 0.16,
+      opacity: 0.24,
       side: THREE.BackSide,
     }),
   )
@@ -1006,8 +1100,11 @@ function createEarthrise() {
   earth.rotation.z = -0.24
   group.add(atmosphere)
   group.add(earth)
+  group.userData.earthMesh = earth
   group.userData.panelRole = 'earthrise-backdrop'
   group.userData.textureSource = EARTHRISE_TEXTURE_SOURCE
+  group.userData.lightingModel = EARTHRISE_LIGHTING_MODEL
+  updateEarthriseLighting(group)
   return group
 }
 
@@ -1059,6 +1156,7 @@ function initThirdPersonMoonWalk(canvas) {
   reportE1SourceReadiness(e1Visuals.visuals, canvas)
   let cachedQuality = null
   let lastQualityRefreshMs = -Infinity
+  let lastEarthLightingRefreshMs = -Infinity
   function draw(now) {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
@@ -1096,6 +1194,10 @@ function initThirdPersonMoonWalk(canvas) {
     updateDistantLolaRidges(distantRidges, followZ, geometry.diagnostics)
     grid.position.z = followZ + 8.5
     earthrise.position.set(-2.2, 3.65, followZ + 32)
+    if (now - lastEarthLightingRefreshMs >= 10000) {
+      updateEarthriseLighting(earthrise)
+      lastEarthLightingRefreshMs = now
+    }
     updateE1ThreeVisuals(
       root,
       geometry.diagnostics,
@@ -1138,6 +1240,10 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.distantRidgeStatus = 'lola-dem-ridges-updating'
     canvas.dataset.panelBackdrop = earthrise.userData.panelRole
     canvas.dataset.earthriseTextureSource = earthrise.userData.textureSource
+    canvas.dataset.earthriseLightingModel = earthrise.userData.lightingModel
+    canvas.dataset.earthriseUtcLightingIso = earthrise.userData.utcLightingIso
+    canvas.dataset.earthriseSubsolarLongitudeDeg = earthrise.userData.subsolarLongitudeDeg.toFixed(2)
+    canvas.dataset.earthriseSubsolarLatitudeDeg = earthrise.userData.subsolarLatitudeDeg.toFixed(2)
     canvas.dataset.lunarSurfaceVisualModel = LUNAR_SURFACE_VISUAL_MODEL
     canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
@@ -3341,6 +3447,7 @@ globalThis.__moonmoonGaitDiagnostics = {
   terrainHeightScale: LOLA_TERRAIN_HEIGHT_SCALE,
   terrainTextureSource: LOLA_TERRAIN_TEXTURE_SOURCE,
   regolithMaterialModel: LOLA_REGOLITH_MATERIAL_MODEL,
+  earthriseLightingModel: EARTHRISE_LIGHTING_MODEL,
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,
