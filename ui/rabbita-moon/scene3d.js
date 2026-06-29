@@ -380,6 +380,26 @@ function loadMoonTexture(gl, canvas) {
   return texture
 }
 
+function canvasRenderActive(canvas) {
+  if (!canvas.isConnected) return false
+  const rect = canvas.getBoundingClientRect()
+  if (rect.width < 2 || rect.height < 2) return false
+  const style = getComputedStyle(canvas)
+  return style.display !== 'none' && style.visibility !== 'hidden'
+}
+
+function markCanvasRenderPaused(canvas) {
+  canvas.dataset.renderPaused = 'true'
+  canvas.dataset.pausedFrames = String(Number(canvas.dataset.pausedFrames || 0) + 1)
+}
+
+function markCanvasRenderActive(canvas) {
+  if (canvas.dataset.renderPaused === 'true') {
+    canvas.dataset.renderResumedCount = String(Number(canvas.dataset.renderResumedCount || 0) + 1)
+  }
+  canvas.dataset.renderPaused = 'false'
+}
+
 function initMoon(canvas, view) {
   const gl = canvas.getContext('webgl', { antialias: true })
   if (!gl) {
@@ -419,6 +439,12 @@ function initMoon(canvas, view) {
     canvas.releasePointerCapture(event.pointerId)
   }
   function draw() {
+    if (!canvasRenderActive(canvas)) {
+      markCanvasRenderPaused(canvas)
+      requestAnimationFrame(draw)
+      return
+    }
+    markCanvasRenderActive(canvas)
     resizeCanvas(canvas, gl)
     gl.clearColor(0.02, 0.026, 0.024, 1)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
@@ -723,6 +749,12 @@ function initThirdPersonMoonWalk(canvas) {
   let cachedQuality = null
   let lastQualityRefreshMs = -Infinity
   function draw(now) {
+    if (!canvasRenderActive(canvas)) {
+      markCanvasRenderPaused(canvas)
+      requestAnimationFrame(draw)
+      return
+    }
+    markCanvasRenderActive(canvas)
     const ratio = Math.min(2, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(420, Math.floor(rect.width * ratio))
@@ -2641,6 +2673,12 @@ function initRobot(canvas) {
   let lastQualityRefreshMs = -Infinity
   let lastDiagnosticDatasetMs = -Infinity
   function draw(now) {
+    if (!canvasRenderActive(canvas)) {
+      markCanvasRenderPaused(canvas)
+      requestAnimationFrame(draw)
+      return
+    }
+    markCanvasRenderActive(canvas)
     const ratio = Math.min(2, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(320, Math.floor(rect.width * ratio))
