@@ -244,7 +244,7 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
                 attrs=@html.Attrs::build().width(540).height(360),
                 "",
               ),
-              div(class="terrain-readout dock-readout", [
+              div(class="scene-readout dock-readout", [
                 span([b("LOLA terrain"), span(" \{view.selected_route_id}")]),
                 span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
               ]),

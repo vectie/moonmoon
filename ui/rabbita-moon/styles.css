@@ -554,9 +554,24 @@ h2 {
 
 .mission-moon-dock .dock-readout {
   left: 12px;
-  right: 12px;
+  right: 168px;
   top: 10px;
+  bottom: auto;
   font-size: 11px;
+  align-items: center;
+  z-index: 3;
+  min-height: 26px;
+}
+
+.mission-moon-dock .dock-readout span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mission-moon-dock .dock-readout > span:last-child {
+  display: none;
 }
 
 .robot-drawer {
@@ -844,7 +859,7 @@ ul {
 
   .mission-moon-dock {
     right: 12px;
-    width: min(290px, calc(100% - 24px));
+    width: min(360px, calc(100% - 24px));
     height: 172px;
   }
 
