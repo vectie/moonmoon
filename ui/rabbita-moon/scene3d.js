@@ -16,6 +16,7 @@ import {
   walkClipSample,
 } from './gait-clip.js'
 import { E1_ASM_ASSEMBLY } from './.generated/e1-asm-assembly.js'
+import LOLA_TERRAIN_TILE from './assets/lro_lola/first_trusted_square_lola_5m_129.json' with { type: 'json' }
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
@@ -29,6 +30,7 @@ const THIRD_PERSON_TERRAIN_COLS = 48
 const THIRD_PERSON_TERRAIN_ROWS = 64
 const THIRD_PERSON_TERRAIN_WIDTH_M = 4.8
 const THIRD_PERSON_TERRAIN_DEPTH_M = 8.8
+const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -718,6 +720,10 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.swingFoot = geometry.diagnostics.swingFoot
     canvas.dataset.rootDistanceM = geometry.diagnostics.rootDistanceM.toFixed(2)
     canvas.dataset.terrainHeightRangeM = geometry.diagnostics.terrain.heightRangeM.toFixed(4)
+    canvas.dataset.terrainSource = LOLA_TERRAIN_TILE.tile_id
+    canvas.dataset.terrainSourceProduct = LOLA_TERRAIN_TILE.source.product_id
+    canvas.dataset.terrainSourceResolutionM = String(LOLA_TERRAIN_TILE.grid.cell_size_m)
+    canvas.dataset.terrainSourceHeightRangeM = String(LOLA_TERRAIN_TILE.grid.height_range_m)
     canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
@@ -798,6 +804,34 @@ function vec3Cross(a, b) {
 function normalizeVec3(v) {
   const len = Math.max(0.000001, vec3Length(v))
   return { x: v.x / len, y: v.y / len, z: v.z / len }
+}
+
+function wrapUnit(value, size) {
+  return ((value % size) + size) % size
+}
+
+function lolaTileElevationM(xM, zM) {
+  const grid = LOLA_TERRAIN_TILE.grid
+  const cellSizeM = grid.cell_size_m
+  const col = wrapUnit((grid.cols - 1) / 2 + xM / cellSizeM, grid.cols - 1)
+  const row = wrapUnit((grid.rows - 1) / 2 - zM / cellSizeM, grid.rows - 1)
+  const col0 = Math.floor(col)
+  const row0 = Math.floor(row)
+  const col1 = (col0 + 1) % grid.cols
+  const row1 = (row0 + 1) % grid.rows
+  const tx = col - col0
+  const ty = row - row0
+  const h00 = LOLA_TERRAIN_TILE.elevations_m[row0][col0]
+  const h10 = LOLA_TERRAIN_TILE.elevations_m[row0][col1]
+  const h01 = LOLA_TERRAIN_TILE.elevations_m[row1][col0]
+  const h11 = LOLA_TERRAIN_TILE.elevations_m[row1][col1]
+  return mix(mix(h00, h10, tx), mix(h01, h11, tx), ty)
+}
+
+function lolaLocalHeightM(x, z, clip) {
+  const travelZ = z + clip.rootDistanceM
+  const baselineM = lolaTileElevationM(0, clip.rootDistanceM)
+  return (lolaTileElevationM(x, travelZ) - baselineM) * LOLA_TERRAIN_HEIGHT_SCALE
 }
 
 function compactPoint(point) {
@@ -1840,22 +1874,19 @@ function footSoleAlignmentProbe(root, side, joints, clip) {
 }
 
 function terrainSampleAt(x, z, clip) {
-  const travelZ = z + clip.rootDistanceM
   const reliefScale = clip.terrainReliefScale ?? 1
-  const a = NOETIX_VISUAL_RIG.terrainReliefMaxM * reliefScale * 0.44
-  const b = NOETIX_VISUAL_RIG.terrainReliefMaxM * reliefScale * 0.22
-  const kxA = 0.9
-  const kzA = 3.1
-  const kxB = 2.4
-  const kzB = -1.7
-  const phaseA = kxA * x + kzA * travelZ
-  const phaseB = kxB * x + kzB * travelZ + 0.45
-  const heightM = a * Math.sin(phaseA) + b * Math.sin(phaseB)
-  const dhdx = a * kxA * Math.cos(phaseA) + b * kxB * Math.cos(phaseB)
-  const dhdz = a * kzA * Math.cos(phaseA) + b * kzB * Math.cos(phaseB)
+  const heightM = lolaLocalHeightM(x, z, clip) * reliefScale
+  const step = 0.08
+  const dhdx = (
+    lolaLocalHeightM(x + step, z, clip) - lolaLocalHeightM(x - step, z, clip)
+  ) * reliefScale / (step * 2)
+  const dhdz = (
+    lolaLocalHeightM(x, z + step, clip) - lolaLocalHeightM(x, z - step, clip)
+  ) * reliefScale / (step * 2)
   return {
     heightM,
     normal: normalizeVec3({ x: -dhdx, y: 1, z: -dhdz }),
+    source: LOLA_TERRAIN_TILE.tile_id,
   }
 }
 
@@ -2858,6 +2889,8 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
 
 globalThis.__moonmoonGaitDiagnostics = {
   rig: NOETIX_VISUAL_RIG,
+  terrainTile: LOLA_TERRAIN_TILE,
+  terrainHeightScale: LOLA_TERRAIN_HEIGHT_SCALE,
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,

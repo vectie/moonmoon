@@ -5,6 +5,7 @@
   "scripts": {
     "prepare:live-moonrobo": "node prepare-live-moonrobo-clip.mjs",
     "prepare:e1-asm": "node prepare-e1-asm-assets.mjs",
+    "prepare:lola-terrain": "node prepare-lola-terrain-asset.mjs",
     "predev": "npm run prepare:live-moonrobo && npm run prepare:e1-asm && moon build --target js --debug && node prepare-rabbita-build.mjs debug",
     "dev": "vite --host 127.0.0.1 --port 8766",
     "prebuild": "npm run prepare:live-moonrobo && npm run prepare:e1-asm && moon build --target js --release && node prepare-rabbita-build.mjs release",

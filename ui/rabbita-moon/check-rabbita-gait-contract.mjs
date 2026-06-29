@@ -60,6 +60,10 @@ const sceneContracts = [
   'third-person-moon-walk-rendered',
   'three-third-person-moon-terrain',
   'endless-e1-on-lunar-heightfield',
+  'first_trusted_square_lola_5m_129.json',
+  'LOLA_TERRAIN_HEIGHT_SCALE',
+  'terrainSourceProduct',
+  'terrainSourceResolutionM',
   'OrbitControls',
   'full-stl-source-indexed',
   'realtime-sampled-stl',
@@ -240,6 +244,14 @@ await import(new URL('./scene3d.js', import.meta.url).href)
 const diagnostics = globalThis.__moonmoonGaitDiagnostics
 if (!diagnostics?.sampleRobotGeometry) {
   throw new Error('scene3d.js did not expose the gait diagnostic sampler')
+}
+
+if (diagnostics.terrainTile?.source?.product_id !== 'LDEM_875S_5M') {
+  throw new Error('scene3d.js did not expose the expected LRO LOLA 5 m terrain tile')
+}
+
+if (diagnostics.terrainTile?.grid?.cell_size_m !== 5) {
+  throw new Error('scene3d.js terrain tile did not preserve the expected 5 m LOLA source resolution')
 }
 
 if (!diagnostics?.moonphysReviewFrameEvidence) {
