@@ -20,18 +20,22 @@ import LOLA_TERRAIN_TILE from './assets/lro_lola/first_trusted_square_lola_5m_12
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
+const EARTH_TEXTURE_URL = new URL('./assets/earth/earth_atmos_2048.jpg', import.meta.url).href
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
 const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
-const THIRD_PERSON_TERRAIN_COLS = 48
-const THIRD_PERSON_TERRAIN_ROWS = 64
-const THIRD_PERSON_TERRAIN_WIDTH_M = 4.8
-const THIRD_PERSON_TERRAIN_DEPTH_M = 8.8
+const THIRD_PERSON_TERRAIN_COLS = 96
+const THIRD_PERSON_TERRAIN_ROWS = 112
+const THIRD_PERSON_TERRAIN_WIDTH_M = 52
+const THIRD_PERSON_TERRAIN_DEPTH_M = 74
+const THIRD_PERSON_VISUAL_RADIUS_M = 260
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
 const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-derived-hillshade'
+const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
+const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -605,13 +609,18 @@ function updateThirdPersonTerrain(mesh, followZ, clip) {
     for (let col = 0; col <= cols; col += 1) {
       const x = ((col / cols) - 0.5) * THIRD_PERSON_TERRAIN_WIDTH_M
       const terrain = terrainSampleAt(x, worldZ - followZ, clip)
+      const curveDropM = lunarVisualCurvatureDropM(x, zLocal)
+      const edgeSkirtM = lunarVisualEdgeSkirtM(x, zLocal)
       position.array[index] = x
-      position.array[index + 1] = terrain.heightM - 0.006
+      position.array[index + 1] = terrain.heightM - curveDropM - edgeSkirtM - 0.006
       position.array[index + 2] = worldZ
       const terrainColor = lolaTerrainColor(terrain)
-      color.array[colorIndex] = terrainColor.r
-      color.array[colorIndex + 1] = terrainColor.g
-      color.array[colorIndex + 2] = terrainColor.b
+      const horizonFade = 1 - smoothstep((zLocal - 8) / 42)
+      const sideFade = 1 - smoothstep((Math.abs(x) - 13) / 13)
+      const fade = clamp(Math.min(horizonFade, sideFade), 0.18, 1)
+      color.array[colorIndex] = terrainColor.r * fade
+      color.array[colorIndex + 1] = terrainColor.g * fade
+      color.array[colorIndex + 2] = terrainColor.b * fade
       index += 3
       colorIndex += 3
     }
@@ -623,11 +632,48 @@ function updateThirdPersonTerrain(mesh, followZ, clip) {
 }
 
 function createThirdPersonGrid() {
-  const helper = new THREE.GridHelper(THIRD_PERSON_TERRAIN_DEPTH_M, 22, 0x7a7568, 0x3e413b)
+  const helper = new THREE.GridHelper(46, 28, 0x615f56, 0x31342f)
   helper.material.transparent = true
-  helper.material.opacity = 0.22
-  helper.position.y = 0.002
+  helper.material.opacity = 0.055
+  helper.position.y = 0.003
   return helper
+}
+
+function createEarthTexture() {
+  const texture = new THREE.TextureLoader().load(EARTH_TEXTURE_URL)
+  texture.colorSpace = THREE.SRGBColorSpace
+  texture.anisotropy = 8
+  return texture
+}
+
+function createEarthrise() {
+  const group = new THREE.Group()
+  const earth = new THREE.Mesh(
+    new THREE.SphereGeometry(4.8, 64, 32),
+    new THREE.MeshStandardMaterial({
+      map: createEarthTexture(),
+      roughness: 0.8,
+      metalness: 0,
+      emissive: new THREE.Color(0x07131f),
+      emissiveIntensity: 0.18,
+    }),
+  )
+  const atmosphere = new THREE.Mesh(
+    new THREE.SphereGeometry(5.06, 64, 32),
+    new THREE.MeshBasicMaterial({
+      color: 0x9ed5ff,
+      transparent: true,
+      opacity: 0.16,
+      side: THREE.BackSide,
+    }),
+  )
+  earth.rotation.y = -0.65
+  earth.rotation.z = -0.24
+  group.add(atmosphere)
+  group.add(earth)
+  group.userData.panelRole = 'earthrise-backdrop'
+  group.userData.textureSource = EARTHRISE_TEXTURE_SOURCE
+  return group
 }
 
 function initThirdPersonMoonWalk(canvas) {
@@ -645,7 +691,7 @@ function initThirdPersonMoonWalk(canvas) {
   renderer.shadowMap.enabled = true
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x070908)
-  scene.fog = new THREE.Fog(0x070908, 4.2, 12.5)
+  scene.fog = new THREE.Fog(0x070908, 18, 54)
   scene.add(new THREE.HemisphereLight(0xf4f8ef, 0x30332e, 1.25))
   const sun = new THREE.DirectionalLight(0xffffff, 2.6)
   sun.position.set(-2.8, 5.6, -3.2)
@@ -654,7 +700,7 @@ function initThirdPersonMoonWalk(canvas) {
   const fill = new THREE.DirectionalLight(0xb8d7ff, 0.42)
   fill.position.set(3.5, 1.8, 3.4)
   scene.add(fill)
-  const camera = new THREE.PerspectiveCamera(46, 1, 0.03, 40)
+  const camera = new THREE.PerspectiveCamera(46, 1, 0.03, 90)
   const controls = new OrbitControls(camera, renderer.domElement)
   controls.enableDamping = true
   controls.dampingFactor = 0.08
@@ -666,6 +712,8 @@ function initThirdPersonMoonWalk(canvas) {
   scene.add(terrain)
   const grid = createThirdPersonGrid()
   scene.add(grid)
+  const earthrise = createEarthrise()
+  scene.add(earthrise)
   const e1Visuals = createE1ThreeVisuals()
   for (const entry of e1Visuals.visuals.values()) {
     entry.mesh.castShadow = true
@@ -702,7 +750,8 @@ function initThirdPersonMoonWalk(canvas) {
     )
     const followZ = geometry.diagnostics.visualRootWorldZ
     updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics)
-    grid.position.z = followZ + 0.28
+    grid.position.z = followZ + 8.5
+    earthrise.position.set(-2.2, 3.65, followZ + 32)
     updateE1ThreeVisuals(
       root,
       geometry.diagnostics,
@@ -719,6 +768,10 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.sceneStatus = 'third-person-moon-walk-rendered'
     canvas.dataset.renderer = 'three-third-person-moon-terrain'
     canvas.dataset.motionStatus = 'endless-e1-on-lunar-heightfield'
+    canvas.dataset.missionMoonDock = 'mission-moon-dock'
+    canvas.dataset.moonTerrainSwitch = 'moon-terrain-switch'
+    canvas.dataset.robotDrawer = 'robot-drawer'
+    canvas.dataset.missionDrawer = 'mission-drawer'
     canvas.dataset.gaitQualityStatus = geometry.diagnostics.quality.status === 'pass'
       ? 'pass'
       : 'viewport-sampled'
@@ -731,6 +784,9 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.terrainSourceResolutionM = String(LOLA_TERRAIN_TILE.grid.cell_size_m)
     canvas.dataset.terrainSourceHeightRangeM = String(LOLA_TERRAIN_TILE.grid.height_range_m)
     canvas.dataset.terrainTextureSource = LOLA_TERRAIN_TEXTURE_SOURCE
+    canvas.dataset.panelBackdrop = earthrise.userData.panelRole
+    canvas.dataset.earthriseTextureSource = earthrise.userData.textureSource
+    canvas.dataset.lunarSurfaceVisualModel = LUNAR_SURFACE_VISUAL_MODEL
     canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
@@ -854,6 +910,18 @@ function lolaTerrainColor(sample) {
     g: shade * 0.86,
     b: shade * 0.80,
   }
+}
+
+function lunarVisualCurvatureDropM(x, zLocal) {
+  const forward = Math.max(0, zLocal + 2.2)
+  const horizonDistance = Math.hypot(x * 0.82, forward)
+  return (horizonDistance * horizonDistance) / (2 * THIRD_PERSON_VISUAL_RADIUS_M)
+}
+
+function lunarVisualEdgeSkirtM(x, zLocal) {
+  const farDrop = smoothstep((zLocal - 18) / 24) * 8.5
+  const sideDrop = smoothstep((Math.abs(x) - 18) / 8) * 5.5
+  return farDrop + sideDrop
 }
 
 function compactPoint(point) {

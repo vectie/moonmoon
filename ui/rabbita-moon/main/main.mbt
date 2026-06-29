@@ -5,10 +5,13 @@ using @html {
   b,
   button,
   canvas,
+  details,
   div,
   h1,
   h2,
   header,
+  input,
+  label,
   li,
   main_,
   nav,
@@ -16,6 +19,7 @@ using @html {
   section,
   span,
   strong,
+  summary,
   ul,
 }
 
@@ -156,23 +160,102 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
           attrs=@html.Attrs::build().width(1280).height(620),
           "",
         ),
+        button(
+          class="mission-settings",
+          type_="button",
+          attrs=@html.Attrs::build().aria_label("mission display settings"),
+          "settings",
+        ),
+        div(class="mission-shortcuts", [
+          button(class="mission-shortcut active", type_="button", [
+            b("T"),
+            span("terrain"),
+          ]),
+          button(class="mission-shortcut", type_="button", [
+            b("R"),
+            span("robot"),
+          ]),
+          button(class="mission-shortcut", type_="button", [
+            b("P"),
+            span("physics"),
+          ]),
+          button(class="mission-shortcut", type_="button", [
+            b("M"),
+            span("mission"),
+          ]),
+          button(class="mission-shortcut", type_="button", [
+            b("E"),
+            span("energy"),
+          ]),
+        ]),
+        div(class="mission-command-bar", [
+          b("Moonmoon"),
+          span("inspect route, terrain contact, and endless E1 walk"),
+        ]),
         div(class="scene-readout", [
           span([b("third-person moon walk"), span(" lunar terrain + Noetix E1")]),
           span(view.selected_route_id),
         ]),
-      ]),
-      div(class="scene-grid", [
-        div(class="moon-viewport", [
-          canvas(
-            id="moonmoon-globe-3d",
-            class="scene-canvas moon-globe-canvas",
-            attrs=@html.Attrs::build().width(960).height(540),
-            "",
-          ),
-          div(class="scene-readout", [
-            span([b("3D Moon"), span(" drag to inspect")]),
-            span("\{view.site_latitude_deg} / \{view.site_longitude_deg}"),
+        div(class="mission-hud mission-hud-top", [
+          span("LOLA 5 m terrain"),
+          span("Noetix E1"),
+          span("Moonphys contact"),
+          span("endless walk"),
+        ]),
+        div(class="mission-hud mission-left-panel", [
+          div(class="mission-hud-status", [
+            b("mission gated"),
+            span(view.selected_route_id),
+            span("terrain source locked to active DEM"),
           ]),
+          div(class="mission-hud-stats", [
+            div([b("\{view.scorecard.score}"), span("site score")]),
+            div([b("\{view.scorecard.blocked_route_candidates}"), span("blocked routes")]),
+            div([b("\{view.scorecard.energy_margin_wh}"), span("energy margin Wh")]),
+          ]),
+        ]),
+        div(class="mission-moon-dock", [
+          input(
+            input_type=@html.Checkbox,
+            id="moon-terrain-switch",
+            class="moon-terrain-switch",
+          ),
+          label(for_="moon-terrain-switch", class="dock-switch", [
+            span("3D Moon"),
+            b("terrain"),
+          ]),
+          div(class="dock-stage", [
+            div(class="dock-view dock-moon", [
+              canvas(
+                id="moonmoon-globe-3d",
+                class="scene-canvas moon-globe-canvas",
+                attrs=@html.Attrs::build().width(540).height(360),
+                "",
+              ),
+              div(class="scene-readout dock-readout", [
+                span([b("3D Moon"), span(" drag")]),
+                span("\{view.site_latitude_deg} / \{view.site_longitude_deg}"),
+              ]),
+            ]),
+            div(class="dock-view dock-terrain", [
+              canvas(
+                id="moonmoon-terrain-3d",
+                class="terrain-canvas",
+                attrs=@html.Attrs::build().width(540).height(360),
+                "",
+              ),
+              div(class="terrain-readout dock-readout", [
+                span([b("LOLA terrain"), span(" \{view.selected_route_id}")]),
+                span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
+              ]),
+            ]),
+          ]),
+        ]),
+      ]),
+      details(class="robot-drawer", [
+        summary(class="robot-drawer-toggle", [
+          span([b("Robot"), span(" FK gait")]),
+          strong("drawer"),
         ]),
         div(class="robot-viewport", [
           canvas(
@@ -195,18 +278,6 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
               span("targets --"),
             ],
           ),
-        ]),
-      ]),
-      div(class="terrain-panel-mini", [
-        canvas(
-          id="moonmoon-terrain-3d",
-          class="terrain-canvas",
-          attrs=@html.Attrs::build().width(960).height(260),
-          "",
-        ),
-        div(class="terrain-readout", [
-          span([b("LOLA terrain"), span(" \{view.selected_route_id}")]),
-          span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
         ]),
       ]),
     ],
@@ -289,16 +360,24 @@ fn view(model : Model) -> Html {
   let view = model.view
   main_(class="moon-shell", [
     section(class="workspace", [
-      header(class="topbar", [
-        div([h1(view.title), p(class="summary", view.scorecard.next_action)]),
-        strong(class="badge ready", "mission \{view.scorecard.decision}"),
-      ]),
-      hero(view),
       terrain_scene(view),
-      layer_nav(view),
-      terrain_grid(view),
+      details(class="mission-drawer", [
+        summary(class="mission-drawer-toggle", [
+          span([b("Mission"), span(" data")]),
+          strong("drawer"),
+        ]),
+        div(class="mission-drawer-body", [
+          header(class="topbar", [
+            div([h1(view.title), p(class="summary", view.scorecard.next_action)]),
+            strong(class="badge ready", "mission \{view.scorecard.decision}"),
+          ]),
+          hero(view),
+          layer_nav(view),
+          terrain_grid(view),
+          inspector(model),
+        ]),
+      ]),
     ]),
-    inspector(model),
   ])
 }
 

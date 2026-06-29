@@ -11,7 +11,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f7f7f4;
+  background: #050706;
 }
 
 button {
@@ -30,24 +30,33 @@ button {
 }
 
 .moon-shell {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  display: block;
 }
 
 .workspace {
-  padding: 24px;
+  padding: 0;
   display: grid;
-  gap: 18px;
+  gap: 0;
   align-content: start;
 }
 
 .inspector {
-  border-left: 1px solid #d8d8d0;
+  border-left: 0;
+  border-top: 1px solid #d8d8d0;
   background: #fbfbf8;
   padding: 20px;
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   align-content: start;
+}
+
+.topbar,
+.hero,
+.toolbar,
+.grid {
+  margin-left: 24px;
+  margin-right: 24px;
 }
 
 .topbar,
@@ -58,6 +67,13 @@ button {
   justify-content: space-between;
   gap: 16px;
   align-items: center;
+}
+
+.topbar {
+  background: #f7f7f4;
+  border: 1px solid #d8d8d0;
+  border-radius: 6px;
+  padding: 18px;
 }
 
 h1,
@@ -188,9 +204,12 @@ h2 {
 }
 
 .scene-panel {
-  padding: 10px;
+  padding: 0;
   display: grid;
-  gap: 10px;
+  gap: 0;
+  border: 0;
+  background: #050706;
+  border-radius: 0;
 }
 
 .scene-grid {
@@ -213,7 +232,12 @@ h2 {
 }
 
 .third-person-viewport {
-  min-height: 520px;
+  min-height: 100vh;
+  border: 0;
+  border-radius: 0;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(81, 113, 132, .18), transparent 24%),
+    linear-gradient(#020403, #0b0f0d);
 }
 
 .moon-viewport {
@@ -232,20 +256,417 @@ h2 {
 }
 
 .third-person-canvas {
-  height: 520px;
+  height: 100vh;
 }
 
 .scene-readout {
   position: absolute;
-  left: 12px;
-  right: 12px;
-  top: 10px;
+  left: 18px;
+  right: 18px;
+  top: 16px;
   color: rgba(247, 251, 249, .84);
   font-size: 12px;
   display: flex;
   justify-content: space-between;
   gap: 12px;
   pointer-events: none;
+}
+
+.mission-settings {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(247, 251, 249, .18);
+  border-radius: 50%;
+  background: rgba(7, 10, 9, .46);
+  color: transparent;
+  overflow: hidden;
+}
+
+.mission-settings::before,
+.mission-settings::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 2px solid rgba(247, 251, 249, .72);
+  border-radius: 50%;
+}
+
+.mission-settings::after {
+  inset: 15px;
+  background: rgba(247, 251, 249, .78);
+  border: 0;
+}
+
+.mission-shortcuts {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  max-width: min(760px, calc(100% - 120px));
+}
+
+.mission-shortcut {
+  width: 68px;
+  border: 0;
+  background: transparent;
+  color: rgba(247, 251, 249, .82);
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 0;
+}
+
+.mission-shortcut b {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(128, 132, 137, .74);
+  color: #f7fbf9;
+  font-size: 20px;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+}
+
+.mission-shortcut.active b {
+  background: #236f5c;
+}
+
+.mission-shortcut span {
+  width: 100%;
+  overflow: hidden;
+  color: rgba(247, 251, 249, .92);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mission-command-bar {
+  position: absolute;
+  left: 50%;
+  top: 134px;
+  transform: translateX(-50%);
+  width: min(520px, calc(100% - 48px));
+  height: 50px;
+  border: 1px solid rgba(247, 251, 249, .10);
+  border-radius: 8px;
+  background: rgba(28, 30, 33, .78);
+  color: rgba(247, 251, 249, .56);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 18px;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, .26);
+  backdrop-filter: blur(10px);
+}
+
+.mission-command-bar b {
+  color: #8ddfc8;
+  font-size: 12px;
+}
+
+.mission-command-bar span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mission-hud {
+  position: absolute;
+  color: rgba(247, 251, 249, .88);
+  pointer-events: none;
+}
+
+.mission-hud-top {
+  left: 50%;
+  top: 196px;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: min(680px, calc(100% - 48px));
+}
+
+.mission-hud-top span {
+  border: 1px solid rgba(247, 251, 249, .14);
+  border-radius: 6px;
+  background: rgba(20, 23, 22, .62);
+  padding: 8px 10px;
+  font-size: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .22);
+}
+
+.mission-left-panel {
+  left: 24px;
+  bottom: 22px;
+  width: min(520px, calc(100% - 48px));
+  display: grid;
+  gap: 10px;
+}
+
+.mission-hud-stats,
+.mission-hud-status,
+.mission-moon-dock {
+  border: 1px solid rgba(247, 251, 249, .12);
+  border-radius: 7px;
+  background: rgba(27, 29, 28, .74);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .32);
+  backdrop-filter: blur(10px);
+}
+
+.mission-hud-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 16px;
+}
+
+.mission-hud-stats div,
+.mission-hud-status {
+  min-width: 0;
+}
+
+.mission-hud-stats b {
+  display: block;
+  color: #f0f3ee;
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.mission-hud-stats span,
+.mission-hud-status span {
+  display: block;
+  margin-top: 4px;
+  color: rgba(247, 251, 249, .62);
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mission-hud-status {
+  padding: 16px;
+}
+
+.mission-hud-status b {
+  color: #f1f4ef;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.mission-moon-dock {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  width: min(430px, calc(100% - 48px));
+  height: 220px;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.dock-stage,
+.dock-view {
+  position: absolute;
+  inset: 0;
+}
+
+.dock-view {
+  padding-top: 38px;
+}
+
+.dock-terrain {
+  display: none;
+}
+
+.moon-terrain-switch {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dock-switch {
+  position: absolute;
+  z-index: 4;
+  right: 10px;
+  top: 10px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(247, 251, 249, .16);
+  border-radius: 999px;
+  background: rgba(6, 8, 8, .74);
+  color: rgba(247, 251, 249, .68);
+  padding: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.dock-switch span,
+.dock-switch b {
+  border-radius: 999px;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.dock-switch span {
+  background: rgba(141, 223, 200, .22);
+  color: #eaf9f3;
+}
+
+.dock-switch b {
+  color: rgba(247, 251, 249, .58);
+}
+
+.moon-terrain-switch:checked ~ .dock-switch span {
+  background: transparent;
+  color: rgba(247, 251, 249, .58);
+}
+
+.moon-terrain-switch:checked ~ .dock-switch b {
+  background: rgba(141, 223, 200, .22);
+  color: #eaf9f3;
+}
+
+.moon-terrain-switch:checked ~ .dock-stage .dock-moon {
+  display: none;
+}
+
+.moon-terrain-switch:checked ~ .dock-stage .dock-terrain {
+  display: block;
+}
+
+.mission-moon-dock .moon-globe-canvas,
+.mission-moon-dock .terrain-canvas {
+  height: 220px;
+}
+
+.mission-moon-dock .dock-readout {
+  left: 12px;
+  right: 12px;
+  top: 10px;
+  font-size: 11px;
+}
+
+.robot-drawer {
+  position: fixed;
+  z-index: 20;
+  right: 24px;
+  top: 228px;
+  width: auto;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.mission-drawer {
+  position: fixed;
+  z-index: 20;
+  left: 24px;
+  top: 228px;
+  width: auto;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  pointer-events: none;
+}
+
+.robot-drawer[open],
+.mission-drawer[open] {
+  top: 78px;
+  bottom: 24px;
+  border: 1px solid rgba(247, 251, 249, .14);
+  border-radius: 8px;
+  background: rgba(6, 8, 8, .88);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .44);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.robot-drawer[open] {
+  width: min(520px, calc(50vw - 36px));
+}
+
+.mission-drawer[open] {
+  width: min(560px, calc(50vw - 36px));
+}
+
+.mission-drawer-body {
+  display: grid;
+  gap: 18px;
+  max-height: calc(100vh - 148px);
+  overflow: auto;
+  padding: 18px 0;
+  background: #f7f7f4;
+}
+
+.robot-drawer:not([open]) .robot-viewport,
+.mission-drawer:not([open]) .mission-drawer-body {
+  display: none;
+}
+
+.robot-drawer-toggle,
+.mission-drawer-toggle {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid rgba(247, 251, 249, .16);
+  border-radius: 8px;
+  background: rgba(27, 29, 28, .78);
+  padding: 10px 14px;
+  color: rgba(247, 251, 249, .86);
+  cursor: pointer;
+  list-style: none;
+  pointer-events: auto;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .32);
+  white-space: nowrap;
+}
+
+.robot-drawer-toggle::-webkit-details-marker,
+.mission-drawer-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.robot-drawer-toggle span span,
+.mission-drawer-toggle span span {
+  color: rgba(247, 251, 249, .58);
+}
+
+.robot-drawer-toggle strong,
+.mission-drawer-toggle strong {
+  border: 1px solid rgba(247, 251, 249, .16);
+  border-radius: 999px;
+  background: rgba(6, 8, 8, .68);
+  padding: 8px 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.robot-drawer[open] .robot-drawer-toggle strong,
+.mission-drawer[open] .mission-drawer-toggle strong {
+  color: #8ddfc8;
+}
+
+.robot-drawer[open] .robot-viewport {
+  min-height: 0;
+  height: min(620px, calc(100vh - 148px));
+  border: 0;
+  border-top: 1px solid rgba(247, 251, 249, .14);
+  border-radius: 0;
 }
 
 .scene-readout b {
@@ -375,12 +796,12 @@ ul {
 
 @media (max-width: 920px) {
   .moon-shell {
-    grid-template-columns: 1fr;
+    display: block;
   }
 
   .inspector {
-    border-left: 0;
     border-top: 1px solid #d8d8d0;
+    grid-template-columns: 1fr;
   }
 
   .hero {
@@ -396,16 +817,102 @@ ul {
   }
 
   .third-person-canvas {
-    height: 340px;
+    height: 100vh;
   }
 
   .moon-viewport,
-  .robot-viewport,
-  .third-person-viewport {
+  .robot-viewport {
     min-height: 270px;
+  }
+
+  .third-person-viewport {
+    min-height: 100vh;
   }
 
   .grid {
     grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+
+  .mission-hud-top {
+    top: 184px;
+  }
+
+  .mission-left-panel {
+    left: 12px;
+    width: min(390px, calc(100% - 24px));
+  }
+
+  .mission-moon-dock {
+    right: 12px;
+    width: min(290px, calc(100% - 24px));
+    height: 172px;
+  }
+
+  .mission-moon-dock .moon-globe-canvas,
+  .mission-moon-dock .terrain-canvas {
+    height: 172px;
+  }
+
+  .mission-hud-stats b {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 620px) {
+  .mission-shortcuts {
+    left: 16px;
+    right: 16px;
+    transform: none;
+    overflow: hidden;
+    max-width: none;
+    gap: 8px;
+  }
+
+  .mission-shortcut {
+    width: 56px;
+  }
+
+  .mission-command-bar {
+    top: 118px;
+  }
+
+  .mission-hud-top {
+    display: none;
+  }
+
+  .mission-left-panel {
+    left: 12px;
+    bottom: 204px;
+    width: min(330px, calc(100% - 24px));
+  }
+
+  .mission-moon-dock {
+    right: 12px;
+    bottom: 12px;
+    width: min(330px, calc(100% - 24px));
+    height: 176px;
+  }
+
+  .mission-moon-dock .moon-globe-canvas,
+  .mission-moon-dock .terrain-canvas {
+    height: 176px;
+  }
+
+  .robot-drawer,
+  .mission-drawer {
+    left: 12px;
+    right: 12px;
+    top: 188px;
+    width: auto;
+  }
+
+  .robot-drawer[open],
+  .mission-drawer[open] {
+    top: 12px;
+    width: auto;
+  }
+
+  .mission-hud-stats {
+    grid-template-columns: 1fr;
   }
 }
