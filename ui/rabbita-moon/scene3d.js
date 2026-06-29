@@ -31,6 +31,7 @@ const THIRD_PERSON_TERRAIN_ROWS = 64
 const THIRD_PERSON_TERRAIN_WIDTH_M = 4.8
 const THIRD_PERSON_TERRAIN_DEPTH_M = 8.8
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
+const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-derived-hillshade'
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -555,6 +556,7 @@ function createThirdPersonTerrain() {
   const cols = THIRD_PERSON_TERRAIN_COLS
   const rows = THIRD_PERSON_TERRAIN_ROWS
   const positions = new Float32Array((cols + 1) * (rows + 1) * 3)
+  const colors = new Float32Array((cols + 1) * (rows + 1) * 3)
   const uvs = new Float32Array((cols + 1) * (rows + 1) * 2)
   const indices = []
   for (let row = 0; row <= rows; row += 1) {
@@ -575,16 +577,12 @@ function createThirdPersonTerrain() {
   }
   const geometry = new THREE.BufferGeometry()
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
   geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
   geometry.setIndex(indices)
-  const texture = new THREE.TextureLoader().load(LUNAR_TEXTURE_URL)
-  texture.wrapS = THREE.RepeatWrapping
-  texture.wrapT = THREE.RepeatWrapping
-  texture.repeat.set(8, 14)
-  texture.colorSpace = THREE.SRGBColorSpace
   const material = new THREE.MeshStandardMaterial({
-    map: texture,
-    color: 0x9d9a8f,
+    vertexColors: true,
+    color: 0xffffff,
     roughness: 0.92,
     metalness: 0.0,
   })
@@ -596,9 +594,11 @@ function createThirdPersonTerrain() {
 
 function updateThirdPersonTerrain(mesh, followZ, clip) {
   const position = mesh.geometry.getAttribute('position')
+  const color = mesh.geometry.getAttribute('color')
   const cols = mesh.userData.cols
   const rows = mesh.userData.rows
   let index = 0
+  let colorIndex = 0
   for (let row = 0; row <= rows; row += 1) {
     const zLocal = ((row / rows) - 0.42) * THIRD_PERSON_TERRAIN_DEPTH_M
     const worldZ = followZ + zLocal
@@ -608,10 +608,16 @@ function updateThirdPersonTerrain(mesh, followZ, clip) {
       position.array[index] = x
       position.array[index + 1] = terrain.heightM - 0.006
       position.array[index + 2] = worldZ
+      const terrainColor = lolaTerrainColor(terrain)
+      color.array[colorIndex] = terrainColor.r
+      color.array[colorIndex + 1] = terrainColor.g
+      color.array[colorIndex + 2] = terrainColor.b
       index += 3
+      colorIndex += 3
     }
   }
   position.needsUpdate = true
+  color.needsUpdate = true
   mesh.geometry.computeVertexNormals()
   mesh.geometry.computeBoundingSphere()
 }
@@ -724,6 +730,7 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.terrainSourceProduct = LOLA_TERRAIN_TILE.source.product_id
     canvas.dataset.terrainSourceResolutionM = String(LOLA_TERRAIN_TILE.grid.cell_size_m)
     canvas.dataset.terrainSourceHeightRangeM = String(LOLA_TERRAIN_TILE.grid.height_range_m)
+    canvas.dataset.terrainTextureSource = LOLA_TERRAIN_TEXTURE_SOURCE
     canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
@@ -832,6 +839,21 @@ function lolaLocalHeightM(x, z, clip) {
   const travelZ = z + clip.rootDistanceM
   const baselineM = lolaTileElevationM(0, clip.rootDistanceM)
   return (lolaTileElevationM(x, travelZ) - baselineM) * LOLA_TERRAIN_HEIGHT_SCALE
+}
+
+function lolaTerrainColor(sample) {
+  const light = clamp(
+    sample.normal.x * -0.32 + sample.normal.y * 0.72 + sample.normal.z * -0.54,
+    0,
+    1,
+  )
+  const elevation = clamp(sample.heightM * 10, -0.22, 0.22)
+  const shade = clamp(0.24 + light * 0.30 + elevation, 0.13, 0.62)
+  return {
+    r: shade * 0.88,
+    g: shade * 0.86,
+    b: shade * 0.80,
+  }
 }
 
 function compactPoint(point) {
@@ -2891,6 +2913,7 @@ globalThis.__moonmoonGaitDiagnostics = {
   rig: NOETIX_VISUAL_RIG,
   terrainTile: LOLA_TERRAIN_TILE,
   terrainHeightScale: LOLA_TERRAIN_HEIGHT_SCALE,
+  terrainTextureSource: LOLA_TERRAIN_TEXTURE_SOURCE,
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,

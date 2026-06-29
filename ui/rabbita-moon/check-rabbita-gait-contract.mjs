@@ -62,8 +62,11 @@ const sceneContracts = [
   'endless-e1-on-lunar-heightfield',
   'first_trusted_square_lola_5m_129.json',
   'LOLA_TERRAIN_HEIGHT_SCALE',
+  'LOLA_TERRAIN_TEXTURE_SOURCE',
+  'lola-dem-derived-hillshade',
   'terrainSourceProduct',
   'terrainSourceResolutionM',
+  'terrainTextureSource',
   'OrbitControls',
   'full-stl-source-indexed',
   'realtime-sampled-stl',
@@ -252,6 +255,10 @@ if (diagnostics.terrainTile?.source?.product_id !== 'LDEM_875S_5M') {
 
 if (diagnostics.terrainTile?.grid?.cell_size_m !== 5) {
   throw new Error('scene3d.js terrain tile did not preserve the expected 5 m LOLA source resolution')
+}
+
+if (diagnostics.terrainTextureSource !== 'lola-dem-derived-hillshade') {
+  throw new Error('scene3d.js terrain texture is not derived from the active LOLA DEM tile')
 }
 
 if (!diagnostics?.moonphysReviewFrameEvidence) {
