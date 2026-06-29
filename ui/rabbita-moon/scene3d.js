@@ -34,6 +34,10 @@ const THIRD_PERSON_TERRAIN_DEPTH_M = 74
 const THIRD_PERSON_VISUAL_RADIUS_M = 260
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
 const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-derived-hillshade'
+const LOLA_TERRAIN_MOTION_MODEL = 'world-progress-lola-dem'
+const LOLA_DISTANT_RIDGE_MODEL = 'lola-dem-distant-ridges'
+const LOLA_TERRAIN_TEXTURE_SIZE = 256
+const LOLA_DISTANT_RIDGE_SAMPLES = 96
 const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
 
@@ -582,6 +586,70 @@ function reportE1SourceReadiness(visuals, canvas) {
   canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
 }
 
+function lolaTextureTone(elevationM, slopeM, light) {
+  const grid = LOLA_TERRAIN_TILE.grid
+  const height01 = clamp(
+    (elevationM - grid.min_elevation_m) / Math.max(0.001, grid.height_range_m),
+    0,
+    1,
+  )
+  const relief = clamp(slopeM / 22, 0, 1)
+  const shade = clamp(0.22 + light * 0.52 + height01 * 0.16 + relief * 0.12, 0.12, 0.86)
+  const warmDust = 0.035 + height01 * 0.055
+  return {
+    r: shade * (0.86 + warmDust),
+    g: shade * (0.84 + warmDust * 0.52),
+    b: shade * (0.78 + relief * 0.035),
+  }
+}
+
+function createLolaTerrainTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = LOLA_TERRAIN_TEXTURE_SIZE
+  canvas.height = LOLA_TERRAIN_TEXTURE_SIZE
+  const context = canvas.getContext('2d')
+  const image = context.createImageData(canvas.width, canvas.height)
+  const grid = LOLA_TERRAIN_TILE.grid
+  for (let y = 0; y < canvas.height; y += 1) {
+    const row = Math.round((y / Math.max(1, canvas.height - 1)) * (grid.rows - 1))
+    const rowPrev = Math.max(0, row - 1)
+    const rowNext = Math.min(grid.rows - 1, row + 1)
+    for (let x = 0; x < canvas.width; x += 1) {
+      const col = Math.round((x / Math.max(1, canvas.width - 1)) * (grid.cols - 1))
+      const colPrev = Math.max(0, col - 1)
+      const colNext = Math.min(grid.cols - 1, col + 1)
+      const elevationM = LOLA_TERRAIN_TILE.elevations_m[row][col]
+      const dx = LOLA_TERRAIN_TILE.elevations_m[row][colNext] - LOLA_TERRAIN_TILE.elevations_m[row][colPrev]
+      const dz = LOLA_TERRAIN_TILE.elevations_m[rowNext][col] - LOLA_TERRAIN_TILE.elevations_m[rowPrev][col]
+      const slopeM = Math.hypot(dx, dz)
+      const light = clamp(0.5 + (dx * -0.038 + dz * 0.046), 0, 1)
+      const tone = lolaTextureTone(elevationM, slopeM, light)
+      const i = (y * canvas.width + x) * 4
+      image.data[i] = Math.round(clamp(tone.r, 0, 1) * 255)
+      image.data[i + 1] = Math.round(clamp(tone.g, 0, 1) * 255)
+      image.data[i + 2] = Math.round(clamp(tone.b, 0, 1) * 255)
+      image.data[i + 3] = 255
+    }
+  }
+  context.putImageData(image, 0, 0)
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.colorSpace = THREE.SRGBColorSpace
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
+  texture.anisotropy = 8
+  texture.needsUpdate = true
+  return texture
+}
+
+function lolaTerrainUv(xM, travelZ) {
+  const grid = LOLA_TERRAIN_TILE.grid
+  const cellSizeM = grid.cell_size_m
+  return {
+    u: ((grid.cols - 1) / 2 + xM / cellSizeM) / Math.max(1, grid.cols - 1),
+    v: ((grid.rows - 1) / 2 - travelZ / cellSizeM) / Math.max(1, grid.rows - 1),
+  }
+}
+
 function createThirdPersonTerrain() {
   const cols = THIRD_PERSON_TERRAIN_COLS
   const rows = THIRD_PERSON_TERRAIN_ROWS
@@ -611,9 +679,10 @@ function createThirdPersonTerrain() {
   geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
   geometry.setIndex(indices)
   const material = new THREE.MeshStandardMaterial({
+    map: createLolaTerrainTexture(),
     vertexColors: true,
-    color: 0xffffff,
-    roughness: 0.92,
+    color: 0xf0eee6,
+    roughness: 0.96,
     metalness: 0.0,
   })
   const mesh = new THREE.Mesh(geometry, material)
@@ -625,22 +694,28 @@ function createThirdPersonTerrain() {
 function updateThirdPersonTerrain(mesh, followZ, clip) {
   const position = mesh.geometry.getAttribute('position')
   const color = mesh.geometry.getAttribute('color')
+  const uv = mesh.geometry.getAttribute('uv')
   const cols = mesh.userData.cols
   const rows = mesh.userData.rows
   let index = 0
   let colorIndex = 0
+  let uvIndex = 0
   for (let row = 0; row <= rows; row += 1) {
     const zLocal = ((row / rows) - 0.42) * THIRD_PERSON_TERRAIN_DEPTH_M
     const worldZ = followZ + zLocal
+    const travelZ = clip.rootDistanceM + zLocal
     for (let col = 0; col <= cols; col += 1) {
       const x = ((col / cols) - 0.5) * THIRD_PERSON_TERRAIN_WIDTH_M
-      const terrain = terrainSampleAt(x, worldZ - followZ, clip)
+      const terrain = terrainSampleAt(x, zLocal, clip)
       const curveDropM = lunarVisualCurvatureDropM(x, zLocal)
       const edgeSkirtM = lunarVisualEdgeSkirtM(x, zLocal)
       position.array[index] = x
       position.array[index + 1] = terrain.heightM - curveDropM - edgeSkirtM - 0.006
       position.array[index + 2] = worldZ
       const terrainColor = lolaTerrainColor(terrain)
+      const textureUv = lolaTerrainUv(x, travelZ)
+      uv.array[uvIndex] = textureUv.u
+      uv.array[uvIndex + 1] = textureUv.v
       const horizonFade = 1 - smoothstep((zLocal - 8) / 42)
       const sideFade = 1 - smoothstep((Math.abs(x) - 13) / 13)
       const fade = clamp(Math.min(horizonFade, sideFade), 0.18, 1)
@@ -649,10 +724,12 @@ function updateThirdPersonTerrain(mesh, followZ, clip) {
       color.array[colorIndex + 2] = terrainColor.b * fade
       index += 3
       colorIndex += 3
+      uvIndex += 2
     }
   }
   position.needsUpdate = true
   color.needsUpdate = true
+  uv.needsUpdate = true
   mesh.geometry.computeVertexNormals()
   mesh.geometry.computeBoundingSphere()
 }
@@ -663,6 +740,81 @@ function createThirdPersonGrid() {
   helper.material.opacity = 0.055
   helper.position.y = 0.003
   return helper
+}
+
+function createDistantLolaRidges() {
+  const group = new THREE.Group()
+  const layers = [
+    { distanceM: 24, widthM: 62, baseY: -0.12, scale: 0.012, opacity: 0.50 },
+    { distanceM: 38, widthM: 86, baseY: 0.02, scale: 0.009, opacity: 0.36 },
+    { distanceM: 55, widthM: 116, baseY: 0.18, scale: 0.006, opacity: 0.24 },
+  ]
+  for (const layer of layers) {
+    const positions = new Float32Array((LOLA_DISTANT_RIDGE_SAMPLES + 1) * 2 * 3)
+    const colors = new Float32Array((LOLA_DISTANT_RIDGE_SAMPLES + 1) * 2 * 3)
+    const indices = []
+    for (let i = 0; i < LOLA_DISTANT_RIDGE_SAMPLES; i += 1) {
+      const bottomA = i * 2
+      const topA = bottomA + 1
+      const bottomB = bottomA + 2
+      const topB = bottomA + 3
+      indices.push(bottomA, topA, bottomB, bottomB, topA, topB)
+    }
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
+    geometry.setIndex(indices)
+    const material = new THREE.MeshBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: layer.opacity,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.userData = layer
+    group.add(mesh)
+  }
+  group.userData.model = LOLA_DISTANT_RIDGE_MODEL
+  return group
+}
+
+function updateDistantLolaRidges(group, followZ, clip) {
+  const baselineM = lolaTileElevationM(0, clip.rootDistanceM)
+  for (const mesh of group.children) {
+    const { distanceM, widthM, baseY, scale } = mesh.userData
+    const position = mesh.geometry.getAttribute('position')
+    const color = mesh.geometry.getAttribute('color')
+    let pi = 0
+    let ci = 0
+    const ridgeTravelZ = clip.rootDistanceM + distanceM
+    for (let i = 0; i <= LOLA_DISTANT_RIDGE_SAMPLES; i += 1) {
+      const t = i / LOLA_DISTANT_RIDGE_SAMPLES
+      const x = (t - 0.5) * widthM
+      const elevationM = lolaTileElevationM(x * 0.82, ridgeTravelZ + x * 0.10)
+      const topY = clamp(baseY + (elevationM - baselineM) * scale, 0.10, 3.25)
+      const bottomY = -0.36
+      const z = followZ + distanceM
+      const shade = clamp(0.18 + topY * 0.12 + (1 - t) * 0.035, 0.14, 0.46)
+      position.array[pi] = x
+      position.array[pi + 1] = bottomY
+      position.array[pi + 2] = z
+      position.array[pi + 3] = x
+      position.array[pi + 4] = topY
+      position.array[pi + 5] = z
+      color.array[ci] = shade * 0.64
+      color.array[ci + 1] = shade * 0.66
+      color.array[ci + 2] = shade * 0.62
+      color.array[ci + 3] = shade * 1.06
+      color.array[ci + 4] = shade * 1.04
+      color.array[ci + 5] = shade * 0.94
+      pi += 6
+      ci += 6
+    }
+    position.needsUpdate = true
+    color.needsUpdate = true
+    mesh.geometry.computeBoundingSphere()
+  }
 }
 
 function createEarthTexture() {
@@ -740,6 +892,8 @@ function initThirdPersonMoonWalk(canvas) {
   scene.add(grid)
   const earthrise = createEarthrise()
   scene.add(earthrise)
+  const distantRidges = createDistantLolaRidges()
+  scene.add(distantRidges)
   const e1Visuals = createE1ThreeVisuals()
   for (const entry of e1Visuals.visuals.values()) {
     entry.mesh.castShadow = true
@@ -782,6 +936,7 @@ function initThirdPersonMoonWalk(canvas) {
     )
     const followZ = geometry.diagnostics.visualRootWorldZ
     updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics)
+    updateDistantLolaRidges(distantRidges, followZ, geometry.diagnostics)
     grid.position.z = followZ + 8.5
     earthrise.position.set(-2.2, 3.65, followZ + 32)
     updateE1ThreeVisuals(
@@ -816,6 +971,10 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.terrainSourceResolutionM = String(LOLA_TERRAIN_TILE.grid.cell_size_m)
     canvas.dataset.terrainSourceHeightRangeM = String(LOLA_TERRAIN_TILE.grid.height_range_m)
     canvas.dataset.terrainTextureSource = LOLA_TERRAIN_TEXTURE_SOURCE
+    canvas.dataset.terrainMotionModel = LOLA_TERRAIN_MOTION_MODEL
+    canvas.dataset.lolaWorldProgressM = geometry.diagnostics.rootDistanceM.toFixed(2)
+    canvas.dataset.distantRidgeModel = distantRidges.userData.model
+    canvas.dataset.distantRidgeStatus = 'lola-dem-ridges-updating'
     canvas.dataset.panelBackdrop = earthrise.userData.panelRole
     canvas.dataset.earthriseTextureSource = earthrise.userData.textureSource
     canvas.dataset.lunarSurfaceVisualModel = LUNAR_SURFACE_VISUAL_MODEL
