@@ -71,7 +71,20 @@ const sceneContracts = [
   'first_trusted_square_lola_5m_129.json',
   'LOLA_TERRAIN_HEIGHT_SCALE',
   'LOLA_TERRAIN_TEXTURE_SOURCE',
-  'lola-dem-derived-hillshade',
+  'lola-dem-moonsand-regolith-texture',
+  'LOLA_TERRAIN_TEXTURE_SIZE',
+  'LOLA_TERRAIN_COLOR_REPEAT',
+  'LOLA_TERRAIN_BUMP_REPEAT',
+  'LOLA_REGOLITH_MATERIAL_MODEL',
+  'lola-hillshade-moonsand-microcrater-pebbles-v1',
+  'createLolaRegolithTexture',
+  'createLolaRegolithBumpTexture',
+  'bumpMap',
+  'bumpScale',
+  'regolithMaterialModel',
+  'terrainTextureResolutionPx',
+  'terrainColorTextureRepeat',
+  'terrainBumpTextureRepeat',
   'LOLA_TERRAIN_MOTION_MODEL',
   'world-progress-lola-dem',
   'LOLA_DISTANT_RIDGE_MODEL',
@@ -282,8 +295,12 @@ if (diagnostics.terrainTile?.grid?.cell_size_m !== 5) {
   throw new Error('scene3d.js terrain tile did not preserve the expected 5 m LOLA source resolution')
 }
 
-if (diagnostics.terrainTextureSource !== 'lola-dem-derived-hillshade') {
-  throw new Error('scene3d.js terrain texture is not derived from the active LOLA DEM tile')
+if (diagnostics.terrainTextureSource !== 'lola-dem-moonsand-regolith-texture') {
+  throw new Error('scene3d.js terrain texture is not using the active LOLA regolith material')
+}
+
+if (diagnostics.regolithMaterialModel !== 'lola-hillshade-moonsand-microcrater-pebbles-v1') {
+  throw new Error('scene3d.js did not expose the expected moonsand regolith material model')
 }
 
 if (!diagnostics?.moonphysReviewFrameEvidence) {

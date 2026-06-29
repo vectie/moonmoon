@@ -33,10 +33,13 @@ const THIRD_PERSON_TERRAIN_WIDTH_M = 52
 const THIRD_PERSON_TERRAIN_DEPTH_M = 74
 const THIRD_PERSON_VISUAL_RADIUS_M = 260
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
-const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-derived-hillshade'
+const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-moonsand-regolith-texture'
 const LOLA_TERRAIN_MOTION_MODEL = 'world-progress-lola-dem'
 const LOLA_DISTANT_RIDGE_MODEL = 'lola-dem-distant-ridges'
-const LOLA_TERRAIN_TEXTURE_SIZE = 256
+const LOLA_TERRAIN_TEXTURE_SIZE = 1024
+const LOLA_TERRAIN_COLOR_REPEAT = 10
+const LOLA_TERRAIN_BUMP_REPEAT = 26
+const LOLA_REGOLITH_MATERIAL_MODEL = 'lola-hillshade-moonsand-microcrater-pebbles-v1'
 const LOLA_DISTANT_RIDGE_SAMPLES = 96
 const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
@@ -586,7 +589,120 @@ function reportE1SourceReadiness(visuals, canvas) {
   canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
 }
 
-function lolaTextureTone(elevationM, slopeM, light) {
+function hash01(x, y) {
+  let h = Math.imul(Math.floor(x * 4096), 374761393) ^ Math.imul(Math.floor(y * 4096), 668265263)
+  h = Math.imul(h ^ (h >>> 13), 1274126177)
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967295
+}
+
+function valueNoise2(x, y) {
+  const xi = Math.floor(x)
+  const yi = Math.floor(y)
+  const tx = smoothstep(x - xi)
+  const ty = smoothstep(y - yi)
+  const a = hash01(xi, yi)
+  const b = hash01(xi + 1, yi)
+  const c = hash01(xi, yi + 1)
+  const d = hash01(xi + 1, yi + 1)
+  return mix(mix(a, b, tx), mix(c, d, tx), ty)
+}
+
+function fbmNoise2(x, y) {
+  let value = 0
+  let amplitude = 0.5
+  let frequency = 1
+  let total = 0
+  for (let octave = 0; octave < 5; octave += 1) {
+    value += valueNoise2(x * frequency, y * frequency) * amplitude
+    total += amplitude
+    amplitude *= 0.52
+    frequency *= 2.07
+  }
+  return value / Math.max(0.0001, total)
+}
+
+function lolaTextureElevationAtUv(u, v) {
+  const grid = LOLA_TERRAIN_TILE.grid
+  const col = wrapUnit(u * (grid.cols - 1), grid.cols - 1)
+  const row = wrapUnit(v * (grid.rows - 1), grid.rows - 1)
+  const col0 = Math.floor(col)
+  const row0 = Math.floor(row)
+  const col1 = (col0 + 1) % grid.cols
+  const row1 = (row0 + 1) % grid.rows
+  const tx = col - col0
+  const ty = row - row0
+  const h00 = LOLA_TERRAIN_TILE.elevations_m[row0][col0]
+  const h10 = LOLA_TERRAIN_TILE.elevations_m[row0][col1]
+  const h01 = LOLA_TERRAIN_TILE.elevations_m[row1][col0]
+  const h11 = LOLA_TERRAIN_TILE.elevations_m[row1][col1]
+  return mix(mix(h00, h10, tx), mix(h01, h11, tx), ty)
+}
+
+function regolithCraterDetail(x, y, scale, strength) {
+  const gx = x * scale
+  const gy = y * scale
+  const cellX = Math.floor(gx)
+  const cellY = Math.floor(gy)
+  let shade = 0
+  let height = 0
+  for (let oy = -1; oy <= 1; oy += 1) {
+    for (let ox = -1; ox <= 1; ox += 1) {
+      const cx = cellX + ox
+      const cy = cellY + oy
+      const seed = hash01(cx, cy)
+      if (seed < 0.64) continue
+      const centerX = cx + 0.18 + hash01(cx + 17.3, cy + 5.9) * 0.64
+      const centerY = cy + 0.18 + hash01(cx + 29.1, cy + 13.7) * 0.64
+      const radius = 0.12 + hash01(cx + 43.7, cy + 71.2) * 0.24
+      const d = Math.hypot(gx - centerX, gy - centerY)
+      if (d >= radius) continue
+      const q = d / radius
+      const bowl = 1 - smoothstep(q * 1.18)
+      const rim = smoothstep((q - 0.58) / 0.30) * (1 - smoothstep((q - 0.88) / 0.12))
+      shade += (-bowl * 0.34 + rim * 0.20) * strength
+      height += (-bowl * 0.42 + rim * 0.24) * strength
+    }
+  }
+  return { shade, height }
+}
+
+function regolithPebbleDetail(x, y) {
+  const gx = x * 180
+  const gy = y * 180
+  const cellX = Math.floor(gx)
+  const cellY = Math.floor(gy)
+  const seed = hash01(cellX, cellY)
+  if (seed < 0.94) return { shade: 0, height: 0 }
+  const cx = cellX + hash01(cellX + 9.1, cellY + 4.3)
+  const cy = cellY + hash01(cellX + 2.4, cellY + 19.7)
+  const d = Math.hypot(gx - cx, gy - cy)
+  const radius = 0.16 + seed * 0.18
+  if (d > radius) return { shade: 0, height: 0 }
+  const edge = 1 - smoothstep(d / radius)
+  const litSide = (gx - cx) * -0.42 + (gy - cy) * 0.58
+  return {
+    shade: edge * (0.10 + litSide * 0.15),
+    height: edge * 0.35,
+  }
+}
+
+function regolithDetailAt(u, v) {
+  const fine = fbmNoise2(u * 76, v * 76)
+  const grit = hash01(Math.floor(u * 1024), Math.floor(v * 1024))
+  const agglutinate = valueNoise2(u * 230, v * 230)
+  const smallCraters = regolithCraterDetail(u, v, 42, 0.30)
+  const largeCraters = regolithCraterDetail(u + 18.7, v + 4.2, 13, 0.46)
+  const pebble = regolithPebbleDetail(u, v)
+  const granularShade = (fine - 0.5) * 0.12 + (grit - 0.5) * 0.045
+  const darkSpeck = agglutinate > 0.72 ? -0.11 * smoothstep((agglutinate - 0.72) / 0.28) : 0
+  return {
+    shade: granularShade + darkSpeck + smallCraters.shade + largeCraters.shade + pebble.shade,
+    height: (fine - 0.5) * 0.18 + (grit - 0.5) * 0.08 +
+      smallCraters.height + largeCraters.height + pebble.height,
+  }
+}
+
+function lolaTextureTone(elevationM, slopeM, light, detail) {
   const grid = LOLA_TERRAIN_TILE.grid
   const height01 = clamp(
     (elevationM - grid.min_elevation_m) / Math.max(0.001, grid.height_range_m),
@@ -594,36 +710,37 @@ function lolaTextureTone(elevationM, slopeM, light) {
     1,
   )
   const relief = clamp(slopeM / 22, 0, 1)
-  const shade = clamp(0.22 + light * 0.52 + height01 * 0.16 + relief * 0.12, 0.12, 0.86)
-  const warmDust = 0.035 + height01 * 0.055
+  const shade = clamp(
+    0.19 + light * 0.46 + height01 * 0.12 + relief * 0.10 + detail.shade,
+    0.055,
+    0.82,
+  )
+  const warmDust = 0.025 + height01 * 0.045 + relief * 0.018
+  const coolShadow = clamp(0.03 - light * 0.025, 0, 0.03)
   return {
-    r: shade * (0.86 + warmDust),
-    g: shade * (0.84 + warmDust * 0.52),
-    b: shade * (0.78 + relief * 0.035),
+    r: shade * (0.80 + warmDust),
+    g: shade * (0.79 + warmDust * 0.46),
+    b: shade * (0.73 + relief * 0.030 + coolShadow),
   }
 }
 
-function createLolaTerrainTexture() {
+function createLolaRegolithTexture() {
   const canvas = document.createElement('canvas')
   canvas.width = LOLA_TERRAIN_TEXTURE_SIZE
   canvas.height = LOLA_TERRAIN_TEXTURE_SIZE
   const context = canvas.getContext('2d')
   const image = context.createImageData(canvas.width, canvas.height)
-  const grid = LOLA_TERRAIN_TILE.grid
   for (let y = 0; y < canvas.height; y += 1) {
-    const row = Math.round((y / Math.max(1, canvas.height - 1)) * (grid.rows - 1))
-    const rowPrev = Math.max(0, row - 1)
-    const rowNext = Math.min(grid.rows - 1, row + 1)
+    const v = y / Math.max(1, canvas.height - 1)
     for (let x = 0; x < canvas.width; x += 1) {
-      const col = Math.round((x / Math.max(1, canvas.width - 1)) * (grid.cols - 1))
-      const colPrev = Math.max(0, col - 1)
-      const colNext = Math.min(grid.cols - 1, col + 1)
-      const elevationM = LOLA_TERRAIN_TILE.elevations_m[row][col]
-      const dx = LOLA_TERRAIN_TILE.elevations_m[row][colNext] - LOLA_TERRAIN_TILE.elevations_m[row][colPrev]
-      const dz = LOLA_TERRAIN_TILE.elevations_m[rowNext][col] - LOLA_TERRAIN_TILE.elevations_m[rowPrev][col]
+      const u = x / Math.max(1, canvas.width - 1)
+      const elevationM = lolaTextureElevationAtUv(u, v)
+      const dx = lolaTextureElevationAtUv(u + 1 / 160, v) - lolaTextureElevationAtUv(u - 1 / 160, v)
+      const dz = lolaTextureElevationAtUv(u, v + 1 / 160) - lolaTextureElevationAtUv(u, v - 1 / 160)
       const slopeM = Math.hypot(dx, dz)
       const light = clamp(0.5 + (dx * -0.038 + dz * 0.046), 0, 1)
-      const tone = lolaTextureTone(elevationM, slopeM, light)
+      const detail = regolithDetailAt(u, v)
+      const tone = lolaTextureTone(elevationM, slopeM, light, detail)
       const i = (y * canvas.width + x) * 4
       image.data[i] = Math.round(clamp(tone.r, 0, 1) * 255)
       image.data[i + 1] = Math.round(clamp(tone.g, 0, 1) * 255)
@@ -636,6 +753,44 @@ function createLolaTerrainTexture() {
   texture.colorSpace = THREE.SRGBColorSpace
   texture.wrapS = THREE.RepeatWrapping
   texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(LOLA_TERRAIN_COLOR_REPEAT, LOLA_TERRAIN_COLOR_REPEAT)
+  texture.anisotropy = 8
+  texture.needsUpdate = true
+  return texture
+}
+
+function createLolaRegolithBumpTexture() {
+  const canvas = document.createElement('canvas')
+  canvas.width = LOLA_TERRAIN_TEXTURE_SIZE
+  canvas.height = LOLA_TERRAIN_TEXTURE_SIZE
+  const context = canvas.getContext('2d')
+  const image = context.createImageData(canvas.width, canvas.height)
+  for (let y = 0; y < canvas.height; y += 1) {
+    const v = y / Math.max(1, canvas.height - 1)
+    for (let x = 0; x < canvas.width; x += 1) {
+      const u = x / Math.max(1, canvas.width - 1)
+      const detail = regolithDetailAt(u + 37.1, v + 11.4)
+      const elevation = lolaTextureElevationAtUv(u, v)
+      const elevation01 = clamp(
+        (elevation - LOLA_TERRAIN_TILE.grid.min_elevation_m) /
+          Math.max(0.001, LOLA_TERRAIN_TILE.grid.height_range_m),
+        0,
+        1,
+      )
+      const bump = clamp(0.48 + detail.height * 0.44 + (elevation01 - 0.5) * 0.10, 0, 1)
+      const i = (y * canvas.width + x) * 4
+      const value = Math.round(bump * 255)
+      image.data[i] = value
+      image.data[i + 1] = value
+      image.data[i + 2] = value
+      image.data[i + 3] = 255
+    }
+  }
+  context.putImageData(image, 0, 0)
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.wrapS = THREE.RepeatWrapping
+  texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(LOLA_TERRAIN_BUMP_REPEAT, LOLA_TERRAIN_BUMP_REPEAT)
   texture.anisotropy = 8
   texture.needsUpdate = true
   return texture
@@ -679,10 +834,12 @@ function createThirdPersonTerrain() {
   geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
   geometry.setIndex(indices)
   const material = new THREE.MeshStandardMaterial({
-    map: createLolaTerrainTexture(),
+    map: createLolaRegolithTexture(),
+    bumpMap: createLolaRegolithBumpTexture(),
+    bumpScale: 0.034,
     vertexColors: true,
-    color: 0xf0eee6,
-    roughness: 0.96,
+    color: 0xd8d2c6,
+    roughness: 0.985,
     metalness: 0.0,
   })
   const mesh = new THREE.Mesh(geometry, material)
@@ -971,6 +1128,10 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.terrainSourceResolutionM = String(LOLA_TERRAIN_TILE.grid.cell_size_m)
     canvas.dataset.terrainSourceHeightRangeM = String(LOLA_TERRAIN_TILE.grid.height_range_m)
     canvas.dataset.terrainTextureSource = LOLA_TERRAIN_TEXTURE_SOURCE
+    canvas.dataset.regolithMaterialModel = LOLA_REGOLITH_MATERIAL_MODEL
+    canvas.dataset.terrainTextureResolutionPx = String(LOLA_TERRAIN_TEXTURE_SIZE)
+    canvas.dataset.terrainColorTextureRepeat = String(LOLA_TERRAIN_COLOR_REPEAT)
+    canvas.dataset.terrainBumpTextureRepeat = String(LOLA_TERRAIN_BUMP_REPEAT)
     canvas.dataset.terrainMotionModel = LOLA_TERRAIN_MOTION_MODEL
     canvas.dataset.lolaWorldProgressM = geometry.diagnostics.rootDistanceM.toFixed(2)
     canvas.dataset.distantRidgeModel = distantRidges.userData.model
@@ -3179,6 +3340,7 @@ globalThis.__moonmoonGaitDiagnostics = {
   terrainTile: LOLA_TERRAIN_TILE,
   terrainHeightScale: LOLA_TERRAIN_HEIGHT_SCALE,
   terrainTextureSource: LOLA_TERRAIN_TEXTURE_SOURCE,
+  regolithMaterialModel: LOLA_REGOLITH_MATERIAL_MODEL,
   sampleRobotGeometry: robotGeometry,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,
