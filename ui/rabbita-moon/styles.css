@@ -777,8 +777,8 @@ h2 {
   position: fixed;
   z-index: 20;
   right: 24px;
-  top: 118px;
-  width: auto;
+  top: 82px;
+  width: 222px;
   margin: 0;
   border: 0;
   background: transparent;
@@ -788,18 +788,28 @@ h2 {
 .mission-drawer {
   position: fixed;
   z-index: 20;
-  left: 24px;
-  top: 118px;
-  width: auto;
+  right: 24px;
+  top: 144px;
+  width: 222px;
   margin: 0;
   border: 0;
   background: transparent;
   pointer-events: none;
 }
 
-.robot-drawer[open],
+.robot-drawer[open] {
+  top: 82px;
+  bottom: 24px;
+  border: 1px solid rgba(247, 251, 249, .14);
+  border-radius: 8px;
+  background: rgba(6, 8, 8, .88);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .44);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
 .mission-drawer[open] {
-  top: 118px;
+  top: 144px;
   bottom: 24px;
   border: 1px solid rgba(247, 251, 249, .14);
   border-radius: 8px;
@@ -814,7 +824,7 @@ h2 {
 }
 
 .mission-drawer[open] {
-  width: min(560px, calc(50vw - 36px));
+  width: min(520px, calc(50vw - 36px));
 }
 
 .mission-drawer-body {
@@ -1171,8 +1181,8 @@ ul {
 
   .robot-drawer,
   .mission-drawer {
-    top: 114px;
-    width: auto;
+    right: 12px;
+    width: 222px;
   }
 
   .robot-drawer-toggle,
@@ -1193,16 +1203,24 @@ ul {
   }
 
   .robot-drawer {
+    top: 82px;
     right: 12px;
   }
 
   .mission-drawer {
-    left: 12px;
+    top: 136px;
+    right: 12px;
   }
 
-  .robot-drawer[open],
+  .robot-drawer[open] {
+    top: 82px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+
   .mission-drawer[open] {
-    top: 114px;
+    top: 136px;
     left: 12px;
     right: 12px;
     width: auto;

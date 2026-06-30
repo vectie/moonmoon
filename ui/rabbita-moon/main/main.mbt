@@ -176,7 +176,7 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
           b("chat + systems"),
         ]),
         div(class="scene-readout", [
-          span([b("third-person moon walk"), span(" lunar terrain + Noetix E1")]),
+          span([b("Moon surface"), span(" Noetix E1 walk")]),
           span(view.selected_route_id),
         ]),
         div(class="mission-hud mission-left-panel", [
