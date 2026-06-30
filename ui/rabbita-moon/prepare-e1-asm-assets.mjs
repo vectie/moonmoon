@@ -11,8 +11,8 @@ const urdfEntry = `${packageRoot}/urdf/e1_asm.urdf`
 const generatedDir = fileURLToPath(new URL('./.generated/', import.meta.url))
 const assetRoot = path.join(generatedDir, 'e1-asm-assets')
 const targetPath = path.join(generatedDir, 'e1-asm-assembly.js')
-const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 900)
-const reductionAlgorithm = 'topology-vertex-cluster-v2'
+const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 1400)
+const reductionAlgorithm = 'outer-shell-preserving-cluster-v3'
 
 function writeUnavailable(status, detail) {
   mkdirSync(generatedDir, { recursive: true })
@@ -184,6 +184,20 @@ function triangleArea(points) {
   return Math.hypot(cx, cy, cz) * 0.5
 }
 
+function triangleNormal(points) {
+  const ax = points[1][0] - points[0][0]
+  const ay = points[1][1] - points[0][1]
+  const az = points[1][2] - points[0][2]
+  const bx = points[2][0] - points[0][0]
+  const by = points[2][1] - points[0][1]
+  const bz = points[2][2] - points[0][2]
+  const nx = ay * bz - az * by
+  const ny = az * bx - ax * bz
+  const nz = ax * by - ay * bx
+  const length = Math.max(0.000001, Math.hypot(nx, ny, nz))
+  return [nx / length, ny / length, nz / length]
+}
+
 function emptyBounds() {
   return {
     min: [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
@@ -270,9 +284,71 @@ function clusterTriangles(triangles, bounds, bins) {
       points: clusteredPoints,
       area,
       centroid: triangleCentroid(clusteredPoints),
+      normal: triangleNormal(clusteredPoints),
     })
   }
   return reduced
+}
+
+function trianglePointKey(points) {
+  return points
+    .map(point => point.map(value => value.toFixed(5)).join(','))
+    .sort()
+    .join('|')
+}
+
+function dot(a, b) {
+  return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+}
+
+function triangleOuterShellScore(triangle, bounds) {
+  let score = 0
+  for (let axis = 0; axis < 3; axis += 1) {
+    const span = Math.max(0.000001, bounds.max[axis] - bounds.min[axis])
+    const center = triangle.centroid[axis]
+    const distanceToShell = Math.min(center - bounds.min[axis], bounds.max[axis] - center) / span
+    score = Math.max(score, 1 - Math.min(1, distanceToShell / 0.18))
+  }
+  return score
+}
+
+function triangleSilhouetteScore(triangle) {
+  const directions = [
+    [1, 0, 0], [0, 1, 0], [0, 0, 1],
+    [0.7071, 0, 0.7071], [-0.7071, 0, 0.7071],
+    [0.5774, 0.5774, 0.5774], [-0.5774, 0.5774, 0.5774],
+  ]
+  return Math.max(...directions.map(direction => 1 - Math.abs(dot(triangle.normal, direction))))
+}
+
+function triangleImportance(triangle, bounds, maxArea) {
+  const shell = triangleOuterShellScore(triangle, bounds)
+  const silhouette = triangleSilhouetteScore(triangle)
+  const area = Math.sqrt(Math.min(1, triangle.area / Math.max(0.000001, maxArea)))
+  return shell * 0.50 + silhouette * 0.36 + area * 0.14
+}
+
+function preserveOuterTriangles(triangles, bounds, targetTriangles) {
+  let maxArea = 0
+  for (const triangle of triangles) {
+    maxArea = Math.max(maxArea, triangle.area)
+  }
+  const preserveBudget = Math.min(
+    triangles.length,
+    Math.max(12, Math.floor(targetTriangles * 0.58)),
+  )
+  const selected = triangles
+    .map(triangle => ({
+      ...triangle,
+      importance: triangleImportance(triangle, bounds, maxArea),
+    }))
+    .sort((a, b) => b.importance - a.importance || b.area - a.area)
+    .slice(0, preserveBudget)
+  const selectedIndexes = new Set(selected.map(triangle => triangle.index))
+  return {
+    preserved: selected,
+    remaining: triangles.filter(triangle => !selectedIndexes.has(triangle.index)),
+  }
 }
 
 function reduceTrianglesForViewport(triangles, targetTriangles) {
@@ -286,34 +362,63 @@ function reduceTrianglesForViewport(triangles, targetTriangles) {
   }
 
   const bounds = triangleBounds(triangles)
+  const { preserved, remaining } = preserveOuterTriangles(triangles, bounds, targetTriangles)
+  const remainingTarget = Math.max(1, targetTriangles - preserved.length)
   const baseBins = chooseClusterBins(bounds, targetTriangles)
-  const maxCount = Math.ceil(targetTriangles * 1.28)
+  const maxCount = Math.ceil(targetTriangles * 1.42)
   let best = null
   let scale = 1
   for (let attempt = 0; attempt < 8; attempt += 1) {
     const bins = baseBins.map(value => Math.max(1, Math.floor(value * scale)))
-    const reduced = clusterTriangles(triangles, bounds, bins)
+    const reduced = clusterTriangles(remaining, bounds, bins)
     const candidate = { triangles: reduced, bins }
+    const candidateTotal = preserved.length + reduced.length
+    const bestTotal = best ? preserved.length + best.triangles.length : Infinity
     if (!best ||
-      (reduced.length <= maxCount && best.triangles.length > maxCount) ||
-      Math.abs(reduced.length - targetTriangles) < Math.abs(best.triangles.length - targetTriangles)) {
+      (candidateTotal <= maxCount && bestTotal > maxCount) ||
+      Math.abs(candidateTotal - targetTriangles) < Math.abs(bestTotal - targetTriangles)) {
       best = candidate
     }
-    if (reduced.length > 0 && reduced.length <= maxCount) break
+    if (reduced.length > 0 && preserved.length + reduced.length <= maxCount) break
     if (reduced.length === 0 || bins.every(value => value === 1)) break
-    if (reduced.length > maxCount) {
-      scale *= Math.max(0.52, Math.sqrt(maxCount / reduced.length) * 0.94)
+    if (preserved.length + reduced.length > maxCount) {
+      scale *= Math.max(0.52, Math.sqrt(remainingTarget / reduced.length) * 0.94)
     } else {
       scale *= 1.12
     }
   }
 
-  const reduced = best.triangles.sort((a, b) => a.index - b.index)
+  const seen = new Set(preserved.map(triangle => trianglePointKey(triangle.points)))
+  const clustered = best.triangles.filter(triangle => {
+    const key = trianglePointKey(triangle.points)
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+  const clusterBudget = Math.max(0, maxCount - preserved.length)
+  const reducedClustered = clustered.length <= clusterBudget
+    ? clustered
+    : (() => {
+      let maxClusterArea = 0
+      for (const triangle of clustered) {
+        maxClusterArea = Math.max(maxClusterArea, triangle.area)
+      }
+      return clustered
+        .map(triangle => ({
+          ...triangle,
+          importance: triangleImportance(triangle, bounds, maxClusterArea),
+        }))
+        .sort((a, b) => b.importance - a.importance || b.area - a.area)
+        .slice(0, clusterBudget)
+    })()
+  const reduced = [...preserved, ...reducedClustered].sort((a, b) => a.index - b.index)
   return {
     triangles: reduced,
     bounds,
     reduced_bounds: triangleBounds(reduced),
     cluster_bins: best.bins,
+    outer_preserved_triangle_count: preserved.length,
+    clustered_triangle_count: reducedClustered.length,
   }
 }
 
@@ -343,6 +448,7 @@ function parseBinaryStlReduced(filePath, maxTriangles) {
         points,
         area,
         centroid: triangleCentroid(points),
+        normal: triangleNormal(points),
       })
     }
   }
@@ -354,6 +460,8 @@ function parseBinaryStlReduced(filePath, maxTriangles) {
     reduction_algorithm: reductionAlgorithm,
     reduction_target_triangles: maxTriangles,
     reduction_cluster_bins: reduced.cluster_bins,
+    reduction_outer_preserved_triangles: reduced.outer_preserved_triangle_count ?? triangles.length,
+    reduction_clustered_triangles: reduced.clustered_triangle_count ?? 0,
     source_bounds_m: reduced.bounds,
     reduced_bounds_m: reduced.reduced_bounds,
     sampled_triangles: triangles,
@@ -392,6 +500,8 @@ const visuals = links
         reduction_algorithm: reductionAlgorithm,
         reduction_target_triangles: targetTrianglesPerMesh,
         reduction_cluster_bins: [0, 0, 0],
+        reduction_outer_preserved_triangles: 0,
+        reduction_clustered_triangles: 0,
         source_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
         reduced_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
         sampled_triangles: [],
