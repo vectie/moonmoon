@@ -272,6 +272,10 @@ h2 {
   pointer-events: none;
 }
 
+.third-person-viewport > .scene-readout {
+  right: 300px;
+}
+
 .mission-settings {
   position: absolute;
   right: 18px;
@@ -310,7 +314,7 @@ h2 {
 .mission-page-back {
   position: absolute;
   z-index: 16;
-  min-height: 34px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -359,17 +363,23 @@ h2 {
   position: absolute;
   inset: 0;
   z-index: 14;
-  overflow: hidden;
+  overflow: auto;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  gap: 18px;
+  padding: clamp(82px, 9vh, 104px) 24px 28px;
   background:
-    radial-gradient(circle at 50% 14%, rgba(35, 111, 92, .24), transparent 24%),
-    linear-gradient(90deg, rgba(3, 5, 5, .92), rgba(7, 10, 9, .72) 52%, rgba(3, 5, 5, .92));
+    radial-gradient(circle at 50% 10%, rgba(35, 111, 92, .28), transparent 25%),
+    radial-gradient(circle at 78% 70%, rgba(86, 124, 142, .18), transparent 28%),
+    linear-gradient(90deg, rgba(3, 5, 5, .97), rgba(8, 12, 11, .91) 52%, rgba(3, 5, 5, .97));
   opacity: 0;
   pointer-events: none;
   transform: translateX(100%);
   transition:
     opacity 420ms ease,
     transform 520ms cubic-bezier(.22, 1, .36, 1);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(9px);
 }
 
 .moon-console-switch:checked ~ .mission-console-page {
@@ -384,38 +394,53 @@ h2 {
   transform: translateX(12px);
 }
 
+.workspace:has(.moon-console-switch:checked) .mission-drawer,
+.scene-panel:has(.moon-console-switch:checked) .robot-drawer,
+.moon-console-switch:checked ~ .scene-readout,
+.moon-console-switch:checked ~ .mission-left-panel,
+.moon-console-switch:checked ~ .mission-moon-dock,
+.moon-console-switch:checked ~ .mission-settings {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
 .mission-shortcuts {
-  position: absolute;
-  top: 32px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   display: flex;
-  gap: 18px;
+  gap: 12px;
   justify-content: center;
-  max-width: min(760px, calc(100% - 120px));
+  width: min(560px, calc(100% - 48px));
 }
 
 .mission-shortcut {
-  width: 68px;
-  border: 0;
-  background: transparent;
+  width: 92px;
+  min-height: 72px;
+  border: 1px solid rgba(247, 251, 249, .12);
+  border-radius: 8px;
+  background: rgba(18, 23, 21, .62);
   color: rgba(247, 251, 249, .82);
   display: grid;
-  gap: 8px;
+  gap: 7px;
   justify-items: center;
-  padding: 0;
+  padding: 9px 8px;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .22);
 }
 
 .mission-shortcut b {
-  width: 48px;
-  height: 48px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
-  border-radius: 12px;
-  background: rgba(128, 132, 137, .74);
+  border-radius: 8px;
+  background: rgba(88, 97, 95, .74);
   color: #f7fbf9;
-  font-size: 20px;
-  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+  font-size: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .24);
 }
 
 .mission-shortcut.active b {
@@ -433,35 +458,126 @@ h2 {
   white-space: nowrap;
 }
 
-.mission-command-bar {
-  position: absolute;
-  left: 50%;
-  top: 184px;
-  transform: translateX(-50%);
-  width: min(520px, calc(100% - 48px));
-  height: 50px;
-  border: 1px solid rgba(247, 251, 249, .10);
+.mission-chat-panel {
+  width: min(720px, calc(100% - 48px));
+  border: 1px solid rgba(247, 251, 249, .13);
   border-radius: 8px;
-  background: rgba(28, 30, 33, .78);
-  color: rgba(247, 251, 249, .56);
+  background: rgba(20, 23, 22, .84);
+  color: rgba(247, 251, 249, .88);
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  box-shadow: 0 26px 86px rgba(0, 0, 0, .34);
+  backdrop-filter: blur(12px);
+}
+
+.mission-chat-head,
+.mission-chat-box,
+.mission-chat-line {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 18px;
-  box-shadow: 0 18px 55px rgba(0, 0, 0, .26);
-  backdrop-filter: blur(10px);
 }
 
-.mission-command-bar b {
+.mission-chat-head {
+  justify-content: space-between;
+}
+
+.mission-chat-head div {
+  display: grid;
+  gap: 3px;
+}
+
+.mission-chat-head b {
+  color: #f7fbf9;
+  font-size: 15px;
+}
+
+.mission-chat-head span,
+.mission-chat-line span {
+  color: rgba(247, 251, 249, .60);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.mission-chat-head strong {
+  border: 1px solid rgba(141, 223, 200, .24);
+  border-radius: 999px;
+  background: rgba(141, 223, 200, .12);
+  color: #a9ead8;
+  padding: 7px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mission-chat-log {
+  display: grid;
+  gap: 10px;
+}
+
+.mission-chat-line {
+  align-items: flex-start;
+  border: 1px solid rgba(247, 251, 249, .09);
+  border-radius: 7px;
+  background: rgba(4, 8, 7, .42);
+  padding: 12px;
+}
+
+.mission-chat-line b {
+  flex: 0 0 84px;
   color: #8ddfc8;
   font-size: 12px;
 }
 
-.mission-command-bar span {
+.mission-chat-line.system b {
+  color: #b9c7ff;
+}
+
+.mission-chat-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.mission-chat-input,
+.mission-chat-send {
+  min-height: 46px;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.mission-chat-input {
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  border: 1px solid rgba(247, 251, 249, .14);
+  background: rgba(4, 8, 7, .66);
+  color: #f7fbf9;
+  padding: 0 14px;
+  outline: none;
+}
+
+.mission-chat-input::placeholder {
+  color: rgba(247, 251, 249, .38);
+}
+
+.mission-chat-input:focus {
+  border-color: rgba(141, 223, 200, .54);
+  box-shadow: 0 0 0 3px rgba(141, 223, 200, .12);
+}
+
+.mission-chat-send {
+  border: 1px solid rgba(141, 223, 200, .32);
+  background: #236f5c;
+  color: #f7fbf9;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.mission-chat-head,
+.mission-chat-line,
+.mission-chat-input,
+.mission-chat-send {
+  min-width: 0;
 }
 
 .mission-hud {
@@ -471,9 +587,8 @@ h2 {
 }
 
 .mission-hud-top {
-  left: 50%;
-  top: 246px;
-  transform: translateX(-50%);
+  position: static;
+  transform: none;
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -958,25 +1073,82 @@ ul {
 }
 
 @media (max-width: 620px) {
+  .third-person-viewport > .scene-readout {
+    top: 68px;
+    right: 18px;
+  }
+
+  .mission-page-next {
+    right: 58px;
+    top: 12px;
+  }
+
+  .mission-page-back {
+    left: 12px;
+    top: 12px;
+  }
+
+  .mission-console-page {
+    gap: 12px;
+    padding: 72px 12px 18px;
+  }
+
   .mission-shortcuts {
-    left: 16px;
-    right: 16px;
-    transform: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     overflow: hidden;
-    max-width: none;
-    gap: 8px;
+    gap: 6px;
   }
 
   .mission-shortcut {
-    width: 56px;
+    width: auto;
+    min-height: 64px;
+    padding: 8px 4px;
   }
 
-  .mission-command-bar {
-    top: 180px;
+  .mission-shortcut b {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+
+  .mission-chat-panel {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .mission-chat-head,
+  .mission-chat-line {
+    align-items: flex-start;
+  }
+
+  .mission-chat-line {
+    display: grid;
+    gap: 6px;
+  }
+
+  .mission-chat-line b {
+    flex: none;
+  }
+
+  .mission-chat-box {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-chat-send {
+    width: 100%;
   }
 
   .mission-hud-top {
-    display: none;
+    width: 100%;
+    max-width: none;
+    gap: 6px;
+  }
+
+  .mission-hud-top span {
+    flex: 1 1 calc(50% - 6px);
+    text-align: center;
   }
 
   .mission-left-panel {

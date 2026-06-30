@@ -255,9 +255,34 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
               span("energy"),
             ]),
           ]),
-          div(class="mission-command-bar", [
-            b("Moonmoon"),
-            span("inspect route, terrain contact, and endless E1 walk"),
+          section(class="mission-chat-panel", [
+            div(class="mission-chat-head", [
+              div([b("Moonmoon"), span("project console")]),
+              strong("live context"),
+            ]),
+            div(class="mission-chat-log", [
+              article(class="mission-chat-line assistant", [
+                b("Moonmoon"),
+                span(
+                  "Ask about terrain contact, Noetix gait, Moonphys constraints, mission blockers, or energy margin.",
+                ),
+              ]),
+              article(class="mission-chat-line system", [
+                b("Source"),
+                span(
+                  "Answers should cite Moonmoon adapters and current scene diagnostics.",
+                ),
+              ]),
+            ]),
+            div(class="mission-chat-box", [
+              input(
+                id="moonmoon-chat-input",
+                class="mission-chat-input",
+                placeholder="Ask about this mission...",
+                attrs=@html.Attrs::build().aria_label("Moonmoon chat prompt"),
+              ),
+              button(class="mission-chat-send", type_="button", "Ask"),
+            ]),
           ]),
           div(class="mission-hud mission-hud-top", [
             span("LOLA 5 m terrain"),
