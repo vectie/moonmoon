@@ -166,41 +166,18 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
           attrs=@html.Attrs::build().aria_label("mission display settings"),
           "settings",
         ),
-        div(class="mission-shortcuts", [
-          button(class="mission-shortcut active", type_="button", [
-            b("T"),
-            span("terrain"),
-          ]),
-          button(class="mission-shortcut", type_="button", [
-            b("R"),
-            span("robot"),
-          ]),
-          button(class="mission-shortcut", type_="button", [
-            b("P"),
-            span("physics"),
-          ]),
-          button(class="mission-shortcut", type_="button", [
-            b("M"),
-            span("mission"),
-          ]),
-          button(class="mission-shortcut", type_="button", [
-            b("E"),
-            span("energy"),
-          ]),
-        ]),
-        div(class="mission-command-bar", [
-          b("Moonmoon"),
-          span("inspect route, terrain contact, and endless E1 walk"),
+        input(
+          input_type=@html.Checkbox,
+          id="moon-console-page",
+          class="moon-console-switch",
+        ),
+        label(for_="moon-console-page", class="mission-page-next", [
+          span("console"),
+          b("chat + systems"),
         ]),
         div(class="scene-readout", [
           span([b("third-person moon walk"), span(" lunar terrain + Noetix E1")]),
           span(view.selected_route_id),
-        ]),
-        div(class="mission-hud mission-hud-top", [
-          span("LOLA 5 m terrain"),
-          span("Noetix E1"),
-          span("Moonphys contact"),
-          span("endless walk"),
         ]),
         div(class="mission-hud mission-left-panel", [
           div(class="mission-hud-status", [
@@ -249,6 +226,44 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
                 span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
               ]),
             ]),
+          ]),
+        ]),
+        div(class="mission-console-page", [
+          label(for_="moon-console-page", class="mission-page-back", [
+            b("scene"),
+            span("back to walk"),
+          ]),
+          div(class="mission-shortcuts", [
+            button(class="mission-shortcut active", type_="button", [
+              b("T"),
+              span("terrain"),
+            ]),
+            button(class="mission-shortcut", type_="button", [
+              b("R"),
+              span("robot"),
+            ]),
+            button(class="mission-shortcut", type_="button", [
+              b("P"),
+              span("physics"),
+            ]),
+            button(class="mission-shortcut", type_="button", [
+              b("M"),
+              span("mission"),
+            ]),
+            button(class="mission-shortcut", type_="button", [
+              b("E"),
+              span("energy"),
+            ]),
+          ]),
+          div(class="mission-command-bar", [
+            b("Moonmoon"),
+            span("inspect route, terrain contact, and endless E1 walk"),
+          ]),
+          div(class="mission-hud mission-hud-top", [
+            span("LOLA 5 m terrain"),
+            span("Noetix E1"),
+            span("Moonphys contact"),
+            span("endless walk"),
           ]),
         ]),
       ]),

@@ -300,6 +300,90 @@ h2 {
   border: 0;
 }
 
+.moon-console-switch {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mission-page-next,
+.mission-page-back {
+  position: absolute;
+  z-index: 16;
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(247, 251, 249, .16);
+  border-radius: 999px;
+  background: rgba(8, 12, 11, .68);
+  color: rgba(247, 251, 249, .84);
+  padding: 7px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow: 0 14px 42px rgba(0, 0, 0, .32);
+  backdrop-filter: blur(10px);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease,
+    background-color 180ms ease;
+}
+
+.mission-page-next {
+  right: 64px;
+  top: 18px;
+}
+
+.mission-page-back {
+  left: 24px;
+  top: 24px;
+}
+
+.mission-page-next:hover,
+.mission-page-back:hover {
+  background: rgba(28, 40, 36, .84);
+}
+
+.mission-page-next b,
+.mission-page-back b {
+  color: #8ddfc8;
+  text-transform: uppercase;
+}
+
+.mission-page-next span,
+.mission-page-back span {
+  color: rgba(247, 251, 249, .62);
+}
+
+.mission-console-page {
+  position: absolute;
+  inset: 0;
+  z-index: 14;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 14%, rgba(35, 111, 92, .24), transparent 24%),
+    linear-gradient(90deg, rgba(3, 5, 5, .92), rgba(7, 10, 9, .72) 52%, rgba(3, 5, 5, .92));
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%);
+  transition:
+    opacity 420ms ease,
+    transform 520ms cubic-bezier(.22, 1, .36, 1);
+  backdrop-filter: blur(5px);
+}
+
+.moon-console-switch:checked ~ .mission-console-page {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.moon-console-switch:checked ~ .mission-page-next {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(12px);
+}
+
 .mission-shortcuts {
   position: absolute;
   top: 32px;
