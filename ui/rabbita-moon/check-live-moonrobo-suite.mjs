@@ -1,10 +1,8 @@
 import { spawnSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
 import { MOONROBO_NOETIX_WALK_CLIP as GENERATED_MOONROBO_NOETIX_WALK_CLIP } from './generated-moonrobo-noetix-clip.js'
-import {
-  MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE,
-  MOONROBO_NOETIX_WALK_CLIP as LIVE_MOONROBO_NOETIX_WALK_CLIP,
-} from './.generated/live-moonrobo-noetix-clip.js'
+import { MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE } from './.generated/live-moonrobo-suite-evidence.js'
+import { MOONROBO_NOETIX_WALK_CLIP as LIVE_MOONROBO_NOETIX_WALK_CLIP } from './.generated/live-moonrobo-noetix-runtime.js'
 
 const moonroboRoot = fileURLToPath(new URL('../../../moonrobo', import.meta.url))
 const moonBin = process.env.MOON_BIN ?? 'moon'

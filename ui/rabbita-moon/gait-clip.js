@@ -1,4 +1,4 @@
-import { MOONROBO_NOETIX_WALK_CLIP } from './.generated/live-moonrobo-noetix-clip.js'
+import { MOONROBO_NOETIX_WALK_CLIP } from './.generated/live-moonrobo-noetix-runtime.js'
 
 export const NOETIX_VISUAL_RIG = {
   robotId: 'noetix-e1-lab-01',

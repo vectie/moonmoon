@@ -5,11 +5,13 @@ import { fileURLToPath } from 'node:url'
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
-const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
+const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-runtime.js', import.meta.url), 'utf8')
+const liveSuiteEvidence = readFileSync(new URL('./.generated/live-moonrobo-suite-evidence.js', import.meta.url), 'utf8')
 const e1AssemblyBridge = readFileSync(new URL('./.generated/e1-asm-assembly.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
 const gaitRuntimeSource = `${liveRuntimeClip}\n${e1AssemblyBridge}\n${gaitClip}\n${scene}`
+const gaitEvidenceSource = liveSuiteEvidence
 const generatedSnapshotSource = generatedClip
 const runHeavyIntegration = process.argv.includes('--heavy') || process.env.RABBITA_GAIT_HEAVY === '1'
 
@@ -160,8 +162,7 @@ const sceneContracts = [
   'authored_joint_samples',
   'authored_motion_samples',
   'authored_motor_frames',
-  'live-moonrobo-noetix-clip.js',
-  'MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE',
+  'live-moonrobo-noetix-runtime.js',
 ]
 
 const planContracts = [
@@ -196,6 +197,7 @@ for (const token of sceneContracts) {
 }
 
 requireText(generatedSnapshotSource, 'export const MOONROBO_NOETIX_WALK_CLIP', 'generated Moonrobo snapshot source')
+requireText(gaitEvidenceSource, 'MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE', 'live Moonrobo suite evidence source')
 
 for (const token of planContracts) {
   requireText(plan, token, 'ANIMATION_FIRST_LOCOMOTION_PLAN.md')
