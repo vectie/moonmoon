@@ -24,24 +24,17 @@ const EARTH_TEXTURE_URL = new URL('./assets/earth/earth_atmos_2048.jpg', import.
 const MAIN_SCENE_QUALITY_REFRESH_MS = 3000
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 500
-const HIDDEN_CANVAS_RETRY_MS = 1000
-const IDLE_DOCK_RENDER_MS = 1000
-const MAIN_SCENE_PIXEL_RATIO = 0.35
-const ROBOT_DRAWER_PIXEL_RATIO = 1
+const HIDDEN_CANVAS_RETRY_MS = 250
+const IDLE_DOCK_RENDER_MS = 66
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
 const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
-const E1_GPU_PALETTE_MODE = 'single-draw-link-matrix-palette'
-const THIRD_PERSON_TERRAIN_COLS = 24
-const THIRD_PERSON_TERRAIN_ROWS = 32
+const THIRD_PERSON_TERRAIN_COLS = 96
+const THIRD_PERSON_TERRAIN_ROWS = 112
 const THIRD_PERSON_TERRAIN_WIDTH_M = 52
 const THIRD_PERSON_TERRAIN_DEPTH_M = 74
 const THIRD_PERSON_VISUAL_RADIUS_M = 260
-const TERRAIN_GEOMETRY_REFRESH_MS = 50
-const TERRAIN_NORMAL_REFRESH_MS = 140
-const DISTANT_RIDGE_REFRESH_MS = 180
-const MAIN_RENDER_GAIT_SAMPLES = 12
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
 const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-moonsand-regolith-texture'
 const LOLA_TERRAIN_MOTION_MODEL = 'world-progress-lola-dem'
@@ -124,11 +117,6 @@ function mat4RotateZ(m, a) {
 
 function mat4AxisAngle(m, axis, angle) {
   const [x, y, z] = normalizeArray3(axis)
-  return mat4AxisAngleNormalized(m, [x, y, z], angle)
-}
-
-function mat4AxisAngleNormalized(m, axis, angle) {
-  const [x, y, z] = axis
   const c = Math.cos(angle)
   const s = Math.sin(angle)
   const t = 1 - c
@@ -153,44 +141,6 @@ function mat4FromUrdfOrigin(origin) {
   matrix = mat4RotateX(matrix, rpy[0])
   matrix = mat4RotateY(matrix, rpy[1])
   matrix = mat4RotateZ(matrix, rpy[2])
-  return matrix
-}
-
-let e1RuntimeJointCache = null
-let e1VisualOriginMatrixCache = null
-
-function e1RuntimeJoints() {
-  if (e1RuntimeJointCache) return e1RuntimeJointCache
-  const ordered = []
-  const resolved = new Set([E1_ASM_ASSEMBLY.root_link])
-  const pending = [...(E1_ASM_ASSEMBLY.joints ?? [])]
-  let progress = true
-  while (pending.length > 0 && progress) {
-    progress = false
-    for (let i = pending.length - 1; i >= 0; i -= 1) {
-      const joint = pending[i]
-      if (!resolved.has(joint.parent)) continue
-      ordered.push({
-        ...joint,
-        originMatrix: mat4FromUrdfOrigin(joint.origin),
-        axisNormal: normalizeArray3(joint.axis),
-      })
-      resolved.add(joint.child)
-      pending.splice(i, 1)
-      progress = true
-    }
-  }
-  e1RuntimeJointCache = ordered
-  return e1RuntimeJointCache
-}
-
-function e1VisualOriginMatrix(linkId, origin) {
-  if (!e1VisualOriginMatrixCache) e1VisualOriginMatrixCache = new Map()
-  let matrix = e1VisualOriginMatrixCache.get(linkId)
-  if (!matrix) {
-    matrix = mat4FromUrdfOrigin(origin)
-    e1VisualOriginMatrixCache.set(linkId, matrix)
-  }
   return matrix
 }
 
@@ -357,7 +307,6 @@ function resizeCanvas(canvas, gl) {
 }
 
 function addTri(vertices, colors, a, b, c, color) {
-  if (!vertices || !colors) return
   vertices.push(...a, ...b, ...c)
   colors.push(...color, ...color, ...color)
 }
@@ -585,7 +534,7 @@ function e1Color(visual, phaseShift = 0) {
 }
 
 function addE1StlMesh(vertices, colors, sceneRoot, linkMatrix, visual, mesh) {
-  const visualMatrix = mat4Multiply(linkMatrix, e1VisualOriginMatrix(visual.link_id, visual.origin))
+  const visualMatrix = mat4Multiply(linkMatrix, mat4FromUrdfOrigin(visual.origin))
   const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
   for (const triangle of mesh.sampled_triangles) {
     const points = triangle.map(point => transformPoint(
@@ -596,91 +545,51 @@ function addE1StlMesh(vertices, colors, sceneRoot, linkMatrix, visual, mesh) {
   }
 }
 
-function e1LinkMatrixSelectorSource(count) {
-  const lines = [
-    'mat4 e1MatrixForLink(float rawIndex) {',
-    '  int index = int(rawIndex + 0.5);',
-    '  mat4 selected = e1LinkMatrices[0];',
-  ]
-  for (let index = 1; index < count; index += 1) {
-    lines.push(`  if (index == ${index}) selected = e1LinkMatrices[${index}];`)
-  }
-  lines.push('  return selected;', '}')
-  return lines.join('\n')
+function threeMatrixFromMat4(matrix) {
+  return new THREE.Matrix4().fromArray(matrix)
 }
 
-function e1GpuMaterial(linkMatrices) {
-  const material = new THREE.MeshStandardMaterial({
-    vertexColors: true,
+function e1ThreeGeometry(visual) {
+  const positions = []
+  for (const triangle of visual.sampled_triangles ?? []) {
+    for (const point of triangle) {
+      positions.push(point[0], point[1], point[2])
+    }
+  }
+  const geometry = new THREE.BufferGeometry()
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  geometry.computeVertexNormals()
+  geometry.computeBoundingBox()
+  geometry.computeBoundingSphere()
+  return geometry
+}
+
+function e1ThreeMaterial(visual) {
+  const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
+  return new THREE.MeshStandardMaterial({
+    color: new THREE.Color(color[0], color[1], color[2]),
     roughness: 0.64,
     metalness: 0.08,
     side: THREE.DoubleSide,
   })
-  material.onBeforeCompile = shader => {
-    shader.uniforms.e1LinkMatrices = { value: linkMatrices }
-    shader.vertexShader = shader.vertexShader
-      .replace(
-        '#include <common>',
-        `#include <common>
-attribute float linkIndex;
-uniform mat4 e1LinkMatrices[${linkMatrices.length}];
-${e1LinkMatrixSelectorSource(linkMatrices.length)}`,
-      )
-      .replace(
-        '#include <beginnormal_vertex>',
-        `mat4 e1LinkMatrixForVertex = e1MatrixForLink(linkIndex);
-vec3 objectNormal = normalize(mat3(e1LinkMatrixForVertex) * normal);`,
-      )
-      .replace(
-        '#include <begin_vertex>',
-        `vec3 transformed = (e1LinkMatrixForVertex * vec4(position, 1.0)).xyz;`,
-      )
-    material.userData.shader = shader
-  }
-  material.userData.linkMatrices = linkMatrices
-  return material
-}
-
-function createE1GpuVisuals() {
-  const group = new THREE.Group()
-  const visuals = new Map()
-  if (!E1_ASM_ASSEMBLY.ready) return { group, visuals, mode: E1_GPU_PALETTE_MODE }
-  const positions = []
-  const linkIndices = []
-  const colors = []
-  const linkMatrices = E1_ASM_ASSEMBLY.visuals.map(() => new THREE.Matrix4())
-  for (let linkIndex = 0; linkIndex < E1_ASM_ASSEMBLY.visuals.length; linkIndex += 1) {
-    const visual = E1_ASM_ASSEMBLY.visuals[linkIndex]
-    const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
-    for (const triangle of visual.sampled_triangles ?? []) {
-      for (const point of triangle) {
-        positions.push(point[0], point[1], point[2])
-        linkIndices.push(linkIndex)
-        colors.push(color[0], color[1], color[2])
-      }
-    }
-    visuals.set(visual.link_id, { visual, linkIndex, matrix: linkMatrices[linkIndex] })
-  }
-  const geometry = new THREE.BufferGeometry()
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-  geometry.setAttribute('linkIndex', new THREE.Float32BufferAttribute(linkIndices, 1))
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
-  geometry.computeVertexNormals()
-  geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0.8, 0), THIRD_PERSON_VISUAL_RADIUS_M)
-  const mesh = new THREE.Mesh(geometry, e1GpuMaterial(linkMatrices))
-  mesh.frustumCulled = false
-  mesh.userData.detailMode = 'sampled-stl'
-  mesh.userData.paletteMode = E1_GPU_PALETTE_MODE
-  mesh.userData.reductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
-  group.add(mesh)
-  group.userData.linkMatrices = linkMatrices
-  group.userData.gpuMesh = mesh
-  group.userData.paletteMode = E1_GPU_PALETTE_MODE
-  return { group, visuals, mesh, linkMatrices, mode: E1_GPU_PALETTE_MODE }
 }
 
 function createE1ThreeVisuals() {
-  return createE1GpuVisuals()
+  const group = new THREE.Group()
+  const visuals = new Map()
+  if (!E1_ASM_ASSEMBLY.ready) return { group, visuals }
+  for (const visual of E1_ASM_ASSEMBLY.visuals) {
+    const mesh = new THREE.Mesh(e1ThreeGeometry(visual), e1ThreeMaterial(visual))
+    mesh.userData.detailMode = 'sampled-stl'
+    mesh.userData.reductionAlgorithm = visual.reduction_algorithm
+    const linkGroup = new THREE.Group()
+    linkGroup.matrixAutoUpdate = false
+    linkGroup.add(mesh)
+    linkGroup.userData.linkId = visual.link_id
+    group.add(linkGroup)
+    visuals.set(visual.link_id, { group: linkGroup, mesh, visual })
+  }
+  return { group, visuals }
 }
 
 function reportE1SourceReadiness(visuals, canvas) {
@@ -696,7 +605,6 @@ function reportE1SourceReadiness(visuals, canvas) {
   canvas.dataset.e1FullStlSourceTriangles = String(sourceTriangles)
   canvas.dataset.e1RenderDetailMode = E1_RENDER_DETAIL_MODE
   canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
-  canvas.dataset.e1GpuPaletteMode = E1_GPU_PALETTE_MODE
 }
 
 function hash01(x, y) {
@@ -954,23 +862,11 @@ function createThirdPersonTerrain() {
   })
   const mesh = new THREE.Mesh(geometry, material)
   mesh.receiveShadow = true
-  mesh.frustumCulled = false
-  geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), THIRD_PERSON_VISUAL_RADIUS_M)
-  mesh.userData = {
-    cols,
-    rows,
-    lastGeometryRefreshMs: -Infinity,
-    lastNormalRefreshMs: -Infinity,
-  }
+  mesh.userData = { cols, rows }
   return mesh
 }
 
-function updateThirdPersonTerrain(mesh, followZ, clip, now = Infinity) {
-  mesh.position.z = followZ
-  if (now - mesh.userData.lastGeometryRefreshMs < TERRAIN_GEOMETRY_REFRESH_MS) {
-    return
-  }
-  mesh.userData.lastGeometryRefreshMs = now
+function updateThirdPersonTerrain(mesh, followZ, clip) {
   const position = mesh.geometry.getAttribute('position')
   const color = mesh.geometry.getAttribute('color')
   const uv = mesh.geometry.getAttribute('uv')
@@ -981,6 +877,7 @@ function updateThirdPersonTerrain(mesh, followZ, clip, now = Infinity) {
   let uvIndex = 0
   for (let row = 0; row <= rows; row += 1) {
     const zLocal = ((row / rows) - 0.42) * THIRD_PERSON_TERRAIN_DEPTH_M
+    const worldZ = followZ + zLocal
     const travelZ = clip.rootDistanceM + zLocal
     for (let col = 0; col <= cols; col += 1) {
       const x = ((col / cols) - 0.5) * THIRD_PERSON_TERRAIN_WIDTH_M
@@ -989,7 +886,7 @@ function updateThirdPersonTerrain(mesh, followZ, clip, now = Infinity) {
       const edgeSkirtM = lunarVisualEdgeSkirtM(x, zLocal)
       position.array[index] = x
       position.array[index + 1] = terrain.heightM - curveDropM - edgeSkirtM - 0.006
-      position.array[index + 2] = zLocal
+      position.array[index + 2] = worldZ
       const terrainColor = lolaTerrainColor(terrain)
       const textureUv = lolaTerrainUv(x, travelZ)
       uv.array[uvIndex] = textureUv.u
@@ -1008,10 +905,8 @@ function updateThirdPersonTerrain(mesh, followZ, clip, now = Infinity) {
   position.needsUpdate = true
   color.needsUpdate = true
   uv.needsUpdate = true
-  if (now - mesh.userData.lastNormalRefreshMs >= TERRAIN_NORMAL_REFRESH_MS) {
-    mesh.geometry.computeVertexNormals()
-    mesh.userData.lastNormalRefreshMs = now
-  }
+  mesh.geometry.computeVertexNormals()
+  mesh.geometry.computeBoundingSphere()
 }
 
 function createThirdPersonGrid() {
@@ -1056,16 +951,10 @@ function createDistantLolaRidges() {
     group.add(mesh)
   }
   group.userData.model = LOLA_DISTANT_RIDGE_MODEL
-  group.userData.lastGeometryRefreshMs = -Infinity
   return group
 }
 
-function updateDistantLolaRidges(group, followZ, clip, now = Infinity) {
-  group.position.z = followZ
-  if (now - group.userData.lastGeometryRefreshMs < DISTANT_RIDGE_REFRESH_MS) {
-    return
-  }
-  group.userData.lastGeometryRefreshMs = now
+function updateDistantLolaRidges(group, followZ, clip) {
   const baselineM = lolaTileElevationM(0, clip.rootDistanceM)
   for (const mesh of group.children) {
     const { distanceM, widthM, baseY, scale } = mesh.userData
@@ -1080,7 +969,7 @@ function updateDistantLolaRidges(group, followZ, clip, now = Infinity) {
       const elevationM = lolaTileElevationM(x * 0.82, ridgeTravelZ + x * 0.10)
       const topY = clamp(baseY + (elevationM - baselineM) * scale, 0.10, 3.25)
       const bottomY = -0.36
-      const z = distanceM
+      const z = followZ + distanceM
       const shade = clamp(0.18 + topY * 0.12 + (1 - t) * 0.035, 0.14, 0.46)
       position.array[pi] = x
       position.array[pi + 1] = bottomY
@@ -1099,6 +988,7 @@ function updateDistantLolaRidges(group, followZ, clip, now = Infinity) {
     }
     position.needsUpdate = true
     color.needsUpdate = true
+    mesh.geometry.computeBoundingSphere()
   }
 }
 
@@ -1238,25 +1128,21 @@ function initThirdPersonMoonWalk(canvas) {
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: false,
-      alpha: false,
-      depth: true,
-      stencil: false,
-      powerPreference: 'high-performance',
-      preserveDrawingBuffer: false,
+      antialias: true,
+      preserveDrawingBuffer: true,
     })
   } catch (_error) {
     canvas.dataset.sceneStatus = 'three-webgl-unavailable'
     return
   }
-  renderer.shadowMap.enabled = false
+  renderer.shadowMap.enabled = true
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x070908)
   scene.fog = new THREE.Fog(0x070908, 18, 54)
   scene.add(new THREE.HemisphereLight(0xf4f8ef, 0x30332e, 1.25))
   const sun = new THREE.DirectionalLight(0xffffff, 2.6)
   sun.position.set(-2.8, 5.6, -3.2)
-  sun.castShadow = false
+  sun.castShadow = true
   scene.add(sun)
   const fill = new THREE.DirectionalLight(0xb8d7ff, 0.42)
   fill.position.set(3.5, 1.8, 3.4)
@@ -1278,17 +1164,14 @@ function initThirdPersonMoonWalk(canvas) {
   const distantRidges = createDistantLolaRidges()
   scene.add(distantRidges)
   const e1Visuals = createE1ThreeVisuals()
-  if (e1Visuals.mesh) {
-    e1Visuals.mesh.castShadow = true
+  for (const entry of e1Visuals.visuals.values()) {
+    entry.mesh.castShadow = true
   }
   scene.add(e1Visuals.group)
   reportE1SourceReadiness(e1Visuals.visuals, canvas)
   let cachedQuality = null
   let lastQualityRefreshMs = -Infinity
   let lastEarthLightingRefreshMs = -Infinity
-  const cameraTarget = new THREE.Vector3()
-  const desiredCamera = new THREE.Vector3()
-  const renderGait = createMainRenderGaitSampler()
   function draw(now) {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
@@ -1296,7 +1179,7 @@ function initThirdPersonMoonWalk(canvas) {
       return
     }
     markCanvasRenderActive(canvas)
-    const ratio = Math.min(MAIN_SCENE_PIXEL_RATIO, window.devicePixelRatio || 1)
+    const ratio = Math.min(2, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(420, Math.floor(rect.width * ratio))
     const height = Math.max(320, Math.floor(rect.height * ratio))
@@ -1306,7 +1189,7 @@ function initThirdPersonMoonWalk(canvas) {
     camera.aspect = canvas.width / Math.max(1, canvas.height)
     camera.updateProjectionMatrix()
     const time = now * 0.001
-    const geometry = renderGait(time)
+    const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
     if (!cachedQuality || now - lastQualityRefreshMs >= MAIN_SCENE_QUALITY_REFRESH_MS) {
       cachedQuality = gaitQuality(time, geometry.diagnostics, {
         footLockSamples: 8,
@@ -1322,8 +1205,8 @@ function initThirdPersonMoonWalk(canvas) {
       geometry.diagnostics.footLock,
     )
     const followZ = geometry.diagnostics.visualRootWorldZ
-    updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics, now)
-    updateDistantLolaRidges(distantRidges, followZ, geometry.diagnostics, now)
+    updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics)
+    updateDistantLolaRidges(distantRidges, followZ, geometry.diagnostics)
     grid.position.z = followZ + 8.5
     earthrise.position.set(-2.2, 3.65, followZ + 32)
     if (now - lastEarthLightingRefreshMs >= 10000) {
@@ -1337,10 +1220,10 @@ function initThirdPersonMoonWalk(canvas) {
       e1Visuals.visuals,
       followZ,
     )
-    cameraTarget.set(0.18, 0.58, followZ + 0.26)
-    desiredCamera.set(0.82, 1.28, followZ - 2.15)
-    camera.position.lerp(desiredCamera, 0.12)
-    controls.target.lerp(cameraTarget, 0.18)
+    const target = new THREE.Vector3(0.18, 0.58, followZ + 0.26)
+    const desired = new THREE.Vector3(0.82, 1.28, followZ - 2.15)
+    camera.position.lerp(desired, 0.12)
+    controls.target.lerp(target, 0.18)
     controls.update()
     renderer.render(scene, camera)
     canvas.dataset.sceneStatus = 'third-person-moon-walk-rendered'
@@ -1403,13 +1286,16 @@ function updateE1ThreeVisuals(root, clip, joints, visuals, rootWorldZ = 0) {
   let sceneRoot = mat4WorldOffset(root, E1_ASM_DUPLICATE_OFFSET_X, 0, 0)
   sceneRoot = mat4WorldOffset(sceneRoot, 0, 0, rootWorldZ)
   const transforms = e1AssemblyLinkTransforms(e1AssemblyJointAngles(clip, joints))
-  for (const entry of visuals.values()) {
-    const { visual, matrix: gpuMatrix } = entry
+  for (const { group, visual } of visuals.values()) {
     const linkMatrix = transforms.get(visual.link_id)
-    if (!linkMatrix || !gpuMatrix) continue
-    const visualMatrix = mat4Multiply(linkMatrix, e1VisualOriginMatrix(visual.link_id, visual.origin))
+    if (!linkMatrix) {
+      group.visible = false
+      continue
+    }
+    const visualMatrix = mat4Multiply(linkMatrix, mat4FromUrdfOrigin(visual.origin))
     const matrix = mat4Multiply(sceneRoot, mat4Multiply(URDF_TO_SCENE_MATRIX, visualMatrix))
-    gpuMatrix.fromArray(matrix)
+    group.matrix.copy(threeMatrixFromMat4(matrix))
+    group.visible = true
   }
 }
 
@@ -1606,7 +1492,6 @@ function pointRecordDistance(a, b) {
 }
 
 function translateVertexRangeZ(vertices, start, end, dz) {
-  if (!vertices) return
   if (dz === 0) return
   for (let i = start + 2; i < end; i += 3) {
     vertices[i] += dz
@@ -1614,7 +1499,6 @@ function translateVertexRangeZ(vertices, start, end, dz) {
 }
 
 function addGround(vertices, colors, clip, rootWorldZ = 0) {
-  if (!vertices || !colors) return
   const spacing = 0.24
   const startWorldZ = Math.floor((clip.rootDistanceM - 1.92) / spacing) * spacing
   for (let i = 0; i <= 17; i += 1) {
@@ -1643,7 +1527,6 @@ function addGround(vertices, colors, clip, rootWorldZ = 0) {
 }
 
 function addGaitTimingRails(vertices, colors, clip, rootWorldZ = 0) {
-  if (!vertices || !colors) return
   for (let i = -6; i <= 6; i += 1) {
     const z = i * 0.18
     const terrain = terrainSampleAt(0, z, clip)
@@ -1871,15 +1754,23 @@ function e1AssemblyJointAngles(clip, joints) {
 
 function e1AssemblyLinkTransforms(jointAngles) {
   const transforms = new Map([[E1_ASM_ASSEMBLY.root_link, mat4Identity()]])
-  for (const joint of e1RuntimeJoints()) {
-    const parent = transforms.get(joint.parent)
-    if (!parent) continue
-    const angle = jointAngles[joint.name] ?? 0
-    let child = mat4Multiply(parent, joint.originMatrix)
-    if (joint.type === 'revolute' || joint.type === 'continuous') {
-      child = mat4AxisAngleNormalized(child, joint.axisNormal, angle)
+  const pending = [...(E1_ASM_ASSEMBLY.joints ?? [])]
+  let progress = true
+  while (pending.length > 0 && progress) {
+    progress = false
+    for (let i = pending.length - 1; i >= 0; i -= 1) {
+      const joint = pending[i]
+      const parent = transforms.get(joint.parent)
+      if (!parent) continue
+      const angle = jointAngles[joint.name] ?? 0
+      let child = mat4Multiply(parent, mat4FromUrdfOrigin(joint.origin))
+      if (joint.type === 'revolute' || joint.type === 'continuous') {
+        child = mat4AxisAngle(child, joint.axis, angle)
+      }
+      transforms.set(joint.child, child)
+      pending.splice(i, 1)
+      progress = true
     }
-    transforms.set(joint.child, child)
   }
   return transforms
 }
@@ -1924,9 +1815,8 @@ function addE1AssemblyVisualCharacter(vertices, colors, root, clip, joints, visu
 }
 
 function robotGeometry(time, options = { quality: true }) {
-  const debugPrimitives = options.debugPrimitives !== false
-  const vertices = debugPrimitives ? [] : null
-  const colors = debugPrimitives ? [] : null
+  const vertices = []
+  const colors = []
   const clip = walkClipSample(time, options)
   const visualRootWorldZ = options.visualWorldSpace === false ? 0 : clip.rootDistanceM
   const authoredJoints = jointSamples(clip)
@@ -2019,44 +1909,15 @@ function robotGeometry(time, options = { quality: true }) {
   diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics, clip)
   diagnostics.centerOfMassVelocity = centerOfMassVelocityAt(time, options)
   diagnostics.visualRootWorldZ = visualRootWorldZ
-  if (debugPrimitives) {
-    const robotVertexEnd = vertices.length
-    translateVertexRangeZ(vertices, 0, robotVertexEnd, visualRootWorldZ)
-    addGround(vertices, colors, clip, visualRootWorldZ)
-    addGaitTimingRails(vertices, colors, clip, visualRootWorldZ)
-  }
+  const robotVertexEnd = vertices.length
+  translateVertexRangeZ(vertices, 0, robotVertexEnd, visualRootWorldZ)
+  addGround(vertices, colors, clip, visualRootWorldZ)
+  addGaitTimingRails(vertices, colors, clip, visualRootWorldZ)
   const gait = { ...diagnostics, ...clip }
   if (options.quality === false) {
     return { vertices, colors, diagnostics: gait }
   }
   return { vertices, colors, diagnostics: { ...gait, quality: gaitQuality(time, gait) } }
-}
-
-function createMainRenderGaitSampler() {
-  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
-  const samples = Array.from({ length: MAIN_RENDER_GAIT_SAMPLES }, (_, index) => {
-    const sampleTime = index * cycleSeconds / MAIN_RENDER_GAIT_SAMPLES
-    return robotGeometry(sampleTime, {
-      quality: false,
-      e1VisualTriangles: false,
-      debugPrimitives: false,
-      centerOfMassVelocity: false,
-    })
-  })
-  return time => {
-    const clip = walkClipSample(time, { centerOfMassVelocity: false })
-    const sampleIndex = Math.floor(cycle01(clip.phase) * MAIN_RENDER_GAIT_SAMPLES) % MAIN_RENDER_GAIT_SAMPLES
-    const sample = samples[sampleIndex]
-    const diagnostics = {
-      ...sample.diagnostics,
-      ...clip,
-      terrain: terrainProfileReport(clip),
-      rootDistanceM: clip.rootDistanceM,
-      visualRootWorldZ: clip.rootDistanceM,
-      centerOfMassVelocity: { x: 0, y: 0, z: 0 },
-    }
-    return { vertices: null, colors: null, diagnostics }
-  }
 }
 
 function centerOfMassVelocityAt(time, options) {
@@ -3231,12 +3092,8 @@ function initRobot(canvas) {
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: false,
-      alpha: false,
-      depth: true,
-      stencil: false,
-      powerPreference: 'high-performance',
-      preserveDrawingBuffer: false,
+      antialias: true,
+      preserveDrawingBuffer: true,
     })
   } catch (_error) {
     canvas.dataset.sceneStatus = 'three-webgl-unavailable'
@@ -3263,9 +3120,6 @@ function initRobot(canvas) {
   const debugMesh = new THREE.Mesh(new THREE.BufferGeometry(), debugMaterial)
   scene.add(debugMesh)
   const e1Visuals = createE1ThreeVisuals()
-  if (e1Visuals.mesh) {
-    e1Visuals.mesh.castShadow = true
-  }
   scene.add(e1Visuals.group)
   reportE1SourceReadiness(e1Visuals.visuals, canvas)
   let cachedQuality = null
@@ -3278,7 +3132,7 @@ function initRobot(canvas) {
       return
     }
     markCanvasRenderActive(canvas)
-    const ratio = Math.min(ROBOT_DRAWER_PIXEL_RATIO, window.devicePixelRatio || 1)
+    const ratio = Math.min(2, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(320, Math.floor(rect.width * ratio))
     const height = Math.max(260, Math.floor(rect.height * ratio))

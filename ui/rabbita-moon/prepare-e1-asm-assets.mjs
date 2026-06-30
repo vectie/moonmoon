@@ -11,7 +11,7 @@ const urdfEntry = `${packageRoot}/urdf/e1_asm.urdf`
 const generatedDir = fileURLToPath(new URL('./.generated/', import.meta.url))
 const assetRoot = path.join(generatedDir, 'e1-asm-assets')
 const targetPath = path.join(generatedDir, 'e1-asm-assembly.js')
-const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 150)
+const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 900)
 const reductionAlgorithm = 'topology-vertex-cluster-v2'
 
 function writeUnavailable(status, detail) {
