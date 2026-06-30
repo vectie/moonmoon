@@ -780,7 +780,7 @@ h2 {
   z-index: 20;
   right: 24px;
   top: 82px;
-  width: 222px;
+  width: auto;
   margin: 0;
   border: 0;
   background: transparent;
@@ -792,7 +792,7 @@ h2 {
   z-index: 20;
   right: 24px;
   top: 144px;
-  width: 222px;
+  width: auto;
   margin: 0;
   border: 0;
   background: transparent;
@@ -1169,7 +1169,7 @@ ul {
   .robot-drawer,
   .mission-drawer {
     right: 12px;
-    width: 222px;
+    width: auto;
   }
 
   .robot-drawer-toggle,
