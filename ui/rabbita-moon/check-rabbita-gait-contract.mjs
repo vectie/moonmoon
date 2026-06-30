@@ -137,6 +137,8 @@ const sceneContracts = [
   'e1FullStlStatus',
   'e1RenderDetailMode',
   'e1MeshReductionAlgorithm',
+  'E1_GPU_PALETTE_MODE',
+  'single-draw-link-matrix-palette',
   'visualMeshAssetStatus',
   'visualMeshAssets',
   'visual_mesh_assets',
