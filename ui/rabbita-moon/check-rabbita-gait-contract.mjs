@@ -5,13 +5,11 @@ import { fileURLToPath } from 'node:url'
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
-const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-runtime.js', import.meta.url), 'utf8')
-const liveSuiteEvidence = readFileSync(new URL('./.generated/live-moonrobo-suite-evidence.js', import.meta.url), 'utf8')
+const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const e1AssemblyBridge = readFileSync(new URL('./.generated/e1-asm-assembly.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
 const gaitRuntimeSource = `${liveRuntimeClip}\n${e1AssemblyBridge}\n${gaitClip}\n${scene}`
-const gaitEvidenceSource = liveSuiteEvidence
 const generatedSnapshotSource = generatedClip
 const runHeavyIntegration = process.argv.includes('--heavy') || process.env.RABBITA_GAIT_HEAVY === '1'
 
@@ -133,7 +131,7 @@ const sceneContracts = [
   'OrbitControls',
   'full-stl-source-indexed',
   'realtime-sampled-stl',
-  'topology-vertex-cluster-v2',
+  'viewport-voxel-area-silhouette-v1',
   'e1FullStlStatus',
   'e1RenderDetailMode',
   'e1MeshReductionAlgorithm',
@@ -162,7 +160,8 @@ const sceneContracts = [
   'authored_joint_samples',
   'authored_motion_samples',
   'authored_motor_frames',
-  'live-moonrobo-noetix-runtime.js',
+  'live-moonrobo-noetix-clip.js',
+  'MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE',
 ]
 
 const planContracts = [
@@ -197,7 +196,6 @@ for (const token of sceneContracts) {
 }
 
 requireText(generatedSnapshotSource, 'export const MOONROBO_NOETIX_WALK_CLIP', 'generated Moonrobo snapshot source')
-requireText(gaitEvidenceSource, 'MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE', 'live Moonrobo suite evidence source')
 
 for (const token of planContracts) {
   requireText(plan, token, 'ANIMATION_FIRST_LOCOMOTION_PLAN.md')
@@ -220,17 +218,16 @@ if (e1AssemblyModule.E1_ASM_ASSEMBLY.mesh_count !== 25 ||
 if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual => visual.format === 'stl' && visual.status === 'e1-asm-stl-ready')) {
   throw new Error('E1 assembly bridge did not expose 25 ready STL visuals')
 }
-if (e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm !== 'topology-vertex-cluster-v2') {
+if (e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm !== 'viewport-voxel-area-silhouette-v1') {
   throw new Error(`E1 assembly bridge used wrong reduction algorithm: ${e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm}`)
 }
 if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual =>
   visual.reduction_algorithm === e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm &&
   visual.reduction_target_triangles === e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh &&
   visual.triangle_count > 0 &&
-  visual.triangle_count <= Math.ceil(e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh * 1.28) &&
-  visual.sampled_triangles.length === visual.triangle_count &&
-  Array.isArray(visual.reduction_cluster_bins) &&
-  visual.reduction_cluster_bins.length === 3)) {
+  visual.triangle_count <= e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh + 6 &&
+  Array.isArray(visual.reduction_voxel_bins) &&
+  visual.reduction_voxel_bins.length === 3)) {
   throw new Error('E1 assembly bridge did not expose bounded viewport-reduced STL visuals')
 }
 if (!gaitModule.NOETIX_WALK_CLIP?.ready) {

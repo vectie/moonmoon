@@ -11,8 +11,8 @@ const urdfEntry = `${packageRoot}/urdf/e1_asm.urdf`
 const generatedDir = fileURLToPath(new URL('./.generated/', import.meta.url))
 const assetRoot = path.join(generatedDir, 'e1-asm-assets')
 const targetPath = path.join(generatedDir, 'e1-asm-assembly.js')
-const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 900)
-const reductionAlgorithm = 'topology-vertex-cluster-v2'
+const targetTrianglesPerMesh = Number(process.env.E1_ASM_TRIANGLES_PER_MESH || 240)
+const reductionAlgorithm = 'viewport-voxel-area-silhouette-v1'
 
 function writeUnavailable(status, detail) {
   mkdirSync(generatedDir, { recursive: true })
@@ -211,68 +211,41 @@ function triangleBounds(triangles) {
   }
 }
 
-function chooseClusterBins(bounds, targetTriangles) {
+function chooseVoxelBins(bounds, targetTriangles) {
   const span = bounds.max.map((max, axis) => Math.max(0.000001, max - bounds.min[axis]))
-  const surfaceArea = Math.max(
-    0.000001,
-    2 * (span[0] * span[1] + span[0] * span[2] + span[1] * span[2]),
-  )
-  const cell = Math.sqrt(surfaceArea / Math.max(1, targetTriangles * 0.56))
+  const volume = span[0] * span[1] * span[2]
+  const cell = Math.cbrt(volume / Math.max(1, targetTriangles * 0.86))
   return span.map(axisSpan => Math.max(1, Math.ceil(axisSpan / cell)))
 }
 
-function clusterKey(point, bounds, bins) {
-  return point.map((value, axis) => {
+function voxelKey(centroid, bounds, bins) {
+  return centroid.map((value, axis) => {
     const span = Math.max(0.000001, bounds.max[axis] - bounds.min[axis])
     const bucket = Math.floor(((value - bounds.min[axis]) / span) * bins[axis])
     return Math.max(0, Math.min(bins[axis] - 1, bucket))
   }).join(':')
 }
 
-function clusterTriangles(triangles, bounds, bins) {
-  const clusters = new Map()
-  const triangleKeys = []
-  for (const triangle of triangles) {
-    const keys = triangle.points.map(point => {
-      const key = clusterKey(point, bounds, bins)
-      let cluster = clusters.get(key)
-      if (!cluster) {
-        cluster = { sum: [0, 0, 0], count: 0 }
-        clusters.set(key, cluster)
+function selectSilhouetteTriangles(triangles) {
+  const selected = new Map()
+  for (let axis = 0; axis < 3; axis += 1) {
+    let min = null
+    let max = null
+    for (const triangle of triangles) {
+      const value = triangle.centroid[axis]
+      if (!min || value < min.centroid[axis] ||
+        (value === min.centroid[axis] && triangle.area > min.area)) {
+        min = triangle
       }
-      cluster.sum[0] += point[0]
-      cluster.sum[1] += point[1]
-      cluster.sum[2] += point[2]
-      cluster.count += 1
-      return key
-    })
-    triangleKeys.push(keys)
+      if (!max || value > max.centroid[axis] ||
+        (value === max.centroid[axis] && triangle.area > max.area)) {
+        max = triangle
+      }
+    }
+    if (min) selected.set(min.index, min)
+    if (max) selected.set(max.index, max)
   }
-
-  const points = new Map()
-  for (const [key, cluster] of clusters) {
-    points.set(key, cluster.sum.map(value => Number((value / cluster.count).toFixed(5))))
-  }
-
-  const reduced = []
-  const seen = new Set()
-  for (let index = 0; index < triangleKeys.length; index += 1) {
-    const keys = triangleKeys[index]
-    if (new Set(keys).size < 3) continue
-    const dedupeKey = [...keys].sort().join('|')
-    if (seen.has(dedupeKey)) continue
-    const clusteredPoints = keys.map(key => points.get(key))
-    const area = triangleArea(clusteredPoints)
-    if (area <= 0 || !clusteredPoints.every(point => point.every(Number.isFinite))) continue
-    seen.add(dedupeKey)
-    reduced.push({
-      index,
-      points: clusteredPoints,
-      area,
-      centroid: triangleCentroid(clusteredPoints),
-    })
-  }
-  return reduced
+  return selected
 }
 
 function reduceTrianglesForViewport(triangles, targetTriangles) {
@@ -281,39 +254,53 @@ function reduceTrianglesForViewport(triangles, targetTriangles) {
       triangles,
       bounds: triangleBounds(triangles),
       reduced_bounds: triangleBounds(triangles),
-      cluster_bins: [1, 1, 1],
+      voxel_bins: [1, 1, 1],
     }
   }
 
   const bounds = triangleBounds(triangles)
-  const baseBins = chooseClusterBins(bounds, targetTriangles)
-  const maxCount = Math.ceil(targetTriangles * 1.28)
-  let best = null
-  let scale = 1
-  for (let attempt = 0; attempt < 8; attempt += 1) {
-    const bins = baseBins.map(value => Math.max(1, Math.floor(value * scale)))
-    const reduced = clusterTriangles(triangles, bounds, bins)
-    const candidate = { triangles: reduced, bins }
-    if (!best ||
-      (reduced.length <= maxCount && best.triangles.length > maxCount) ||
-      Math.abs(reduced.length - targetTriangles) < Math.abs(best.triangles.length - targetTriangles)) {
-      best = candidate
+  const bins = chooseVoxelBins(bounds, targetTriangles)
+  const selected = selectSilhouetteTriangles(triangles)
+  const buckets = new Map()
+  for (const triangle of triangles) {
+    const key = voxelKey(triangle.centroid, bounds, bins)
+    const current = buckets.get(key)
+    if (!current || triangle.area > current.area) {
+      buckets.set(key, triangle)
     }
-    if (reduced.length > 0 && reduced.length <= maxCount) break
-    if (reduced.length === 0 || bins.every(value => value === 1)) break
-    if (reduced.length > maxCount) {
-      scale *= Math.max(0.52, Math.sqrt(maxCount / reduced.length) * 0.94)
-    } else {
-      scale *= 1.12
+  }
+  for (const triangle of buckets.values()) {
+    selected.set(triangle.index, triangle)
+  }
+
+  const maxCount = targetTriangles + 6
+  if (selected.size > maxCount) {
+    const keep = selectSilhouetteTriangles([...selected.values()])
+    const ranked = [...selected.values()].sort((a, b) => b.area - a.area)
+    for (const triangle of ranked) {
+      if (keep.size >= maxCount) break
+      keep.set(triangle.index, triangle)
+    }
+    selected.clear()
+    for (const [index, triangle] of keep) {
+      selected.set(index, triangle)
     }
   }
 
-  const reduced = best.triangles.sort((a, b) => a.index - b.index)
+  if (selected.size < targetTriangles) {
+    const ranked = [...triangles].sort((a, b) => b.area - a.area)
+    for (const triangle of ranked) {
+      if (selected.size >= targetTriangles) break
+      selected.set(triangle.index, triangle)
+    }
+  }
+
+  const reduced = [...selected.values()].sort((a, b) => a.index - b.index)
   return {
     triangles: reduced,
     bounds,
     reduced_bounds: triangleBounds(reduced),
-    cluster_bins: best.bins,
+    voxel_bins: bins,
   }
 }
 
@@ -353,7 +340,7 @@ function parseBinaryStlReduced(filePath, maxTriangles) {
     triangle_count: triangles.length,
     reduction_algorithm: reductionAlgorithm,
     reduction_target_triangles: maxTriangles,
-    reduction_cluster_bins: reduced.cluster_bins,
+    reduction_voxel_bins: reduced.voxel_bins,
     source_bounds_m: reduced.bounds,
     reduced_bounds_m: reduced.reduced_bounds,
     sampled_triangles: triangles,
@@ -391,7 +378,7 @@ const visuals = links
         triangle_count: 0,
         reduction_algorithm: reductionAlgorithm,
         reduction_target_triangles: targetTrianglesPerMesh,
-        reduction_cluster_bins: [0, 0, 0],
+        reduction_voxel_bins: [0, 0, 0],
         source_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
         reduced_bounds_m: { min: [0, 0, 0], max: [0, 0, 0] },
         sampled_triangles: [],

@@ -21,11 +21,8 @@ import LOLA_TERRAIN_TILE from './assets/lro_lola/first_trusted_square_lola_5m_12
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
 const EARTH_TEXTURE_URL = new URL('./assets/earth/earth_atmos_2048.jpg', import.meta.url).href
-const MAIN_SCENE_QUALITY_REFRESH_MS = 3000
 const ROBOT_QUALITY_REFRESH_MS = 1000
-const ROBOT_DATASET_REFRESH_MS = 500
-const HIDDEN_CANVAS_RETRY_MS = 250
-const IDLE_DOCK_RENDER_MS = 66
+const ROBOT_DATASET_REFRESH_MS = 250
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
@@ -413,18 +410,6 @@ function markCanvasRenderActive(canvas) {
   canvas.dataset.renderPaused = 'false'
 }
 
-function scheduleCanvasDraw(canvas, draw, active, delayMs = 0) {
-  if (active) {
-    if (delayMs > 0) {
-      setTimeout(() => requestAnimationFrame(draw), delayMs)
-      return
-    }
-    requestAnimationFrame(draw)
-    return
-  }
-  setTimeout(() => requestAnimationFrame(draw), HIDDEN_CANVAS_RETRY_MS)
-}
-
 function initMoon(canvas, view) {
   const gl = canvas.getContext('webgl', { antialias: true })
   if (!gl) {
@@ -466,7 +451,7 @@ function initMoon(canvas, view) {
   function draw() {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
-      scheduleCanvasDraw(canvas, draw, false)
+      requestAnimationFrame(draw)
       return
     }
     markCanvasRenderActive(canvas)
@@ -489,7 +474,7 @@ function initMoon(canvas, view) {
     canvas.dataset.sceneStatus = 'moon-globe-webgl-rendered'
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
     if (!dragging) yaw += 0.0015
-    scheduleCanvasDraw(canvas, draw, true, dragging ? 0 : IDLE_DOCK_RENDER_MS)
+    requestAnimationFrame(draw)
   }
   draw()
 }
@@ -1175,7 +1160,7 @@ function initThirdPersonMoonWalk(canvas) {
   function draw(now) {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
-      scheduleCanvasDraw(canvas, draw, false)
+      requestAnimationFrame(draw)
       return
     }
     markCanvasRenderActive(canvas)
@@ -1190,7 +1175,7 @@ function initThirdPersonMoonWalk(canvas) {
     camera.updateProjectionMatrix()
     const time = now * 0.001
     const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
-    if (!cachedQuality || now - lastQualityRefreshMs >= MAIN_SCENE_QUALITY_REFRESH_MS) {
+    if (!cachedQuality || now - lastQualityRefreshMs >= ROBOT_QUALITY_REFRESH_MS) {
       cachedQuality = gaitQuality(time, geometry.diagnostics, {
         footLockSamples: 8,
         cycleSamples: 12,
@@ -1276,7 +1261,7 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
     canvas.dataset.threeRenderCalls = String(renderer.info.render.calls)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
-    scheduleCanvasDraw(canvas, draw, true)
+    requestAnimationFrame(draw)
   }
   requestAnimationFrame(draw)
 }
@@ -3128,7 +3113,7 @@ function initRobot(canvas) {
   function draw(now) {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
-      scheduleCanvasDraw(canvas, draw, false)
+      requestAnimationFrame(draw)
       return
     }
     markCanvasRenderActive(canvas)
@@ -3444,7 +3429,7 @@ function initRobot(canvas) {
     canvas.dataset.visualLinkCount = String(NOETIX_VISUAL_RIG.linkCount)
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
     updateRobotDebug(debug, geometry.diagnostics)
-    scheduleCanvasDraw(canvas, draw, true)
+    requestAnimationFrame(draw)
   }
   requestAnimationFrame(draw)
 }

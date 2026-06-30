@@ -88,22 +88,6 @@ function drawSelectedPin(ctx, canvas, state, yaw) {
   ctx.stroke()
 }
 
-function canvasRenderActive(canvas) {
-  if (!canvas.isConnected) return false
-  const rect = canvas.getBoundingClientRect()
-  if (rect.width < 2 || rect.height < 2) return false
-  const style = getComputedStyle(canvas)
-  return style.display !== 'none' && style.visibility !== 'hidden'
-}
-
-function scheduleTerrainRender(canvas, render, active) {
-  if (active) {
-    window.requestAnimationFrame(render)
-    return
-  }
-  window.setTimeout(() => window.requestAnimationFrame(render), 250)
-}
-
 globalThis.__moonmoonRenderTerrain = modelJson => {
   const canvas = document.getElementById('moonmoon-terrain-3d')
   if (!canvas) return
@@ -142,16 +126,6 @@ globalThis.__moonmoonRenderTerrain = modelJson => {
   }
 
   function render() {
-    if (!canvasRenderActive(canvas)) {
-      canvas.dataset.renderPaused = 'true'
-      canvas.dataset.pausedFrames = String(Number(canvas.dataset.pausedFrames || 0) + 1)
-      scheduleTerrainRender(canvas, render, false)
-      return
-    }
-    if (canvas.dataset.renderPaused === 'true') {
-      canvas.dataset.renderResumedCount = String(Number(canvas.dataset.renderResumedCount || 0) + 1)
-    }
-    canvas.dataset.renderPaused = 'false'
     const ratio = window.devicePixelRatio || 1
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(360, Math.floor(rect.width * ratio))
@@ -182,7 +156,7 @@ globalThis.__moonmoonRenderTerrain = modelJson => {
     yaw += dragging ? 0 : 0.0018
     canvas.dataset.renderedFrames = String(frame)
     frame += 1
-    scheduleTerrainRender(canvas, render, true)
+    window.requestAnimationFrame(render)
   }
 
   render()
