@@ -463,7 +463,7 @@ function initMoon(canvas, view) {
     let model = mat4Identity()
     model = mat4RotateX(model, pitch)
     model = mat4RotateY(model, yaw)
-    const viewMat = mat4Translate(mat4Identity(), 0, 0, -3.35)
+    const viewMat = mat4Translate(mat4Identity(), 0, 0, -4.05)
     const mvp = mat4Multiply(mat4Perspective(44 * DEG, aspect, 0.1, 20), mat4Multiply(viewMat, model))
     uploadMoon(gl, moonShader, moonBuffers, mesh, texture, mvp)
     gl.drawArrays(gl.TRIANGLES, 0, mesh.vertices.length / 3)

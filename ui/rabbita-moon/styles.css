@@ -669,8 +669,8 @@ h2 {
   position: absolute;
   right: 24px;
   bottom: 22px;
-  width: min(430px, calc(100% - 48px));
-  height: 220px;
+  width: min(480px, calc(100% - 48px));
+  height: 280px;
   overflow: hidden;
   pointer-events: auto;
 }
@@ -679,10 +679,6 @@ h2 {
 .dock-view {
   position: absolute;
   inset: 0;
-}
-
-.dock-view {
-  padding-top: 38px;
 }
 
 .dock-terrain {
@@ -750,7 +746,7 @@ h2 {
 
 .mission-moon-dock .moon-globe-canvas,
 .mission-moon-dock .terrain-canvas {
-  height: 220px;
+  height: 100%;
 }
 
 .mission-moon-dock .dock-readout {
@@ -1055,13 +1051,13 @@ ul {
 
   .mission-moon-dock {
     right: 12px;
-    width: min(360px, calc(100% - 24px));
-    height: 172px;
+    width: min(410px, calc(100% - 24px));
+    height: 240px;
   }
 
   .mission-moon-dock .moon-globe-canvas,
   .mission-moon-dock .terrain-canvas {
-    height: 172px;
+    height: 100%;
   }
 
   .mission-hud-stats b {
@@ -1150,7 +1146,7 @@ ul {
 
   .mission-left-panel {
     left: 12px;
-    bottom: 204px;
+    bottom: 232px;
     width: min(330px, calc(100% - 24px));
   }
 
@@ -1158,12 +1154,12 @@ ul {
     right: 12px;
     bottom: 12px;
     width: min(330px, calc(100% - 24px));
-    height: 176px;
+    height: 204px;
   }
 
   .mission-moon-dock .moon-globe-canvas,
   .mission-moon-dock .terrain-canvas {
-    height: 176px;
+    height: 100%;
   }
 
   .robot-drawer,
