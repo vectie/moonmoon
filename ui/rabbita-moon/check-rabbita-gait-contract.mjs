@@ -115,7 +115,7 @@ const sceneContracts = [
   'earth-atmos-2048-real-texture',
   'earthriseTextureSource',
   'EARTHRISE_LIGHTING_MODEL',
-  'utc-subsolar-terminator-v1',
+  'utc-subsolar-readable-terminator-v2',
   'EARTHRISE_NIGHT_FILL',
   'EARTHRISE_DAY_BOOST',
   'earthUtcLightingState',
@@ -326,7 +326,7 @@ if (diagnostics.regolithMaterialModel !== 'lola-hillshade-moonsand-microcrater-p
   throw new Error('scene3d.js did not expose the expected moonsand regolith material model')
 }
 
-if (diagnostics.earthriseLightingModel !== 'utc-subsolar-terminator-v1') {
+if (diagnostics.earthriseLightingModel !== 'utc-subsolar-readable-terminator-v2') {
   throw new Error('scene3d.js did not expose the expected time-based Earthrise lighting model')
 }
 

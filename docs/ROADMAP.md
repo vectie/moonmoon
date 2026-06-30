@@ -17,6 +17,10 @@
 
 - Tighten mission clearance language around terrain, illumination, energy, and
   operator review.
+- Replace the readable UTC Earthrise shader with a Moon observer model using
+  Sun direction, Moon surface location, Earth phase, camera direction, and real
+  ephemeris. The current Rabbita Earthrise pass is intentionally brighter for
+  readability, but it is not yet the physical lighting authority.
 - Let the route-motion contract become `suite-adapter-ready` only after the
   route gates allow traversal.
 - Add a second lunar site only after the first site has a clean route-gate

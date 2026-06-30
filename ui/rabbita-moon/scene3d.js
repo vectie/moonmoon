@@ -42,9 +42,9 @@ const LOLA_TERRAIN_BUMP_REPEAT = 26
 const LOLA_REGOLITH_MATERIAL_MODEL = 'lola-hillshade-moonsand-microcrater-pebbles-v1'
 const LOLA_DISTANT_RIDGE_SAMPLES = 96
 const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
-const EARTHRISE_LIGHTING_MODEL = 'utc-subsolar-terminator-v1'
-const EARTHRISE_NIGHT_FILL = 0.34
-const EARTHRISE_DAY_BOOST = 1.36
+const EARTHRISE_LIGHTING_MODEL = 'utc-subsolar-readable-terminator-v2'
+const EARTHRISE_NIGHT_FILL = 0.52
+const EARTHRISE_DAY_BOOST = 1.54
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
 
 function clamp(value, min, max) {
@@ -1057,12 +1057,12 @@ function createEarthMaterial() {
         ));
         float daylight = smoothstep(-0.07, 0.18, dot(surface, sun));
         float limb = smoothstep(-0.18, 0.58, vNormal.z);
-        vec3 nightTint = vec3(0.055, 0.10, 0.16);
+        vec3 nightTint = vec3(0.085, 0.135, 0.19);
         vec3 dayColor = tex * dayBoost;
         vec3 nightColor = tex * nightFill + nightTint;
         vec3 color = mix(nightColor, dayColor, daylight);
-        color += vec3(0.10, 0.18, 0.25) * (1.0 - abs(daylight - 0.5) * 2.0) * 0.28;
-        color *= mix(0.76, 1.0, limb);
+        color += vec3(0.12, 0.20, 0.28) * (1.0 - abs(daylight - 0.5) * 2.0) * 0.32;
+        color *= mix(0.88, 1.0, limb);
         gl_FragColor = vec4(color, 1.0);
       }
     `,

@@ -404,3 +404,30 @@ Acceptance:
 
 - evidence can be regenerated from typed source packages
 - task orchestration consumes evidence; it does not become hidden motion logic
+
+## Phase 11: Earthrise Observer Lighting
+
+The current Rabbita Earthrise shader is a readable UTC terminator pass. It uses
+the current UTC subsolar point to keep a visible day/night split, but it
+intentionally brightens the night side and limb so Earth remains legible in the
+third-person walking scene. This is a product-readability improvement, not the
+final physical authority.
+
+Next deliverables:
+
+- Moon observer model using Sun direction, Moon surface location, Earth phase,
+  camera direction, and real ephemeris
+- explicit scene metadata for observer latitude, longitude, local normal, Sun
+  vector, Earth vector, and camera vector
+- Earth phase and terminator derived from observer geometry instead of only UTC
+  texture rotation
+- validation that the rendered Earth brightness, phase, and horizon placement
+  match the selected lunar site and time
+
+Acceptance:
+
+- Rabbita can display a bright readable preview mode and a physically grounded
+  observer mode as separate scene states
+- the real observer mode cites its ephemeris source and exposes the computed
+  Sun/Earth/camera vectors in viewport metadata
+- visual readability tuning does not overwrite the physical lighting contract
