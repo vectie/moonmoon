@@ -295,7 +295,6 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
       details(class="robot-drawer", [
         summary(class="robot-drawer-toggle", [
           span([b("Robot"), span(" FK gait")]),
-          strong("drawer"),
         ]),
         div(class="robot-viewport", [
           canvas(
@@ -404,7 +403,6 @@ fn view(model : Model) -> Html {
       details(class="mission-drawer", [
         summary(class="mission-drawer-toggle", [
           span([b("Mission"), span(" data")]),
-          strong("drawer"),
         ]),
         div(class="mission-drawer-body", [
           header(class="topbar", [

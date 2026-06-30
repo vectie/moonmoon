@@ -396,6 +396,8 @@ h2 {
 
 .workspace:has(.moon-console-switch:checked) .mission-drawer,
 .scene-panel:has(.moon-console-switch:checked) .robot-drawer,
+.workspace:has(.mission-drawer[open]) .robot-drawer,
+.scene-panel:has(.robot-drawer[open]) + .mission-drawer,
 .moon-console-switch:checked ~ .scene-readout,
 .moon-console-switch:checked ~ .mission-left-panel,
 .moon-console-switch:checked ~ .mission-moon-dock,
@@ -846,7 +848,7 @@ h2 {
   min-height: 42px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 16px;
   border: 1px solid rgba(247, 251, 249, .16);
   border-radius: 8px;
@@ -868,21 +870,6 @@ h2 {
 .robot-drawer-toggle span span,
 .mission-drawer-toggle span span {
   color: rgba(247, 251, 249, .58);
-}
-
-.robot-drawer-toggle strong,
-.mission-drawer-toggle strong {
-  border: 1px solid rgba(247, 251, 249, .16);
-  border-radius: 999px;
-  background: rgba(6, 8, 8, .68);
-  padding: 8px 10px;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.robot-drawer[open] .robot-drawer-toggle strong,
-.mission-drawer[open] .mission-drawer-toggle strong {
-  color: #8ddfc8;
 }
 
 .robot-drawer[open] .robot-viewport {
@@ -1194,12 +1181,6 @@ ul {
   .robot-drawer-toggle span span,
   .mission-drawer-toggle span span {
     display: none;
-  }
-
-  .robot-drawer-toggle strong,
-  .mission-drawer-toggle strong {
-    padding: 7px 8px;
-    font-size: 10px;
   }
 
   .robot-drawer {
