@@ -24,21 +24,24 @@ const EARTH_TEXTURE_URL = new URL('./assets/earth/earth_atmos_2048.jpg', import.
 const MAIN_SCENE_QUALITY_REFRESH_MS = 3000
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 500
-const HIDDEN_CANVAS_RETRY_MS = 250
-const IDLE_DOCK_RENDER_MS = 66
+const HIDDEN_CANVAS_RETRY_MS = 1000
+const IDLE_DOCK_RENDER_MS = 1000
+const MAIN_SCENE_PIXEL_RATIO = 0.35
+const ROBOT_DRAWER_PIXEL_RATIO = 1
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
 const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
 const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
 const E1_GPU_PALETTE_MODE = 'single-draw-link-matrix-palette'
-const THIRD_PERSON_TERRAIN_COLS = 96
-const THIRD_PERSON_TERRAIN_ROWS = 112
+const THIRD_PERSON_TERRAIN_COLS = 24
+const THIRD_PERSON_TERRAIN_ROWS = 32
 const THIRD_PERSON_TERRAIN_WIDTH_M = 52
 const THIRD_PERSON_TERRAIN_DEPTH_M = 74
 const THIRD_PERSON_VISUAL_RADIUS_M = 260
 const TERRAIN_GEOMETRY_REFRESH_MS = 50
 const TERRAIN_NORMAL_REFRESH_MS = 140
 const DISTANT_RIDGE_REFRESH_MS = 180
+const MAIN_RENDER_GAIT_SAMPLES = 12
 const LOLA_TERRAIN_HEIGHT_SCALE = 0.12
 const LOLA_TERRAIN_TEXTURE_SOURCE = 'lola-dem-moonsand-regolith-texture'
 const LOLA_TERRAIN_MOTION_MODEL = 'world-progress-lola-dem'
@@ -354,6 +357,7 @@ function resizeCanvas(canvas, gl) {
 }
 
 function addTri(vertices, colors, a, b, c, color) {
+  if (!vertices || !colors) return
   vertices.push(...a, ...b, ...c)
   colors.push(...color, ...color, ...color)
 }
@@ -1234,7 +1238,7 @@ function initThirdPersonMoonWalk(canvas) {
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: false,
       alpha: false,
       depth: true,
       stencil: false,
@@ -1245,14 +1249,14 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.sceneStatus = 'three-webgl-unavailable'
     return
   }
-  renderer.shadowMap.enabled = true
+  renderer.shadowMap.enabled = false
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x070908)
   scene.fog = new THREE.Fog(0x070908, 18, 54)
   scene.add(new THREE.HemisphereLight(0xf4f8ef, 0x30332e, 1.25))
   const sun = new THREE.DirectionalLight(0xffffff, 2.6)
   sun.position.set(-2.8, 5.6, -3.2)
-  sun.castShadow = true
+  sun.castShadow = false
   scene.add(sun)
   const fill = new THREE.DirectionalLight(0xb8d7ff, 0.42)
   fill.position.set(3.5, 1.8, 3.4)
@@ -1284,6 +1288,7 @@ function initThirdPersonMoonWalk(canvas) {
   let lastEarthLightingRefreshMs = -Infinity
   const cameraTarget = new THREE.Vector3()
   const desiredCamera = new THREE.Vector3()
+  const renderGait = createMainRenderGaitSampler()
   function draw(now) {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
@@ -1291,7 +1296,7 @@ function initThirdPersonMoonWalk(canvas) {
       return
     }
     markCanvasRenderActive(canvas)
-    const ratio = Math.min(2, window.devicePixelRatio || 1)
+    const ratio = Math.min(MAIN_SCENE_PIXEL_RATIO, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(420, Math.floor(rect.width * ratio))
     const height = Math.max(320, Math.floor(rect.height * ratio))
@@ -1301,7 +1306,7 @@ function initThirdPersonMoonWalk(canvas) {
     camera.aspect = canvas.width / Math.max(1, canvas.height)
     camera.updateProjectionMatrix()
     const time = now * 0.001
-    const geometry = robotGeometry(time, { quality: false, e1VisualTriangles: false })
+    const geometry = renderGait(time)
     if (!cachedQuality || now - lastQualityRefreshMs >= MAIN_SCENE_QUALITY_REFRESH_MS) {
       cachedQuality = gaitQuality(time, geometry.diagnostics, {
         footLockSamples: 8,
@@ -1601,6 +1606,7 @@ function pointRecordDistance(a, b) {
 }
 
 function translateVertexRangeZ(vertices, start, end, dz) {
+  if (!vertices) return
   if (dz === 0) return
   for (let i = start + 2; i < end; i += 3) {
     vertices[i] += dz
@@ -1608,6 +1614,7 @@ function translateVertexRangeZ(vertices, start, end, dz) {
 }
 
 function addGround(vertices, colors, clip, rootWorldZ = 0) {
+  if (!vertices || !colors) return
   const spacing = 0.24
   const startWorldZ = Math.floor((clip.rootDistanceM - 1.92) / spacing) * spacing
   for (let i = 0; i <= 17; i += 1) {
@@ -1636,6 +1643,7 @@ function addGround(vertices, colors, clip, rootWorldZ = 0) {
 }
 
 function addGaitTimingRails(vertices, colors, clip, rootWorldZ = 0) {
+  if (!vertices || !colors) return
   for (let i = -6; i <= 6; i += 1) {
     const z = i * 0.18
     const terrain = terrainSampleAt(0, z, clip)
@@ -1916,8 +1924,9 @@ function addE1AssemblyVisualCharacter(vertices, colors, root, clip, joints, visu
 }
 
 function robotGeometry(time, options = { quality: true }) {
-  const vertices = []
-  const colors = []
+  const debugPrimitives = options.debugPrimitives !== false
+  const vertices = debugPrimitives ? [] : null
+  const colors = debugPrimitives ? [] : null
   const clip = walkClipSample(time, options)
   const visualRootWorldZ = options.visualWorldSpace === false ? 0 : clip.rootDistanceM
   const authoredJoints = jointSamples(clip)
@@ -2010,15 +2019,44 @@ function robotGeometry(time, options = { quality: true }) {
   diagnostics.centerOfMass = supportAnchoredCenterOfMass(root, diagnostics, clip)
   diagnostics.centerOfMassVelocity = centerOfMassVelocityAt(time, options)
   diagnostics.visualRootWorldZ = visualRootWorldZ
-  const robotVertexEnd = vertices.length
-  translateVertexRangeZ(vertices, 0, robotVertexEnd, visualRootWorldZ)
-  addGround(vertices, colors, clip, visualRootWorldZ)
-  addGaitTimingRails(vertices, colors, clip, visualRootWorldZ)
+  if (debugPrimitives) {
+    const robotVertexEnd = vertices.length
+    translateVertexRangeZ(vertices, 0, robotVertexEnd, visualRootWorldZ)
+    addGround(vertices, colors, clip, visualRootWorldZ)
+    addGaitTimingRails(vertices, colors, clip, visualRootWorldZ)
+  }
   const gait = { ...diagnostics, ...clip }
   if (options.quality === false) {
     return { vertices, colors, diagnostics: gait }
   }
   return { vertices, colors, diagnostics: { ...gait, quality: gaitQuality(time, gait) } }
+}
+
+function createMainRenderGaitSampler() {
+  const cycleSeconds = 1 / NOETIX_VISUAL_RIG.cycleHz
+  const samples = Array.from({ length: MAIN_RENDER_GAIT_SAMPLES }, (_, index) => {
+    const sampleTime = index * cycleSeconds / MAIN_RENDER_GAIT_SAMPLES
+    return robotGeometry(sampleTime, {
+      quality: false,
+      e1VisualTriangles: false,
+      debugPrimitives: false,
+      centerOfMassVelocity: false,
+    })
+  })
+  return time => {
+    const clip = walkClipSample(time, { centerOfMassVelocity: false })
+    const sampleIndex = Math.floor(cycle01(clip.phase) * MAIN_RENDER_GAIT_SAMPLES) % MAIN_RENDER_GAIT_SAMPLES
+    const sample = samples[sampleIndex]
+    const diagnostics = {
+      ...sample.diagnostics,
+      ...clip,
+      terrain: terrainProfileReport(clip),
+      rootDistanceM: clip.rootDistanceM,
+      visualRootWorldZ: clip.rootDistanceM,
+      centerOfMassVelocity: { x: 0, y: 0, z: 0 },
+    }
+    return { vertices: null, colors: null, diagnostics }
+  }
 }
 
 function centerOfMassVelocityAt(time, options) {
@@ -3193,7 +3231,7 @@ function initRobot(canvas) {
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
-      antialias: true,
+      antialias: false,
       alpha: false,
       depth: true,
       stencil: false,
@@ -3240,7 +3278,7 @@ function initRobot(canvas) {
       return
     }
     markCanvasRenderActive(canvas)
-    const ratio = Math.min(2, window.devicePixelRatio || 1)
+    const ratio = Math.min(ROBOT_DRAWER_PIXEL_RATIO, window.devicePixelRatio || 1)
     const rect = canvas.getBoundingClientRect()
     const width = Math.max(320, Math.floor(rect.width * ratio))
     const height = Math.max(260, Math.floor(rect.height * ratio))

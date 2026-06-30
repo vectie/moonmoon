@@ -133,7 +133,7 @@ const sceneContracts = [
   'OrbitControls',
   'full-stl-source-indexed',
   'realtime-sampled-stl',
-  'outer-shell-preserving-cluster-v3',
+  'topology-vertex-cluster-v2',
   'e1FullStlStatus',
   'e1RenderDetailMode',
   'e1MeshReductionAlgorithm',
@@ -222,20 +222,17 @@ if (e1AssemblyModule.E1_ASM_ASSEMBLY.mesh_count !== 25 ||
 if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual => visual.format === 'stl' && visual.status === 'e1-asm-stl-ready')) {
   throw new Error('E1 assembly bridge did not expose 25 ready STL visuals')
 }
-if (e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm !== 'outer-shell-preserving-cluster-v3') {
+if (e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm !== 'topology-vertex-cluster-v2') {
   throw new Error(`E1 assembly bridge used wrong reduction algorithm: ${e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm}`)
 }
 if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual =>
   visual.reduction_algorithm === e1AssemblyModule.E1_ASM_ASSEMBLY.reduction_algorithm &&
   visual.reduction_target_triangles === e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh &&
   visual.triangle_count > 0 &&
-  visual.triangle_count <= Math.ceil(e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh * 1.42) &&
+  visual.triangle_count <= Math.ceil(e1AssemblyModule.E1_ASM_ASSEMBLY.target_triangles_per_mesh * 1.28) &&
   visual.sampled_triangles.length === visual.triangle_count &&
   Array.isArray(visual.reduction_cluster_bins) &&
-  visual.reduction_cluster_bins.length === 3 &&
-  Number.isFinite(visual.reduction_outer_preserved_triangles) &&
-  visual.reduction_outer_preserved_triangles > 0 &&
-  Number.isFinite(visual.reduction_clustered_triangles))) {
+  visual.reduction_cluster_bins.length === 3)) {
   throw new Error('E1 assembly bridge did not expose bounded viewport-reduced STL visuals')
 }
 if (!gaitModule.NOETIX_WALK_CLIP?.ready) {

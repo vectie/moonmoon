@@ -101,7 +101,7 @@ function scheduleTerrainRender(canvas, render, active) {
     window.requestAnimationFrame(render)
     return
   }
-  window.setTimeout(() => window.requestAnimationFrame(render), 250)
+  window.setTimeout(() => window.requestAnimationFrame(render), 1000)
 }
 
 globalThis.__moonmoonRenderTerrain = modelJson => {
