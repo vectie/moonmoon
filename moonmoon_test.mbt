@@ -8,6 +8,17 @@ test "root facade exposes the standalone product kernel" {
 }
 
 ///|
+test "root facade exposes moonsuite product home contract" {
+  let home = @moonmoon.moonsuite_product_home(book_id="lunar-site")
+  assert_eq(home.product_id, "moonmoon")
+  assert_eq(home.state_path, ".moonsuite/products/moonmoon")
+  assert_eq(home.service_path, ".moonsuite/products/moonmoon/service.json")
+  assert_eq(home.cache_path, ".moonsuite/products/moonmoon/cache")
+  assert_eq(home.tmp_path, ".tmp/products/moonmoon")
+  assert_eq(home.accepted_output_path, "books/lunar-site/outputs/moonmoon")
+}
+
+///|
 test "root facade exposes promoted corridor route state" {
   let dossier = @moonmoon.trusted_square_dossier()
   let best = dossier.corridor_scan[0]

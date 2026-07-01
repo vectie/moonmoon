@@ -2,12 +2,28 @@
 package "vectie/moonmoon"
 
 import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/ui",
 }
 
 // Values
+pub fn moonsuite_product_accepted_output_path(book_id? : String) -> String
+
+pub fn moonsuite_product_cache_path() -> String
+
+pub fn moonsuite_product_home(book_id? : String) -> MoonMoonMoonSuiteProductHome
+
+pub fn moonsuite_product_id() -> String
+
+pub fn moonsuite_product_service_path() -> String
+
+pub fn moonsuite_product_state_path() -> String
+
+pub fn moonsuite_product_tmp_path() -> String
+
 pub fn product_kernel() -> @kernel.MoonMoonKernel
 
 pub fn product_kernel_json() -> Json
@@ -31,6 +47,14 @@ pub fn trusted_square_view_model() -> @ui.TrustedSquareViewModel
 // Errors
 
 // Types and methods
+pub(all) struct MoonMoonMoonSuiteProductHome {
+  product_id : String
+  state_path : String
+  service_path : String
+  cache_path : String
+  tmp_path : String
+  accepted_output_path : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases
 
