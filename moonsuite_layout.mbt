@@ -15,29 +15,29 @@ pub fn moonsuite_product_id() -> String {
 
 ///|
 pub fn moonsuite_product_state_path() -> String {
-  ".moonsuite/products/moonmoon"
+  @moonsuite.product_dir("", moonsuite_product_id())
 }
 
 ///|
 pub fn moonsuite_product_service_path() -> String {
-  "\{moonsuite_product_state_path()}/service.json"
+  @moonsuite.product_service_path("", moonsuite_product_id())
 }
 
 ///|
 pub fn moonsuite_product_cache_path() -> String {
-  "\{moonsuite_product_state_path()}/cache"
+  @moonsuite.product_artifact("", moonsuite_product_id(), "cache")
 }
 
 ///|
 pub fn moonsuite_product_tmp_path() -> String {
-  ".tmp/products/moonmoon"
+  @moonsuite.product_tmp_dir("", moonsuite_product_id())
 }
 
 ///|
 pub fn moonsuite_product_accepted_output_path(
   book_id? : String = "<book-id>",
 ) -> String {
-  "books/\{book_id}/outputs/moonmoon"
+  @moonsuite.book_artifact("", book_id, "outputs/\{moonsuite_product_id()}")
 }
 
 ///|
