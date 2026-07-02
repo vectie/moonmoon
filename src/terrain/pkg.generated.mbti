@@ -5,7 +5,6 @@ import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
   "vectie/moonmoon/src/core",
-  "vectie/moonmoon/src/dataset",
 }
 
 // Values
@@ -23,23 +22,37 @@ pub fn first_trusted_square_north_rim_grid() -> TerrainGrid
 
 pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_north_rim_source_manifest() -> TerrainSourceManifest
+
 pub fn first_trusted_square_northeast_stepout_grid() -> TerrainGrid
 
 pub fn first_trusted_square_northeast_stepout_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_northeast_stepout_source_manifest() -> TerrainSourceManifest
+
 pub fn first_trusted_square_route_grids() -> Array[TerrainGrid]
+
+pub fn first_trusted_square_route_source_manifests() -> Array[TerrainSourceManifest]
+
+pub fn first_trusted_square_source_manifest() -> TerrainSourceManifest
 
 pub fn first_trusted_square_south_stepout_grid() -> TerrainGrid
 
 pub fn first_trusted_square_south_stepout_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_south_stepout_source_manifest() -> TerrainSourceManifest
+
 pub fn first_trusted_square_southwest_bypass_grid() -> TerrainGrid
 
 pub fn first_trusted_square_southwest_bypass_metrics() -> TerrainMetrics
 
+pub fn first_trusted_square_southwest_bypass_source_manifest() -> TerrainSourceManifest
+
 pub fn first_trusted_square_west_contour_grid() -> TerrainGrid
 
 pub fn first_trusted_square_west_contour_metrics() -> TerrainMetrics
+
+pub fn first_trusted_square_west_contour_source_manifest() -> TerrainSourceManifest
 
 pub fn grid_fingerprint(TerrainGrid) -> String
 
@@ -50,6 +63,14 @@ pub fn render_grid_json(TerrainGrid) -> Json
 pub fn render_grid_markdown(TerrainGrid) -> String
 
 pub fn terrain_fixture_validation_status_label(TerrainFixtureValidationStatus) -> String
+
+pub fn terrain_source_checksum_kind_label(TerrainSourceChecksumKind) -> String
+
+pub fn terrain_source_provenance(TerrainSourceManifest) -> @core.Provenance
+
+pub fn terrain_source_review_status_label(TerrainSourceReviewStatus) -> String
+
+pub fn terrain_source_trust_label(TerrainSourceTrust) -> String
 
 pub fn validate_grid_source(TerrainGrid) -> TerrainFixtureValidation
 
@@ -81,7 +102,7 @@ pub(all) struct TerrainGrid {
   rows : Int
   cols : Int
   cell_size_m : Double
-  source_manifest : @dataset.DatasetManifest
+  source_manifest : TerrainSourceManifest
   cells : Array[@core.TerrainCell]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -95,6 +116,47 @@ pub(all) struct TerrainMetrics {
   hazard_reason : String
   provenance : @core.Provenance
   uncertainty : @core.Uncertainty
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum TerrainSourceChecksumKind {
+  InlineFixtureFingerprint
+  Sha256
+  UnknownChecksumKind
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainSourceManifest {
+  dataset_id : String
+  title : String
+  source_url : String
+  license : String
+  product_type : String
+  trust : TerrainSourceTrust
+  claim_kind : @core.ClaimKind
+  coverage : @core.LunarBounds
+  resolution_m : Double
+  source_path : String
+  source_sha256 : String
+  extractor : String
+  checksum_kind : TerrainSourceChecksumKind
+  checksum : String
+  citation : String
+  review_status : TerrainSourceReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum TerrainSourceReviewStatus {
+  AcceptedForSoftwareProof
+  NeedsSourceUpgrade
+  NeedsHumanReview
+  Rejected
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum TerrainSourceTrust {
+  Authoritative
+  CuratedFixture
+  DerivedProduct
+  Experimental
+  UnknownTrust
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

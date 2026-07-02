@@ -1,5 +1,5 @@
 import {
   "vectie/moonmoon/src/core",
-  "vectie/moonmoon/src/dataset",
+  "vectie/moonmoon/src/lunar_data",
   "moonbitlang/core/json",
 }

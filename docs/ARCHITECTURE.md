@@ -11,7 +11,6 @@ data/sources
   -> src/lunar_catalog
   -> src/robot_data
   -> src/robot_catalog
-  -> src/dataset
   -> src/terrain
   -> src/mission
   -> src/site
@@ -39,8 +38,8 @@ by responsibility, but package imports define the actual dependency graph.
   importing lunar, store, validation, UI, or Moonrobo packages.
 - `robot_catalog` materializes robot data bundles into the generic data root
   and validates them through the same store/validation boundary as lunar data.
-- `dataset` describes source evidence and extraction metadata.
-- `terrain` turns checked source fixtures into terrain metrics.
+- `terrain` owns terrain source manifests and turns checked source fixtures
+  into terrain metrics.
 - `mission` turns terrain and power evidence into route decisions.
 - `site` assembles one coherent dossier for the first trusted square.
 - `site_catalog` is the narrow adapter that replaces static first-site catalog

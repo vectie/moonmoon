@@ -17,10 +17,8 @@ committed as source.
   records, catalog materialization, and catalog-backed first-site evidence.
 - `src/robot_data`, `src/robot_catalog`: pure robot episode/model/signal/replay
   contracts and the robot data-root materialization adapter.
-- `src/dataset`: the narrow terrain fixture manifest/provenance facade still
-  consumed by terrain fixtures.
-- `src/terrain`: checked DEM fixtures, grid analysis, slope, roughness, and
-  hazard classification.
+- `src/terrain`: terrain source manifests, checked DEM fixtures, grid analysis,
+  slope, roughness, and hazard classification.
 - `src/mission`: traverse scoring, corridor ranking, horizon evidence, terrain
   remediation, energy assessment, and route clearance.
 - `src/site`: the assembled first trusted square dossier.

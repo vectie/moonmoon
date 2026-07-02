@@ -42,7 +42,9 @@ fn source_panel(
       None => []
     },
     claim: @core.claim_kind_label(manifest.claim_kind),
-    review_status: @dataset.review_status_label(manifest.review_status),
+    review_status: @terrain.terrain_source_review_status_label(
+      manifest.review_status,
+    ),
     checksum: manifest.checksum,
     generated_by: manifest.extractor,
   }

@@ -1,7 +1,7 @@
 ///|
 pub(all) struct SiteDossier {
   site : @core.LunarSite
-  datasets : Array[@dataset.DatasetManifest]
+  datasets : Array[@terrain.TerrainSourceManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
   source_candidates : Array[@lunar_data.LunarSourceCandidate]
@@ -137,13 +137,13 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   text += "## Source Datasets\n\n"
   for manifest in dossier.datasets {
     text += "- \{manifest.dataset_id}: \{manifest.title}\n"
-    text += "  - trust: \{@dataset.trust_label(manifest.trust)}\n"
-    text += "  - review: \{@dataset.review_status_label(manifest.review_status)}\n"
+    text += "  - trust: \{@terrain.terrain_source_trust_label(manifest.trust)}\n"
+    text += "  - review: \{@terrain.terrain_source_review_status_label(manifest.review_status)}\n"
     text += "  - resolution: \{manifest.resolution_m} m\n"
     text += "  - source path: \{manifest.source_path}\n"
     text += "  - source sha256: \{manifest.source_sha256}\n"
     text += "  - extractor: \{manifest.extractor}\n"
-    text += "  - checksum kind: \{@dataset.checksum_kind_label(manifest.checksum_kind)}\n"
+    text += "  - checksum kind: \{@terrain.terrain_source_checksum_kind_label(manifest.checksum_kind)}\n"
     text += "  - checksum: \{manifest.checksum}\n"
   }
   text += "\n"

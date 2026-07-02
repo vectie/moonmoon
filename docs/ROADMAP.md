@@ -13,16 +13,17 @@
 6. Follow `docs/LOCOMOTION_PHASE_GUIDANCE.md` for the route-motion to robot
    gait adapter phases.
 7. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: finish
-   the root-level robot catalog read side, migrate one robot dataset family at
-   a time, and keep product labels tied to validated catalog evidence.
+   the dataset-facade removal, keep the generic root readable, migrate one
+   robot dataset family at a time, and keep product labels tied to validated
+   catalog evidence.
 
 ## Next
 
 - Tighten mission clearance language around terrain, illumination, energy, and
   operator review.
-- Keep shrinking historical `src/dataset` surface until it is only a focused
-  product projection facade over `lunar_data`, `lunar_catalog`, and real
-  product consumers.
+- Keep the historical `src/dataset` facade removed. Terrain source manifests
+  stay in `src/terrain`, lunar facts stay in `src/lunar_data`, and generic
+  refs/manifests stay in `src/data_core`.
 - Replace the readable UTC Earthrise shader with a Moon observer model using
   Sun direction, Moon surface location, Earth phase, camera direction, and real
   ephemeris. The current Rabbita Earthrise pass is intentionally brighter for

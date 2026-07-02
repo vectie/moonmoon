@@ -58,11 +58,6 @@ fn lunar_catalog_files() -> Array[String] {
 }
 
 ///|
-fn dataset_files() -> Array[String] {
-  ["src/dataset/moon.pkg", "src/dataset/manifest.mbt"]
-}
-
-///|
 fn product_evidence_files() -> Array[String] {
   [
     "src/site/moon.pkg", "src/site/site.mbt", "src/site/catalog_evidence.mbt", "src/ui/moon.pkg",
@@ -81,6 +76,7 @@ fn robot_data_files() -> Array[String] {
   [
     "src/robot_data/moon.pkg", "src/robot_data/payload.mbt", "src/robot_data/model.mbt",
     "src/robot_data/episode.mbt", "src/robot_data/quality.mbt", "src/robot_data/legacy_ref.mbt",
+    "src/robot_data/telemetry.mbt",
   ]
 }
 
@@ -90,7 +86,8 @@ fn robot_catalog_files() -> Array[String] {
     "src/robot_catalog/moon.pkg", "src/robot_catalog/bundle.mbt", "src/robot_catalog/materialize.mbt",
     "src/robot_catalog/model_import.mbt", "src/robot_catalog/model_listing.mbt",
     "src/robot_catalog/episode_import.mbt", "src/robot_catalog/episode_listing.mbt",
-    "src/robot_catalog/root_listing.mbt", "src/robot_catalog/readiness.mbt",
+    "src/robot_catalog/root_listing.mbt", "src/robot_catalog/readiness.mbt", "src/robot_catalog/telemetry_import.mbt",
+    "src/robot_catalog/telemetry_listing.mbt",
   ]
 }
 
@@ -109,31 +106,10 @@ test "data_core stays domain neutral and filesystem free" {
 }
 
 ///|
-test "dataset is a lunar_data projection not a store validate or ui boundary" {
-  let forbidden = [
-    "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
-    "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/terrain", "\"vectie/moonmoon/src/mission",
-    "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/ui", "\"vectie/moonmoon/src/suite_adapter_preview",
-    "\"vectie/moonmoon/src/robot_data", "SourceCandidate", "SourceAcquisition", "SourceProduct",
-    "SourceExtraction", "URDF", "telemetry", "Noetix", "Rabbita",
-  ]
-  for path in dataset_files() {
-    let text = read_text(path)
-    for term in forbidden {
-      assert_not_contains(text, term, path)
-    }
-  }
-  let manifest = read_text("src/dataset/moon.pkg")
-  if !manifest.contains("\"vectie/moonmoon/src/lunar_data\"") {
-    fail("dataset must project migrated first-site evidence from lunar_data")
-  }
-}
-
-///|
 test "product evidence consumes catalog refs without store adapters" {
   let forbidden = [
     "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
-    "\"vectie/moonmoon/src/lunar_catalog",
+    "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/dataset",
   ]
   for path in product_evidence_files() {
     let text = read_text(path)
@@ -267,6 +243,28 @@ test "lunar_catalog is the only lunar store validate adapter" {
     if !manifest.contains(required) {
       fail("lunar_catalog missing required import " + required)
     }
+  }
+}
+
+///|
+test "terrain owns terrain source manifests without dataset facade" {
+  let manifest = read_text("src/terrain/moon.pkg")
+  if manifest.contains("\"vectie/moonmoon/src/dataset\"") {
+    fail("terrain must not import the removed dataset facade")
+  }
+  if !manifest.contains("\"vectie/moonmoon/src/lunar_data\"") {
+    fail("terrain source manifests must project from lunar_data")
+  }
+  let source_manifest = read_text("src/terrain/source_manifest.mbt")
+  for
+    term in [
+      "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
+      "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/ui",
+      "\"vectie/moonmoon/src/robot_data", "URDF", "telemetry", "Noetix", "Rabbita",
+    ] {
+    assert_not_contains(
+      source_manifest, term, "src/terrain/source_manifest.mbt",
+    )
   }
 }
 

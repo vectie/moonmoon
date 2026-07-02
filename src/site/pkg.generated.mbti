@@ -6,7 +6,6 @@ import {
   "moonbitlang/core/json",
   "vectie/moonmoon/src/core",
   "vectie/moonmoon/src/data_core",
-  "vectie/moonmoon/src/dataset",
   "vectie/moonmoon/src/lunar_data",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/terrain",
@@ -43,7 +42,7 @@ pub(all) struct SiteCatalogEvidence {
 
 pub(all) struct SiteDossier {
   site : @core.LunarSite
-  datasets : Array[@dataset.DatasetManifest]
+  datasets : Array[@terrain.TerrainSourceManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
   source_candidates : Array[@lunar_data.LunarSourceCandidate]

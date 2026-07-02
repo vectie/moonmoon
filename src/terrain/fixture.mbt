@@ -1,12 +1,12 @@
 ///|
 fn build_grid(
-  source_manifest : @dataset.DatasetManifest,
+  source_manifest : TerrainSourceManifest,
   tile_id : String,
   rows : Int,
   cols : Int,
   elevations : Array[Array[Double]],
 ) -> TerrainGrid {
-  let provenance = @dataset.to_provenance(source_manifest)
+  let provenance = terrain_source_provenance(source_manifest)
   let uncertainty = @core.uncertainty(
     0.82, "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification.",
   )
@@ -36,7 +36,7 @@ fn build_grid(
 ///|
 pub fn first_trusted_square_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_manifest(),
+    first_trusted_square_source_manifest(),
     generated_first_trusted_square_tile_id(),
     generated_first_trusted_square_rows(),
     generated_first_trusted_square_cols(),
@@ -52,7 +52,7 @@ pub fn first_trusted_square_metrics() -> TerrainMetrics {
 ///|
 pub fn first_trusted_square_west_contour_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_west_contour_manifest(),
+    first_trusted_square_west_contour_source_manifest(),
     generated_first_trusted_square_west_contour_tile_id(),
     generated_first_trusted_square_west_contour_rows(),
     generated_first_trusted_square_west_contour_cols(),
@@ -68,7 +68,7 @@ pub fn first_trusted_square_west_contour_metrics() -> TerrainMetrics {
 ///|
 pub fn first_trusted_square_north_rim_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_north_rim_manifest(),
+    first_trusted_square_north_rim_source_manifest(),
     generated_first_trusted_square_north_rim_tile_id(),
     generated_first_trusted_square_north_rim_rows(),
     generated_first_trusted_square_north_rim_cols(),
@@ -84,7 +84,7 @@ pub fn first_trusted_square_north_rim_metrics() -> TerrainMetrics {
 ///|
 pub fn first_trusted_square_southwest_bypass_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_southwest_bypass_manifest(),
+    first_trusted_square_southwest_bypass_source_manifest(),
     generated_first_trusted_square_southwest_bypass_tile_id(),
     generated_first_trusted_square_southwest_bypass_rows(),
     generated_first_trusted_square_southwest_bypass_cols(),
@@ -100,7 +100,7 @@ pub fn first_trusted_square_southwest_bypass_metrics() -> TerrainMetrics {
 ///|
 pub fn first_trusted_square_south_stepout_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_south_stepout_manifest(),
+    first_trusted_square_south_stepout_source_manifest(),
     generated_first_trusted_square_south_stepout_tile_id(),
     generated_first_trusted_square_south_stepout_rows(),
     generated_first_trusted_square_south_stepout_cols(),
@@ -116,7 +116,7 @@ pub fn first_trusted_square_south_stepout_metrics() -> TerrainMetrics {
 ///|
 pub fn first_trusted_square_northeast_stepout_grid() -> TerrainGrid {
   build_grid(
-    @dataset.first_trusted_square_northeast_stepout_manifest(),
+    first_trusted_square_northeast_stepout_source_manifest(),
     generated_first_trusted_square_northeast_stepout_tile_id(),
     generated_first_trusted_square_northeast_stepout_rows(),
     generated_first_trusted_square_northeast_stepout_cols(),

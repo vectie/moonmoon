@@ -1,5 +1,5 @@
 ///|
-pub(all) enum DatasetTrust {
+pub(all) enum TerrainSourceTrust {
   Authoritative
   CuratedFixture
   DerivedProduct
@@ -8,7 +8,7 @@ pub(all) enum DatasetTrust {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) enum ReviewStatus {
+pub(all) enum TerrainSourceReviewStatus {
   AcceptedForSoftwareProof
   NeedsSourceUpgrade
   NeedsHumanReview
@@ -16,9 +16,37 @@ pub(all) enum ReviewStatus {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) enum TerrainSourceChecksumKind {
+  InlineFixtureFingerprint
+  Sha256
+  UnknownChecksumKind
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct TerrainSourceManifest {
+  dataset_id : @core.DatasetId
+  title : String
+  source_url : String
+  license : String
+  product_type : String
+  trust : TerrainSourceTrust
+  claim_kind : @core.ClaimKind
+  coverage : @core.LunarBounds
+  resolution_m : Double
+  source_path : String
+  source_sha256 : String
+  extractor : String
+  checksum_kind : TerrainSourceChecksumKind
+  checksum : String
+  citation : String
+  review_status : TerrainSourceReviewStatus
+  notes : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn review_status_from_lunar(
   status : @lunar_data.LunarReviewStatus,
-) -> ReviewStatus {
+) -> TerrainSourceReviewStatus {
   match status {
     @lunar_data.LunarReviewStatus::AcceptedForSoftwareProof =>
       AcceptedForSoftwareProof
@@ -40,9 +68,9 @@ fn claim_kind_from_lunar(label : String) -> @core.ClaimKind {
 }
 
 ///|
-fn terrain_manifest_from_lunar(
+fn terrain_source_manifest_from_lunar(
   record : @lunar_data.LunarTerrainDatasetRecord,
-) -> DatasetManifest {
+) -> TerrainSourceManifest {
   let source = @lunar_data.first_trusted_square_lola_source()
   let product = @lunar_data.first_trusted_square_lola_product_selection()
   let extraction = record.extraction
@@ -73,35 +101,7 @@ fn terrain_manifest_from_lunar(
 }
 
 ///|
-pub(all) enum ChecksumKind {
-  InlineFixtureFingerprint
-  Sha256
-  UnknownChecksumKind
-} derive(Debug, Eq, ToJson, FromJson)
-
-///|
-pub(all) struct DatasetManifest {
-  dataset_id : @core.DatasetId
-  title : String
-  source_url : String
-  license : String
-  product_type : String
-  trust : DatasetTrust
-  claim_kind : @core.ClaimKind
-  coverage : @core.LunarBounds
-  resolution_m : Double
-  source_path : String
-  source_sha256 : String
-  extractor : String
-  checksum_kind : ChecksumKind
-  checksum : String
-  citation : String
-  review_status : ReviewStatus
-  notes : Array[String]
-} derive(Debug, Eq, ToJson, FromJson)
-
-///|
-pub fn trust_label(trust : DatasetTrust) -> String {
+pub fn terrain_source_trust_label(trust : TerrainSourceTrust) -> String {
   match trust {
     Authoritative => "authoritative"
     CuratedFixture => "curated-fixture"
@@ -112,7 +112,9 @@ pub fn trust_label(trust : DatasetTrust) -> String {
 }
 
 ///|
-pub fn review_status_label(status : ReviewStatus) -> String {
+pub fn terrain_source_review_status_label(
+  status : TerrainSourceReviewStatus,
+) -> String {
   match status {
     AcceptedForSoftwareProof => "accepted-for-software-proof"
     NeedsSourceUpgrade => "needs-source-upgrade"
@@ -122,7 +124,9 @@ pub fn review_status_label(status : ReviewStatus) -> String {
 }
 
 ///|
-pub fn checksum_kind_label(kind : ChecksumKind) -> String {
+pub fn terrain_source_checksum_kind_label(
+  kind : TerrainSourceChecksumKind,
+) -> String {
   match kind {
     InlineFixtureFingerprint => "inline-fixture-fingerprint"
     Sha256 => "sha256"
@@ -131,7 +135,9 @@ pub fn checksum_kind_label(kind : ChecksumKind) -> String {
 }
 
 ///|
-pub fn to_provenance(manifest : DatasetManifest) -> @core.Provenance {
+pub fn terrain_source_provenance(
+  manifest : TerrainSourceManifest,
+) -> @core.Provenance {
   {
     dataset_id: manifest.dataset_id,
     source_title: manifest.title,
@@ -139,59 +145,61 @@ pub fn to_provenance(manifest : DatasetManifest) -> @core.Provenance {
     license: manifest.license,
     product_type: manifest.product_type,
     claim_kind: manifest.claim_kind,
-    generated_by: "source-manifest",
+    generated_by: "terrain-source-manifest",
   }
 }
 
 ///|
-pub fn first_trusted_square_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_west_contour_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_west_contour_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_west_contour_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_north_rim_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_north_rim_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_north_rim_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_southwest_bypass_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_southwest_bypass_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_southwest_bypass_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_south_stepout_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_south_stepout_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_south_stepout_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_northeast_stepout_manifest() -> DatasetManifest {
-  terrain_manifest_from_lunar(
+pub fn first_trusted_square_northeast_stepout_source_manifest() -> TerrainSourceManifest {
+  terrain_source_manifest_from_lunar(
     @lunar_data.first_trusted_square_northeast_stepout_lola_terrain_dataset_record(),
   )
 }
 
 ///|
-pub fn first_trusted_square_route_manifests() -> Array[DatasetManifest] {
+pub fn first_trusted_square_route_source_manifests() -> Array[
+  TerrainSourceManifest,
+] {
   [
-    first_trusted_square_west_contour_manifest(),
-    first_trusted_square_north_rim_manifest(),
-    first_trusted_square_southwest_bypass_manifest(),
-    first_trusted_square_south_stepout_manifest(),
-    first_trusted_square_northeast_stepout_manifest(),
+    first_trusted_square_west_contour_source_manifest(),
+    first_trusted_square_north_rim_source_manifest(),
+    first_trusted_square_southwest_bypass_source_manifest(),
+    first_trusted_square_south_stepout_source_manifest(),
+    first_trusted_square_northeast_stepout_source_manifest(),
   ]
 }

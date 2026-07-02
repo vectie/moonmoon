@@ -74,7 +74,18 @@ This is the operating plan for the next implementation passes. It favors the
 highest-leverage boundary moves first, keeps robot migration generic, and avoids
 stale compatibility layers.
 
-1. Lock the generic root read side.
+1. Finish the dataset-facade removal checkpoint.
+   - Status: in progress. The old `src/dataset` package is deleted in the
+     current slice, and terrain source manifests now belong to `src/terrain`.
+   - Current task: validate imports, generated interfaces, boundary tests, and
+     docs, then commit and push the removal as one scoped boundary move.
+   - Keep source ownership explicit: terrain fixture manifests in `terrain`,
+     lunar acquisition records in `lunar_data`, generic refs/manifests in
+     `data_core`, and data-root reads through catalog adapters.
+   - Done when no package imports `src/dataset`, `moon test` passes, and the
+     generated `.mbti` diff only reflects the intended public API move.
+
+2. Lock the generic root read side.
    - Status: in progress. `src/data_validate` exposes a root summary and
      `cmd/main` exposes `data root-json`.
    - Current task: make the summary useful for any domain by reporting generic
@@ -83,7 +94,7 @@ stale compatibility layers.
    - Done when `data root-json [data-root]` can show what kinds of datasets and
      payload refs are present before any domain-specific reader exists.
 
-2. Keep the robot catalog read side domain-local.
+3. Keep the robot catalog read side domain-local.
    - Status: done for the first root-level read side. `src/robot_catalog`
      exposes a combined root dossier and `cmd/main` exposes `data robot-json`.
    - Keep robot counts, readiness, replay evidence, telemetry evidence, and
@@ -94,7 +105,7 @@ stale compatibility layers.
      count, telemetry stream count, validation status, source ids, quality
      evidence, and blockers.
 
-3. Migrate robot data one dataset family at a time.
+4. Migrate robot data one dataset family at a time.
    - Status: started for model packages, episode signal frames, replay
      artifacts, quality reports, and standalone telemetry streams.
    - Next families must be selected one at a time: gait clips, richer replay
@@ -105,7 +116,7 @@ stale compatibility layers.
    - Done when the selected family has catalog entries, lineage, validation,
      tests, docs, and a scoped commit.
 
-4. Connect visible product labels to validated data.
+5. Connect visible product labels to validated data.
    - Status: started for robot migration readiness through
      `data robot-readiness-json`; lunar first-site evidence is catalog-backed
      through `src/site_catalog`, and `cmd/main` now exposes catalog-root-backed
@@ -117,7 +128,7 @@ stale compatibility layers.
      site confidence, route review, lighting authority, or robot migration
      readiness.
 
-5. Promote real lunar data acquisition boundaries.
+6. Promote real lunar data acquisition boundaries.
    - Keep download and conversion at explicit boundary commands or asset-prep
      tools.
    - Keep validation and product evidence in MoonBit packages.
@@ -125,14 +136,14 @@ stale compatibility layers.
      and explain validation state through the same catalog path used by robot
      data.
 
-6. Re-check package boundaries before widening scope.
+7. Re-check package boundaries before widening scope.
    - Inspect imports, public `.mbti` changes, tests, scripts, and root files
      before adding another feature family.
    - Remove stale compatibility code instead of adapting new work around it.
    - Done when the next implementation starts from clean dependencies and a
      small package-local API.
 
-7. Commit and push every completed boundary move.
+8. Commit and push every completed boundary move.
    - Run targeted tests first, then `moon check`, full `moon test`,
      `moon info`, and `moon fmt` for code changes.
    - For docs-only changes, at minimum review the diff and keep the worktree
@@ -258,8 +269,7 @@ Implementation:
 4. Rebuild and validate the catalog.
 5. Add a small query path that lists source authority, payload refs, coverage,
    and validation state for the first trusted square.
-6. Shrink `src/dataset` into either a compatibility wrapper or a focused lunar
-   projection facade.
+6. Keep terrain fixture source manifests inside `src/terrain`.
 7. Remove stale per-feature checks that duplicate `data_validate`.
 8. Commit and push after the UI and mission tests still pass.
 
@@ -267,7 +277,8 @@ Exit criteria:
 
 - The first trusted square can explain which LOLA and ephemeris records it is
   using through the catalog.
-- `src/dataset` no longer owns generic data-layer concepts.
+- The historical `src/dataset` facade is removed; terrain fixture source
+  manifests now live in `src/terrain`.
 - No stale Python or per-feature check script remains for data integrity that
   belongs in MoonBit validation.
 
@@ -275,13 +286,16 @@ Current checkpoint:
 
 - `src/lunar_catalog` materializes the first trusted square into a generic
   catalog root and validates it.
-- `src/dataset` now projects migrated first-site source, product, extraction,
-  and active DEM manifest fields from `src/lunar_data`.
+- The historical `src/dataset` package has been removed. Terrain fixture source
+  manifests live in `src/terrain`; lunar acquisition facts live in
+  `src/lunar_data`; product catalog reads go through `src/site_catalog` and
+  `src/lunar_catalog`.
 - `src/lunar_data` now owns acquisition plans, route-window extractions, route
   terrain dataset records, and their generic dataset projections.
 - `src/terrain` owns generated-grid fixture validation, while `data_validate`
   remains the data-root validation authority.
-- Remaining cleanup: let product views read catalog-backed evidence directly.
+- Remaining cleanup: keep replacing any product-local source constants with
+  catalog-backed evidence when a visible view needs them.
 
 Completed and queued boundary steps:
 
@@ -309,17 +323,16 @@ and push.
    - Done when: UI and kernel summaries can name the LOLA and ephemeris records
      from catalog entries, not from standalone first-site constants.
 
-3. Shrink `src/dataset` to a focused projection facade.
-   - Status: done for source candidates, acquisition plans, product
-     selections, and extraction candidates; remaining surface is the terrain
-     fixture manifest facade still consumed by `src/terrain`.
-   - Why: it is currently the remaining historical package between lunar data
-     and product views.
-   - Code target: keep only product projection shapes that are still consumed by
-     terrain, mission, site, kernel, or UI; move lunar facts into `lunar_data`
-     and generic facts into `data_core`.
-   - Done when: deleting any remaining `src/dataset` field would break a real
-     product view or mission gate, not just compatibility.
+3. Remove the historical `src/dataset` facade.
+   - Status: done. The historical package has been removed, and terrain fixture
+     source manifests now live in `src/terrain`.
+   - Why: the standalone project should not carry a generic-sounding
+     compatibility package that hides the real boundary ownership.
+   - Code target: keep terrain-specific source manifest fields local to
+     `terrain`; keep lunar facts in `lunar_data` and generic facts in
+     `data_core`.
+   - Done when: no product package imports `src/dataset`, and package boundary
+     tests enforce the removed facade.
 
 4. Keep data-root commands at true build boundaries.
    - Status: done for the root `scripts/` directory; product-home layout is
@@ -611,8 +624,8 @@ Initial lunar contracts:
 
 Migration target:
 
-- Wrap current LOLA and SPICE records from `src/dataset` with generic
-  `DataSource`, `DatasetManifest`, and `DataRef`.
+- Project LOLA and SPICE records from `src/lunar_data` into generic
+  `DataSource`, `DatasetManifest`, and `DataRef` values.
 - Keep domain-specific fields such as projection, latitude/longitude bounds,
   resolution, source row/column windows, value offsets, and lunar frame in
   `lunar_data`.
@@ -622,8 +635,8 @@ Migration target:
 Done when:
 
 - The first trusted square still renders and tests pass.
-- Current `src/dataset` can either become a compatibility wrapper or shrink to
-  re-export lunar data constructs.
+- Terrain source manifests live in `src/terrain`; do not reintroduce a generic
+  `src/dataset` compatibility package.
 - LOLA/SPICE source metadata can be listed through the generic catalog.
 
 ## Step 5: Moonrobo Migration Path

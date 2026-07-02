@@ -11,7 +11,7 @@ pub(all) struct TerrainGrid {
   rows : Int
   cols : Int
   cell_size_m : Double
-  source_manifest : @dataset.DatasetManifest
+  source_manifest : TerrainSourceManifest
   cells : Array[@core.TerrainCell]
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -224,13 +224,13 @@ pub fn render_grid_markdown(grid : TerrainGrid) -> String {
   text += "## Source\n\n"
   text += "- dataset: \{manifest.dataset_id}\n"
   text += "- title: \{manifest.title}\n"
-  text += "- trust: \{@dataset.trust_label(manifest.trust)}\n"
+  text += "- trust: \{terrain_source_trust_label(manifest.trust)}\n"
   text += "- claim: \{@core.claim_kind_label(manifest.claim_kind)}\n"
   text += "- resolution: \{manifest.resolution_m} m\n"
   text += "- source path: \{manifest.source_path}\n"
   text += "- source sha256: \{manifest.source_sha256}\n"
   text += "- extractor: \{manifest.extractor}\n"
-  text += "- checksum kind: \{@dataset.checksum_kind_label(manifest.checksum_kind)}\n"
+  text += "- checksum kind: \{terrain_source_checksum_kind_label(manifest.checksum_kind)}\n"
   text += "- checksum: \{manifest.checksum}\n\n"
   text += "## Terrain Fixture Validation\n\n"
   text += "- status: \{terrain_fixture_validation_status_label(validation.status)}\n"
