@@ -45,6 +45,7 @@ moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-squa
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square json
 moon run cmd/main -- data site-json target/data-roots/first-trusted-square
 moon run cmd/main -- data robot-json target/robot-catalog-tests/episode-directory-import
+moon run cmd/main -- data robot-readiness-json target/robot-catalog-tests/episode-directory-import
 moon run cmd/main -- ui
 moon run cmd/main -- ui json
 moon run cmd/main -- ui html

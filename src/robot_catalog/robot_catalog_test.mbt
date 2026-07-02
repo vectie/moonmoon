@@ -437,6 +437,16 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(root_dossier.validation_artifact.artifact_id, "validation-901")
   assert_eq(root_dossier.blocker_count, 0)
   assert_eq(root_dossier.warning_count, 0)
+  let readiness = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(readiness.status, "ready")
+  assert_true(readiness.ready)
+  assert_eq(readiness.model_count, 1)
+  assert_eq(readiness.episode_count, 1)
+  assert_eq(readiness.signal_ref_count, 2)
+  assert_eq(readiness.replay_ref_count, 1)
+  assert_eq(readiness.quality_ref_count, 1)
+  assert_eq(readiness.data_ref_count, 7)
+  assert_eq(readiness.validation_artifact.artifact_id, "validation-901")
 }
 
 ///|

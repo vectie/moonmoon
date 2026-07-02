@@ -100,6 +100,9 @@ stale compatibility layers.
      a scoped commit.
 
 3. Connect visible product labels to validated data.
+   - Status: started for robot migration readiness: `src/robot_catalog` now
+     exposes a compact readiness projection and `cmd/main` exposes
+     `data robot-readiness-json`.
    - Keep the live Moon view as the first user-facing surface.
    - Replace static source/status labels with catalog-backed lunar or robot
      dossier fields only after the underlying manifests validate.
@@ -341,6 +344,9 @@ and push.
      `replays/` source subdirectory and cataloged `robot-replay` refs. Quality
      evidence follows the same pattern through a `quality/` source subdirectory
      and cataloged robot quality validation reports.
+   - The compact `data robot-readiness-json` read path now summarizes whether a
+     robot root has the minimum model, episode, signal, and quality evidence to
+     continue migration.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.
