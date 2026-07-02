@@ -27,6 +27,21 @@ fn dataset_evidence(
 }
 
 ///|
+fn validation_evidence(
+  validation : @lunar_catalog.CatalogedLunarValidation,
+) -> @site.SiteCatalogValidationEvidence {
+  {
+    artifact: validation.artifact,
+    validation_status: validation.validation_status,
+    ready: validation.ready,
+    finding_count: validation.finding_count,
+    blocker_count: validation.blocker_count,
+    warning_count: validation.warning_count,
+    summary: validation.summary,
+  }
+}
+
+///|
 pub fn first_trusted_square_catalog_evidence_from_root(
   root : String,
 ) -> Result[Array[@site.SiteCatalogEvidence], @data_store.DataStoreIssue] {
@@ -44,11 +59,26 @@ pub fn first_trusted_square_catalog_evidence_from_root(
 }
 
 ///|
+pub fn first_trusted_square_catalog_validation_from_root(
+  root : String,
+) -> Result[@site.SiteCatalogValidationEvidence, @data_store.DataStoreIssue] {
+  match @lunar_catalog.first_trusted_square_catalog_validation(root) {
+    Ok(value) => Ok(validation_evidence(value))
+    Err(error) => Err(error)
+  }
+}
+
+///|
 pub fn first_trusted_square_dossier_from_catalog_root(
   root : String,
 ) -> Result[@site.SiteDossier, @data_store.DataStoreIssue] {
   let catalog_evidence = match
     first_trusted_square_catalog_evidence_from_root(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let catalog_validation = match
+    first_trusted_square_catalog_validation_from_root(root) {
     Ok(value) => value
     Err(error) => return Err(error)
   }
@@ -58,6 +88,7 @@ pub fn first_trusted_square_dossier_from_catalog_root(
     datasets: dossier.datasets,
     validations: dossier.validations,
     catalog_evidence,
+    catalog_validation,
     source_candidates: dossier.source_candidates,
     source_acquisition_plans: dossier.source_acquisition_plans,
     source_product_selections: dossier.source_product_selections,

@@ -128,6 +128,19 @@ fn inspector_facts(
       evidence_path: "indexes/catalog.json",
     },
     {
+      fact_id: "catalog-validation",
+      label: "Catalog validation",
+      value: "\{@data_core.validation_status_label(dossier.catalog_validation.validation_status)} / \{dossier.catalog_validation.finding_count} finding(s); \{dossier.catalog_validation.summary}",
+      status: if dossier.catalog_validation.ready {
+        "ready"
+      } else if dossier.catalog_validation.blocker_count > 0 {
+        "blocked"
+      } else {
+        "review"
+      },
+      evidence_path: dossier.catalog_validation.artifact.manifest_path,
+    },
+    {
       fact_id: "best-corridor-window",
       label: "Best corridor window",
       value: "\{best.window_id} -> \{selected_route_id}",

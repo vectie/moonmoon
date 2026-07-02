@@ -103,7 +103,19 @@ stale compatibility layers.
      count, telemetry stream count, gait clip count, validation status, source
      ids, quality evidence, and blockers.
 
-4. Migrate robot data one dataset family at a time.
+4. Surface data-root validation in the product view.
+   - Status: done. `src/lunar_catalog` reads the cataloged validation
+     report, `src/site_catalog` maps it into site evidence, and `src/ui`
+     exposes the compact status in the selected-site inspector.
+   - Keep validation policy out of `site`, `site_catalog`, and `ui`; those
+     packages should only receive already-projected evidence from the catalog
+     adapter.
+   - Done when `data ui-json [data-root]` and `data ui-html [data-root]` can
+     show catalog validation status, finding count, blockers, warnings, and the
+     validation artifact path without importing `data_validate` outside catalog
+     adapters.
+
+5. Migrate robot data one dataset family at a time.
    - Status: started for model packages, episode signal frames, replay
      artifacts, quality reports, standalone telemetry streams, and gait clips.
    - Next families must be selected one at a time: richer replay artifacts,
@@ -115,7 +127,7 @@ stale compatibility layers.
    - Done when the selected family has catalog entries, lineage, validation,
      tests, docs, and a scoped commit.
 
-5. Connect visible product labels to validated data.
+6. Connect more visible product labels to validated data.
    - Status: started for robot migration readiness through
      `data robot-readiness-json`; lunar first-site evidence is catalog-backed
      through `src/site_catalog`, and `cmd/main` now exposes catalog-root-backed
@@ -127,7 +139,7 @@ stale compatibility layers.
      site confidence, route review, lighting authority, or robot migration
      readiness.
 
-6. Promote real lunar data acquisition boundaries.
+7. Promote real lunar data acquisition boundaries.
    - Keep download and conversion at explicit boundary commands or asset-prep
      tools.
    - Keep validation and product evidence in MoonBit packages.
@@ -135,14 +147,14 @@ stale compatibility layers.
      and explain validation state through the same catalog path used by robot
      data.
 
-7. Re-check package boundaries before widening scope.
+8. Re-check package boundaries before widening scope.
    - Inspect imports, public `.mbti` changes, tests, scripts, and root files
      before adding another feature family.
    - Remove stale compatibility code instead of adapting new work around it.
    - Done when the next implementation starts from clean dependencies and a
      small package-local API.
 
-8. Commit and push every completed boundary move.
+9. Commit and push every completed boundary move.
    - Run targeted tests first, then `moon check`, full `moon test`,
      `moon info`, and `moon fmt` for code changes.
    - For docs-only changes, at minimum review the diff and keep the worktree

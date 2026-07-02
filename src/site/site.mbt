@@ -4,6 +4,7 @@ pub(all) struct SiteDossier {
   datasets : Array[@terrain.TerrainSourceManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
+  catalog_validation : SiteCatalogValidationEvidence
   source_candidates : Array[@lunar_data.LunarSourceCandidate]
   source_acquisition_plans : Array[@lunar_data.LunarAcquisitionPlan]
   source_product_selections : Array[@lunar_data.LunarProductSelection]
@@ -102,6 +103,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       @terrain.validate_grid_source(northeast_grid),
     ],
     catalog_evidence: first_trusted_square_catalog_evidence(),
+    catalog_validation: missing_catalog_validation_evidence(),
     source_candidates: @lunar_data.first_trusted_square_lunar_source_candidates(),
     source_acquisition_plans: @lunar_data.first_trusted_square_lunar_acquisition_plans(),
     source_product_selections: [
@@ -156,6 +158,14 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - refs: \{evidence.ref_uris.length()}\n"
   }
   text += "\n"
+  text += "## Catalog Validation\n\n"
+  text += "- artifact: \{dossier.catalog_validation.artifact.artifact_id}\n"
+  text += "  - status: \{@data_core.validation_status_label(dossier.catalog_validation.validation_status)}\n"
+  text += "  - ready: \{dossier.catalog_validation.ready}\n"
+  text += "  - findings: \{dossier.catalog_validation.finding_count}\n"
+  text += "  - blockers: \{dossier.catalog_validation.blocker_count}\n"
+  text += "  - warnings: \{dossier.catalog_validation.warning_count}\n"
+  text += "  - summary: \{dossier.catalog_validation.summary}\n\n"
   text += "## Source Upgrade Candidates\n\n"
   for candidate in dossier.source_candidates {
     text += "- \{candidate.source_id}: \{candidate.title}\n"

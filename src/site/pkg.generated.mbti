@@ -24,6 +24,8 @@ pub fn first_trusted_square_markdown() -> String
 
 pub fn first_trusted_square_site() -> @core.LunarSite
 
+pub fn missing_catalog_validation_evidence() -> SiteCatalogValidationEvidence
+
 pub fn render_json(SiteDossier) -> Json
 
 pub fn render_markdown(SiteDossier) -> String
@@ -40,11 +42,22 @@ pub(all) struct SiteCatalogEvidence {
   linked_source_ids : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct SiteCatalogValidationEvidence {
+  artifact : @data_core.ArtifactRef
+  validation_status : @data_core.ValidationStatus
+  ready : Bool
+  finding_count : Int
+  blocker_count : Int
+  warning_count : Int
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@terrain.TerrainSourceManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
+  catalog_validation : SiteCatalogValidationEvidence
   source_candidates : Array[@lunar_data.LunarSourceCandidate]
   source_acquisition_plans : Array[@lunar_data.LunarAcquisitionPlan]
   source_product_selections : Array[@lunar_data.LunarProductSelection]

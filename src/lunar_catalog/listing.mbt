@@ -24,6 +24,17 @@ pub(all) struct CatalogedLunarDataset {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct CatalogedLunarValidation {
+  artifact : @data_core.ArtifactRef
+  validation_status : @data_core.ValidationStatus
+  ready : Bool
+  finding_count : Int
+  blocker_count : Int
+  warning_count : Int
+  summary : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn ref_uris(refs : Array[@data_core.DataRef]) -> Array[String] {
   refs.map(fn(data_ref) { data_ref.uri })
 }
@@ -40,6 +51,68 @@ fn catalog_entry_for(
     }
   }
   None
+}
+
+///|
+fn latest_root_validation_entry(
+  catalog : @data_core.DataCatalog,
+) -> @data_core.CatalogEntry? {
+  let mut found : @data_core.CatalogEntry? = None
+  for entry in catalog.entries {
+    if entry.artifact_kind == "validation-report" &&
+      entry.artifact_id.has_prefix("validation-") {
+      found = Some(entry)
+    }
+  }
+  found
+}
+
+///|
+fn warning_count(report : @data_core.ValidationReport) -> Int {
+  let mut count = 0
+  for finding in report.findings {
+    if finding.severity == @data_core.FindingSeverity::WarningSeverity {
+      count += 1
+    }
+  }
+  count
+}
+
+///|
+pub fn first_trusted_square_catalog_validation(
+  root : String,
+) -> Result[CatalogedLunarValidation, @data_store.DataStoreIssue] {
+  let catalog = match @data_store.read_catalog(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let entry = match latest_root_validation_entry(catalog) {
+    Some(value) => value
+    None =>
+      return Err({
+        code: "lunar-catalog-validation-not-cataloged",
+        path: root,
+        message: "first trusted square catalog root has no validation report",
+      })
+  }
+  let report = match
+    @data_store.read_validation_report(root, entry.artifact_id) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let blocker_count = @data_core.validation_blocker_count(report)
+  let warnings = warning_count(report)
+  let finding_count = @data_core.validation_finding_count(report)
+  Ok({
+    artifact: @data_core.catalog_entry_ref(entry),
+    validation_status: report.status,
+    ready: report.status == @data_core.ValidationStatus::Passed &&
+    blocker_count == 0,
+    finding_count,
+    blocker_count,
+    warning_count: warnings,
+    summary: "\{finding_count} finding(s), \{blocker_count} blocker(s), \{warnings} warning(s)",
+  })
 }
 
 ///|

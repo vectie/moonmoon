@@ -9,6 +9,17 @@ pub(all) struct SiteCatalogEvidence {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SiteCatalogValidationEvidence {
+  artifact : @data_core.ArtifactRef
+  validation_status : @data_core.ValidationStatus
+  ready : Bool
+  finding_count : Int
+  blocker_count : Int
+  warning_count : Int
+  summary : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn ref_uris(refs : Array[@data_core.DataRef]) -> Array[String] {
   refs.map(fn(data_ref) { data_ref.uri })
 }
@@ -94,6 +105,25 @@ pub fn first_trusted_square_catalog_evidence() -> Array[SiteCatalogEvidence] {
   let datasets = @lunar_data.first_trusted_square_lunar_datasets()
   sources.map(catalog_source_evidence) +
   datasets.map(fn(dataset) { catalog_dataset_evidence(dataset, sources) })
+}
+
+///|
+pub fn missing_catalog_validation_evidence() -> SiteCatalogValidationEvidence {
+  {
+    artifact: @data_core.artifact_ref(
+      "validation-report",
+      "",
+      "",
+      status=@data_core.DataStatus::UnknownStatus,
+      summary="catalog validation has not been read from a data root",
+    ),
+    validation_status: @data_core.ValidationStatus::Warning,
+    ready: false,
+    finding_count: 0,
+    blocker_count: 0,
+    warning_count: 0,
+    summary: "catalog validation has not been read from a data root",
+  }
 }
 
 ///|

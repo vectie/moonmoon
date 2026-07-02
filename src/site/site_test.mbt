@@ -72,6 +72,12 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     "datasets/lro-lola-first-trusted-square-dem-v1.json",
   )
   assert_eq(dossier.catalog_evidence[2].ref_uris.length(), 1)
+  assert_eq(
+    dossier.catalog_validation.artifact.artifact_kind,
+    "validation-report",
+  )
+  assert_eq(dossier.catalog_validation.artifact.artifact_id, "")
+  assert_true(!dossier.catalog_validation.ready)
   assert_eq(dossier.source_candidates.length(), 2)
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
   assert_eq(dossier.source_candidates[1].instrument, "SPICE kernels")
@@ -159,6 +165,8 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
       "manifest: datasets/lro-lola-first-trusted-square-dem-v1.json",
     ),
   )
+  assert_true(markdown.contains("## Catalog Validation"))
+  assert_true(markdown.contains("catalog validation has not been read"))
   assert_true(markdown.contains("## Source Upgrade Candidates"))
   assert_true(
     markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),
@@ -238,6 +246,8 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"source_acquisition_plans\""))
   assert_true(text.contains("\"source_product_selections\""))
   assert_true(text.contains("\"source_extraction_candidates\""))
+  assert_true(text.contains("\"catalog_validation\""))
+  assert_true(text.contains("\"catalog validation has not been read"))
   assert_true(
     text.contains(
       "\"product_family_id\": \"lro-lola-gdr-south-pole-selection\"",

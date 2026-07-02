@@ -29,6 +29,16 @@ test "site catalog adapter projects evidence from materialized catalog root" {
   )
   assert_true(evidence[2].artifact.status == @data_core.DataStatus::Verified)
   assert_eq(evidence[2].ref_uris.length(), 1)
+  let validation = @site_catalog.first_trusted_square_catalog_validation_from_root(
+    root,
+  ).unwrap()
+  assert_eq(validation.artifact.artifact_id, "validation-400")
+  assert_true(
+    validation.validation_status == @data_core.ValidationStatus::Warning,
+  )
+  assert_true(!validation.ready)
+  assert_eq(validation.blocker_count, 0)
+  assert_true(validation.warning_count > 0)
 }
 
 ///|
@@ -42,6 +52,13 @@ test "site dossier can replace static catalog claims from data root" {
   ).unwrap()
   assert_eq(dossier.site.site_id, "first-trusted-square")
   assert_eq(dossier.catalog_evidence.length(), 4)
+  assert_eq(dossier.catalog_validation.artifact.artifact_id, "validation-500")
+  assert_true(
+    dossier.catalog_validation.validation_status ==
+    @data_core.ValidationStatus::Warning,
+  )
+  assert_true(!dossier.catalog_validation.ready)
+  assert_true(dossier.catalog_validation.warning_count > 0)
   assert_true(
     dossier.catalog_evidence[2].artifact.manifest_path.has_prefix(root),
   )

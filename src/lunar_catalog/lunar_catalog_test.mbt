@@ -80,6 +80,14 @@ test "lists first trusted square evidence from cataloged manifests" {
     datasets[1].dataset_id,
     "naif-lunar-first-trusted-square-power-window-v1",
   )
+  let validation = @lunar_catalog.first_trusted_square_catalog_validation(root).unwrap()
+  assert_eq(validation.artifact.artifact_id, "validation-200")
+  assert_true(
+    validation.validation_status == @data_core.ValidationStatus::Warning,
+  )
+  assert_true(!validation.ready)
+  assert_eq(validation.blocker_count, 0)
+  assert_true(validation.warning_count > 0)
 }
 
 ///|

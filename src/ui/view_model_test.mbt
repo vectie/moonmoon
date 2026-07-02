@@ -124,6 +124,8 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("hardware_authority"))
   assert_true(json.contains("selected_tile"))
   assert_true(json.contains("catalog_artifact_id"))
+  assert_true(json.contains("catalog-validation"))
+  assert_true(json.contains("catalog validation has not been read"))
   assert_true(json.contains("energy-window"))
 }
 
