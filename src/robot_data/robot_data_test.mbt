@@ -147,3 +147,36 @@ test "robot quality report projects to generic validation report" {
   assert_true(validation.status == @data_core.ValidationStatus::Passed)
   assert_true(validation.to_json().stringify().contains("frame-count-ok"))
 }
+
+///|
+test "legacy moondata refs normalize into robot payload data refs" {
+  let payload = @robot_data.robot_legacy_moondata_payload_ref(
+    "robot-alpha-replay-legacy",
+    "moondata://robot-alpha/replay/episode-1.json",
+    "robot-replay",
+    "application/json",
+    2048L,
+    sha("abcdefabcdefabcd"),
+  ).unwrap()
+  assert_eq(
+    payload.path,
+    "payloads/robot_data/robot-alpha/replay/episode-1.json",
+  )
+  let data_ref = @robot_data.robot_payload_data_ref(payload)
+  assert_eq(
+    data_ref.uri,
+    "data://payloads/robot_data/robot-alpha/replay/episode-1.json",
+  )
+}
+
+///|
+test "legacy moondata refs reject unsafe or non legacy paths" {
+  let rejected = [
+    "data://robot-alpha/replay/episode-1.json", "moondata://", "moondata:///robot-alpha/replay/episode-1.json",
+    "moondata://../robot-alpha/replay/episode-1.json", "moondata://robot-alpha//replay/episode-1.json",
+    "moondata://robot-alpha/./replay/episode-1.json", "moondata://robot-alpha\\replay\\episode-1.json",
+  ]
+  for uri in rejected {
+    assert_true(@robot_data.robot_legacy_moondata_payload_path(uri) is None)
+  }
+}

@@ -78,7 +78,7 @@ fn site_catalog_files() -> Array[String] {
 fn robot_data_files() -> Array[String] {
   [
     "src/robot_data/moon.pkg", "src/robot_data/payload.mbt", "src/robot_data/model.mbt",
-    "src/robot_data/episode.mbt", "src/robot_data/quality.mbt",
+    "src/robot_data/episode.mbt", "src/robot_data/quality.mbt", "src/robot_data/legacy_ref.mbt",
   ]
 }
 

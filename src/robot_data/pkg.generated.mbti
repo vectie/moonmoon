@@ -20,6 +20,12 @@ pub fn robot_episode_source_ids(RobotEpisodeManifest) -> Array[String]
 
 pub fn robot_episode_version(RobotEpisodeManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
 
+pub fn robot_legacy_moondata_payload_path(String) -> String?
+
+pub fn robot_legacy_moondata_payload_ref(String, String, String, String, Int64, String) -> RobotPayloadRef?
+
+pub fn robot_legacy_moondata_relative_path(String) -> String?
+
 pub fn robot_model_data_source(RobotModelRef) -> @data_core.DataSource
 
 pub fn robot_model_ref(String, String, String, String, String, String, String, String, String, Int64, RobotPayloadRef) -> RobotModelRef

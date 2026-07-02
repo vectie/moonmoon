@@ -340,6 +340,10 @@ Implementation:
      robot-specific fields here without touching generic packages.
 4. Decide whether existing `moondata://` refs become a domain alias or migrate
    to `data://`.
+   - Status: done for robot data. `robot_data` accepts safe legacy
+     `moondata://` payload refs as a domain migration alias and normalizes them
+     into `data://payloads/robot_data/...`; generic store, validate, and core
+     packages remain `data://` only.
 5. Add a migration script or command only at the data-root boundary.
    - Status: done for the generic MoonBit adapter; product-specific commands
      are still queued.
