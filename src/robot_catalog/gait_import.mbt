@@ -228,6 +228,7 @@ pub fn import_robot_gait_clip_directory(
       telemetry_stream_count: 0,
       gait_clip_count: 1,
       gait_annotation_count: 0,
+      gait_alignment_count: 0,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

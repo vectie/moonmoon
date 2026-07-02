@@ -12,6 +12,8 @@ import {
 // Values
 pub fn import_robot_episode_directory(RobotEpisodeDirectoryImportRequest) -> Result[RobotEpisodeDirectoryImportResult, @data_store.DataStoreIssue]
 
+pub fn import_robot_gait_alignment_directory(RobotGaitAlignmentDirectoryImportRequest) -> Result[RobotGaitAlignmentDirectoryImportResult, @data_store.DataStoreIssue]
+
 pub fn import_robot_gait_annotation_directory(RobotGaitAnnotationDirectoryImportRequest) -> Result[RobotGaitAnnotationDirectoryImportResult, @data_store.DataStoreIssue]
 
 pub fn import_robot_gait_clip_directory(RobotGaitClipDirectoryImportRequest) -> Result[RobotGaitClipDirectoryImportResult, @data_store.DataStoreIssue]
@@ -22,13 +24,17 @@ pub fn import_robot_telemetry_directory(RobotTelemetryDirectoryImportRequest) ->
 
 pub fn materialize_robot_catalog_bundle(String, RobotCatalogBundle, Int64) -> Result[RobotCatalogMaterialization, @data_store.DataStoreIssue]
 
-pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], telemetry_streams? : Array[@robot_data.RobotTelemetryStreamManifest], gait_clips? : Array[@robot_data.RobotGaitClipManifest], gait_annotations? : Array[@robot_data.RobotGaitAnnotationManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
+pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], telemetry_streams? : Array[@robot_data.RobotTelemetryStreamManifest], gait_clips? : Array[@robot_data.RobotGaitClipManifest], gait_annotations? : Array[@robot_data.RobotGaitAnnotationManifest], gait_alignments? : Array[@robot_data.RobotGaitAlignmentManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
 
 pub fn robot_catalog_root_dossier_from_root(String) -> Result[RobotCatalogRootDossier, @data_store.DataStoreIssue]
 
 pub fn robot_episode_catalog_dossier_from_root(String, String) -> Result[RobotEpisodeCatalogDossier, @data_store.DataStoreIssue]
 
 pub fn robot_episode_directory_import_request(String, String, String, String, String, String, Int64, source_label? : String) -> RobotEpisodeDirectoryImportRequest
+
+pub fn robot_gait_alignment_catalog_dossier_from_root(String, String) -> Result[RobotGaitAlignmentCatalogDossier, @data_store.DataStoreIssue]
+
+pub fn robot_gait_alignment_directory_import_request(String, String, String, String, String, String, String, String, Int64, source_label? : String) -> RobotGaitAlignmentDirectoryImportRequest
 
 pub fn robot_gait_annotation_catalog_dossier_from_root(String, String) -> Result[RobotGaitAnnotationCatalogDossier, @data_store.DataStoreIssue]
 
@@ -75,6 +81,13 @@ pub(all) struct ImportedRobotEpisodeSignal {
   signal : @robot_data.RobotSignalRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct ImportedRobotGaitAlignmentPayload {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  alignment : @robot_data.RobotGaitAlignmentPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct ImportedRobotGaitAnnotationPayload {
   source_path : String
   relative_path : String
@@ -110,6 +123,7 @@ pub(all) struct RobotCatalogBundle {
   telemetry_streams : Array[@robot_data.RobotTelemetryStreamManifest]
   gait_clips : Array[@robot_data.RobotGaitClipManifest]
   gait_annotations : Array[@robot_data.RobotGaitAnnotationManifest]
+  gait_alignments : Array[@robot_data.RobotGaitAlignmentManifest]
   quality_reports : Array[@robot_data.RobotQualityReport]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -124,6 +138,7 @@ pub(all) struct RobotCatalogMaterialization {
   telemetry_stream_count : Int
   gait_clip_count : Int
   gait_annotation_count : Int
+  gait_alignment_count : Int
   quality_report_count : Int
   catalog_entry_count : Int
   validation_status : @data_core.ValidationStatus
@@ -143,6 +158,7 @@ pub(all) struct RobotCatalogRootDossier {
   telemetry_stream_count : Int
   gait_clip_count : Int
   gait_annotation_count : Int
+  gait_alignment_count : Int
   data_ref_count : Int
   source_ids : Array[String]
   model_ids : Array[String]
@@ -150,11 +166,13 @@ pub(all) struct RobotCatalogRootDossier {
   telemetry_stream_ids : Array[String]
   gait_clip_ids : Array[String]
   gait_annotation_ids : Array[String]
+  gait_alignment_ids : Array[String]
   model_dossiers : Array[RobotModelCatalogDossier]
   episode_dossiers : Array[RobotEpisodeCatalogDossier]
   telemetry_dossiers : Array[RobotTelemetryCatalogDossier]
   gait_clip_dossiers : Array[RobotGaitClipCatalogDossier]
   gait_annotation_dossiers : Array[RobotGaitAnnotationCatalogDossier]
+  gait_alignment_dossiers : Array[RobotGaitAlignmentCatalogDossier]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotEpisodeCatalogDossier {
@@ -207,6 +225,59 @@ pub(all) struct RobotEpisodeDirectoryImportResult {
   signals : Array[ImportedRobotEpisodeSignal]
   replays : Array[ImportedRobotEpisodeReplay]
   quality_reports : Array[ImportedRobotEpisodeQuality]
+  materialization : RobotCatalogMaterialization
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitAlignmentCatalogDossier {
+  root : String
+  alignment_id : String
+  episode_id : String
+  clip_id : String
+  annotation_id : String
+  catalog_entry_count : Int
+  source_artifact : @data_core.ArtifactRef
+  dataset_artifact : @data_core.ArtifactRef
+  version_artifact : @data_core.ArtifactRef
+  validation_artifact : @data_core.ArtifactRef
+  source : @data_core.DataSource
+  dataset : @data_core.DatasetManifest
+  version : @data_core.DatasetVersion
+  validation_status : @data_core.ValidationStatus
+  blocker_count : Int
+  warning_count : Int
+  alignment_ref_count : Int
+  model_ref_count : Int
+  data_ref_count : Int
+  alignment_ref_uris : Array[String]
+  model_ref_uris : Array[String]
+  data_ref_uris : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitAlignmentDirectoryImportRequest {
+  root : String
+  source_dir : String
+  alignment_id : String
+  episode_id : String
+  clip_id : String
+  annotation_id : String
+  robot_id : String
+  model_id : String
+  imported_at_ms : Int64
+  source_label : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitAlignmentDirectoryImportResult {
+  root : String
+  source_dir : String
+  alignment_id : String
+  episode_id : String
+  clip_id : String
+  annotation_id : String
+  robot_id : String
+  model_id : String
+  payload_count : Int
+  gait_alignment : @robot_data.RobotGaitAlignmentManifest
+  payloads : Array[ImportedRobotGaitAlignmentPayload]
   materialization : RobotCatalogMaterialization
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -314,12 +385,14 @@ pub(all) struct RobotMigrationReadiness {
   telemetry_stream_count : Int
   gait_clip_count : Int
   gait_annotation_count : Int
+  gait_alignment_count : Int
   signal_ref_count : Int
   replay_ref_count : Int
   quality_ref_count : Int
   telemetry_ref_count : Int
   gait_ref_count : Int
   gait_annotation_ref_count : Int
+  gait_alignment_ref_count : Int
   data_ref_count : Int
   next_action : String
   summary : String

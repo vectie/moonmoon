@@ -20,6 +20,22 @@ pub fn robot_episode_source_ids(RobotEpisodeManifest) -> Array[String]
 
 pub fn robot_episode_version(RobotEpisodeManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
 
+pub fn robot_gait_alignment_data_refs(RobotGaitAlignmentManifest) -> Array[@data_core.DataRef]
+
+pub fn robot_gait_alignment_data_source(RobotGaitAlignmentManifest) -> @data_core.DataSource
+
+pub fn robot_gait_alignment_dataset(RobotGaitAlignmentManifest) -> @data_core.DatasetManifest
+
+pub fn robot_gait_alignment_lineage(RobotGaitAlignmentManifest, String) -> @data_core.LineageManifest
+
+pub fn robot_gait_alignment_manifest(String, String, String, String, String, String, String, String, @data_core.DataStatus, Int64, Array[RobotModelRef], Array[RobotGaitAlignmentPayloadRef], String) -> RobotGaitAlignmentManifest
+
+pub fn robot_gait_alignment_payload_ref(String, Int, RobotPayloadRef) -> RobotGaitAlignmentPayloadRef
+
+pub fn robot_gait_alignment_source_ids(RobotGaitAlignmentManifest) -> Array[String]
+
+pub fn robot_gait_alignment_version(RobotGaitAlignmentManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
+
 pub fn robot_gait_annotation_data_refs(RobotGaitAnnotationManifest) -> Array[@data_core.DataRef]
 
 pub fn robot_gait_annotation_data_source(RobotGaitAnnotationManifest) -> @data_core.DataSource
@@ -107,6 +123,28 @@ pub(all) struct RobotEpisodeManifest {
   replay_artifacts : Array[RobotReplayArtifact]
   quality_report_refs : Array[RobotPayloadRef]
   summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitAlignmentManifest {
+  alignment_id : String
+  robot_id : String
+  episode_id : String
+  clip_id : String
+  annotation_id : String
+  source_id : String
+  source_label : String
+  source_url : String
+  status : @data_core.DataStatus
+  created_at_ms : Int64
+  model_refs : Array[RobotModelRef]
+  payload_refs : Array[RobotGaitAlignmentPayloadRef]
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitAlignmentPayloadRef {
+  role : String
+  line_count : Int
+  payload : RobotPayloadRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotGaitAnnotationManifest {
@@ -219,6 +257,8 @@ pub(all) struct RobotTelemetryStreamManifest {
 
 // Type aliases
 pub type RobotEpisodeId = String
+
+pub type RobotGaitAlignmentId = String
 
 pub type RobotGaitAnnotationId = String
 

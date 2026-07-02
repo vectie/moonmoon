@@ -219,6 +219,65 @@ test "robot gait annotation maps to generic dataset version and lineage" {
 }
 
 ///|
+test "robot gait alignment maps to generic dataset version and lineage" {
+  let alignment_payload = @robot_data.robot_gait_alignment_payload_ref(
+    "frame-map",
+    3,
+    @robot_data.robot_payload_ref(
+      "robot-alpha-gait-alignment-frame-map",
+      "robot-gait-alignment",
+      "payloads/robot_data/robot-alpha/gait/alignment/frame-map.csv",
+      "text/csv",
+      256L,
+      sha("ccccddddaaaabbbb"),
+    ),
+  )
+  let alignment = @robot_data.robot_gait_alignment_manifest(
+    "alignment-robot-alpha-walk-episode-1",
+    "robot-alpha",
+    "episode-robot-alpha-1",
+    "gait-robot-alpha-walk",
+    "annotation-robot-alpha-walk-phases",
+    "source-robot-alpha-gait-alignment",
+    "Robot Alpha gait alignment",
+    "https://example.invalid/robot-alpha/gait/alignment",
+    @data_core.DataStatus::Verified,
+    60L,
+    [fixture_model()],
+    [alignment_payload],
+    "Robot Alpha episode/gait frame alignment.",
+  )
+  let source = @robot_data.robot_gait_alignment_data_source(alignment)
+  assert_eq(source.source_id, "source-robot-alpha-gait-alignment")
+  assert_eq(source.source_refs.length(), 1)
+  let dataset = @robot_data.robot_gait_alignment_dataset(alignment)
+  assert_eq(dataset.dataset_id, "alignment-robot-alpha-walk-episode-1")
+  assert_eq(dataset.kind, "robot-gait-alignment")
+  assert_eq(dataset.source_ids.length(), 2)
+  assert_eq(dataset.data_refs.length(), 2)
+  assert_eq(dataset.data_refs[1].kind, "robot-gait-alignment")
+  let version = @robot_data.robot_gait_alignment_version(
+    alignment,
+    "alignment-robot-alpha-walk-episode-1-v1",
+    parent_version_ids=[
+      "episode-robot-alpha-1-v1", "gait-robot-alpha-walk-v1", "annotation-robot-alpha-walk-phases-v1",
+    ],
+  )
+  assert_eq(version.parent_version_ids.length(), 3)
+  let lineage = @robot_data.robot_gait_alignment_lineage(
+    alignment, "lineage-alignment-robot-alpha-walk-episode-1",
+  )
+  assert_eq(lineage.root_artifact.artifact_id, dataset.dataset_id)
+  assert_eq(lineage.edges.length(), 5)
+  assert_eq(lineage.edges[1].from_artifact.artifact_id, "episode-robot-alpha-1")
+  assert_eq(lineage.edges[2].from_artifact.artifact_id, "gait-robot-alpha-walk")
+  assert_eq(
+    lineage.edges[3].from_artifact.artifact_id,
+    "annotation-robot-alpha-walk-phases",
+  )
+}
+
+///|
 test "robot quality report projects to generic validation report" {
   let episode_artifact = @data_core.artifact_ref(
     "dataset", "episode-robot-alpha-1", "datasets/episode-robot-alpha-1.json",

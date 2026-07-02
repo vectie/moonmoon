@@ -461,6 +461,7 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(readiness.quality_ref_count, 1)
   assert_eq(readiness.telemetry_ref_count, 0)
   assert_eq(readiness.gait_ref_count, 0)
+  assert_eq(readiness.gait_alignment_ref_count, 0)
   assert_eq(readiness.data_ref_count, 7)
   assert_eq(readiness.validation_artifact.artifact_id, "validation-901")
   assert_eq(
@@ -553,6 +554,7 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(gait_ready.gait_annotation_count, 0)
   assert_eq(gait_ready.gait_ref_count, 2)
   assert_eq(gait_ready.gait_annotation_ref_count, 0)
+  assert_eq(gait_ready.gait_alignment_ref_count, 0)
   assert_eq(gait_ready.data_ref_count, 12)
   assert_eq(
     gait_ready.next_action,
@@ -623,11 +625,92 @@ test "robot episode directory import uses cataloged model evidence" {
   let annotation_ready = @robot_catalog.robot_migration_readiness_from_root(
     root,
   ).unwrap()
-  assert_eq(annotation_ready.status, "ready")
-  assert_true(annotation_ready.ready)
+  assert_eq(annotation_ready.status, "needs-evidence")
+  assert_true(!annotation_ready.ready)
   assert_eq(annotation_ready.gait_annotation_count, 1)
   assert_eq(annotation_ready.gait_annotation_ref_count, 2)
+  assert_eq(annotation_ready.gait_alignment_count, 0)
+  assert_eq(annotation_ready.gait_alignment_ref_count, 0)
   assert_eq(annotation_ready.data_ref_count, 15)
+  assert_eq(
+    annotation_ready.next_action,
+    "migrate clip-to-episode alignment records for the cataloged gait evidence",
+  )
+  let alignment_input = "target/robot-catalog-tests/episode-gait-alignment-input"
+  ensure_test_dir(alignment_input)
+  @fsx.write_string_to_file(
+    alignment_input + "/frame-map.csv",
+    "episode_frame,gait_frame\nframe-0001,0\nframe-0002,1\n",
+  ) catch {
+    _ => fail("failed to write episode gait alignment frame map")
+  }
+  @fsx.write_string_to_file(
+    alignment_input + "/time-window.json",
+    "{\"episode\":\"episode-alpha-1\",\"clip\":\"gait-alpha-walk\"}",
+  ) catch {
+    _ => fail("failed to write episode gait alignment time window")
+  }
+  let alignment = @robot_catalog.import_robot_gait_alignment_directory(
+    @robot_catalog.robot_gait_alignment_directory_import_request(
+      root,
+      alignment_input,
+      "alignment-alpha-walk-episode",
+      "episode-alpha-1",
+      "gait-alpha-walk",
+      "annotation-alpha-walk-phases",
+      "robot-alpha",
+      "episode-alpha-model",
+      905L,
+      source_label="Alpha gait alignment fixture",
+    ),
+  ).unwrap()
+  assert_eq(alignment.payload_count, 2)
+  assert_eq(alignment.gait_alignment.episode_id, "episode-alpha-1")
+  assert_eq(alignment.gait_alignment.clip_id, "gait-alpha-walk")
+  assert_eq(
+    alignment.gait_alignment.annotation_id,
+    "annotation-alpha-walk-phases",
+  )
+  assert_eq(alignment.materialization.gait_alignment_count, 1)
+  assert_eq(alignment.materialization.blocker_count, 0)
+  assert_eq(alignment.materialization.warning_count, 0)
+  let alignment_dossier = @robot_catalog.robot_gait_alignment_catalog_dossier_from_root(
+    root, "alignment-alpha-walk-episode",
+  ).unwrap()
+  assert_eq(alignment_dossier.alignment_id, "alignment-alpha-walk-episode")
+  assert_eq(alignment_dossier.episode_id, "episode-alpha-1")
+  assert_eq(alignment_dossier.clip_id, "gait-alpha-walk")
+  assert_eq(alignment_dossier.annotation_id, "annotation-alpha-walk-phases")
+  assert_eq(alignment_dossier.dataset.kind, "robot-gait-alignment")
+  assert_eq(alignment_dossier.version.parent_version_ids.length(), 3)
+  assert_eq(alignment_dossier.alignment_ref_count, 2)
+  assert_eq(alignment_dossier.model_ref_count, 1)
+  assert_eq(alignment_dossier.data_ref_count, 3)
+  assert_eq(alignment_dossier.validation_artifact.artifact_id, "validation-905")
+  assert_true(
+    alignment_dossier.validation_status == @data_core.ValidationStatus::Passed,
+  )
+  let alignment_ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(
+    root,
+  ).unwrap()
+  assert_eq(alignment_ready_root.gait_alignment_count, 1)
+  assert_true(
+    alignment_ready_root.gait_alignment_ids.contains(
+      "alignment-alpha-walk-episode",
+    ),
+  )
+  assert_eq(alignment_ready_root.gait_alignment_dossiers.length(), 1)
+  assert_eq(alignment_ready_root.data_ref_count, 18)
+  assert_eq(
+    alignment_ready_root.validation_artifact.artifact_id,
+    "validation-905",
+  )
+  let alignment_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(alignment_ready.status, "ready")
+  assert_true(alignment_ready.ready)
+  assert_eq(alignment_ready.gait_alignment_count, 1)
+  assert_eq(alignment_ready.gait_alignment_ref_count, 2)
+  assert_eq(alignment_ready.data_ref_count, 18)
 }
 
 ///|
@@ -698,8 +781,10 @@ test "robot telemetry directory import creates standalone stream dataset" {
   assert_eq(readiness.telemetry_ref_count, 2)
   assert_eq(readiness.gait_clip_count, 0)
   assert_eq(readiness.gait_annotation_count, 0)
+  assert_eq(readiness.gait_alignment_count, 0)
   assert_eq(readiness.gait_ref_count, 0)
   assert_eq(readiness.gait_annotation_ref_count, 0)
+  assert_eq(readiness.gait_alignment_ref_count, 0)
   assert_eq(readiness.next_action, "import a robot model package")
 }
 

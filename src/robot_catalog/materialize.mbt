@@ -287,6 +287,59 @@ fn write_gait_annotations(
 }
 
 ///|
+fn write_gait_alignments(
+  root : String,
+  alignments : Array[@robot_data.RobotGaitAlignmentManifest],
+) -> Result[Unit, @data_store.DataStoreIssue] {
+  for alignment in alignments {
+    match
+      @data_store.write_source(
+        root,
+        @robot_data.robot_gait_alignment_data_source(alignment),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset(
+        root,
+        @robot_data.robot_gait_alignment_dataset(alignment),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset_version(
+        root,
+        @robot_data.robot_gait_alignment_version(
+          alignment,
+          "\{alignment.alignment_id}-v1",
+          parent_version_ids=[
+            "\{alignment.episode_id}-v1",
+            "\{alignment.clip_id}-v1",
+            "\{alignment.annotation_id}-v1",
+          ],
+        ),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_lineage_manifest(
+        root,
+        @robot_data.robot_gait_alignment_lineage(
+          alignment,
+          "lineage-\{alignment.alignment_id}",
+        ),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+  }
+  Ok(())
+}
+
+///|
 fn write_quality_reports(
   root : String,
   reports : Array[@robot_data.RobotQualityReport],
@@ -334,6 +387,10 @@ pub fn materialize_robot_catalog_bundle(
     Ok(_) => ()
     Err(error) => return Err(error)
   }
+  match write_gait_alignments(root, bundle.gait_alignments) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
   match write_quality_reports(root, bundle.quality_reports) {
     Ok(_) => ()
     Err(error) => return Err(error)
@@ -358,22 +415,27 @@ pub fn materialize_robot_catalog_bundle(
     source_count: bundle.models.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
-    bundle.gait_annotations.length(),
+    bundle.gait_annotations.length() +
+    bundle.gait_alignments.length(),
     dataset_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
-    bundle.gait_annotations.length(),
+    bundle.gait_annotations.length() +
+    bundle.gait_alignments.length(),
     version_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
-    bundle.gait_annotations.length(),
+    bundle.gait_annotations.length() +
+    bundle.gait_alignments.length(),
     lineage_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
-    bundle.gait_annotations.length(),
+    bundle.gait_annotations.length() +
+    bundle.gait_alignments.length(),
     telemetry_stream_count: bundle.telemetry_streams.length(),
     gait_clip_count: bundle.gait_clips.length(),
     gait_annotation_count: bundle.gait_annotations.length(),
+    gait_alignment_count: bundle.gait_alignments.length(),
     quality_report_count: bundle.quality_reports.length(),
     catalog_entry_count: catalog.entries.length(),
     validation_status: validation.status,
