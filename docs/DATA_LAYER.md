@@ -189,6 +189,33 @@ read.
    - Status: done.
    - Commit message: `Add robot rollout summary data boundary`.
 
+### Current Product Visibility Checkpoint
+
+The active pass makes robot migration readiness visible through the product UI
+layer instead of leaving it only as catalog JSON.
+
+1. Keep validation and robot vocabulary in catalog/domain packages.
+   - Status: done.
+   - `src/ui` consumes `src/robot_catalog` readiness as a projection boundary;
+     it does not import `data_validate` or move robot fields into generic
+     packages.
+
+2. Add a compact robot readiness view model.
+   - Status: done.
+   - The view exposes status, validation state, blockers, warnings,
+     data-reference count, next action, dataset-family counts, and evidence-ref
+     counts.
+
+3. Add UI render commands at product boundaries.
+   - Status: done.
+   - `data robot-ui-json [data-root]` emits the robot readiness view model.
+   - `data robot-ui-html [data-root]` emits a standalone operator page for the
+     same projection.
+
+4. Validate, commit, and push the boundary move.
+   - Status: done.
+   - Commit message: `Expose robot readiness in product UI`.
+
 1. Finish the dataset-facade removal checkpoint.
    - Status: done. The old `src/dataset` package is deleted, and terrain source
      manifests now belong to `src/terrain`.
@@ -246,9 +273,10 @@ read.
 
 6. Connect more visible product labels to validated data.
    - Status: started for robot migration readiness through
-     `data robot-readiness-json`; lunar first-site evidence is catalog-backed
-     through `src/site_catalog`, and `cmd/main` now exposes catalog-root-backed
-     `data ui-json` and `data ui-html` product views.
+     `data robot-readiness-json`, `data robot-ui-json`, and `data
+     robot-ui-html`; lunar first-site evidence is catalog-backed through
+     `src/site_catalog`, and `cmd/main` now exposes catalog-root-backed `data
+     ui-json` and `data ui-html` product views.
    - Keep the live movable Moon view as the first user-facing surface.
    - Replace static source/status labels only after the underlying manifests
      validate.

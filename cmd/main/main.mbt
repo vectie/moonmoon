@@ -37,6 +37,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data robot-gait-alignment-json [data-root] [alignment-id]
     #|  moon run cmd/main -- data robot-task-label-json [data-root] [task-label-id]
     #|  moon run cmd/main -- data robot-rollout-json [data-root] [rollout-id]
+    #|  moon run cmd/main -- data robot-ui-json [data-root]
+    #|  moon run cmd/main -- data robot-ui-html [data-root]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- data ui-json [data-root]
     #|  moon run cmd/main -- data ui-html [data-root]
@@ -157,6 +159,16 @@ fn data_robot_json_root(args : Array[String]) -> String {
 ///|
 fn data_robot_readiness_json_root(args : Array[String]) -> String {
   arg_offset(args, "robot-readiness-json", 1, "target/data-roots/robot")
+}
+
+///|
+fn data_robot_ui_json_root(args : Array[String]) -> String {
+  arg_offset(args, "robot-ui-json", 1, "target/data-roots/robot")
+}
+
+///|
+fn data_robot_ui_html_root(args : Array[String]) -> String {
+  arg_offset(args, "robot-ui-html", 1, "target/data-roots/robot")
 }
 
 ///|
@@ -986,6 +998,24 @@ fn print_data_robot_readiness_json(args : Array[String]) -> Unit {
 }
 
 ///|
+fn print_data_robot_ui_json(args : Array[String]) -> Unit {
+  let root = data_robot_ui_json_root(args)
+  match @ui.robot_readiness_catalog_json(root) {
+    Ok(json) => println(json.stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
+fn print_data_robot_ui_html(args : Array[String]) -> Unit {
+  let root = data_robot_ui_html_root(args)
+  match @ui.robot_readiness_catalog_html(root) {
+    Ok(html) => println(html)
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn print_data_site_json(args : Array[String]) -> Unit {
   let root = data_site_root(args)
   match @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
@@ -1045,6 +1075,10 @@ fn main {
     print_data_robot_episode_ingest(args, output_json)
   } else if args.contains("data") && args.contains("robot-readiness-json") {
     print_data_robot_readiness_json(args)
+  } else if args.contains("data") && args.contains("robot-ui-html") {
+    print_data_robot_ui_html(args)
+  } else if args.contains("data") && args.contains("robot-ui-json") {
+    print_data_robot_ui_json(args)
   } else if args.contains("data") && args.contains("robot-json") {
     print_data_robot_json(args)
   } else if args.contains("data") && args.contains("robot-telemetry-json") {

@@ -139,3 +139,58 @@ test "catalog-backed view model reports missing roots as data store issues" {
     Err(error) => assert_eq(error.code, "read-manifest")
   }
 }
+
+///|
+test "robot readiness view model exposes catalog-backed migration evidence" {
+  let readiness : @robot_catalog.RobotMigrationReadiness = {
+    root: "target/data-roots/robot-ui-test",
+    status: "ready",
+    ready: true,
+    validation_artifact: @data_core.artifact_ref(
+      "validation-report",
+      "validation-1",
+      "validations/validation-1.json",
+      status=@data_core.DataStatus::Verified,
+      summary="0 finding(s)",
+    ),
+    validation_status: @data_core.ValidationStatus::Passed,
+    blocker_count: 0,
+    warning_count: 0,
+    model_count: 1,
+    episode_count: 1,
+    telemetry_stream_count: 1,
+    gait_clip_count: 1,
+    gait_annotation_count: 1,
+    gait_alignment_count: 1,
+    task_label_count: 1,
+    rollout_count: 1,
+    signal_ref_count: 2,
+    replay_ref_count: 1,
+    quality_ref_count: 1,
+    telemetry_ref_count: 2,
+    gait_ref_count: 2,
+    gait_annotation_ref_count: 2,
+    gait_alignment_ref_count: 2,
+    task_label_ref_count: 2,
+    rollout_ref_count: 2,
+    data_ref_count: 24,
+    next_action: "migrate the next robot dataset family only after this root stays green",
+    summary: "robot root is ready",
+  }
+  let view = @ui.robot_readiness_view_model(readiness)
+  assert_eq(view.view_id, "ui/robot-migration-readiness/operator-view-v1")
+  assert_true(view.ready)
+  assert_eq(view.validation_status, "passed")
+  assert_eq(view.data_ref_count, 24)
+  assert_eq(view.metrics.length(), 8)
+  assert_eq(view.evidence.length(), 9)
+  assert_eq(view.metrics[7].metric_id, "rollouts")
+  assert_eq(view.metrics[7].value, 1)
+  assert_eq(view.evidence[8].evidence_id, "rollouts")
+  assert_eq(view.evidence[8].count, 2)
+  let html = @ui.render_robot_readiness_html(view)
+  assert_true(html.contains("moonmoon-robot-readiness-view-model"))
+  assert_true(html.contains("Robot Migration Readiness"))
+  assert_true(html.contains("rollout summaries"))
+  assert_true(html.contains("validations/validation-1.json"))
+}

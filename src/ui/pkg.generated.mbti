@@ -4,6 +4,7 @@ package "vectie/moonmoon/src/ui"
 import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
+  "vectie/moonmoon/src/robot_catalog",
   "vectie/moonmoon/src/site",
 }
 
@@ -41,6 +42,16 @@ pub fn render_html(TrustedSquareViewModel) -> String
 pub fn render_json(TrustedSquareViewModel) -> Json
 
 pub fn render_markdown(TrustedSquareViewModel) -> String
+
+pub fn render_robot_readiness_html(RobotReadinessViewModel) -> String
+
+pub fn robot_readiness_catalog_html(String) -> Result[String, CatalogBackedViewIssue]
+
+pub fn robot_readiness_catalog_json(String) -> Result[Json, CatalogBackedViewIssue]
+
+pub fn robot_readiness_view_model(@robot_catalog.RobotMigrationReadiness) -> RobotReadinessViewModel
+
+pub fn robot_readiness_view_model_from_catalog_root(String) -> Result[RobotReadinessViewModel, CatalogBackedViewIssue]
 
 pub fn traverse_motion_contract(TrustedSquareViewModel) -> TraverseMotionContract
 
@@ -139,6 +150,38 @@ pub(all) struct LayerToggle {
   legend_min : Double
   legend_max : Double
   status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotReadinessEvidenceView {
+  evidence_id : String
+  label : String
+  count : Int
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotReadinessMetricView {
+  metric_id : String
+  label : String
+  value : Int
+  status : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotReadinessViewModel {
+  view_id : String
+  root : String
+  title : String
+  status : String
+  ready : Bool
+  validation_status : String
+  blocker_count : Int
+  warning_count : Int
+  data_ref_count : Int
+  next_action : String
+  summary : String
+  validation_artifact_id : String
+  validation_manifest_path : String
+  metrics : Array[RobotReadinessMetricView]
+  evidence : Array[RobotReadinessEvidenceView]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RouteOverlay {
