@@ -10,6 +10,7 @@ data/sources
   -> src/lunar_data
   -> src/lunar_catalog
   -> src/robot_data
+  -> src/robot_catalog
   -> src/dataset
   -> src/terrain
   -> src/mission
@@ -36,6 +37,8 @@ by responsibility, but package imports define the actual dependency graph.
 - `robot_data` maps robot episodes, model refs, signal payloads, replay
   artifacts, and quality reports onto `data_core` without importing lunar,
   store, validation, UI, or Moonrobo packages.
+- `robot_catalog` materializes robot data bundles into the generic data root
+  and validates them through the same store/validation boundary as lunar data.
 - `dataset` describes source evidence and extraction metadata.
 - `terrain` turns checked source fixtures into terrain metrics.
 - `mission` turns terrain and power evidence into route decisions.

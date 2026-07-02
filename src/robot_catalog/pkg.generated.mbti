@@ -1,0 +1,46 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/robot_catalog"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+  "vectie/moonmoon/src/data_store",
+  "vectie/moonmoon/src/robot_data",
+}
+
+// Values
+pub fn materialize_robot_catalog_bundle(String, RobotCatalogBundle, Int64) -> Result[RobotCatalogMaterialization, @data_store.DataStoreIssue]
+
+pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
+
+pub fn stage_robot_payload_text(String, @robot_data.RobotPayloadRef, String) -> Result[Unit, @data_store.DataStoreIssue]
+
+// Errors
+
+// Types and methods
+pub(all) struct RobotCatalogBundle {
+  bundle_id : String
+  models : Array[@robot_data.RobotModelRef]
+  episodes : Array[@robot_data.RobotEpisodeManifest]
+  quality_reports : Array[@robot_data.RobotQualityReport]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotCatalogMaterialization {
+  root : String
+  catalog_path : String
+  validation_report_path : String
+  source_count : Int
+  dataset_count : Int
+  version_count : Int
+  lineage_count : Int
+  quality_report_count : Int
+  catalog_entry_count : Int
+  validation_status : @data_core.ValidationStatus
+  blocker_count : Int
+  warning_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits

@@ -40,6 +40,10 @@ src/site_catalog
 src/robot_data
   Robot domain layer: episodes, frames, signals, robot models, replay/export
   projections, telemetry-specific quality.
+
+src/robot_catalog
+  Robot data-root adapter: writes robot bundles through data_store, stages
+  payloads at true data boundaries, validates through data_validate.
 ```
 
 Dependency direction:
@@ -52,6 +56,7 @@ lunar_data     -> data_core
 lunar_catalog  -> data_core + data_store + data_validate + lunar_data
 site_catalog   -> site + lunar_catalog
 robot_data     -> data_core
+robot_catalog  -> data_core + data_store + data_validate + robot_data
 ```
 
 `data_core` must stay dependency-light. A package that only needs `DataRef` or
@@ -315,9 +320,9 @@ Commit rhythm:
 
 ### Phase 6: Robot Data Landing Zone
 
-Status: in progress. The pure `src/robot_data` landing contract is in place;
-stored migration commands are still queued until the first robot dataset family
-is selected.
+Status: in progress. The pure `src/robot_data` landing contract and generic
+`src/robot_catalog` data-root adapter are in place; product-specific migration
+commands are still queued until the first robot dataset family is selected.
 
 Goal: prepare a general data layer that can accept robot data quickly without
 copying lunar concepts.
@@ -336,6 +341,8 @@ Implementation:
 4. Decide whether existing `moondata://` refs become a domain alias or migrate
    to `data://`.
 5. Add a migration script or command only at the data-root boundary.
+   - Status: done for the generic MoonBit adapter; product-specific commands
+     are still queued.
 6. Commit and push each migrated robot dataset family separately.
 
 Exit criteria:

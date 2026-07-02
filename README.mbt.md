@@ -15,8 +15,8 @@ committed as source.
   local data-root persistence, and data-root validation.
 - `src/lunar_data`, `src/lunar_catalog`, `src/site_catalog`: lunar source
   records, catalog materialization, and catalog-backed first-site evidence.
-- `src/robot_data`: pure robot episode/model/signal/replay/quality contracts
-  projected onto `data_core` for later robot dataset migration.
+- `src/robot_data`, `src/robot_catalog`: pure robot episode/model/signal/replay
+  contracts and the robot data-root materialization adapter.
 - `src/dataset`: the narrow terrain fixture manifest/provenance facade still
   consumed by terrain fixtures.
 - `src/terrain`: checked DEM fixtures, grid analysis, slope, roughness, and
