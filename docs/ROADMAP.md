@@ -12,10 +12,9 @@
    Moonphys.
 6. Follow `docs/LOCOMOTION_PHASE_GUIDANCE.md` for the route-motion to robot
    gait adapter phases.
-7. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: finish
-   the dataset-facade removal, keep the generic root readable, migrate one
-   robot dataset family at a time, and keep product labels tied to validated
-   catalog evidence.
+7. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: keep
+   the generic root readable, migrate one robot dataset family at a time, and
+   keep product labels tied to validated catalog evidence.
 
 ## Next
 

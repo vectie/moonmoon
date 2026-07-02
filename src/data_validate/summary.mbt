@@ -17,8 +17,12 @@ pub(all) struct DataRootValidationSummary {
   finding_count : Int
   blocker_count : Int
   warning_count : Int
+  payload_ref_count : Int
+  source_payload_ref_count : Int
+  dataset_payload_ref_count : Int
+  version_payload_ref_count : Int
   dataset_kind_counts : Array[DataKindCount]
-  data_ref_kind_counts : Array[DataKindCount]
+  payload_ref_kind_counts : Array[DataKindCount]
   next_action : String
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -101,25 +105,14 @@ fn increment_kind_count(counts : Array[DataKindCount], kind : String) -> Unit {
 }
 
 ///|
-fn add_dataset_kind_counts(
-  root : String,
-  catalog : @data_core.DataCatalog,
-  dataset_kind_counts : Array[DataKindCount],
-  data_ref_kind_counts : Array[DataKindCount],
-) -> Result[Unit, @data_store.DataStoreIssue] {
-  for entry in catalog.entries {
-    if entry.artifact_kind == "dataset" {
-      let dataset = match @data_store.read_dataset(root, entry.artifact_id) {
-        Ok(value) => value
-        Err(error) => return Err(error)
-      }
-      increment_kind_count(dataset_kind_counts, dataset.kind)
-      for data_ref in dataset.data_refs {
-        increment_kind_count(data_ref_kind_counts, data_ref.kind)
-      }
-    }
+fn count_payload_ref_kinds(
+  refs : Array[@data_core.DataRef],
+  counts : Array[DataKindCount],
+) -> Int {
+  for data_ref in refs {
+    increment_kind_count(counts, data_ref.kind)
   }
-  Ok(())
+  refs.length()
 }
 
 ///|
@@ -152,14 +145,45 @@ pub fn data_root_validation_summary_from_root(
     @data_core.FindingSeverity::WarningSeverity,
   )
   let dataset_kind_counts : Array[DataKindCount] = []
-  let data_ref_kind_counts : Array[DataKindCount] = []
-  match
-    add_dataset_kind_counts(
-      root, catalog, dataset_kind_counts, data_ref_kind_counts,
-    ) {
-    Ok(_) => ()
-    Err(error) => return Err(error)
+  let payload_ref_kind_counts : Array[DataKindCount] = []
+  let mut source_payload_ref_count = 0
+  let mut dataset_payload_ref_count = 0
+  let mut version_payload_ref_count = 0
+  for entry in catalog.entries {
+    if entry.artifact_kind == "source" {
+      let source = match @data_store.read_source(root, entry.artifact_id) {
+        Ok(value) => value
+        Err(error) => return Err(error)
+      }
+      source_payload_ref_count += count_payload_ref_kinds(
+        source.source_refs,
+        payload_ref_kind_counts,
+      )
+    } else if entry.artifact_kind == "dataset" {
+      let dataset = match @data_store.read_dataset(root, entry.artifact_id) {
+        Ok(value) => value
+        Err(error) => return Err(error)
+      }
+      increment_kind_count(dataset_kind_counts, dataset.kind)
+      dataset_payload_ref_count += count_payload_ref_kinds(
+        dataset.data_refs,
+        payload_ref_kind_counts,
+      )
+    } else if entry.artifact_kind == "dataset-version" {
+      let version = match
+        @data_store.read_dataset_version(root, entry.artifact_id) {
+        Ok(value) => value
+        Err(error) => return Err(error)
+      }
+      version_payload_ref_count += count_payload_ref_kinds(
+        version.data_refs,
+        payload_ref_kind_counts,
+      )
+    }
   }
+  let payload_ref_count = source_payload_ref_count +
+    dataset_payload_ref_count +
+    version_payload_ref_count
   let ready = report.status == @data_core.ValidationStatus::Passed &&
     blocker_count == 0
   let status = if ready {
@@ -188,8 +212,12 @@ pub fn data_root_validation_summary_from_root(
     finding_count: @data_core.validation_finding_count(report),
     blocker_count,
     warning_count,
+    payload_ref_count,
+    source_payload_ref_count,
+    dataset_payload_ref_count,
+    version_payload_ref_count,
     dataset_kind_counts,
-    data_ref_kind_counts,
+    payload_ref_kind_counts,
     next_action: if ready {
       "continue domain migration against this validated data root"
     } else {

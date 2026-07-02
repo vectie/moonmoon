@@ -108,10 +108,19 @@ test "data validation passes a cataloged root with checked local payloads" {
     data_refs=[payload],
     summary="valid dataset",
   )
+  let version = @data_core.dataset_version(
+    "dataset-a-v1",
+    dataset.dataset_id,
+    @data_core.DataStatus::Verified,
+    3L,
+    data_refs=[payload],
+    summary="first generic dataset version",
+  )
   ignore(@data_store.write_source(root, source))
   ignore(@data_store.write_dataset(root, dataset))
-  ignore(@data_store.rebuild_catalog(root, 3L))
-  let result = @data_validate.validate_and_write_root(root, 4L).unwrap()
+  ignore(@data_store.write_dataset_version(root, version))
+  ignore(@data_store.rebuild_catalog(root, 4L))
+  let result = @data_validate.validate_and_write_root(root, 5L).unwrap()
   assert_true(result.status == @data_core.ValidationStatus::Passed)
   assert_eq(result.finding_count, 0)
   assert_true(@fsx.path_exists(result.report_path))
@@ -141,16 +150,21 @@ test "data validation passes a cataloged root with checked local payloads" {
   ignore(@data_store.rebuild_catalog(root, 6L))
   let summary = @data_validate.data_root_validation_summary_from_root(root).unwrap()
   assert_true(summary.ready)
-  assert_eq(summary.latest_validation_artifact.artifact_id, "validation-4")
+  assert_eq(summary.latest_validation_artifact.artifact_id, "validation-5")
   assert_eq(summary.source_count, 1)
   assert_eq(summary.dataset_count, 1)
+  assert_eq(summary.version_count, 1)
   assert_eq(summary.validation_report_count, 2)
   assert_eq(summary.root_validation_report_count, 1)
   assert_eq(summary.auxiliary_validation_report_count, 1)
+  assert_eq(summary.payload_ref_count, 3)
+  assert_eq(summary.source_payload_ref_count, 1)
+  assert_eq(summary.dataset_payload_ref_count, 1)
+  assert_eq(summary.version_payload_ref_count, 1)
   assert_eq(count_for_kind(summary.dataset_kind_counts, "generic"), 1)
-  assert_eq(count_for_kind(summary.data_ref_kind_counts, "json"), 1)
+  assert_eq(count_for_kind(summary.payload_ref_kind_counts, "json"), 3)
   let catalog = @data_store.read_catalog(root).unwrap()
-  assert_true(catalog.entries.length() >= 3)
+  assert_true(catalog.entries.length() >= 4)
 }
 
 ///|

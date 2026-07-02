@@ -75,10 +75,8 @@ highest-leverage boundary moves first, keeps robot migration generic, and avoids
 stale compatibility layers.
 
 1. Finish the dataset-facade removal checkpoint.
-   - Status: in progress. The old `src/dataset` package is deleted in the
-     current slice, and terrain source manifests now belong to `src/terrain`.
-   - Current task: validate imports, generated interfaces, boundary tests, and
-     docs, then commit and push the removal as one scoped boundary move.
+   - Status: done. The old `src/dataset` package is deleted, and terrain source
+     manifests now belong to `src/terrain`.
    - Keep source ownership explicit: terrain fixture manifests in `terrain`,
      lunar acquisition records in `lunar_data`, generic refs/manifests in
      `data_core`, and data-root reads through catalog adapters.
@@ -86,10 +84,10 @@ stale compatibility layers.
      generated `.mbti` diff only reflects the intended public API move.
 
 2. Lock the generic root read side.
-   - Status: in progress. `src/data_validate` exposes a root summary and
-     `cmd/main` exposes `data root-json`.
-   - Current task: make the summary useful for any domain by reporting generic
-     dataset kind counts and payload ref kind counts.
+   - Status: done for the current generic read surface. `src/data_validate`
+     exposes a root summary and `cmd/main` exposes `data root-json`.
+   - It reports generic dataset kind counts and payload ref kind counts across
+     source, dataset, and dataset-version manifests.
    - Keep this in `data_validate`; do not add lunar or robot vocabulary.
    - Done when `data root-json [data-root]` can show what kinds of datasets and
      payload refs are present before any domain-specific reader exists.
@@ -206,8 +204,8 @@ Current read side: `src/data_validate` exposes a compact root validation
 summary, and `cmd/main` exposes it as `data root-json [data-root]`. This summary
 counts generic manifest classes, chooses only `validation-*` reports as root
 validation authority, still counts auxiliary domain validation reports, and
-reports dataset/ref kind counts without interpreting those kinds as lunar or
-robot concepts.
+reports dataset kinds plus source/dataset/version payload ref kinds without
+interpreting those kinds as lunar or robot concepts.
 
 Implementation:
 
