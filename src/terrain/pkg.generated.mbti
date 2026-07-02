@@ -49,7 +49,9 @@ pub fn render_grid_json(TerrainGrid) -> Json
 
 pub fn render_grid_markdown(TerrainGrid) -> String
 
-pub fn validate_grid_source(TerrainGrid) -> @dataset.DatasetValidation
+pub fn terrain_fixture_validation_status_label(TerrainFixtureValidationStatus) -> String
+
+pub fn validate_grid_source(TerrainGrid) -> TerrainFixtureValidation
 
 // Errors
 
@@ -58,6 +60,20 @@ pub(all) enum HazardClass {
   Clear
   Caution
   Blocked
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct TerrainFixtureValidation {
+  dataset_id : String
+  expected_fingerprint : String
+  actual_fingerprint : String
+  status : TerrainFixtureValidationStatus
+  note : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum TerrainFixtureValidationStatus {
+  Verified
+  FingerprintMismatch
+  MissingFingerprint
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct TerrainGrid {

@@ -69,7 +69,7 @@ pub fn first_trusted_square_lola_acquisition_plan() -> LunarAcquisitionPlan {
         step_id: "validate",
         title: "Verify evidence chain",
         action: "Check raw label checksum, raw image checksum when available, extracted CSV checksum, and generated inline grid fingerprint.",
-        expected_evidence: "A passing source verification script and a DatasetValidation with status verified.",
+        expected_evidence: "A data-root validation report plus a terrain fixture validation with status verified.",
         done_when: "moon test passes while the dossier marks the authoritative dataset as accepted for software proof.",
       },
       {

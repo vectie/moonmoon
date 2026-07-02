@@ -29,22 +29,28 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_eq(dossier.validations.length(), 6)
   assert_true(
-    dossier.validations[0].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[0].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_true(
-    dossier.validations[1].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[1].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_true(
-    dossier.validations[2].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[2].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_true(
-    dossier.validations[3].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[3].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_true(
-    dossier.validations[4].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[4].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_true(
-    dossier.validations[5].status == @dataset.DatasetValidationStatus::Verified,
+    dossier.validations[5].status ==
+    @terrain.TerrainFixtureValidationStatus::Verified,
   )
   assert_eq(dossier.source_candidates.length(), 2)
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
@@ -151,7 +157,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
       "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
     ),
   )
-  assert_true(markdown.contains("## Source Validation"))
+  assert_true(markdown.contains("## Terrain Fixture Validation"))
   assert_true(markdown.contains("verified"))
   assert_true(markdown.contains("## Traverse Readiness"))
   assert_true(markdown.contains("## Corridor Scan"))

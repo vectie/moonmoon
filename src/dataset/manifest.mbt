@@ -143,24 +143,6 @@ pub(all) enum ChecksumKind {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) enum DatasetValidationStatus {
-  Verified
-  ChecksumMismatch
-  MissingChecksum
-  UnsupportedChecksum
-} derive(Debug, Eq, ToJson, FromJson)
-
-///|
-pub(all) struct DatasetValidation {
-  dataset_id : @core.DatasetId
-  checksum_kind : ChecksumKind
-  expected_checksum : String
-  actual_checksum : String
-  status : DatasetValidationStatus
-  note : String
-} derive(Debug, Eq, ToJson, FromJson)
-
-///|
 pub(all) struct SourceCandidate {
   candidate_id : String
   title : String
@@ -327,47 +309,6 @@ pub fn checksum_kind_label(kind : ChecksumKind) -> String {
     InlineFixtureFingerprint => "inline-fixture-fingerprint"
     Sha256 => "sha256"
     UnknownChecksumKind => "unknown"
-  }
-}
-
-///|
-pub fn validation_status_label(status : DatasetValidationStatus) -> String {
-  match status {
-    Verified => "verified"
-    ChecksumMismatch => "checksum-mismatch"
-    MissingChecksum => "missing-checksum"
-    UnsupportedChecksum => "unsupported-checksum"
-  }
-}
-
-///|
-pub fn verify_checksum(
-  manifest : DatasetManifest,
-  actual_checksum : String,
-) -> DatasetValidation {
-  let status = if manifest.checksum_kind == UnknownChecksumKind {
-    UnsupportedChecksum
-  } else if manifest.checksum == "" {
-    MissingChecksum
-  } else if actual_checksum == "" {
-    MissingChecksum
-  } else if manifest.checksum == actual_checksum {
-    Verified
-  } else {
-    ChecksumMismatch
-  }
-  {
-    dataset_id: manifest.dataset_id,
-    checksum_kind: manifest.checksum_kind,
-    expected_checksum: manifest.checksum,
-    actual_checksum,
-    status,
-    note: match status {
-      Verified => "source fingerprint matches manifest"
-      ChecksumMismatch => "source fingerprint differs from manifest"
-      MissingChecksum => "manifest or source fingerprint is missing"
-      UnsupportedChecksum => "checksum kind is not supported by this verifier"
-    },
   }
 }
 

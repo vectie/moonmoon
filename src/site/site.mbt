@@ -2,7 +2,7 @@
 pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
-  validations : Array[@dataset.DatasetValidation]
+  validations : Array[@terrain.TerrainFixtureValidation]
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   source_product_selections : Array[@dataset.SourceProductSelection]
@@ -218,10 +218,10 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     }
   }
   text += "\n"
-  text += "## Source Validation\n\n"
+  text += "## Terrain Fixture Validation\n\n"
   for validation in dossier.validations {
-    text += "- \{validation.dataset_id}: \{@dataset.validation_status_label(validation.status)}\n"
-    text += "  - actual: \{validation.actual_checksum}\n"
+    text += "- \{validation.dataset_id}: \{@terrain.terrain_fixture_validation_status_label(validation.status)}\n"
+    text += "  - actual: \{validation.actual_fingerprint}\n"
     text += "  - note: \{validation.note}\n"
   }
   text += "\n"

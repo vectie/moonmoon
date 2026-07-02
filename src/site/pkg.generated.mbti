@@ -29,7 +29,7 @@ pub fn render_markdown(SiteDossier) -> String
 pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
-  validations : Array[@dataset.DatasetValidation]
+  validations : Array[@terrain.TerrainFixtureValidation]
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   source_product_selections : Array[@dataset.SourceProductSelection]

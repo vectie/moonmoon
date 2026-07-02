@@ -29,11 +29,38 @@ pub(all) struct TerrainMetrics {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) enum TerrainFixtureValidationStatus {
+  Verified
+  FingerprintMismatch
+  MissingFingerprint
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct TerrainFixtureValidation {
+  dataset_id : @core.DatasetId
+  expected_fingerprint : String
+  actual_fingerprint : String
+  status : TerrainFixtureValidationStatus
+  note : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub fn hazard_label(hazard : HazardClass) -> String {
   match hazard {
     Clear => "clear"
     Caution => "caution"
     Blocked => "blocked"
+  }
+}
+
+///|
+pub fn terrain_fixture_validation_status_label(
+  status : TerrainFixtureValidationStatus,
+) -> String {
+  match status {
+    Verified => "verified"
+    FingerprintMismatch => "fingerprint-mismatch"
+    MissingFingerprint => "missing-fingerprint"
   }
 }
 
@@ -164,8 +191,28 @@ pub fn grid_fingerprint(grid : TerrainGrid) -> String {
 }
 
 ///|
-pub fn validate_grid_source(grid : TerrainGrid) -> @dataset.DatasetValidation {
-  @dataset.verify_checksum(grid.source_manifest, grid_fingerprint(grid))
+pub fn validate_grid_source(grid : TerrainGrid) -> TerrainFixtureValidation {
+  let expected_fingerprint = grid.source_manifest.checksum
+  let actual_fingerprint = grid_fingerprint(grid)
+  let status = if expected_fingerprint == "" || actual_fingerprint == "" {
+    MissingFingerprint
+  } else if expected_fingerprint == actual_fingerprint {
+    Verified
+  } else {
+    FingerprintMismatch
+  }
+  {
+    dataset_id: grid.source_manifest.dataset_id,
+    expected_fingerprint,
+    actual_fingerprint,
+    status,
+    note: match status {
+      Verified => "terrain fixture fingerprint matches manifest"
+      FingerprintMismatch => "terrain fixture fingerprint differs from manifest"
+      MissingFingerprint =>
+        "terrain fixture manifest or generated grid fingerprint is missing"
+    },
+  }
 }
 
 ///|
@@ -185,9 +232,9 @@ pub fn render_grid_markdown(grid : TerrainGrid) -> String {
   text += "- extractor: \{manifest.extractor}\n"
   text += "- checksum kind: \{@dataset.checksum_kind_label(manifest.checksum_kind)}\n"
   text += "- checksum: \{manifest.checksum}\n\n"
-  text += "## Source Validation\n\n"
-  text += "- status: \{@dataset.validation_status_label(validation.status)}\n"
-  text += "- actual: \{validation.actual_checksum}\n"
+  text += "## Terrain Fixture Validation\n\n"
+  text += "- status: \{terrain_fixture_validation_status_label(validation.status)}\n"
+  text += "- actual: \{validation.actual_fingerprint}\n"
   text += "- note: \{validation.note}\n\n"
   text += "## Grid\n\n"
   text += "- rows: \{grid.rows}\n"

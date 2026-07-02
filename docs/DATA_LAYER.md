@@ -191,12 +191,14 @@ Current checkpoint:
   and active DEM manifest fields from `src/lunar_data`.
 - `src/lunar_data` now owns acquisition plans, route-window extractions, route
   terrain dataset records, and their generic dataset projections.
-- Remaining cleanup: remove duplicate integrity checks that belong in
-  `data_validate` and let product views read catalog-backed evidence directly.
+- `src/terrain` owns generated-grid fixture validation, while `data_validate`
+  remains the data-root validation authority.
+- Remaining cleanup: let product views read catalog-backed evidence directly.
 
 Step-by-step next runbook:
 
 1. Move inline terrain fixture checks out of `src/dataset`.
+   - Status: done.
    - Why: `src/dataset` should no longer own data integrity policy.
    - Code target: make terrain-owned fixture validation cover generated grid
      fingerprints, while `data_validate` remains the data-root authority.
@@ -204,6 +206,7 @@ Step-by-step next runbook:
      types, and `src/dataset` has no duplicate validation API.
 
 2. Make product-facing evidence read catalog-backed authority.
+   - Status: next.
    - Why: the product should explain source authority through the same catalog
      path that future data uses.
    - Code target: route the first trusted square source panel, dataset labels,

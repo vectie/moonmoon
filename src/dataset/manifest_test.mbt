@@ -25,13 +25,6 @@ test "first trusted square manifest marks LOLA evidence clearly" {
   let provenance = @dataset.to_provenance(manifest)
   assert_eq(provenance.dataset_id, manifest.dataset_id)
   assert_true(provenance.claim_kind == @core.ClaimKind::Measured)
-  let validation = @dataset.verify_checksum(manifest, manifest.checksum)
-  assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
-  assert_eq(@dataset.validation_status_label(validation.status), "verified")
-  let mismatch = @dataset.verify_checksum(manifest, "wrong")
-  assert_true(
-    mismatch.status == @dataset.DatasetValidationStatus::ChecksumMismatch,
-  )
 }
 
 ///|

@@ -12,8 +12,10 @@ test "first trusted square fixture derives deterministic terrain metrics" {
     grid.source_manifest.trust == @dataset.DatasetTrust::Authoritative,
   )
   let validation = @terrain.validate_grid_source(grid)
-  assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
-  assert_eq(validation.actual_checksum, @terrain.grid_fingerprint(grid))
+  assert_true(
+    validation.status == @terrain.TerrainFixtureValidationStatus::Verified,
+  )
+  assert_eq(validation.actual_fingerprint, @terrain.grid_fingerprint(grid))
   let metrics = @terrain.analyze(grid)
   assert_eq(metrics.min_elevation_m.to_string(), "441.521")
   assert_eq(metrics.max_elevation_m.to_string(), "499.693")
@@ -43,7 +45,9 @@ test "first trusted square adjacent route windows derive measured terrain metric
   )
   for grid in route_grids {
     let validation = @terrain.validate_grid_source(grid)
-    assert_true(validation.status == @dataset.DatasetValidationStatus::Verified)
+    assert_true(
+      validation.status == @terrain.TerrainFixtureValidationStatus::Verified,
+    )
     let metrics = @terrain.analyze(grid)
     assert_true(metrics.hazard_class == Blocked)
     assert_true(metrics.max_neighbor_grade > 0.5)
