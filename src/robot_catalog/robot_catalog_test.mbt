@@ -350,6 +350,16 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_true(
     dataset.data_refs[1].uri.contains("/episodes/episode-alpha-dataset/"),
   )
+  let dossier = @robot_catalog.robot_episode_catalog_dossier_from_root(
+    root, "episode-alpha-1",
+  ).unwrap()
+  assert_eq(dossier.episode_id, "episode-alpha-1")
+  assert_eq(dossier.dataset.kind, "robot-episode")
+  assert_eq(dossier.signal_ref_count, 2)
+  assert_eq(dossier.model_ref_uris.length(), 1)
+  assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
+  assert_eq(dossier.blocker_count, 0)
+  assert_eq(dossier.warning_count, 0)
 }
 
 ///|

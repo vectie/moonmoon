@@ -21,6 +21,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data ingest-robot-model [data-root] [source-dir] [model-id] [robot-id] [json]
     #|  moon run cmd/main -- data ingest-robot-episode [data-root] [source-dir] [dataset-id] [episode-id] [robot-id] [model-id] [json]
     #|  moon run cmd/main -- data robot-model-json [data-root] [model-id]
+    #|  moon run cmd/main -- data robot-episode-json [data-root] [episode-id]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
@@ -104,6 +105,16 @@ fn data_robot_model_json_root(args : Array[String]) -> String {
 ///|
 fn data_robot_model_json_id(args : Array[String]) -> String {
   arg_offset(args, "robot-model-json", 2, "robot-model")
+}
+
+///|
+fn data_robot_episode_json_root(args : Array[String]) -> String {
+  arg_offset(args, "robot-episode-json", 1, "target/data-roots/robot-episode")
+}
+
+///|
+fn data_robot_episode_json_id(args : Array[String]) -> String {
+  arg_offset(args, "robot-episode-json", 2, "robot-episode")
 }
 
 ///|
@@ -269,6 +280,17 @@ fn print_data_robot_model_json(args : Array[String]) -> Unit {
 }
 
 ///|
+fn print_data_robot_episode_json(args : Array[String]) -> Unit {
+  let root = data_robot_episode_json_root(args)
+  let episode_id = data_robot_episode_json_id(args)
+  match
+    @robot_catalog.robot_episode_catalog_dossier_from_root(root, episode_id) {
+    Ok(dossier) => println(dossier.to_json().stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn print_data_site_json(args : Array[String]) -> Unit {
   let root = data_site_root(args)
   match @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
@@ -285,6 +307,8 @@ fn main {
     print_help()
   } else if args.contains("data") && args.contains("ingest-robot-episode") {
     print_data_robot_episode_ingest(args, output_json)
+  } else if args.contains("data") && args.contains("robot-episode-json") {
+    print_data_robot_episode_json(args)
   } else if args.contains("data") && args.contains("robot-model-json") {
     print_data_robot_model_json(args)
   } else if args.contains("data") && args.contains("ingest-robot-model") {

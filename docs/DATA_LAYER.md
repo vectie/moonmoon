@@ -273,7 +273,9 @@ and push.
      read the catalog back as a robot model dossier through `data
      robot-model-json`. The next family is also started: a robot episode
      directory can be imported against a cataloged model and stored as
-     signal-frame payloads, a robot episode dataset, a version, and lineage.
+     signal-frame payloads, a robot episode dataset, a version, and lineage;
+     `data robot-episode-json` reads that episode evidence back from the
+     catalog.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.

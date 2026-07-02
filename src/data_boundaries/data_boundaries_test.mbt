@@ -87,7 +87,7 @@ fn robot_catalog_files() -> Array[String] {
   [
     "src/robot_catalog/moon.pkg", "src/robot_catalog/bundle.mbt", "src/robot_catalog/materialize.mbt",
     "src/robot_catalog/model_import.mbt", "src/robot_catalog/model_listing.mbt",
-    "src/robot_catalog/episode_import.mbt",
+    "src/robot_catalog/episode_import.mbt", "src/robot_catalog/episode_listing.mbt",
   ]
 }
 
