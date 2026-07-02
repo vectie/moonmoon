@@ -194,6 +194,71 @@ Current checkpoint:
 - Remaining cleanup: remove duplicate integrity checks that belong in
   `data_validate` and let product views read catalog-backed evidence directly.
 
+Step-by-step next runbook:
+
+1. Move inline terrain fixture checks out of `src/dataset`.
+   - Why: `src/dataset` should no longer own data integrity policy.
+   - Code target: make terrain-owned fixture validation cover generated grid
+     fingerprints, while `data_validate` remains the data-root authority.
+   - Done when: terrain/site tests no longer depend on dataset validation
+     types, and `src/dataset` has no duplicate validation API.
+
+2. Make product-facing evidence read catalog-backed authority.
+   - Why: the product should explain source authority through the same catalog
+     path that future data uses.
+   - Code target: route the first trusted square source panel, dataset labels,
+     and evidence summaries through `src/lunar_catalog` or through a narrow
+     projection generated from it.
+   - Done when: UI and kernel summaries can name the LOLA and ephemeris records
+     from catalog entries, not from standalone first-site constants.
+
+3. Shrink `src/dataset` to a focused projection facade.
+   - Why: it is currently the remaining historical package between lunar data
+     and product views.
+   - Code target: keep only product projection shapes that are still consumed by
+     terrain, mission, site, kernel, or UI; move lunar facts into `lunar_data`
+     and generic facts into `data_core`.
+   - Done when: deleting any remaining `src/dataset` field would break a real
+     product view or mission gate, not just compatibility.
+
+4. Keep data-root commands at true build boundaries.
+   - Why: scripts should exist only where MoonBit cannot yet own the boundary,
+     such as downloading, preparing, or copying external payloads.
+   - Code target: keep validation in MoonBit; keep external acquisition and
+     asset preparation as small boundary commands.
+   - Done when: stale per-feature check scripts are gone or replaced by
+     MoonBit package tests and `data_validate` reports.
+
+5. Add the robot-data landing contract after the lunar catalog path is clean.
+   - Why: robot migration needs a general layer, not a lunar-shaped layer.
+   - Code target: define the minimal `robot_data` mapping for episodes, frames,
+     signals, model refs, replay artifacts, and quality reports on top of
+     `data_core`.
+   - Done when: robot data can enter through `DataRef`, `DatasetManifest`,
+     `DatasetVersion`, lineage, store, and validation without importing lunar
+     packages.
+
+6. Migrate robot data in small dataset families.
+   - Why: each migrated family should be reviewable and reversible.
+   - Code target: migrate one family at a time, with a catalog entry,
+     validation report, and product-facing proof that the data is usable.
+   - Done when: every robot migration commit has tests and can be pushed
+     independently.
+
+7. Keep the Moon view visible while data grows.
+   - Why: the project should remain a product, not only a backend refactor.
+   - Code target: keep the movable 3D Moon landscape as the first screen and
+     connect visible labels to validated data as soon as each source lands.
+   - Done when: every major data milestone improves terrain, lighting, site
+     confidence, route review, or robot migration readiness in the product.
+
+Commit rhythm:
+
+- Commit and push after each numbered step that changes code or public docs.
+- Keep commits scoped to one boundary move.
+- Run targeted tests first, then `moon check`, `moon test`, `moon info`, and
+  `moon fmt` before a code checkpoint.
+
 ### Phase 6: Robot Data Landing Zone
 
 Status: queued after the Moonmoon catalog is proven.
