@@ -1,0 +1,20 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/site_catalog"
+
+import {
+  "vectie/moonmoon/src/data_store",
+  "vectie/moonmoon/src/site",
+}
+
+// Values
+pub fn first_trusted_square_catalog_evidence_from_root(String) -> Result[Array[@site.SiteCatalogEvidence], @data_store.DataStoreIssue]
+
+pub fn first_trusted_square_dossier_from_catalog_root(String) -> Result[@site.SiteDossier, @data_store.DataStoreIssue]
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

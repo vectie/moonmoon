@@ -33,6 +33,10 @@ src/lunar_catalog
   Lunar data-root adapter: writes lunar records through data_store, validates
   through data_validate, and lists first-site evidence from the catalog.
 
+src/site_catalog
+  Product evidence adapter: replaces static first-site catalog claims with
+  SiteDossier evidence read from a materialized generic data root.
+
 future src/robot_data
   Robot domain layer: episodes, frames, signals, robot models, replay/export
   projections, telemetry-specific quality.
@@ -46,6 +50,7 @@ data_store     -> data_core
 data_validate  -> data_core + data_store
 lunar_data     -> data_core
 lunar_catalog  -> data_core + data_store + data_validate + lunar_data
+site_catalog   -> site + lunar_catalog
 robot_data     -> data_core
 ```
 
@@ -278,6 +283,9 @@ and push.
      that payload's source, validation state, and site coverage.
 
 9. Replace static first-site claims with catalog-backed live claims.
+   - Status: done for the data-root product JSON path: `src/site_catalog`
+     projects materialized catalog entries into `SiteDossier`, and `cmd/main`
+     exposes `data site-json`.
    - Why: static fixtures are useful proof points, but the user should see
      product evidence coming from the same validated root that future data
      uses.

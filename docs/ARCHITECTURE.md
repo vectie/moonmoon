@@ -13,6 +13,7 @@ data/sources
   -> src/terrain
   -> src/mission
   -> src/site
+  -> src/site_catalog
   -> src/ui
   -> cmd/main
 ```
@@ -35,6 +36,8 @@ by responsibility, but package imports define the actual dependency graph.
 - `terrain` turns checked source fixtures into terrain metrics.
 - `mission` turns terrain and power evidence into route decisions.
 - `site` assembles one coherent dossier for the first trusted square.
+- `site_catalog` is the narrow adapter that replaces static first-site catalog
+  claims with evidence read from a materialized generic data root.
 - `ui` projects the dossier into renderer-neutral state, standalone HTML, and
   the route-motion contract exposed by `src/ui/motion_contract.mbt`.
 - `kernel` summarizes product layers, evidence gates, and next work.

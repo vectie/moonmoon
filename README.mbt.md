@@ -37,6 +37,7 @@ moon run cmd/main -- mission terrain
 moon run cmd/main -- mission energy
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square json
+moon run cmd/main -- data site-json target/data-roots/first-trusted-square
 moon run cmd/main -- ui
 moon run cmd/main -- ui json
 moon run cmd/main -- ui html

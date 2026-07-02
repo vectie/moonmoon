@@ -18,6 +18,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- mission energy json
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
+    #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
     #|  moon run cmd/main -- ui html
@@ -53,6 +54,11 @@ fn data_ingest_root(args : Array[String]) -> String {
 }
 
 ///|
+fn data_site_root(args : Array[String]) -> String {
+  arg_after(args, "site-json", "target/data-roots/first-trusted-square")
+}
+
+///|
 fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
   let root = data_ingest_root(args)
   match @lunar_catalog.ingest_first_trusted_square_catalog(root, 1L) {
@@ -85,11 +91,22 @@ fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
 }
 
 ///|
+fn print_data_site_json(args : Array[String]) -> Unit {
+  let root = data_site_root(args)
+  match @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
+    Ok(dossier) => println(dossier.to_json().stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn main {
   let args = @env.args()
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("site-json") {
+    print_data_site_json(args)
   } else if args.contains("data") && args.contains("ingest-first-site") {
     print_data_ingest(args, output_json)
   } else if args.contains("layout") {

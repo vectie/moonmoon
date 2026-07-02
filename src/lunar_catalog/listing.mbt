@@ -1,17 +1,22 @@
 ///|
 pub(all) struct CatalogedLunarSource {
+  artifact : @data_core.ArtifactRef
   source_id : String
   authority : String
   label : String
+  source_url : String
   source_ref_count : Int
   source_ref_uris : Array[String]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
 pub(all) struct CatalogedLunarDataset {
+  artifact : @data_core.ArtifactRef
   dataset_id : String
   kind : String
   status : @data_core.DataStatus
+  authority : String
+  source_url : String
   source_ids : Array[String]
   data_ref_count : Int
   data_ref_uris : Array[String]
@@ -24,17 +29,17 @@ fn ref_uris(refs : Array[@data_core.DataRef]) -> Array[String] {
 }
 
 ///|
-fn catalog_contains(
+fn catalog_entry_for(
   catalog : @data_core.DataCatalog,
   artifact_kind : String,
   artifact_id : String,
-) -> Bool {
+) -> @data_core.CatalogEntry? {
   for entry in catalog.entries {
     if entry.artifact_kind == artifact_kind && entry.artifact_id == artifact_id {
-      return true
+      return Some(entry)
     }
   }
-  false
+  None
 }
 
 ///|
@@ -47,18 +52,23 @@ pub fn first_trusted_square_catalog_sources(
   }
   let rows : Array[CatalogedLunarSource] = []
   for source in @lunar_data.first_trusted_square_lunar_sources() {
-    if catalog_contains(catalog, "source", source.source_id) {
-      let stored = match @data_store.read_source(root, source.source_id) {
-        Ok(value) => value
-        Err(error) => return Err(error)
+    match catalog_entry_for(catalog, "source", source.source_id) {
+      Some(entry) => {
+        let stored = match @data_store.read_source(root, source.source_id) {
+          Ok(value) => value
+          Err(error) => return Err(error)
+        }
+        rows.push({
+          artifact: @data_core.catalog_entry_ref(entry),
+          source_id: stored.source_id,
+          authority: stored.authority,
+          label: stored.label,
+          source_url: stored.source_url,
+          source_ref_count: stored.source_refs.length(),
+          source_ref_uris: ref_uris(stored.source_refs),
+        })
       }
-      rows.push({
-        source_id: stored.source_id,
-        authority: stored.authority,
-        label: stored.label,
-        source_ref_count: stored.source_refs.length(),
-        source_ref_uris: ref_uris(stored.source_refs),
-      })
+      None => ()
     }
   }
   Ok(rows)
@@ -77,6 +87,22 @@ fn dataset_coverage(dataset_id : String) -> @lunar_data.LunarCoverage {
 }
 
 ///|
+fn source_for_dataset(
+  dataset : @data_core.DatasetManifest,
+) -> @data_core.DataSource? {
+  if dataset.source_ids.is_empty() {
+    return None
+  }
+  let source_id = dataset.source_ids[0]
+  for source in @lunar_data.first_trusted_square_lunar_sources() {
+    if source.source_id == source_id {
+      return Some(source)
+    }
+  }
+  None
+}
+
+///|
 pub fn first_trusted_square_catalog_datasets(
   root : String,
 ) -> Result[Array[CatalogedLunarDataset], @data_store.DataStoreIssue] {
@@ -86,20 +112,33 @@ pub fn first_trusted_square_catalog_datasets(
   }
   let rows : Array[CatalogedLunarDataset] = []
   for dataset in @lunar_data.first_trusted_square_lunar_datasets() {
-    if catalog_contains(catalog, "dataset", dataset.dataset_id) {
-      let stored = match @data_store.read_dataset(root, dataset.dataset_id) {
-        Ok(value) => value
-        Err(error) => return Err(error)
+    match catalog_entry_for(catalog, "dataset", dataset.dataset_id) {
+      Some(entry) => {
+        let stored = match @data_store.read_dataset(root, dataset.dataset_id) {
+          Ok(value) => value
+          Err(error) => return Err(error)
+        }
+        let source = source_for_dataset(stored)
+        rows.push({
+          artifact: @data_core.catalog_entry_ref(entry),
+          dataset_id: stored.dataset_id,
+          kind: stored.kind,
+          status: stored.status,
+          authority: match source {
+            Some(value) => value.authority
+            None => ""
+          },
+          source_url: match source {
+            Some(value) => value.source_url
+            None => ""
+          },
+          source_ids: stored.source_ids,
+          data_ref_count: stored.data_refs.length(),
+          data_ref_uris: ref_uris(stored.data_refs),
+          coverage: dataset_coverage(stored.dataset_id),
+        })
       }
-      rows.push({
-        dataset_id: stored.dataset_id,
-        kind: stored.kind,
-        status: stored.status,
-        source_ids: stored.source_ids,
-        data_ref_count: stored.data_refs.length(),
-        data_ref_uris: ref_uris(stored.data_refs),
-        coverage: dataset_coverage(stored.dataset_id),
-      })
+      None => ()
     }
   }
   Ok(rows)

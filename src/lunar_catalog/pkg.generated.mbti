@@ -22,9 +22,12 @@ pub fn materialize_first_trusted_square_catalog(String, Int64) -> Result[FirstTr
 
 // Types and methods
 pub(all) struct CatalogedLunarDataset {
+  artifact : @data_core.ArtifactRef
   dataset_id : String
   kind : String
   status : @data_core.DataStatus
+  authority : String
+  source_url : String
   source_ids : Array[String]
   data_ref_count : Int
   data_ref_uris : Array[String]
@@ -32,9 +35,11 @@ pub(all) struct CatalogedLunarDataset {
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct CatalogedLunarSource {
+  artifact : @data_core.ArtifactRef
   source_id : String
   authority : String
   label : String
+  source_url : String
   source_ref_count : Int
   source_ref_uris : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
