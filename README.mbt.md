@@ -47,6 +47,8 @@ moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-squa
 moon run cmd/main -- data site-json target/data-roots/first-trusted-square
 moon run cmd/main -- data robot-json target/robot-catalog-tests/episode-directory-import
 moon run cmd/main -- data robot-readiness-json target/robot-catalog-tests/episode-directory-import
+moon run cmd/main -- data ingest-robot-telemetry target/data-roots/robot-telemetry data/robot_telemetry/input telemetry-alpha robot-alpha session-alpha
+moon run cmd/main -- data robot-telemetry-json target/data-roots/robot-telemetry telemetry-alpha
 moon run cmd/main -- ui
 moon run cmd/main -- ui json
 moon run cmd/main -- ui html
@@ -55,6 +57,10 @@ moon run cmd/main -- ui html
 Robot episode imports read top-level text payloads as signal frames. Optional
 `replays/` and `quality/` subdirectories are staged as replay and quality
 evidence in the same episode dataset.
+
+Robot telemetry imports are a separate data-root boundary. They create
+`robot-telemetry-stream` datasets instead of hiding streams inside episode
+frames.
 
 Run the live browser view through Rabbita, not through generated `output/`
 artifacts:

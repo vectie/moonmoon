@@ -21,10 +21,12 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
     #|  moon run cmd/main -- data ingest-robot-model [data-root] [source-dir] [model-id] [robot-id] [json]
     #|  moon run cmd/main -- data ingest-robot-episode [data-root] [source-dir] [dataset-id] [episode-id] [robot-id] [model-id] [json]
+    #|  moon run cmd/main -- data ingest-robot-telemetry [data-root] [source-dir] [stream-id] [robot-id] [session-id] [json]
     #|  moon run cmd/main -- data robot-json [data-root]
     #|  moon run cmd/main -- data robot-readiness-json [data-root]
     #|  moon run cmd/main -- data robot-model-json [data-root] [model-id]
     #|  moon run cmd/main -- data robot-episode-json [data-root] [episode-id]
+    #|  moon run cmd/main -- data robot-telemetry-json [data-root] [stream-id]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
@@ -166,6 +168,45 @@ fn data_robot_episode_model_id(args : Array[String]) -> String {
 }
 
 ///|
+fn data_robot_telemetry_root(args : Array[String]) -> String {
+  arg_offset(
+    args, "ingest-robot-telemetry", 1, "target/data-roots/robot-telemetry",
+  )
+}
+
+///|
+fn data_robot_telemetry_source_dir(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-telemetry", 2, "data/robot_telemetry/input")
+}
+
+///|
+fn data_robot_telemetry_stream_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-telemetry", 3, "robot-telemetry-stream")
+}
+
+///|
+fn data_robot_telemetry_robot_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-telemetry", 4, "robot")
+}
+
+///|
+fn data_robot_telemetry_session_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-telemetry", 5, "robot-session")
+}
+
+///|
+fn data_robot_telemetry_json_root(args : Array[String]) -> String {
+  arg_offset(
+    args, "robot-telemetry-json", 1, "target/data-roots/robot-telemetry",
+  )
+}
+
+///|
+fn data_robot_telemetry_json_id(args : Array[String]) -> String {
+  arg_offset(args, "robot-telemetry-json", 2, "robot-telemetry-stream")
+}
+
+///|
 fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
   let root = data_ingest_root(args)
   match @lunar_catalog.ingest_first_trusted_square_catalog(root, 1L) {
@@ -288,6 +329,51 @@ fn print_data_robot_episode_ingest(
 }
 
 ///|
+fn print_data_robot_telemetry_ingest(
+  args : Array[String],
+  output_json : Bool,
+) -> Unit {
+  let root = data_robot_telemetry_root(args)
+  let source_dir = data_robot_telemetry_source_dir(args)
+  let stream_id = data_robot_telemetry_stream_id(args)
+  let robot_id = data_robot_telemetry_robot_id(args)
+  let session_id = data_robot_telemetry_session_id(args)
+  match
+    @robot_catalog.import_robot_telemetry_directory(
+      @robot_catalog.robot_telemetry_directory_import_request(
+        root, source_dir, stream_id, robot_id, session_id, 1L,
+      ),
+    ) {
+    Ok(result) =>
+      if output_json {
+        println(result.to_json().stringify(indent=2))
+      } else {
+        let materialization = result.materialization
+        println("Moonmoon robot telemetry data ingest")
+        println("- root: \{materialization.root}")
+        println("- source: \{result.source_dir}")
+        println("- stream: \{result.stream_id}")
+        println("- payloads: \{result.payload_count}")
+        println("- catalog: \{materialization.catalog_path}")
+        println(
+          "- validation: \{@data_core.validation_status_label(materialization.validation_status)}",
+        )
+        println("- blockers: \{materialization.blocker_count}")
+        println("- warnings: \{materialization.warning_count}")
+      }
+    Err(error) =>
+      if output_json {
+        println(error.to_json().stringify(indent=2))
+      } else {
+        println("Moonmoon robot telemetry ingest failed")
+        println("- code: \{error.code}")
+        println("- path: \{error.path}")
+        println("- message: \{error.message}")
+      }
+  }
+}
+
+///|
 fn print_data_robot_model_json(args : Array[String]) -> Unit {
   let root = data_robot_model_json_root(args)
   let model_id = data_robot_model_json_id(args)
@@ -303,6 +389,17 @@ fn print_data_robot_episode_json(args : Array[String]) -> Unit {
   let episode_id = data_robot_episode_json_id(args)
   match
     @robot_catalog.robot_episode_catalog_dossier_from_root(root, episode_id) {
+    Ok(dossier) => println(dossier.to_json().stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
+fn print_data_robot_telemetry_json(args : Array[String]) -> Unit {
+  let root = data_robot_telemetry_json_root(args)
+  let stream_id = data_robot_telemetry_json_id(args)
+  match
+    @robot_catalog.robot_telemetry_catalog_dossier_from_root(root, stream_id) {
     Ok(dossier) => println(dossier.to_json().stringify(indent=2))
     Err(error) => println(error.to_json().stringify(indent=2))
   }
@@ -350,12 +447,16 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("ingest-robot-telemetry") {
+    print_data_robot_telemetry_ingest(args, output_json)
   } else if args.contains("data") && args.contains("ingest-robot-episode") {
     print_data_robot_episode_ingest(args, output_json)
   } else if args.contains("data") && args.contains("robot-readiness-json") {
     print_data_robot_readiness_json(args)
   } else if args.contains("data") && args.contains("robot-json") {
     print_data_robot_json(args)
+  } else if args.contains("data") && args.contains("robot-telemetry-json") {
+    print_data_robot_telemetry_json(args)
   } else if args.contains("data") && args.contains("robot-episode-json") {
     print_data_robot_episode_json(args)
   } else if args.contains("data") && args.contains("robot-model-json") {

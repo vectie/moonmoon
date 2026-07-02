@@ -446,6 +446,7 @@ pub fn import_robot_model_package(
       dataset_count: 1,
       version_count: 1,
       lineage_count: 1,
+      telemetry_stream_count: 0,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

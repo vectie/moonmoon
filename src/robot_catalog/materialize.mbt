@@ -154,6 +154,51 @@ fn write_episodes(
 }
 
 ///|
+fn write_telemetry_streams(
+  root : String,
+  streams : Array[@robot_data.RobotTelemetryStreamManifest],
+) -> Result[Unit, @data_store.DataStoreIssue] {
+  for stream in streams {
+    match
+      @data_store.write_source(
+        root,
+        @robot_data.robot_telemetry_data_source(stream),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset(
+        root,
+        @robot_data.robot_telemetry_dataset(stream),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset_version(
+        root,
+        @robot_data.robot_telemetry_version(stream, "\{stream.stream_id}-v1"),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_lineage_manifest(
+        root,
+        @robot_data.robot_telemetry_lineage(
+          stream,
+          "lineage-\{stream.stream_id}",
+        ),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+  }
+  Ok(())
+}
+
+///|
 fn write_quality_reports(
   root : String,
   reports : Array[@robot_data.RobotQualityReport],
@@ -189,6 +234,10 @@ pub fn materialize_robot_catalog_bundle(
     Ok(_) => ()
     Err(error) => return Err(error)
   }
+  match write_telemetry_streams(root, bundle.telemetry_streams) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
   match write_quality_reports(root, bundle.quality_reports) {
     Ok(_) => ()
     Err(error) => return Err(error)
@@ -210,10 +259,11 @@ pub fn materialize_robot_catalog_bundle(
     root,
     catalog_path: validation.catalog_path,
     validation_report_path: validation.report_path,
-    source_count: bundle.models.length(),
-    dataset_count: bundle.episodes.length(),
-    version_count: bundle.episodes.length(),
-    lineage_count: bundle.episodes.length(),
+    source_count: bundle.models.length() + bundle.telemetry_streams.length(),
+    dataset_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
+    version_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
+    lineage_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
+    telemetry_stream_count: bundle.telemetry_streams.length(),
     quality_report_count: bundle.quality_reports.length(),
     catalog_entry_count: catalog.entries.length(),
     validation_status: validation.status,

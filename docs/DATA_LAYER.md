@@ -86,18 +86,19 @@ stale compatibility layers.
 2. Keep the robot catalog read side domain-local.
    - Status: done for the first root-level read side. `src/robot_catalog`
      exposes a combined root dossier and `cmd/main` exposes `data robot-json`.
-   - Keep robot counts, readiness, replay evidence, and quality evidence in
-     `src/robot_catalog` and `src/robot_data`.
+   - Keep robot counts, readiness, replay evidence, telemetry evidence, and
+     quality evidence in `src/robot_catalog` and `src/robot_data`.
    - Do not move robot fields into `data_core`, `data_store`, or
      `data_validate`.
    - Done when one command against a data root shows model count, episode
-     count, validation status, source ids, quality evidence, and blockers.
+     count, telemetry stream count, validation status, source ids, quality
+     evidence, and blockers.
 
 3. Migrate robot data one dataset family at a time.
    - Status: started for model packages, episode signal frames, replay
-     artifacts, and quality reports.
-   - Next families must be selected one at a time: telemetry streams, gait
-     clips, richer replay artifacts, or deeper quality reports.
+     artifacts, quality reports, and standalone telemetry streams.
+   - Next families must be selected one at a time: gait clips, richer replay
+     artifacts, richer telemetry streams, or deeper quality reports.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
      `src/robot_catalog`, and a CLI command only when it materializes or reads a
      true data-root boundary.
@@ -331,12 +332,12 @@ and push.
 
 5. Add the robot-data landing contract after the lunar catalog path is clean.
    - Status: done for the pure domain landing contract: `src/robot_data`
-     maps models, episodes, signals, replay artifacts, and quality reports
-     onto `data_core`.
+     maps models, episodes, signals, replay artifacts, telemetry streams, and
+     quality reports onto `data_core`.
    - Why: robot migration needs a general layer, not a lunar-shaped layer.
    - Code target: define the minimal `robot_data` mapping for episodes, frames,
-     signals, model refs, replay artifacts, and quality reports on top of
-     `data_core`.
+     signals, model refs, replay artifacts, telemetry streams, and quality
+     reports on top of `data_core`.
    - Done when: robot data can enter through `DataRef`, `DatasetManifest`,
      `DatasetVersion`, lineage, store, and validation without importing lunar
      packages.
@@ -356,10 +357,13 @@ and push.
      artifacts are now part of the episode import/read side through a
      `replays/` source subdirectory and cataloged `robot-replay` refs. Quality
      evidence follows the same pattern through a `quality/` source subdirectory
-     and cataloged robot quality validation reports.
+     and cataloged robot quality validation reports. Standalone telemetry
+     streams now have their own `robot-telemetry-stream` dataset kind through
+     `data ingest-robot-telemetry`, and `data robot-telemetry-json` reads the
+     stream dossier back from the same data root.
    - The compact `data robot-readiness-json` read path now summarizes whether a
-     robot root has the minimum model, episode, signal, and quality evidence to
-     continue migration.
+     robot root has the minimum model, episode, signal, quality, and telemetry
+     evidence to continue migration.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.
@@ -425,9 +429,10 @@ Implementation:
 
 1. Add `src/robot_data` as a pure domain package over `data_core`.
    - Status: done.
-2. Map robot episodes, frames, signals, robot model refs, replay artifacts, and
-   quality reports onto `data_core` refs and manifests.
-   - Status: done for the first contract surface.
+2. Map robot episodes, frames, signals, robot model refs, replay artifacts,
+   telemetry streams, and quality reports onto `data_core` refs and manifests.
+   - Status: done for the first contract surface, including standalone
+     telemetry stream manifests.
 3. Keep URDF, telemetry, gait clips, and replay semantics in `robot_data`, not
    `data_core`.
    - Status: done for the boundary guard; future migration can add more

@@ -46,6 +46,11 @@ fn quality_payload_body() -> String {
 }
 
 ///|
+fn telemetry_payload_body() -> String {
+  "{\"imu\":{\"x\":0.1,\"y\":0.0,\"z\":1.0}}"
+}
+
+///|
 fn model_ref() -> @robot_data.RobotModelRef {
   @robot_data.robot_model_ref(
     "model-alpha-v1",
@@ -424,6 +429,7 @@ test "robot episode directory import uses cataloged model evidence" {
   let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
   assert_eq(root_dossier.model_count, 1)
   assert_eq(root_dossier.episode_count, 1)
+  assert_eq(root_dossier.telemetry_stream_count, 0)
   assert_eq(root_dossier.data_ref_count, 7)
   assert_true(root_dossier.model_ids.contains("episode-alpha-model"))
   assert_true(root_dossier.episode_ids.contains("episode-alpha-1"))
@@ -438,15 +444,128 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(root_dossier.blocker_count, 0)
   assert_eq(root_dossier.warning_count, 0)
   let readiness = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
-  assert_eq(readiness.status, "ready")
-  assert_true(readiness.ready)
+  assert_eq(readiness.status, "needs-evidence")
+  assert_true(!readiness.ready)
   assert_eq(readiness.model_count, 1)
   assert_eq(readiness.episode_count, 1)
+  assert_eq(readiness.telemetry_stream_count, 0)
   assert_eq(readiness.signal_ref_count, 2)
   assert_eq(readiness.replay_ref_count, 1)
   assert_eq(readiness.quality_ref_count, 1)
+  assert_eq(readiness.telemetry_ref_count, 0)
   assert_eq(readiness.data_ref_count, 7)
   assert_eq(readiness.validation_artifact.artifact_id, "validation-901")
+  assert_eq(
+    readiness.next_action,
+    "migrate a standalone robot telemetry stream into the generic data root",
+  )
+  let telemetry_input = "target/robot-catalog-tests/episode-telemetry-input"
+  ensure_test_dir(telemetry_input)
+  @fsx.write_string_to_file(
+    telemetry_input + "/imu.json",
+    telemetry_payload_body(),
+  ) catch {
+    _ => fail("failed to write episode telemetry imu payload")
+  }
+  @fsx.write_string_to_file(
+    telemetry_input + "/joints.csv",
+    "time,hip,knee\n0,0.1,0.2\n",
+  ) catch {
+    _ => fail("failed to write episode telemetry joints payload")
+  }
+  ignore(
+    @robot_catalog.import_robot_telemetry_directory(
+      @robot_catalog.robot_telemetry_directory_import_request(
+        root,
+        telemetry_input,
+        "telemetry-alpha-1",
+        "robot-alpha",
+        "session-alpha-1",
+        902L,
+        source_label="Alpha telemetry fixture",
+      ),
+    ).unwrap(),
+  )
+  let ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
+  assert_eq(ready_root.model_count, 1)
+  assert_eq(ready_root.episode_count, 1)
+  assert_eq(ready_root.telemetry_stream_count, 1)
+  assert_eq(ready_root.data_ref_count, 9)
+  assert_eq(ready_root.validation_artifact.artifact_id, "validation-902")
+  let ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(ready.status, "ready")
+  assert_true(ready.ready)
+  assert_eq(ready.telemetry_stream_count, 1)
+  assert_eq(ready.telemetry_ref_count, 2)
+  assert_eq(ready.data_ref_count, 9)
+}
+
+///|
+test "robot telemetry directory import creates standalone stream dataset" {
+  let root = root_path("telemetry-directory-import")
+  reset_robot_catalog_root(root)
+  let input = "target/robot-catalog-tests/telemetry-payload-input"
+  ensure_test_dir("target")
+  ensure_test_dir("target/robot-catalog-tests")
+  ensure_test_dir(input)
+  @fsx.write_string_to_file(input + "/imu.json", telemetry_payload_body()) catch {
+    _ => fail("failed to write telemetry imu payload")
+  }
+  @fsx.write_string_to_file(input + "/joints.csv", "time,hip,knee\n0,0.1,0.2\n") catch {
+    _ => fail("failed to write telemetry joints payload")
+  }
+  let result = @robot_catalog.import_robot_telemetry_directory(
+    @robot_catalog.robot_telemetry_directory_import_request(
+      root,
+      input,
+      "telemetry-alpha-1",
+      "robot-alpha",
+      "session-alpha-1",
+      902L,
+      source_label="Alpha telemetry fixture",
+    ),
+  ).unwrap()
+  assert_eq(result.payload_count, 2)
+  assert_eq(result.stream.stream_id, "telemetry-alpha-1")
+  assert_eq(result.materialization.source_count, 1)
+  assert_eq(result.materialization.dataset_count, 1)
+  assert_eq(result.materialization.telemetry_stream_count, 1)
+  assert_eq(result.materialization.blocker_count, 0)
+  assert_eq(result.materialization.warning_count, 0)
+  assert_true(
+    result.materialization.validation_status ==
+    @data_core.ValidationStatus::Passed,
+  )
+  let dataset = @data_store.read_dataset(root, "telemetry-alpha-1").unwrap()
+  assert_eq(dataset.kind, "robot-telemetry-stream")
+  assert_eq(dataset.data_refs.length(), 2)
+  assert_eq(dataset.data_refs[0].kind, "robot-telemetry-sample")
+  assert_true(
+    dataset.data_refs[0].uri.contains("/telemetry/telemetry-alpha-1/imu.json"),
+  )
+  let dossier = @robot_catalog.robot_telemetry_catalog_dossier_from_root(
+    root, "telemetry-alpha-1",
+  ).unwrap()
+  assert_eq(dossier.stream_id, "telemetry-alpha-1")
+  assert_eq(dossier.dataset.kind, "robot-telemetry-stream")
+  assert_eq(dossier.telemetry_ref_count, 2)
+  assert_eq(dossier.data_ref_count, 2)
+  assert_eq(dossier.telemetry_ref_uris.length(), 2)
+  assert_eq(dossier.validation_artifact.artifact_id, "validation-902")
+  assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
+  let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
+  assert_eq(root_dossier.model_count, 0)
+  assert_eq(root_dossier.episode_count, 0)
+  assert_eq(root_dossier.telemetry_stream_count, 1)
+  assert_eq(root_dossier.data_ref_count, 2)
+  assert_true(root_dossier.telemetry_stream_ids.contains("telemetry-alpha-1"))
+  assert_eq(root_dossier.telemetry_dossiers.length(), 1)
+  let readiness = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(readiness.status, "needs-evidence")
+  assert_true(!readiness.ready)
+  assert_eq(readiness.telemetry_stream_count, 1)
+  assert_eq(readiness.telemetry_ref_count, 2)
+  assert_eq(readiness.next_action, "import a robot model package")
 }
 
 ///|
