@@ -69,6 +69,8 @@ domain packages.
 The phased implementation path is documented in
 `docs/LOCOMOTION_PHASE_GUIDANCE.md`.
 
+The current product build order is documented in `docs/STEP_BY_STEP_PLAN.md`.
+
 The general data-layer migration path is documented in `docs/DATA_LAYER.md`.
 
 Generated artifacts belong outside source control. If a future workflow needs

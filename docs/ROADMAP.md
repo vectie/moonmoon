@@ -12,7 +12,10 @@
    Moonphys.
 6. Follow `docs/LOCOMOTION_PHASE_GUIDANCE.md` for the route-motion to robot
    gait adapter phases.
-7. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: keep
+7. Follow `docs/STEP_BY_STEP_PLAN.md` as the active build order: selected-route
+   clearance first, evidence-backed Moon view next, then general data-layer
+   hardening and robot migration through domain-local packages.
+8. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: keep
    the generic root readable, migrate one robot dataset family at a time, and
    keep product labels tied to validated catalog evidence.
 
