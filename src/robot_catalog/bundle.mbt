@@ -7,6 +7,7 @@ pub(all) struct RobotCatalogBundle {
   gait_clips : Array[@robot_data.RobotGaitClipManifest]
   gait_annotations : Array[@robot_data.RobotGaitAnnotationManifest]
   gait_alignments : Array[@robot_data.RobotGaitAlignmentManifest]
+  task_labels : Array[@robot_data.RobotTaskLabelManifest]
   quality_reports : Array[@robot_data.RobotQualityReport]
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -23,6 +24,7 @@ pub(all) struct RobotCatalogMaterialization {
   gait_clip_count : Int
   gait_annotation_count : Int
   gait_alignment_count : Int
+  task_label_count : Int
   quality_report_count : Int
   catalog_entry_count : Int
   validation_status : @data_core.ValidationStatus
@@ -39,6 +41,7 @@ pub fn robot_catalog_bundle(
   gait_clips? : Array[@robot_data.RobotGaitClipManifest] = [],
   gait_annotations? : Array[@robot_data.RobotGaitAnnotationManifest] = [],
   gait_alignments? : Array[@robot_data.RobotGaitAlignmentManifest] = [],
+  task_labels? : Array[@robot_data.RobotTaskLabelManifest] = [],
   quality_reports? : Array[@robot_data.RobotQualityReport] = [],
 ) -> RobotCatalogBundle {
   {
@@ -49,6 +52,7 @@ pub fn robot_catalog_bundle(
     gait_clips,
     gait_annotations,
     gait_alignments,
+    task_labels,
     quality_reports,
   }
 }

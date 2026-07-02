@@ -706,11 +706,79 @@ test "robot episode directory import uses cataloged model evidence" {
     "validation-905",
   )
   let alignment_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
-  assert_eq(alignment_ready.status, "ready")
-  assert_true(alignment_ready.ready)
+  assert_eq(alignment_ready.status, "needs-evidence")
+  assert_true(!alignment_ready.ready)
   assert_eq(alignment_ready.gait_alignment_count, 1)
   assert_eq(alignment_ready.gait_alignment_ref_count, 2)
+  assert_eq(alignment_ready.task_label_count, 0)
+  assert_eq(alignment_ready.task_label_ref_count, 0)
   assert_eq(alignment_ready.data_ref_count, 18)
+  assert_eq(
+    alignment_ready.next_action,
+    "migrate task labels over aligned robot episodes",
+  )
+  let task_input = "target/robot-catalog-tests/episode-task-label-input"
+  ensure_test_dir(task_input)
+  @fsx.write_string_to_file(
+    task_input + "/segments.json",
+    "{\"segments\":[{\"task\":\"walk\",\"start\":0,\"end\":2}]}",
+  ) catch {
+    _ => fail("failed to write episode task label segments")
+  }
+  @fsx.write_string_to_file(
+    task_input + "/labels.csv",
+    "start,end,task\n0,2,walk\n",
+  ) catch {
+    _ => fail("failed to write episode task label csv")
+  }
+  let task = @robot_catalog.import_robot_task_label_directory(
+    @robot_catalog.robot_task_label_directory_import_request(
+      root,
+      task_input,
+      "task-label-alpha-walk",
+      "episode-alpha-1",
+      "alignment-alpha-walk-episode",
+      "robot-alpha",
+      "episode-alpha-model",
+      906L,
+      source_label="Alpha task label fixture",
+    ),
+  ).unwrap()
+  assert_eq(task.payload_count, 2)
+  assert_eq(task.task_label.episode_id, "episode-alpha-1")
+  assert_eq(task.task_label.alignment_id, "alignment-alpha-walk-episode")
+  assert_eq(task.materialization.task_label_count, 1)
+  assert_eq(task.materialization.blocker_count, 0)
+  assert_eq(task.materialization.warning_count, 0)
+  let task_dossier = @robot_catalog.robot_task_label_catalog_dossier_from_root(
+    root, "task-label-alpha-walk",
+  ).unwrap()
+  assert_eq(task_dossier.task_label_id, "task-label-alpha-walk")
+  assert_eq(task_dossier.episode_id, "episode-alpha-1")
+  assert_eq(task_dossier.alignment_id, "alignment-alpha-walk-episode")
+  assert_eq(task_dossier.dataset.kind, "robot-task-label")
+  assert_eq(task_dossier.version.parent_version_ids.length(), 2)
+  assert_eq(task_dossier.task_label_ref_count, 2)
+  assert_eq(task_dossier.model_ref_count, 1)
+  assert_eq(task_dossier.data_ref_count, 3)
+  assert_eq(task_dossier.validation_artifact.artifact_id, "validation-906")
+  assert_true(
+    task_dossier.validation_status == @data_core.ValidationStatus::Passed,
+  )
+  let task_ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(
+    root,
+  ).unwrap()
+  assert_eq(task_ready_root.task_label_count, 1)
+  assert_true(task_ready_root.task_label_ids.contains("task-label-alpha-walk"))
+  assert_eq(task_ready_root.task_label_dossiers.length(), 1)
+  assert_eq(task_ready_root.data_ref_count, 21)
+  assert_eq(task_ready_root.validation_artifact.artifact_id, "validation-906")
+  let task_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(task_ready.status, "ready")
+  assert_true(task_ready.ready)
+  assert_eq(task_ready.task_label_count, 1)
+  assert_eq(task_ready.task_label_ref_count, 2)
+  assert_eq(task_ready.data_ref_count, 21)
 }
 
 ///|
@@ -782,9 +850,11 @@ test "robot telemetry directory import creates standalone stream dataset" {
   assert_eq(readiness.gait_clip_count, 0)
   assert_eq(readiness.gait_annotation_count, 0)
   assert_eq(readiness.gait_alignment_count, 0)
+  assert_eq(readiness.task_label_count, 0)
   assert_eq(readiness.gait_ref_count, 0)
   assert_eq(readiness.gait_annotation_ref_count, 0)
   assert_eq(readiness.gait_alignment_ref_count, 0)
+  assert_eq(readiness.task_label_ref_count, 0)
   assert_eq(readiness.next_action, "import a robot model package")
 }
 

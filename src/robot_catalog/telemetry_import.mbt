@@ -225,6 +225,7 @@ pub fn import_robot_telemetry_directory(
       gait_clip_count: 0,
       gait_annotation_count: 0,
       gait_alignment_count: 0,
+      task_label_count: 0,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

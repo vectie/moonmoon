@@ -20,11 +20,13 @@ pub fn import_robot_gait_clip_directory(RobotGaitClipDirectoryImportRequest) -> 
 
 pub fn import_robot_model_package(RobotModelPackageImportRequest) -> Result[RobotModelPackageImportResult, @data_store.DataStoreIssue]
 
+pub fn import_robot_task_label_directory(RobotTaskLabelDirectoryImportRequest) -> Result[RobotTaskLabelDirectoryImportResult, @data_store.DataStoreIssue]
+
 pub fn import_robot_telemetry_directory(RobotTelemetryDirectoryImportRequest) -> Result[RobotTelemetryDirectoryImportResult, @data_store.DataStoreIssue]
 
 pub fn materialize_robot_catalog_bundle(String, RobotCatalogBundle, Int64) -> Result[RobotCatalogMaterialization, @data_store.DataStoreIssue]
 
-pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], telemetry_streams? : Array[@robot_data.RobotTelemetryStreamManifest], gait_clips? : Array[@robot_data.RobotGaitClipManifest], gait_annotations? : Array[@robot_data.RobotGaitAnnotationManifest], gait_alignments? : Array[@robot_data.RobotGaitAlignmentManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
+pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], telemetry_streams? : Array[@robot_data.RobotTelemetryStreamManifest], gait_clips? : Array[@robot_data.RobotGaitClipManifest], gait_annotations? : Array[@robot_data.RobotGaitAnnotationManifest], gait_alignments? : Array[@robot_data.RobotGaitAlignmentManifest], task_labels? : Array[@robot_data.RobotTaskLabelManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
 
 pub fn robot_catalog_root_dossier_from_root(String) -> Result[RobotCatalogRootDossier, @data_store.DataStoreIssue]
 
@@ -49,6 +51,10 @@ pub fn robot_migration_readiness_from_root(String) -> Result[RobotMigrationReadi
 pub fn robot_model_catalog_dossier_from_root(String, String) -> Result[RobotModelCatalogDossier, @data_store.DataStoreIssue]
 
 pub fn robot_model_package_import_request(String, String, String, String, Int64, source_label? : String) -> RobotModelPackageImportRequest
+
+pub fn robot_task_label_catalog_dossier_from_root(String, String) -> Result[RobotTaskLabelCatalogDossier, @data_store.DataStoreIssue]
+
+pub fn robot_task_label_directory_import_request(String, String, String, String, String, String, String, Int64, source_label? : String) -> RobotTaskLabelDirectoryImportRequest
 
 pub fn robot_telemetry_catalog_dossier_from_root(String, String) -> Result[RobotTelemetryCatalogDossier, @data_store.DataStoreIssue]
 
@@ -109,6 +115,13 @@ pub(all) struct ImportedRobotModelPayload {
   data_ref : @data_core.DataRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct ImportedRobotTaskLabelPayload {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  task_label : @robot_data.RobotTaskLabelPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct ImportedRobotTelemetryPayload {
   source_path : String
   relative_path : String
@@ -124,6 +137,7 @@ pub(all) struct RobotCatalogBundle {
   gait_clips : Array[@robot_data.RobotGaitClipManifest]
   gait_annotations : Array[@robot_data.RobotGaitAnnotationManifest]
   gait_alignments : Array[@robot_data.RobotGaitAlignmentManifest]
+  task_labels : Array[@robot_data.RobotTaskLabelManifest]
   quality_reports : Array[@robot_data.RobotQualityReport]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
@@ -139,6 +153,7 @@ pub(all) struct RobotCatalogMaterialization {
   gait_clip_count : Int
   gait_annotation_count : Int
   gait_alignment_count : Int
+  task_label_count : Int
   quality_report_count : Int
   catalog_entry_count : Int
   validation_status : @data_core.ValidationStatus
@@ -159,6 +174,7 @@ pub(all) struct RobotCatalogRootDossier {
   gait_clip_count : Int
   gait_annotation_count : Int
   gait_alignment_count : Int
+  task_label_count : Int
   data_ref_count : Int
   source_ids : Array[String]
   model_ids : Array[String]
@@ -167,12 +183,14 @@ pub(all) struct RobotCatalogRootDossier {
   gait_clip_ids : Array[String]
   gait_annotation_ids : Array[String]
   gait_alignment_ids : Array[String]
+  task_label_ids : Array[String]
   model_dossiers : Array[RobotModelCatalogDossier]
   episode_dossiers : Array[RobotEpisodeCatalogDossier]
   telemetry_dossiers : Array[RobotTelemetryCatalogDossier]
   gait_clip_dossiers : Array[RobotGaitClipCatalogDossier]
   gait_annotation_dossiers : Array[RobotGaitAnnotationCatalogDossier]
   gait_alignment_dossiers : Array[RobotGaitAlignmentCatalogDossier]
+  task_label_dossiers : Array[RobotTaskLabelCatalogDossier]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotEpisodeCatalogDossier {
@@ -386,6 +404,7 @@ pub(all) struct RobotMigrationReadiness {
   gait_clip_count : Int
   gait_annotation_count : Int
   gait_alignment_count : Int
+  task_label_count : Int
   signal_ref_count : Int
   replay_ref_count : Int
   quality_ref_count : Int
@@ -393,6 +412,7 @@ pub(all) struct RobotMigrationReadiness {
   gait_ref_count : Int
   gait_annotation_ref_count : Int
   gait_alignment_ref_count : Int
+  task_label_ref_count : Int
   data_ref_count : Int
   next_action : String
   summary : String
@@ -437,6 +457,56 @@ pub(all) struct RobotModelPackageImportResult {
   dataset : @data_core.DatasetManifest
   version : @data_core.DatasetVersion
   payloads : Array[ImportedRobotModelPayload]
+  materialization : RobotCatalogMaterialization
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotTaskLabelCatalogDossier {
+  root : String
+  task_label_id : String
+  episode_id : String
+  alignment_id : String
+  catalog_entry_count : Int
+  source_artifact : @data_core.ArtifactRef
+  dataset_artifact : @data_core.ArtifactRef
+  version_artifact : @data_core.ArtifactRef
+  validation_artifact : @data_core.ArtifactRef
+  source : @data_core.DataSource
+  dataset : @data_core.DatasetManifest
+  version : @data_core.DatasetVersion
+  validation_status : @data_core.ValidationStatus
+  blocker_count : Int
+  warning_count : Int
+  task_label_ref_count : Int
+  model_ref_count : Int
+  data_ref_count : Int
+  task_label_ref_uris : Array[String]
+  model_ref_uris : Array[String]
+  data_ref_uris : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotTaskLabelDirectoryImportRequest {
+  root : String
+  source_dir : String
+  task_label_id : String
+  episode_id : String
+  alignment_id : String
+  robot_id : String
+  model_id : String
+  imported_at_ms : Int64
+  source_label : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotTaskLabelDirectoryImportResult {
+  root : String
+  source_dir : String
+  task_label_id : String
+  episode_id : String
+  alignment_id : String
+  robot_id : String
+  model_id : String
+  payload_count : Int
+  task_label : @robot_data.RobotTaskLabelManifest
+  payloads : Array[ImportedRobotTaskLabelPayload]
   materialization : RobotCatalogMaterialization
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

@@ -25,6 +25,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data ingest-robot-gait-clip [data-root] [source-dir] [clip-id] [robot-id] [model-id] [json]
     #|  moon run cmd/main -- data ingest-robot-gait-annotation [data-root] [source-dir] [annotation-id] [clip-id] [robot-id] [model-id] [json]
     #|  moon run cmd/main -- data ingest-robot-gait-alignment [data-root] [source-dir] [alignment-id] [episode-id] [clip-id] [annotation-id] [robot-id] [model-id] [json]
+    #|  moon run cmd/main -- data ingest-robot-task-label [data-root] [source-dir] [task-label-id] [episode-id] [alignment-id] [robot-id] [model-id] [json]
     #|  moon run cmd/main -- data robot-json [data-root]
     #|  moon run cmd/main -- data robot-readiness-json [data-root]
     #|  moon run cmd/main -- data robot-model-json [data-root] [model-id]
@@ -33,6 +34,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data robot-gait-clip-json [data-root] [clip-id]
     #|  moon run cmd/main -- data robot-gait-annotation-json [data-root] [annotation-id]
     #|  moon run cmd/main -- data robot-gait-alignment-json [data-root] [alignment-id]
+    #|  moon run cmd/main -- data robot-task-label-json [data-root] [task-label-id]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- data ui-json [data-root]
     #|  moon run cmd/main -- data ui-html [data-root]
@@ -366,6 +368,55 @@ fn data_robot_gait_alignment_json_id(args : Array[String]) -> String {
 }
 
 ///|
+fn data_robot_task_label_root(args : Array[String]) -> String {
+  arg_offset(
+    args, "ingest-robot-task-label", 1, "target/data-roots/robot-task-label",
+  )
+}
+
+///|
+fn data_robot_task_label_source_dir(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 2, "data/robot_task_labels/input")
+}
+
+///|
+fn data_robot_task_label_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 3, "robot-task-label")
+}
+
+///|
+fn data_robot_task_label_episode_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 4, "robot-episode")
+}
+
+///|
+fn data_robot_task_label_alignment_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 5, "robot-gait-alignment")
+}
+
+///|
+fn data_robot_task_label_robot_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 6, "robot")
+}
+
+///|
+fn data_robot_task_label_model_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-task-label", 7, "robot-model")
+}
+
+///|
+fn data_robot_task_label_json_root(args : Array[String]) -> String {
+  arg_offset(
+    args, "robot-task-label-json", 1, "target/data-roots/robot-task-label",
+  )
+}
+
+///|
+fn data_robot_task_label_json_id(args : Array[String]) -> String {
+  arg_offset(args, "robot-task-label-json", 2, "robot-task-label")
+}
+
+///|
 fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
   let root = data_ingest_root(args)
   match @lunar_catalog.ingest_first_trusted_square_catalog(root, 1L) {
@@ -677,6 +728,56 @@ fn print_data_robot_gait_alignment_ingest(
 }
 
 ///|
+fn print_data_robot_task_label_ingest(
+  args : Array[String],
+  output_json : Bool,
+) -> Unit {
+  let root = data_robot_task_label_root(args)
+  let source_dir = data_robot_task_label_source_dir(args)
+  let task_label_id = data_robot_task_label_id(args)
+  let episode_id = data_robot_task_label_episode_id(args)
+  let alignment_id = data_robot_task_label_alignment_id(args)
+  let robot_id = data_robot_task_label_robot_id(args)
+  let model_id = data_robot_task_label_model_id(args)
+  match
+    @robot_catalog.import_robot_task_label_directory(
+      @robot_catalog.robot_task_label_directory_import_request(
+        root, source_dir, task_label_id, episode_id, alignment_id, robot_id, model_id,
+        1L,
+      ),
+    ) {
+    Ok(result) =>
+      if output_json {
+        println(result.to_json().stringify(indent=2))
+      } else {
+        let materialization = result.materialization
+        println("Moonmoon robot task label data ingest")
+        println("- root: \{materialization.root}")
+        println("- source: \{result.source_dir}")
+        println("- task-label: \{result.task_label_id}")
+        println("- episode: \{result.episode_id}")
+        println("- alignment: \{result.alignment_id}")
+        println("- payloads: \{result.payload_count}")
+        println("- catalog: \{materialization.catalog_path}")
+        println(
+          "- validation: \{@data_core.validation_status_label(materialization.validation_status)}",
+        )
+        println("- blockers: \{materialization.blocker_count}")
+        println("- warnings: \{materialization.warning_count}")
+      }
+    Err(error) =>
+      if output_json {
+        println(error.to_json().stringify(indent=2))
+      } else {
+        println("Moonmoon robot task label ingest failed")
+        println("- code: \{error.code}")
+        println("- path: \{error.path}")
+        println("- message: \{error.message}")
+      }
+  }
+}
+
+///|
 fn print_data_robot_model_json(args : Array[String]) -> Unit {
   let root = data_robot_model_json_root(args)
   let model_id = data_robot_model_json_id(args)
@@ -746,6 +847,19 @@ fn print_data_robot_gait_alignment_json(args : Array[String]) -> Unit {
 }
 
 ///|
+fn print_data_robot_task_label_json(args : Array[String]) -> Unit {
+  let root = data_robot_task_label_json_root(args)
+  let task_label_id = data_robot_task_label_json_id(args)
+  match
+    @robot_catalog.robot_task_label_catalog_dossier_from_root(
+      root, task_label_id,
+    ) {
+    Ok(dossier) => println(dossier.to_json().stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn print_data_robot_json(args : Array[String]) -> Unit {
   let root = data_robot_json_root(args)
   match @robot_catalog.robot_catalog_root_dossier_from_root(root) {
@@ -805,6 +919,8 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("ingest-robot-task-label") {
+    print_data_robot_task_label_ingest(args, output_json)
   } else if args.contains("data") &&
     args.contains("ingest-robot-gait-alignment") {
     print_data_robot_gait_alignment_ingest(args, output_json)
@@ -829,6 +945,8 @@ fn main {
     print_data_robot_gait_annotation_json(args)
   } else if args.contains("data") && args.contains("robot-gait-alignment-json") {
     print_data_robot_gait_alignment_json(args)
+  } else if args.contains("data") && args.contains("robot-task-label-json") {
+    print_data_robot_task_label_json(args)
   } else if args.contains("data") && args.contains("robot-episode-json") {
     print_data_robot_episode_json(args)
   } else if args.contains("data") && args.contains("robot-model-json") {

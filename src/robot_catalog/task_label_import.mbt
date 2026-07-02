@@ -1,11 +1,10 @@
 ///|
-pub(all) struct RobotGaitAlignmentDirectoryImportRequest {
+pub(all) struct RobotTaskLabelDirectoryImportRequest {
   root : String
   source_dir : String
-  alignment_id : @robot_data.RobotGaitAlignmentId
+  task_label_id : @robot_data.RobotTaskLabelId
   episode_id : @robot_data.RobotEpisodeId
-  clip_id : @robot_data.RobotGaitClipId
-  annotation_id : @robot_data.RobotGaitAnnotationId
+  alignment_id : @robot_data.RobotGaitAlignmentId
   robot_id : @robot_data.RobotId
   model_id : @robot_data.RobotModelId
   imported_at_ms : Int64
@@ -13,49 +12,46 @@ pub(all) struct RobotGaitAlignmentDirectoryImportRequest {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) struct ImportedRobotGaitAlignmentPayload {
+pub(all) struct ImportedRobotTaskLabelPayload {
   source_path : String
   relative_path : String
   payload_path : String
-  alignment : @robot_data.RobotGaitAlignmentPayloadRef
+  task_label : @robot_data.RobotTaskLabelPayloadRef
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) struct RobotGaitAlignmentDirectoryImportResult {
+pub(all) struct RobotTaskLabelDirectoryImportResult {
   root : String
   source_dir : String
-  alignment_id : @robot_data.RobotGaitAlignmentId
+  task_label_id : @robot_data.RobotTaskLabelId
   episode_id : @robot_data.RobotEpisodeId
-  clip_id : @robot_data.RobotGaitClipId
-  annotation_id : @robot_data.RobotGaitAnnotationId
+  alignment_id : @robot_data.RobotGaitAlignmentId
   robot_id : @robot_data.RobotId
   model_id : @robot_data.RobotModelId
   payload_count : Int
-  gait_alignment : @robot_data.RobotGaitAlignmentManifest
-  payloads : Array[ImportedRobotGaitAlignmentPayload]
+  task_label : @robot_data.RobotTaskLabelManifest
+  payloads : Array[ImportedRobotTaskLabelPayload]
   materialization : RobotCatalogMaterialization
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub fn robot_gait_alignment_directory_import_request(
+pub fn robot_task_label_directory_import_request(
   root : String,
   source_dir : String,
-  alignment_id : @robot_data.RobotGaitAlignmentId,
+  task_label_id : @robot_data.RobotTaskLabelId,
   episode_id : @robot_data.RobotEpisodeId,
-  clip_id : @robot_data.RobotGaitClipId,
-  annotation_id : @robot_data.RobotGaitAnnotationId,
+  alignment_id : @robot_data.RobotGaitAlignmentId,
   robot_id : @robot_data.RobotId,
   model_id : @robot_data.RobotModelId,
   imported_at_ms : Int64,
-  source_label? : String = "Robot gait alignment directory import",
-) -> RobotGaitAlignmentDirectoryImportRequest {
+  source_label? : String = "Robot task label directory import",
+) -> RobotTaskLabelDirectoryImportRequest {
   {
     root,
     source_dir,
-    alignment_id,
+    task_label_id,
     episode_id,
-    clip_id,
-    annotation_id,
+    alignment_id,
     robot_id,
     model_id,
     imported_at_ms,
@@ -64,7 +60,7 @@ pub fn robot_gait_alignment_directory_import_request(
 }
 
 ///|
-fn gait_alignment_source_files(
+fn task_label_source_files(
   source_dir : String,
 ) -> Result[Array[(String, String)], @data_store.DataStoreIssue] {
   let names = match read_sorted_names(source_dir) {
@@ -76,7 +72,7 @@ fn gait_alignment_source_files(
     if !@data_core.data_relative_path_is_safe(name) {
       return Err(
         import_issue(
-          "unsafe-robot-gait-alignment-path", name, "robot gait alignment source contains an unsafe relative path",
+          "unsafe-robot-task-label-path", name, "robot task label source contains an unsafe relative path",
         ),
       )
     }
@@ -89,7 +85,7 @@ fn gait_alignment_source_files(
 }
 
 ///|
-fn gait_alignment_content_type(relative_path : String) -> String {
+fn task_label_content_type(relative_path : String) -> String {
   if relative_path.has_suffix(".json") {
     "application/json"
   } else if relative_path.has_suffix(".csv") {
@@ -100,7 +96,7 @@ fn gait_alignment_content_type(relative_path : String) -> String {
 }
 
 ///|
-fn gait_alignment_role(relative_path : String) -> String {
+fn task_label_role(relative_path : String) -> String {
   let mut value = relative_path
   if value.has_suffix(".json") {
     value = value[0:value.length() - 5].to_owned()
@@ -113,7 +109,7 @@ fn gait_alignment_role(relative_path : String) -> String {
 }
 
 ///|
-fn alignment_line_count(body : String) -> Int {
+fn task_label_line_count(body : String) -> Int {
   if body.length() == 0 {
     0
   } else {
@@ -128,28 +124,28 @@ fn alignment_line_count(body : String) -> Int {
 }
 
 ///|
-fn gait_alignment_payload_data_ref(
-  alignment_id : @robot_data.RobotGaitAlignmentId,
+fn task_label_payload_data_ref(
+  task_label_id : @robot_data.RobotTaskLabelId,
   relative_path : String,
   body : String,
 ) -> @data_core.DataRef {
-  let payload_path = "payloads/robot_data/gait_alignments/\{alignment_id}/\{relative_path}"
+  let payload_path = "payloads/robot_data/task_labels/\{task_label_id}/\{relative_path}"
   @data_core.data_ref(
-    "robot-gait-alignment-\{safe_ref_segment(alignment_id)}-\{safe_ref_segment(relative_path)}",
-    "robot-gait-alignment",
+    "robot-task-label-\{safe_ref_segment(task_label_id)}-\{safe_ref_segment(relative_path)}",
+    "robot-task-label",
     @data_core.data_uri(payload_path),
-    content_type=gait_alignment_content_type(relative_path),
+    content_type=task_label_content_type(relative_path),
     byte_count=body.length().to_int64(),
     checksum=text_sum(body),
   )
 }
 
 ///|
-pub fn import_robot_gait_alignment_directory(
-  request : RobotGaitAlignmentDirectoryImportRequest,
-) -> Result[RobotGaitAlignmentDirectoryImportResult, @data_store.DataStoreIssue] {
+pub fn import_robot_task_label_directory(
+  request : RobotTaskLabelDirectoryImportRequest,
+) -> Result[RobotTaskLabelDirectoryImportResult, @data_store.DataStoreIssue] {
   match
-    validate_episode_import_id(request.alignment_id, "robot-gait-alignment-id") {
+    validate_episode_import_id(request.task_label_id, "robot-task-label-id") {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
@@ -157,15 +153,8 @@ pub fn import_robot_gait_alignment_directory(
     Ok(_) => ()
     Err(error) => return Err(error)
   }
-  match validate_episode_import_id(request.clip_id, "robot-gait-clip-id") {
-    Ok(_) => ()
-    Err(error) => return Err(error)
-  }
   match
-    validate_episode_import_id(
-      request.annotation_id,
-      "robot-gait-annotation-id",
-    ) {
+    validate_episode_import_id(request.alignment_id, "robot-gait-alignment-id") {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
@@ -184,44 +173,39 @@ pub fn import_robot_gait_alignment_directory(
     Err(error) => return Err(error)
   }
   match
-    robot_gait_clip_catalog_dossier_from_root(request.root, request.clip_id) {
-    Ok(_) => ()
-    Err(error) => return Err(error)
-  }
-  match
-    robot_gait_annotation_catalog_dossier_from_root(
+    robot_gait_alignment_catalog_dossier_from_root(
       request.root,
-      request.annotation_id,
+      request.alignment_id,
     ) {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
-  let files = match gait_alignment_source_files(request.source_dir) {
+  let files = match task_label_source_files(request.source_dir) {
     Ok(value) => value
     Err(error) => return Err(error)
   }
   if files.length() == 0 {
     return Err(
       import_issue(
-        "empty-robot-gait-alignment-directory",
+        "empty-robot-task-label-directory",
         request.source_dir,
-        "robot gait alignment source directory has no file payloads",
+        "robot task label source directory has no file payloads",
       ),
     )
   }
-  let payloads : Array[ImportedRobotGaitAlignmentPayload] = []
+  let payloads : Array[ImportedRobotTaskLabelPayload] = []
   for index in 0..<files.length() {
     let (source_path, relative_path) = files[index]
     let body = @fsx.read_file_to_string(source_path) catch {
       _ =>
         return Err(
           import_issue(
-            "read-robot-gait-alignment-payload", source_path, "failed to read robot gait alignment payload as text",
+            "read-robot-task-label-payload", source_path, "failed to read robot task label payload as text",
           ),
         )
     }
-    let data_ref = gait_alignment_payload_data_ref(
-      request.alignment_id,
+    let data_ref = task_label_payload_data_ref(
+      request.task_label_id,
       relative_path,
       body,
     )
@@ -233,29 +217,28 @@ pub fn import_robot_gait_alignment_directory(
       Ok(value) => value
       Err(error) => return Err(error)
     }
-    let alignment = @robot_data.robot_gait_alignment_payload_ref(
-      gait_alignment_role(relative_path),
-      alignment_line_count(body),
+    let task_label = @robot_data.robot_task_label_payload_ref(
+      task_label_role(relative_path),
+      task_label_line_count(body),
       payload,
     )
-    payloads.push({ source_path, relative_path, payload_path, alignment })
+    payloads.push({ source_path, relative_path, payload_path, task_label })
   }
-  let gait_alignment = @robot_data.robot_gait_alignment_manifest(
-    request.alignment_id,
+  let task_label = @robot_data.robot_task_label_manifest(
+    request.task_label_id,
     request.robot_id,
     request.episode_id,
-    request.clip_id,
-    request.annotation_id,
-    "source-robot-gait-alignment-\{request.alignment_id}",
+    request.alignment_id,
+    "source-robot-task-label-\{request.task_label_id}",
     request.source_label,
     request.source_dir,
     @data_core.DataStatus::Verified,
     request.imported_at_ms,
     [model],
-    payloads.map(fn(payload) { payload.alignment }),
-    "Robot gait alignment for \{request.episode_id} and \{request.clip_id}",
+    payloads.map(fn(payload) { payload.task_label }),
+    "Robot task labels for \{request.episode_id}",
   )
-  match write_gait_alignments(request.root, [gait_alignment]) {
+  match write_task_labels(request.root, [task_label]) {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
@@ -275,14 +258,13 @@ pub fn import_robot_gait_alignment_directory(
   Ok({
     root: request.root,
     source_dir: request.source_dir,
-    alignment_id: request.alignment_id,
+    task_label_id: request.task_label_id,
     episode_id: request.episode_id,
-    clip_id: request.clip_id,
-    annotation_id: request.annotation_id,
+    alignment_id: request.alignment_id,
     robot_id: request.robot_id,
     model_id: request.model_id,
     payload_count: payloads.length(),
-    gait_alignment,
+    task_label,
     payloads,
     materialization: {
       root: request.root,
@@ -295,8 +277,8 @@ pub fn import_robot_gait_alignment_directory(
       telemetry_stream_count: 0,
       gait_clip_count: 0,
       gait_annotation_count: 0,
-      gait_alignment_count: 1,
-      task_label_count: 0,
+      gait_alignment_count: 0,
+      task_label_count: 1,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

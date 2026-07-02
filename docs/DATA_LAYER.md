@@ -74,14 +74,14 @@ This is the operating plan for the next implementation passes. It favors the
 highest-leverage boundary moves first, keeps robot migration generic, and avoids
 stale compatibility layers.
 
-### Current Robot Migration Checklist
+### Completed Robot Task-Label Checkpoint
 
-The active pass is to add higher-level robot task labels over aligned episodes.
-This keeps the generic data layer general while giving robot migration a useful
-next product-level proof point.
+The current completed pass adds higher-level robot task labels over aligned
+episodes. This keeps the generic data layer general while giving robot
+migration a useful next product-level proof point.
 
 1. Select one dataset family.
-   - Current choice: `robot-task-label`.
+   - Status: done for `robot-task-label`.
    - Why: task labels sit above episodes, gait clips, annotations, and
      clip-to-episode alignments, so they prove the data layer can express
      higher-level robot semantics without adding robot fields to generic
@@ -90,6 +90,7 @@ next product-level proof point.
      source id shape, version id shape, and lineage shape.
 
 2. Add the pure domain contract in `src/robot_data`.
+   - Status: done.
    - Define the task-label manifest, payload refs, generic data refs, source
      projection, dataset projection, version projection, and lineage projection.
    - Keep labels, models, episodes, alignments, and payload roles in
@@ -100,6 +101,7 @@ next product-level proof point.
      data source, dataset, version, refs, and lineage.
 
 3. Add the data-root write boundary in `src/robot_catalog`.
+   - Status: done.
    - Import a task-label directory only after the referenced model, episode,
      and gait alignment already exist in the catalog.
    - Stage text payloads under `payloads/robot_data/task_labels/`.
@@ -110,6 +112,7 @@ next product-level proof point.
      green.
 
 4. Add the data-root read boundary in `src/robot_catalog`.
+   - Status: done.
    - Read one task-label dossier from a generic root.
    - Include task-label ids in the robot root dossier.
    - Update robot readiness so a root with models, episodes, telemetry, gait
@@ -119,6 +122,7 @@ next product-level proof point.
      aligned robot episodes" to ready after the task-label import.
 
 5. Add CLI only at real boundaries.
+   - Status: done.
    - Add `data ingest-robot-task-label` for materialization.
    - Add `data robot-task-label-json` for readback.
    - Do not add helper commands for internal transforms.
@@ -127,6 +131,7 @@ next product-level proof point.
      read readiness back as ready.
 
 6. Validate before commit.
+   - Status: done.
    - Run targeted checks for `src/robot_data`, `src/robot_catalog`, and
      `cmd/main`.
    - Run full `moon check`, `moon test`, `moon info`, and `moon fmt`.
@@ -134,11 +139,14 @@ next product-level proof point.
    - Done when: tests pass and `git diff --check` is clean.
 
 7. Commit and push the boundary move.
+   - Status: pending for the current worktree until this checkpoint is
+     committed and pushed.
    - Commit message: `Add robot task label data boundary`.
    - Push to the GitHub remote immediately after the commit.
    - Done when: `git status --short` is clean after push.
 
 8. Choose the next family only after the checkpoint.
+   - Status: next.
    - Candidate families: richer replay artifacts, richer telemetry streams,
      deeper quality reports, or higher-level episode/task rollout summaries.
    - Pick one, repeat this checklist, and avoid widening the generic layer for
@@ -463,8 +471,7 @@ and push.
      `data robot-gait-clip-json` reads the clip dossier back from the same data
      root. Gait phase/contact annotations, clip-to-episode alignments, and
      task labels now follow the same family-by-family pattern in the domain and
-     catalog layers; the task-label CLI/readback boundary is the active
-     checkpoint.
+     catalog layers; the task-label CLI/readback boundary is complete.
    - The compact `data robot-readiness-json` read path now summarizes whether a
      robot root has the minimum model, episode, signal, quality, telemetry,
      gait, annotation, alignment, and task-label evidence to continue

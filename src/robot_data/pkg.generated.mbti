@@ -94,6 +94,22 @@ pub fn robot_replay_artifact(String, String, RobotPayloadRef) -> RobotReplayArti
 
 pub fn robot_signal_ref(String, String, String, Int, String, RobotPayloadRef) -> RobotSignalRef
 
+pub fn robot_task_label_data_refs(RobotTaskLabelManifest) -> Array[@data_core.DataRef]
+
+pub fn robot_task_label_data_source(RobotTaskLabelManifest) -> @data_core.DataSource
+
+pub fn robot_task_label_dataset(RobotTaskLabelManifest) -> @data_core.DatasetManifest
+
+pub fn robot_task_label_lineage(RobotTaskLabelManifest, String) -> @data_core.LineageManifest
+
+pub fn robot_task_label_manifest(String, String, String, String, String, String, String, @data_core.DataStatus, Int64, Array[RobotModelRef], Array[RobotTaskLabelPayloadRef], String) -> RobotTaskLabelManifest
+
+pub fn robot_task_label_payload_ref(String, Int, RobotPayloadRef) -> RobotTaskLabelPayloadRef
+
+pub fn robot_task_label_source_ids(RobotTaskLabelManifest) -> Array[String]
+
+pub fn robot_task_label_version(RobotTaskLabelManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
+
 pub fn robot_telemetry_data_refs(RobotTelemetryStreamManifest) -> Array[@data_core.DataRef]
 
 pub fn robot_telemetry_data_source(RobotTelemetryStreamManifest) -> @data_core.DataSource
@@ -235,6 +251,27 @@ pub(all) struct RobotSignalRef {
   payload : RobotPayloadRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RobotTaskLabelManifest {
+  task_label_id : String
+  robot_id : String
+  episode_id : String
+  alignment_id : String
+  source_id : String
+  source_label : String
+  source_url : String
+  status : @data_core.DataStatus
+  created_at_ms : Int64
+  model_refs : Array[RobotModelRef]
+  payload_refs : Array[RobotTaskLabelPayloadRef]
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotTaskLabelPayloadRef {
+  role : String
+  line_count : Int
+  payload : RobotPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RobotTelemetryPayloadRef {
   channel : String
   sample_count : Int
@@ -275,6 +312,8 @@ pub type RobotQualityReportId = String
 pub type RobotReplayArtifactId = String
 
 pub type RobotSignalId = String
+
+pub type RobotTaskLabelId = String
 
 pub type RobotTelemetryStreamId = String
 
