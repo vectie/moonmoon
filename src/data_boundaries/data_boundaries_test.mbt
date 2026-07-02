@@ -76,7 +76,7 @@ fn robot_data_files() -> Array[String] {
   [
     "src/robot_data/moon.pkg", "src/robot_data/payload.mbt", "src/robot_data/model.mbt",
     "src/robot_data/episode.mbt", "src/robot_data/quality.mbt", "src/robot_data/legacy_ref.mbt",
-    "src/robot_data/telemetry.mbt",
+    "src/robot_data/telemetry.mbt", "src/robot_data/gait.mbt",
   ]
 }
 
@@ -87,7 +87,8 @@ fn robot_catalog_files() -> Array[String] {
     "src/robot_catalog/model_import.mbt", "src/robot_catalog/model_listing.mbt",
     "src/robot_catalog/episode_import.mbt", "src/robot_catalog/episode_listing.mbt",
     "src/robot_catalog/root_listing.mbt", "src/robot_catalog/readiness.mbt", "src/robot_catalog/telemetry_import.mbt",
-    "src/robot_catalog/telemetry_listing.mbt",
+    "src/robot_catalog/telemetry_listing.mbt", "src/robot_catalog/gait_import.mbt",
+    "src/robot_catalog/gait_listing.mbt",
   ]
 }
 

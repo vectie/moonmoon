@@ -10,10 +10,12 @@ pub(all) struct RobotMigrationReadiness {
   model_count : Int
   episode_count : Int
   telemetry_stream_count : Int
+  gait_clip_count : Int
   signal_ref_count : Int
   replay_ref_count : Int
   quality_ref_count : Int
   telemetry_ref_count : Int
+  gait_ref_count : Int
   data_ref_count : Int
   next_action : String
   summary : String
@@ -58,11 +60,21 @@ fn robot_telemetry_ref_count(
 }
 
 ///|
+fn robot_gait_ref_count(clips : Array[RobotGaitClipCatalogDossier]) -> Int {
+  let mut count = 0
+  for clip in clips {
+    count += clip.gait_ref_count
+  }
+  count
+}
+
+///|
 fn readiness_next_action(
   dossier : RobotCatalogRootDossier,
   signal_ref_count : Int,
   quality_ref_count : Int,
   telemetry_ref_count : Int,
+  gait_ref_count : Int,
 ) -> String {
   if dossier.blocker_count > 0 {
     "repair data-root validation blockers before migrating more robot data"
@@ -76,6 +88,8 @@ fn readiness_next_action(
     "stage quality evidence for imported robot episodes"
   } else if telemetry_ref_count == 0 {
     "migrate a standalone robot telemetry stream into the generic data root"
+  } else if gait_ref_count == 0 {
+    "migrate a robot gait clip into the generic data root"
   } else {
     "migrate the next robot dataset family only after this root stays green"
   }
@@ -95,13 +109,15 @@ pub fn robot_migration_readiness_from_root(
   let telemetry_ref_count = robot_telemetry_ref_count(
     dossier.telemetry_dossiers,
   )
+  let gait_ref_count = robot_gait_ref_count(dossier.gait_clip_dossiers)
   let ready = dossier.validation_status == @data_core.ValidationStatus::Passed &&
     dossier.blocker_count == 0 &&
     dossier.model_count > 0 &&
     dossier.episode_count > 0 &&
     signal_ref_count > 0 &&
     quality_ref_count > 0 &&
-    telemetry_ref_count > 0
+    telemetry_ref_count > 0 &&
+    gait_ref_count > 0
   let status = if ready {
     "ready"
   } else if dossier.blocker_count > 0 {
@@ -110,7 +126,7 @@ pub fn robot_migration_readiness_from_root(
     "needs-evidence"
   }
   let next_action = readiness_next_action(
-    dossier, signal_ref_count, quality_ref_count, telemetry_ref_count,
+    dossier, signal_ref_count, quality_ref_count, telemetry_ref_count, gait_ref_count,
   )
   Ok({
     root,
@@ -123,12 +139,14 @@ pub fn robot_migration_readiness_from_root(
     model_count: dossier.model_count,
     episode_count: dossier.episode_count,
     telemetry_stream_count: dossier.telemetry_stream_count,
+    gait_clip_count: dossier.gait_clip_count,
     signal_ref_count,
     replay_ref_count,
     quality_ref_count,
     telemetry_ref_count,
+    gait_ref_count,
     data_ref_count: dossier.data_ref_count,
     next_action,
-    summary: "robot catalog has \{dossier.model_count} model(s), \{dossier.episode_count} episode(s), \{dossier.telemetry_stream_count} telemetry stream(s), \{signal_ref_count} signal ref(s), \{replay_ref_count} replay ref(s), \{quality_ref_count} quality ref(s), and \{telemetry_ref_count} telemetry ref(s)",
+    summary: "robot catalog has \{dossier.model_count} model(s), \{dossier.episode_count} episode(s), \{dossier.telemetry_stream_count} telemetry stream(s), \{dossier.gait_clip_count} gait clip(s), \{signal_ref_count} signal ref(s), \{replay_ref_count} replay ref(s), \{quality_ref_count} quality ref(s), \{telemetry_ref_count} telemetry ref(s), and \{gait_ref_count} gait ref(s)",
   })
 }

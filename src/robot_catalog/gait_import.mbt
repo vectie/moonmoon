@@ -1,58 +1,58 @@
 ///|
-pub(all) struct RobotTelemetryDirectoryImportRequest {
+pub(all) struct RobotGaitClipDirectoryImportRequest {
   root : String
   source_dir : String
-  stream_id : @robot_data.RobotTelemetryStreamId
+  clip_id : @robot_data.RobotGaitClipId
   robot_id : @robot_data.RobotId
-  session_id : String
+  model_id : @robot_data.RobotModelId
   imported_at_ms : Int64
   source_label : String
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) struct ImportedRobotTelemetryPayload {
+pub(all) struct ImportedRobotGaitClipPayload {
   source_path : String
   relative_path : String
   payload_path : String
-  telemetry : @robot_data.RobotTelemetryPayloadRef
+  gait : @robot_data.RobotGaitClipPayloadRef
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub(all) struct RobotTelemetryDirectoryImportResult {
+pub(all) struct RobotGaitClipDirectoryImportResult {
   root : String
   source_dir : String
-  stream_id : @robot_data.RobotTelemetryStreamId
+  clip_id : @robot_data.RobotGaitClipId
   robot_id : @robot_data.RobotId
-  session_id : String
+  model_id : @robot_data.RobotModelId
   payload_count : Int
-  stream : @robot_data.RobotTelemetryStreamManifest
-  payloads : Array[ImportedRobotTelemetryPayload]
+  gait_clip : @robot_data.RobotGaitClipManifest
+  payloads : Array[ImportedRobotGaitClipPayload]
   materialization : RobotCatalogMaterialization
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
-pub fn robot_telemetry_directory_import_request(
+pub fn robot_gait_clip_directory_import_request(
   root : String,
   source_dir : String,
-  stream_id : @robot_data.RobotTelemetryStreamId,
+  clip_id : @robot_data.RobotGaitClipId,
   robot_id : @robot_data.RobotId,
-  session_id : String,
+  model_id : @robot_data.RobotModelId,
   imported_at_ms : Int64,
-  source_label? : String = "Robot telemetry directory import",
-) -> RobotTelemetryDirectoryImportRequest {
+  source_label? : String = "Robot gait clip directory import",
+) -> RobotGaitClipDirectoryImportRequest {
   {
     root,
     source_dir,
-    stream_id,
+    clip_id,
     robot_id,
-    session_id,
+    model_id,
     imported_at_ms,
     source_label,
   }
 }
 
 ///|
-fn telemetry_source_files(
+fn gait_clip_source_files(
   source_dir : String,
 ) -> Result[Array[(String, String)], @data_store.DataStoreIssue] {
   let names = match read_sorted_names(source_dir) {
@@ -64,7 +64,7 @@ fn telemetry_source_files(
     if !@data_core.data_relative_path_is_safe(name) {
       return Err(
         import_issue(
-          "unsafe-robot-telemetry-path", name, "robot telemetry source contains an unsafe relative path",
+          "unsafe-robot-gait-clip-path", name, "robot gait clip source contains an unsafe relative path",
         ),
       )
     }
@@ -77,7 +77,7 @@ fn telemetry_source_files(
 }
 
 ///|
-fn telemetry_content_type(relative_path : String) -> String {
+fn gait_clip_content_type(relative_path : String) -> String {
   if relative_path.has_suffix(".json") {
     "application/json"
   } else if relative_path.has_suffix(".csv") {
@@ -88,7 +88,7 @@ fn telemetry_content_type(relative_path : String) -> String {
 }
 
 ///|
-fn telemetry_channel(relative_path : String) -> String {
+fn gait_clip_role(relative_path : String) -> String {
   let mut value = relative_path
   if value.has_suffix(".json") {
     value = value[0:value.length() - 5].to_owned()
@@ -101,61 +101,65 @@ fn telemetry_channel(relative_path : String) -> String {
 }
 
 ///|
-fn telemetry_payload_data_ref(
-  stream_id : @robot_data.RobotTelemetryStreamId,
+fn gait_clip_payload_data_ref(
+  clip_id : @robot_data.RobotGaitClipId,
   relative_path : String,
   body : String,
 ) -> @data_core.DataRef {
-  let payload_path = "payloads/robot_data/telemetry/\{stream_id}/\{relative_path}"
+  let payload_path = "payloads/robot_data/gait_clips/\{clip_id}/\{relative_path}"
   @data_core.data_ref(
-    "robot-telemetry-\{safe_ref_segment(stream_id)}-\{safe_ref_segment(relative_path)}",
-    "robot-telemetry-sample",
+    "robot-gait-clip-\{safe_ref_segment(clip_id)}-\{safe_ref_segment(relative_path)}",
+    "robot-gait-clip",
     @data_core.data_uri(payload_path),
-    content_type=telemetry_content_type(relative_path),
+    content_type=gait_clip_content_type(relative_path),
     byte_count=body.length().to_int64(),
     checksum=text_sum(body),
   )
 }
 
 ///|
-pub fn import_robot_telemetry_directory(
-  request : RobotTelemetryDirectoryImportRequest,
-) -> Result[RobotTelemetryDirectoryImportResult, @data_store.DataStoreIssue] {
-  match
-    validate_episode_import_id(request.stream_id, "robot-telemetry-stream-id") {
+pub fn import_robot_gait_clip_directory(
+  request : RobotGaitClipDirectoryImportRequest,
+) -> Result[RobotGaitClipDirectoryImportResult, @data_store.DataStoreIssue] {
+  match validate_episode_import_id(request.clip_id, "robot-gait-clip-id") {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
-  match @data_store.initialize_root(request.root) {
-    Ok(_) => ()
+  let model_dossier = match
+    robot_model_catalog_dossier_from_root(request.root, request.model_id) {
+    Ok(value) => value
     Err(error) => return Err(error)
   }
-  let files = match telemetry_source_files(request.source_dir) {
+  let model = match model_ref_from_dossier(model_dossier, request.robot_id) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let files = match gait_clip_source_files(request.source_dir) {
     Ok(value) => value
     Err(error) => return Err(error)
   }
   if files.length() == 0 {
     return Err(
       import_issue(
-        "empty-robot-telemetry-directory",
+        "empty-robot-gait-clip-directory",
         request.source_dir,
-        "robot telemetry source directory has no file payloads",
+        "robot gait clip source directory has no file payloads",
       ),
     )
   }
-  let payloads : Array[ImportedRobotTelemetryPayload] = []
+  let payloads : Array[ImportedRobotGaitClipPayload] = []
   for index in 0..<files.length() {
     let (source_path, relative_path) = files[index]
     let body = @fsx.read_file_to_string(source_path) catch {
       _ =>
         return Err(
           import_issue(
-            "read-robot-telemetry-payload", source_path, "failed to read robot telemetry payload as text",
+            "read-robot-gait-clip-payload", source_path, "failed to read robot gait clip payload as text",
           ),
         )
     }
-    let data_ref = telemetry_payload_data_ref(
-      request.stream_id,
+    let data_ref = gait_clip_payload_data_ref(
+      request.clip_id,
       relative_path,
       body,
     )
@@ -167,27 +171,27 @@ pub fn import_robot_telemetry_directory(
       Ok(value) => value
       Err(error) => return Err(error)
     }
-    let telemetry = @robot_data.robot_telemetry_payload_ref(
-      telemetry_channel(relative_path),
+    let gait = @robot_data.robot_gait_clip_payload_ref(
+      gait_clip_role(relative_path),
       1,
-      "payload",
+      0.0,
       payload,
     )
-    payloads.push({ source_path, relative_path, payload_path, telemetry })
+    payloads.push({ source_path, relative_path, payload_path, gait })
   }
-  let stream = @robot_data.robot_telemetry_stream_manifest(
-    request.stream_id,
+  let gait_clip = @robot_data.robot_gait_clip_manifest(
+    request.clip_id,
     request.robot_id,
-    request.session_id,
-    "source-robot-telemetry-\{request.stream_id}",
+    "source-robot-gait-clip-\{request.clip_id}",
     request.source_label,
     request.source_dir,
     @data_core.DataStatus::Verified,
     request.imported_at_ms,
-    payloads.map(fn(payload) { payload.telemetry }),
-    "Robot telemetry stream for \{request.robot_id}",
+    [model],
+    payloads.map(fn(payload) { payload.gait }),
+    "Robot gait clip for \{request.robot_id}",
   )
-  match write_telemetry_streams(request.root, [stream]) {
+  match write_gait_clips(request.root, [gait_clip]) {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
@@ -207,11 +211,11 @@ pub fn import_robot_telemetry_directory(
   Ok({
     root: request.root,
     source_dir: request.source_dir,
-    stream_id: request.stream_id,
+    clip_id: request.clip_id,
     robot_id: request.robot_id,
-    session_id: request.session_id,
+    model_id: request.model_id,
     payload_count: payloads.length(),
-    stream,
+    gait_clip,
     payloads,
     materialization: {
       root: request.root,
@@ -221,8 +225,8 @@ pub fn import_robot_telemetry_directory(
       dataset_count: 1,
       version_count: 1,
       lineage_count: 1,
-      telemetry_stream_count: 1,
-      gait_clip_count: 0,
+      telemetry_stream_count: 0,
+      gait_clip_count: 1,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

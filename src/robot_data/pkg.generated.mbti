@@ -20,6 +20,22 @@ pub fn robot_episode_source_ids(RobotEpisodeManifest) -> Array[String]
 
 pub fn robot_episode_version(RobotEpisodeManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
 
+pub fn robot_gait_clip_data_refs(RobotGaitClipManifest) -> Array[@data_core.DataRef]
+
+pub fn robot_gait_clip_data_source(RobotGaitClipManifest) -> @data_core.DataSource
+
+pub fn robot_gait_clip_dataset(RobotGaitClipManifest) -> @data_core.DatasetManifest
+
+pub fn robot_gait_clip_lineage(RobotGaitClipManifest, String) -> @data_core.LineageManifest
+
+pub fn robot_gait_clip_manifest(String, String, String, String, String, @data_core.DataStatus, Int64, Array[RobotModelRef], Array[RobotGaitClipPayloadRef], String) -> RobotGaitClipManifest
+
+pub fn robot_gait_clip_payload_ref(String, Int, Double, RobotPayloadRef) -> RobotGaitClipPayloadRef
+
+pub fn robot_gait_clip_source_ids(RobotGaitClipManifest) -> Array[String]
+
+pub fn robot_gait_clip_version(RobotGaitClipManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
+
 pub fn robot_legacy_moondata_payload_path(String) -> String?
 
 pub fn robot_legacy_moondata_payload_ref(String, String, String, String, Int64, String) -> RobotPayloadRef?
@@ -75,6 +91,26 @@ pub(all) struct RobotEpisodeManifest {
   replay_artifacts : Array[RobotReplayArtifact]
   quality_report_refs : Array[RobotPayloadRef]
   summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitClipManifest {
+  clip_id : String
+  robot_id : String
+  source_id : String
+  source_label : String
+  source_url : String
+  status : @data_core.DataStatus
+  created_at_ms : Int64
+  model_refs : Array[RobotModelRef]
+  payload_refs : Array[RobotGaitClipPayloadRef]
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotGaitClipPayloadRef {
+  role : String
+  frame_count : Int
+  duration_s : Double
+  payload : RobotPayloadRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotModelRef {
@@ -147,6 +183,8 @@ pub(all) struct RobotTelemetryStreamManifest {
 
 // Type aliases
 pub type RobotEpisodeId = String
+
+pub type RobotGaitClipId = String
 
 pub type RobotId = String
 

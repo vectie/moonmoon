@@ -34,8 +34,9 @@ by responsibility, but package imports define the actual dependency graph.
 - `lunar_catalog` materializes lunar records into the generic data root and
   exposes catalog-backed first-site listings.
 - `robot_data` maps robot episodes, model refs, signal payloads, replay
-  artifacts, telemetry streams, and quality reports onto `data_core` without
-  importing lunar, store, validation, UI, or Moonrobo packages.
+  artifacts, telemetry streams, gait clips, and quality reports onto
+  `data_core` without importing lunar, store, validation, UI, or Moonrobo
+  packages.
 - `robot_catalog` materializes robot data bundles into the generic data root
   and validates them through the same store/validation boundary as lunar data.
 - `terrain` owns terrain source manifests and turns checked source fixtures

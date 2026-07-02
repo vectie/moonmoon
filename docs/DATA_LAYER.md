@@ -100,14 +100,15 @@ stale compatibility layers.
    - Do not move robot fields into `data_core`, `data_store`, or
      `data_validate`.
    - Done when one command against a data root shows model count, episode
-     count, telemetry stream count, validation status, source ids, quality
-     evidence, and blockers.
+     count, telemetry stream count, gait clip count, validation status, source
+     ids, quality evidence, and blockers.
 
 4. Migrate robot data one dataset family at a time.
    - Status: started for model packages, episode signal frames, replay
-     artifacts, quality reports, and standalone telemetry streams.
-   - Next families must be selected one at a time: gait clips, richer replay
-     artifacts, richer telemetry streams, or deeper quality reports.
+     artifacts, quality reports, standalone telemetry streams, and gait clips.
+   - Next families must be selected one at a time: richer replay artifacts,
+     richer telemetry streams, deeper quality reports, or higher-level gait
+     annotations.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
      `src/robot_catalog`, and a CLI command only when it materializes or reads a
      true data-root boundary.
@@ -344,12 +345,12 @@ and push.
 
 5. Add the robot-data landing contract after the lunar catalog path is clean.
    - Status: done for the pure domain landing contract: `src/robot_data`
-     maps models, episodes, signals, replay artifacts, telemetry streams, and
-     quality reports onto `data_core`.
+     maps models, episodes, signals, replay artifacts, telemetry streams, gait
+     clips, and quality reports onto `data_core`.
    - Why: robot migration needs a general layer, not a lunar-shaped layer.
    - Code target: define the minimal `robot_data` mapping for episodes, frames,
-     signals, model refs, replay artifacts, telemetry streams, and quality
-     reports on top of `data_core`.
+     signals, model refs, replay artifacts, telemetry streams, gait clips, and
+     quality reports on top of `data_core`.
    - Done when: robot data can enter through `DataRef`, `DatasetManifest`,
      `DatasetVersion`, lineage, store, and validation without importing lunar
      packages.
@@ -372,10 +373,13 @@ and push.
      and cataloged robot quality validation reports. Standalone telemetry
      streams now have their own `robot-telemetry-stream` dataset kind through
      `data ingest-robot-telemetry`, and `data robot-telemetry-json` reads the
-     stream dossier back from the same data root.
+     stream dossier back from the same data root. Gait clips now have their own
+     `robot-gait-clip` dataset kind through `data ingest-robot-gait-clip`, and
+     `data robot-gait-clip-json` reads the clip dossier back from the same data
+     root.
    - The compact `data robot-readiness-json` read path now summarizes whether a
-     robot root has the minimum model, episode, signal, quality, and telemetry
-     evidence to continue migration.
+     robot root has the minimum model, episode, signal, quality, telemetry, and
+     gait evidence to continue migration.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.
@@ -444,9 +448,10 @@ Implementation:
 1. Add `src/robot_data` as a pure domain package over `data_core`.
    - Status: done.
 2. Map robot episodes, frames, signals, robot model refs, replay artifacts,
-   telemetry streams, and quality reports onto `data_core` refs and manifests.
+   telemetry streams, gait clips, and quality reports onto `data_core` refs and
+   manifests.
    - Status: done for the first contract surface, including standalone
-     telemetry stream manifests.
+     telemetry stream and gait clip manifests.
 3. Keep URDF, telemetry, gait clips, and replay semantics in `robot_data`, not
    `data_core`.
    - Status: done for the boundary guard; future migration can add more

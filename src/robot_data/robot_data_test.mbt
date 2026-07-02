@@ -120,6 +120,54 @@ test "robot episode maps to generic dataset version and lineage" {
 }
 
 ///|
+test "robot gait clip maps to generic dataset version and lineage" {
+  let gait_payload = @robot_data.robot_gait_clip_payload_ref(
+    "walk-cycle",
+    24,
+    1.2,
+    @robot_data.robot_payload_ref(
+      "robot-alpha-gait-walk-cycle",
+      "robot-gait-clip",
+      "payloads/robot_data/robot-alpha/gait/walk-cycle.json",
+      "application/json",
+      1024L,
+      sha("aaaabbbbccccdddd"),
+    ),
+  )
+  let clip = @robot_data.robot_gait_clip_manifest(
+    "gait-robot-alpha-walk",
+    "robot-alpha",
+    "source-robot-alpha-gait-walk",
+    "Robot Alpha walk gait",
+    "https://example.invalid/robot-alpha/gait/walk",
+    @data_core.DataStatus::Verified,
+    40L,
+    [fixture_model()],
+    [gait_payload],
+    "Robot Alpha walk gait clip.",
+  )
+  let source = @robot_data.robot_gait_clip_data_source(clip)
+  assert_eq(source.source_id, "source-robot-alpha-gait-walk")
+  assert_eq(source.source_refs.length(), 1)
+  let dataset = @robot_data.robot_gait_clip_dataset(clip)
+  assert_eq(dataset.dataset_id, "gait-robot-alpha-walk")
+  assert_eq(dataset.kind, "robot-gait-clip")
+  assert_eq(dataset.source_ids.length(), 2)
+  assert_eq(dataset.data_refs.length(), 2)
+  assert_eq(dataset.data_refs[1].kind, "robot-gait-clip")
+  let version = @robot_data.robot_gait_clip_version(
+    clip, "gait-robot-alpha-walk-v1",
+  )
+  assert_eq(version.dataset_id, dataset.dataset_id)
+  assert_eq(version.data_refs.length(), dataset.data_refs.length())
+  let lineage = @robot_data.robot_gait_clip_lineage(
+    clip, "lineage-gait-robot-alpha-walk",
+  )
+  assert_eq(lineage.root_artifact.artifact_id, dataset.dataset_id)
+  assert_eq(lineage.edges.length(), 2)
+}
+
+///|
 test "robot quality report projects to generic validation report" {
   let episode_artifact = @data_core.artifact_ref(
     "dataset", "episode-robot-alpha-1", "datasets/episode-robot-alpha-1.json",

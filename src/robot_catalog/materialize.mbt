@@ -199,6 +199,45 @@ fn write_telemetry_streams(
 }
 
 ///|
+fn write_gait_clips(
+  root : String,
+  clips : Array[@robot_data.RobotGaitClipManifest],
+) -> Result[Unit, @data_store.DataStoreIssue] {
+  for clip in clips {
+    match
+      @data_store.write_source(
+        root,
+        @robot_data.robot_gait_clip_data_source(clip),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset(root, @robot_data.robot_gait_clip_dataset(clip)) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset_version(
+        root,
+        @robot_data.robot_gait_clip_version(clip, "\{clip.clip_id}-v1"),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_lineage_manifest(
+        root,
+        @robot_data.robot_gait_clip_lineage(clip, "lineage-\{clip.clip_id}"),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+  }
+  Ok(())
+}
+
+///|
 fn write_quality_reports(
   root : String,
   reports : Array[@robot_data.RobotQualityReport],
@@ -238,6 +277,10 @@ pub fn materialize_robot_catalog_bundle(
     Ok(_) => ()
     Err(error) => return Err(error)
   }
+  match write_gait_clips(root, bundle.gait_clips) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
   match write_quality_reports(root, bundle.quality_reports) {
     Ok(_) => ()
     Err(error) => return Err(error)
@@ -259,11 +302,20 @@ pub fn materialize_robot_catalog_bundle(
     root,
     catalog_path: validation.catalog_path,
     validation_report_path: validation.report_path,
-    source_count: bundle.models.length() + bundle.telemetry_streams.length(),
-    dataset_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
-    version_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
-    lineage_count: bundle.episodes.length() + bundle.telemetry_streams.length(),
+    source_count: bundle.models.length() +
+    bundle.telemetry_streams.length() +
+    bundle.gait_clips.length(),
+    dataset_count: bundle.episodes.length() +
+    bundle.telemetry_streams.length() +
+    bundle.gait_clips.length(),
+    version_count: bundle.episodes.length() +
+    bundle.telemetry_streams.length() +
+    bundle.gait_clips.length(),
+    lineage_count: bundle.episodes.length() +
+    bundle.telemetry_streams.length() +
+    bundle.gait_clips.length(),
     telemetry_stream_count: bundle.telemetry_streams.length(),
+    gait_clip_count: bundle.gait_clips.length(),
     quality_report_count: bundle.quality_reports.length(),
     catalog_entry_count: catalog.entries.length(),
     validation_status: validation.status,

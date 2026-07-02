@@ -51,6 +51,11 @@ fn telemetry_payload_body() -> String {
 }
 
 ///|
+fn gait_payload_body() -> String {
+  "{\"clip\":\"walk\",\"frames\":[{\"phase\":\"left-stance\"}]}"
+}
+
+///|
 fn model_ref() -> @robot_data.RobotModelRef {
   @robot_data.robot_model_ref(
     "model-alpha-v1",
@@ -430,6 +435,7 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(root_dossier.model_count, 1)
   assert_eq(root_dossier.episode_count, 1)
   assert_eq(root_dossier.telemetry_stream_count, 0)
+  assert_eq(root_dossier.gait_clip_count, 0)
   assert_eq(root_dossier.data_ref_count, 7)
   assert_true(root_dossier.model_ids.contains("episode-alpha-model"))
   assert_true(root_dossier.episode_ids.contains("episode-alpha-1"))
@@ -449,10 +455,12 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(readiness.model_count, 1)
   assert_eq(readiness.episode_count, 1)
   assert_eq(readiness.telemetry_stream_count, 0)
+  assert_eq(readiness.gait_clip_count, 0)
   assert_eq(readiness.signal_ref_count, 2)
   assert_eq(readiness.replay_ref_count, 1)
   assert_eq(readiness.quality_ref_count, 1)
   assert_eq(readiness.telemetry_ref_count, 0)
+  assert_eq(readiness.gait_ref_count, 0)
   assert_eq(readiness.data_ref_count, 7)
   assert_eq(readiness.validation_artifact.artifact_id, "validation-901")
   assert_eq(
@@ -490,14 +498,59 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(ready_root.model_count, 1)
   assert_eq(ready_root.episode_count, 1)
   assert_eq(ready_root.telemetry_stream_count, 1)
+  assert_eq(ready_root.gait_clip_count, 0)
   assert_eq(ready_root.data_ref_count, 9)
   assert_eq(ready_root.validation_artifact.artifact_id, "validation-902")
   let ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
-  assert_eq(ready.status, "ready")
-  assert_true(ready.ready)
+  assert_eq(ready.status, "needs-evidence")
+  assert_true(!ready.ready)
   assert_eq(ready.telemetry_stream_count, 1)
   assert_eq(ready.telemetry_ref_count, 2)
   assert_eq(ready.data_ref_count, 9)
+  assert_eq(
+    ready.next_action,
+    "migrate a robot gait clip into the generic data root",
+  )
+  let gait_input = "target/robot-catalog-tests/episode-gait-input"
+  ensure_test_dir(gait_input)
+  @fsx.write_string_to_file(gait_input + "/walk.json", gait_payload_body()) catch {
+    _ => fail("failed to write episode gait payload")
+  }
+  @fsx.write_string_to_file(
+    gait_input + "/footfalls.csv",
+    "time,foot,phase\n0,left,stance\n",
+  ) catch {
+    _ => fail("failed to write episode gait footfalls payload")
+  }
+  ignore(
+    @robot_catalog.import_robot_gait_clip_directory(
+      @robot_catalog.robot_gait_clip_directory_import_request(
+        root,
+        gait_input,
+        "gait-alpha-walk",
+        "robot-alpha",
+        "episode-alpha-model",
+        903L,
+        source_label="Alpha gait fixture",
+      ),
+    ).unwrap(),
+  )
+  let gait_ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(
+    root,
+  ).unwrap()
+  assert_eq(gait_ready_root.model_count, 1)
+  assert_eq(gait_ready_root.episode_count, 1)
+  assert_eq(gait_ready_root.telemetry_stream_count, 1)
+  assert_eq(gait_ready_root.gait_clip_count, 1)
+  assert_eq(gait_ready_root.data_ref_count, 12)
+  assert_true(gait_ready_root.gait_clip_ids.contains("gait-alpha-walk"))
+  assert_eq(gait_ready_root.validation_artifact.artifact_id, "validation-903")
+  let gait_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(gait_ready.status, "ready")
+  assert_true(gait_ready.ready)
+  assert_eq(gait_ready.gait_clip_count, 1)
+  assert_eq(gait_ready.gait_ref_count, 2)
+  assert_eq(gait_ready.data_ref_count, 12)
 }
 
 ///|
@@ -557,6 +610,7 @@ test "robot telemetry directory import creates standalone stream dataset" {
   assert_eq(root_dossier.model_count, 0)
   assert_eq(root_dossier.episode_count, 0)
   assert_eq(root_dossier.telemetry_stream_count, 1)
+  assert_eq(root_dossier.gait_clip_count, 0)
   assert_eq(root_dossier.data_ref_count, 2)
   assert_true(root_dossier.telemetry_stream_ids.contains("telemetry-alpha-1"))
   assert_eq(root_dossier.telemetry_dossiers.length(), 1)
@@ -565,7 +619,92 @@ test "robot telemetry directory import creates standalone stream dataset" {
   assert_true(!readiness.ready)
   assert_eq(readiness.telemetry_stream_count, 1)
   assert_eq(readiness.telemetry_ref_count, 2)
+  assert_eq(readiness.gait_clip_count, 0)
+  assert_eq(readiness.gait_ref_count, 0)
   assert_eq(readiness.next_action, "import a robot model package")
+}
+
+///|
+test "robot gait clip directory import creates standalone clip dataset" {
+  let root = root_path("gait-clip-directory-import")
+  reset_robot_catalog_root(root)
+  let model_input = "target/robot-catalog-tests/gait-model-input"
+  let gait_input = "target/robot-catalog-tests/gait-payload-input"
+  ensure_test_dir("target")
+  ensure_test_dir("target/robot-catalog-tests")
+  ensure_test_dir(model_input)
+  ensure_test_dir(gait_input)
+  @fsx.write_string_to_file(
+    model_input + "/robot.urdf",
+    "<robot name=\"alpha\"><link name=\"base_link\"/></robot>",
+  ) catch {
+    _ => fail("failed to write gait model urdf")
+  }
+  ignore(
+    @robot_catalog.import_robot_model_package(
+      @robot_catalog.robot_model_package_import_request(
+        root, model_input, "gait-alpha-model", "robot-alpha", 950L,
+      ),
+    ).unwrap(),
+  )
+  @fsx.write_string_to_file(gait_input + "/walk.json", gait_payload_body()) catch {
+    _ => fail("failed to write gait walk payload")
+  }
+  @fsx.write_string_to_file(
+    gait_input + "/footfalls.csv",
+    "time,foot,phase\n0,left,stance\n",
+  ) catch {
+    _ => fail("failed to write gait footfalls payload")
+  }
+  let result = @robot_catalog.import_robot_gait_clip_directory(
+    @robot_catalog.robot_gait_clip_directory_import_request(
+      root,
+      gait_input,
+      "gait-alpha-walk",
+      "robot-alpha",
+      "gait-alpha-model",
+      951L,
+      source_label="Alpha gait fixture",
+    ),
+  ).unwrap()
+  assert_eq(result.payload_count, 2)
+  assert_eq(result.gait_clip.clip_id, "gait-alpha-walk")
+  assert_eq(result.materialization.source_count, 1)
+  assert_eq(result.materialization.dataset_count, 1)
+  assert_eq(result.materialization.gait_clip_count, 1)
+  assert_eq(result.materialization.blocker_count, 0)
+  assert_eq(result.materialization.warning_count, 0)
+  assert_true(
+    result.materialization.validation_status ==
+    @data_core.ValidationStatus::Passed,
+  )
+  let dataset = @data_store.read_dataset(root, "gait-alpha-walk").unwrap()
+  assert_eq(dataset.kind, "robot-gait-clip")
+  assert_eq(dataset.data_refs.length(), 3)
+  assert_eq(dataset.data_refs[1].kind, "robot-gait-clip")
+  let mut has_footfalls = false
+  for data_ref in dataset.data_refs {
+    if data_ref.uri.contains("/gait_clips/gait-alpha-walk/footfalls.csv") {
+      has_footfalls = true
+    }
+  }
+  assert_true(has_footfalls)
+  let dossier = @robot_catalog.robot_gait_clip_catalog_dossier_from_root(
+    root, "gait-alpha-walk",
+  ).unwrap()
+  assert_eq(dossier.clip_id, "gait-alpha-walk")
+  assert_eq(dossier.dataset.kind, "robot-gait-clip")
+  assert_eq(dossier.gait_ref_count, 2)
+  assert_eq(dossier.model_ref_count, 1)
+  assert_eq(dossier.data_ref_count, 3)
+  assert_eq(dossier.gait_ref_uris.length(), 2)
+  assert_eq(dossier.validation_artifact.artifact_id, "validation-951")
+  assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
+  let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
+  assert_eq(root_dossier.model_count, 1)
+  assert_eq(root_dossier.gait_clip_count, 1)
+  assert_true(root_dossier.gait_clip_ids.contains("gait-alpha-walk"))
+  assert_eq(root_dossier.gait_clip_dossiers.length(), 1)
 }
 
 ///|
