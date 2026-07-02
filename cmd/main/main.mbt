@@ -16,6 +16,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- mission terrain json
     #|  moon run cmd/main -- mission energy
     #|  moon run cmd/main -- mission energy json
+    #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
     #|  moon run cmd/main -- ui html
@@ -24,11 +25,35 @@ fn print_help() -> Unit {
 }
 
 ///|
+fn arg_after(
+  args : Array[String],
+  marker : String,
+  fallback : String,
+) -> String {
+  for index in 0..<args.length() {
+    if args[index] == marker && index + 1 < args.length() {
+      return args[index + 1]
+    }
+  }
+  fallback
+}
+
+///|
+fn print_layout(args : Array[String]) -> Unit {
+  let root = arg_after(args, "layout", ".")
+  let book_id = arg_after(args, root, "<book-id>")
+  let home = @moonmoon.moonsuite_product_home_for_workspace_root(root, book_id~)
+  println(home.to_json().stringify(indent=2))
+}
+
+///|
 fn main {
   let args = @env.args()
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("layout") {
+    print_layout(args)
   } else if args.contains("kernel") {
     if output_json {
       println(@kernel.system_kernel_json().stringify(indent=2))

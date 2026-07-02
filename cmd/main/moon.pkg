@@ -1,10 +1,12 @@
 import {
+  "vectie/moonmoon",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/terrain",
   "vectie/moonmoon/src/ui",
   "moonbitlang/core/env",
+  "moonbitlang/core/json",
 }
 
 options(
