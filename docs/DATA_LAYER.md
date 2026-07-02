@@ -85,6 +85,9 @@ stale compatibility layers.
      count, episode count, validation status, source ids, and blockers.
 
 2. Migrate the next robot dataset family only after the summary exists.
+   - Status: started for replay artifacts: robot episode directory imports now
+     accept a `replays/` subdirectory, store replay payloads as `robot-replay`
+     refs, and expose replay counts/URIs in the episode dossier.
    - Pick one family at a time: replay artifacts, telemetry streams, gait clips,
      or quality reports.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
@@ -330,7 +333,9 @@ and push.
      signal-frame payloads, a robot episode dataset, a version, and lineage;
      `data robot-episode-json` reads that episode evidence back from the
      catalog. The root-level `data robot-json` command now summarizes all
-     cataloged robot model and episode dossiers in one read-side view.
+     cataloged robot model and episode dossiers in one read-side view. Replay
+     artifacts are now part of the episode import/read side through a
+     `replays/` source subdirectory and cataloged `robot-replay` refs.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.

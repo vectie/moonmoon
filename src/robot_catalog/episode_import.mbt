@@ -19,6 +19,14 @@ pub(all) struct ImportedRobotEpisodeSignal {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct ImportedRobotEpisodeReplay {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  replay : @robot_data.RobotReplayArtifact
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RobotEpisodeDirectoryImportResult {
   root : String
   source_dir : String
@@ -27,8 +35,10 @@ pub(all) struct RobotEpisodeDirectoryImportResult {
   robot_id : @robot_data.RobotId
   model_id : @robot_data.RobotModelId
   signal_count : Int
+  replay_count : Int
   episode : @robot_data.RobotEpisodeManifest
   signals : Array[ImportedRobotEpisodeSignal]
+  replays : Array[ImportedRobotEpisodeReplay]
   materialization : RobotCatalogMaterialization
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -103,6 +113,35 @@ fn episode_source_files(
 }
 
 ///|
+fn episode_replay_files(
+  source_dir : String,
+) -> Result[Array[(String, String)], @data_store.DataStoreIssue] {
+  let replay_dir = join(source_dir, "replays")
+  if !@fsx.path_exists(replay_dir) {
+    return Ok([])
+  }
+  let names = match read_sorted_names(replay_dir) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let files : Array[(String, String)] = []
+  for name in names {
+    if !@data_core.data_relative_path_is_safe(name) {
+      return Err(
+        import_issue(
+          "unsafe-robot-replay-path", name, "robot replay source contains an unsafe relative path",
+        ),
+      )
+    }
+    let path = join(replay_dir, name)
+    if !is_directory(path) {
+      files.push((path, name))
+    }
+  }
+  Ok(files)
+}
+
+///|
 fn episode_payload_data_ref(
   dataset_id : @data_core.DatasetId,
   relative_path : String,
@@ -112,6 +151,27 @@ fn episode_payload_data_ref(
   @data_core.data_ref(
     "robot-episode-\{safe_ref_segment(dataset_id)}-\{safe_ref_segment(relative_path)}",
     "robot-signal-frame",
+    @data_core.data_uri(payload_path),
+    content_type=if relative_path.has_suffix(".json") {
+      "application/json"
+    } else {
+      "text/plain"
+    },
+    byte_count=body.length().to_int64(),
+    checksum=text_sum(body),
+  )
+}
+
+///|
+fn replay_payload_data_ref(
+  dataset_id : @data_core.DatasetId,
+  relative_path : String,
+  body : String,
+) -> @data_core.DataRef {
+  let payload_path = "payloads/robot_data/episodes/\{dataset_id}/replays/\{relative_path}"
+  @data_core.data_ref(
+    "robot-replay-\{safe_ref_segment(dataset_id)}-\{safe_ref_segment(relative_path)}",
+    "robot-replay",
     @data_core.data_uri(payload_path),
     content_type=if relative_path.has_suffix(".json") {
       "application/json"
@@ -232,6 +292,10 @@ pub fn import_robot_episode_directory(
       ),
     )
   }
+  let replay_files = match episode_replay_files(request.source_dir) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
   let signals : Array[ImportedRobotEpisodeSignal] = []
   for index in 0..<files.length() {
     let (source_path, relative_path) = files[index]
@@ -266,6 +330,37 @@ pub fn import_robot_episode_directory(
     )
     signals.push({ source_path, relative_path, payload_path, signal })
   }
+  let replays : Array[ImportedRobotEpisodeReplay] = []
+  for index in 0..<replay_files.length() {
+    let (source_path, relative_path) = replay_files[index]
+    let body = @fsx.read_file_to_string(source_path) catch {
+      _ =>
+        return Err(
+          import_issue(
+            "read-robot-replay-payload", source_path, "failed to read robot replay payload as text",
+          ),
+        )
+    }
+    let data_ref = replay_payload_data_ref(
+      request.dataset_id,
+      relative_path,
+      body,
+    )
+    let payload_path = match stage_text_data_ref(request.root, data_ref, body) {
+      Ok(value) => value
+      Err(error) => return Err(error)
+    }
+    let payload = match payload_from_data_ref(data_ref) {
+      Ok(value) => value
+      Err(error) => return Err(error)
+    }
+    let replay = @robot_data.robot_replay_artifact(
+      "replay-\{safe_ref_segment(request.dataset_id)}-\{index}",
+      "robot-replay",
+      payload,
+    )
+    replays.push({ source_path, relative_path, payload_path, replay })
+  }
   let episode = @robot_data.robot_episode_manifest(
     request.episode_id,
     request.robot_id,
@@ -275,7 +370,7 @@ pub fn import_robot_episode_directory(
     signals.length(),
     [model],
     signals.map(fn(signal) { signal.signal }),
-    [],
+    replays.map(fn(replay) { replay.replay }),
     [],
     request.source_label,
   )
@@ -304,8 +399,10 @@ pub fn import_robot_episode_directory(
     robot_id: request.robot_id,
     model_id: request.model_id,
     signal_count: signals.length(),
+    replay_count: replays.length(),
     episode,
     signals,
+    replays,
     materialization: {
       root: request.root,
       catalog_path: validation.catalog_path,

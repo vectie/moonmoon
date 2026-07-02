@@ -314,11 +314,13 @@ test "robot episode directory import uses cataloged model evidence" {
   reset_robot_catalog_root(root)
   let model_input = "target/robot-catalog-tests/episode-model-input"
   let episode_input = "target/robot-catalog-tests/episode-payload-input"
+  let replay_input = episode_input + "/replays"
   ensure_test_dir("target")
   ensure_test_dir("target/robot-catalog-tests")
   ensure_test_dir(model_input)
   ensure_test_dir(model_input + "/meshes")
   ensure_test_dir(episode_input)
+  ensure_test_dir(replay_input)
   @fsx.write_string_to_file(
     model_input + "/robot.urdf",
     "<robot name=\"alpha\"><link name=\"base_link\"/></robot>",
@@ -347,6 +349,12 @@ test "robot episode directory import uses cataloged model evidence" {
   ) catch {
     _ => fail("failed to write episode frame 2")
   }
+  @fsx.write_string_to_file(
+    replay_input + "/replay-0001.json",
+    "{\"replay\":[\"frame-0001\",\"frame-0002\"]}",
+  ) catch {
+    _ => fail("failed to write episode replay")
+  }
   let result = @robot_catalog.import_robot_episode_directory(
     @robot_catalog.robot_episode_directory_import_request(
       root,
@@ -360,6 +368,7 @@ test "robot episode directory import uses cataloged model evidence" {
     ),
   ).unwrap()
   assert_eq(result.signal_count, 2)
+  assert_eq(result.replay_count, 1)
   assert_eq(result.episode.frame_count, 2)
   assert_eq(
     result.episode.model_refs[0].source_id,
@@ -373,9 +382,14 @@ test "robot episode directory import uses cataloged model evidence" {
   )
   let dataset = @data_store.read_dataset(root, "episode-alpha-1").unwrap()
   assert_eq(dataset.kind, "robot-episode")
-  assert_eq(dataset.data_refs.length(), 3)
+  assert_eq(dataset.data_refs.length(), 4)
   assert_true(
     dataset.data_refs[1].uri.contains("/episodes/episode-alpha-dataset/"),
+  )
+  assert_true(
+    dataset.data_refs[3].uri.contains(
+      "/episodes/episode-alpha-dataset/replays/",
+    ),
   )
   let dossier = @robot_catalog.robot_episode_catalog_dossier_from_root(
     root, "episode-alpha-1",
@@ -383,14 +397,16 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(dossier.episode_id, "episode-alpha-1")
   assert_eq(dossier.dataset.kind, "robot-episode")
   assert_eq(dossier.signal_ref_count, 2)
+  assert_eq(dossier.replay_ref_count, 1)
   assert_eq(dossier.model_ref_uris.length(), 1)
+  assert_eq(dossier.replay_ref_uris.length(), 1)
   assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
   assert_eq(dossier.blocker_count, 0)
   assert_eq(dossier.warning_count, 0)
   let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
   assert_eq(root_dossier.model_count, 1)
   assert_eq(root_dossier.episode_count, 1)
-  assert_eq(root_dossier.data_ref_count, 5)
+  assert_eq(root_dossier.data_ref_count, 6)
   assert_true(root_dossier.model_ids.contains("episode-alpha-model"))
   assert_true(root_dossier.episode_ids.contains("episode-alpha-1"))
   assert_true(

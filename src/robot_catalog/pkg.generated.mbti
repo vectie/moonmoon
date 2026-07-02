@@ -33,6 +33,13 @@ pub fn stage_robot_payload_text(String, @robot_data.RobotPayloadRef, String) -> 
 // Errors
 
 // Types and methods
+pub(all) struct ImportedRobotEpisodeReplay {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  replay : @robot_data.RobotReplayArtifact
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct ImportedRobotEpisodeSignal {
   source_path : String
   relative_path : String
@@ -102,9 +109,11 @@ pub(all) struct RobotEpisodeCatalogDossier {
   warning_count : Int
   data_ref_count : Int
   signal_ref_count : Int
+  replay_ref_count : Int
   data_ref_uris : Array[String]
   model_ref_uris : Array[String]
   signal_ref_uris : Array[String]
+  replay_ref_uris : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotEpisodeDirectoryImportRequest {
@@ -126,8 +135,10 @@ pub(all) struct RobotEpisodeDirectoryImportResult {
   robot_id : String
   model_id : String
   signal_count : Int
+  replay_count : Int
   episode : @robot_data.RobotEpisodeManifest
   signals : Array[ImportedRobotEpisodeSignal]
+  replays : Array[ImportedRobotEpisodeReplay]
   materialization : RobotCatalogMaterialization
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

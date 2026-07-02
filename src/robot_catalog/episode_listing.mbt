@@ -15,9 +15,11 @@ pub(all) struct RobotEpisodeCatalogDossier {
   warning_count : Int
   data_ref_count : Int
   signal_ref_count : Int
+  replay_ref_count : Int
   data_ref_uris : Array[String]
   model_ref_uris : Array[String]
   signal_ref_uris : Array[String]
+  replay_ref_uris : Array[String]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -113,6 +115,7 @@ pub fn robot_episode_catalog_dossier_from_root(
   }
   let model_refs = refs_of_kind(dataset.data_refs, "urdf")
   let signal_refs = refs_of_kind(dataset.data_refs, "robot-signal-frame")
+  let replay_refs = refs_of_kind(dataset.data_refs, "robot-replay")
   Ok({
     root,
     episode_id,
@@ -129,8 +132,10 @@ pub fn robot_episode_catalog_dossier_from_root(
     warning_count: warning_count(report),
     data_ref_count: dataset.data_refs.length(),
     signal_ref_count: signal_refs.length(),
+    replay_ref_count: replay_refs.length(),
     data_ref_uris: data_ref_uris(dataset.data_refs),
     model_ref_uris: data_ref_uris(model_refs),
     signal_ref_uris: data_ref_uris(signal_refs),
+    replay_ref_uris: data_ref_uris(replay_refs),
   })
 }
