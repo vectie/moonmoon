@@ -47,6 +47,189 @@ robot_data     -> data_core
 `data_core` must stay dependency-light. A package that only needs `DataRef` or
 `ArtifactRef` should not import filesystem access or validation policy.
 
+## Execution Plan
+
+This is the current build order. Each phase should stay small enough to review,
+but large enough to move a real boundary instead of adding thin compatibility
+code.
+
+### Phase 1: Generic Data Contracts
+
+Status: done.
+
+Goal: define a domain-neutral vocabulary for data identity, provenance,
+payload refs, versions, catalogs, lineage, and validation reports.
+
+Implementation:
+
+1. Add `src/data_core`.
+2. Define `DataRef`, `ArtifactRef`, `DataSource`, `DatasetManifest`,
+   `DatasetVersion`, `DataCatalog`, `LineageManifest`, and
+   `ValidationReport`.
+3. Add `data://` URI helpers and relative-path safety checks.
+4. Add JSON round-trip and boundary tests.
+5. Commit and push before adding filesystem behavior.
+
+Exit criteria:
+
+- `data_core` imports no Moonmoon domain packages.
+- `data_core` contains no lunar, robot, UI, telemetry, or runtime-control
+  vocabulary.
+- Tests prove stable refs, catalog refs, lineage refs, and validation reports.
+
+### Phase 2: Generic Data Store
+
+Status: done.
+
+Goal: create the local persistence boundary for the generic contracts.
+
+Implementation:
+
+1. Add `src/data_store`.
+2. Own the data-root layout and path helpers.
+3. Read and write generic JSON manifests.
+4. Rebuild `indexes/catalog.json` from stored manifests.
+5. Return typed store issues for missing or malformed files.
+6. Commit and push before adding validation policy.
+
+Exit criteria:
+
+- `data_store` imports `data_core` and filesystem APIs only.
+- Store tests prove root initialization, read/write, catalog rebuild, and typed
+  missing-file failures.
+- No lunar or robot concept appears in store code.
+
+### Phase 3: Generic Data Validation
+
+Status: done.
+
+Goal: certify a data root without importing any domain model.
+
+Implementation:
+
+1. Add `src/data_validate`.
+2. Check catalog freshness, manifest uniqueness, safe `data://` refs, local
+   payload presence, byte counts, supported checksums, and lineage refs.
+3. Store validation reports through `data_store`.
+4. Keep unsupported checksum kinds as warnings unless they block correctness.
+5. Commit and push before adding lunar products.
+
+Exit criteria:
+
+- `data_validate` imports only `data_core`, `data_store`, JSON, and filesystem
+  APIs.
+- Tests cover valid roots, unsafe refs, missing payloads, duplicate artifacts,
+  checksum mismatch, stale catalogs, and broken lineage.
+- Validation output is itself catalogable.
+
+### Phase 4: Lunar Data Layer
+
+Status: next.
+
+Goal: move Moon-specific source records into a domain layer while projecting
+their generic identities through `data_core`.
+
+Implementation:
+
+1. Add `src/lunar_data`.
+2. Define lunar-only contracts for coverage, coordinate frame, product
+   selection, extraction windows, source review status, and tile manifests.
+3. Add first LOLA source records for the first trusted square.
+4. Add first SPICE or ephemeris source records for the same site.
+5. Expose generic `DataSource`, `DatasetManifest`, and `DataRef` projections
+   for those records.
+6. Add boundary tests proving `lunar_data` depends on `data_core` but not
+   `data_store`, `data_validate`, robot packages, UI packages, or old dataset
+   compatibility code.
+7. Commit and push after tests pass.
+
+Exit criteria:
+
+- LOLA and ephemeris evidence can be listed as generic data sources and
+  datasets.
+- Lunar-specific fields stay in `lunar_data`, not in `data_core`.
+- Existing first trusted square behavior still passes tests.
+
+### Phase 5: Catalog-Backed First Trusted Square
+
+Status: queued after Phase 4.
+
+Goal: make the first trusted square read its source authority from the generic
+catalog instead of from a standalone first-site manifest shape.
+
+Implementation:
+
+1. Write the lunar source and dataset manifests into the generic data root.
+2. Rebuild and validate the catalog.
+3. Add a small query path that lists source authority, payload refs, coverage,
+   and validation state for the first trusted square.
+4. Shrink `src/dataset` into either a compatibility wrapper or a focused lunar
+   projection facade.
+5. Remove stale per-feature checks that duplicate `data_validate`.
+6. Commit and push after the UI and mission tests still pass.
+
+Exit criteria:
+
+- The first trusted square can explain which LOLA and ephemeris records it is
+  using through the catalog.
+- `src/dataset` no longer owns generic data-layer concepts.
+- No stale Python or per-feature check script remains for data integrity that
+  belongs in MoonBit validation.
+
+### Phase 6: Robot Data Landing Zone
+
+Status: queued after the Moonmoon catalog is proven.
+
+Goal: prepare a general data layer that can accept robot data quickly without
+copying lunar concepts.
+
+Implementation:
+
+1. Add `future src/robot_data` only when the first robot migration begins.
+2. Map robot episodes, frames, signals, robot model refs, replay artifacts, and
+   quality reports onto `data_core` refs and manifests.
+3. Keep URDF, telemetry, gait clips, and replay semantics in `robot_data`, not
+   `data_core`.
+4. Decide whether existing `moondata://` refs become a domain alias or migrate
+   to `data://`.
+5. Add a migration script or command only at the data-root boundary.
+6. Commit and push each migrated robot dataset family separately.
+
+Exit criteria:
+
+- Robot data can share refs, manifests, cataloging, lineage, storage, and
+  validation with lunar data.
+- Robot-specific data remains outside standalone lunar packages.
+- The migration path does not require Moonmoon to import Moonrobo packages.
+
+### Phase 7: Product Loop
+
+Status: continuous.
+
+Goal: keep every data-layer phase visible in the product instead of building an
+unused backend.
+
+Implementation:
+
+1. Keep the live Moon view first: global lunar landscape, zoom into selected
+   site, and show source-backed evidence.
+2. Connect catalog entries to UI evidence labels only after the underlying
+   manifests validate.
+3. Keep operator-facing blockers tied to data validation, terrain gates, power
+   windows, and review status.
+4. Add higher-resolution lunar products only after the first site is cataloged
+   and movable in the UI.
+5. Commit and push any user-visible milestone with screenshots or generated
+   artifacts kept out of source control unless they are true source fixtures.
+
+Exit criteria:
+
+- The user can see why the product is about the Moon before deep simulation is
+  complete.
+- New data sources improve a visible path: terrain, lighting, site confidence,
+  route review, or future robot migration.
+- The root directory stays clean and generated output remains ignored.
+
 ## Data Root Shape
 
 The first generic root should stay small:
