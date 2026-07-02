@@ -75,6 +75,8 @@ highest-leverage boundary moves first, keeps robot migration generic, and avoids
 stale compatibility layers.
 
 1. Finish the robot catalog read side.
+   - Status: done for the first root-level read side: `src/robot_catalog`
+     exposes a combined root dossier and `cmd/main` exposes `data robot-json`.
    - Build one root-level robot dossier command that summarizes imported robot
      model packages and episode datasets from the generic data root.
    - Keep the summary in `src/robot_catalog`; do not move robot fields into
@@ -327,7 +329,8 @@ and push.
      directory can be imported against a cataloged model and stored as
      signal-frame payloads, a robot episode dataset, a version, and lineage;
      `data robot-episode-json` reads that episode evidence back from the
-     catalog.
+     catalog. The root-level `data robot-json` command now summarizes all
+     cataloged robot model and episode dossiers in one read-side view.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.

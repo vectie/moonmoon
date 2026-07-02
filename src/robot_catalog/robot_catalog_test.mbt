@@ -221,8 +221,34 @@ fn ensure_test_dir(path : String) -> Unit {
 }
 
 ///|
+fn remove_files(dir : String) -> Unit {
+  if !@fsx.path_exists(dir) {
+    return
+  }
+  let names = @fsx.read_dir(dir) catch { _ => return }
+  for name in names {
+    let path = dir + "/\{name}"
+    @fsx.remove_file(path) catch {
+      _ => ()
+    }
+  }
+}
+
+///|
+fn reset_robot_catalog_root(root : String) -> Unit {
+  remove_files(root + "/sources")
+  remove_files(root + "/datasets")
+  remove_files(root + "/versions")
+  remove_files(root + "/artifacts")
+  remove_files(root + "/lineage")
+  remove_files(root + "/validations")
+  remove_files(root + "/indexes")
+}
+
+///|
 test "robot model package import stages payloads into generic data root" {
   let root = root_path("model-package-import")
+  reset_robot_catalog_root(root)
   let input = "target/robot-catalog-tests/model-package-input"
   ensure_test_dir("target")
   ensure_test_dir("target/robot-catalog-tests")
@@ -285,6 +311,7 @@ test "robot model package import stages payloads into generic data root" {
 ///|
 test "robot episode directory import uses cataloged model evidence" {
   let root = root_path("episode-directory-import")
+  reset_robot_catalog_root(root)
   let model_input = "target/robot-catalog-tests/episode-model-input"
   let episode_input = "target/robot-catalog-tests/episode-payload-input"
   ensure_test_dir("target")
@@ -360,6 +387,21 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
   assert_eq(dossier.blocker_count, 0)
   assert_eq(dossier.warning_count, 0)
+  let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
+  assert_eq(root_dossier.model_count, 1)
+  assert_eq(root_dossier.episode_count, 1)
+  assert_eq(root_dossier.data_ref_count, 5)
+  assert_true(root_dossier.model_ids.contains("episode-alpha-model"))
+  assert_true(root_dossier.episode_ids.contains("episode-alpha-1"))
+  assert_true(
+    root_dossier.source_ids.contains("source-robot-model-episode-alpha-model"),
+  )
+  assert_eq(root_dossier.source_ids.length(), 1)
+  assert_true(
+    root_dossier.validation_status == @data_core.ValidationStatus::Passed,
+  )
+  assert_eq(root_dossier.blocker_count, 0)
+  assert_eq(root_dossier.warning_count, 0)
 }
 
 ///|
