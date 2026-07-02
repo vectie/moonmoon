@@ -34,6 +34,8 @@ pub fn robot_payload_data_ref(RobotPayloadRef) -> @data_core.DataRef
 
 pub fn robot_payload_ref(String, String, String, String, Int64, String) -> RobotPayloadRef
 
+pub fn robot_payload_ref_with_checksum(String, String, String, String, Int64, @data_core.DeclaredChecksum) -> RobotPayloadRef
+
 pub fn robot_quality_report(String, String, @data_core.ValidationStatus, Int64, Int, Int, findings? : Array[@data_core.ValidationFinding]) -> RobotQualityReport
 
 pub fn robot_quality_report_ref(RobotQualityReport, RobotPayloadRef) -> @data_core.ArtifactRef
@@ -81,7 +83,7 @@ pub(all) struct RobotPayloadRef {
   path : String
   content_type : String
   byte_count : Int64
-  sha256 : String
+  checksum : @data_core.DeclaredChecksum
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotQualityReport {

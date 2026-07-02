@@ -283,6 +283,76 @@ test "robot model package import stages payloads into generic data root" {
 }
 
 ///|
+test "robot episode directory import uses cataloged model evidence" {
+  let root = root_path("episode-directory-import")
+  let model_input = "target/robot-catalog-tests/episode-model-input"
+  let episode_input = "target/robot-catalog-tests/episode-payload-input"
+  ensure_test_dir("target")
+  ensure_test_dir("target/robot-catalog-tests")
+  ensure_test_dir(model_input)
+  ensure_test_dir(model_input + "/meshes")
+  ensure_test_dir(episode_input)
+  @fsx.write_string_to_file(
+    model_input + "/robot.urdf",
+    "<robot name=\"alpha\"><link name=\"base_link\"/></robot>",
+  ) catch {
+    _ => fail("failed to write episode model urdf")
+  }
+  @fsx.write_string_to_file(model_input + "/meshes/base.stl", "solid base\n") catch {
+    _ => fail("failed to write episode model mesh")
+  }
+  ignore(
+    @robot_catalog.import_robot_model_package(
+      @robot_catalog.robot_model_package_import_request(
+        root, model_input, "episode-alpha-model", "robot-alpha", 900L,
+      ),
+    ).unwrap(),
+  )
+  @fsx.write_string_to_file(
+    episode_input + "/frame-0001.json",
+    "{\"joint\":\"hip\",\"position\":0.1}",
+  ) catch {
+    _ => fail("failed to write episode frame 1")
+  }
+  @fsx.write_string_to_file(
+    episode_input + "/frame-0002.json",
+    "{\"joint\":\"knee\",\"position\":0.2}",
+  ) catch {
+    _ => fail("failed to write episode frame 2")
+  }
+  let result = @robot_catalog.import_robot_episode_directory(
+    @robot_catalog.robot_episode_directory_import_request(
+      root,
+      episode_input,
+      "episode-alpha-dataset",
+      "episode-alpha-1",
+      "robot-alpha",
+      "episode-alpha-model",
+      901L,
+      source_label="Alpha episode fixture",
+    ),
+  ).unwrap()
+  assert_eq(result.signal_count, 2)
+  assert_eq(result.episode.frame_count, 2)
+  assert_eq(
+    result.episode.model_refs[0].source_id,
+    "source-robot-model-episode-alpha-model",
+  )
+  assert_eq(result.materialization.blocker_count, 0)
+  assert_eq(result.materialization.warning_count, 0)
+  assert_true(
+    result.materialization.validation_status ==
+    @data_core.ValidationStatus::Passed,
+  )
+  let dataset = @data_store.read_dataset(root, "episode-alpha-1").unwrap()
+  assert_eq(dataset.kind, "robot-episode")
+  assert_eq(dataset.data_refs.length(), 3)
+  assert_true(
+    dataset.data_refs[1].uri.contains("/episodes/episode-alpha-dataset/"),
+  )
+}
+
+///|
 test "robot model package import rejects unsafe model ids" {
   let input = "target/robot-catalog-tests/model-package-unsafe-input"
   ensure_test_dir("target")

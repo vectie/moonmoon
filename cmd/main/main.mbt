@@ -19,6 +19,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
     #|  moon run cmd/main -- data ingest-robot-model [data-root] [source-dir] [model-id] [robot-id] [json]
+    #|  moon run cmd/main -- data ingest-robot-episode [data-root] [source-dir] [dataset-id] [episode-id] [robot-id] [model-id] [json]
     #|  moon run cmd/main -- data robot-model-json [data-root] [model-id]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
@@ -106,6 +107,36 @@ fn data_robot_model_json_id(args : Array[String]) -> String {
 }
 
 ///|
+fn data_robot_episode_root(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 1, "target/data-roots/robot-episode")
+}
+
+///|
+fn data_robot_episode_source_dir(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 2, "data/robot_episodes/input")
+}
+
+///|
+fn data_robot_episode_dataset_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 3, "robot-episode-dataset")
+}
+
+///|
+fn data_robot_episode_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 4, "robot-episode")
+}
+
+///|
+fn data_robot_episode_robot_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 5, "robot")
+}
+
+///|
+fn data_robot_episode_model_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-episode", 6, "robot-model")
+}
+
+///|
 fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
   let root = data_ingest_root(args)
   match @lunar_catalog.ingest_first_trusted_square_catalog(root, 1L) {
@@ -182,6 +213,52 @@ fn print_data_robot_model_ingest(
 }
 
 ///|
+fn print_data_robot_episode_ingest(
+  args : Array[String],
+  output_json : Bool,
+) -> Unit {
+  let root = data_robot_episode_root(args)
+  let source_dir = data_robot_episode_source_dir(args)
+  let dataset_id = data_robot_episode_dataset_id(args)
+  let episode_id = data_robot_episode_id(args)
+  let robot_id = data_robot_episode_robot_id(args)
+  let model_id = data_robot_episode_model_id(args)
+  match
+    @robot_catalog.import_robot_episode_directory(
+      @robot_catalog.robot_episode_directory_import_request(
+        root, source_dir, dataset_id, episode_id, robot_id, model_id, 1L,
+      ),
+    ) {
+    Ok(result) =>
+      if output_json {
+        println(result.to_json().stringify(indent=2))
+      } else {
+        let materialization = result.materialization
+        println("Moonmoon robot episode data ingest")
+        println("- root: \{materialization.root}")
+        println("- source: \{result.source_dir}")
+        println("- episode: \{result.episode_id}")
+        println("- signals: \{result.signal_count}")
+        println("- catalog: \{materialization.catalog_path}")
+        println(
+          "- validation: \{@data_core.validation_status_label(materialization.validation_status)}",
+        )
+        println("- blockers: \{materialization.blocker_count}")
+        println("- warnings: \{materialization.warning_count}")
+      }
+    Err(error) =>
+      if output_json {
+        println(error.to_json().stringify(indent=2))
+      } else {
+        println("Moonmoon robot episode ingest failed")
+        println("- code: \{error.code}")
+        println("- path: \{error.path}")
+        println("- message: \{error.message}")
+      }
+  }
+}
+
+///|
 fn print_data_robot_model_json(args : Array[String]) -> Unit {
   let root = data_robot_model_json_root(args)
   let model_id = data_robot_model_json_id(args)
@@ -206,6 +283,8 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("ingest-robot-episode") {
+    print_data_robot_episode_ingest(args, output_json)
   } else if args.contains("data") && args.contains("robot-model-json") {
     print_data_robot_model_json(args)
   } else if args.contains("data") && args.contains("ingest-robot-model") {
