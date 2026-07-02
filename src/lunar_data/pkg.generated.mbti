@@ -1,0 +1,155 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/lunar_data"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+}
+
+// Values
+pub fn first_trusted_square_ephemeris_dataset() -> @data_core.DatasetManifest
+
+pub fn first_trusted_square_ephemeris_source() -> @data_core.DataSource
+
+pub fn first_trusted_square_ephemeris_source_candidate() -> LunarSourceCandidate
+
+pub fn first_trusted_square_ephemeris_window() -> LunarEphemerisWindow
+
+pub fn first_trusted_square_lola_dataset() -> @data_core.DatasetManifest
+
+pub fn first_trusted_square_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_lola_product_selection() -> LunarProductSelection
+
+pub fn first_trusted_square_lola_source() -> @data_core.DataSource
+
+pub fn first_trusted_square_lola_source_candidate() -> LunarSourceCandidate
+
+pub fn first_trusted_square_lunar_datasets() -> Array[@data_core.DatasetManifest]
+
+pub fn first_trusted_square_lunar_source_candidates() -> Array[LunarSourceCandidate]
+
+pub fn first_trusted_square_lunar_sources() -> Array[@data_core.DataSource]
+
+pub fn first_trusted_square_tile_manifest() -> LunarTileManifest
+
+pub fn lro_lola_south_pole_frame() -> LunarCoordinateFrame
+
+pub fn lunar_coverage(Double, Double, Double, Double, Double, Double, Double, body? : String) -> LunarCoverage
+
+pub fn lunar_review_status_label(LunarReviewStatus) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct LunarCoordinateFrame {
+  frame_id : String
+  body : String
+  datum : String
+  projection : String
+  radius_reference_m : Double
+  notes : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarCoverage {
+  body : String
+  south_deg : Double
+  north_deg : Double
+  west_deg : Double
+  east_deg : Double
+  center_lat_deg : Double
+  center_lon_deg : Double
+  resolution_m : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarEphemerisWindow {
+  window_id : String
+  source_id : String
+  output_path : String
+  output_sha256 : String
+  output_bytes : Int64
+  coverage : LunarCoverage
+  time_basis : String
+  review_status : LunarReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarExtractionCandidate {
+  extraction_id : String
+  selection_id : String
+  generated_by : String
+  output_path : String
+  output_sha256 : String
+  output_bytes : Int64
+  tile_id : String
+  coverage : LunarCoverage
+  source_row_start : Int
+  source_col_start : Int
+  rows : Int
+  cols : Int
+  cell_size_m : Double
+  value_unit : String
+  claim_kind : String
+  review_status : LunarReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarProductSelection {
+  selection_id : String
+  source_id : String
+  product_id : String
+  product_lid : String
+  image_url : String
+  label_url : String
+  local_label_path : String
+  label_sha256 : String
+  label_bytes : Int64
+  image_bytes : Int64
+  coordinate_frame : LunarCoordinateFrame
+  coverage : LunarCoverage
+  lines : Int
+  samples : Int
+  data_type : String
+  unit : String
+  value_offset_km : Double
+  selection_reason : String
+  review_status : LunarReviewStatus
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum LunarReviewStatus {
+  AcceptedForSoftwareProof
+  NeedsSourceUpgrade
+  NeedsHumanReview
+  Rejected
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarSourceCandidate {
+  source_id : String
+  title : String
+  body : String
+  mission : String
+  instrument : String
+  product_family : String
+  authority : String
+  official_source_url : String
+  access_url : String
+  local_source_directory : String
+  intended_use : String
+  review_status : LunarReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarTileManifest {
+  tile_id : String
+  terrain_dataset_id : String
+  ephemeris_dataset_id : String
+  coverage : LunarCoverage
+  terrain_extraction_id : String
+  ephemeris_window_id : String
+  review_status : LunarReviewStatus
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
