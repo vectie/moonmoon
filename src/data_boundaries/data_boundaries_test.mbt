@@ -27,6 +27,13 @@ fn data_core_files() -> Array[String] {
 }
 
 ///|
+fn data_store_files() -> Array[String] {
+  [
+    "src/data_store/moon.pkg", "src/data_store/store.mbt", "src/data_store/catalog_rebuild.mbt",
+  ]
+}
+
+///|
 test "data_core stays domain neutral and filesystem free" {
   let forbidden = [
     "lunar", "Lunar", "Moon", "LOLA", "SPICE", "crater", "robot", "Robot", "URDF",
@@ -37,5 +44,28 @@ test "data_core stays domain neutral and filesystem free" {
     for term in forbidden {
       assert_not_contains(text, term, path)
     }
+  }
+}
+
+///|
+test "data_store depends only on data_core and filesystem" {
+  let forbidden = [
+    "lunar", "Lunar", "Moon", "LOLA", "SPICE", "crater", "robot", "Robot", "URDF",
+    "telemetry", "bridge", "\"vectie/moonmoon/src/core", "\"vectie/moonmoon/src/dataset",
+    "\"vectie/moonmoon/src/terrain", "\"vectie/moonmoon/src/mission", "\"vectie/moonmoon/src/site",
+    "\"vectie/moonmoon/src/ui", "\"vectie/moonmoon/src/data_validate",
+  ]
+  for path in data_store_files() {
+    let text = read_text(path)
+    for term in forbidden {
+      assert_not_contains(text, term, path)
+    }
+  }
+  let manifest = read_text("src/data_store/moon.pkg")
+  if !manifest.contains("\"vectie/moonmoon/src/data_core\"") {
+    fail("data_store must import data_core")
+  }
+  if !manifest.contains("\"moonbitlang/x/fs\"") {
+    fail("data_store must own the filesystem boundary")
   }
 }

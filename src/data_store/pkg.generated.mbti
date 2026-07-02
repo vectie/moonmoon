@@ -1,0 +1,88 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/data_store"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+}
+
+// Values
+pub fn artifact_path(String, String) -> String
+
+pub fn catalog_path(String) -> String
+
+pub fn dataset_path(String, String) -> String
+
+pub fn dataset_version_path(String, String) -> String
+
+pub fn initialize_root(String) -> Result[DataStoreInit, DataStoreIssue]
+
+pub fn lineage_path(String, String) -> String
+
+pub fn read_artifact_ref(String, String) -> Result[@data_core.ArtifactRef, DataStoreIssue]
+
+pub fn read_catalog(String) -> Result[@data_core.DataCatalog, DataStoreIssue]
+
+pub fn read_dataset(String, String) -> Result[@data_core.DatasetManifest, DataStoreIssue]
+
+pub fn read_dataset_version(String, String) -> Result[@data_core.DatasetVersion, DataStoreIssue]
+
+pub fn read_lineage_manifest(String, String) -> Result[@data_core.LineageManifest, DataStoreIssue]
+
+pub fn read_source(String, String) -> Result[@data_core.DataSource, DataStoreIssue]
+
+pub fn read_validation_report(String, String) -> Result[@data_core.ValidationReport, DataStoreIssue]
+
+pub fn rebuild_catalog(String, Int64) -> Result[CatalogRebuild, DataStoreIssue]
+
+pub fn source_path(String, String) -> String
+
+pub fn validation_report_path(String, String) -> String
+
+pub fn write_artifact_ref(String, @data_core.ArtifactRef) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_catalog(String, @data_core.DataCatalog) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_dataset(String, @data_core.DatasetManifest) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_dataset_version(String, @data_core.DatasetVersion) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_lineage_manifest(String, @data_core.LineageManifest) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_source(String, @data_core.DataSource) -> Result[PersistedManifest, DataStoreIssue]
+
+pub fn write_validation_report(String, @data_core.ValidationReport) -> Result[PersistedManifest, DataStoreIssue]
+
+// Errors
+
+// Types and methods
+pub(all) struct CatalogRebuild {
+  root : String
+  catalog_path : String
+  generated_at_ms : Int64
+  entry_count : Int
+  catalog : @data_core.DataCatalog
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DataStoreInit {
+  root : String
+  created_dir_count : Int
+  directories : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DataStoreIssue {
+  code : String
+  path : String
+  message : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PersistedManifest {
+  artifact_kind : String
+  artifact_id : String
+  path : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
