@@ -37,7 +37,7 @@ src/site_catalog
   Product evidence adapter: replaces static first-site catalog claims with
   SiteDossier evidence read from a materialized generic data root.
 
-future src/robot_data
+src/robot_data
   Robot domain layer: episodes, frames, signals, robot models, replay/export
   projections, telemetry-specific quality.
 ```
@@ -249,6 +249,9 @@ and push.
      MoonBit package tests and `data_validate` reports.
 
 5. Add the robot-data landing contract after the lunar catalog path is clean.
+   - Status: done for the pure domain landing contract: `src/robot_data`
+     maps models, episodes, signals, replay artifacts, and quality reports
+     onto `data_core`.
    - Why: robot migration needs a general layer, not a lunar-shaped layer.
    - Code target: define the minimal `robot_data` mapping for episodes, frames,
      signals, model refs, replay artifacts, and quality reports on top of
@@ -312,18 +315,24 @@ Commit rhythm:
 
 ### Phase 6: Robot Data Landing Zone
 
-Status: queued after the Moonmoon catalog is proven.
+Status: in progress. The pure `src/robot_data` landing contract is in place;
+stored migration commands are still queued until the first robot dataset family
+is selected.
 
 Goal: prepare a general data layer that can accept robot data quickly without
 copying lunar concepts.
 
 Implementation:
 
-1. Add `future src/robot_data` only when the first robot migration begins.
+1. Add `src/robot_data` as a pure domain package over `data_core`.
+   - Status: done.
 2. Map robot episodes, frames, signals, robot model refs, replay artifacts, and
    quality reports onto `data_core` refs and manifests.
+   - Status: done for the first contract surface.
 3. Keep URDF, telemetry, gait clips, and replay semantics in `robot_data`, not
    `data_core`.
+   - Status: done for the boundary guard; future migration can add more
+     robot-specific fields here without touching generic packages.
 4. Decide whether existing `moondata://` refs become a domain alias or migrate
    to `data://`.
 5. Add a migration script or command only at the data-root boundary.

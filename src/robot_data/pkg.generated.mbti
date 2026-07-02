@@ -1,0 +1,121 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/robot_data"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+}
+
+// Values
+pub fn robot_episode_data_refs(RobotEpisodeManifest) -> Array[@data_core.DataRef]
+
+pub fn robot_episode_dataset(RobotEpisodeManifest) -> @data_core.DatasetManifest
+
+pub fn robot_episode_lineage(RobotEpisodeManifest, String) -> @data_core.LineageManifest
+
+pub fn robot_episode_manifest(String, String, String, @data_core.DataStatus, Int64, Int, Array[RobotModelRef], Array[RobotSignalRef], Array[RobotReplayArtifact], Array[RobotPayloadRef], String) -> RobotEpisodeManifest
+
+pub fn robot_episode_source_ids(RobotEpisodeManifest) -> Array[String]
+
+pub fn robot_episode_version(RobotEpisodeManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
+
+pub fn robot_model_data_source(RobotModelRef) -> @data_core.DataSource
+
+pub fn robot_model_ref(String, String, String, String, String, String, String, String, String, Int64, RobotPayloadRef) -> RobotModelRef
+
+pub fn robot_payload_data_ref(RobotPayloadRef) -> @data_core.DataRef
+
+pub fn robot_payload_ref(String, String, String, String, Int64, String) -> RobotPayloadRef
+
+pub fn robot_quality_report(String, String, @data_core.ValidationStatus, Int64, Int, Int, findings? : Array[@data_core.ValidationFinding]) -> RobotQualityReport
+
+pub fn robot_quality_report_ref(RobotQualityReport, RobotPayloadRef) -> @data_core.ArtifactRef
+
+pub fn robot_quality_validation_report(String, RobotQualityReport) -> @data_core.ValidationReport
+
+pub fn robot_replay_artifact(String, String, RobotPayloadRef) -> RobotReplayArtifact
+
+pub fn robot_signal_ref(String, String, String, Int, String, RobotPayloadRef) -> RobotSignalRef
+
+// Errors
+
+// Types and methods
+pub(all) struct RobotEpisodeManifest {
+  episode_id : String
+  robot_id : String
+  session_id : String
+  status : @data_core.DataStatus
+  created_at_ms : Int64
+  frame_count : Int
+  model_refs : Array[RobotModelRef]
+  signal_refs : Array[RobotSignalRef]
+  replay_artifacts : Array[RobotReplayArtifact]
+  quality_report_refs : Array[RobotPayloadRef]
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotModelRef {
+  model_id : String
+  robot_id : String
+  source_id : String
+  label : String
+  model_kind : String
+  authority : String
+  source_url : String
+  license : String
+  citation : String
+  created_at_ms : Int64
+  payload : RobotPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotPayloadRef {
+  ref_id : String
+  role : String
+  path : String
+  content_type : String
+  byte_count : Int64
+  sha256 : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotQualityReport {
+  report_id : String
+  episode_id : String
+  status : @data_core.ValidationStatus
+  generated_at_ms : Int64
+  accepted_frame_count : Int
+  rejected_frame_count : Int
+  findings : Array[@data_core.ValidationFinding]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotReplayArtifact {
+  artifact_id : String
+  artifact_kind : String
+  payload : RobotPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotSignalRef {
+  signal_id : String
+  frame_id : String
+  channel : String
+  sample_count : Int
+  unit : String
+  payload : RobotPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+pub type RobotEpisodeId = String
+
+pub type RobotId = String
+
+pub type RobotModelId = String
+
+pub type RobotPayloadRefId = String
+
+pub type RobotQualityReportId = String
+
+pub type RobotReplayArtifactId = String
+
+pub type RobotSignalId = String
+
+// Traits

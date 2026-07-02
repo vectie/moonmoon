@@ -75,6 +75,14 @@ fn site_catalog_files() -> Array[String] {
 }
 
 ///|
+fn robot_data_files() -> Array[String] {
+  [
+    "src/robot_data/moon.pkg", "src/robot_data/payload.mbt", "src/robot_data/model.mbt",
+    "src/robot_data/episode.mbt", "src/robot_data/quality.mbt",
+  ]
+}
+
+///|
 test "data_core stays domain neutral and filesystem free" {
   let forbidden = [
     "lunar", "Lunar", "Moon", "LOLA", "SPICE", "crater", "robot", "Robot", "URDF",
@@ -247,5 +255,25 @@ test "lunar_catalog is the only lunar store validate adapter" {
     if !manifest.contains(required) {
       fail("lunar_catalog missing required import " + required)
     }
+  }
+}
+
+///|
+test "robot_data is a pure robot domain projection over data_core" {
+  let forbidden = [
+    "lunar", "Lunar", "Moonrobo", "Noetix", "Rabbita", "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store",
+    "\"vectie/moonmoon/src/data_validate", "\"vectie/moonmoon/src/lunar_data", "\"vectie/moonmoon/src/lunar_catalog",
+    "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/site_catalog", "\"vectie/moonmoon/src/ui",
+    "\"vectie/moonmoon/src/kernel", "\"vectie/moonmoon/src/suite_adapter_preview",
+  ]
+  for path in robot_data_files() {
+    let text = read_text(path)
+    for term in forbidden {
+      assert_not_contains(text, term, path)
+    }
+  }
+  let manifest = read_text("src/robot_data/moon.pkg")
+  if !manifest.contains("\"vectie/moonmoon/src/data_core\"") {
+    fail("robot_data must project records through data_core")
   }
 }

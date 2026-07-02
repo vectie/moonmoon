@@ -1,0 +1,4 @@
+import {
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+}
