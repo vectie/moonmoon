@@ -24,8 +24,9 @@
 ## Next
 
 - Continue the evidence-backed movable Moon view from Phase 2 of
-  `docs/STEP_BY_STEP_PLAN.md`: improve the current standalone globe with
-  stronger source-backed terrain texture and browser-verified viewport framing.
+  `docs/STEP_BY_STEP_PLAN.md`: keep the current standalone globe/runtime check
+  green, then add browser-verified viewport framing and stronger global terrain
+  source products.
 - Tighten the underlying selected-route evidence around terrain, illumination,
   energy, and operator review until the clearance decision can move from block
   to review or allow.

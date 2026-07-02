@@ -83,7 +83,7 @@ fn moon_view_panel(view : TrustedSquareViewModel) -> String {
   let status = html_escape(view.globe_overlay.status)
   let summary = html_escape(view.globe_overlay.summary)
   let html =
-    $|<section class="moonstage panel" aria-label="operable Moon globe"><div class="moonstage-head"><div><h2>Moon context</h2><b>\{route_id}</b><span>\{source_id}</span></div><strong class="\{status_class(status)}">\{status}</strong></div><div class="moonviewport"><canvas id="moon-globe-canvas" width="960" height="620" data-source="\{source_path}" data-route="\{route_id}"></canvas><div class="moonhud"><span>source \{source_id}</span><span>site \{view.site_latitude_deg}, \{view.site_longitude_deg}</span></div></div><div class="mooncontrols" aria-label="Moon view controls"><button type="button" data-moon-action="focus">focus site</button><button type="button" data-moon-action="reset">reset globe</button><button type="button" data-moon-action="orbit">orbit</button></div><p class="moonclaim">\{summary}</p></section>
+    $|<section class="moonstage panel" aria-label="operable Moon globe"><div class="moonstage-head"><div><h2>Moon context</h2><b>\{route_id}</b><span>\{source_id}</span></div><strong class="\{status_class(status)}">\{status}</strong></div><div class="moonviewport"><canvas id="moon-globe-canvas" width="960" height="620" data-source="\{source_path}" data-route="\{route_id}" data-terrain-texture="lola-dem-elevation-hazard"></canvas><div class="moonhud"><span>source \{source_id}</span><span>LOLA DEM texture + route evidence</span><span>site \{view.site_latitude_deg}, \{view.site_longitude_deg}</span></div></div><div class="mooncontrols" aria-label="Moon view controls"><button type="button" data-moon-action="focus">focus site</button><button type="button" data-moon-action="reset">reset globe</button><button type="button" data-moon-action="orbit">orbit</button></div><p class="moonclaim">\{summary}</p></section>
   html
 }
 
@@ -122,7 +122,7 @@ fn app_styles() -> String {
     #|.moonviewport { min-height: 280px; border: 1px solid rgba(255,255,255,.14); background: radial-gradient(circle at 50% 45%, #1a2025, #06080a 70%); border-radius: 5px; position: relative; overflow: hidden; touch-action: none; }
     #|#moon-globe-canvas { width: 100%; height: 100%; min-height: 280px; display: block; cursor: grab; }
     #|#moon-globe-canvas:active { cursor: grabbing; }
-    #|.moonhud { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; }
+    #|.moonhud { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; flex-wrap: wrap; }
     #|.mooncontrols { display: flex; gap: 8px; flex-wrap: wrap; }
     #|.mooncontrols button { border: 1px solid rgba(255,255,255,.22); color: #f4f1e8; background: rgba(255,255,255,.08); border-radius: 5px; padding: 7px 10px; }
     #|.mooncontrols button:hover { background: rgba(255,255,255,.16); }
@@ -163,6 +163,9 @@ fn moon_globe_script() -> String {
     #|  const view = JSON.parse(modelNode.textContent);
     #|  const ctx = canvas.getContext('2d');
     #|  const overlay = view.globe_overlay;
+    #|  const terrainCells = view.terrain_cells || [];
+    #|  const terrainRows = Math.max(1, view.viewport?.rows || 1);
+    #|  const terrainCols = Math.max(1, view.viewport?.cols || 1);
     #|  const state = {
     #|    centerLat: -58,
     #|    centerLon: view.site_longitude_deg,
@@ -174,6 +177,17 @@ fn moon_globe_script() -> String {
     #|  };
     #|  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
     #|  const rad = deg => deg * Math.PI / 180;
+    #|  const textureStats = terrainCells.reduce((stats, cell) => ({
+    #|    minElevation: Math.min(stats.minElevation, cell.elevation_m),
+    #|    maxElevation: Math.max(stats.maxElevation, cell.elevation_m),
+    #|    maxSlope: Math.max(stats.maxSlope, cell.slope_grade),
+    #|    maxRoughness: Math.max(stats.maxRoughness, cell.roughness_m)
+    #|  }), {
+    #|    minElevation: Number.POSITIVE_INFINITY,
+    #|    maxElevation: Number.NEGATIVE_INFINITY,
+    #|    maxSlope: 0,
+    #|    maxRoughness: 0
+    #|  });
     #|  function resize() {
     #|    const rect = canvas.getBoundingClientRect();
     #|    const dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -193,6 +207,57 @@ fn moon_globe_script() -> String {
     #|    const z = Math.sin(cLat) * Math.sin(latR) + Math.cos(cLat) * Math.cos(latR) * Math.cos(lonR);
     #|    if (z <= -0.04) return null;
     #|    return { x: cx + x * radius, y: cy - y * radius, z };
+    #|  }
+    #|  function terrainBounds() {
+    #|    const lats = overlay.footprint.map(point => point.latitude_deg);
+    #|    const lons = overlay.footprint.map(point => point.longitude_deg);
+    #|    return {
+    #|      south: Math.min(...lats),
+    #|      north: Math.max(...lats),
+    #|      west: Math.min(...lons),
+    #|      east: Math.max(...lons)
+    #|    };
+    #|  }
+    #|  function terrainCellCenter(cell, bounds) {
+    #|    const latStep = (bounds.north - bounds.south) / terrainRows;
+    #|    const lonStep = (bounds.east - bounds.west) / terrainCols;
+    #|    return {
+    #|      latitude_deg: bounds.north - (cell.row + 0.5) * latStep,
+    #|      longitude_deg: bounds.west + (cell.col + 0.5) * lonStep
+    #|    };
+    #|  }
+    #|  function terrainColor(cell) {
+    #|    const range = Math.max(0.001, textureStats.maxElevation - textureStats.minElevation);
+    #|    const elevationT = clamp((cell.elevation_m - textureStats.minElevation) / range, 0, 1);
+    #|    const slopeT = clamp(cell.slope_grade / Math.max(0.001, textureStats.maxSlope), 0, 1);
+    #|    const roughT = clamp(cell.roughness_m / Math.max(0.001, textureStats.maxRoughness), 0, 1);
+    #|    const base = 92 + elevationT * 92;
+    #|    const warm = cell.hazard === 'blocked' ? 28 + slopeT * 54 : 0;
+    #|    const green = base - roughT * 22;
+    #|    const blue = base - slopeT * 34;
+    #|    return `rgba(${Math.round(base + warm)}, ${Math.round(green)}, ${Math.round(blue)}, 0.76)`;
+    #|  }
+    #|  function drawSourceTerrainTexture(radius, cx, cy) {
+    #|    if (!terrainCells.length || !overlay.footprint.length) return;
+    #|    const bounds = terrainBounds();
+    #|    const projectedCells = [];
+    #|    for (const cell of terrainCells) {
+    #|      const center = terrainCellCenter(cell, bounds);
+    #|      const p = project(center.latitude_deg, center.longitude_deg, radius, cx, cy);
+    #|      if (!p) continue;
+    #|      projectedCells.push({ cell, p });
+    #|    }
+    #|    projectedCells.sort((a, b) => a.p.z - b.p.z);
+    #|    for (const entry of projectedCells) {
+    #|      const size = Math.max(2.5, radius * (entry.cell.selected ? 0.026 : 0.017) * clamp(state.zoom, 0.8, 2.4));
+    #|      ctx.beginPath();
+    #|      ctx.arc(entry.p.x, entry.p.y, size, 0, Math.PI * 2);
+    #|      ctx.fillStyle = terrainColor(entry.cell);
+    #|      ctx.fill();
+    #|      ctx.strokeStyle = entry.cell.selected ? '#2dba89' : 'rgba(255,255,255,.22)';
+    #|      ctx.lineWidth = entry.cell.selected ? Math.max(1.5, radius * 0.006) : Math.max(0.8, radius * 0.0025);
+    #|      ctx.stroke();
+    #|    }
     #|  }
     #|  function drawMoon(radius, cx, cy) {
     #|    ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -299,6 +364,7 @@ fn moon_globe_script() -> String {
     #|    const cx = canvas.width * 0.5;
     #|    const cy = canvas.height * 0.52;
     #|    drawMoon(radius, cx, cy);
+    #|    drawSourceTerrainTexture(radius, cx, cy);
     #|    drawOverlay(radius, cx, cy);
     #|  }
     #|  function focusSite() {

@@ -7,6 +7,9 @@ test "standalone Moonmoon UI renders from the MoonBit view model" {
   assert_true(html.contains("moonmoon-motion-contract"))
   assert_true(html.contains("moonmoon-globe-runtime"))
   assert_true(html.contains("moon-globe-canvas"))
+  assert_true(
+    html.contains("data-terrain-texture=\"lola-dem-elevation-hazard\""),
+  )
   assert_true(html.contains("operable Moon globe"))
   assert_true(html.contains("Moon context"))
   assert_true(html.contains("data-moon-action=\"focus\""))
@@ -21,6 +24,9 @@ test "standalone Moonmoon UI renders from the MoonBit view model" {
   assert_true(html.contains("northeast-stepout"))
   assert_true(html.contains("site_latitude_deg"))
   assert_true(html.contains("globe_overlay"))
+  assert_true(html.contains("drawSourceTerrainTexture"))
+  assert_true(html.contains("terrainColor"))
+  assert_true(html.contains("terrain_cells"))
   assert_true(html.contains("site-footprint/ne"))
   assert_true(html.contains("globe-route/northeast-stepout"))
   assert_true(

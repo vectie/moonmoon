@@ -74,9 +74,11 @@ change before traversal is allowed.
 
 Status: started. The standalone operator page now opens with an inline movable
 Moon globe that consumes the existing MoonBit view-model JSON, projects the
-trusted-square footprint, selected route, and corridor windows, and keeps the
-route/grid inspector beside it. Remaining work is stronger source-backed
-terrain texture and browser QA across viewports.
+trusted-square footprint, selected route, corridor windows, and a LOLA-derived
+terrain-cell texture, and keeps the route/grid inspector beside it. The
+generated page is checked by `scripts/check-standalone-ui-runtime.mjs`.
+Remaining work is browser QA across viewports and stronger global terrain
+source products.
 
 Goal: the first viewport should feel like an operable Moon landscape, then let
 the user zoom into the selected site.
@@ -103,6 +105,8 @@ Steps:
    - Check desktop and mobile framing.
    - Verify the canvas is nonblank, the Moon/site are visible, and route
      overlays do not overlap core UI.
+   - Keep `scripts/check-standalone-ui-runtime.mjs` green as the generated HTML
+     runtime boundary.
 
 Done when: the first screen shows a movable Moon context, the user can zoom to
 the trusted square, and visible evidence labels match catalog-backed records.
