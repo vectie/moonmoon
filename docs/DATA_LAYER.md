@@ -68,6 +68,58 @@ This is the current build order. Each phase should stay small enough to review,
 but large enough to move a real boundary instead of adding thin compatibility
 code.
 
+## Immediate Step-by-Step Plan
+
+This is the operating plan for the next implementation passes. It favors the
+highest-leverage boundary moves first, keeps robot migration generic, and avoids
+stale compatibility layers.
+
+1. Finish the robot catalog read side.
+   - Build one root-level robot dossier command that summarizes imported robot
+     model packages and episode datasets from the generic data root.
+   - Keep the summary in `src/robot_catalog`; do not move robot fields into
+     `data_core`, `data_store`, or `data_validate`.
+   - Done when a user can run one command against a data root and see model
+     count, episode count, validation status, source ids, and blockers.
+
+2. Migrate the next robot dataset family only after the summary exists.
+   - Pick one family at a time: replay artifacts, telemetry streams, gait clips,
+     or quality reports.
+   - Add the domain shape in `src/robot_data`, the data-root adapter in
+     `src/robot_catalog`, and one CLI boundary command only if it materializes
+     or reads a true data-root boundary.
+   - Done when that family has catalog entries, lineage, validation, tests, and
+     a scoped commit.
+
+3. Connect visible product labels to validated data.
+   - Keep the live Moon view as the first user-facing surface.
+   - Replace static source/status labels with catalog-backed lunar or robot
+     dossier fields only after the underlying manifests validate.
+   - Done when each new data milestone changes something visible: terrain
+     source, site confidence, route review, lighting authority, or robot
+     migration readiness.
+
+4. Promote real lunar data acquisition boundaries.
+   - Keep download/conversion at explicit boundary commands or asset-prep tools.
+   - Keep validation and product evidence in MoonBit packages.
+   - Done when the first trusted square can name real acquired lunar payloads
+     and explain validation state through the same catalog path used by robot
+     data.
+
+5. Re-check package boundaries before widening scope.
+   - Inspect imports, public `.mbti` changes, tests, scripts, and root files
+     before adding another feature family.
+   - Remove stale compatibility code instead of adapting new work around it.
+   - Done when the next implementation starts from clean dependencies and a
+     small package-local API.
+
+6. Commit and push every completed boundary move.
+   - Run targeted tests first, then `moon check`, full `moon test`,
+     `moon info`, and `moon fmt` for code changes.
+   - For docs-only changes, at minimum review the diff and keep the worktree
+     clean before committing.
+   - Push to the GitHub remote after each scoped commit.
+
 ### Phase 1: Generic Data Contracts
 
 Status: done.
@@ -205,7 +257,7 @@ Current checkpoint:
   remains the data-root validation authority.
 - Remaining cleanup: let product views read catalog-backed evidence directly.
 
-Current step-by-step plan:
+Completed and queued boundary steps:
 
 This is the working order for the next implementation passes. Do the earliest
 unfinished step first unless a user-visible blocker forces a narrower fix. Each
