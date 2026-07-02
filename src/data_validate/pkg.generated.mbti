@@ -1,0 +1,33 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/data_validate"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+  "vectie/moonmoon/src/data_store",
+}
+
+// Values
+pub fn validate_and_write_root(String, Int64) -> Result[StoredValidationResult, @data_store.DataStoreIssue]
+
+pub fn validate_root(String, Int64) -> Result[@data_core.ValidationReport, @data_store.DataStoreIssue]
+
+// Errors
+
+// Types and methods
+pub(all) struct StoredValidationResult {
+  root : String
+  validation_report_id : String
+  report_path : String
+  catalog_path : String
+  status : @data_core.ValidationStatus
+  finding_count : Int
+  blocker_count : Int
+  warning_count : Int
+  report : @data_core.ValidationReport
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
