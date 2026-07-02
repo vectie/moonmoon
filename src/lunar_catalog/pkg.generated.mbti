@@ -1,0 +1,54 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/lunar_catalog"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+  "vectie/moonmoon/src/data_core",
+  "vectie/moonmoon/src/data_store",
+  "vectie/moonmoon/src/lunar_data",
+}
+
+// Values
+pub fn first_trusted_square_catalog_datasets(String) -> Result[Array[CatalogedLunarDataset], @data_store.DataStoreIssue]
+
+pub fn first_trusted_square_catalog_sources(String) -> Result[Array[CatalogedLunarSource], @data_store.DataStoreIssue]
+
+pub fn materialize_first_trusted_square_catalog(String, Int64) -> Result[FirstTrustedSquareCatalogMaterialization, @data_store.DataStoreIssue]
+
+// Errors
+
+// Types and methods
+pub(all) struct CatalogedLunarDataset {
+  dataset_id : String
+  kind : String
+  status : @data_core.DataStatus
+  source_ids : Array[String]
+  data_ref_count : Int
+  data_ref_uris : Array[String]
+  coverage : @lunar_data.LunarCoverage
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CatalogedLunarSource {
+  source_id : String
+  authority : String
+  label : String
+  source_ref_count : Int
+  source_ref_uris : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct FirstTrustedSquareCatalogMaterialization {
+  root : String
+  catalog_path : String
+  validation_report_path : String
+  source_count : Int
+  dataset_count : Int
+  catalog_entry_count : Int
+  validation_status : @data_core.ValidationStatus
+  blocker_count : Int
+  warning_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits

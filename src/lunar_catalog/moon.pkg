@@ -1,0 +1,8 @@
+import {
+  "moonbitlang/core/json",
+  "moonbitlang/x/fs" @fsx,
+  "vectie/moonmoon/src/data_core",
+  "vectie/moonmoon/src/data_store",
+  "vectie/moonmoon/src/data_validate",
+  "vectie/moonmoon/src/lunar_data",
+}

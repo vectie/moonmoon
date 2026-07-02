@@ -8,6 +8,7 @@ data/sources
   -> src/data_store
   -> src/data_validate
   -> src/lunar_data
+  -> src/lunar_catalog
   -> src/dataset
   -> src/terrain
   -> src/mission
@@ -28,6 +29,8 @@ by responsibility, but package imports define the actual dependency graph.
 - `data_validate` will own generic integrity certification.
 - `lunar_data` will own Moon-specific source metadata, coordinate frames,
   product selections, and terrain tile extraction records.
+- `lunar_catalog` materializes lunar records into the generic data root and
+  exposes catalog-backed first-site listings.
 - `dataset` describes source evidence and extraction metadata.
 - `terrain` turns checked source fixtures into terrain metrics.
 - `mission` turns terrain and power evidence into route decisions.

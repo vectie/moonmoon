@@ -29,6 +29,10 @@ src/lunar_data
   Lunar domain layer: LOLA, SPICE, IAU, Diviner, Apollo sample source records,
   terrain tiles, coordinate frames, coverage, resolution, extraction windows.
 
+src/lunar_catalog
+  Lunar data-root adapter: writes lunar records through data_store, validates
+  through data_validate, and lists first-site evidence from the catalog.
+
 future src/robot_data
   Robot domain layer: episodes, frames, signals, robot models, replay/export
   projections, telemetry-specific quality.
@@ -41,6 +45,7 @@ data_core
 data_store     -> data_core
 data_validate  -> data_core + data_store
 lunar_data     -> data_core
+lunar_catalog  -> data_core + data_store + data_validate + lunar_data
 robot_data     -> data_core
 ```
 
@@ -124,7 +129,7 @@ Exit criteria:
 
 ### Phase 4: Lunar Data Layer
 
-Status: next.
+Status: done.
 
 Goal: move Moon-specific source records into a domain layer while projecting
 their generic identities through `data_core`.
@@ -152,21 +157,23 @@ Exit criteria:
 
 ### Phase 5: Catalog-Backed First Trusted Square
 
-Status: queued after Phase 4.
+Status: in progress.
 
 Goal: make the first trusted square read its source authority from the generic
 catalog instead of from a standalone first-site manifest shape.
 
 Implementation:
 
-1. Write the lunar source and dataset manifests into the generic data root.
-2. Rebuild and validate the catalog.
-3. Add a small query path that lists source authority, payload refs, coverage,
+1. Add `src/lunar_catalog` as the lunar store/validate adapter.
+2. Write the lunar source and dataset manifests into the generic data root.
+3. Copy committed first-site payload boundaries into that root.
+4. Rebuild and validate the catalog.
+5. Add a small query path that lists source authority, payload refs, coverage,
    and validation state for the first trusted square.
-4. Shrink `src/dataset` into either a compatibility wrapper or a focused lunar
+6. Shrink `src/dataset` into either a compatibility wrapper or a focused lunar
    projection facade.
-5. Remove stale per-feature checks that duplicate `data_validate`.
-6. Commit and push after the UI and mission tests still pass.
+7. Remove stale per-feature checks that duplicate `data_validate`.
+8. Commit and push after the UI and mission tests still pass.
 
 Exit criteria:
 
