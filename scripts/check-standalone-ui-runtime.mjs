@@ -43,10 +43,17 @@ requireValue(model.selected_route_id === 'northeast-stepout', 'selected route mi
 requireValue(model.globe_overlay?.corridor_windows?.length === 81, 'corridor window count mismatch')
 requireValue(model.terrain_cells?.length === 16, 'terrain cell count mismatch')
 requireValue(model.globe_overlay?.source_dataset_id === 'lro-lola-first-trusted-square-dem-v1', 'source dataset mismatch')
+requireValue(model.terrain_cells.some(cell => cell.selected), 'missing selected terrain cell')
 requireValue(html.includes('data-terrain-texture="lola-dem-elevation-hazard"'), 'missing terrain texture marker')
+requireValue(html.includes(`data-source="${model.globe_overlay.source_path}"`), 'canvas source path mismatch')
+requireValue(html.includes(`data-route="${model.selected_route_id}"`), 'canvas selected route mismatch')
 requireValue(runtimeText.includes('drawSourceTerrainTexture'), 'missing terrain texture renderer')
 requireValue(runtimeText.includes('terrainColor'), 'missing terrain color mapping')
-requireValue(runtimeText.includes('data-moon-action'), 'missing moon controls')
+requireValue(runtimeText.includes('terrainCellCenter'), 'missing terrain projection mapping')
+requireValue(runtimeText.includes('textureStats'), 'missing terrain texture stats')
+
+const controls = [...html.matchAll(/data-moon-action="([^"]+)"/g)].map(match => match[1]).sort()
+requireValue(JSON.stringify(controls) === JSON.stringify(['focus', 'orbit', 'reset']), 'moon controls mismatch')
 
 console.log(
   `Standalone UI runtime check passed: ${model.selected_route_id}, ${model.terrain_cells.length} terrain cells, ${model.globe_overlay.corridor_windows.length} corridor windows`,
