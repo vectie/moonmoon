@@ -17,7 +17,15 @@ pub(all) struct DataRootValidationSummary {
   finding_count : Int
   blocker_count : Int
   warning_count : Int
+  dataset_kind_counts : Array[DataKindCount]
+  data_ref_kind_counts : Array[DataKindCount]
   next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct DataKindCount {
+  kind : String
+  count : Int
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -82,6 +90,39 @@ fn root_validation_report_count(catalog : @data_core.DataCatalog) -> Int {
 }
 
 ///|
+fn increment_kind_count(counts : Array[DataKindCount], kind : String) -> Unit {
+  for index in 0..<counts.length() {
+    if counts[index].kind == kind {
+      counts[index] = { kind, count: counts[index].count + 1 }
+      return
+    }
+  }
+  counts.push({ kind, count: 1 })
+}
+
+///|
+fn add_dataset_kind_counts(
+  root : String,
+  catalog : @data_core.DataCatalog,
+  dataset_kind_counts : Array[DataKindCount],
+  data_ref_kind_counts : Array[DataKindCount],
+) -> Result[Unit, @data_store.DataStoreIssue] {
+  for entry in catalog.entries {
+    if entry.artifact_kind == "dataset" {
+      let dataset = match @data_store.read_dataset(root, entry.artifact_id) {
+        Ok(value) => value
+        Err(error) => return Err(error)
+      }
+      increment_kind_count(dataset_kind_counts, dataset.kind)
+      for data_ref in dataset.data_refs {
+        increment_kind_count(data_ref_kind_counts, data_ref.kind)
+      }
+    }
+  }
+  Ok(())
+}
+
+///|
 pub fn data_root_validation_summary_from_root(
   root : String,
 ) -> Result[DataRootValidationSummary, @data_store.DataStoreIssue] {
@@ -110,6 +151,15 @@ pub fn data_root_validation_summary_from_root(
     report.findings,
     @data_core.FindingSeverity::WarningSeverity,
   )
+  let dataset_kind_counts : Array[DataKindCount] = []
+  let data_ref_kind_counts : Array[DataKindCount] = []
+  match
+    add_dataset_kind_counts(
+      root, catalog, dataset_kind_counts, data_ref_kind_counts,
+    ) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
   let ready = report.status == @data_core.ValidationStatus::Passed &&
     blocker_count == 0
   let status = if ready {
@@ -138,6 +188,8 @@ pub fn data_root_validation_summary_from_root(
     finding_count: @data_core.validation_finding_count(report),
     blocker_count,
     warning_count,
+    dataset_kind_counts,
+    data_ref_kind_counts,
     next_action: if ready {
       "continue domain migration against this validated data root"
     } else {

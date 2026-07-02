@@ -18,6 +18,11 @@ pub fn validate_root(String, Int64) -> Result[@data_core.ValidationReport, @data
 // Errors
 
 // Types and methods
+pub(all) struct DataKindCount {
+  kind : String
+  count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct DataRootValidationSummary {
   root : String
   status : String
@@ -36,6 +41,8 @@ pub(all) struct DataRootValidationSummary {
   finding_count : Int
   blocker_count : Int
   warning_count : Int
+  dataset_kind_counts : Array[DataKindCount]
+  data_ref_kind_counts : Array[DataKindCount]
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

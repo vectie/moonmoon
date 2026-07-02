@@ -74,58 +74,63 @@ This is the operating plan for the next implementation passes. It favors the
 highest-leverage boundary moves first, keeps robot migration generic, and avoids
 stale compatibility layers.
 
-1. Finish the robot catalog read side.
-   - Status: done for the first root-level read side: `src/robot_catalog`
+1. Lock the generic root read side.
+   - Status: in progress. `src/data_validate` exposes a root summary and
+     `cmd/main` exposes `data root-json`.
+   - Current task: make the summary useful for any domain by reporting generic
+     dataset kind counts and payload ref kind counts.
+   - Keep this in `data_validate`; do not add lunar or robot vocabulary.
+   - Done when `data root-json [data-root]` can show what kinds of datasets and
+     payload refs are present before any domain-specific reader exists.
+
+2. Keep the robot catalog read side domain-local.
+   - Status: done for the first root-level read side. `src/robot_catalog`
      exposes a combined root dossier and `cmd/main` exposes `data robot-json`.
-   - Build one root-level robot dossier command that summarizes imported robot
-     model packages and episode datasets from the generic data root.
-   - Keep the summary in `src/robot_catalog`; do not move robot fields into
-     `data_core`, `data_store`, or `data_validate`.
-   - Done when a user can run one command against a data root and see model
-     count, episode count, validation status, source ids, and blockers.
+   - Keep robot counts, readiness, replay evidence, and quality evidence in
+     `src/robot_catalog` and `src/robot_data`.
+   - Do not move robot fields into `data_core`, `data_store`, or
+     `data_validate`.
+   - Done when one command against a data root shows model count, episode
+     count, validation status, source ids, quality evidence, and blockers.
 
-2. Migrate the next robot dataset family only after the summary exists.
-   - Status: started for replay artifacts: robot episode directory imports now
-     accept a `replays/` subdirectory, store replay payloads as `robot-replay`
-     refs, and expose replay counts/URIs in the episode dossier. Quality
-     evidence is now also started: imports accept a `quality/` subdirectory,
-     store `robot-quality-report` payload refs, write robot quality validation
-     reports, and expose quality counts/URIs in the episode dossier.
-   - Pick one family at a time: replay artifacts, telemetry streams, gait clips,
-     or quality reports.
+3. Migrate robot data one dataset family at a time.
+   - Status: started for model packages, episode signal frames, replay
+     artifacts, and quality reports.
+   - Next families must be selected one at a time: telemetry streams, gait
+     clips, richer replay artifacts, or deeper quality reports.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
-     `src/robot_catalog`, and one CLI boundary command only if it materializes
-     or reads a true data-root boundary.
-   - Done when that family has catalog entries, lineage, validation, tests, and
-     a scoped commit.
+     `src/robot_catalog`, and a CLI command only when it materializes or reads a
+     true data-root boundary.
+   - Done when the selected family has catalog entries, lineage, validation,
+     tests, docs, and a scoped commit.
 
-3. Connect visible product labels to validated data.
-   - Status: started for robot migration readiness: `src/robot_catalog` now
-     exposes a compact readiness projection and `cmd/main` exposes
-     `data robot-readiness-json`. Generic data roots can now be inspected with
-     `data root-json` before a lunar or robot domain projection is available.
-   - Keep the live Moon view as the first user-facing surface.
-   - Replace static source/status labels with catalog-backed lunar or robot
-     dossier fields only after the underlying manifests validate.
-   - Done when each new data milestone changes something visible: terrain
-     source, site confidence, route review, lighting authority, or robot
-     migration readiness.
+4. Connect visible product labels to validated data.
+   - Status: started for robot migration readiness through
+     `data robot-readiness-json`; lunar first-site evidence is already
+     catalog-backed through `src/site_catalog`.
+   - Keep the live movable Moon view as the first user-facing surface.
+   - Replace static source/status labels only after the underlying manifests
+     validate.
+   - Done when each data milestone changes something visible: terrain source,
+     site confidence, route review, lighting authority, or robot migration
+     readiness.
 
-4. Promote real lunar data acquisition boundaries.
-   - Keep download/conversion at explicit boundary commands or asset-prep tools.
+5. Promote real lunar data acquisition boundaries.
+   - Keep download and conversion at explicit boundary commands or asset-prep
+     tools.
    - Keep validation and product evidence in MoonBit packages.
    - Done when the first trusted square can name real acquired lunar payloads
      and explain validation state through the same catalog path used by robot
      data.
 
-5. Re-check package boundaries before widening scope.
+6. Re-check package boundaries before widening scope.
    - Inspect imports, public `.mbti` changes, tests, scripts, and root files
      before adding another feature family.
    - Remove stale compatibility code instead of adapting new work around it.
    - Done when the next implementation starts from clean dependencies and a
      small package-local API.
 
-6. Commit and push every completed boundary move.
+7. Commit and push every completed boundary move.
    - Run targeted tests first, then `moon check`, full `moon test`,
      `moon info`, and `moon fmt` for code changes.
    - For docs-only changes, at minimum review the diff and keep the worktree
@@ -187,7 +192,9 @@ Goal: certify a data root without importing any domain model.
 Current read side: `src/data_validate` exposes a compact root validation
 summary, and `cmd/main` exposes it as `data root-json [data-root]`. This summary
 counts generic manifest classes, chooses only `validation-*` reports as root
-validation authority, and still counts auxiliary domain validation reports.
+validation authority, still counts auxiliary domain validation reports, and
+reports dataset/ref kind counts without interpreting those kinds as lunar or
+robot concepts.
 
 Implementation:
 
@@ -614,7 +621,7 @@ Done when:
 ## Step 5: Moonrobo Migration Path
 
 After Moonmoon proves the generic core, Moonrobo can migrate its robot data
-plane without copying lunar concepts.
+layer without copying lunar concepts.
 
 Likely mapping:
 

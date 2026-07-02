@@ -71,6 +71,19 @@ fn has_rule(report : @data_core.ValidationReport, rule_id : String) -> Bool {
 }
 
 ///|
+fn count_for_kind(
+  counts : Array[@data_validate.DataKindCount],
+  kind : String,
+) -> Int {
+  for count in counts {
+    if count.kind == kind {
+      return count.count
+    }
+  }
+  0
+}
+
+///|
 test "data validation passes a cataloged root with checked local payloads" {
   let root = prepare_root("valid")
   let body = "{\"ok\":true}"
@@ -134,6 +147,8 @@ test "data validation passes a cataloged root with checked local payloads" {
   assert_eq(summary.validation_report_count, 2)
   assert_eq(summary.root_validation_report_count, 1)
   assert_eq(summary.auxiliary_validation_report_count, 1)
+  assert_eq(count_for_kind(summary.dataset_kind_counts, "generic"), 1)
+  assert_eq(count_for_kind(summary.data_ref_kind_counts, "json"), 1)
   let catalog = @data_store.read_catalog(root).unwrap()
   assert_true(catalog.entries.length() >= 3)
 }
