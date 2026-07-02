@@ -40,6 +40,22 @@ test "root facade exposes moonsuite product home contract" {
     "/tmp/moonmoon-suite/books/lunar-site/outputs/moonmoon",
   )
   assert_false(suite_home.state_path.contains("books/lunar-site/.moonsuite"))
+  let inferred_home = @moonmoon.moonsuite_product_home_for_workspace_root(
+    book_root,
+  )
+  assert_eq(
+    inferred_home.state_path,
+    "/tmp/moonmoon-suite/.moonsuite/products/moonmoon",
+  )
+  assert_eq(
+    inferred_home.tmp_path,
+    "/tmp/moonmoon-suite/.tmp/products/moonmoon",
+  )
+  assert_eq(
+    inferred_home.accepted_output_path,
+    "/tmp/moonmoon-suite/books/lunar-site/outputs/moonmoon",
+  )
+  assert_false(inferred_home.state_path.contains("books/lunar-site/.moonsuite"))
 }
 
 ///|
