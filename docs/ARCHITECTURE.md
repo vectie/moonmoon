@@ -4,6 +4,10 @@ Moonmoon is organized as a standalone MoonBit module.
 
 ```text
 data/sources
+  -> src/data_core
+  -> src/data_store
+  -> src/data_validate
+  -> src/lunar_data
   -> src/dataset
   -> src/terrain
   -> src/mission
@@ -18,6 +22,12 @@ by responsibility, but package imports define the actual dependency graph.
 ## Boundaries
 
 - `core` has no product policy. It defines reusable lunar data types.
+- `data_core` will define the domain-neutral data contracts: refs, manifests,
+  catalog entries, lineage, checksums, and validation reports.
+- `data_store` will own local persistence for those contracts.
+- `data_validate` will own generic integrity certification.
+- `lunar_data` will own Moon-specific source metadata, coordinate frames,
+  product selections, and terrain tile extraction records.
 - `dataset` describes source evidence and extraction metadata.
 - `terrain` turns checked source fixtures into terrain metrics.
 - `mission` turns terrain and power evidence into route decisions.
@@ -44,6 +54,8 @@ domain packages.
 
 The phased implementation path is documented in
 `docs/LOCOMOTION_PHASE_GUIDANCE.md`.
+
+The general data-layer migration path is documented in `docs/DATA_LAYER.md`.
 
 Generated artifacts belong outside source control. If a future workflow needs
 durable exports, generate them from the CLI into an ignored directory.

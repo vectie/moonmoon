@@ -12,11 +12,16 @@
    Moonphys.
 6. Follow `docs/LOCOMOTION_PHASE_GUIDANCE.md` for the route-motion to robot
    gait adapter phases.
+7. Start the general data-layer migration documented in `docs/DATA_LAYER.md`:
+   `data_core` first, then `data_store`, `data_validate`, and `lunar_data`.
 
 ## Next
 
 - Tighten mission clearance language around terrain, illumination, energy, and
   operator review.
+- Replace the current first-trusted-square-specific `src/dataset` shape with a
+  generic data catalog plus a lunar domain layer, without importing robot or UI
+  concepts into the generic packages.
 - Replace the readable UTC Earthrise shader with a Moon observer model using
   Sun direction, Moon surface location, Earth phase, camera direction, and real
   ephemeris. The current Rabbita Earthrise pass is intentionally brighter for
