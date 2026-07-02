@@ -3,6 +3,7 @@ pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
+  catalog_evidence : Array[SiteCatalogEvidence]
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   source_product_selections : Array[@dataset.SourceProductSelection]
@@ -100,6 +101,7 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       @terrain.validate_grid_source(south_grid),
       @terrain.validate_grid_source(northeast_grid),
     ],
+    catalog_evidence: first_trusted_square_catalog_evidence(),
     source_candidates: @dataset.first_trusted_square_source_candidates(),
     source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
     source_product_selections: @dataset.first_trusted_square_source_product_selections(),
@@ -141,6 +143,15 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - extractor: \{manifest.extractor}\n"
     text += "  - checksum kind: \{@dataset.checksum_kind_label(manifest.checksum_kind)}\n"
     text += "  - checksum: \{manifest.checksum}\n"
+  }
+  text += "\n"
+  text += "## Catalog Evidence\n\n"
+  for evidence in dossier.catalog_evidence {
+    text += "- \{evidence.artifact.artifact_kind}: \{evidence.artifact.artifact_id}\n"
+    text += "  - status: \{@data_core.artifact_ref_status_label(evidence.artifact)}\n"
+    text += "  - authority: \{evidence.authority}\n"
+    text += "  - manifest: \{evidence.artifact.manifest_path}\n"
+    text += "  - refs: \{evidence.ref_uris.length()}\n"
   }
   text += "\n"
   text += "## Source Upgrade Candidates\n\n"

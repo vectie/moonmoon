@@ -82,26 +82,27 @@ pub fn build_lane_label(lane : BuildLane) -> String {
 
 ///|
 fn source_gate(dossier : @site.SiteDossier) -> EvidenceGate {
-  let ready = dossier.validations.length() == dossier.datasets.length()
+  let ready = dossier.validations.length() == dossier.datasets.length() &&
+    dossier.catalog_evidence.length() >= 4
   {
-    gate_id: "source-fixtures-verified",
-    label: "Checked lunar source fixtures back the model",
-    owner_package: "src/dataset + src/terrain",
+    gate_id: "catalog-backed-source-evidence",
+    label: "Cataloged lunar source evidence backs the model",
+    owner_package: "src/data_core + src/lunar_data + src/terrain",
     readiness: if ready {
       Ready
     } else {
       Blocked
     },
-    proof_artifact: "data/sources/lro_lola/",
+    proof_artifact: "indexes/catalog.json + terrain fixture validation",
     blocker: if ready {
       "none"
     } else {
-      "one or more dataset validations failed"
+      "catalog evidence or terrain fixture validation is incomplete"
     },
     next_action: if ready {
-      "keep source data minimal and checksummed"
+      "connect more product labels directly to catalog refs"
     } else {
-      "repair source manifests before changing terrain claims"
+      "repair catalog evidence before changing terrain claims"
     },
   }
 }
@@ -174,11 +175,11 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
     {
       layer_id: "source-registry",
       label: "Source registry",
-      owns: "source manifests, checksums, acquisition notes, extraction candidates",
-      source_contract: "data/sources -> typed MoonBit manifests",
-      current_artifact: "src/dataset/manifest.mbt",
+      owns: "catalog refs, source manifests, checksums, acquisition notes, extraction candidates",
+      source_contract: "lunar_data -> data_core catalog evidence -> product views",
+      current_artifact: "src/site/catalog_evidence.mbt",
       readiness: Ready,
-      next_output: "remove inactive source candidates as the fixture grows",
+      next_output: "route remaining product evidence labels through catalog refs",
     },
     {
       layer_id: "terrain-world",
@@ -211,7 +212,7 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
       layer_id: "site-dossier",
       label: "Site dossier",
       owns: "one inspectable lunar site model assembled from the domain packages",
-      source_contract: "core + dataset + terrain + mission -> SiteDossier",
+      source_contract: "core + data_core + lunar_data + terrain + mission -> SiteDossier",
       current_artifact: "src/site/site.mbt",
       readiness: Ready,
       next_output: "add a second site only after the first site gates are clean",
@@ -229,10 +230,12 @@ fn kernel_layers(dossier : @site.SiteDossier) -> Array[KernelLayer] {
 }
 
 ///|
-fn dataset_ids(dossier : @site.SiteDossier) -> Array[String] {
+fn catalog_artifact_ids(dossier : @site.SiteDossier) -> Array[String] {
   let ids : Array[String] = []
-  for manifest in dossier.datasets {
-    ids.push(manifest.dataset_id)
+  for evidence in dossier.catalog_evidence {
+    ids.push(
+      "\{evidence.artifact.artifact_kind}/\{evidence.artifact.artifact_id}",
+    )
   }
   ids
 }
@@ -252,14 +255,14 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       done_when: "selected route blockers are represented by small MoonBit data structures and tests",
     },
     {
-      task_id: "tighten-source-fixture-generation",
+      task_id: "catalog-backed-product-evidence",
       priority: 80,
       lane: DataLane,
-      title: "Keep source fixtures MoonBit-owned and reproducible without Python checks",
-      outcome: "source data stays under data/sources while generated MoonBit fixtures stay reviewed",
-      depends_on: ["data/sources/lro_lola", "src/terrain"],
-      evidence: dataset_ids(dossier),
-      done_when: "moon test validates the fixture checksums and no tracked output directory is needed",
+      title: "Keep product source evidence wired through catalog refs",
+      outcome: "source labels and authority in the product come from catalog evidence, not standalone fixture constants",
+      depends_on: ["src/data_core", "src/lunar_data", "src/site"],
+      evidence: catalog_artifact_ids(dossier),
+      done_when: "the UI source panel and kernel source gate name catalog artifacts and tests prove the refs",
     },
     {
       task_id: "moonmoon-ui-package",

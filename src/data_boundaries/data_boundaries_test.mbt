@@ -61,6 +61,15 @@ fn dataset_files() -> Array[String] {
 }
 
 ///|
+fn product_evidence_files() -> Array[String] {
+  [
+    "src/site/moon.pkg", "src/site/site.mbt", "src/site/catalog_evidence.mbt", "src/ui/moon.pkg",
+    "src/ui/types.mbt", "src/ui/inspector.mbt", "src/ui/view_model.mbt", "src/kernel/moon.pkg",
+    "src/kernel/kernel.mbt",
+  ]
+}
+
+///|
 test "data_core stays domain neutral and filesystem free" {
   let forbidden = [
     "lunar", "Lunar", "Moon", "LOLA", "SPICE", "crater", "robot", "Robot", "URDF",
@@ -91,6 +100,27 @@ test "dataset is a lunar_data projection not a store validate or ui boundary" {
   let manifest = read_text("src/dataset/moon.pkg")
   if !manifest.contains("\"vectie/moonmoon/src/lunar_data\"") {
     fail("dataset must project migrated first-site evidence from lunar_data")
+  }
+}
+
+///|
+test "product evidence consumes catalog refs without store adapters" {
+  let forbidden = [
+    "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
+    "\"vectie/moonmoon/src/lunar_catalog",
+  ]
+  for path in product_evidence_files() {
+    let text = read_text(path)
+    for term in forbidden {
+      assert_not_contains(text, term, path)
+    }
+  }
+  let site_manifest = read_text("src/site/moon.pkg")
+  if !site_manifest.contains("\"vectie/moonmoon/src/data_core\"") {
+    fail("site must expose catalog evidence through data_core refs")
+  }
+  if !site_manifest.contains("\"vectie/moonmoon/src/lunar_data\"") {
+    fail("site must project catalog evidence from lunar_data")
   }
 }
 

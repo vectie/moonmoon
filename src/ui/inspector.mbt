@@ -1,11 +1,46 @@
 ///|
-fn source_panel(grid : @terrain.TerrainGrid) -> SourcePanel {
+fn source_panel(
+  dossier : @site.SiteDossier,
+  grid : @terrain.TerrainGrid,
+) -> SourcePanel {
   let manifest = grid.source_manifest
+  let catalog = @site.catalog_evidence_for_artifact(
+    dossier,
+    "dataset",
+    manifest.dataset_id,
+  )
   {
     dataset_id: manifest.dataset_id,
+    catalog_artifact_kind: match catalog {
+      Some(evidence) => evidence.artifact.artifact_kind
+      None => ""
+    },
+    catalog_artifact_id: match catalog {
+      Some(evidence) => evidence.artifact.artifact_id
+      None => ""
+    },
+    catalog_manifest_path: match catalog {
+      Some(evidence) => evidence.artifact.manifest_path
+      None => ""
+    },
+    catalog_status: match catalog {
+      Some(evidence) => @data_core.artifact_ref_status_label(evidence.artifact)
+      None => "missing"
+    },
+    authority: match catalog {
+      Some(evidence) => evidence.authority
+      None => ""
+    },
     source_title: manifest.title,
-    source_url: manifest.source_url,
+    source_url: match catalog {
+      Some(evidence) => evidence.source_url
+      None => manifest.source_url
+    },
     local_source_path: manifest.source_path,
+    catalog_ref_uris: match catalog {
+      Some(evidence) => evidence.ref_uris
+      None => []
+    },
     claim: @core.claim_kind_label(manifest.claim_kind),
     review_status: @dataset.review_status_label(manifest.review_status),
     checksum: manifest.checksum,
@@ -84,11 +119,11 @@ fn inspector_facts(
       evidence_path: "ui/first-trusted-square/view-model.json",
     },
     {
-      fact_id: "source-datasets",
-      label: "Source datasets",
-      value: "\{dossier.datasets.length()} checked datasets",
+      fact_id: "catalog-evidence",
+      label: "Catalog evidence",
+      value: "\{dossier.catalog_evidence.length()} catalog artifacts",
       status: "ready",
-      evidence_path: "artifact/operator-review-index.json",
+      evidence_path: "indexes/catalog.json",
     },
     {
       fact_id: "best-corridor-window",

@@ -33,7 +33,7 @@ pub fn from_site_dossier_with_selection(
       selected,
       selected_route_id,
     ),
-    source_panel: source_panel(grid),
+    source_panel: source_panel(dossier, grid),
     scorecard: site_scorecard(dossier, selected_route_id),
     inspector_facts: inspector_facts(
       dossier, selected_route_id, selected_cell_id,

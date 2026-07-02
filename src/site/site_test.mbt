@@ -52,6 +52,26 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     dossier.validations[5].status ==
     @terrain.TerrainFixtureValidationStatus::Verified,
   )
+  assert_eq(dossier.catalog_evidence.length(), 4)
+  assert_eq(dossier.catalog_evidence[0].artifact.artifact_kind, "source")
+  assert_eq(
+    dossier.catalog_evidence[0].artifact.artifact_id,
+    "source-lro-lola-gdr-south-pole-v1",
+  )
+  assert_eq(
+    dossier.catalog_evidence[0].authority,
+    "NASA PDS Geosciences / LRO LOLA",
+  )
+  assert_eq(dossier.catalog_evidence[2].artifact.artifact_kind, "dataset")
+  assert_eq(
+    dossier.catalog_evidence[2].artifact.artifact_id,
+    "lro-lola-first-trusted-square-dem-v1",
+  )
+  assert_eq(
+    dossier.catalog_evidence[2].artifact.manifest_path,
+    "datasets/lro-lola-first-trusted-square-dem-v1.json",
+  )
+  assert_eq(dossier.catalog_evidence[2].ref_uris.length(), 1)
   assert_eq(dossier.source_candidates.length(), 2)
   assert_eq(dossier.source_candidates[0].instrument, "LOLA")
   assert_eq(dossier.source_candidates[1].instrument, "SPICE kernels")
@@ -129,6 +149,16 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("## Source Datasets"))
   assert_true(markdown.contains("authoritative"))
   assert_true(markdown.contains("source sha256"))
+  assert_true(markdown.contains("## Catalog Evidence"))
+  assert_true(markdown.contains("source: source-lro-lola-gdr-south-pole-v1"))
+  assert_true(
+    markdown.contains("dataset: lro-lola-first-trusted-square-dem-v1"),
+  )
+  assert_true(
+    markdown.contains(
+      "manifest: datasets/lro-lola-first-trusted-square-dem-v1.json",
+    ),
+  )
   assert_true(markdown.contains("## Source Upgrade Candidates"))
   assert_true(
     markdown.contains("https://pds-geosciences.wustl.edu/missions/lro/lola.htm"),

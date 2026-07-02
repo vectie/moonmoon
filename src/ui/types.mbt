@@ -178,9 +178,15 @@ pub(all) struct TileInspector {
 ///|
 pub(all) struct SourcePanel {
   dataset_id : String
+  catalog_artifact_kind : String
+  catalog_artifact_id : String
+  catalog_manifest_path : String
+  catalog_status : String
+  authority : String
   source_title : String
   source_url : String
   local_source_path : String
+  catalog_ref_uris : Array[String]
   claim : String
   review_status : String
   checksum : String

@@ -206,7 +206,8 @@ Step-by-step next runbook:
      types, and `src/dataset` has no duplicate validation API.
 
 2. Make product-facing evidence read catalog-backed authority.
-   - Status: next.
+   - Status: done for the site dossier, kernel source gate, and UI source
+     panel; continue widening this pattern as new evidence panels land.
    - Why: the product should explain source authority through the same catalog
      path that future data uses.
    - Code target: route the first trusted square source panel, dataset labels,

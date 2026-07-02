@@ -17,6 +17,8 @@ test "kernel does not depend on generated suite output" {
   assert_true(markdown.contains("MoonBit-native lunar terrain"))
   assert_true(markdown.contains("src/ui/page.mbt"))
   assert_true(markdown.contains("clear-selected-route-blockers"))
+  assert_true(markdown.contains("catalog-backed-product-evidence"))
+  assert_true(markdown.contains("src/site/catalog_evidence.mbt"))
   assert_true(markdown.contains("moonmoon-ui-package"))
   assert_true(!markdown.contains("output/moonbook"))
   assert_true(!markdown.contains("output/moonclaw"))
@@ -29,5 +31,6 @@ test "kernel json exposes compact build queue" {
   let json = @kernel.system_kernel_json().stringify(indent=2)
   assert_true(json.contains("\"kernel_id\": \"moonmoon/kernel/standalone-v1\""))
   assert_true(json.contains("\"build_queue\""))
-  assert_true(json.contains("\"source-fixtures-verified\""))
+  assert_true(json.contains("\"catalog-backed-source-evidence\""))
+  assert_true(json.contains("\"dataset/lro-lola-first-trusted-square-dem-v1\""))
 }

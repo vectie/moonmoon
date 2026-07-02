@@ -33,9 +33,13 @@ pub fn render_markdown(view : TrustedSquareViewModel) -> String {
   }
   text += "\n## Source Panel\n\n"
   text += "- dataset: \{view.source_panel.dataset_id}\n"
+  text += "- catalog: \{view.source_panel.catalog_artifact_kind}/\{view.source_panel.catalog_artifact_id} (\{view.source_panel.catalog_status})\n"
+  text += "- catalog manifest: \{view.source_panel.catalog_manifest_path}\n"
+  text += "- authority: \{view.source_panel.authority}\n"
   text += "- title: \{view.source_panel.source_title}\n"
   text += "- source: \{view.source_panel.source_url}\n"
   text += "- local path: \{view.source_panel.local_source_path}\n"
+  text += "- catalog refs: \{view.source_panel.catalog_ref_uris.length()}\n"
   text += "- claim: \{view.source_panel.claim}\n"
   text += "- review: \{view.source_panel.review_status}\n"
   text += "- checksum: \{view.source_panel.checksum}\n\n"

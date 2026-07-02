@@ -5,12 +5,17 @@ import {
   "moonbitlang/core/debug",
   "moonbitlang/core/json",
   "vectie/moonmoon/src/core",
+  "vectie/moonmoon/src/data_core",
   "vectie/moonmoon/src/dataset",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/terrain",
 }
 
 // Values
+pub fn catalog_evidence_for_artifact(SiteDossier, String, String) -> SiteCatalogEvidence?
+
+pub fn first_trusted_square_catalog_evidence() -> Array[SiteCatalogEvidence]
+
 pub fn first_trusted_square_dossier() -> SiteDossier
 
 pub fn first_trusted_square_json() -> Json
@@ -26,10 +31,20 @@ pub fn render_markdown(SiteDossier) -> String
 // Errors
 
 // Types and methods
+pub(all) struct SiteCatalogEvidence {
+  artifact : @data_core.ArtifactRef
+  authority : String
+  label : String
+  source_url : String
+  ref_uris : Array[String]
+  linked_source_ids : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct SiteDossier {
   site : @core.LunarSite
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
+  catalog_evidence : Array[SiteCatalogEvidence]
   source_candidates : Array[@dataset.SourceCandidate]
   source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
   source_product_selections : Array[@dataset.SourceProductSelection]

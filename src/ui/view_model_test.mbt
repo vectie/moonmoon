@@ -53,6 +53,18 @@ test "first trusted square view model exposes selected tile inspector" {
   )
   assert_true(view.selected_tile.layer_values.length() >= 5)
   assert_eq(view.source_panel.review_status, "accepted-for-software-proof")
+  assert_eq(view.source_panel.catalog_artifact_kind, "dataset")
+  assert_eq(
+    view.source_panel.catalog_artifact_id,
+    "lro-lola-first-trusted-square-dem-v1",
+  )
+  assert_eq(
+    view.source_panel.catalog_manifest_path,
+    "datasets/lro-lola-first-trusted-square-dem-v1.json",
+  )
+  assert_eq(view.source_panel.catalog_status, "verified")
+  assert_eq(view.source_panel.authority, "NASA PDS Geosciences / LRO LOLA")
+  assert_eq(view.source_panel.catalog_ref_uris.length(), 1)
 }
 
 ///|
@@ -97,6 +109,10 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(markdown.contains("northeast-stepout"))
   assert_true(markdown.contains("Power-window evidence"))
   assert_true(markdown.contains("Selected Tile Inspector"))
+  assert_true(
+    markdown.contains("catalog: dataset/lro-lola-first-trusted-square-dem-v1"),
+  )
+  assert_true(markdown.contains("authority: NASA PDS Geosciences / LRO LOLA"))
   assert_true(markdown.contains("Route Overlays"))
   let json = @ui.first_trusted_square_json().stringify(indent=2)
   assert_true(json.contains("terrain_cells"))
@@ -107,5 +123,6 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("corridor_windows"))
   assert_true(json.contains("hardware_authority"))
   assert_true(json.contains("selected_tile"))
+  assert_true(json.contains("catalog_artifact_id"))
   assert_true(json.contains("energy-window"))
 }
