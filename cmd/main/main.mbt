@@ -19,6 +19,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
     #|  moon run cmd/main -- data ingest-robot-model [data-root] [source-dir] [model-id] [robot-id] [json]
+    #|  moon run cmd/main -- data robot-model-json [data-root] [model-id]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
@@ -92,6 +93,16 @@ fn data_robot_model_id(args : Array[String]) -> String {
 ///|
 fn data_robot_id(args : Array[String]) -> String {
   arg_offset(args, "ingest-robot-model", 4, "robot")
+}
+
+///|
+fn data_robot_model_json_root(args : Array[String]) -> String {
+  arg_offset(args, "robot-model-json", 1, "target/data-roots/robot-model")
+}
+
+///|
+fn data_robot_model_json_id(args : Array[String]) -> String {
+  arg_offset(args, "robot-model-json", 2, "robot-model")
 }
 
 ///|
@@ -171,6 +182,16 @@ fn print_data_robot_model_ingest(
 }
 
 ///|
+fn print_data_robot_model_json(args : Array[String]) -> Unit {
+  let root = data_robot_model_json_root(args)
+  let model_id = data_robot_model_json_id(args)
+  match @robot_catalog.robot_model_catalog_dossier_from_root(root, model_id) {
+    Ok(dossier) => println(dossier.to_json().stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn print_data_site_json(args : Array[String]) -> Unit {
   let root = data_site_root(args)
   match @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
@@ -185,6 +206,8 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("robot-model-json") {
+    print_data_robot_model_json(args)
   } else if args.contains("data") && args.contains("ingest-robot-model") {
     print_data_robot_model_ingest(args, output_json)
   } else if args.contains("data") && args.contains("site-json") {

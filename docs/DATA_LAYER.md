@@ -269,7 +269,9 @@ and push.
    - Status: started with the standalone robot model package family:
      `robot_catalog` can import a text-readable URDF package directory into a
      generic data root, stage assets under `payloads/robot_data`, and validate
-     the resulting source, dataset, version, and lineage manifests.
+     the resulting source, dataset, version, and lineage manifests. It can also
+     read the catalog back as a robot model dossier through `data
+     robot-model-json`.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.

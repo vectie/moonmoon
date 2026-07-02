@@ -16,6 +16,8 @@ pub fn materialize_robot_catalog_bundle(String, RobotCatalogBundle, Int64) -> Re
 
 pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
 
+pub fn robot_model_catalog_dossier_from_root(String, String) -> Result[RobotModelCatalogDossier, @data_store.DataStoreIssue]
+
 pub fn robot_model_package_import_request(String, String, String, String, Int64, source_label? : String) -> RobotModelPackageImportRequest
 
 pub fn stage_robot_payload_text(String, @robot_data.RobotPayloadRef, String) -> Result[Unit, @data_store.DataStoreIssue]
@@ -50,6 +52,25 @@ pub(all) struct RobotCatalogMaterialization {
   validation_status : @data_core.ValidationStatus
   blocker_count : Int
   warning_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotModelCatalogDossier {
+  root : String
+  model_id : String
+  catalog_entry_count : Int
+  source_artifact : @data_core.ArtifactRef
+  dataset_artifact : @data_core.ArtifactRef
+  version_artifact : @data_core.ArtifactRef
+  validation_artifact : @data_core.ArtifactRef
+  source : @data_core.DataSource
+  dataset : @data_core.DatasetManifest
+  version : @data_core.DatasetVersion
+  validation_status : @data_core.ValidationStatus
+  blocker_count : Int
+  warning_count : Int
+  data_ref_count : Int
+  data_ref_uris : Array[String]
+  urdf_ref_uri : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotModelPackageImportRequest {

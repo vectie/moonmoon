@@ -270,6 +270,16 @@ test "robot model package import stages payloads into generic data root" {
   assert_true(
     dataset.data_refs[0].uri.has_prefix("data://payloads/robot_data/"),
   )
+  let dossier = @robot_catalog.robot_model_catalog_dossier_from_root(
+    root, "alpha-model",
+  ).unwrap()
+  assert_eq(dossier.model_id, "alpha-model")
+  assert_eq(dossier.dataset.dataset_id, "robot-model-package-alpha-model")
+  assert_eq(dossier.data_ref_count, 3)
+  assert_true(dossier.urdf_ref_uri.has_suffix("/robot.urdf"))
+  assert_true(dossier.validation_status == @data_core.ValidationStatus::Passed)
+  assert_eq(dossier.blocker_count, 0)
+  assert_eq(dossier.warning_count, 0)
 }
 
 ///|
