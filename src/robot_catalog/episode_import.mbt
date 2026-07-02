@@ -27,6 +27,15 @@ pub(all) struct ImportedRobotEpisodeReplay {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct ImportedRobotEpisodeQuality {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  payload : @robot_data.RobotPayloadRef
+  report : @robot_data.RobotQualityReport
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RobotEpisodeDirectoryImportResult {
   root : String
   source_dir : String
@@ -36,9 +45,11 @@ pub(all) struct RobotEpisodeDirectoryImportResult {
   model_id : @robot_data.RobotModelId
   signal_count : Int
   replay_count : Int
+  quality_report_count : Int
   episode : @robot_data.RobotEpisodeManifest
   signals : Array[ImportedRobotEpisodeSignal]
   replays : Array[ImportedRobotEpisodeReplay]
+  quality_reports : Array[ImportedRobotEpisodeQuality]
   materialization : RobotCatalogMaterialization
 } derive(Debug, Eq, ToJson, FromJson)
 
@@ -142,6 +153,35 @@ fn episode_replay_files(
 }
 
 ///|
+fn episode_quality_files(
+  source_dir : String,
+) -> Result[Array[(String, String)], @data_store.DataStoreIssue] {
+  let quality_dir = join(source_dir, "quality")
+  if !@fsx.path_exists(quality_dir) {
+    return Ok([])
+  }
+  let names = match read_sorted_names(quality_dir) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let files : Array[(String, String)] = []
+  for name in names {
+    if !@data_core.data_relative_path_is_safe(name) {
+      return Err(
+        import_issue(
+          "unsafe-robot-quality-path", name, "robot quality source contains an unsafe relative path",
+        ),
+      )
+    }
+    let path = join(quality_dir, name)
+    if !is_directory(path) {
+      files.push((path, name))
+    }
+  }
+  Ok(files)
+}
+
+///|
 fn episode_payload_data_ref(
   dataset_id : @data_core.DatasetId,
   relative_path : String,
@@ -151,6 +191,27 @@ fn episode_payload_data_ref(
   @data_core.data_ref(
     "robot-episode-\{safe_ref_segment(dataset_id)}-\{safe_ref_segment(relative_path)}",
     "robot-signal-frame",
+    @data_core.data_uri(payload_path),
+    content_type=if relative_path.has_suffix(".json") {
+      "application/json"
+    } else {
+      "text/plain"
+    },
+    byte_count=body.length().to_int64(),
+    checksum=text_sum(body),
+  )
+}
+
+///|
+fn quality_payload_data_ref(
+  dataset_id : @data_core.DatasetId,
+  relative_path : String,
+  body : String,
+) -> @data_core.DataRef {
+  let payload_path = "payloads/robot_data/episodes/\{dataset_id}/quality/\{relative_path}"
+  @data_core.data_ref(
+    "robot-quality-\{safe_ref_segment(dataset_id)}-\{safe_ref_segment(relative_path)}",
+    "robot-quality-report",
     @data_core.data_uri(payload_path),
     content_type=if relative_path.has_suffix(".json") {
       "application/json"
@@ -296,6 +357,10 @@ pub fn import_robot_episode_directory(
     Ok(value) => value
     Err(error) => return Err(error)
   }
+  let quality_files = match episode_quality_files(request.source_dir) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
   let signals : Array[ImportedRobotEpisodeSignal] = []
   for index in 0..<files.length() {
     let (source_path, relative_path) = files[index]
@@ -361,6 +426,61 @@ pub fn import_robot_episode_directory(
     )
     replays.push({ source_path, relative_path, payload_path, replay })
   }
+  let quality_reports : Array[ImportedRobotEpisodeQuality] = []
+  for index in 0..<quality_files.length() {
+    let (source_path, relative_path) = quality_files[index]
+    let body = @fsx.read_file_to_string(source_path) catch {
+      _ =>
+        return Err(
+          import_issue(
+            "read-robot-quality-payload", source_path, "failed to read robot quality payload as text",
+          ),
+        )
+    }
+    let data_ref = quality_payload_data_ref(
+      request.dataset_id,
+      relative_path,
+      body,
+    )
+    let payload_path = match stage_text_data_ref(request.root, data_ref, body) {
+      Ok(value) => value
+      Err(error) => return Err(error)
+    }
+    let payload = match payload_from_data_ref(data_ref) {
+      Ok(value) => value
+      Err(error) => return Err(error)
+    }
+    let report = @robot_data.robot_quality_report(
+      "quality-\{safe_ref_segment(request.dataset_id)}-\{index}",
+      request.episode_id,
+      @data_core.ValidationStatus::Passed,
+      request.imported_at_ms,
+      signals.length(),
+      0,
+      findings=[
+        @data_core.validation_finding(
+          "robot-quality-payload-imported",
+          @data_core.FindingSeverity::Info,
+          @data_core.artifact_ref(
+            "payload",
+            payload.ref_id,
+            payload.path,
+            status=@data_core.DataStatus::Verified,
+            summary=payload.role,
+          ),
+          "robot quality payload imported",
+          recommendation="use the domain quality payload for detailed robot acceptance evidence",
+        ),
+      ],
+    )
+    quality_reports.push({
+      source_path,
+      relative_path,
+      payload_path,
+      payload,
+      report,
+    })
+  }
   let episode = @robot_data.robot_episode_manifest(
     request.episode_id,
     request.robot_id,
@@ -371,10 +491,18 @@ pub fn import_robot_episode_directory(
     [model],
     signals.map(fn(signal) { signal.signal }),
     replays.map(fn(replay) { replay.replay }),
-    [],
+    quality_reports.map(fn(quality) { quality.payload }),
     request.source_label,
   )
   match write_episodes(request.root, [episode]) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
+  match
+    write_quality_reports(
+      request.root,
+      quality_reports.map(fn(quality) { quality.report }),
+    ) {
     Ok(_) => ()
     Err(error) => return Err(error)
   }
@@ -400,9 +528,11 @@ pub fn import_robot_episode_directory(
     model_id: request.model_id,
     signal_count: signals.length(),
     replay_count: replays.length(),
+    quality_report_count: quality_reports.length(),
     episode,
     signals,
     replays,
+    quality_reports,
     materialization: {
       root: request.root,
       catalog_path: validation.catalog_path,
@@ -411,7 +541,7 @@ pub fn import_robot_episode_directory(
       dataset_count: 1,
       version_count: 1,
       lineage_count: 1,
-      quality_report_count: 0,
+      quality_report_count: quality_reports.length(),
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,
       blocker_count: validation.blocker_count,

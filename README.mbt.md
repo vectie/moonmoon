@@ -50,9 +50,9 @@ moon run cmd/main -- ui json
 moon run cmd/main -- ui html
 ```
 
-Robot episode imports read top-level text payloads as signal frames. An
-optional `replays/` subdirectory is staged as `robot-replay` payload evidence in
-the same episode dataset.
+Robot episode imports read top-level text payloads as signal frames. Optional
+`replays/` and `quality/` subdirectories are staged as replay and quality
+evidence in the same episode dataset.
 
 Run the live browser view through Rabbita, not through generated `output/`
 artifacts:

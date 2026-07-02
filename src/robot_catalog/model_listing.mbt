@@ -57,7 +57,8 @@ fn latest_validation_entry(
 ) -> @data_core.CatalogEntry? {
   let mut found : @data_core.CatalogEntry? = None
   for entry in catalog.entries {
-    if entry.artifact_kind == "validation-report" {
+    if entry.artifact_kind == "validation-report" &&
+      entry.artifact_id.has_prefix("validation-") {
       found = Some(entry)
     }
   }
