@@ -81,3 +81,26 @@ test "lists first trusted square evidence from cataloged manifests" {
     "naif-lunar-first-trusted-square-power-window-v1",
   )
 }
+
+///|
+test "ingest summary carries validation sources datasets and coverage" {
+  let root = prepare_root("ingest-summary")
+  let ingest = @lunar_catalog.ingest_first_trusted_square_catalog(root, 300L).unwrap()
+  assert_eq(ingest.materialization.root, root)
+  assert_eq(ingest.materialization.source_count, ingest.sources.length())
+  assert_eq(ingest.materialization.dataset_count, ingest.datasets.length())
+  assert_eq(ingest.materialization.blocker_count, 0)
+  assert_true(
+    ingest.materialization.validation_status ==
+    @data_core.ValidationStatus::Warning,
+  )
+  assert_eq(ingest.sources[0].source_id, "source-lro-lola-gdr-south-pole-v1")
+  assert_true(ingest.sources[0].source_ref_uris[0].contains("gdr_ds.cat"))
+  assert_eq(ingest.datasets[0].coverage.body, "Moon")
+  assert_true(ingest.datasets[0].coverage.south_deg < -89.0)
+  assert_true(
+    ingest.datasets[0].data_ref_uris[0].contains("first_trusted_square_dem.csv"),
+  )
+  assert_true(@fsx.path_exists(ingest.materialization.catalog_path))
+  assert_true(@fsx.path_exists(ingest.materialization.validation_report_path))
+}

@@ -17,6 +17,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- mission energy
     #|  moon run cmd/main -- mission energy json
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
+    #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
     #|  moon run cmd/main -- ui html
@@ -47,11 +48,50 @@ fn print_layout(args : Array[String]) -> Unit {
 }
 
 ///|
+fn data_ingest_root(args : Array[String]) -> String {
+  arg_after(args, "ingest-first-site", "target/data-roots/first-trusted-square")
+}
+
+///|
+fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
+  let root = data_ingest_root(args)
+  match @lunar_catalog.ingest_first_trusted_square_catalog(root, 1L) {
+    Ok(ingest) =>
+      if output_json {
+        println(ingest.to_json().stringify(indent=2))
+      } else {
+        let materialization = ingest.materialization
+        println("Moonmoon first-site data ingest")
+        println("- root: \{materialization.root}")
+        println("- catalog: \{materialization.catalog_path}")
+        println(
+          "- validation: \{@data_core.validation_status_label(materialization.validation_status)}",
+        )
+        println("- blockers: \{materialization.blocker_count}")
+        println("- warnings: \{materialization.warning_count}")
+        println("- sources: \{ingest.sources.length()}")
+        println("- datasets: \{ingest.datasets.length()}")
+      }
+    Err(error) =>
+      if output_json {
+        println(error.to_json().stringify(indent=2))
+      } else {
+        println("Moonmoon data ingest failed")
+        println("- code: \{error.code}")
+        println("- path: \{error.path}")
+        println("- message: \{error.message}")
+      }
+  }
+}
+
+///|
 fn main {
   let args = @env.args()
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("ingest-first-site") {
+    print_data_ingest(args, output_json)
   } else if args.contains("layout") {
     print_layout(args)
   } else if args.contains("kernel") {

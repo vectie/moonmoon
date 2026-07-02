@@ -267,6 +267,8 @@ and push.
      confidence, route review, or robot migration readiness in the product.
 
 8. Promote the first external data ingest boundary.
+   - Status: done for the first trusted square: `src/lunar_catalog` exposes a
+     MoonBit ingest API and `cmd/main` exposes `data ingest-first-site`.
    - Why: the product needs real lunar data without letting download and
      conversion scripts become the application architecture.
    - Code target: one small boundary command that prepares a known lunar

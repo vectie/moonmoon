@@ -12,6 +12,13 @@ pub(all) struct FirstTrustedSquareCatalogMaterialization {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct FirstTrustedSquareCatalogIngest {
+  materialization : FirstTrustedSquareCatalogMaterialization
+  sources : Array[CatalogedLunarSource]
+  datasets : Array[CatalogedLunarDataset]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 fn issue(
   code : String,
   path : String,
@@ -196,4 +203,25 @@ pub fn materialize_first_trusted_square_catalog(
     blocker_count: validation.blocker_count,
     warning_count: validation.warning_count,
   })
+}
+
+///|
+pub fn ingest_first_trusted_square_catalog(
+  root : String,
+  generated_at_ms : Int64,
+) -> Result[FirstTrustedSquareCatalogIngest, @data_store.DataStoreIssue] {
+  let materialization = match
+    materialize_first_trusted_square_catalog(root, generated_at_ms) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let sources = match first_trusted_square_catalog_sources(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  let datasets = match first_trusted_square_catalog_datasets(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  Ok({ materialization, sources, datasets })
 }

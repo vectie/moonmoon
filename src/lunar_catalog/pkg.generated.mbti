@@ -14,6 +14,8 @@ pub fn first_trusted_square_catalog_datasets(String) -> Result[Array[CatalogedLu
 
 pub fn first_trusted_square_catalog_sources(String) -> Result[Array[CatalogedLunarSource], @data_store.DataStoreIssue]
 
+pub fn ingest_first_trusted_square_catalog(String, Int64) -> Result[FirstTrustedSquareCatalogIngest, @data_store.DataStoreIssue]
+
 pub fn materialize_first_trusted_square_catalog(String, Int64) -> Result[FirstTrustedSquareCatalogMaterialization, @data_store.DataStoreIssue]
 
 // Errors
@@ -35,6 +37,12 @@ pub(all) struct CatalogedLunarSource {
   label : String
   source_ref_count : Int
   source_ref_uris : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct FirstTrustedSquareCatalogIngest {
+  materialization : FirstTrustedSquareCatalogMaterialization
+  sources : Array[CatalogedLunarSource]
+  datasets : Array[CatalogedLunarDataset]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct FirstTrustedSquareCatalogMaterialization {
