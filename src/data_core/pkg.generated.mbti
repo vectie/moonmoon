@@ -1,0 +1,208 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/data_core"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn artifact_ref(String, String, String, status? : DataStatus, summary? : String) -> ArtifactRef
+
+pub fn artifact_ref_status_label(ArtifactRef) -> String
+
+pub fn catalog_entry(String, String, String, status? : DataStatus, summary? : String) -> CatalogEntry
+
+pub fn catalog_entry_ref(CatalogEntry) -> ArtifactRef
+
+pub fn catalog_refs(DataCatalog) -> Array[ArtifactRef]
+
+pub fn checksum_kind_label(ChecksumKind) -> String
+
+pub fn data_catalog(String, Int64, Array[CatalogEntry], catalog_id? : String) -> DataCatalog
+
+pub fn data_payload_root(String) -> String
+
+pub fn data_payload_uri_relative_path(String) -> String?
+
+pub fn data_ref(String, String, String, content_type? : String, byte_count? : Int64, checksum? : DeclaredChecksum) -> DataRef
+
+pub fn data_relative_path_is_safe(String) -> Bool
+
+pub fn data_source(String, String, String, String, String, String, Int64, source_refs? : Array[DataRef]) -> DataSource
+
+pub fn data_status_label(DataStatus) -> String
+
+pub fn data_uri(String) -> String
+
+pub fn data_uri_relative_path(String) -> String?
+
+pub fn dataset_manifest(String, String, DataStatus, Int64, source_ids? : Array[String], data_refs? : Array[DataRef], summary? : String) -> DatasetManifest
+
+pub fn dataset_version(String, String, DataStatus, Int64, parent_version_ids? : Array[String], data_refs? : Array[DataRef], summary? : String) -> DatasetVersion
+
+pub fn declared_checksum(ChecksumKind, String) -> DeclaredChecksum
+
+pub fn finding_severity_label(FindingSeverity) -> String
+
+pub fn lineage_edge(ArtifactRef, ArtifactRef, String) -> LineageEdge
+
+pub fn lineage_manifest(String, ArtifactRef, Int64, edges? : Array[LineageEdge]) -> LineageManifest
+
+pub fn validation_blocker_count(ValidationReport) -> Int
+
+pub fn validation_finding(String, FindingSeverity, ArtifactRef, String, recommendation? : String) -> ValidationFinding
+
+pub fn validation_finding_count(ValidationReport) -> Int
+
+pub fn validation_report(String, String, Int64, ValidationStatus, findings? : Array[ValidationFinding]) -> ValidationReport
+
+pub fn validation_status_label(ValidationStatus) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct ArtifactRef {
+  artifact_kind : String
+  artifact_id : String
+  manifest_path : String
+  status : DataStatus
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct CatalogEntry {
+  artifact_kind : String
+  artifact_id : String
+  manifest_path : String
+  status : DataStatus
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum ChecksumKind {
+  Sha256
+  TextSumV1
+  BytesSumV1
+  NoChecksum
+  UnknownChecksumKind
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DataCatalog {
+  catalog_id : String
+  root : String
+  generated_at_ms : Int64
+  entries : Array[CatalogEntry]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DataRef {
+  ref_id : String
+  kind : String
+  uri : String
+  content_type : String
+  byte_count : Int64
+  checksum : DeclaredChecksum
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DataSource {
+  source_id : String
+  authority : String
+  label : String
+  source_url : String
+  license : String
+  citation : String
+  created_at_ms : Int64
+  source_refs : Array[DataRef]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum DataStatus {
+  Raw
+  Verified
+  Curated
+  Rejected
+  Blocked
+  UnknownStatus
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DatasetManifest {
+  dataset_id : String
+  kind : String
+  status : DataStatus
+  source_ids : Array[String]
+  data_refs : Array[DataRef]
+  created_at_ms : Int64
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DatasetVersion {
+  version_id : String
+  dataset_id : String
+  status : DataStatus
+  parent_version_ids : Array[String]
+  data_refs : Array[DataRef]
+  created_at_ms : Int64
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DeclaredChecksum {
+  kind : ChecksumKind
+  value : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum FindingSeverity {
+  Info
+  WarningSeverity
+  Blocker
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LineageEdge {
+  from_artifact : ArtifactRef
+  to_artifact : ArtifactRef
+  relation : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LineageManifest {
+  lineage_id : String
+  root_artifact : ArtifactRef
+  created_at_ms : Int64
+  edges : Array[LineageEdge]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ValidationFinding {
+  rule_id : String
+  severity : FindingSeverity
+  artifact : ArtifactRef
+  message : String
+  recommendation : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ValidationReport {
+  validation_report_id : String
+  root : String
+  generated_at_ms : Int64
+  status : ValidationStatus
+  findings : Array[ValidationFinding]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) enum ValidationStatus {
+  Passed
+  Warning
+  BlockedValidation
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+pub type ArtifactId = String
+
+pub type CatalogId = String
+
+pub type DataRefId = String
+
+pub type DatasetId = String
+
+pub type DatasetVersionId = String
+
+pub type LineageId = String
+
+pub type SourceId = String
+
+pub type ValidationReportId = String
+
+// Traits
