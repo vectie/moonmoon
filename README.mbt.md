@@ -11,8 +11,8 @@ committed as source.
 
 - `src/core`: common lunar coordinates, provenance, uncertainty, and source
   claim types.
-- `src/dataset`: source manifests, acquisition notes, product selections, and
-  extraction candidates.
+- `src/dataset`: the narrow terrain fixture manifest/provenance facade still
+  consumed by terrain fixtures.
 - `src/terrain`: checked DEM fixtures, grid analysis, slope, roughness, and
   hazard classification.
 - `src/mission`: traverse scoring, corridor ranking, horizon evidence, terrain
@@ -62,6 +62,10 @@ moon fmt
 
 `moon info` updates generated `.mbti` interfaces. Review those diffs as the
 public API signal.
+
+The product-home layout contract is covered by MoonBit tests in
+`moonmoon_test.mbt`; keep root-level shell smoke scripts out of the core
+development loop unless they guard a true external data or build boundary.
 
 ## Product Rule
 

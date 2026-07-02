@@ -195,7 +195,12 @@ Current checkpoint:
   remains the data-root validation authority.
 - Remaining cleanup: let product views read catalog-backed evidence directly.
 
-Step-by-step next runbook:
+Current step-by-step plan:
+
+This is the working order for the next implementation passes. Do the earliest
+unfinished step first unless a user-visible blocker forces a narrower fix. Each
+step should end with tests, docs if the boundary changed, then a scoped commit
+and push.
 
 1. Move inline terrain fixture checks out of `src/dataset`.
    - Status: done.
@@ -229,6 +234,8 @@ Step-by-step next runbook:
      product view or mission gate, not just compatibility.
 
 4. Keep data-root commands at true build boundaries.
+   - Status: done for the root `scripts/` directory; product-home layout is
+     covered by MoonBit tests, not shell smoke scripts.
    - Why: scripts should exist only where MoonBit cannot yet own the boundary,
      such as downloading, preparing, or copying external payloads.
    - Code target: keep validation in MoonBit; keep external acquisition and
@@ -258,6 +265,33 @@ Step-by-step next runbook:
      connect visible labels to validated data as soon as each source lands.
    - Done when: every major data milestone improves terrain, lighting, site
      confidence, route review, or robot migration readiness in the product.
+
+8. Promote the first external data ingest boundary.
+   - Why: the product needs real lunar data without letting download and
+     conversion scripts become the application architecture.
+   - Code target: one small boundary command that prepares a known lunar
+     payload into the generic data root, plus MoonBit validation that certifies
+     the result.
+   - Done when: the catalog records a real acquired payload and the UI can show
+     that payload's source, validation state, and site coverage.
+
+9. Replace static first-site claims with catalog-backed live claims.
+   - Why: static fixtures are useful proof points, but the user should see
+     product evidence coming from the same validated root that future data
+     uses.
+   - Code target: route source labels, data freshness, terrain confidence, and
+     route blockers through catalog entries or domain projections generated
+     from those entries.
+   - Done when: deleting an old first-site constant no longer removes the
+     product's source authority.
+
+10. Revisit package boundaries before widening scope.
+    - Why: the fastest route to a durable product is to keep the ecosystem
+      small, directional, and easy to migrate.
+    - Code target: inspect imports, public interfaces, tests, scripts, and root
+      files before adding a new feature family.
+    - Done when: the next feature starts from a clean boundary, not from
+      compatibility glue.
 
 Commit rhythm:
 
