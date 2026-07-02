@@ -102,7 +102,8 @@ stale compatibility layers.
 3. Connect visible product labels to validated data.
    - Status: started for robot migration readiness: `src/robot_catalog` now
      exposes a compact readiness projection and `cmd/main` exposes
-     `data robot-readiness-json`.
+     `data robot-readiness-json`. Generic data roots can now be inspected with
+     `data root-json` before a lunar or robot domain projection is available.
    - Keep the live Moon view as the first user-facing surface.
    - Replace static source/status labels with catalog-backed lunar or robot
      dossier fields only after the underlying manifests validate.
@@ -182,6 +183,11 @@ Exit criteria:
 Status: done.
 
 Goal: certify a data root without importing any domain model.
+
+Current read side: `src/data_validate` exposes a compact root validation
+summary, and `cmd/main` exposes it as `data root-json [data-root]`. This summary
+counts generic manifest classes, chooses only `validation-*` reports as root
+validation authority, and still counts auxiliary domain validation reports.
 
 Implementation:
 

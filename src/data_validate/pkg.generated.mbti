@@ -9,6 +9,8 @@ import {
 }
 
 // Values
+pub fn data_root_validation_summary_from_root(String) -> Result[DataRootValidationSummary, @data_store.DataStoreIssue]
+
 pub fn validate_and_write_root(String, Int64) -> Result[StoredValidationResult, @data_store.DataStoreIssue]
 
 pub fn validate_root(String, Int64) -> Result[@data_core.ValidationReport, @data_store.DataStoreIssue]
@@ -16,6 +18,27 @@ pub fn validate_root(String, Int64) -> Result[@data_core.ValidationReport, @data
 // Errors
 
 // Types and methods
+pub(all) struct DataRootValidationSummary {
+  root : String
+  status : String
+  ready : Bool
+  catalog_entry_count : Int
+  source_count : Int
+  dataset_count : Int
+  version_count : Int
+  artifact_count : Int
+  lineage_count : Int
+  validation_report_count : Int
+  root_validation_report_count : Int
+  auxiliary_validation_report_count : Int
+  latest_validation_artifact : @data_core.ArtifactRef
+  validation_status : @data_core.ValidationStatus
+  finding_count : Int
+  blocker_count : Int
+  warning_count : Int
+  next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct StoredValidationResult {
   root : String
   validation_report_id : String

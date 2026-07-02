@@ -35,7 +35,9 @@ fn data_store_files() -> Array[String] {
 
 ///|
 fn data_validate_files() -> Array[String] {
-  ["src/data_validate/moon.pkg", "src/data_validate/validation.mbt"]
+  [
+    "src/data_validate/moon.pkg", "src/data_validate/validation.mbt", "src/data_validate/summary.mbt",
+  ]
 }
 
 ///|

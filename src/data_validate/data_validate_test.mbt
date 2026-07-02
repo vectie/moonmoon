@@ -102,6 +102,38 @@ test "data validation passes a cataloged root with checked local payloads" {
   assert_true(result.status == @data_core.ValidationStatus::Passed)
   assert_eq(result.finding_count, 0)
   assert_true(@fsx.path_exists(result.report_path))
+  ignore(
+    @data_store.write_validation_report(
+      root,
+      @data_core.validation_report(
+        "quality-dataset-a",
+        root,
+        5L,
+        @data_core.ValidationStatus::Passed,
+        findings=[
+          @data_core.validation_finding(
+            "auxiliary-quality-report",
+            @data_core.FindingSeverity::Info,
+            @data_core.artifact_ref(
+              "dataset",
+              dataset.dataset_id,
+              @data_store.dataset_path(root, dataset.dataset_id),
+            ),
+            "auxiliary validation report should not replace root validation",
+          ),
+        ],
+      ),
+    ),
+  )
+  ignore(@data_store.rebuild_catalog(root, 6L))
+  let summary = @data_validate.data_root_validation_summary_from_root(root).unwrap()
+  assert_true(summary.ready)
+  assert_eq(summary.latest_validation_artifact.artifact_id, "validation-4")
+  assert_eq(summary.source_count, 1)
+  assert_eq(summary.dataset_count, 1)
+  assert_eq(summary.validation_report_count, 2)
+  assert_eq(summary.root_validation_report_count, 1)
+  assert_eq(summary.auxiliary_validation_report_count, 1)
   let catalog = @data_store.read_catalog(root).unwrap()
   assert_true(catalog.entries.length() >= 3)
 }

@@ -1,6 +1,7 @@
 import {
   "vectie/moonmoon",
   "vectie/moonmoon/src/data_core",
+  "vectie/moonmoon/src/data_validate",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/lunar_catalog",
   "vectie/moonmoon/src/mission",
