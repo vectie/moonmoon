@@ -31,6 +31,13 @@ robot-specific.
    - Keep each commit scoped to one boundary move.
    - Run the relevant MoonBit checks before committing.
 
+## Phase Order
+
+The plan is now feature-first, then hardening. Phases 1-4 deliver the product
+path a user can see or consume: selected route truth, movable Moon view, robot
+data migration, and adapter handoff. Phases 5-7 harden the substrate and source
+authority after the product path is moving.
+
 ## Phase 1: Explain the Selected Route Gate
 
 Status: implemented for the first trusted square. The selected route clearance
@@ -111,61 +118,7 @@ Steps:
 Done when: the first screen shows a movable Moon context, the user can zoom to
 the trusted square, and visible evidence labels match catalog-backed records.
 
-## Phase 3: Harden the General Data Layer
-
-Goal: make the data layer general enough that lunar and robot datasets enter
-through the same substrate while keeping domain vocabulary outside generic
-packages.
-
-Steps:
-
-1. Keep `src/data_core` pure.
-   - Only refs, manifests, versions, catalog entries, lineage, checksums,
-     statuses, validation findings, and safe data URI helpers belong here.
-
-2. Keep `src/data_store` as the filesystem boundary.
-   - It owns root layout, manifest paths, JSON read/write, and catalog rebuild.
-   - It does not interpret lunar or robot dataset kinds.
-
-3. Keep `src/data_validate` as the integrity boundary.
-   - It checks unsafe refs, missing payloads, checksum mismatch, duplicate ids,
-     stale catalogs, and broken lineage.
-   - It reports generic findings; domain packages explain domain meaning.
-
-4. Add commands only at data boundaries.
-   - Ingest commands materialize data into a root.
-   - Read commands expose a dossier or readiness projection.
-   - Internal transforms stay inside packages.
-
-Done when: a root can be inspected generically before any lunar or robot reader
-is used, and domain readers can layer their own meaning on top.
-
-## Phase 4: Improve Lunar Source Authority
-
-Goal: the Moon model should increasingly come from real data products, not
-handwritten visual approximations.
-
-Steps:
-
-1. Record source candidates and acquisition plans.
-   - Global terrain: LOLA or SLDEM-style DEM authority.
-   - Local detail: higher-resolution regional terrain where practical.
-   - Nomenclature: IAU/USGS-style feature names and coordinates.
-   - Lighting and ephemeris: explicit source records before simulation claims.
-
-2. Select product slices for the first trusted square.
-   - Prefer compact, reproducible fixtures over large committed assets.
-   - Store evidence paths and extraction windows so the product can explain
-     where each claim came from.
-
-3. Promote only validated evidence into the site dossier.
-   - Terrain metrics, route candidates, power windows, and blockers must point
-     back to catalog or fixture evidence.
-
-Done when: the trusted square's terrain, route, lighting, and catalog labels
-can be traced back to named source records and validated fixtures.
-
-## Phase 5: Migrate Robot Data Through the General Layer
+## Phase 3: Migrate Robot Data Through the General Layer
 
 Goal: robot data should move in quickly without turning Moonmoon into a robot
 project.
@@ -195,7 +148,7 @@ Steps:
 Done when: robot migration can proceed family-by-family while generic packages
 remain reusable for non-robot datasets.
 
-## Phase 6: Add Suite Adapters After Route Readiness
+## Phase 4: Add Suite Adapters After Route Readiness
 
 Goal: Moonmoon should expose route-motion readiness, then external adapters can
 consume it for robot walking or richer simulation.
@@ -217,6 +170,60 @@ Steps:
 
 Done when: a route can become adapter-ready only after its terrain,
 illumination, energy, and review gates allow traversal.
+
+## Phase 5: Harden the General Data Layer
+
+Goal: make the data layer general enough that lunar and robot datasets enter
+through the same substrate while keeping domain vocabulary outside generic
+packages.
+
+Steps:
+
+1. Keep `src/data_core` pure.
+   - Only refs, manifests, versions, catalog entries, lineage, checksums,
+     statuses, validation findings, and safe data URI helpers belong here.
+
+2. Keep `src/data_store` as the filesystem boundary.
+   - It owns root layout, manifest paths, JSON read/write, and catalog rebuild.
+   - It does not interpret lunar or robot dataset kinds.
+
+3. Keep `src/data_validate` as the integrity boundary.
+   - It checks unsafe refs, missing payloads, checksum mismatch, duplicate ids,
+     stale catalogs, and broken lineage.
+   - It reports generic findings; domain packages explain domain meaning.
+
+4. Add commands only at data boundaries.
+   - Ingest commands materialize data into a root.
+   - Read commands expose a dossier or readiness projection.
+   - Internal transforms stay inside packages.
+
+Done when: a root can be inspected generically before any lunar or robot reader
+is used, and domain readers can layer their own meaning on top.
+
+## Phase 6: Improve Lunar Source Authority
+
+Goal: the Moon model should increasingly come from real data products, not
+handwritten visual approximations.
+
+Steps:
+
+1. Record source candidates and acquisition plans.
+   - Global terrain: LOLA or SLDEM-style DEM authority.
+   - Local detail: higher-resolution regional terrain where practical.
+   - Nomenclature: IAU/USGS-style feature names and coordinates.
+   - Lighting and ephemeris: explicit source records before simulation claims.
+
+2. Select product slices for the first trusted square.
+   - Prefer compact, reproducible fixtures over large committed assets.
+   - Store evidence paths and extraction windows so the product can explain
+     where each claim came from.
+
+3. Promote only validated evidence into the site dossier.
+   - Terrain metrics, route candidates, power windows, and blockers must point
+     back to catalog or fixture evidence.
+
+Done when: the trusted square's terrain, route, lighting, and catalog labels
+can be traced back to named source records and validated fixtures.
 
 ## Phase 7: Expand Only After the First Site Is Honest
 
