@@ -7,6 +7,7 @@ import {
   "vectie/moonmoon/src/core",
   "vectie/moonmoon/src/data_core",
   "vectie/moonmoon/src/dataset",
+  "vectie/moonmoon/src/lunar_data",
   "vectie/moonmoon/src/mission",
   "vectie/moonmoon/src/terrain",
 }
@@ -45,10 +46,10 @@ pub(all) struct SiteDossier {
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
-  source_candidates : Array[@dataset.SourceCandidate]
-  source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
-  source_product_selections : Array[@dataset.SourceProductSelection]
-  source_extraction_candidates : Array[@dataset.SourceExtractionCandidate]
+  source_candidates : Array[@lunar_data.LunarSourceCandidate]
+  source_acquisition_plans : Array[@lunar_data.LunarAcquisitionPlan]
+  source_product_selections : Array[@lunar_data.LunarProductSelection]
+  source_extraction_candidates : Array[@lunar_data.LunarExtractionCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   corridor_scan : Array[@mission.CorridorScanWindow]

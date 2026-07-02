@@ -4,10 +4,10 @@ pub(all) struct SiteDossier {
   datasets : Array[@dataset.DatasetManifest]
   validations : Array[@terrain.TerrainFixtureValidation]
   catalog_evidence : Array[SiteCatalogEvidence]
-  source_candidates : Array[@dataset.SourceCandidate]
-  source_acquisition_plans : Array[@dataset.SourceAcquisitionPlan]
-  source_product_selections : Array[@dataset.SourceProductSelection]
-  source_extraction_candidates : Array[@dataset.SourceExtractionCandidate]
+  source_candidates : Array[@lunar_data.LunarSourceCandidate]
+  source_acquisition_plans : Array[@lunar_data.LunarAcquisitionPlan]
+  source_product_selections : Array[@lunar_data.LunarProductSelection]
+  source_extraction_candidates : Array[@lunar_data.LunarExtractionCandidate]
   terrain : @terrain.TerrainMetrics
   traverse : @mission.TraverseScore
   corridor_scan : Array[@mission.CorridorScanWindow]
@@ -102,10 +102,12 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
       @terrain.validate_grid_source(northeast_grid),
     ],
     catalog_evidence: first_trusted_square_catalog_evidence(),
-    source_candidates: @dataset.first_trusted_square_source_candidates(),
-    source_acquisition_plans: @dataset.first_trusted_square_source_acquisition_plans(),
-    source_product_selections: @dataset.first_trusted_square_source_product_selections(),
-    source_extraction_candidates: @dataset.first_trusted_square_source_extraction_candidates(),
+    source_candidates: @lunar_data.first_trusted_square_lunar_source_candidates(),
+    source_acquisition_plans: @lunar_data.first_trusted_square_lunar_acquisition_plans(),
+    source_product_selections: [
+      @lunar_data.first_trusted_square_lola_product_selection(),
+    ],
+    source_extraction_candidates: @lunar_data.first_trusted_square_all_lola_extraction_candidates(),
     terrain,
     traverse,
     corridor_scan: @mission.first_trusted_square_corridor_scan(),
@@ -156,22 +158,22 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   text += "\n"
   text += "## Source Upgrade Candidates\n\n"
   for candidate in dossier.source_candidates {
-    text += "- \{candidate.candidate_id}: \{candidate.title}\n"
+    text += "- \{candidate.source_id}: \{candidate.title}\n"
     text += "  - mission: \{candidate.mission}\n"
     text += "  - instrument: \{candidate.instrument}\n"
     text += "  - product family: \{candidate.product_family}\n"
-    text += "  - status: \{@dataset.source_candidate_status_label(candidate)}\n"
+    text += "  - status: \{@lunar_data.lunar_review_status_label(candidate.review_status)}\n"
     text += "  - official source: \{candidate.official_source_url}\n"
     text += "  - access: \{candidate.access_url}\n"
-    text += "  - target path: \{candidate.local_target_path}\n"
-    text += "  - next action: \{candidate.next_action}\n"
+    text += "  - local source directory: \{candidate.local_source_directory}\n"
+    text += "  - intended use: \{candidate.intended_use}\n"
   }
   text += "\n"
   text += "## Source Acquisition Plans\n\n"
   for plan in dossier.source_acquisition_plans {
     text += "- \{plan.plan_id}: \{plan.product_family_id}\n"
-    text += "  - candidate: \{plan.candidate_id}\n"
-    text += "  - progress: \{@dataset.acquisition_plan_progress_label(plan)}\n"
+    text += "  - source: \{plan.source_id}\n"
+    text += "  - progress: recorded:\{plan.steps.length()}-steps\n"
     text += "  - discovery: \{plan.discovery_url}\n"
     text += "  - source family: \{plan.source_family_url}\n"
     text += "  - source metadata: \{plan.source_metadata_url}\n"
@@ -191,8 +193,8 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
   text += "## Source Product Selections\n\n"
   for selection in dossier.source_product_selections {
     text += "- \{selection.selection_id}: \{selection.product_id}\n"
-    text += "  - plan: \{selection.plan_id}\n"
-    text += "  - status: \{@dataset.product_selection_status_label(selection)}\n"
+    text += "  - source: \{selection.source_id}\n"
+    text += "  - status: \{@lunar_data.lunar_review_status_label(selection.review_status)}\n"
     text += "  - product lid: \{selection.product_lid}\n"
     text += "  - image: \{selection.image_url}\n"
     text += "  - label: \{selection.label_url}\n"
@@ -200,29 +202,28 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     text += "  - label sha256: \{selection.label_sha256}\n"
     text += "  - label bytes: \{selection.label_bytes}\n"
     text += "  - image bytes: \{selection.image_bytes}\n"
-    text += "  - projection: \{selection.projection}\n"
-    text += "  - resolution: \{selection.resolution_m} m\n"
-    text += "  - bounds: \{selection.south_deg}..\{selection.north_deg} lat, \{selection.west_deg}..\{selection.east_deg} lon\n"
+    text += "  - projection: \{selection.coordinate_frame.projection}\n"
+    text += "  - resolution: \{selection.coverage.resolution_m} m\n"
+    text += "  - bounds: \{selection.coverage.south_deg}..\{selection.coverage.north_deg} lat, \{selection.coverage.west_deg}..\{selection.coverage.east_deg} lon\n"
     text += "  - shape: \{selection.lines} lines x \{selection.samples} samples\n"
     text += "  - data: \{selection.data_type} / \{selection.unit}, offset \{selection.value_offset_km} km\n"
     text += "  - reason: \{selection.selection_reason}\n"
-    text += "  - extraction risk: \{selection.extraction_risk}\n"
   }
   text += "\n"
   text += "## Source Extraction Candidates\n\n"
   for extraction in dossier.source_extraction_candidates {
     text += "- \{extraction.extraction_id}: \{extraction.tile_id}\n"
     text += "  - selection: \{extraction.selection_id}\n"
-    text += "  - status: \{@dataset.extraction_candidate_status_label(extraction)}\n"
+    text += "  - status: \{@lunar_data.lunar_review_status_label(extraction.review_status)}\n"
     text += "  - generated by: \{extraction.generated_by}\n"
     text += "  - output path: \{extraction.output_path}\n"
     text += "  - output sha256: \{extraction.output_sha256}\n"
     text += "  - output bytes: \{extraction.output_bytes}\n"
-    text += "  - center: \{extraction.center_lat_deg}, \{extraction.center_lon_deg}\n"
+    text += "  - center: \{extraction.coverage.center_lat_deg}, \{extraction.coverage.center_lon_deg}\n"
     text += "  - source window: row \{extraction.source_row_start}, col \{extraction.source_col_start}, \{extraction.rows}x\{extraction.cols}\n"
     text += "  - cell size: \{extraction.cell_size_m} m\n"
-    text += "  - elevation unit: \{extraction.elevation_unit}\n"
-    text += "  - claim: \{@core.claim_kind_label(extraction.claim_kind)}\n"
+    text += "  - elevation unit: \{extraction.value_unit}\n"
+    text += "  - claim: \{extraction.claim_kind}\n"
     text += "  - notes:\n"
     for note in extraction.notes {
       text += "    - \{note}\n"

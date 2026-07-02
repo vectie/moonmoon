@@ -89,7 +89,8 @@ test "dataset is a lunar_data projection not a store validate or ui boundary" {
     "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
     "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/terrain", "\"vectie/moonmoon/src/mission",
     "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/ui", "\"vectie/moonmoon/src/suite_adapter_preview",
-    "\"vectie/moonmoon/src/robot_data", "URDF", "telemetry", "Noetix", "Rabbita",
+    "\"vectie/moonmoon/src/robot_data", "SourceCandidate", "SourceAcquisition", "SourceProduct",
+    "SourceExtraction", "URDF", "telemetry", "Noetix", "Rabbita",
   ]
   for path in dataset_files() {
     let text = read_text(path)

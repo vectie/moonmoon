@@ -249,9 +249,9 @@ test "first trusted square dossier exports machine-readable evidence" {
     ),
   )
   assert_true(text.contains("\"instrument\": \"SPICE kernels\""))
-  assert_true(text.contains("\"source_metadata_bytes\": 5672"))
+  assert_true(text.contains("\"source_metadata_bytes\": \"5672\""))
   assert_true(text.contains("\"product_id\": \"ldem_875s_20m_float\""))
-  assert_true(text.contains("\"label_bytes\": 11629"))
+  assert_true(text.contains("\"label_bytes\": \"11629\""))
   assert_true(text.contains("\"tile_id\": \"first-trusted-square-lola\""))
   assert_true(
     text.contains("\"tile_id\": \"first-trusted-square-west-contour-lola\""),
@@ -270,12 +270,12 @@ test "first trusted square dossier exports machine-readable evidence" {
       "\"tile_id\": \"first-trusted-square-northeast-stepout-lola\"",
     ),
   )
-  assert_true(text.contains("\"output_bytes\": 636"))
-  assert_true(text.contains("\"output_bytes\": 844"))
-  assert_true(text.contains("\"output_bytes\": 796"))
-  assert_true(text.contains("\"output_bytes\": 908"))
-  assert_true(text.contains("\"output_bytes\": 860"))
-  assert_true(text.contains("\"output_bytes\": 924"))
+  assert_true(text.contains("\"output_bytes\": \"636\""))
+  assert_true(text.contains("\"output_bytes\": \"844\""))
+  assert_true(text.contains("\"output_bytes\": \"796\""))
+  assert_true(text.contains("\"output_bytes\": \"908\""))
+  assert_true(text.contains("\"output_bytes\": \"860\""))
+  assert_true(text.contains("\"output_bytes\": \"924\""))
   assert_true(text.contains("\"instrument\": \"LOLA\""))
   assert_true(text.contains("\"status\": \"Verified\""))
   assert_true(text.contains("\"trust\": \"Authoritative\""))

@@ -217,6 +217,9 @@ Step-by-step next runbook:
      from catalog entries, not from standalone first-site constants.
 
 3. Shrink `src/dataset` to a focused projection facade.
+   - Status: done for source candidates, acquisition plans, product
+     selections, and extraction candidates; remaining surface is the terrain
+     fixture manifest facade still consumed by `src/terrain`.
    - Why: it is currently the remaining historical package between lunar data
      and product views.
    - Code target: keep only product projection shapes that are still consumed by
