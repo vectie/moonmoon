@@ -12,17 +12,29 @@ import {
 // Values
 pub fn moonsuite_product_accepted_output_path(book_id? : String) -> String
 
+pub fn moonsuite_product_accepted_output_path_for_workspace_root(String, book_id? : String) -> String
+
 pub fn moonsuite_product_cache_path() -> String
 
+pub fn moonsuite_product_cache_path_for_workspace_root(String) -> String
+
 pub fn moonsuite_product_home(book_id? : String) -> MoonMoonMoonSuiteProductHome
+
+pub fn moonsuite_product_home_for_workspace_root(String, book_id? : String) -> MoonMoonMoonSuiteProductHome
 
 pub fn moonsuite_product_id() -> String
 
 pub fn moonsuite_product_service_path() -> String
 
+pub fn moonsuite_product_service_path_for_workspace_root(String) -> String
+
 pub fn moonsuite_product_state_path() -> String
 
+pub fn moonsuite_product_state_path_for_workspace_root(String) -> String
+
 pub fn moonsuite_product_tmp_path() -> String
+
+pub fn moonsuite_product_tmp_path_for_workspace_root(String) -> String
 
 pub fn product_kernel() -> @kernel.MoonMoonKernel
 
