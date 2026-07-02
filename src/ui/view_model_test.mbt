@@ -23,6 +23,7 @@ test "first trusted square view model exposes terrain and routes" {
   assert_eq(view.corridor_windows[0].selected_route_id, "northeast-stepout")
   assert_eq(view.selected_route_id, "northeast-stepout")
   assert_eq(view.active_layer_id, "hazard")
+  assert_true(view.scorecard.next_action.contains("terrain grade"))
   assert_true(view.layers.length() >= 7)
 }
 
@@ -127,6 +128,10 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("catalog-validation"))
   assert_true(json.contains("catalog validation has not been read"))
   assert_true(json.contains("energy-window"))
+  assert_true(json.contains("selected-route-clearance"))
+  assert_true(json.contains("clear-terrain-grade-northeast-stepout"))
+  assert_true(json.contains("clear-energy-margin"))
+  assert_true(json.contains("operator-review-transitions.json"))
 }
 
 ///|

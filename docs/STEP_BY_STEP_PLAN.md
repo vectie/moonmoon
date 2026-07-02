@@ -33,6 +33,10 @@ robot-specific.
 
 ## Phase 1: Explain the Selected Route Gate
 
+Status: implemented for the first trusted square. The selected route clearance
+plan is part of `SiteDossier`, markdown/JSON render paths expose it, and the
+operator view projects both the summary and individual clearance gates.
+
 Goal: the first trusted square must explain why the selected
 `northeast-stepout` route is blocked or reviewable before any motion or robot
 adapter can claim readiness.
@@ -67,6 +71,8 @@ selected, which gate blocks it, what evidence backs the decision, and what must
 change before traversal is allowed.
 
 ## Phase 2: Make the Moon View Evidence-Backed and Movable
+
+Status: next.
 
 Goal: the first viewport should feel like an operable Moon landscape, then let
 the user zoom into the selected site.

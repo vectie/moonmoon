@@ -68,6 +68,7 @@ pub(all) struct SiteDossier {
   route_candidates : Array[@mission.RouteCandidate]
   power_window_evidence : @mission.PowerWindowEvidence
   energy : @mission.EnergyAssessment
+  clearance_plan : @mission.MissionClearancePlan
   summary : String
   blockers : Array[String]
   next_questions : Array[String]

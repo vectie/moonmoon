@@ -3,7 +3,9 @@
 ## Now
 
 1. Keep the first trusted square concise and fully MoonBit-owned.
-2. Clear or explain the selected `northeast-stepout` route blockers.
+2. Keep the selected `northeast-stepout` clearance gates visible in the
+   dossier and operator view while the underlying terrain, illumination, energy,
+   and operator-review blockers are cleared.
 3. Keep source fixtures reproducible through MoonBit tests and manifests.
 4. Use `src/ui/page.mbt` as the current operator view until live interaction
    justifies a dedicated Rabbita-style UI package.
@@ -21,8 +23,12 @@
 
 ## Next
 
-- Tighten mission clearance language around terrain, illumination, energy, and
-  operator review.
+- Build the evidence-backed movable Moon view from Phase 2 of
+  `docs/STEP_BY_STEP_PLAN.md`: lunar-scale context first, then selected-site
+  zoom and route overlay.
+- Tighten the underlying selected-route evidence around terrain, illumination,
+  energy, and operator review until the clearance decision can move from block
+  to review or allow.
 - Keep the historical `src/dataset` facade removed. Terrain source manifests
   stay in `src/terrain`, lunar facts stay in `src/lunar_data`, and generic
   refs/manifests stay in `src/data_core`.

@@ -15,6 +15,7 @@ pub(all) struct SiteDossier {
   route_candidates : Array[@mission.RouteCandidate]
   power_window_evidence : @mission.PowerWindowEvidence
   energy : @mission.EnergyAssessment
+  clearance_plan : @mission.MissionClearancePlan
   summary : String
   blockers : Array[String]
   next_questions : Array[String]
@@ -36,6 +37,73 @@ fn selected_route_label(value : String) -> String {
   } else {
     value
   }
+}
+
+///|
+fn route_candidate_by_id(
+  routes : Array[@mission.RouteCandidate],
+  route_id : String,
+) -> @mission.RouteCandidate {
+  for route in routes {
+    if route.route_id == route_id {
+      return route
+    }
+  }
+  routes[0]
+}
+
+///|
+fn selected_route_readiness(
+  route : @mission.RouteCandidate,
+  corridor : @mission.CorridorScanWindow,
+  energy : @mission.EnergyAssessment,
+) -> @mission.MissionSimulationReadiness {
+  @mission.simulation_readiness(
+    "mission/first-trusted-square/\{route.route_id}/simulation-readiness",
+    route.route_id,
+    [
+      @mission.readiness_check(
+        "terrain-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::TerrainReadiness,
+        "Selected-route terrain gate",
+        route.terrain_remediation.decision,
+        route.terrain_remediation.output_path,
+        route.terrain_remediation.next_action,
+      ),
+      @mission.readiness_check(
+        "corridor-scan-best-window",
+        @mission.MissionReadinessCheckKind::CorridorReadiness,
+        "Measured corridor search gate",
+        corridor.decision,
+        "mission/first-trusted-square/corridor-scan.json",
+        corridor.note,
+      ),
+      @mission.readiness_check(
+        "illumination-\{route.route_id}",
+        @mission.MissionReadinessCheckKind::IlluminationReadiness,
+        "Selected-route illumination gate",
+        route.illumination.decision,
+        route.illumination.local_horizon.output_path,
+        route.illumination.next_action,
+      ),
+      @mission.readiness_check(
+        "energy-window",
+        @mission.MissionReadinessCheckKind::EnergyReadiness,
+        "Rover energy window gate",
+        energy.decision,
+        energy.budget.power_window_source_path,
+        energy.next_action,
+      ),
+      @mission.readiness_check(
+        "operator-review",
+        @mission.MissionReadinessCheckKind::OperatorReviewReadiness,
+        "Operator accepted-review gate",
+        @mission.TraverseDecision::Block,
+        "artifact/operator-review-transitions.json",
+        "Operator review has unresolved blockers for selected route simulation",
+      ),
+    ],
+  )
 }
 
 ///|
@@ -83,7 +151,27 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     terrain,
     @mission.conservative_rover_profile(),
   )
+  let corridor_scan = @mission.first_trusted_square_corridor_scan()
   let route_candidates = @mission.first_trusted_square_route_candidates()
+  let energy = @mission.assess_energy_window(
+    route_candidates,
+    @mission.conservative_energy_budget(),
+  )
+  let selected_route = route_candidate_by_id(
+    route_candidates,
+    corridor_scan[0].selected_route_id,
+  )
+  let readiness = selected_route_readiness(
+    selected_route,
+    corridor_scan[0],
+    energy,
+  )
+  let clearance_plan = @mission.selected_route_clearance_plan(
+    "mission/first-trusted-square/\{selected_route.route_id}/selected-route-clearance",
+    selected_route,
+    energy,
+    readiness,
+  )
   {
     site: first_trusted_square_site(),
     datasets: [
@@ -112,13 +200,11 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     source_extraction_candidates: @lunar_data.first_trusted_square_all_lola_extraction_candidates(),
     terrain,
     traverse,
-    corridor_scan: @mission.first_trusted_square_corridor_scan(),
+    corridor_scan,
     route_candidates,
     power_window_evidence: @mission.first_trusted_square_power_window_evidence(),
-    energy: @mission.assess_energy_window(
-      route_candidates,
-      @mission.conservative_energy_budget(),
-    ),
+    energy,
+    clearance_plan,
     summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, promoted best-window route evidence, and a conservative rover energy-window budget.",
     blockers: terrain_blockers(terrain),
     next_questions: [
@@ -382,6 +468,28 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
         text += "    - \{reason}\n"
       }
     }
+  }
+  text += "\n"
+  text += "## Selected Route Clearance\n\n"
+  let clearance = dossier.clearance_plan
+  text += "- plan: \{clearance.plan_id}\n"
+  text += "- route: \{clearance.route_id}\n"
+  text += "- decision: \{@mission.traverse_decision_label(clearance.decision)}\n"
+  text += "- blocking items: \{clearance.blocking_items.length()}\n"
+  text += "- review items: \{clearance.review_items.length()}\n"
+  text += "- accepted items: \{clearance.accepted_items.length()}\n"
+  text += "- rejected items: \{clearance.rejected_items.length()}\n"
+  text += "- next action: \{clearance.next_action}\n"
+  text += "- gates:\n"
+  for item in clearance.items {
+    text += "  - \{item.clearance_id}: \{item.label}\n"
+    text += "    - kind: \{@mission.mission_clearance_kind_label(item.kind)}\n"
+    text += "    - decision: \{@mission.traverse_decision_label(item.decision)}\n"
+    text += "    - status: \{@mission.mission_clearance_status_label(item.status)}\n"
+    text += "    - evidence: \{item.evidence_path}\n"
+    text += "    - observed: \{item.observed}\n"
+    text += "    - required: \{item.required}\n"
+    text += "    - action: \{item.clearance_action}\n"
   }
   text += "\n"
   text += "## Blockers\n\n"

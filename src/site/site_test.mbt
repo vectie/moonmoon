@@ -149,6 +149,26 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(dossier.power_window_evidence.available_energy_wh > 230.0)
   assert_eq(dossier.energy.route_count, 6)
   assert_eq(dossier.energy.blocked_route_count, 6)
+  assert_eq(dossier.clearance_plan.route_id, "northeast-stepout")
+  assert_true(
+    dossier.clearance_plan.decision == @mission.TraverseDecision::Block,
+  )
+  assert_eq(dossier.clearance_plan.items.length(), 4)
+  assert_eq(dossier.clearance_plan.blocking_items.length(), 4)
+  assert_eq(
+    dossier.clearance_plan.items[0].clearance_id,
+    "clear-terrain-grade-northeast-stepout",
+  )
+  assert_eq(
+    dossier.clearance_plan.items[1].clearance_id,
+    "clear-illumination-confidence-northeast-stepout",
+  )
+  assert_eq(dossier.clearance_plan.items[2].clearance_id, "clear-energy-margin")
+  assert_eq(
+    dossier.clearance_plan.items[3].clearance_id,
+    "clear-operator-review-northeast-stepout",
+  )
+  assert_true(dossier.clearance_plan.next_action.contains("terrain grade"))
   assert_eq(dossier.blockers.length(), 2)
   let markdown = @site.render_markdown(dossier)
   assert_true(markdown.contains("# First Trusted Square"))
@@ -228,6 +248,14 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("illumination decision: block"))
   assert_true(markdown.contains("illumination risk"))
   assert_true(markdown.contains("local relief shadow proxy exceeds"))
+  assert_true(markdown.contains("## Selected Route Clearance"))
+  assert_true(markdown.contains("clear-terrain-grade-northeast-stepout"))
+  assert_true(
+    markdown.contains("clear-illumination-confidence-northeast-stepout"),
+  )
+  assert_true(markdown.contains("clear-energy-margin"))
+  assert_true(markdown.contains("clear-operator-review-northeast-stepout"))
+  assert_true(markdown.contains("operator-review-transitions.json"))
   assert_true(
     markdown.contains("provenance: lro-lola-first-trusted-square-dem-v1"),
   )
@@ -247,6 +275,12 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"source_product_selections\""))
   assert_true(text.contains("\"source_extraction_candidates\""))
   assert_true(text.contains("\"catalog_validation\""))
+  assert_true(text.contains("\"clearance_plan\""))
+  assert_true(text.contains("\"route_id\": \"northeast-stepout\""))
+  assert_true(
+    text.contains("\"clearance_id\": \"clear-terrain-grade-northeast-stepout\""),
+  )
+  assert_true(text.contains("\"clearance_id\": \"clear-energy-margin\""))
   assert_true(text.contains("\"catalog validation has not been read"))
   assert_true(
     text.contains(

@@ -101,8 +101,30 @@ fn site_scorecard(
     available_energy_wh: dossier.energy.available_energy_wh,
     energy_margin_wh: dossier.energy.margin_wh,
     confidence: dossier.terrain.uncertainty.confidence,
-    next_action: dossier.energy.next_action,
+    next_action: dossier.clearance_plan.next_action,
   }
+}
+
+///|
+fn clearance_fact_value(plan : @mission.MissionClearancePlan) -> String {
+  "\{plan.blocking_items.length()} blocker(s), \{plan.review_items.length()} review(s), \{plan.accepted_items.length()} accepted"
+}
+
+///|
+fn clearance_item_facts(
+  plan : @mission.MissionClearancePlan,
+) -> Array[InspectorFact] {
+  let facts : Array[InspectorFact] = []
+  for item in plan.items {
+    facts.push({
+      fact_id: item.clearance_id,
+      label: item.label,
+      value: item.clearance_action,
+      status: @mission.traverse_decision_label(item.decision),
+      evidence_path: item.evidence_path,
+    })
+  }
+  facts
 }
 
 ///|
@@ -112,7 +134,7 @@ fn inspector_facts(
   selected_cell_id : String,
 ) -> Array[InspectorFact] {
   let best = dossier.corridor_scan[0]
-  [
+  let summary_facts = [
     {
       fact_id: "selected-cell",
       label: "Selected cell",
@@ -165,5 +187,13 @@ fn inspector_facts(
       status: @mission.energy_decision_label(dossier.energy),
       evidence_path: "mission/first-trusted-square/energy-window.json",
     },
+    {
+      fact_id: "selected-route-clearance",
+      label: "Selected route clearance",
+      value: clearance_fact_value(dossier.clearance_plan),
+      status: @mission.traverse_decision_label(dossier.clearance_plan.decision),
+      evidence_path: "mission/first-trusted-square/\{selected_route_id}/selected-route-clearance.json",
+    },
   ]
+  summary_facts + clearance_item_facts(dossier.clearance_plan)
 }

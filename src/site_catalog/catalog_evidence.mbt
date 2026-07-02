@@ -99,6 +99,7 @@ pub fn first_trusted_square_dossier_from_catalog_root(
     route_candidates: dossier.route_candidates,
     power_window_evidence: dossier.power_window_evidence,
     energy: dossier.energy,
+    clearance_plan: dossier.clearance_plan,
     summary: dossier.summary,
     blockers: dossier.blockers,
     next_questions: dossier.next_questions,
