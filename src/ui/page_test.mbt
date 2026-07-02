@@ -5,6 +5,13 @@ test "standalone Moonmoon UI renders from the MoonBit view model" {
   assert_true(html.contains("Moonmoon"))
   assert_true(html.contains("moonmoon-view-model"))
   assert_true(html.contains("moonmoon-motion-contract"))
+  assert_true(html.contains("moonmoon-globe-runtime"))
+  assert_true(html.contains("moon-globe-canvas"))
+  assert_true(html.contains("operable Moon globe"))
+  assert_true(html.contains("Moon context"))
+  assert_true(html.contains("data-moon-action=\"focus\""))
+  assert_true(html.contains("data-moon-action=\"reset\""))
+  assert_true(html.contains("data-moon-action=\"orbit\""))
   assert_true(html.contains("motion contract"))
   assert_true(html.contains("terrain cells"))
   assert_true(html.contains("selected cell"))
@@ -13,6 +20,14 @@ test "standalone Moonmoon UI renders from the MoonBit view model" {
   )
   assert_true(html.contains("northeast-stepout"))
   assert_true(html.contains("site_latitude_deg"))
+  assert_true(html.contains("globe_overlay"))
+  assert_true(html.contains("site-footprint/ne"))
+  assert_true(html.contains("globe-route/northeast-stepout"))
+  assert_true(
+    html.contains(
+      "trusted square bounds, 81 measured corridor windows, and northeast-stepout",
+    ),
+  )
 }
 
 ///|
@@ -23,6 +38,8 @@ test "standalone Moonmoon UI has no stale external asset bundle" {
   assert_true(!html.contains("moonmoon-moonbook"))
   assert_true(!html.contains("moonmoon-noetix"))
   assert_true(!html.contains("src/ui/rabbita_moon"))
+  assert_true(!html.contains("three.module.js"))
+  assert_true(!html.contains("https://esm.sh"))
 }
 
 ///|

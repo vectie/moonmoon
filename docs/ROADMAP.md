@@ -23,9 +23,9 @@
 
 ## Next
 
-- Build the evidence-backed movable Moon view from Phase 2 of
-  `docs/STEP_BY_STEP_PLAN.md`: lunar-scale context first, then selected-site
-  zoom and route overlay.
+- Continue the evidence-backed movable Moon view from Phase 2 of
+  `docs/STEP_BY_STEP_PLAN.md`: improve the current standalone globe with
+  stronger source-backed terrain texture and browser-verified viewport framing.
 - Tighten the underlying selected-route evidence around terrain, illumination,
   energy, and operator review until the clearance decision can move from block
   to review or allow.

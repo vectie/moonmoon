@@ -72,7 +72,11 @@ change before traversal is allowed.
 
 ## Phase 2: Make the Moon View Evidence-Backed and Movable
 
-Status: next.
+Status: started. The standalone operator page now opens with an inline movable
+Moon globe that consumes the existing MoonBit view-model JSON, projects the
+trusted-square footprint, selected route, and corridor windows, and keeps the
+route/grid inspector beside it. Remaining work is stronger source-backed
+terrain texture and browser QA across viewports.
 
 Goal: the first viewport should feel like an operable Moon landscape, then let
 the user zoom into the selected site.
