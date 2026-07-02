@@ -16,6 +16,30 @@ pub(all) enum ReviewStatus {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+fn review_status_from_lunar(
+  status : @lunar_data.LunarReviewStatus,
+) -> ReviewStatus {
+  match status {
+    @lunar_data.LunarReviewStatus::AcceptedForSoftwareProof =>
+      AcceptedForSoftwareProof
+    @lunar_data.LunarReviewStatus::NeedsSourceUpgrade => NeedsSourceUpgrade
+    @lunar_data.LunarReviewStatus::NeedsHumanReview => NeedsHumanReview
+    @lunar_data.LunarReviewStatus::Rejected => Rejected
+  }
+}
+
+///|
+fn claim_kind_from_lunar(label : String) -> @core.ClaimKind {
+  match label {
+    "measured" => @core.ClaimKind::Measured
+    "derived" => @core.ClaimKind::Derived
+    "simulated" => @core.ClaimKind::Simulated
+    "assumed" => @core.ClaimKind::Assumed
+    _ => @core.ClaimKind::Unknown
+  }
+}
+
+///|
 pub(all) enum ChecksumKind {
   InlineFixtureFingerprint
   Sha256
@@ -253,23 +277,26 @@ pub fn verify_checksum(
 
 ///|
 pub fn first_trusted_square_lola_candidate() -> SourceCandidate {
+  let source = @lunar_data.first_trusted_square_lola_source_candidate()
+  let extraction = @lunar_data.first_trusted_square_lola_extraction_candidate()
   {
     candidate_id: "candidate-lro-lola-sldem-first-trusted-square",
-    title: "LRO LOLA derived gridded topography candidate",
-    body: "Moon",
-    mission: "Lunar Reconnaissance Orbiter",
-    instrument: "LOLA",
-    product_family: "GDR/SLDEM derived gridded terrain",
-    official_source_url: "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
-    access_url: "https://ode.rsl.wustl.edu/moon/",
+    title: source.title + " candidate",
+    body: source.body,
+    mission: source.mission,
+    instrument: source.instrument,
+    product_family: source.product_family + " / SLDEM derived gridded terrain",
+    official_source_url: source.official_source_url,
+    access_url: source.access_url,
     local_target_path: "data/sources/lro_lola/first_trusted_square_dem.csv plus adjacent route-window CSVs",
-    intended_use: "Replace the synthetic trusted-square DEM with a tiny authoritative lunar south-pole terrain extraction.",
+    intended_use: source.intended_use,
     next_action: "Use the checked LOLA byte-range fixtures for software proof, then add illumination and wider corridor search before any rover claim.",
-    review_status: AcceptedForSoftwareProof,
-    notes: [
+    review_status: review_status_from_lunar(source.review_status),
+    notes: source.notes +
+    [
+      "Active extraction: \{extraction.extraction_id}.",
       "PDS Geosciences identifies LOLA as the LRO Lunar Orbiter Laser Altimeter for high-resolution lunar topography.",
       "The PDS page lists derived GDR and SLDEM product families and points recent LOLA data discovery to ODE/LOLA Data Node.",
-      "The first trusted-square active fixture now uses a checked LOLA GDR byte-range extraction for software proof.",
     ],
   }
 }
@@ -333,23 +360,25 @@ pub fn first_trusted_square_lola_acquisition_plan() -> SourceAcquisitionPlan {
 
 ///|
 pub fn first_trusted_square_ephemeris_candidate() -> SourceCandidate {
+  let source = @lunar_data.first_trusted_square_ephemeris_source_candidate()
+  let window = @lunar_data.first_trusted_square_ephemeris_window()
   {
     candidate_id: "candidate-lunar-solar-ephemeris-first-trusted-square",
-    title: "Lunar solar ephemeris power-window candidate",
-    body: "Moon",
-    mission: "NASA NAIF SPICE / planetary ephemeris",
-    instrument: "SPICE kernels",
-    product_family: "Sun/Moon ephemeris and lunar orientation kernels",
-    official_source_url: "https://naif.jpl.nasa.gov/naif/data.html",
-    access_url: "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/",
-    local_target_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    intended_use: "Attach time-windowed Sun/Moon geometry, local sunlit hours, and rover power-window evidence to the first trusted square.",
+    title: source.title,
+    body: source.body,
+    mission: source.mission,
+    instrument: source.instrument,
+    product_family: source.product_family,
+    official_source_url: source.official_source_url,
+    access_url: source.access_url,
+    local_target_path: window.output_path,
+    intended_use: source.intended_use,
     next_action: "Review the computed low-sun-angle power window, local horizon assumptions, and rover power model before clearing the energy gate.",
-    review_status: NeedsHumanReview,
-    notes: [
+    review_status: review_status_from_lunar(source.review_status),
+    notes: source.notes +
+    [
+      "Window fixture: \{window.window_id}.",
       "The current illumination and energy gates deliberately block because computed power remains below the conservative route demand.",
-      "The NAIF source files and first time-bounded Sun/Moon geometry computation are pinned locally.",
-      "This candidate turns the ephemeris evidence from prose into a typed Operator review-visible source contract.",
     ],
   }
 }
@@ -431,31 +460,33 @@ pub fn first_trusted_square_source_acquisition_plans() -> Array[
 
 ///|
 pub fn first_trusted_square_lola_product_selection() -> SourceProductSelection {
+  let selection = @lunar_data.first_trusted_square_lola_product_selection()
   {
-    selection_id: "select-ldem-875s-20m-float-v1",
+    selection_id: selection.selection_id,
     plan_id: "acquire-lro-lola-gdr-south-pole-20m-v1",
-    product_id: "ldem_875s_20m_float",
-    product_lid: "urn:nasa:pds:lro_lola_rdr:data_gridded:ldem_875s_20m_float",
-    image_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
-    label_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.xml",
-    local_label_path: "data/sources/lro_lola/ldem_875s_20m_float.xml",
-    label_sha256: "10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53",
-    label_bytes: 11629,
-    image_bytes: 230068224,
-    projection: "Polar Stereographic",
-    resolution_m: 20.0,
-    west_deg: 0.0,
-    east_deg: 360.0,
-    south_deg: -90.0,
-    north_deg: -87.5,
-    lines: 7584,
-    samples: 7584,
-    data_type: "IEEE754LSBSingle",
-    unit: "KILOMETER",
-    value_offset_km: 1737.4,
-    selection_reason: "Covers the first trusted square near 89.88S with south-polar 20 m/pixel LOLA DEM data and has a small pinned XML label for extractor development.",
+    product_id: selection.product_id,
+    product_lid: selection.product_lid,
+    image_url: selection.image_url,
+    label_url: selection.label_url,
+    local_label_path: selection.local_label_path,
+    label_sha256: selection.label_sha256,
+    label_bytes: selection.label_bytes.to_int(),
+    image_bytes: selection.image_bytes.to_int(),
+    projection: selection.coordinate_frame.projection,
+    resolution_m: selection.coverage.resolution_m,
+    west_deg: selection.coverage.west_deg,
+    east_deg: selection.coverage.east_deg,
+    south_deg: selection.coverage.south_deg,
+    north_deg: selection.coverage.north_deg,
+    lines: selection.lines,
+    samples: selection.samples,
+    data_type: selection.data_type,
+    unit: selection.unit,
+    value_offset_km: selection.value_offset_km,
+    selection_reason: selection.selection_reason +
+    " The XML label remains the committed extractor boundary.",
     extraction_risk: "The image is about 230 MB and should be window-read from the float raster after projection math is tested; do not commit the raw image.",
-    review_status: AcceptedForSoftwareProof,
+    review_status: review_status_from_lunar(selection.review_status),
   }
 }
 
@@ -468,27 +499,27 @@ pub fn first_trusted_square_source_product_selections() -> Array[
 
 ///|
 pub fn first_trusted_square_lola_extraction_candidate() -> SourceExtractionCandidate {
+  let extraction = @lunar_data.first_trusted_square_lola_extraction_candidate()
   {
-    extraction_id: "extract-ldem-875s-20m-first-trusted-square-v1",
-    selection_id: "select-ldem-875s-20m-float-v1",
-    generated_by: "MoonBit source extraction",
-    output_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
-    output_sha256: "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
-    output_bytes: 636,
-    tile_id: "first-trusted-square-lola",
-    center_lat_deg: -89.88,
-    center_lon_deg: 0.12,
-    source_row_start: 3972,
-    source_col_start: 3790,
-    rows: 4,
-    cols: 4,
-    cell_size_m: 20.0,
-    elevation_unit: "meters relative to 1737.4 km reference radius",
-    claim_kind: @core.ClaimKind::Measured,
-    review_status: AcceptedForSoftwareProof,
-    notes: [
-      "Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.",
-      "This extraction is the active Moonmoon trusted-square fixture for software proof.",
+    extraction_id: extraction.extraction_id,
+    selection_id: extraction.selection_id,
+    generated_by: extraction.generated_by,
+    output_path: extraction.output_path,
+    output_sha256: extraction.output_sha256,
+    output_bytes: extraction.output_bytes.to_int(),
+    tile_id: extraction.tile_id,
+    center_lat_deg: extraction.coverage.center_lat_deg,
+    center_lon_deg: extraction.coverage.center_lon_deg,
+    source_row_start: extraction.source_row_start,
+    source_col_start: extraction.source_col_start,
+    rows: extraction.rows,
+    cols: extraction.cols,
+    cell_size_m: extraction.cell_size_m,
+    elevation_unit: extraction.value_unit,
+    claim_kind: claim_kind_from_lunar(extraction.claim_kind),
+    review_status: review_status_from_lunar(extraction.review_status),
+    notes: extraction.notes +
+    [
       "The output CSV keeps the small Moonmoon fixture shape while replacing synthetic values with measured LOLA DEM values.",
     ],
   }
@@ -663,31 +694,35 @@ pub fn to_provenance(manifest : DatasetManifest) -> @core.Provenance {
 
 ///|
 pub fn first_trusted_square_manifest() -> DatasetManifest {
+  let dataset = @lunar_data.first_trusted_square_lola_dataset()
+  let source = @lunar_data.first_trusted_square_lola_source()
+  let product = @lunar_data.first_trusted_square_lola_product_selection()
+  let extraction = @lunar_data.first_trusted_square_lola_extraction_candidate()
   {
-    dataset_id: "lro-lola-first-trusted-square-dem-v1",
+    dataset_id: dataset.dataset_id,
     title: "LOLA Shackleton Rim DEM byte-range fixture",
-    source_url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/float_img/ldem_875s_20m_float.img",
-    license: "Apache-2.0",
+    source_url: product.image_url,
+    license: source.license,
     product_type: "lola-gdr-byte-range-dem-fixture",
     trust: Authoritative,
-    claim_kind: @core.ClaimKind::Measured,
+    claim_kind: claim_kind_from_lunar(extraction.claim_kind),
     coverage: {
-      south_deg: -89.90,
-      north_deg: -89.86,
-      west_deg: 0.10,
-      east_deg: 0.14,
+      south_deg: extraction.coverage.south_deg,
+      north_deg: extraction.coverage.north_deg,
+      west_deg: extraction.coverage.west_deg,
+      east_deg: extraction.coverage.east_deg,
     },
-    resolution_m: 20.0,
-    source_path: "data/sources/lro_lola/first_trusted_square_dem.csv",
-    source_sha256: "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
+    resolution_m: extraction.coverage.resolution_m,
+    source_path: extraction.output_path,
+    source_sha256: extraction.output_sha256,
     extractor: "MoonBit source extraction -> data/sources/lro_lola/first_trusted_square_dem.csv -> MoonBit fixture generator -> src/terrain/generated_first_trusted_square_fixture.mbt",
     checksum_kind: InlineFixtureFingerprint,
     checksum: "inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521",
-    citation: "LRO LOLA GDR product ldem_875s_20m_float, extracted from official PDS Geosciences byte ranges for Moonmoon software proof.",
-    review_status: AcceptedForSoftwareProof,
-    notes: [
+    citation: source.citation,
+    review_status: review_status_from_lunar(extraction.review_status),
+    notes: extraction.notes +
+    [
       "Elevation values are measured LOLA DEM samples converted from kilometers to meters relative to the 1737.4 km reference radius.",
-      "The raw 230 MB IMG is not committed; the tiny CSV is reproducibly extracted from HTTP byte ranges.",
       "Do not use this dataset for mission-grade traverse planning without independent geospatial review.",
     ],
   }

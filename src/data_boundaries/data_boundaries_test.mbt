@@ -55,6 +55,11 @@ fn lunar_catalog_files() -> Array[String] {
 }
 
 ///|
+fn dataset_files() -> Array[String] {
+  ["src/dataset/moon.pkg", "src/dataset/manifest.mbt"]
+}
+
+///|
 test "data_core stays domain neutral and filesystem free" {
   let forbidden = [
     "lunar", "Lunar", "Moon", "LOLA", "SPICE", "crater", "robot", "Robot", "URDF",
@@ -65,6 +70,26 @@ test "data_core stays domain neutral and filesystem free" {
     for term in forbidden {
       assert_not_contains(text, term, path)
     }
+  }
+}
+
+///|
+test "dataset is a lunar_data projection not a store validate or ui boundary" {
+  let forbidden = [
+    "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store", "\"vectie/moonmoon/src/data_validate",
+    "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/terrain", "\"vectie/moonmoon/src/mission",
+    "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/ui", "\"vectie/moonmoon/src/suite_adapter_preview",
+    "\"vectie/moonmoon/src/robot_data", "URDF", "telemetry", "Noetix", "Rabbita",
+  ]
+  for path in dataset_files() {
+    let text = read_text(path)
+    for term in forbidden {
+      assert_not_contains(text, term, path)
+    }
+  }
+  let manifest = read_text("src/dataset/moon.pkg")
+  if !manifest.contains("\"vectie/moonmoon/src/lunar_data\"") {
+    fail("dataset must project migrated first-site evidence from lunar_data")
   }
 }
 

@@ -183,6 +183,16 @@ Exit criteria:
 - No stale Python or per-feature check script remains for data integrity that
   belongs in MoonBit validation.
 
+Current checkpoint:
+
+- `src/lunar_catalog` materializes the first trusted square into a generic
+  catalog root and validates it.
+- `src/dataset` now projects migrated first-site source, product, extraction,
+  and active DEM manifest fields from `src/lunar_data`.
+- Remaining cleanup: move acquisition-plan details and route-window manifests
+  behind lunar-domain records, then remove duplicate integrity checks that
+  belong in `data_validate`.
+
 ### Phase 6: Robot Data Landing Zone
 
 Status: queued after the Moonmoon catalog is proven.

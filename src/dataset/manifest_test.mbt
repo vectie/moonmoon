@@ -37,16 +37,15 @@ test "first trusted square manifest marks LOLA evidence clearly" {
 ///|
 test "first trusted square declares an authoritative LOLA upgrade candidate" {
   let candidate = @dataset.first_trusted_square_lola_candidate()
+  let lunar = @lunar_data.first_trusted_square_lola_source_candidate()
   assert_eq(
     candidate.candidate_id,
     "candidate-lro-lola-sldem-first-trusted-square",
   )
-  assert_eq(candidate.instrument, "LOLA")
+  assert_eq(candidate.instrument, lunar.instrument)
+  assert_eq(candidate.official_source_url, lunar.official_source_url)
+  assert_eq(candidate.intended_use, lunar.intended_use)
   assert_true(candidate.product_family.contains("SLDEM"))
-  assert_eq(
-    candidate.official_source_url,
-    "https://pds-geosciences.wustl.edu/missions/lro/lola.htm",
-  )
   assert_eq(candidate.access_url, "https://ode.rsl.wustl.edu/moon/")
   assert_eq(
     @dataset.source_candidate_status_label(candidate),
@@ -58,20 +57,16 @@ test "first trusted square declares an authoritative LOLA upgrade candidate" {
 ///|
 test "first trusted square declares an ephemeris power source candidate" {
   let candidate = @dataset.first_trusted_square_ephemeris_candidate()
+  let lunar = @lunar_data.first_trusted_square_ephemeris_source_candidate()
+  let window = @lunar_data.first_trusted_square_ephemeris_window()
   assert_eq(
     candidate.candidate_id,
     "candidate-lunar-solar-ephemeris-first-trusted-square",
   )
-  assert_true(candidate.instrument.contains("SPICE"))
+  assert_eq(candidate.instrument, lunar.instrument)
   assert_true(candidate.product_family.contains("ephemeris"))
-  assert_eq(
-    candidate.official_source_url,
-    "https://naif.jpl.nasa.gov/naif/data.html",
-  )
-  assert_eq(
-    candidate.local_target_path,
-    "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-  )
+  assert_eq(candidate.official_source_url, lunar.official_source_url)
+  assert_eq(candidate.local_target_path, window.output_path)
   assert_true(candidate.next_action.contains("energy gate"))
   assert_eq(
     @dataset.source_candidate_status_label(candidate),
@@ -134,30 +129,25 @@ test "first trusted square has an ephemeris acquisition plan" {
 ///|
 test "first trusted square selects a concrete LOLA product label" {
   let selection = @dataset.first_trusted_square_lola_product_selection()
+  let lunar = @lunar_data.first_trusted_square_lola_product_selection()
   assert_eq(selection.selection_id, "select-ldem-875s-20m-float-v1")
-  assert_eq(selection.product_id, "ldem_875s_20m_float")
+  assert_eq(selection.product_id, lunar.product_id)
   assert_true(selection.product_lid.contains("ldem_875s_20m_float"))
-  assert_true(selection.image_url.has_suffix("ldem_875s_20m_float.img"))
-  assert_true(selection.label_url.has_suffix("ldem_875s_20m_float.xml"))
-  assert_eq(
-    selection.local_label_path,
-    "data/sources/lro_lola/ldem_875s_20m_float.xml",
-  )
-  assert_eq(
-    selection.label_sha256,
-    "10d62a66364276d544168949a11a93580e748aaff78f8cf946837d98d077ff53",
-  )
-  assert_eq(selection.label_bytes, 11629)
-  assert_eq(selection.image_bytes, 230068224)
-  assert_eq(selection.projection, "Polar Stereographic")
-  assert_eq(selection.resolution_m, 20.0)
-  assert_eq(selection.south_deg, -90.0)
-  assert_eq(selection.north_deg, -87.5)
-  assert_eq(selection.lines, 7584)
-  assert_eq(selection.samples, 7584)
-  assert_eq(selection.data_type, "IEEE754LSBSingle")
-  assert_eq(selection.unit, "KILOMETER")
-  assert_eq(selection.value_offset_km, 1737.4)
+  assert_eq(selection.image_url, lunar.image_url)
+  assert_eq(selection.label_url, lunar.label_url)
+  assert_eq(selection.local_label_path, lunar.local_label_path)
+  assert_eq(selection.label_sha256, lunar.label_sha256)
+  assert_eq(selection.label_bytes, lunar.label_bytes.to_int())
+  assert_eq(selection.image_bytes, lunar.image_bytes.to_int())
+  assert_eq(selection.projection, lunar.coordinate_frame.projection)
+  assert_eq(selection.resolution_m, lunar.coverage.resolution_m)
+  assert_eq(selection.south_deg, lunar.coverage.south_deg)
+  assert_eq(selection.north_deg, lunar.coverage.north_deg)
+  assert_eq(selection.lines, lunar.lines)
+  assert_eq(selection.samples, lunar.samples)
+  assert_eq(selection.data_type, lunar.data_type)
+  assert_eq(selection.unit, lunar.unit)
+  assert_eq(selection.value_offset_km, lunar.value_offset_km)
   assert_eq(
     @dataset.product_selection_status_label(selection),
     "accepted-for-software-proof",
@@ -171,27 +161,19 @@ test "first trusted square selects a concrete LOLA product label" {
 ///|
 test "first trusted square tracks LOLA extraction candidates" {
   let extraction = @dataset.first_trusted_square_lola_extraction_candidate()
-  assert_eq(
-    extraction.extraction_id,
-    "extract-ldem-875s-20m-first-trusted-square-v1",
-  )
-  assert_eq(extraction.selection_id, "select-ldem-875s-20m-float-v1")
-  assert_eq(extraction.generated_by, "MoonBit source extraction")
-  assert_eq(
-    extraction.output_path,
-    "data/sources/lro_lola/first_trusted_square_dem.csv",
-  )
-  assert_eq(
-    extraction.output_sha256,
-    "7d296f65efc1df9544c043e5e59d6fcba9774d39c481814b5bb9a37288fec98c",
-  )
-  assert_eq(extraction.output_bytes, 636)
-  assert_eq(extraction.tile_id, "first-trusted-square-lola")
-  assert_eq(extraction.source_row_start, 3972)
-  assert_eq(extraction.source_col_start, 3790)
-  assert_eq(extraction.rows, 4)
-  assert_eq(extraction.cols, 4)
-  assert_eq(extraction.cell_size_m, 20.0)
+  let lunar = @lunar_data.first_trusted_square_lola_extraction_candidate()
+  assert_eq(extraction.extraction_id, lunar.extraction_id)
+  assert_eq(extraction.selection_id, lunar.selection_id)
+  assert_eq(extraction.generated_by, lunar.generated_by)
+  assert_eq(extraction.output_path, lunar.output_path)
+  assert_eq(extraction.output_sha256, lunar.output_sha256)
+  assert_eq(extraction.output_bytes, lunar.output_bytes.to_int())
+  assert_eq(extraction.tile_id, lunar.tile_id)
+  assert_eq(extraction.source_row_start, lunar.source_row_start)
+  assert_eq(extraction.source_col_start, lunar.source_col_start)
+  assert_eq(extraction.rows, lunar.rows)
+  assert_eq(extraction.cols, lunar.cols)
+  assert_eq(extraction.cell_size_m, lunar.cell_size_m)
   assert_true(extraction.claim_kind == @core.ClaimKind::Measured)
   assert_eq(
     @dataset.extraction_candidate_status_label(extraction),
