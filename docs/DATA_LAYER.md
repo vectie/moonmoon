@@ -117,10 +117,11 @@ stale compatibility layers.
 
 5. Migrate robot data one dataset family at a time.
    - Status: started for model packages, episode signal frames, replay
-     artifacts, quality reports, standalone telemetry streams, and gait clips.
+     artifacts, quality reports, standalone telemetry streams, gait clips, and
+     gait phase/contact annotations.
    - Next families must be selected one at a time: richer replay artifacts,
-     richer telemetry streams, deeper quality reports, or higher-level gait
-     annotations.
+     richer telemetry streams, deeper quality reports, or clip-to-episode
+     alignment records.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
      `src/robot_catalog`, and a CLI command only when it materializes or reads a
      true data-root boundary.

@@ -542,15 +542,92 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(gait_ready_root.episode_count, 1)
   assert_eq(gait_ready_root.telemetry_stream_count, 1)
   assert_eq(gait_ready_root.gait_clip_count, 1)
+  assert_eq(gait_ready_root.gait_annotation_count, 0)
   assert_eq(gait_ready_root.data_ref_count, 12)
   assert_true(gait_ready_root.gait_clip_ids.contains("gait-alpha-walk"))
   assert_eq(gait_ready_root.validation_artifact.artifact_id, "validation-903")
   let gait_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
-  assert_eq(gait_ready.status, "ready")
-  assert_true(gait_ready.ready)
+  assert_eq(gait_ready.status, "needs-evidence")
+  assert_true(!gait_ready.ready)
   assert_eq(gait_ready.gait_clip_count, 1)
+  assert_eq(gait_ready.gait_annotation_count, 0)
   assert_eq(gait_ready.gait_ref_count, 2)
+  assert_eq(gait_ready.gait_annotation_ref_count, 0)
   assert_eq(gait_ready.data_ref_count, 12)
+  assert_eq(
+    gait_ready.next_action,
+    "migrate gait phase/contact annotations for a cataloged gait clip",
+  )
+  let annotation_input = "target/robot-catalog-tests/episode-gait-annotation-input"
+  ensure_test_dir(annotation_input)
+  @fsx.write_string_to_file(
+    annotation_input + "/phase-labels.json",
+    "{\"labels\":[\"left-stance\",\"right-stance\"]}",
+  ) catch {
+    _ => fail("failed to write episode gait annotation phase labels")
+  }
+  @fsx.write_string_to_file(
+    annotation_input + "/contacts.csv",
+    "time,foot,contact\n0,left,true\n",
+  ) catch {
+    _ => fail("failed to write episode gait annotation contacts")
+  }
+  let annotation = @robot_catalog.import_robot_gait_annotation_directory(
+    @robot_catalog.robot_gait_annotation_directory_import_request(
+      root,
+      annotation_input,
+      "annotation-alpha-walk-phases",
+      "gait-alpha-walk",
+      "robot-alpha",
+      "episode-alpha-model",
+      904L,
+      source_label="Alpha gait annotation fixture",
+    ),
+  ).unwrap()
+  assert_eq(annotation.payload_count, 2)
+  assert_eq(annotation.gait_annotation.clip_id, "gait-alpha-walk")
+  assert_eq(annotation.materialization.gait_annotation_count, 1)
+  assert_eq(annotation.materialization.blocker_count, 0)
+  assert_eq(annotation.materialization.warning_count, 0)
+  let annotation_dossier = @robot_catalog.robot_gait_annotation_catalog_dossier_from_root(
+    root, "annotation-alpha-walk-phases",
+  ).unwrap()
+  assert_eq(annotation_dossier.annotation_id, "annotation-alpha-walk-phases")
+  assert_eq(annotation_dossier.clip_id, "gait-alpha-walk")
+  assert_eq(annotation_dossier.dataset.kind, "robot-gait-annotation")
+  assert_eq(annotation_dossier.annotation_ref_count, 2)
+  assert_eq(annotation_dossier.model_ref_count, 1)
+  assert_eq(annotation_dossier.data_ref_count, 3)
+  assert_eq(
+    annotation_dossier.validation_artifact.artifact_id,
+    "validation-904",
+  )
+  assert_true(
+    annotation_dossier.validation_status == @data_core.ValidationStatus::Passed,
+  )
+  let annotation_ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(
+    root,
+  ).unwrap()
+  assert_eq(annotation_ready_root.gait_annotation_count, 1)
+  assert_true(
+    annotation_ready_root.gait_annotation_ids.contains(
+      "annotation-alpha-walk-phases",
+    ),
+  )
+  assert_eq(annotation_ready_root.gait_annotation_dossiers.length(), 1)
+  assert_eq(annotation_ready_root.data_ref_count, 15)
+  assert_eq(
+    annotation_ready_root.validation_artifact.artifact_id,
+    "validation-904",
+  )
+  let annotation_ready = @robot_catalog.robot_migration_readiness_from_root(
+    root,
+  ).unwrap()
+  assert_eq(annotation_ready.status, "ready")
+  assert_true(annotation_ready.ready)
+  assert_eq(annotation_ready.gait_annotation_count, 1)
+  assert_eq(annotation_ready.gait_annotation_ref_count, 2)
+  assert_eq(annotation_ready.data_ref_count, 15)
 }
 
 ///|
@@ -620,7 +697,9 @@ test "robot telemetry directory import creates standalone stream dataset" {
   assert_eq(readiness.telemetry_stream_count, 1)
   assert_eq(readiness.telemetry_ref_count, 2)
   assert_eq(readiness.gait_clip_count, 0)
+  assert_eq(readiness.gait_annotation_count, 0)
   assert_eq(readiness.gait_ref_count, 0)
+  assert_eq(readiness.gait_annotation_ref_count, 0)
   assert_eq(readiness.next_action, "import a robot model package")
 }
 
@@ -703,6 +782,7 @@ test "robot gait clip directory import creates standalone clip dataset" {
   let root_dossier = @robot_catalog.robot_catalog_root_dossier_from_root(root).unwrap()
   assert_eq(root_dossier.model_count, 1)
   assert_eq(root_dossier.gait_clip_count, 1)
+  assert_eq(root_dossier.gait_annotation_count, 0)
   assert_true(root_dossier.gait_clip_ids.contains("gait-alpha-walk"))
   assert_eq(root_dossier.gait_clip_dossiers.length(), 1)
 }

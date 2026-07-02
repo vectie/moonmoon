@@ -168,6 +168,57 @@ test "robot gait clip maps to generic dataset version and lineage" {
 }
 
 ///|
+test "robot gait annotation maps to generic dataset version and lineage" {
+  let annotation_payload = @robot_data.robot_gait_annotation_payload_ref(
+    "phase-labels",
+    4,
+    @robot_data.robot_payload_ref(
+      "robot-alpha-gait-phase-labels",
+      "robot-gait-annotation",
+      "payloads/robot_data/robot-alpha/gait/phase-labels.json",
+      "application/json",
+      512L,
+      sha("bbbbccccddddaaaa"),
+    ),
+  )
+  let annotation = @robot_data.robot_gait_annotation_manifest(
+    "annotation-robot-alpha-walk-phases",
+    "robot-alpha",
+    "gait-robot-alpha-walk",
+    "source-robot-alpha-gait-phases",
+    "Robot Alpha gait phase labels",
+    "https://example.invalid/robot-alpha/gait/phases",
+    @data_core.DataStatus::Verified,
+    50L,
+    [fixture_model()],
+    [annotation_payload],
+    "Robot Alpha walk gait phase labels.",
+  )
+  let source = @robot_data.robot_gait_annotation_data_source(annotation)
+  assert_eq(source.source_id, "source-robot-alpha-gait-phases")
+  assert_eq(source.source_refs.length(), 1)
+  let dataset = @robot_data.robot_gait_annotation_dataset(annotation)
+  assert_eq(dataset.dataset_id, "annotation-robot-alpha-walk-phases")
+  assert_eq(dataset.kind, "robot-gait-annotation")
+  assert_eq(dataset.source_ids.length(), 2)
+  assert_eq(dataset.data_refs.length(), 2)
+  assert_eq(dataset.data_refs[1].kind, "robot-gait-annotation")
+  let version = @robot_data.robot_gait_annotation_version(
+    annotation,
+    "annotation-robot-alpha-walk-phases-v1",
+    parent_version_ids=["gait-robot-alpha-walk-v1"],
+  )
+  assert_eq(version.dataset_id, dataset.dataset_id)
+  assert_eq(version.parent_version_ids[0], "gait-robot-alpha-walk-v1")
+  let lineage = @robot_data.robot_gait_annotation_lineage(
+    annotation, "lineage-annotation-robot-alpha-walk-phases",
+  )
+  assert_eq(lineage.root_artifact.artifact_id, dataset.dataset_id)
+  assert_eq(lineage.edges.length(), 3)
+  assert_eq(lineage.edges[1].from_artifact.artifact_id, "gait-robot-alpha-walk")
+}
+
+///|
 test "robot quality report projects to generic validation report" {
   let episode_artifact = @data_core.artifact_ref(
     "dataset", "episode-robot-alpha-1", "datasets/episode-robot-alpha-1.json",

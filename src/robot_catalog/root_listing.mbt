@@ -10,16 +10,19 @@ pub(all) struct RobotCatalogRootDossier {
   episode_count : Int
   telemetry_stream_count : Int
   gait_clip_count : Int
+  gait_annotation_count : Int
   data_ref_count : Int
   source_ids : Array[String]
   model_ids : Array[@robot_data.RobotModelId]
   episode_ids : Array[@robot_data.RobotEpisodeId]
   telemetry_stream_ids : Array[@robot_data.RobotTelemetryStreamId]
   gait_clip_ids : Array[@robot_data.RobotGaitClipId]
+  gait_annotation_ids : Array[@robot_data.RobotGaitAnnotationId]
   model_dossiers : Array[RobotModelCatalogDossier]
   episode_dossiers : Array[RobotEpisodeCatalogDossier]
   telemetry_dossiers : Array[RobotTelemetryCatalogDossier]
   gait_clip_dossiers : Array[RobotGaitClipCatalogDossier]
+  gait_annotation_dossiers : Array[RobotGaitAnnotationCatalogDossier]
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -80,11 +83,13 @@ pub fn robot_catalog_root_dossier_from_root(
   let episode_ids : Array[@robot_data.RobotEpisodeId] = []
   let telemetry_stream_ids : Array[@robot_data.RobotTelemetryStreamId] = []
   let gait_clip_ids : Array[@robot_data.RobotGaitClipId] = []
+  let gait_annotation_ids : Array[@robot_data.RobotGaitAnnotationId] = []
   let source_ids : Array[String] = []
   let model_dossiers : Array[RobotModelCatalogDossier] = []
   let episode_dossiers : Array[RobotEpisodeCatalogDossier] = []
   let telemetry_dossiers : Array[RobotTelemetryCatalogDossier] = []
   let gait_clip_dossiers : Array[RobotGaitClipCatalogDossier] = []
+  let gait_annotation_dossiers : Array[RobotGaitAnnotationCatalogDossier] = []
   let mut data_ref_count = 0
   for entry in catalog.entries {
     if entry.artifact_kind == "dataset" {
@@ -143,6 +148,19 @@ pub fn robot_catalog_root_dossier_from_root(
         push_source_ids(source_ids, dataset)
         data_ref_count += dossier.data_ref_count
         gait_clip_dossiers.push(dossier)
+      } else if dataset.kind == "robot-gait-annotation" {
+        let dossier = match
+          robot_gait_annotation_catalog_dossier_from_root(
+            root,
+            dataset.dataset_id,
+          ) {
+          Ok(value) => value
+          Err(error) => return Err(error)
+        }
+        push_unique_string(gait_annotation_ids, dataset.dataset_id)
+        push_source_ids(source_ids, dataset)
+        data_ref_count += dossier.data_ref_count
+        gait_annotation_dossiers.push(dossier)
       }
     }
   }
@@ -157,15 +175,18 @@ pub fn robot_catalog_root_dossier_from_root(
     episode_count: episode_dossiers.length(),
     telemetry_stream_count: telemetry_dossiers.length(),
     gait_clip_count: gait_clip_dossiers.length(),
+    gait_annotation_count: gait_annotation_dossiers.length(),
     data_ref_count,
     source_ids,
     model_ids,
     episode_ids,
     telemetry_stream_ids,
     gait_clip_ids,
+    gait_annotation_ids,
     model_dossiers,
     episode_dossiers,
     telemetry_dossiers,
     gait_clip_dossiers,
+    gait_annotation_dossiers,
   })
 }

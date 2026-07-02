@@ -448,6 +448,7 @@ pub fn import_robot_model_package(
       lineage_count: 1,
       telemetry_stream_count: 0,
       gait_clip_count: 0,
+      gait_annotation_count: 0,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

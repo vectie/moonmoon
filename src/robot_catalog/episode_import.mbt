@@ -543,6 +543,7 @@ pub fn import_robot_episode_directory(
       lineage_count: 1,
       telemetry_stream_count: 0,
       gait_clip_count: 0,
+      gait_annotation_count: 0,
       quality_report_count: quality_reports.length(),
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,
