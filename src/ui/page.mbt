@@ -138,6 +138,8 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
   let next_action = html_escape(view.scorecard.next_action)
   let source_title = html_escape(view.source_panel.source_title)
   let source_path = html_escape(view.source_panel.local_source_path)
+  let source_catalog_path = html_escape(view.source_panel.catalog_manifest_path)
+  let source_authority = html_escape(view.source_panel.authority)
   let source_review = html_escape(view.source_panel.review_status)
   let view_json = render_json(view).stringify(indent=2)
   let motion_contract = traverse_motion_contract(view)
@@ -168,7 +170,7 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
     $|  <aside class="inspector">
     $|    <section class="card panel"><h2>selected cell</h2><article class="row"><div><b>\{html_escape(view.selected_tile.cell_id)}</b><span>\{html_escape(view.selected_tile.hazard)}</span></div><strong>\{view.selected_tile.elevation_m} m</strong></article></section>
     $|    <section class="card panel"><h2>routes</h2>\{route_list(view)}</section>
-    $|    <section class="card panel"><h2>source</h2><article class="row"><div><b>\{source_title}</b><span>\{source_path}</span></div><strong>\{source_review}</strong></article></section>
+    $|    <section class="card panel"><h2>source</h2><article class="row"><div><b>\{source_title}</b><span>\{source_path}</span></div><strong>\{source_review}</strong></article><article class="row"><div><b>\{source_authority}</b><span>\{source_catalog_path}</span></div><strong>\{html_escape(view.source_panel.catalog_status)}</strong></article></section>
     $|    \{motion_contract_panel(motion_contract)}
     $|    <section class="card panel"><h2>facts</h2>\{fact_list(view)}</section>
     $|    <section class="card panel"><h2>blockers</h2><ul>\{blocker_list(view)}</ul></section>
@@ -182,4 +184,15 @@ pub fn render_html(view : TrustedSquareViewModel) -> String {
 ///|
 pub fn first_trusted_square_html() -> String {
   render_html(first_trusted_square_view_model())
+}
+
+///|
+pub fn first_trusted_square_catalog_html(
+  root : String,
+) -> Result[String, CatalogBackedViewIssue] {
+  let view = match first_trusted_square_view_model_from_catalog_root(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  Ok(render_html(view))
 }

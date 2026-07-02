@@ -45,6 +45,8 @@ moon run cmd/main -- data root-json target/data-roots/first-trusted-square
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square json
 moon run cmd/main -- data site-json target/data-roots/first-trusted-square
+moon run cmd/main -- data ui-json target/data-roots/first-trusted-square
+moon run cmd/main -- data ui-html target/data-roots/first-trusted-square
 moon run cmd/main -- data robot-json target/robot-catalog-tests/episode-directory-import
 moon run cmd/main -- data robot-readiness-json target/robot-catalog-tests/episode-directory-import
 moon run cmd/main -- data ingest-robot-telemetry target/data-roots/robot-telemetry data/robot_telemetry/input telemetry-alpha robot-alpha session-alpha
@@ -61,6 +63,10 @@ evidence in the same episode dataset.
 Robot telemetry imports are a separate data-root boundary. They create
 `robot-telemetry-stream` datasets instead of hiding streams inside episode
 frames.
+
+The catalog-backed UI commands read the same validated first-site data root as
+`data site-json`, so source labels and catalog manifest paths can come from the
+materialized root instead of static product defaults.
 
 Run the live browser view through Rabbita, not through generated `output/`
 artifacts:

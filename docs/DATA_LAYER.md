@@ -107,8 +107,9 @@ stale compatibility layers.
 
 4. Connect visible product labels to validated data.
    - Status: started for robot migration readiness through
-     `data robot-readiness-json`; lunar first-site evidence is already
-     catalog-backed through `src/site_catalog`.
+     `data robot-readiness-json`; lunar first-site evidence is catalog-backed
+     through `src/site_catalog`, and `cmd/main` now exposes catalog-root-backed
+     `data ui-json` and `data ui-html` product views.
    - Keep the live movable Moon view as the first user-facing surface.
    - Replace static source/status labels only after the underlying manifests
      validate.
@@ -389,9 +390,11 @@ and push.
      that payload's source, validation state, and site coverage.
 
 9. Replace static first-site claims with catalog-backed live claims.
-   - Status: done for the data-root product JSON path: `src/site_catalog`
-     projects materialized catalog entries into `SiteDossier`, and `cmd/main`
-     exposes `data site-json`.
+   - Status: done for the data-root product JSON path and started for the
+     operator UI projection: `src/site_catalog` projects materialized catalog
+     entries into `SiteDossier`, `src/ui` can build a view model from that
+     catalog-backed dossier, and `cmd/main` exposes `data site-json`,
+     `data ui-json`, and `data ui-html`.
    - Why: static fixtures are useful proof points, but the user should see
      product evidence coming from the same validated root that future data
      uses.

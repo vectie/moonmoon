@@ -8,6 +8,12 @@ import {
 }
 
 // Values
+pub fn first_trusted_square_catalog_html(String) -> Result[String, CatalogBackedViewIssue]
+
+pub fn first_trusted_square_catalog_json(String) -> Result[Json, CatalogBackedViewIssue]
+
+pub fn first_trusted_square_catalog_markdown(String) -> Result[String, CatalogBackedViewIssue]
+
 pub fn first_trusted_square_html() -> String
 
 pub fn first_trusted_square_json() -> Json
@@ -21,6 +27,10 @@ pub fn first_trusted_square_motion_contract_json() -> Json
 pub fn first_trusted_square_view_model() -> TrustedSquareViewModel
 
 pub fn first_trusted_square_view_model_at(Int, Int) -> TrustedSquareViewModel
+
+pub fn first_trusted_square_view_model_from_catalog_root(String) -> Result[TrustedSquareViewModel, CatalogBackedViewIssue]
+
+pub fn first_trusted_square_view_model_from_catalog_root_at(String, Int, Int) -> Result[TrustedSquareViewModel, CatalogBackedViewIssue]
 
 pub fn from_site_dossier(@site.SiteDossier) -> TrustedSquareViewModel
 
@@ -39,6 +49,12 @@ pub fn view_layer_kind_label(ViewLayerKind) -> String
 // Errors
 
 // Types and methods
+pub(all) struct CatalogBackedViewIssue {
+  code : String
+  path : String
+  message : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct CellLayerValue {
   layer_id : String
   value : Double

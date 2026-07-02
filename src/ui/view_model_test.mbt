@@ -126,3 +126,14 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("catalog_artifact_id"))
   assert_true(json.contains("energy-window"))
 }
+
+///|
+test "catalog-backed view model reports missing roots as data store issues" {
+  match
+    @ui.first_trusted_square_view_model_from_catalog_root(
+      "target/ui-tests/missing-catalog-root",
+    ) {
+    Ok(_) => fail("missing catalog root should fail")
+    Err(error) => assert_eq(error.code, "read-manifest")
+  }
+}

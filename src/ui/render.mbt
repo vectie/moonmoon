@@ -79,3 +79,25 @@ pub fn render_json(view : TrustedSquareViewModel) -> Json {
 pub fn first_trusted_square_json() -> Json {
   render_json(first_trusted_square_view_model())
 }
+
+///|
+pub fn first_trusted_square_catalog_markdown(
+  root : String,
+) -> Result[String, CatalogBackedViewIssue] {
+  let view = match first_trusted_square_view_model_from_catalog_root(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  Ok(render_markdown(view))
+}
+
+///|
+pub fn first_trusted_square_catalog_json(
+  root : String,
+) -> Result[Json, CatalogBackedViewIssue] {
+  let view = match first_trusted_square_view_model_from_catalog_root(root) {
+    Ok(value) => value
+    Err(error) => return Err(error)
+  }
+  Ok(render_json(view))
+}

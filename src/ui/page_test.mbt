@@ -8,6 +8,9 @@ test "standalone Moonmoon UI renders from the MoonBit view model" {
   assert_true(html.contains("motion contract"))
   assert_true(html.contains("terrain cells"))
   assert_true(html.contains("selected cell"))
+  assert_true(
+    html.contains("datasets/lro-lola-first-trusted-square-dem-v1.json"),
+  )
   assert_true(html.contains("northeast-stepout"))
   assert_true(html.contains("site_latitude_deg"))
 }

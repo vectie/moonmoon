@@ -28,6 +28,8 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- data robot-episode-json [data-root] [episode-id]
     #|  moon run cmd/main -- data robot-telemetry-json [data-root] [stream-id]
     #|  moon run cmd/main -- data site-json [data-root]
+    #|  moon run cmd/main -- data ui-json [data-root]
+    #|  moon run cmd/main -- data ui-html [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
     #|  moon run cmd/main -- ui html
@@ -80,6 +82,16 @@ fn data_ingest_root(args : Array[String]) -> String {
 ///|
 fn data_site_root(args : Array[String]) -> String {
   arg_after(args, "site-json", "target/data-roots/first-trusted-square")
+}
+
+///|
+fn data_ui_json_root(args : Array[String]) -> String {
+  arg_after(args, "ui-json", "target/data-roots/first-trusted-square")
+}
+
+///|
+fn data_ui_html_root(args : Array[String]) -> String {
+  arg_after(args, "ui-html", "target/data-roots/first-trusted-square")
 }
 
 ///|
@@ -433,6 +445,24 @@ fn print_data_site_json(args : Array[String]) -> Unit {
 }
 
 ///|
+fn print_data_ui_json(args : Array[String]) -> Unit {
+  let root = data_ui_json_root(args)
+  match @ui.first_trusted_square_catalog_json(root) {
+    Ok(json) => println(json.stringify(indent=2))
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
+fn print_data_ui_html(args : Array[String]) -> Unit {
+  let root = data_ui_html_root(args)
+  match @ui.first_trusted_square_catalog_html(root) {
+    Ok(html) => println(html)
+    Err(error) => println(error.to_json().stringify(indent=2))
+  }
+}
+
+///|
 fn print_data_root_json(args : Array[String]) -> Unit {
   let root = data_root_json_root(args)
   match @data_validate.data_root_validation_summary_from_root(root) {
@@ -463,6 +493,10 @@ fn main {
     print_data_robot_model_json(args)
   } else if args.contains("data") && args.contains("ingest-robot-model") {
     print_data_robot_model_ingest(args, output_json)
+  } else if args.contains("data") && args.contains("ui-html") {
+    print_data_ui_html(args)
+  } else if args.contains("data") && args.contains("ui-json") {
+    print_data_ui_json(args)
   } else if args.contains("data") && args.contains("site-json") {
     print_data_site_json(args)
   } else if args.contains("data") && args.contains("root-json") {

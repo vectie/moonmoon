@@ -45,8 +45,9 @@ by responsibility, but package imports define the actual dependency graph.
 - `site` assembles one coherent dossier for the first trusted square.
 - `site_catalog` is the narrow adapter that replaces static first-site catalog
   claims with evidence read from a materialized generic data root.
-- `ui` projects the dossier into renderer-neutral state, standalone HTML, and
-  the route-motion contract exposed by `src/ui/motion_contract.mbt`.
+- `ui` projects either the standalone dossier or the catalog-backed site
+  dossier into renderer-neutral state, standalone HTML, and the route-motion
+  contract exposed by `src/ui/motion_contract.mbt`.
 - `kernel` summarizes product layers, evidence gates, and next work.
 - `cmd/main` is presentation only.
 

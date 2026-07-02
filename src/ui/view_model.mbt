@@ -1,4 +1,20 @@
 ///|
+pub(all) struct CatalogBackedViewIssue {
+  code : String
+  path : String
+  message : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+fn catalog_backed_view_issue(
+  code : String,
+  path : String,
+  message : String,
+) -> CatalogBackedViewIssue {
+  { code, path, message }
+}
+
+///|
 pub fn from_site_dossier_with_selection(
   dossier : @site.SiteDossier,
   row : Int,
@@ -55,6 +71,21 @@ pub fn first_trusted_square_view_model() -> TrustedSquareViewModel {
 }
 
 ///|
+pub fn first_trusted_square_view_model_from_catalog_root(
+  root : String,
+) -> Result[TrustedSquareViewModel, CatalogBackedViewIssue] {
+  let dossier = match
+    @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
+    Ok(value) => value
+    Err(error) =>
+      return Err(
+        catalog_backed_view_issue(error.code, error.path, error.message),
+      )
+  }
+  Ok(from_site_dossier(dossier))
+}
+
+///|
 pub fn first_trusted_square_view_model_at(
   row : Int,
   col : Int,
@@ -64,4 +95,21 @@ pub fn first_trusted_square_view_model_at(
     row,
     col,
   )
+}
+
+///|
+pub fn first_trusted_square_view_model_from_catalog_root_at(
+  root : String,
+  row : Int,
+  col : Int,
+) -> Result[TrustedSquareViewModel, CatalogBackedViewIssue] {
+  let dossier = match
+    @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
+    Ok(value) => value
+    Err(error) =>
+      return Err(
+        catalog_backed_view_issue(error.code, error.path, error.message),
+      )
+  }
+  Ok(from_site_dossier_with_selection(dossier, row, col))
 }
