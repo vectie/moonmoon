@@ -10,15 +10,26 @@ import {
 }
 
 // Values
+pub fn import_robot_model_package(RobotModelPackageImportRequest) -> Result[RobotModelPackageImportResult, @data_store.DataStoreIssue]
+
 pub fn materialize_robot_catalog_bundle(String, RobotCatalogBundle, Int64) -> Result[RobotCatalogMaterialization, @data_store.DataStoreIssue]
 
 pub fn robot_catalog_bundle(String, Array[@robot_data.RobotModelRef], Array[@robot_data.RobotEpisodeManifest], quality_reports? : Array[@robot_data.RobotQualityReport]) -> RobotCatalogBundle
+
+pub fn robot_model_package_import_request(String, String, String, String, Int64, source_label? : String) -> RobotModelPackageImportRequest
 
 pub fn stage_robot_payload_text(String, @robot_data.RobotPayloadRef, String) -> Result[Unit, @data_store.DataStoreIssue]
 
 // Errors
 
 // Types and methods
+pub(all) struct ImportedRobotModelPayload {
+  source_path : String
+  relative_path : String
+  payload_path : String
+  data_ref : @data_core.DataRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RobotCatalogBundle {
   bundle_id : String
   models : Array[@robot_data.RobotModelRef]
@@ -39,6 +50,29 @@ pub(all) struct RobotCatalogMaterialization {
   validation_status : @data_core.ValidationStatus
   blocker_count : Int
   warning_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotModelPackageImportRequest {
+  root : String
+  source_dir : String
+  model_id : String
+  robot_id : String
+  imported_at_ms : Int64
+  source_label : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotModelPackageImportResult {
+  root : String
+  source_dir : String
+  model_id : String
+  robot_id : String
+  urdf_payload_path : String
+  asset_count : Int
+  source : @data_core.DataSource
+  dataset : @data_core.DatasetManifest
+  version : @data_core.DatasetVersion
+  payloads : Array[ImportedRobotModelPayload]
+  materialization : RobotCatalogMaterialization
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases

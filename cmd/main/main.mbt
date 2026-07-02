@@ -18,6 +18,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- mission energy json
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
+    #|  moon run cmd/main -- data ingest-robot-model [data-root] [source-dir] [model-id] [robot-id] [json]
     #|  moon run cmd/main -- data site-json [data-root]
     #|  moon run cmd/main -- ui
     #|  moon run cmd/main -- ui json
@@ -41,6 +42,21 @@ fn arg_after(
 }
 
 ///|
+fn arg_offset(
+  args : Array[String],
+  marker : String,
+  offset : Int,
+  fallback : String,
+) -> String {
+  for index in 0..<args.length() {
+    if args[index] == marker && index + offset < args.length() {
+      return args[index + offset]
+    }
+  }
+  fallback
+}
+
+///|
 fn print_layout(args : Array[String]) -> Unit {
   let root = arg_after(args, "layout", ".")
   let book_id = arg_after(args, root, "<book-id>")
@@ -56,6 +72,26 @@ fn data_ingest_root(args : Array[String]) -> String {
 ///|
 fn data_site_root(args : Array[String]) -> String {
   arg_after(args, "site-json", "target/data-roots/first-trusted-square")
+}
+
+///|
+fn data_robot_model_root(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-model", 1, "target/data-roots/robot-model")
+}
+
+///|
+fn data_robot_model_source_dir(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-model", 2, "data/robot_models/input")
+}
+
+///|
+fn data_robot_model_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-model", 3, "robot-model")
+}
+
+///|
+fn data_robot_id(args : Array[String]) -> String {
+  arg_offset(args, "ingest-robot-model", 4, "robot")
 }
 
 ///|
@@ -91,6 +127,50 @@ fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
 }
 
 ///|
+fn print_data_robot_model_ingest(
+  args : Array[String],
+  output_json : Bool,
+) -> Unit {
+  let root = data_robot_model_root(args)
+  let source_dir = data_robot_model_source_dir(args)
+  let model_id = data_robot_model_id(args)
+  let robot_id = data_robot_id(args)
+  match
+    @robot_catalog.import_robot_model_package(
+      @robot_catalog.robot_model_package_import_request(
+        root, source_dir, model_id, robot_id, 1L,
+      ),
+    ) {
+    Ok(result) =>
+      if output_json {
+        println(result.to_json().stringify(indent=2))
+      } else {
+        let materialization = result.materialization
+        println("Moonmoon robot model data ingest")
+        println("- root: \{materialization.root}")
+        println("- source: \{result.source_dir}")
+        println("- model: \{result.model_id}")
+        println("- assets: \{result.asset_count}")
+        println("- catalog: \{materialization.catalog_path}")
+        println(
+          "- validation: \{@data_core.validation_status_label(materialization.validation_status)}",
+        )
+        println("- blockers: \{materialization.blocker_count}")
+        println("- warnings: \{materialization.warning_count}")
+      }
+    Err(error) =>
+      if output_json {
+        println(error.to_json().stringify(indent=2))
+      } else {
+        println("Moonmoon robot model ingest failed")
+        println("- code: \{error.code}")
+        println("- path: \{error.path}")
+        println("- message: \{error.message}")
+      }
+  }
+}
+
+///|
 fn print_data_site_json(args : Array[String]) -> Unit {
   let root = data_site_root(args)
   match @site_catalog.first_trusted_square_dossier_from_catalog_root(root) {
@@ -105,6 +185,8 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("data") && args.contains("ingest-robot-model") {
+    print_data_robot_model_ingest(args, output_json)
   } else if args.contains("data") && args.contains("site-json") {
     print_data_site_json(args)
   } else if args.contains("data") && args.contains("ingest-first-site") {

@@ -210,3 +210,91 @@ test "robot catalog blocks missing staged payloads" {
   )
   assert_true(result.blocker_count > 0)
 }
+
+///|
+fn ensure_test_dir(path : String) -> Unit {
+  if !@fsx.path_exists(path) {
+    @fsx.create_dir(path) catch {
+      _ => ()
+    }
+  }
+}
+
+///|
+test "robot model package import stages payloads into generic data root" {
+  let root = root_path("model-package-import")
+  let input = "target/robot-catalog-tests/model-package-input"
+  ensure_test_dir("target")
+  ensure_test_dir("target/robot-catalog-tests")
+  ensure_test_dir(input)
+  ensure_test_dir(input + "/meshes")
+  ensure_test_dir(input + "/materials")
+  @fsx.write_string_to_file(
+    input + "/robot.urdf",
+    "<robot name=\"alpha\"><link name=\"base_link\"/><mesh filename=\"package://alpha/meshes/base.stl\"/></robot>",
+  ) catch {
+    _ => fail("failed to write robot package urdf")
+  }
+  @fsx.write_string_to_file(input + "/meshes/base.stl", "solid base\n") catch {
+    _ => fail("failed to write robot package mesh")
+  }
+  @fsx.write_string_to_file(input + "/materials/base.json", "{}") catch {
+    _ => fail("failed to write robot package material")
+  }
+  let result = @robot_catalog.import_robot_model_package(
+    @robot_catalog.robot_model_package_import_request(
+      root,
+      input,
+      "alpha-model",
+      "robot-alpha",
+      800L,
+      source_label="Alpha model fixture",
+    ),
+  ).unwrap()
+  assert_eq(result.asset_count, 3)
+  assert_eq(result.dataset.kind, "robot-model-package")
+  assert_eq(result.dataset.data_refs.length(), 3)
+  assert_eq(result.materialization.blocker_count, 0)
+  assert_eq(result.materialization.warning_count, 0)
+  assert_true(
+    result.materialization.validation_status ==
+    @data_core.ValidationStatus::Passed,
+  )
+  assert_true(@fsx.path_exists(result.urdf_payload_path))
+  let dataset = @data_store.read_dataset(
+    root, "robot-model-package-alpha-model",
+  ).unwrap()
+  assert_true(
+    dataset.data_refs[0].checksum.kind == @data_core.ChecksumKind::TextSumV1,
+  )
+  assert_true(
+    dataset.data_refs[0].uri.has_prefix("data://payloads/robot_data/"),
+  )
+}
+
+///|
+test "robot model package import rejects unsafe model ids" {
+  let input = "target/robot-catalog-tests/model-package-unsafe-input"
+  ensure_test_dir("target")
+  ensure_test_dir("target/robot-catalog-tests")
+  ensure_test_dir(input)
+  @fsx.write_string_to_file(
+    input + "/robot.urdf",
+    "<robot name=\"alpha\"><link name=\"base_link\"/></robot>",
+  ) catch {
+    _ => fail("failed to write unsafe model fixture")
+  }
+  match
+    @robot_catalog.import_robot_model_package(
+      @robot_catalog.robot_model_package_import_request(
+        root_path("model-package-unsafe"),
+        input,
+        "../alpha",
+        "robot-alpha",
+        801L,
+      ),
+    ) {
+    Ok(_) => fail("unsafe robot model id should fail")
+    Err(error) => assert_eq(error.code, "invalid-robot-model-id")
+  }
+}

@@ -266,6 +266,10 @@ and push.
      packages.
 
 6. Migrate robot data in small dataset families.
+   - Status: started with the standalone robot model package family:
+     `robot_catalog` can import a text-readable URDF package directory into a
+     generic data root, stage assets under `payloads/robot_data`, and validate
+     the resulting source, dataset, version, and lineage manifests.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
      validation report, and product-facing proof that the data is usable.
@@ -345,8 +349,9 @@ Implementation:
      into `data://payloads/robot_data/...`; generic store, validate, and core
      packages remain `data://` only.
 5. Add a migration script or command only at the data-root boundary.
-   - Status: done for the generic MoonBit adapter; product-specific commands
-     are still queued.
+   - Status: done for the generic MoonBit adapter and first robot model package
+     ingest boundary. Additional robot dataset commands should be added only
+     when their dataset family is selected.
 6. Commit and push each migrated robot dataset family separately.
 
 Exit criteria:

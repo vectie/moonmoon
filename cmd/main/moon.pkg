@@ -4,6 +4,7 @@ import {
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/lunar_catalog",
   "vectie/moonmoon/src/mission",
+  "vectie/moonmoon/src/robot_catalog",
   "vectie/moonmoon/src/site",
   "vectie/moonmoon/src/site_catalog",
   "vectie/moonmoon/src/terrain",
