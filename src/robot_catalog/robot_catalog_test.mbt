@@ -774,11 +774,82 @@ test "robot episode directory import uses cataloged model evidence" {
   assert_eq(task_ready_root.data_ref_count, 21)
   assert_eq(task_ready_root.validation_artifact.artifact_id, "validation-906")
   let task_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
-  assert_eq(task_ready.status, "ready")
-  assert_true(task_ready.ready)
+  assert_eq(task_ready.status, "needs-evidence")
+  assert_true(!task_ready.ready)
   assert_eq(task_ready.task_label_count, 1)
   assert_eq(task_ready.task_label_ref_count, 2)
   assert_eq(task_ready.data_ref_count, 21)
+  assert_eq(task_ready.rollout_count, 0)
+  assert_eq(task_ready.rollout_ref_count, 0)
+  assert_eq(
+    task_ready.next_action,
+    "migrate rollout summaries over labeled robot episodes",
+  )
+  let rollout_input = "target/robot-catalog-tests/episode-rollout-input"
+  ensure_test_dir(rollout_input)
+  @fsx.write_string_to_file(
+    rollout_input + "/summary.json",
+    "{\"episode\":\"episode-alpha-1\",\"task\":\"walk\",\"ready\":true}",
+  ) catch {
+    _ => fail("failed to write episode rollout summary")
+  }
+  @fsx.write_string_to_file(
+    rollout_input + "/review.md",
+    "episode-alpha-1 rollout accepted\n",
+  ) catch {
+    _ => fail("failed to write episode rollout review")
+  }
+  let rollout = @robot_catalog.import_robot_rollout_directory(
+    @robot_catalog.robot_rollout_directory_import_request(
+      root,
+      rollout_input,
+      "rollout-alpha-walk",
+      "episode-alpha-1",
+      "task-label-alpha-walk",
+      "robot-alpha",
+      "episode-alpha-model",
+      907L,
+      source_label="Alpha rollout summary fixture",
+    ),
+  ).unwrap()
+  assert_eq(rollout.payload_count, 2)
+  assert_eq(rollout.rollout.episode_id, "episode-alpha-1")
+  assert_eq(rollout.rollout.task_label_id, "task-label-alpha-walk")
+  assert_eq(rollout.materialization.rollout_count, 1)
+  assert_eq(rollout.materialization.blocker_count, 0)
+  assert_eq(rollout.materialization.warning_count, 0)
+  let rollout_dossier = @robot_catalog.robot_rollout_catalog_dossier_from_root(
+    root, "rollout-alpha-walk",
+  ).unwrap()
+  assert_eq(rollout_dossier.rollout_id, "rollout-alpha-walk")
+  assert_eq(rollout_dossier.episode_id, "episode-alpha-1")
+  assert_eq(rollout_dossier.task_label_id, "task-label-alpha-walk")
+  assert_eq(rollout_dossier.dataset.kind, "robot-rollout-summary")
+  assert_eq(rollout_dossier.version.parent_version_ids.length(), 2)
+  assert_eq(rollout_dossier.rollout_ref_count, 2)
+  assert_eq(rollout_dossier.model_ref_count, 1)
+  assert_eq(rollout_dossier.data_ref_count, 3)
+  assert_eq(rollout_dossier.validation_artifact.artifact_id, "validation-907")
+  assert_true(
+    rollout_dossier.validation_status == @data_core.ValidationStatus::Passed,
+  )
+  let rollout_ready_root = @robot_catalog.robot_catalog_root_dossier_from_root(
+    root,
+  ).unwrap()
+  assert_eq(rollout_ready_root.rollout_count, 1)
+  assert_true(rollout_ready_root.rollout_ids.contains("rollout-alpha-walk"))
+  assert_eq(rollout_ready_root.rollout_dossiers.length(), 1)
+  assert_eq(rollout_ready_root.data_ref_count, 24)
+  assert_eq(
+    rollout_ready_root.validation_artifact.artifact_id,
+    "validation-907",
+  )
+  let rollout_ready = @robot_catalog.robot_migration_readiness_from_root(root).unwrap()
+  assert_eq(rollout_ready.status, "ready")
+  assert_true(rollout_ready.ready)
+  assert_eq(rollout_ready.rollout_count, 1)
+  assert_eq(rollout_ready.rollout_ref_count, 2)
+  assert_eq(rollout_ready.data_ref_count, 24)
 }
 
 ///|

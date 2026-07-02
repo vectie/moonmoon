@@ -92,6 +92,22 @@ pub fn robot_quality_validation_report(String, RobotQualityReport) -> @data_core
 
 pub fn robot_replay_artifact(String, String, RobotPayloadRef) -> RobotReplayArtifact
 
+pub fn robot_rollout_data_refs(RobotRolloutManifest) -> Array[@data_core.DataRef]
+
+pub fn robot_rollout_data_source(RobotRolloutManifest) -> @data_core.DataSource
+
+pub fn robot_rollout_dataset(RobotRolloutManifest) -> @data_core.DatasetManifest
+
+pub fn robot_rollout_lineage(RobotRolloutManifest, String) -> @data_core.LineageManifest
+
+pub fn robot_rollout_manifest(String, String, String, String, String, String, String, @data_core.DataStatus, Int64, Array[RobotModelRef], Array[RobotRolloutPayloadRef], String) -> RobotRolloutManifest
+
+pub fn robot_rollout_payload_ref(String, Int, RobotPayloadRef) -> RobotRolloutPayloadRef
+
+pub fn robot_rollout_source_ids(RobotRolloutManifest) -> Array[String]
+
+pub fn robot_rollout_version(RobotRolloutManifest, String, parent_version_ids? : Array[String]) -> @data_core.DatasetVersion
+
 pub fn robot_signal_ref(String, String, String, Int, String, RobotPayloadRef) -> RobotSignalRef
 
 pub fn robot_task_label_data_refs(RobotTaskLabelManifest) -> Array[@data_core.DataRef]
@@ -242,6 +258,27 @@ pub(all) struct RobotReplayArtifact {
   payload : RobotPayloadRef
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RobotRolloutManifest {
+  rollout_id : String
+  robot_id : String
+  episode_id : String
+  task_label_id : String
+  source_id : String
+  source_label : String
+  source_url : String
+  status : @data_core.DataStatus
+  created_at_ms : Int64
+  model_refs : Array[RobotModelRef]
+  payload_refs : Array[RobotRolloutPayloadRef]
+  summary : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotRolloutPayloadRef {
+  role : String
+  line_count : Int
+  payload : RobotPayloadRef
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RobotSignalRef {
   signal_id : String
   frame_id : String
@@ -310,6 +347,8 @@ pub type RobotPayloadRefId = String
 pub type RobotQualityReportId = String
 
 pub type RobotReplayArtifactId = String
+
+pub type RobotRolloutId = String
 
 pub type RobotSignalId = String
 

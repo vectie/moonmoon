@@ -266,6 +266,7 @@ pub fn import_robot_gait_annotation_directory(
       gait_annotation_count: 1,
       gait_alignment_count: 0,
       task_label_count: 0,
+      rollout_count: 0,
       quality_report_count: 0,
       catalog_entry_count: catalog.entries.length(),
       validation_status: validation.status,

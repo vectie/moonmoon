@@ -14,6 +14,7 @@ pub(all) struct RobotMigrationReadiness {
   gait_annotation_count : Int
   gait_alignment_count : Int
   task_label_count : Int
+  rollout_count : Int
   signal_ref_count : Int
   replay_ref_count : Int
   quality_ref_count : Int
@@ -22,6 +23,7 @@ pub(all) struct RobotMigrationReadiness {
   gait_annotation_ref_count : Int
   gait_alignment_ref_count : Int
   task_label_ref_count : Int
+  rollout_ref_count : Int
   data_ref_count : Int
   next_action : String
   summary : String
@@ -108,6 +110,15 @@ fn robot_task_label_ref_count(
 }
 
 ///|
+fn robot_rollout_ref_count(rollouts : Array[RobotRolloutCatalogDossier]) -> Int {
+  let mut count = 0
+  for rollout in rollouts {
+    count += rollout.rollout_ref_count
+  }
+  count
+}
+
+///|
 fn readiness_next_action(
   dossier : RobotCatalogRootDossier,
   signal_ref_count : Int,
@@ -117,6 +128,7 @@ fn readiness_next_action(
   gait_annotation_ref_count : Int,
   gait_alignment_ref_count : Int,
   task_label_ref_count : Int,
+  rollout_ref_count : Int,
 ) -> String {
   if dossier.blocker_count > 0 {
     "repair data-root validation blockers before migrating more robot data"
@@ -138,6 +150,8 @@ fn readiness_next_action(
     "migrate clip-to-episode alignment records for the cataloged gait evidence"
   } else if task_label_ref_count == 0 {
     "migrate task labels over aligned robot episodes"
+  } else if rollout_ref_count == 0 {
+    "migrate rollout summaries over labeled robot episodes"
   } else {
     "migrate the next robot dataset family only after this root stays green"
   }
@@ -167,6 +181,7 @@ pub fn robot_migration_readiness_from_root(
   let task_label_ref_count = robot_task_label_ref_count(
     dossier.task_label_dossiers,
   )
+  let rollout_ref_count = robot_rollout_ref_count(dossier.rollout_dossiers)
   let ready = dossier.validation_status == @data_core.ValidationStatus::Passed &&
     dossier.blocker_count == 0 &&
     dossier.model_count > 0 &&
@@ -177,7 +192,8 @@ pub fn robot_migration_readiness_from_root(
     gait_ref_count > 0 &&
     gait_annotation_ref_count > 0 &&
     gait_alignment_ref_count > 0 &&
-    task_label_ref_count > 0
+    task_label_ref_count > 0 &&
+    rollout_ref_count > 0
   let status = if ready {
     "ready"
   } else if dossier.blocker_count > 0 {
@@ -187,7 +203,7 @@ pub fn robot_migration_readiness_from_root(
   }
   let next_action = readiness_next_action(
     dossier, signal_ref_count, quality_ref_count, telemetry_ref_count, gait_ref_count,
-    gait_annotation_ref_count, gait_alignment_ref_count, task_label_ref_count,
+    gait_annotation_ref_count, gait_alignment_ref_count, task_label_ref_count, rollout_ref_count,
   )
   Ok({
     root,
@@ -204,6 +220,7 @@ pub fn robot_migration_readiness_from_root(
     gait_annotation_count: dossier.gait_annotation_count,
     gait_alignment_count: dossier.gait_alignment_count,
     task_label_count: dossier.task_label_count,
+    rollout_count: dossier.rollout_count,
     signal_ref_count,
     replay_ref_count,
     quality_ref_count,
@@ -212,8 +229,9 @@ pub fn robot_migration_readiness_from_root(
     gait_annotation_ref_count,
     gait_alignment_ref_count,
     task_label_ref_count,
+    rollout_ref_count,
     data_ref_count: dossier.data_ref_count,
     next_action,
-    summary: "robot catalog has \{dossier.model_count} model(s), \{dossier.episode_count} episode(s), \{dossier.telemetry_stream_count} telemetry stream(s), \{dossier.gait_clip_count} gait clip(s), \{dossier.gait_annotation_count} gait annotation(s), \{dossier.gait_alignment_count} gait alignment(s), \{dossier.task_label_count} task label(s), \{signal_ref_count} signal ref(s), \{replay_ref_count} replay ref(s), \{quality_ref_count} quality ref(s), \{telemetry_ref_count} telemetry ref(s), \{gait_ref_count} gait ref(s), \{gait_annotation_ref_count} gait annotation ref(s), \{gait_alignment_ref_count} gait alignment ref(s), and \{task_label_ref_count} task label ref(s)",
+    summary: "robot catalog has \{dossier.model_count} model(s), \{dossier.episode_count} episode(s), \{dossier.telemetry_stream_count} telemetry stream(s), \{dossier.gait_clip_count} gait clip(s), \{dossier.gait_annotation_count} gait annotation(s), \{dossier.gait_alignment_count} gait alignment(s), \{dossier.task_label_count} task label(s), \{dossier.rollout_count} rollout summary(s), \{signal_ref_count} signal ref(s), \{replay_ref_count} replay ref(s), \{quality_ref_count} quality ref(s), \{telemetry_ref_count} telemetry ref(s), \{gait_ref_count} gait ref(s), \{gait_annotation_ref_count} gait annotation ref(s), \{gait_alignment_ref_count} gait alignment ref(s), \{task_label_ref_count} task label ref(s), and \{rollout_ref_count} rollout ref(s)",
   })
 }

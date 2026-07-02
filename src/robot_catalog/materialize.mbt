@@ -392,6 +392,54 @@ fn write_task_labels(
 }
 
 ///|
+fn write_rollouts(
+  root : String,
+  rollouts : Array[@robot_data.RobotRolloutManifest],
+) -> Result[Unit, @data_store.DataStoreIssue] {
+  for rollout in rollouts {
+    match
+      @data_store.write_source(
+        root,
+        @robot_data.robot_rollout_data_source(rollout),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset(
+        root,
+        @robot_data.robot_rollout_dataset(rollout),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_dataset_version(
+        root,
+        @robot_data.robot_rollout_version(rollout, "\{rollout.rollout_id}-v1", parent_version_ids=[
+          "\{rollout.episode_id}-v1",
+          "\{rollout.task_label_id}-v1",
+        ]),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+    match
+      @data_store.write_lineage_manifest(
+        root,
+        @robot_data.robot_rollout_lineage(
+          rollout,
+          "lineage-\{rollout.rollout_id}",
+        ),
+      ) {
+      Ok(_) => ()
+      Err(error) => return Err(error)
+    }
+  }
+  Ok(())
+}
+
+///|
 fn write_quality_reports(
   root : String,
   reports : Array[@robot_data.RobotQualityReport],
@@ -447,6 +495,10 @@ pub fn materialize_robot_catalog_bundle(
     Ok(_) => ()
     Err(error) => return Err(error)
   }
+  match write_rollouts(root, bundle.rollouts) {
+    Ok(_) => ()
+    Err(error) => return Err(error)
+  }
   match write_quality_reports(root, bundle.quality_reports) {
     Ok(_) => ()
     Err(error) => return Err(error)
@@ -473,30 +525,35 @@ pub fn materialize_robot_catalog_bundle(
     bundle.gait_clips.length() +
     bundle.gait_annotations.length() +
     bundle.gait_alignments.length() +
-    bundle.task_labels.length(),
+    bundle.task_labels.length() +
+    bundle.rollouts.length(),
     dataset_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
     bundle.gait_annotations.length() +
     bundle.gait_alignments.length() +
-    bundle.task_labels.length(),
+    bundle.task_labels.length() +
+    bundle.rollouts.length(),
     version_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
     bundle.gait_annotations.length() +
     bundle.gait_alignments.length() +
-    bundle.task_labels.length(),
+    bundle.task_labels.length() +
+    bundle.rollouts.length(),
     lineage_count: bundle.episodes.length() +
     bundle.telemetry_streams.length() +
     bundle.gait_clips.length() +
     bundle.gait_annotations.length() +
     bundle.gait_alignments.length() +
-    bundle.task_labels.length(),
+    bundle.task_labels.length() +
+    bundle.rollouts.length(),
     telemetry_stream_count: bundle.telemetry_streams.length(),
     gait_clip_count: bundle.gait_clips.length(),
     gait_annotation_count: bundle.gait_annotations.length(),
     gait_alignment_count: bundle.gait_alignments.length(),
     task_label_count: bundle.task_labels.length(),
+    rollout_count: bundle.rollouts.length(),
     quality_report_count: bundle.quality_reports.length(),
     catalog_entry_count: catalog.entries.length(),
     validation_status: validation.status,

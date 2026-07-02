@@ -335,6 +335,63 @@ test "robot task labels map to generic dataset version and lineage" {
 }
 
 ///|
+test "robot rollout summaries map to generic dataset version and lineage" {
+  let rollout_payload = @robot_data.robot_rollout_payload_ref(
+    "rollout-summary",
+    6,
+    @robot_data.robot_payload_ref(
+      "robot-alpha-rollout-summary",
+      "robot-rollout-summary",
+      "payloads/robot_data/robot-alpha/rollouts/episode-1.json",
+      "application/json",
+      512L,
+      sha("eeeeaaaabbbbcccc"),
+    ),
+  )
+  let rollout = @robot_data.robot_rollout_manifest(
+    "rollout-robot-alpha-episode-1",
+    "robot-alpha",
+    "episode-robot-alpha-1",
+    "task-labels-robot-alpha-episode-1",
+    "source-robot-alpha-rollout",
+    "Robot Alpha rollout summary",
+    "https://example.invalid/robot-alpha/rollouts",
+    @data_core.DataStatus::Verified,
+    80L,
+    [fixture_model()],
+    [rollout_payload],
+    "Robot Alpha labeled episode rollout summary.",
+  )
+  let source = @robot_data.robot_rollout_data_source(rollout)
+  assert_eq(source.source_id, "source-robot-alpha-rollout")
+  assert_eq(source.source_refs.length(), 1)
+  let dataset = @robot_data.robot_rollout_dataset(rollout)
+  assert_eq(dataset.dataset_id, "rollout-robot-alpha-episode-1")
+  assert_eq(dataset.kind, "robot-rollout-summary")
+  assert_eq(dataset.source_ids.length(), 2)
+  assert_eq(dataset.data_refs.length(), 2)
+  assert_eq(dataset.data_refs[1].kind, "robot-rollout-summary")
+  let version = @robot_data.robot_rollout_version(
+    rollout,
+    "rollout-robot-alpha-episode-1-v1",
+    parent_version_ids=[
+      "episode-robot-alpha-1-v1", "task-labels-robot-alpha-episode-1-v1",
+    ],
+  )
+  assert_eq(version.parent_version_ids.length(), 2)
+  let lineage = @robot_data.robot_rollout_lineage(
+    rollout, "lineage-rollout-robot-alpha-episode-1",
+  )
+  assert_eq(lineage.root_artifact.artifact_id, dataset.dataset_id)
+  assert_eq(lineage.edges.length(), 4)
+  assert_eq(lineage.edges[1].from_artifact.artifact_id, "episode-robot-alpha-1")
+  assert_eq(
+    lineage.edges[2].from_artifact.artifact_id,
+    "task-labels-robot-alpha-episode-1",
+  )
+}
+
+///|
 test "robot quality report projects to generic validation report" {
   let episode_artifact = @data_core.artifact_ref(
     "dataset", "episode-robot-alpha-1", "datasets/episode-robot-alpha-1.json",

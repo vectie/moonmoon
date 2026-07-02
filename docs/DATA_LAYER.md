@@ -139,18 +139,55 @@ migration a useful next product-level proof point.
    - Done when: tests pass and `git diff --check` is clean.
 
 7. Commit and push the boundary move.
-   - Status: pending for the current worktree until this checkpoint is
-     committed and pushed.
+   - Status: done.
    - Commit message: `Add robot task label data boundary`.
    - Push to the GitHub remote immediately after the commit.
    - Done when: `git status --short` is clean after push.
 
 8. Choose the next family only after the checkpoint.
-   - Status: next.
+   - Status: done. The next selected family is `robot-rollout-summary`.
    - Candidate families: richer replay artifacts, richer telemetry streams,
      deeper quality reports, or higher-level episode/task rollout summaries.
    - Pick one, repeat this checklist, and avoid widening the generic layer for
      robot-only vocabulary.
+
+### Current Robot Rollout Summary Checkpoint
+
+The active pass adds rollout summaries over labeled robot episodes. This is the
+next product-level robot proof point: a data root is no longer only a collection
+of parts; it can carry an accepted episode/task summary that product code can
+read.
+
+1. Select one dataset family.
+   - Status: done for `robot-rollout-summary`.
+   - Why: rollout summaries sit above episode payloads and task labels, so they
+     prove the migration can express usable episode-level outcomes without
+     moving robot vocabulary into generic packages.
+
+2. Add the pure domain contract in `src/robot_data`.
+   - Status: done.
+   - Define the rollout manifest, payload refs, generic data refs, source
+     projection, dataset projection, version projection, and lineage projection.
+
+3. Add the data-root write boundary in `src/robot_catalog`.
+   - Status: done.
+   - Import a rollout directory only after the referenced model, episode, and
+     task-label dataset already exist in the catalog.
+   - Stage text payloads under `payloads/robot_data/rollouts/`.
+
+4. Add the data-root read boundary in `src/robot_catalog`.
+   - Status: done.
+   - Read one rollout dossier from a generic root and include rollout ids in
+     the root-level robot dossier.
+
+5. Add CLI only at real boundaries.
+   - Status: done.
+   - Add `data ingest-robot-rollout` for materialization.
+   - Add `data robot-rollout-json` for readback.
+
+6. Validate, commit, and push the boundary move.
+   - Status: done.
+   - Commit message: `Add robot rollout summary data boundary`.
 
 1. Finish the dataset-facade removal checkpoint.
    - Status: done. The old `src/dataset` package is deleted, and terrain source
@@ -197,10 +234,10 @@ migration a useful next product-level proof point.
    - Status: started for model packages, episode signal frames, replay
      artifacts, quality reports, standalone telemetry streams, gait clips, and
      gait phase/contact annotations, clip-to-episode alignment records, and
-     higher-level task labels over aligned episodes.
+     higher-level task labels and rollout summaries over aligned episodes.
    - Next families must be selected one at a time: richer replay artifacts,
      richer telemetry streams, deeper quality reports, or higher-level
-     episode/task rollout summaries.
+     rollout acceptance reports.
    - Add the domain shape in `src/robot_data`, the data-root adapter in
      `src/robot_catalog`, and a CLI command only when it materializes or reads a
      true data-root boundary.
@@ -438,12 +475,12 @@ and push.
 5. Add the robot-data landing contract after the lunar catalog path is clean.
    - Status: done for the pure domain landing contract: `src/robot_data`
      maps models, episodes, signals, replay artifacts, telemetry streams, gait
-     clips, gait annotations, gait alignments, task labels, and quality reports
-     onto `data_core`.
+     clips, gait annotations, gait alignments, task labels, rollout summaries,
+     and quality reports onto `data_core`.
    - Why: robot migration needs a general layer, not a lunar-shaped layer.
    - Code target: define the minimal `robot_data` mapping for episodes, frames,
      signals, model refs, replay artifacts, telemetry streams, gait clips, and
-     task labels on top of `data_core`.
+     rollout/task labels on top of `data_core`.
    - Done when: robot data can enter through `DataRef`, `DatasetManifest`,
      `DatasetVersion`, lineage, store, and validation without importing lunar
      packages.
@@ -471,10 +508,11 @@ and push.
      `data robot-gait-clip-json` reads the clip dossier back from the same data
      root. Gait phase/contact annotations, clip-to-episode alignments, and
      task labels now follow the same family-by-family pattern in the domain and
-     catalog layers; the task-label CLI/readback boundary is complete.
+     catalog layers; rollout summaries add a product-level episode/task outcome
+     over labeled robot episodes.
    - The compact `data robot-readiness-json` read path now summarizes whether a
      robot root has the minimum model, episode, signal, quality, telemetry,
-     gait, annotation, alignment, and task-label evidence to continue
+     gait, annotation, alignment, task-label, and rollout evidence to continue
      migration.
    - Why: each migrated family should be reviewable and reversible.
    - Code target: migrate one family at a time, with a catalog entry,
@@ -545,10 +583,11 @@ Implementation:
    - Status: done.
 2. Map robot episodes, frames, signals, robot model refs, replay artifacts,
    telemetry streams, gait clips, gait annotations, gait alignments, task
-   labels, and quality reports onto `data_core` refs and manifests.
+   labels, rollout summaries, and quality reports onto `data_core` refs and
+   manifests.
    - Status: done for the first contract surface, including standalone
      telemetry stream, gait clip, gait annotation, gait alignment, and
-     task-label manifests.
+     task-label and rollout manifests.
 3. Keep URDF, telemetry, gait clips, and replay semantics in `robot_data`, not
    `data_core`.
    - Status: done for the boundary guard; future migration can add more
