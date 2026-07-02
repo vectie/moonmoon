@@ -8,6 +8,10 @@ import {
 }
 
 // Values
+pub fn first_trusted_square_all_lola_extraction_candidates() -> Array[LunarExtractionCandidate]
+
+pub fn first_trusted_square_ephemeris_acquisition_plan() -> LunarAcquisitionPlan
+
 pub fn first_trusted_square_ephemeris_dataset() -> @data_core.DatasetManifest
 
 pub fn first_trusted_square_ephemeris_source() -> @data_core.DataSource
@@ -15,6 +19,8 @@ pub fn first_trusted_square_ephemeris_source() -> @data_core.DataSource
 pub fn first_trusted_square_ephemeris_source_candidate() -> LunarSourceCandidate
 
 pub fn first_trusted_square_ephemeris_window() -> LunarEphemerisWindow
+
+pub fn first_trusted_square_lola_acquisition_plan() -> LunarAcquisitionPlan
 
 pub fn first_trusted_square_lola_dataset() -> @data_core.DatasetManifest
 
@@ -26,13 +32,45 @@ pub fn first_trusted_square_lola_source() -> @data_core.DataSource
 
 pub fn first_trusted_square_lola_source_candidate() -> LunarSourceCandidate
 
+pub fn first_trusted_square_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
+pub fn first_trusted_square_lunar_acquisition_plans() -> Array[LunarAcquisitionPlan]
+
 pub fn first_trusted_square_lunar_datasets() -> Array[@data_core.DatasetManifest]
 
 pub fn first_trusted_square_lunar_source_candidates() -> Array[LunarSourceCandidate]
 
 pub fn first_trusted_square_lunar_sources() -> Array[@data_core.DataSource]
 
+pub fn first_trusted_square_north_rim_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_north_rim_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
+pub fn first_trusted_square_northeast_stepout_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_northeast_stepout_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
+pub fn first_trusted_square_route_lola_datasets() -> Array[@data_core.DatasetManifest]
+
+pub fn first_trusted_square_route_lola_extraction_candidates() -> Array[LunarExtractionCandidate]
+
+pub fn first_trusted_square_route_lola_terrain_dataset_records() -> Array[LunarTerrainDatasetRecord]
+
+pub fn first_trusted_square_south_stepout_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_south_stepout_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
+pub fn first_trusted_square_southwest_bypass_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_southwest_bypass_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
 pub fn first_trusted_square_tile_manifest() -> LunarTileManifest
+
+pub fn first_trusted_square_west_contour_lola_extraction_candidate() -> LunarExtractionCandidate
+
+pub fn first_trusted_square_west_contour_lola_terrain_dataset_record() -> LunarTerrainDatasetRecord
+
+pub fn lola_terrain_dataset_manifest(LunarTerrainDatasetRecord) -> @data_core.DatasetManifest
 
 pub fn lro_lola_south_pole_frame() -> LunarCoordinateFrame
 
@@ -43,6 +81,32 @@ pub fn lunar_review_status_label(LunarReviewStatus) -> String
 // Errors
 
 // Types and methods
+pub(all) struct LunarAcquisitionPlan {
+  plan_id : String
+  source_id : String
+  product_family_id : String
+  source_family_url : String
+  source_metadata_url : String
+  source_metadata_sha256 : String
+  source_metadata_bytes : Int64
+  discovery_url : String
+  target_region : String
+  expected_format : String
+  local_source_directory : String
+  local_metadata_path : String
+  extracted_fixture_path : String
+  trust_gate : String
+  steps : Array[LunarAcquisitionStep]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarAcquisitionStep {
+  step_id : String
+  title : String
+  action : String
+  expected_evidence : String
+  done_when : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct LunarCoordinateFrame {
   frame_id : String
   body : String
@@ -137,6 +201,16 @@ pub(all) struct LunarSourceCandidate {
   local_source_directory : String
   intended_use : String
   review_status : LunarReviewStatus
+  notes : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct LunarTerrainDatasetRecord {
+  dataset_id : String
+  title : String
+  product_type : String
+  extraction : LunarExtractionCandidate
+  inline_fingerprint : String
+  citation : String
   notes : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 

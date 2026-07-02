@@ -189,9 +189,10 @@ Current checkpoint:
   catalog root and validates it.
 - `src/dataset` now projects migrated first-site source, product, extraction,
   and active DEM manifest fields from `src/lunar_data`.
-- Remaining cleanup: move acquisition-plan details and route-window manifests
-  behind lunar-domain records, then remove duplicate integrity checks that
-  belong in `data_validate`.
+- `src/lunar_data` now owns acquisition plans, route-window extractions, route
+  terrain dataset records, and their generic dataset projections.
+- Remaining cleanup: remove duplicate integrity checks that belong in
+  `data_validate` and let product views read catalog-backed evidence directly.
 
 ### Phase 6: Robot Data Landing Zone
 

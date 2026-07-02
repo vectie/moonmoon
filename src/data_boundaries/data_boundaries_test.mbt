@@ -42,8 +42,9 @@ fn data_validate_files() -> Array[String] {
 fn lunar_data_files() -> Array[String] {
   [
     "src/lunar_data/moon.pkg", "src/lunar_data/status.mbt", "src/lunar_data/coverage.mbt",
-    "src/lunar_data/source.mbt", "src/lunar_data/product.mbt", "src/lunar_data/extraction.mbt",
-    "src/lunar_data/ephemeris.mbt", "src/lunar_data/tile.mbt",
+    "src/lunar_data/source.mbt", "src/lunar_data/acquisition.mbt", "src/lunar_data/product.mbt",
+    "src/lunar_data/extraction.mbt", "src/lunar_data/terrain_dataset.mbt", "src/lunar_data/ephemeris.mbt",
+    "src/lunar_data/tile.mbt",
   ]
 }
 

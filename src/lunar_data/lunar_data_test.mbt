@@ -42,3 +42,23 @@ test "lunar records json round trip" {
     "naif-lunar-first-trusted-square-power-window-v1",
   )
 }
+
+///|
+test "lunar data owns acquisition plans and route windows" {
+  let plans = @lunar_data.first_trusted_square_lunar_acquisition_plans()
+  assert_eq(plans.length(), 2)
+  assert_eq(plans[0].source_metadata_bytes, 5672L)
+  assert_eq(plans[0].steps.length(), 5)
+  assert_eq(plans[1].source_metadata_bytes, 45745465L)
+  let routes = @lunar_data.first_trusted_square_route_lola_extraction_candidates()
+  assert_eq(routes.length(), 5)
+  assert_eq(routes[0].tile_id, "first-trusted-square-west-contour-lola")
+  assert_eq(routes[4].source_row_start, 3960)
+  assert_eq(routes[4].source_col_start, 3806)
+  let records = @lunar_data.first_trusted_square_route_lola_terrain_dataset_records()
+  assert_eq(records.length(), 5)
+  assert_eq(
+    records[4].inline_fingerprint,
+    "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
+  )
+}
