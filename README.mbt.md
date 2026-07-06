@@ -30,6 +30,16 @@ committed as source.
   queue.
 - `cmd/main`: the native CLI.
 
+## Docs
+
+- [docs/README.md](docs/README.md): documentation guide, scope, testing, and
+  future plan.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): package and product boundary.
+- [docs/DATA_LAYER.md](docs/DATA_LAYER.md): general data-root design.
+- [docs/ROADMAP.md](docs/ROADMAP.md): staged product direction.
+- [docs/STEP_BY_STEP_PLAN.md](docs/STEP_BY_STEP_PLAN.md): implementation
+  sequence and validation gates.
+
 ## Run
 
 ```bash
