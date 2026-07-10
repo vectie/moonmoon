@@ -6,6 +6,10 @@ function terrainPoint(col, row, elevation, state) {
   }
 }
 
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
+}
+
 function project(point, canvas, yaw) {
   const cy = Math.cos(yaw)
   const sy = Math.sin(yaw)
@@ -56,14 +60,47 @@ function cellMesh(cell, state, canvas, yaw) {
 }
 
 function drawRoute(ctx, canvas, state, yaw) {
-  const start = project(terrainPoint(0.2, state.rows - 0.18, state.minElevation, state), canvas, yaw)
-  const end = project(terrainPoint(state.cols - 0.05, 0.2, state.maxElevation, state), canvas, yaw)
+  const selected = state.selected
+  const routeWindow = state.corridorWindows.find(
+    window => window.selected_route_id === state.selectedRouteId,
+  )
+  let colDirection = Number(routeWindow?.col_offset || 0)
+  let rowDirection = Number(routeWindow?.row_offset || 0)
+  if (colDirection === 0 && rowDirection === 0) {
+    colDirection = 1
+    rowDirection = -1
+  }
+  const directionScale = Math.max(Math.abs(colDirection), Math.abs(rowDirection), 1)
+  colDirection /= directionScale
+  rowDirection /= directionScale
+  const startPoint = terrainPoint(
+    selected.col + 0.48,
+    selected.row + 0.48,
+    selected.elevation_m,
+    state,
+  )
+  const endPoint = terrainPoint(
+    clamp(selected.col + 0.48 + colDirection * 2.2, 0.18, state.cols - 0.18),
+    clamp(selected.row + 0.48 + rowDirection * 2.2, 0.18, state.rows - 0.18),
+    selected.elevation_m,
+    state,
+  )
+  const start = project(startPoint, canvas, yaw)
+  const end = project(endPoint, canvas, yaw)
   ctx.beginPath()
   ctx.moveTo(start.x, start.y)
   ctx.lineTo(end.x, end.y)
-  ctx.strokeStyle = 'rgba(39, 120, 98, 0.9)'
+  ctx.setLineDash([12, 7])
+  ctx.strokeStyle = 'rgba(184, 79, 62, 0.94)'
   ctx.lineWidth = 4
   ctx.stroke()
+  ctx.setLineDash([])
+  ctx.beginPath()
+  ctx.arc(end.x, end.y, 5, 0, Math.PI * 2)
+  ctx.fillStyle = '#e7b84f'
+  ctx.fill()
+  canvas.dataset.inspectedRouteId = state.selectedRouteId
+  canvas.dataset.corridorWindowId = routeWindow?.window_id || 'local-direct-window'
 }
 
 function drawSelectedPin(ctx, canvas, state, yaw) {
@@ -98,9 +135,12 @@ globalThis.__moonmoonRenderTerrain = modelJson => {
   const elevations = cells.map(cell => Number(cell.elevation_m || 0))
   const state = {
     cells,
+    routes: view.routes || [],
+    corridorWindows: view.corridor_windows || [],
     rows: view.viewport.rows || 4,
     cols: view.viewport.cols || 4,
     selected: view.selected_tile || cells[0],
+    selectedRouteId: view.selected_route_id,
     minElevation: Math.min(...elevations),
     maxElevation: Math.max(...elevations),
   }
@@ -127,6 +167,24 @@ globalThis.__moonmoonRenderTerrain = modelJson => {
   canvas.onpointercancel = () => {
     dragging = false
   }
+
+  function selectCell(cellId) {
+    const selected = state.cells.find(cell => cell.cell_id === cellId)
+    if (!selected) return
+    state.selected = selected
+    for (const cell of state.cells) cell.selected = cell.cell_id === cellId
+    canvas.dataset.selectedCellId = cellId
+  }
+
+  function selectRoute(routeId) {
+    if (!state.routes.some(route => route.route_id === routeId)) return
+    state.selectedRouteId = routeId
+    canvas.dataset.inspectedRouteId = routeId
+  }
+
+  globalThis.__moonmoonTerrainController = { selectCell, selectRoute }
+  selectCell(state.selected.cell_id)
+  selectRoute(state.selectedRouteId)
 
   function render() {
     const ratio = window.devicePixelRatio || 1

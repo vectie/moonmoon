@@ -39,6 +39,11 @@ Acceptance:
 
 ## Checkpoint 2: Complete the Operator Workflow
 
+Status: implemented for route-candidate inspection and terrain-cell selection.
+Route clicks compare existing candidate evidence without changing the
+mission-selected route or motion authority. Terrain-cell clicks update both the
+local terrain marker and the selected-cell evidence panel.
+
 1. Add real route selection state backed by the existing route projections.
 2. Add real terrain-cell selection and update the evidence inspector from the
    selected cell.

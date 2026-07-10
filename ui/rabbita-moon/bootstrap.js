@@ -1,6 +1,7 @@
 import '/styles.css'
 import '/terrain-canvas.js'
 import '/scene3d.js'
+import '/operator-ui.js'
 
 const app = document.getElementById('app')
 

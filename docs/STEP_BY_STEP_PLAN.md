@@ -113,6 +113,8 @@ view-model boundary. The next step is to make `ui/rabbita-moon` the canonical
 interactive product, retain the generated page as a static report, and remove
 the current conflict between a blocked route and an always-on robot scene. The
 detailed checkpoint plan is in `docs/UI_UX_NEXT_PHASE.md`.
+Checkpoint 2 now supports route-candidate inspection and terrain-cell
+selection without changing the mission-selected route authority.
 
 Goal: the first viewport should feel like an operable Moon landscape, then let
 the user zoom into the selected site.

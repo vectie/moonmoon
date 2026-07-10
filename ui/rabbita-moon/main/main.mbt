@@ -41,6 +41,10 @@ extern "js" fn render_terrain_canvas(model_json : String) -> Unit = "(modelJson)
 extern "js" fn render_3d_scene(model_json : String) -> Unit = "(modelJson) => globalThis.__moonmoonRenderScene3d?.(modelJson)"
 
 ///|
+#cfg(target="js")
+extern "js" fn bind_operator_ui(model_json : String) -> Unit = "(modelJson) => globalThis.__moonmoonBindOperatorUi?.(modelJson)"
+
+///|
 fn init_model() -> Model {
   let view = @ui.first_trusted_square_view_model()
   {
@@ -90,10 +94,18 @@ fn terrain_grid(view : @ui.TrustedSquareViewModel) -> Html {
   for cell in view.terrain_cells {
     let selected = if cell.selected { " selected" } else { "" }
     items.push(
-      article(class="tile \{status_class(cell.hazard)}\{selected}", [
-        span("r\{cell.row} c\{cell.col}"),
-        b("\{cell.elevation_m} m"),
-      ]),
+      button(
+        id="terrain-cell-r\{cell.row}-c\{cell.col}",
+        class="tile terrain-cell-choice \{status_class(cell.hazard)}\{selected}",
+        type_="button",
+        attrs=@html.Attrs::build()
+          .data_set("cell-id", cell.cell_id)
+          .aria_pressed(if cell.selected { "true" } else { "false" }),
+        [
+          span("r\{cell.row} c\{cell.col}"),
+          b("\{cell.elevation_m} m"),
+        ],
+      ),
     )
   }
   section(
@@ -101,6 +113,46 @@ fn terrain_grid(view : @ui.TrustedSquareViewModel) -> Html {
     attrs=@html.Attrs::build().aria_label("terrain cell evidence"),
     items,
   )
+}
+
+///|
+fn selected_route_view(view : @ui.TrustedSquareViewModel) -> @ui.RouteView {
+  for route in view.routes {
+    if route.selected {
+      return route
+    }
+  }
+  view.routes[0]
+}
+
+///|
+fn route_picker(view : @ui.TrustedSquareViewModel) -> Html {
+  let choices : Array[Html] = []
+  for route in view.routes {
+    let active = if route.selected { " active" } else { "" }
+    let authority = if route.selected { "mission selected" } else { "candidate" }
+    choices.push(
+      button(
+        id="route-inspect-\{route.route_id}",
+        class="route-choice\{active}",
+        type_="button",
+        attrs=@html.Attrs::build()
+          .data_set("route-id", route.route_id)
+          .aria_pressed(if route.selected { "true" } else { "false" }),
+        [
+          div([b(route.label), span(route.route_id)]),
+          div(class="route-choice-meta", [
+            strong(class=status_class(route.decision), route.decision),
+            span(class="route-authority", authority),
+          ]),
+        ],
+      ),
+    )
+  }
+  section(class="route-picker", [
+    span(class="eyebrow", "Compare route candidates"),
+    div(class="route-options", choices),
+  ])
 }
 
 ///|
@@ -152,6 +204,7 @@ fn blocker_list(view : @ui.TrustedSquareViewModel) -> Html {
 ///|
 fn operator_scene(model : Model) -> Html {
   let view = model.view
+  let selected_route = selected_route_view(view)
   section(
     class="operator-shell",
     attrs=@html.Attrs::build().aria_label("lunar site operator view"),
@@ -231,10 +284,28 @@ fn operator_scene(model : Model) -> Html {
           ),
         ]),
         section(class="route-gate", [
-          span("Selected route"),
-          h2(view.selected_route_id),
-          p(view.scorecard.next_action),
+          span(id="operator-route-context", "Mission selected route"),
+          h2(id="operator-route-label", selected_route.label),
+          span(id="operator-route-id", selected_route.route_id),
+          strong(
+            id="operator-route-decision",
+            class="status \{status_class(selected_route.decision)}",
+            selected_route.decision,
+          ),
+          div(class="route-inspection-metrics", [
+            span([b(id="operator-route-score", "\{selected_route.score}"), span("score")]),
+            span([
+              b(id="operator-route-grade", "\{selected_route.max_grade}"),
+              span("max grade"),
+            ]),
+            span([
+              b(id="operator-route-roughness", "\{selected_route.roughness_m} m"),
+              span("roughness"),
+            ]),
+          ]),
+          p(id="operator-route-action", selected_route.next_action),
         ]),
+        route_picker(view),
         div(class="rail-metrics", [
           metric("site score", "\{view.scorecard.score}"),
           metric("blocked routes", "\{view.scorecard.blocked_route_candidates}"),
@@ -307,14 +378,32 @@ fn motion_contract_panel(contract : @ui.TraverseMotionContract) -> Html {
 fn inspector(model : Model) -> Html {
   let view = model.view
   aside(class="inspector", [
-    section(class="card", [
+    section(
+      id="operator-selected-cell",
+      class="card selected-cell-card",
+      attrs=@html.Attrs::build().aria_live("polite"),
+      [
       h2("selected cell"),
-      row(
-        view.selected_tile.cell_id,
-        view.selected_tile.hazard,
-        "\{view.selected_tile.elevation_m} m",
-      ),
-    ]),
+        article(class="row", [
+          div([
+            b(id="operator-cell-id", view.selected_tile.cell_id),
+            span(id="operator-cell-hazard", view.selected_tile.hazard),
+          ]),
+          strong(id="operator-cell-elevation", "\{view.selected_tile.elevation_m} m"),
+        ]),
+        div(class="cell-detail-grid", [
+          span([span("slope"), b(id="operator-cell-slope", "\{view.selected_tile.slope_grade}")]),
+          span([
+            span("roughness"),
+            b(id="operator-cell-roughness", "\{view.selected_tile.roughness_m} m"),
+          ]),
+          span([
+            span("confidence"),
+            b(id="operator-cell-confidence", "\{view.selected_tile.confidence}"),
+          ]),
+        ]),
+      ],
+    ),
     section(class="card", [h2("routes")] + route_rows(view)),
     section(class="card", [
       h2("source"),
@@ -408,6 +497,7 @@ fn start_renderer(model : Model) -> @rabbita.Cmd {
     _ => {
       render_terrain_canvas(model.model_json)
       render_3d_scene(model.model_json)
+      bind_operator_ui(model.model_json)
     },
     kind=@cmd.after_render,
   )

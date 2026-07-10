@@ -295,6 +295,7 @@ p {
 }
 
 .route-gate,
+.route-picker,
 .next-evidence,
 .source-claim,
 .rail-blockers {
@@ -311,6 +312,97 @@ p {
 
 .route-gate h2 {
   font-size: 22px;
+}
+
+#operator-route-id {
+  color: #667069;
+  font-size: 12px;
+}
+
+.route-gate > .status {
+  margin-top: 2px;
+}
+
+.route-inspection-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.route-inspection-metrics > span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  border-left: 2px solid #c9cec6;
+  padding-left: 8px;
+}
+
+.route-inspection-metrics b {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.route-inspection-metrics span span {
+  color: #69736c;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.route-picker {
+  gap: 10px;
+}
+
+.route-options {
+  display: grid;
+  gap: 7px;
+}
+
+.route-choice {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #cdd1c9;
+  border-radius: 5px;
+  background: #fff;
+  color: #171b18;
+  padding: 9px 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.route-choice:hover {
+  border-color: #7d877f;
+  background: #fafbf8;
+}
+
+.route-choice.active {
+  border-color: #2c705b;
+  box-shadow: inset 3px 0 0 #2c705b;
+}
+
+.route-choice > div:first-child,
+.route-choice-meta {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.route-choice > div:first-child span,
+.route-authority {
+  color: #69736c;
+  font-size: 10px;
+}
+
+.route-choice-meta {
+  justify-items: end;
+  text-align: right;
+}
+
+.route-choice-meta strong {
+  font-size: 11px;
+  text-transform: uppercase;
 }
 
 .route-gate p,
@@ -531,6 +623,17 @@ p {
   padding: 10px;
 }
 
+.terrain-cell-choice {
+  color: #171b18;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.terrain-cell-choice:hover {
+  border-color: #7d877f;
+}
+
 .tile.selected {
   outline: 3px solid #2c705b;
   outline-offset: -3px;
@@ -595,6 +698,38 @@ p {
   line-height: 1.35;
   text-align: right;
   text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.selected-cell-card {
+  display: grid;
+  gap: 8px;
+}
+
+.cell-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.cell-detail-grid > span {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+  border: 1px solid #d3d7cf;
+  border-radius: 5px;
+  background: #fff;
+  padding: 8px;
+}
+
+.cell-detail-grid span span {
+  color: #667069;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.cell-detail-grid b {
+  font-size: 12px;
   overflow-wrap: anywhere;
 }
 
@@ -737,7 +872,8 @@ p {
 
   .rail-metrics,
   .evidence-metrics,
-  .inspector {
+  .inspector,
+  .cell-detail-grid {
     grid-template-columns: 1fr;
   }
 
