@@ -19,6 +19,10 @@ The local copies, byte counts, SHA-256 checksums, and first hourly DE440s
 sunlit/dark computation are pinned. This is still a conservative review result:
 local terrain-shadow and panel-attitude modeling remain explicit blockers.
 
+The JSON exposes the sampled minimum and maximum Sun altitude as typed fields.
+MoonBit combines that window with each measured route grid to produce an
+eight-sector bounded local-horizon profile.
+
 The MoonBit mirror is committed under `src/mission` and checked by `moon test`.
 External ephemeris computation tools may exist outside this repository, but
 they are not part of the committed source architecture.

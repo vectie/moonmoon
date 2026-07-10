@@ -41,6 +41,11 @@ test "first trusted square view model marks selected route" {
       assert_true(route.illumination.max_sun_altitude_deg < 0.2)
       assert_true(route.illumination.terrain_shadow_margin_deg > 26.0)
       assert_true(route.illumination.bounded_horizon)
+      assert_eq(route.illumination.horizon_profile.length(), 8)
+      assert_eq(route.illumination.horizon_profile[6].label, "W")
+      assert_true(
+        route.illumination.horizon_profile[6].horizon_angle_deg > 26.0,
+      )
       assert_true(
         route.illumination.power_window_source_path.contains(
           "first_trusted_square_power_window.json",

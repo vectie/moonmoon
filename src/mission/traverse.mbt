@@ -34,6 +34,8 @@ pub(all) struct IlluminationConstraint {
   power_window_source_status : String
   time_start_utc : String
   time_end_utc : String
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
   min_sunlit_hours : Double
   max_dark_hours : Double
   max_relief_shadow_risk : Double
@@ -64,10 +66,23 @@ pub(all) struct LocalHorizonEvidence {
   min_sun_altitude_deg : Double
   max_sun_altitude_deg : Double
   terrain_shadow_margin_deg : Double
+  azimuth_samples : Array[HorizonAzimuthSample]
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
   next_action : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct HorizonAzimuthSample {
+  sector_id : String
+  label : String
+  azimuth_center_deg : Double
+  obstruction_row : Int
+  obstruction_col : Int
+  obstruction_elevation_m : Double
+  distance_m : Double
+  horizon_angle_deg : Double
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -141,6 +156,8 @@ pub(all) struct PowerWindowEvidence {
   time_end_utc : String
   target_lat_deg : Double
   target_lon_deg : Double
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
   sunlit_hours : Double
   dark_hours : Double
   available_energy_wh : Double
@@ -299,7 +316,10 @@ pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence {
 
 ///|
 pub fn first_trusted_square_northeast_stepout_horizon_evidence() -> LocalHorizonEvidence {
-  generated_first_trusted_square_northeast_stepout_horizon_evidence()
+  bounded_local_horizon_evidence(
+    @terrain.first_trusted_square_northeast_stepout_grid(),
+    conservative_illumination_constraint(),
+  )
 }
 
 ///|
@@ -322,6 +342,11 @@ pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String {
   text += "- max sun altitude: \{evidence.max_sun_altitude_deg} deg\n"
   text += "- terrain-shadow margin: \{evidence.terrain_shadow_margin_deg} deg\n"
   text += "- confidence: \{evidence.confidence}\n\n"
+  text += "## Azimuth Profile\n\n"
+  for sample in evidence.azimuth_samples {
+    text += "- \{sample.label} (\{sample.azimuth_center_deg} deg): \{sample.horizon_angle_deg} deg at r\{sample.obstruction_row} c\{sample.obstruction_col}\n"
+  }
+  text += "\n"
   text += "## Reasons\n\n"
   for reason in evidence.reasons {
     text += "- \{reason}\n"
@@ -338,7 +363,7 @@ pub fn first_trusted_square_energy_remediation() -> EnergyRemediationEvidence {
     first_trusted_square_energy_assessment(),
     "northeast-stepout",
     "artifact/mission/first_trusted_square_northeast_stepout_terrain_remediation.json",
-    "artifact/mission/first_trusted_square_northeast_stepout_horizon.json",
+    first_trusted_square_northeast_stepout_horizon_evidence().output_path,
     "artifact/mission/first_trusted_square_energy_remediation.json",
   )
 }
@@ -400,6 +425,8 @@ pub fn conservative_illumination_constraint() -> IlluminationConstraint {
     power_window_source_status: evidence.source_status,
     time_start_utc: evidence.time_start_utc,
     time_end_utc: evidence.time_end_utc,
+    min_sun_altitude_deg: evidence.min_sun_altitude_deg,
+    max_sun_altitude_deg: evidence.max_sun_altitude_deg,
     min_sunlit_hours: 4.0,
     max_dark_hours: 2.0,
     max_relief_shadow_risk: 0.22,
@@ -592,62 +619,11 @@ fn relief_shadow_risk(
 }
 
 ///|
-fn proxy_local_horizon_evidence(
-  grid : @terrain.TerrainGrid,
-  metrics : @terrain.TerrainMetrics,
-  risk : Double,
-  constraint : IlluminationConstraint,
-) -> LocalHorizonEvidence {
-  let decision = if risk >= constraint.max_relief_shadow_risk {
-    Block
-  } else if risk >= constraint.caution_relief_shadow_risk {
-    Review
-  } else {
-    Allow
-  }
-  {
-    evidence_id: "local-horizon-proxy/\{grid.tile_id}",
-    route_id: grid.tile_id,
-    site_id: "first-trusted-square",
-    source_dataset_id: grid.source_manifest.dataset_id,
-    source_tile_id: grid.tile_id,
-    source_path: grid.source_manifest.source_path,
-    power_window_evidence_id: constraint.power_window_evidence_id,
-    power_window_source_path: constraint.power_window_source_path,
-    output_path: "",
-    method_id: "relief-shadow-proxy-v1",
-    generated_by: "src/mission/traverse.mbt",
-    rows: grid.rows,
-    cols: grid.cols,
-    cell_size_m: grid.cell_size_m,
-    center_elevation_m: metrics.min_elevation_m +
-    metrics.elevation_range_m / 2.0,
-    max_obstruction_elevation_m: metrics.max_elevation_m,
-    max_horizon_angle_deg: risk,
-    min_sun_altitude_deg: 0.0,
-    max_sun_altitude_deg: 0.0,
-    terrain_shadow_margin_deg: risk,
-    confidence: metrics.uncertainty.confidence * 0.6,
-    decision,
-    reasons: [
-      "relief-shadow proxy retained until a bounded local horizon model is generated",
-    ],
-    next_action: "generate bounded local horizon evidence before route simulation",
-  }
-}
-
-///|
 fn local_horizon_evidence(
   grid : @terrain.TerrainGrid,
-  metrics : @terrain.TerrainMetrics,
-  risk : Double,
   constraint : IlluminationConstraint,
 ) -> LocalHorizonEvidence {
-  if grid.tile_id == "first-trusted-square-northeast-stepout-lola" {
-    first_trusted_square_northeast_stepout_horizon_evidence()
-  } else {
-    proxy_local_horizon_evidence(grid, metrics, risk, constraint)
-  }
+  bounded_local_horizon_evidence(grid, constraint)
 }
 
 ///|
@@ -657,7 +633,7 @@ pub fn assess_illumination(
 ) -> IlluminationAssessment {
   let metrics = @terrain.analyze(grid)
   let risk = relief_shadow_risk(grid, metrics)
-  let local_horizon = local_horizon_evidence(grid, metrics, risk, constraint)
+  let local_horizon = local_horizon_evidence(grid, constraint)
   let confidence = metrics.uncertainty.confidence * 0.6
   let reasons : Array[String] = []
   let missing_ephemeris = !constraint.has_time_window_ephemeris

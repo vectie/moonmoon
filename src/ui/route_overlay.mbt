@@ -1,4 +1,18 @@
 ///|
+fn route_horizon_profile(
+  evidence : @mission.LocalHorizonEvidence,
+) -> Array[RouteHorizonSampleView] {
+  evidence.azimuth_samples.map(fn(sample) {
+    {
+      label: sample.label,
+      azimuth_center_deg: sample.azimuth_center_deg,
+      horizon_angle_deg: sample.horizon_angle_deg,
+      obstruction_elevation_m: sample.obstruction_elevation_m,
+    }
+  })
+}
+
+///|
 fn route_views(
   routes : Array[@mission.RouteCandidate],
   selected_route_id : String,
@@ -31,6 +45,7 @@ fn route_views(
         } else {
           route.illumination.constraint.power_window_source_path
         },
+        horizon_profile: route_horizon_profile(route.illumination.local_horizon),
       },
       next_action: route.next_action,
     })

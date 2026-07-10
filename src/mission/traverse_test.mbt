@@ -65,6 +65,14 @@ test "first trusted square route candidates use measured adjacent windows" {
     "first-trusted-square-northeast-stepout-lola",
   )
   assert_true(routes[5].expected_max_grade < routes[4].expected_max_grade)
+  for route in routes {
+    assert_eq(
+      route.illumination.local_horizon.method_id,
+      "azimuth-binned-local-horizon-v2",
+    )
+    assert_eq(route.illumination.local_horizon.azimuth_samples.length(), 8)
+    assert_true(route.illumination.local_horizon.output_path != "")
+  }
   assert_eq(
     routes[5].terrain_remediation.evidence_id,
     "first-trusted-square-northeast-stepout-terrain-remediation-v1",
@@ -134,6 +142,8 @@ test "first trusted square illumination gate uses computed time window evidence"
   assert_eq(evidence.computation.status, "computed")
   assert_eq(evidence.time_start_utc, "2026-06-25T00:00:00Z")
   assert_eq(evidence.time_end_utc, "2026-07-09T00:00:00Z")
+  assert_eq(evidence.min_sun_altitude_deg, -0.012003)
+  assert_eq(evidence.max_sun_altitude_deg, 0.130418)
   assert_eq(evidence.sunlit_hours, 323.0)
   assert_eq(evidence.dark_hours, 13.0)
   assert_true(evidence.available_energy_wh > 230.0)
@@ -161,14 +171,19 @@ test "first trusted square illumination gate uses computed time window evidence"
   let horizon = @mission.first_trusted_square_route_candidates()[5].illumination.local_horizon
   assert_eq(
     horizon.evidence_id,
-    "first-trusted-square-northeast-stepout-local-horizon-v1",
+    "first-trusted-square-northeast-stepout-local-horizon-v2",
   )
   assert_eq(
     horizon.output_path,
     "artifact/mission/first_trusted_square_northeast_stepout_horizon.json",
   )
   assert_true(horizon.max_horizon_angle_deg > horizon.max_sun_altitude_deg)
+  assert_true(horizon.max_horizon_angle_deg > 26.48)
+  assert_true(horizon.max_horizon_angle_deg < 26.49)
   assert_true(horizon.terrain_shadow_margin_deg > 0.0)
+  assert_eq(horizon.azimuth_samples.length(), 8)
+  assert_eq(horizon.azimuth_samples[6].label, "W")
+  assert_true(horizon.azimuth_samples[6].horizon_angle_deg > 26.48)
 }
 
 ///|

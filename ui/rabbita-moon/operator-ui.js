@@ -22,6 +22,21 @@ function compactNumber(value, digits = 3) {
   return number.toFixed(digits).replace(/\.?0+$/, '')
 }
 
+function updateHorizonProfile(samples) {
+  for (const sample of samples || []) {
+    const angle = Number(sample.horizon_angle_deg)
+    const level = Number.isFinite(angle)
+      ? Math.max(0.06, Math.min(1, (angle + 30) / 60))
+      : 0.06
+    const bar = document.getElementById(`operator-horizon-bar-${sample.label}`)
+    if (bar) {
+      bar.style.height = `${level * 100}%`
+      bar.classList.toggle('below-horizon', angle < 0)
+    }
+    setText(`operator-horizon-angle-${sample.label}`, compactNumber(angle, 1))
+  }
+}
+
 globalThis.__moonmoonBindOperatorUi = modelJson => {
   const root = document.querySelector('.operator-shell')
   if (!root || root.dataset.operatorBound === 'true') return
@@ -95,6 +110,7 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
       compactNumber(illumination.confidence, 2),
     )
     setText('operator-illumination-evidence', illumination.horizon_evidence_path || '')
+    updateHorizonProfile(illumination.horizon_profile)
     globalThis.__moonmoonTerrainController?.selectRoute(routeId)
     if (revealTerrain) showTerrain()
   }

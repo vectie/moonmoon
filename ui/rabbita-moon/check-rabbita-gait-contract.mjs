@@ -209,6 +209,8 @@ const operatorContracts = [
   'operator-illumination-sun',
   'operator-illumination-margin',
   'operator-illumination-evidence',
+  'operator-horizon-bar-',
+  'azimuth horizon profile',
   'operator-selected-cell',
 ]
 
@@ -230,6 +232,7 @@ const operatorRuntimeContracts = [
   'selectRoute',
   'operator-illumination-window',
   'operator-illumination-confidence',
+  'updateHorizonProfile',
   'selectCell',
 ]
 

@@ -74,6 +74,8 @@ fn generated_first_trusted_square_power_window_evidence() -> PowerWindowEvidence
     time_end_utc: "2026-07-09T00:00:00Z",
     target_lat_deg: -89.880000,
     target_lon_deg: 0.120000,
+    min_sun_altitude_deg: -0.012003,
+    max_sun_altitude_deg: 0.130418,
     sunlit_hours: 323.000000,
     dark_hours: 13.000000,
     available_energy_wh: 234.938073,

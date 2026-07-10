@@ -12,6 +12,8 @@ pub fn assess_energy_window(Array[RouteCandidate], EnergyBudget) -> EnergyAssess
 
 pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint) -> IlluminationAssessment
 
+pub fn bounded_local_horizon_evidence(@terrain.TerrainGrid, IlluminationConstraint) -> LocalHorizonEvidence
+
 pub fn clearance_transition(String, String, MissionClearanceReviewDecision, String, String, String, String) -> MissionClearanceTransition
 
 pub fn conservative_energy_budget() -> EnergyBudget
@@ -176,6 +178,17 @@ pub(all) struct EnergyRemediationEvidence {
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct HorizonAzimuthSample {
+  sector_id : String
+  label : String
+  azimuth_center_deg : Double
+  obstruction_row : Int
+  obstruction_col : Int
+  obstruction_elevation_m : Double
+  distance_m : Double
+  horizon_angle_deg : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct IlluminationAssessment {
   constraint : IlluminationConstraint
   evidence_dataset_id : String
@@ -197,6 +210,8 @@ pub(all) struct IlluminationConstraint {
   power_window_source_status : String
   time_start_utc : String
   time_end_utc : String
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
   min_sunlit_hours : Double
   max_dark_hours : Double
   max_relief_shadow_risk : Double
@@ -226,6 +241,7 @@ pub(all) struct LocalHorizonEvidence {
   min_sun_altitude_deg : Double
   max_sun_altitude_deg : Double
   terrain_shadow_margin_deg : Double
+  azimuth_samples : Array[HorizonAzimuthSample]
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
@@ -339,6 +355,8 @@ pub(all) struct PowerWindowEvidence {
   time_end_utc : String
   target_lat_deg : Double
   target_lon_deg : Double
+  min_sun_altitude_deg : Double
+  max_sun_altitude_deg : Double
   sunlit_hours : Double
   dark_hours : Double
   available_energy_wh : Double

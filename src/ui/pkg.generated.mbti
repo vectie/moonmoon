@@ -184,6 +184,13 @@ pub(all) struct RobotReadinessViewModel {
   evidence : Array[RobotReadinessEvidenceView]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct RouteHorizonSampleView {
+  label : String
+  azimuth_center_deg : Double
+  horizon_angle_deg : Double
+  obstruction_elevation_m : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct RouteIlluminationView {
   decision : String
   confidence : Double
@@ -196,6 +203,7 @@ pub(all) struct RouteIlluminationView {
   time_end_utc : String
   power_window_source_path : String
   horizon_evidence_path : String
+  horizon_profile : Array[RouteHorizonSampleView]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RouteOverlay {

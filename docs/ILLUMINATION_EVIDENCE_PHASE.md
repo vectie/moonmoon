@@ -10,7 +10,7 @@ clearance: the active power window is the checked fixture from
 The selected route and every inspected candidate expose:
 
 - illumination decision and confidence;
-- bounded or proxy local-horizon angle;
+- bounded local-horizon angle and eight-sector azimuth profile;
 - maximum sampled Sun altitude when a bounded horizon exists;
 - terrain-shadow margin;
 - power-window dates and evidence path.
@@ -36,17 +36,23 @@ Status: implemented.
    margin, confidence, decision, and evidence path in the decision rail.
 3. Update the panel when a candidate is inspected without changing mission
    selection.
-4. Label routes without bounded local-horizon evidence as `not bounded` rather
-   than presenting zero as a measured Sun altitude.
+4. Preserve a `not bounded` fallback for future routes that do not yet have a
+   measured horizon grid.
 
 ## Phase 3: Expand Horizon Coverage
 
-Status: next feature work.
+Status: implemented for the six measured 4x4 route fixtures.
 
-1. Generate bounded local-horizon evidence for the remaining five candidates.
-2. Add azimuth-resolved horizon samples rather than one maximum obstruction.
-3. Generate a new declared UTC power window from the pinned kernel boundary.
-4. Recompute route illumination and energy decisions from those artifacts.
+1. Generate bounded local-horizon evidence for all six candidates.
+2. Add eight azimuth-resolved horizon sectors rather than one maximum
+   obstruction.
+3. Recompute route illumination decisions from typed minimum and maximum Sun
+   altitude fields in the pinned power-window evidence.
+4. Show the profile while inspecting candidates without changing mission
+   selection.
+
+The next data expansion is a wider horizon grid and a newly declared UTC power
+window from the pinned kernel boundary.
 
 ## Acceptance
 

@@ -71,6 +71,15 @@ pub(all) struct RouteIlluminationView {
   time_end_utc : String
   power_window_source_path : String
   horizon_evidence_path : String
+  horizon_profile : Array[RouteHorizonSampleView]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct RouteHorizonSampleView {
+  label : String
+  azimuth_center_deg : Double
+  horizon_angle_deg : Double
+  obstruction_elevation_m : Double
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|

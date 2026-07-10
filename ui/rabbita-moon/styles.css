@@ -478,6 +478,48 @@ p {
   font-size: 11px;
 }
 
+.horizon-profile {
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  align-items: end;
+  gap: 4px;
+}
+
+.horizon-sector {
+  min-width: 0;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  color: #667069;
+  font-size: 9px;
+}
+
+.horizon-sector > b {
+  color: #2a302c;
+  font-size: 9px;
+}
+
+.horizon-track {
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid #929b94;
+  background: #edf0eb;
+}
+
+.horizon-bar {
+  width: 100%;
+  min-height: 2px;
+  background: #8c4a3c;
+  transition: height 160ms ease;
+}
+
+.horizon-bar.below-horizon {
+  background: #527b6d;
+}
+
 .rail-metrics {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

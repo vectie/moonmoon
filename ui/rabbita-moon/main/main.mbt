@@ -158,6 +158,25 @@ fn route_picker(view : @ui.TrustedSquareViewModel) -> Html {
 ///|
 fn illumination_gate(route : @ui.RouteView) -> Html {
   let evidence = route.illumination
+  let horizon_sectors : Array[Html] = []
+  for sample in evidence.horizon_profile {
+    horizon_sectors.push(
+      span(class="horizon-sector", [
+        span(class="horizon-track", [
+          span(
+            id="operator-horizon-bar-\{sample.label}",
+            class="horizon-bar",
+            "",
+          ),
+        ]),
+        b(sample.label),
+        span(
+          id="operator-horizon-angle-\{sample.label}",
+          "\{sample.horizon_angle_deg}",
+        ),
+      ]),
+    )
+  }
   section(class="illumination-gate", [
     header([
       div([
@@ -188,6 +207,11 @@ fn illumination_gate(route : @ui.RouteView) -> Html {
         span("confidence"),
       ]),
     ]),
+    div(
+      class="horizon-profile",
+      attrs=@html.Attrs::build().aria_label("azimuth horizon profile"),
+      horizon_sectors,
+    ),
     p(
       id="operator-illumination-evidence",
       evidence.horizon_evidence_path,
