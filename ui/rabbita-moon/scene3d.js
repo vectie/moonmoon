@@ -426,11 +426,40 @@ function initMoon(canvas, view) {
     lat: Number(view.site_latitude_deg || -89.88),
     lon: Number(view.site_longitude_deg || 0.12),
   }
-  let yaw = 0.35
-  let pitch = -0.92
+  const defaultYaw = 0.35
+  const defaultPitch = -0.92
+  const defaultDistance = 4.05
+  const terrainSwitch = document.getElementById('moon-terrain-switch')
+  const focusButton = document.getElementById('moon-focus-site')
+  const resetButton = document.getElementById('moon-reset-view')
+  const orbitButton = document.getElementById('moon-toggle-orbit')
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
+  let yaw = defaultYaw
+  let pitch = defaultPitch
+  let distance = defaultDistance
+  let orbit = !reduceMotion
   let dragging = false
   let lastX = 0
   let lastY = 0
+  function updateOrbitButton() {
+    if (!orbitButton) return
+    orbitButton.textContent = orbit ? 'Pause orbit' : 'Resume orbit'
+    orbitButton.setAttribute('aria-pressed', String(orbit))
+  }
+  focusButton?.addEventListener('click', () => {
+    if (terrainSwitch) terrainSwitch.checked = true
+  })
+  resetButton?.addEventListener('click', () => {
+    if (terrainSwitch) terrainSwitch.checked = false
+    yaw = defaultYaw
+    pitch = defaultPitch
+    distance = defaultDistance
+  })
+  orbitButton?.addEventListener('click', () => {
+    orbit = !orbit
+    updateOrbitButton()
+  })
+  updateOrbitButton()
   canvas.onpointerdown = event => {
     dragging = true
     lastX = event.clientX
@@ -448,6 +477,13 @@ function initMoon(canvas, view) {
     dragging = false
     canvas.releasePointerCapture(event.pointerId)
   }
+  canvas.onpointercancel = () => {
+    dragging = false
+  }
+  canvas.onwheel = event => {
+    event.preventDefault()
+    distance = clamp(distance + event.deltaY * 0.003, 2.45, 6.2)
+  }
   function draw() {
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
@@ -463,7 +499,7 @@ function initMoon(canvas, view) {
     let model = mat4Identity()
     model = mat4RotateX(model, pitch)
     model = mat4RotateY(model, yaw)
-    const viewMat = mat4Translate(mat4Identity(), 0, 0, -4.05)
+    const viewMat = mat4Translate(mat4Identity(), 0, 0, -distance)
     const mvp = mat4Multiply(mat4Perspective(44 * DEG, aspect, 0.1, 20), mat4Multiply(viewMat, model))
     uploadMoon(gl, moonShader, moonBuffers, mesh, texture, mvp)
     gl.drawArrays(gl.TRIANGLES, 0, mesh.vertices.length / 3)
@@ -473,7 +509,7 @@ function initMoon(canvas, view) {
     gl.drawArrays(gl.POINTS, 0, 1)
     canvas.dataset.sceneStatus = 'moon-globe-webgl-rendered'
     canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
-    if (!dragging) yaw += 0.0015
+    if (!dragging && orbit) yaw += 0.0015
     requestAnimationFrame(draw)
   }
   draw()
@@ -1214,22 +1250,8 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.sceneStatus = 'third-person-moon-walk-rendered'
     canvas.dataset.renderer = 'three-third-person-moon-terrain'
     canvas.dataset.motionStatus = 'endless-e1-on-lunar-heightfield'
-    canvas.dataset.missionMoonDock = 'mission-moon-dock'
-    canvas.dataset.moonTerrainSwitch = 'moon-terrain-switch'
-    canvas.dataset.robotDrawer = 'robot-drawer'
-    canvas.dataset.missionDrawer = 'mission-drawer'
-    canvas.dataset.moonConsolePage = 'moon-console-page'
-    canvas.dataset.moonConsoleSwitch = 'moon-console-switch'
-    canvas.dataset.missionConsolePage = 'mission-console-page'
-    canvas.dataset.missionPageNext = 'mission-page-next'
-    canvas.dataset.missionPageBack = 'mission-page-back'
-    canvas.dataset.missionShortcuts = 'mission-shortcuts'
-    canvas.dataset.missionChatPanel = 'mission-chat-panel'
-    canvas.dataset.missionChatLog = 'mission-chat-log'
-    canvas.dataset.missionChatInput = 'mission-chat-input'
-    canvas.dataset.missionChatSend = 'mission-chat-send'
-    canvas.dataset.missionChatPrompt = 'Moonmoon chat prompt'
-    canvas.dataset.missionConsoleMode = 'chat + systems'
+    canvas.dataset.adapterPreview = 'moonmoon-adapter-preview'
+    canvas.dataset.adapterAuthority = 'non-authoritative-mission-gated'
     canvas.dataset.gaitQualityStatus = geometry.diagnostics.quality.status === 'pass'
       ? 'pass'
       : 'viewport-sampled'
@@ -3438,8 +3460,9 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
   const view = JSON.parse(modelJson)
   const thirdPerson = document.getElementById('moonmoon-third-person-3d')
   const moon = document.getElementById('moonmoon-globe-3d')
-  const robot = document.getElementById('moonmoon-robot-3d')
-  if (thirdPerson && thirdPerson.dataset.sceneBooted !== 'true') {
+  const adapterPreview = document.getElementById('moonmoon-adapter-preview')
+  const bootAdapterPreview = () => {
+    if (!adapterPreview?.open || !thirdPerson || thirdPerson.dataset.sceneBooted === 'true') return
     thirdPerson.dataset.sceneBooted = 'true'
     initThirdPersonMoonWalk(thirdPerson)
   }
@@ -3447,10 +3470,8 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
     moon.dataset.sceneBooted = 'true'
     initMoon(moon, view)
   }
-  if (robot && robot.dataset.sceneBooted !== 'true') {
-    robot.dataset.sceneBooted = 'true'
-    initRobot(robot)
-  }
+  adapterPreview?.addEventListener('toggle', bootAdapterPreview)
+  bootAdapterPreview()
 }
 
 globalThis.__moonmoonGaitDiagnostics = {

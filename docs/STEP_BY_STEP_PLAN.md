@@ -106,15 +106,13 @@ Done when: a user can open the product view and answer: which route is
 selected, which gate blocks it, what evidence backs the decision, and what must
 change before traversal is allowed.
 
-## Phase 2: Make the Moon View Evidence-Backed and Movable
+## Phase 2: Deliver the Canonical Lunar Operator Experience
 
-Status: started. The standalone operator page now opens with an inline movable
-Moon globe that consumes the existing MoonBit view-model JSON, projects the
-trusted-square footprint, selected route, corridor windows, and a LOLA-derived
-terrain-cell texture, and keeps the route/grid inspector beside it. The
-generated page is checked by `scripts/check-standalone-ui-runtime.mjs`.
-Remaining work is browser QA across viewports and stronger global terrain
-source products.
+Status: active. The generated inspection page proved the movable Moon and
+view-model boundary. The next step is to make `ui/rabbita-moon` the canonical
+interactive product, retain the generated page as a static report, and remove
+the current conflict between a blocked route and an always-on robot scene. The
+detailed checkpoint plan is in `docs/UI_UX_NEXT_PHASE.md`.
 
 Goal: the first viewport should feel like an operable Moon landscape, then let
 the user zoom into the selected site.
@@ -146,11 +144,10 @@ Steps:
 
 Implementation plan:
 
-1. Keep the render contract simple.
-   - Continue generating one standalone HTML page from `cmd/main`.
-   - Keep the Moon view driven by the embedded `moonmoon-view-model` JSON.
-   - Keep canvas/runtime code in `src/ui/moon_globe_runtime.mbt` and page
-     composition in `src/ui/page.mbt`.
+1. Establish one interactive product surface.
+   - Make `ui/rabbita-moon` the canonical live operator UI.
+   - Keep `src/ui` as the renderer-neutral MoonBit contract.
+   - Keep generated HTML as a static report and fast boundary check.
 
 2. Improve the source-backed visual layer.
    - Promote compact terrain cells, elevation range, slope, roughness, source
@@ -159,18 +156,19 @@ Implementation plan:
    - Keep large raw DEM/image products outside the repository; commit only
      compact fixtures and manifests.
 
-3. Make movement feel correct before adding more layers.
+3. Make movement and product truth correct before adding more layers.
    - Verify drag direction across east and west longitudes.
    - Keep initial zoom lunar-scale, then focus-site zoom local.
    - Keep controls limited to pan, wheel zoom, orbit, reset, and focus site.
+   - Keep robot motion behind a closed, mission-gated adapter preview.
 
 4. Add browser-grade checks after generated HTML checks.
    - Keep `scripts/check-standalone-ui-runtime.mjs` as the fast static/runtime
      smoke test.
    - Add browser screenshot checks only for layout, canvas nonblank state, and
      control reachability.
-   - Test one desktop viewport and one mobile viewport before calling the phase
-     done.
+   - Test desktop, tablet, and mobile viewports before calling the phase done.
+   - Exercise every visible control and reject horizontal overflow.
 
 5. Commit in visible checkpoints.
    - Commit runtime organization separately from visual/data changes.

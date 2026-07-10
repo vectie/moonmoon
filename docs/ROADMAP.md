@@ -7,8 +7,9 @@
    dossier and operator view while the underlying terrain, illumination, energy,
    and operator-review blockers are cleared.
 3. Keep source fixtures reproducible through MoonBit tests and manifests.
-4. Use `src/ui/page.mbt` as the current operator view until live interaction
-   justifies a dedicated Rabbita-style UI package.
+4. Use `ui/rabbita-moon` as the canonical interactive operator product while
+   `src/ui` owns its renderer-neutral state and the generated HTML remains a
+   static report.
 5. Keep `src/ui/motion_contract.mbt` as the current locomotion handoff: it
    exposes route-motion readiness without placing robot gait primitives in
    Moonphys.
@@ -23,10 +24,10 @@
 
 ## Next
 
-- Continue the evidence-backed movable Moon view from Phase 2 of
-  `docs/STEP_BY_STEP_PLAN.md`: keep the current standalone globe/runtime check
-  green, then add browser-verified viewport framing and stronger global terrain
-  source products.
+- Deliver the canonical lunar operator experience in
+  `docs/UI_UX_NEXT_PHASE.md`: open on the Moon, make global-to-local controls
+  real, show route gates in the first viewport, and keep robot motion in a
+  separate adapter preview.
 - Tighten the underlying selected-route evidence around terrain, illumination,
   energy, and operator review until the clearance decision can move from block
   to review or allow.
@@ -41,8 +42,8 @@
   route gates allow traversal.
 - Add a second lunar site only after the first site has a clean route-gate
   story.
-- Move live browser behavior into `ui/moonmoon/main` if the UI grows beyond a
-  standalone generated page.
+- Keep live browser behavior in `ui/rabbita-moon`; do not create another live
+  UI package while this canonical surface is being consolidated.
 - Add explicit suite adapters later. Moonrobo can provide Noetix/URDF gait and
   Rabbita visualization there, but adapters stay out of the standalone domain
   packages. The current first step is split between Moonmoon's typed suite

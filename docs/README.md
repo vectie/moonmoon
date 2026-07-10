@@ -30,6 +30,8 @@ be explicit boundary packages or exported records.
 4. [ROADMAP.md](ROADMAP.md): current product milestones.
 5. [STEP_BY_STEP_PLAN.md](STEP_BY_STEP_PLAN.md): implementation slices and
    gate criteria.
+6. [UI_UX_NEXT_PHASE.md](UI_UX_NEXT_PHASE.md): canonical lunar operator UI
+   checkpoints and browser acceptance criteria.
 
 ## Implementation Guidance
 

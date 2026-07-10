@@ -14,7 +14,6 @@ using @html {
   label,
   li,
   main_,
-  nav,
   p,
   section,
   span,
@@ -64,11 +63,11 @@ fn status_class(value : String) -> String {
 
 ///|
 fn metric(label : String, value : String) -> Html {
-  div(class="metric", [span(label), b(value)])
+  div(class="metric", [b(value), span(label)])
 }
 
 ///|
-fn layer_nav(view : @ui.TrustedSquareViewModel) -> Html {
+fn layer_legend(view : @ui.TrustedSquareViewModel) -> Html {
   let items : Array[Html] = []
   for layer in view.layers {
     let active = if layer.layer_id == view.active_layer_id {
@@ -76,9 +75,13 @@ fn layer_nav(view : @ui.TrustedSquareViewModel) -> Html {
     } else {
       ""
     }
-    items.push(button(class="seg\{active}", type_="button", layer.label))
+    items.push(span(class="legend-item\{active}", layer.label))
   }
-  nav(class="toolbar", attrs=@html.Attrs::build().aria_label("layers"), items)
+  div(
+    class="layer-legend",
+    attrs=@html.Attrs::build().aria_label("available evidence layers"),
+    items,
+  )
 }
 
 ///|
@@ -87,16 +90,15 @@ fn terrain_grid(view : @ui.TrustedSquareViewModel) -> Html {
   for cell in view.terrain_cells {
     let selected = if cell.selected { " selected" } else { "" }
     items.push(
-      button(
-        class="tile \{status_class(cell.hazard)}\{selected}",
-        type_="button",
-        [span("r\{cell.row} c\{cell.col}"), b("\{cell.elevation_m} m")],
-      ),
+      article(class="tile \{status_class(cell.hazard)}\{selected}", [
+        span("r\{cell.row} c\{cell.col}"),
+        b("\{cell.elevation_m} m"),
+      ]),
     )
   }
   section(
     class="grid",
-    attrs=@html.Attrs::build().aria_label("terrain cells"),
+    attrs=@html.Attrs::build().aria_label("terrain cell evidence"),
     items,
   )
 }
@@ -148,177 +150,109 @@ fn blocker_list(view : @ui.TrustedSquareViewModel) -> Html {
 }
 
 ///|
-fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
+fn operator_scene(model : Model) -> Html {
+  let view = model.view
   section(
-    class="scene-panel panel",
-    attrs=@html.Attrs::build().aria_label("3D Moon and robot view"),
+    class="operator-shell",
+    attrs=@html.Attrs::build().aria_label("lunar site operator view"),
     [
-      div(class="third-person-viewport", [
-        canvas(
-          id="moonmoon-third-person-3d",
-          class="scene-canvas third-person-canvas",
-          attrs=@html.Attrs::build().width(1280).height(620),
-          "",
-        ),
-        button(
-          class="mission-settings",
-          type_="button",
-          attrs=@html.Attrs::build().aria_label("mission display settings"),
-          "settings",
-        ),
+      section(class="lunar-stage", [
         input(
           input_type=@html.Checkbox,
-          id="moon-console-page",
-          class="moon-console-switch",
+          id="moon-terrain-switch",
+          class="view-switch-input",
         ),
-        label(for_="moon-console-page", class="mission-page-next", [
-          span("console"),
-          b("chat + systems"),
-        ]),
-        div(class="scene-readout", [
-          span([
-            b("Moon surface"),
-            span(" Noetix E1 walk / \{view.selected_route_id}"),
+        header(class="stage-header", [
+          div([span(class="eyebrow", "Moonmoon"), b("Lunar operator")]),
+          label(for_="moon-terrain-switch", class="view-switch", [
+            span("Moon"),
+            b("Site terrain"),
           ]),
         ]),
-        div(class="mission-hud mission-left-panel", [
-          div(class="mission-hud-status", [
-            b("mission gated"),
-            span(view.selected_route_id),
-            span("terrain source locked to active DEM"),
+        div(class="stage-stack", [
+          div(class="stage-view stage-moon", [
+            canvas(
+              id="moonmoon-globe-3d",
+              class="scene-canvas moon-globe-canvas",
+              attrs=@html.Attrs::build()
+                .width(1280)
+                .height(900)
+                .aria_label("Movable source-backed Moon globe"),
+              "",
+            ),
           ]),
-          div(class="mission-hud-stats", [
-            div([b("\{view.scorecard.score}"), span("site score")]),
-            div([b("\{view.scorecard.blocked_route_candidates}"), span("blocked routes")]),
-            div([b("\{view.scorecard.energy_margin_wh}"), span("energy margin Wh")]),
-          ]),
-        ]),
-        div(class="mission-moon-dock", [
-          input(
-            input_type=@html.Checkbox,
-            id="moon-terrain-switch",
-            class="moon-terrain-switch",
-          ),
-          label(for_="moon-terrain-switch", class="dock-switch", [
-            span("3D Moon"),
-            b("terrain"),
-          ]),
-          div(class="dock-stage", [
-            div(class="dock-view dock-moon", [
-              canvas(
-                id="moonmoon-globe-3d",
-                class="scene-canvas moon-globe-canvas",
-                attrs=@html.Attrs::build().width(540).height(360),
-                "",
-              ),
-              div(class="scene-readout dock-readout", [
-                span([b("3D Moon"), span(" drag")]),
-                span("\{view.site_latitude_deg} / \{view.site_longitude_deg}"),
-              ]),
-            ]),
-            div(class="dock-view dock-terrain", [
-              canvas(
-                id="moonmoon-terrain-3d",
-                class="terrain-canvas",
-                attrs=@html.Attrs::build().width(540).height(360),
-                "",
-              ),
-              div(class="scene-readout dock-readout", [
-                span([b("LOLA terrain"), span(" \{view.selected_route_id}")]),
-                span("\{view.viewport.rows}x\{view.viewport.cols} cells"),
-              ]),
-            ]),
+          div(class="stage-view stage-terrain", [
+            canvas(
+              id="moonmoon-terrain-3d",
+              class="terrain-canvas",
+              attrs=@html.Attrs::build()
+                .width(1280)
+                .height(900)
+                .aria_label("LOLA terrain for the first trusted square"),
+              "",
+            ),
           ]),
         ]),
-        div(class="mission-console-page", [
-          label(for_="moon-console-page", class="mission-page-back", [
-            b("scene"),
-            span("back to walk"),
-          ]),
-          div(class="mission-shortcuts", [
-            button(class="mission-shortcut active", type_="button", [
-              b("T"),
-              span("terrain"),
-            ]),
-            button(class="mission-shortcut", type_="button", [
-              b("R"),
-              span("robot"),
-            ]),
-            button(class="mission-shortcut", type_="button", [
-              b("P"),
-              span("physics"),
-            ]),
-            button(class="mission-shortcut", type_="button", [
-              b("M"),
-              span("mission"),
-            ]),
-            button(class="mission-shortcut", type_="button", [
-              b("E"),
-              span("energy"),
-            ]),
-          ]),
-          section(class="mission-chat-panel", [
-            div(class="mission-chat-head", [
-              div([b("Moonmoon"), span("project console")]),
-              strong("live context"),
-            ]),
-            div(class="mission-chat-log", [
-              article(class="mission-chat-line assistant", [
-                b("Moonmoon"),
-                span(
-                  "Ask about terrain contact, Noetix gait, Moonphys constraints, mission blockers, or energy margin.",
-                ),
-              ]),
-              article(class="mission-chat-line system", [
-                b("Source"),
-                span(
-                  "Answers should cite Moonmoon adapters and current scene diagnostics.",
-                ),
-              ]),
-            ]),
-            div(class="mission-chat-box", [
-              input(
-                id="moonmoon-chat-input",
-                class="mission-chat-input",
-                placeholder="Ask about this mission...",
-                attrs=@html.Attrs::build().aria_label("Moonmoon chat prompt"),
-              ),
-              button(class="mission-chat-send", type_="button", "Ask"),
-            ]),
-          ]),
-          div(class="mission-hud mission-hud-top", [
-            span("LOLA 5 m terrain"),
-            span("Noetix E1"),
-            span("Moonphys contact"),
-            span("endless walk"),
-          ]),
+        div(
+          class="stage-controls",
+          attrs=@html.Attrs::build().aria_label("Moon view controls"),
+          [
+            button(
+              id="moon-focus-site",
+              class="control primary",
+              type_="button",
+              "Focus site",
+            ),
+            button(
+              id="moon-reset-view",
+              class="control",
+              type_="button",
+              "Reset",
+            ),
+            button(
+              id="moon-toggle-orbit",
+              class="control",
+              type_="button",
+              "Pause orbit",
+            ),
+          ],
+        ),
+        div(class="stage-source", [
+          span("source \{view.globe_overlay.source_dataset_id}"),
+          span("site \{view.site_latitude_deg}, \{view.site_longitude_deg}"),
         ]),
       ]),
-      details(class="robot-drawer", [
-        summary(class="robot-drawer-toggle", [
-          span([b("Robot"), span(" FK gait")]),
+      aside(class="decision-rail", [
+        header(class="rail-header", [
+          div([span(class="eyebrow", "First trusted square"), h1(view.title)]),
+          strong(
+            class="status \{status_class(view.scorecard.decision)}",
+            view.scorecard.decision,
+          ),
         ]),
-        div(class="robot-viewport", [
-          canvas(
-            id="moonmoon-robot-3d",
-            class="scene-canvas robot-canvas",
-            attrs=@html.Attrs::build().width(760).height(540),
-            "",
-          ),
-          div(class="scene-readout", [
-            span([b("3D robot"), span(" rigid FK gait")]),
-            span(view.selected_route_id),
-          ]),
-          div(
-            id="moonmoon-robot-debug",
-            class="robot-debug",
-            attrs=@html.Attrs::build().aria_label("robot locomotion diagnostics"),
-            [
-              span("phase --"),
-              span("support --"),
-              span("targets --"),
-            ],
-          ),
+        section(class="route-gate", [
+          span("Selected route"),
+          h2(view.selected_route_id),
+          p(view.scorecard.next_action),
+        ]),
+        div(class="rail-metrics", [
+          metric("site score", "\{view.scorecard.score}"),
+          metric("blocked routes", "\{view.scorecard.blocked_route_candidates}"),
+          metric("energy margin Wh", "\{view.scorecard.energy_margin_wh}"),
+        ]),
+        section(class="next-evidence", [
+          span(class="eyebrow", "Motion handoff"),
+          strong(model.contract.status),
+          p(model.contract.next_action),
+        ]),
+        section(class="source-claim", [
+          span(class="eyebrow", "Evidence authority"),
+          b(view.source_panel.source_title),
+          p(view.source_panel.local_source_path),
+        ]),
+        section(class="rail-blockers", [
+          span(class="eyebrow", "Current blockers"),
+          blocker_list(view),
         ]),
       ]),
     ],
@@ -327,15 +261,15 @@ fn terrain_scene(view : @ui.TrustedSquareViewModel) -> Html {
 
 ///|
 fn hero(view : @ui.TrustedSquareViewModel) -> Html {
-  section(class="hero", [
-    div(class="surface", [
-      h2("lunar site model"),
+  section(class="evidence-hero", [
+    div([
+      span(class="eyebrow", "Lunar site model"),
       strong("\{view.site_latitude_deg} deg"),
-      span(
+      p(
         "\{view.site_longitude_deg} deg longitude, selected route \{view.selected_route_id}",
       ),
     ]),
-    div(class="panel metrics", [
+    div(class="evidence-metrics", [
       metric("score", "\{view.scorecard.score}"),
       metric("route candidates", "\{view.scorecard.route_candidates}"),
       metric("blocked routes", "\{view.scorecard.blocked_route_candidates}"),
@@ -346,7 +280,7 @@ fn hero(view : @ui.TrustedSquareViewModel) -> Html {
 
 ///|
 fn motion_contract_panel(contract : @ui.TraverseMotionContract) -> Html {
-  section(class="card panel", [
+  section(class="card", [
     h2("motion contract"),
     row(
       contract.preview_kind,
@@ -373,7 +307,7 @@ fn motion_contract_panel(contract : @ui.TraverseMotionContract) -> Html {
 fn inspector(model : Model) -> Html {
   let view = model.view
   aside(class="inspector", [
-    section(class="card panel", [
+    section(class="card", [
       h2("selected cell"),
       row(
         view.selected_tile.cell_id,
@@ -381,8 +315,8 @@ fn inspector(model : Model) -> Html {
         "\{view.selected_tile.elevation_m} m",
       ),
     ]),
-    section(class="card panel", [h2("routes")] + route_rows(view)),
-    section(class="card panel", [
+    section(class="card", [h2("routes")] + route_rows(view)),
+    section(class="card", [
       h2("source"),
       row(
         view.source_panel.source_title,
@@ -391,33 +325,79 @@ fn inspector(model : Model) -> Html {
       ),
     ]),
     motion_contract_panel(model.contract),
-    section(class="card panel", [h2("facts")] + fact_rows(view)),
-    section(class="card panel", [h2("blockers"), blocker_list(view)]),
+    section(class="card", [h2("facts")] + fact_rows(view)),
+    section(class="card", [h2("blockers"), blocker_list(view)]),
+  ])
+}
+
+///|
+fn evidence_dossier(model : Model) -> Html {
+  let view = model.view
+  details(class="evidence-dossier", [
+    summary([
+      div([
+        b("Evidence dossier"),
+        span("terrain, routes, source, and clearance"),
+      ]),
+      strong("Open"),
+    ]),
+    div(class="evidence-body", [
+      header(class="evidence-header", [
+        div([h1(view.title), p(view.scorecard.next_action)]),
+        strong(
+          class="status \{status_class(view.scorecard.decision)}",
+          "mission \{view.scorecard.decision}",
+        ),
+      ]),
+      hero(view),
+      layer_legend(view),
+      terrain_grid(view),
+      inspector(model),
+    ]),
+  ])
+}
+
+///|
+fn adapter_preview(model : Model) -> Html {
+  details(id="moonmoon-adapter-preview", class="adapter-preview", [
+    summary([
+      div([
+        b("Adapter preview"),
+        span("Noetix E1 / explicit non-authoritative simulation"),
+      ]),
+      strong(class=status_class(model.contract.status), model.contract.status),
+    ]),
+    div(class="adapter-body", [
+      div(class="adapter-copy", [
+        span(class="eyebrow", "Preview boundary"),
+        h2("Robot motion is not route authority"),
+        p(model.contract.next_action),
+      ]),
+      div(class="adapter-viewport", [
+        canvas(
+          id="moonmoon-third-person-3d",
+          class="scene-canvas third-person-canvas",
+          attrs=@html.Attrs::build()
+            .width(1280)
+            .height(720)
+            .aria_label("Mission-gated robot adapter preview"),
+          "",
+        ),
+        div(class="adapter-readout", [
+          b("preview only"),
+          span(model.view.selected_route_id),
+        ]),
+      ]),
+    ]),
   ])
 }
 
 ///|
 fn view(model : Model) -> Html {
-  let view = model.view
   main_(class="moon-shell", [
-    section(class="workspace", [
-      terrain_scene(view),
-      details(class="mission-drawer", [
-        summary(class="mission-drawer-toggle", [
-          span([b("Mission"), span(" data")]),
-        ]),
-        div(class="mission-drawer-body", [
-          header(class="topbar", [
-            div([h1(view.title), p(class="summary", view.scorecard.next_action)]),
-            strong(class="badge ready", "mission \{view.scorecard.decision}"),
-          ]),
-          hero(view),
-          layer_nav(view),
-          terrain_grid(view),
-          inspector(model),
-        ]),
-      ]),
-    ]),
+    operator_scene(model),
+    evidence_dossier(model),
+    adapter_preview(model),
   ])
 }
 

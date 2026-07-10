@@ -124,10 +124,19 @@ globalThis.__moonmoonRenderTerrain = modelJson => {
   canvas.onpointerup = () => {
     dragging = false
   }
+  canvas.onpointercancel = () => {
+    dragging = false
+  }
 
   function render() {
     const ratio = window.devicePixelRatio || 1
     const rect = canvas.getBoundingClientRect()
+    if (!canvas.isConnected || rect.width < 2 || rect.height < 2) {
+      canvas.dataset.renderPaused = 'true'
+      window.requestAnimationFrame(render)
+      return
+    }
+    canvas.dataset.renderPaused = 'false'
     const width = Math.max(360, Math.floor(rect.width * ratio))
     const height = Math.max(260, Math.floor(rect.height * ratio))
     if (canvas.width !== width || canvas.height !== height) {
