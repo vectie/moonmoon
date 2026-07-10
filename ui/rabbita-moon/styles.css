@@ -295,6 +295,7 @@ p {
 }
 
 .route-gate,
+.illumination-gate,
 .route-picker,
 .next-evidence,
 .source-claim,
@@ -406,10 +407,75 @@ p {
 }
 
 .route-gate p,
+.illumination-gate p,
 .next-evidence p,
 .source-claim p {
   color: #525c55;
   font-size: 14px;
+}
+
+.illumination-gate > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.illumination-gate > header > div {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.illumination-gate > header b,
+.illumination-gate > p {
+  overflow-wrap: anywhere;
+}
+
+.illumination-gate > header b {
+  color: #59635c;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.illumination-gate > header strong {
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.illumination-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.illumination-metrics > span {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+  border-left: 2px solid #c9cec6;
+  padding-left: 8px;
+}
+
+.illumination-metrics b {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.illumination-metrics span span {
+  color: #69736c;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.illumination-gate > p {
+  font-size: 11px;
 }
 
 .rail-metrics {

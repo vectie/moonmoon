@@ -139,6 +139,26 @@ fn terrain_blockers(metrics : @terrain.TerrainMetrics) -> Array[String] {
 }
 
 ///|
+fn mission_blockers(
+  terrain : @terrain.TerrainMetrics,
+  route : @mission.RouteCandidate,
+  energy : @mission.EnergyAssessment,
+) -> Array[String] {
+  let blockers = terrain_blockers(terrain)
+  if route.illumination.decision != Allow {
+    blockers.push(
+      "selected-route terrain-shadow margin is \{route.illumination.terrain_shadow_margin_deg} deg",
+    )
+  }
+  if energy.decision != Allow {
+    blockers.push(
+      "energy margin is \{energy.margin_wh} Wh; required minimum is \{energy.budget.min_energy_margin_wh} Wh",
+    )
+  }
+  blockers
+}
+
+///|
 pub fn first_trusted_square_dossier() -> SiteDossier {
   let grid = @terrain.first_trusted_square_grid()
   let west_grid = @terrain.first_trusted_square_west_contour_grid()
@@ -205,10 +225,10 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     power_window_evidence: @mission.first_trusted_square_power_window_evidence(),
     energy,
     clearance_plan,
-    summary: "One small lunar site model with explicit provenance, uncertainty, terrain metrics, first-pass hazard classification, a reproducible measured 9x9 route-corridor scan, promoted best-window route evidence, and a conservative rover energy-window budget.",
-    blockers: terrain_blockers(terrain),
+    summary: "One small lunar site model with explicit provenance, measured terrain, a reproducible 9x9 corridor scan, DE440 power-window evidence, selected-route local horizon evidence, and a conservative rover energy budget.",
+    blockers: mission_blockers(terrain, selected_route, energy),
     next_questions: [
-      "Attach time-windowed solar ephemeris for robot energy and thermal constraints.",
+      "Collect wider local horizon and terrain-shadow evidence for the selected route.",
       "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "Review the materialized Operator review workspace entries and close accepted or rejected queue items.",
     ],

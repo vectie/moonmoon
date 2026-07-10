@@ -156,6 +156,46 @@ fn route_picker(view : @ui.TrustedSquareViewModel) -> Html {
 }
 
 ///|
+fn illumination_gate(route : @ui.RouteView) -> Html {
+  let evidence = route.illumination
+  section(class="illumination-gate", [
+    header([
+      div([
+        span(class="eyebrow", "Illumination gate"),
+        b(id="operator-illumination-window", "\{evidence.time_start_utc} to \{evidence.time_end_utc}"),
+      ]),
+      strong(
+        id="operator-illumination-status",
+        class=status_class(evidence.decision),
+        evidence.decision,
+      ),
+    ]),
+    div(class="illumination-metrics", [
+      span([
+        b(id="operator-illumination-horizon", "\{evidence.max_horizon_angle_deg} deg"),
+        span("max horizon"),
+      ]),
+      span([
+        b(id="operator-illumination-sun", "\{evidence.max_sun_altitude_deg} deg"),
+        span("max sun"),
+      ]),
+      span([
+        b(id="operator-illumination-margin", "\{evidence.terrain_shadow_margin_deg} deg"),
+        span("shadow margin"),
+      ]),
+      span([
+        b(id="operator-illumination-confidence", "\{evidence.confidence}"),
+        span("confidence"),
+      ]),
+    ]),
+    p(
+      id="operator-illumination-evidence",
+      evidence.horizon_evidence_path,
+    ),
+  ])
+}
+
+///|
 fn row(label : String, detail : String, value : String, tone? : String) -> Html {
   let klass = match tone {
     Some(value) => "row \{status_class(value)}"
@@ -305,6 +345,7 @@ fn operator_scene(model : Model) -> Html {
           ]),
           p(id="operator-route-action", selected_route.next_action),
         ]),
+        illumination_gate(selected_route),
         route_picker(view),
         div(class="rail-metrics", [
           metric("site score", "\{view.scorecard.score}"),

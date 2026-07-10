@@ -59,6 +59,21 @@ pub(all) struct TerrainCellView {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RouteIlluminationView {
+  decision : String
+  confidence : Double
+  relief_shadow_risk : Double
+  max_horizon_angle_deg : Double
+  max_sun_altitude_deg : Double
+  terrain_shadow_margin_deg : Double
+  bounded_horizon : Bool
+  time_start_utc : String
+  time_end_utc : String
+  power_window_source_path : String
+  horizon_evidence_path : String
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RouteView {
   route_id : String
   label : String
@@ -68,6 +83,7 @@ pub(all) struct RouteView {
   max_grade : Double
   roughness_m : Double
   evidence_tile_id : String
+  illumination : RouteIlluminationView
   next_action : String
 } derive(Debug, Eq, ToJson, FromJson)
 

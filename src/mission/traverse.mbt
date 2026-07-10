@@ -539,6 +539,20 @@ fn combine_decisions(
 }
 
 ///|
+fn route_candidate_next_action(
+  terrain_decision : TraverseDecision,
+  illumination : IlluminationAssessment,
+  terrain_action : String,
+) -> String {
+  match (terrain_decision, illumination.decision) {
+    (Allow, Allow) | (Block, Allow) | (Review, Allow) => terrain_action
+    (Allow, Block) | (Allow, Review) => illumination.next_action
+    (Block, Block) | (Block, Review) | (Review, Block) | (Review, Review) =>
+      "\{terrain_action}; \{illumination.next_action}"
+  }
+}
+
+///|
 fn route_score(
   decision : TraverseDecision,
   confidence : Double,
@@ -1018,7 +1032,9 @@ fn make_route_candidate(
     decision,
     score: route_score(decision, confidence, illumination),
     reasons,
-    next_action,
+    next_action: route_candidate_next_action(
+      terrain_decision, illumination, next_action,
+    ),
   }
 }
 
@@ -1051,7 +1067,7 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       @terrain.first_trusted_square_north_rim_grid(),
       profile,
       "north-adjacent LOLA window is measured but still blocked at this scale",
-      "widen the north corridor extraction and add illumination review",
+      "widen the north corridor extraction before simulation",
     ),
     make_route_candidate(
       "southwest-bypass",
@@ -1069,7 +1085,7 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       @terrain.first_trusted_square_south_stepout_grid(),
       profile,
       "south widened corridor is measured and smoother than the active patch but still blocked",
-      "continue south corridor extraction and add ephemeris-backed illumination review",
+      "continue south corridor extraction before simulation",
     ),
     make_route_candidate(
       "northeast-stepout",
@@ -1078,7 +1094,7 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       @terrain.first_trusted_square_northeast_stepout_grid(),
       profile,
       "best active 9x9 corridor window is measured and selected but still blocked",
-      "review the promoted route fixture and attach ephemeris-backed illumination before simulation",
+      "review the promoted route fixture before simulation",
     ),
   ]
 }

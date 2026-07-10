@@ -41,7 +41,7 @@ test "first trusted square route candidates use measured adjacent windows" {
   assert_eq(routes[2].route_id, "north-rim-stepout")
   assert_true(routes[2].decision == Block)
   assert_eq(routes[2].evidence_tile_id, "first-trusted-square-north-rim-lola")
-  assert_true(routes[2].next_action.contains("illumination"))
+  assert_true(routes[2].next_action.contains("local horizon"))
   assert_eq(routes[3].route_id, "southwest-bypass")
   assert_true(routes[3].decision == Block)
   assert_eq(
@@ -169,6 +169,14 @@ test "first trusted square illumination gate uses computed time window evidence"
   )
   assert_true(horizon.max_horizon_angle_deg > horizon.max_sun_altitude_deg)
   assert_true(horizon.terrain_shadow_margin_deg > 0.0)
+}
+
+///|
+test "selected route action distinguishes attached ephemeris from terrain shadow" {
+  let selected = @mission.first_trusted_square_route_candidates()[5]
+  assert_true(selected.illumination.constraint.has_time_window_ephemeris)
+  assert_true(selected.next_action.contains("local horizon"))
+  assert_true(!selected.next_action.contains("attach ephemeris"))
 }
 
 ///|

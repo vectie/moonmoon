@@ -36,6 +36,16 @@ test "first trusted square view model marks selected route" {
       selected_count += 1
       assert_eq(route.route_id, "northeast-stepout")
       assert_eq(route.decision, "block")
+      assert_eq(route.illumination.decision, "block")
+      assert_true(route.illumination.max_horizon_angle_deg > 26.0)
+      assert_true(route.illumination.max_sun_altitude_deg < 0.2)
+      assert_true(route.illumination.terrain_shadow_margin_deg > 26.0)
+      assert_true(route.illumination.bounded_horizon)
+      assert_true(
+        route.illumination.power_window_source_path.contains(
+          "first_trusted_square_power_window.json",
+        ),
+      )
     }
   }
   assert_eq(selected_count, 1)
@@ -129,6 +139,8 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("catalog validation has not been read"))
   assert_true(json.contains("energy-window"))
   assert_true(json.contains("selected-route-clearance"))
+  assert_true(json.contains("terrain_shadow_margin_deg"))
+  assert_true(json.contains("max_sun_altitude_deg"))
   assert_true(json.contains("clear-terrain-grade-northeast-stepout"))
   assert_true(json.contains("clear-energy-margin"))
   assert_true(json.contains("operator-review-transitions.json"))

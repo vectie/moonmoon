@@ -204,6 +204,11 @@ const operatorContracts = [
   'route-inspect-',
   'terrain-cell-r',
   'operator-route-context',
+  'operator-illumination-status',
+  'operator-illumination-horizon',
+  'operator-illumination-sun',
+  'operator-illumination-margin',
+  'operator-illumination-evidence',
   'operator-selected-cell',
 ]
 
@@ -223,6 +228,8 @@ const operatorRuntimeContracts = [
   'inspectedRouteId',
   '__moonmoonTerrainController',
   'selectRoute',
+  'operator-illumination-window',
+  'operator-illumination-confidence',
   'selectCell',
 ]
 

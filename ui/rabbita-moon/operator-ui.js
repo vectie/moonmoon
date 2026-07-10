@@ -67,6 +67,34 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
     setText('operator-route-grade', compactNumber(route.max_grade))
     setText('operator-route-roughness', `${compactNumber(route.roughness_m)} m`)
     setText('operator-route-action', route.next_action)
+    const illumination = route.illumination || {}
+    setStatus(
+      document.getElementById('operator-illumination-status'),
+      illumination.decision || 'blocked',
+    )
+    setText(
+      'operator-illumination-window',
+      `${illumination.time_start_utc || 'unknown'} to ${illumination.time_end_utc || 'unknown'}`,
+    )
+    setText(
+      'operator-illumination-horizon',
+      `${compactNumber(illumination.max_horizon_angle_deg)} deg`,
+    )
+    setText(
+      'operator-illumination-sun',
+      illumination.bounded_horizon
+        ? `${compactNumber(illumination.max_sun_altitude_deg)} deg`
+        : 'not bounded',
+    )
+    setText(
+      'operator-illumination-margin',
+      `${compactNumber(illumination.terrain_shadow_margin_deg)} deg`,
+    )
+    setText(
+      'operator-illumination-confidence',
+      compactNumber(illumination.confidence, 2),
+    )
+    setText('operator-illumination-evidence', illumination.horizon_evidence_path || '')
     globalThis.__moonmoonTerrainController?.selectRoute(routeId)
     if (revealTerrain) showTerrain()
   }

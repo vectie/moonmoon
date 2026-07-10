@@ -169,7 +169,16 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
     "clear-operator-review-northeast-stepout",
   )
   assert_true(dossier.clearance_plan.next_action.contains("terrain grade"))
-  assert_eq(dossier.blockers.length(), 2)
+  assert_eq(dossier.blockers.length(), 4)
+  assert_true(
+    dossier.blockers.any(fn(blocker) {
+      blocker.contains("terrain-shadow margin")
+    }),
+  )
+  assert_true(
+    dossier.blockers.any(fn(blocker) { blocker.contains("energy margin") }),
+  )
+  assert_true(!dossier.next_questions[0].contains("Attach time-windowed"))
   let markdown = @site.render_markdown(dossier)
   assert_true(markdown.contains("# First Trusted Square"))
   assert_true(markdown.contains("## Source Datasets"))
