@@ -26,6 +26,8 @@ the same half-open UTC window. Each sample records body-fixed Sun and Earth
 vectors, local altitude and azimuth, and Earth illuminated fraction for the
 trusted-square observer. `cmd/ephemeris` computes both the JSON artifact and
 its typed MoonBit fixture directly from the pinned DE440s kernel.
+The phase fraction is the illuminated Earth disc seen from the Moon, so it is
+complementary to the Moon phase seen from Earth.
 
 The JSON exposes the sampled minimum and maximum Sun altitude as typed fields.
 MoonBit combines that window with each measured route grid to produce an

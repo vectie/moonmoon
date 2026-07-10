@@ -265,6 +265,10 @@ export function initMoonGlobe(canvas, view) {
     canvas.dataset.earthAltitudeDeg = String(sample.earth_altitude_deg)
     canvas.dataset.earthAzimuthDeg = String(sample.earth_azimuth_deg)
     canvas.dataset.earthIlluminatedFraction = String(sample.earth_illuminated_fraction)
+    canvas.dataset.lightingSampleIndex = String(lightingSampleIndex)
+    window.dispatchEvent(new CustomEvent('moonmoon:lighting-sample-change', {
+      detail: { sampleIndex: lightingSampleIndex, sample },
+    }))
   }
   const changeLightingTime = event => {
     lightingSampleIndex = clamp(Number(event.currentTarget.value), 0, Math.max(0, lightingSamples.length - 1))
@@ -275,6 +279,9 @@ export function initMoonGlobe(canvas, view) {
     lightingModeButton.textContent = readableLighting ? 'Readable' : 'Physical'
     lightingModeButton.setAttribute('aria-pressed', String(readableLighting))
     canvas.dataset.lightingMode = readableLighting ? 'readable' : 'physical'
+    window.dispatchEvent(new CustomEvent('moonmoon:lighting-mode-change', {
+      detail: { mode: canvas.dataset.lightingMode },
+    }))
   }
   focusButton?.addEventListener('click', focusSite)
   resetButton?.addEventListener('click', resetView)

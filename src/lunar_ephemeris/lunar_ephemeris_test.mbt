@@ -57,7 +57,7 @@ test "DE440s observer timeline reproduces the checked polar Sun window" {
   assert_eq(timeline.samples.length(), 14)
   assert_eq(timeline.samples[0].timestamp_utc, "2026-06-25T00:00:00Z")
   assert_eq(timeline.samples[13].timestamp_utc, "2026-07-08T00:00:00Z")
-  assert_true(timeline.samples[5].earth_illuminated_fraction > 0.99)
+  assert_true(timeline.samples[5].earth_illuminated_fraction < 0.01)
   for sample in timeline.samples {
     assert_true(sample.sun_altitude_deg > -3.0)
     assert_true(sample.sun_altitude_deg < 3.0)

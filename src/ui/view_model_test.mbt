@@ -28,6 +28,8 @@ test "first trusted square view model exposes terrain and routes" {
   )
   assert_eq(view.lighting.samples.length(), 14)
   assert_eq(view.lighting.default_sample_index, 13)
+  assert_eq(view.lighting.target_lat_deg, -89.88)
+  assert_eq(view.lighting.target_lon_deg, 0.12)
   assert_true(view.lighting.orientation_source_path.contains("pck00011.tpc"))
   assert_true(view.lighting.samples[13].sun_altitude_deg < -1.12)
   assert_eq(view.active_layer_id, "hazard")

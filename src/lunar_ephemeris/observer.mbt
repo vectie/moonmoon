@@ -174,6 +174,12 @@ fn observer_geometry_at(
   let (earth_altitude_deg, earth_azimuth_deg) = local_angles(
     earth_body_fixed, latitude_deg, longitude_deg,
   )
+  // Earth-to-Moon is opposite Moon-to-Earth, so Earth phase is complementary
+  // to the Moon phase seen by an Earth observer.
+  let earth_illuminated_fraction = ((
+    sun_from_moon.dot(earth_from_moon.negate()) + 1.0
+  ) /
+  2.0).clamp(min=0.0, max=1.0)
   {
     timestamp_utc: iso_timestamp(unix_seconds),
     ephemeris_time_s,
@@ -183,8 +189,7 @@ fn observer_geometry_at(
     sun_azimuth_deg,
     earth_altitude_deg,
     earth_azimuth_deg,
-    earth_illuminated_fraction: ((sun_from_moon.dot(earth_from_moon) + 1.0) /
-    2.0).clamp(min=0.0, max=1.0),
+    earth_illuminated_fraction,
   }
 }
 

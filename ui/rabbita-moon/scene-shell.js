@@ -24,7 +24,13 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
     try {
       const adapter = await loadAdapterModule()
       if (!adapterPreview.open) return
-      await adapter.mountAdapterPreview(thirdPerson)
+      const sampleIndex = Number(moon?.dataset.lightingSampleIndex || view.lighting?.default_sample_index || 0)
+      await adapter.mountAdapterPreview(
+        thirdPerson,
+        view.lighting,
+        sampleIndex,
+        moon?.dataset.lightingMode || 'physical',
+      )
     } catch (error) {
       thirdPerson.dataset.adapterRuntime = 'failed'
       thirdPerson.dataset.sceneError = error instanceof Error ? error.message : String(error)

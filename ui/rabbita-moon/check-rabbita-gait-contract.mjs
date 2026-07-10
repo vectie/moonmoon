@@ -119,16 +119,41 @@ const sceneContracts = [
   'earth-atmos-2048-real-texture',
   'earthriseTextureSource',
   'EARTHRISE_LIGHTING_MODEL',
-  'utc-subsolar-readable-terminator-v2',
+  'de440s-pck11-moon-observer-earthrise-v1',
+  'EARTHRISE_TEXTURE_ROTATION_MODEL',
+  'gmst-utc-texture-orientation-v1',
+  'EARTHRISE_DISTANCE_M',
+  'EARTHRISE_RADIUS_M',
   'EARTHRISE_NIGHT_FILL',
   'EARTHRISE_DAY_BOOST',
-  'earthUtcLightingState',
+  'EARTHRISE_READABLE_NIGHT_FILL',
+  'EARTHRISE_READABLE_DAY_BOOST',
+  'earthriseObserverState',
+  'localSkyDirection',
   'createEarthMaterial',
   'updateEarthriseLighting',
+  'updateEarthriseMode',
+  'updateEarthrisePosition',
   'earthriseLightingModel',
-  'earthriseUtcLightingIso',
-  'earthriseSubsolarLongitudeDeg',
-  'earthriseSubsolarLatitudeDeg',
+  'earthriseLightingMode',
+  'earthriseLightingTimestamp',
+  'earthriseLightingSampleIndex',
+  'earthriseSceneVectorFrame',
+  'LOCAL_ENU_SCENE_X_EAST_Y_UP_Z_NORTH',
+  'earthriseObserverLatitudeDeg',
+  'earthriseObserverLongitudeDeg',
+  'earthriseLocalNormalWorld',
+  'earthriseCameraDirectionWorld',
+  'earthriseSunBodyFixed',
+  'earthriseEarthBodyFixed',
+  'earthriseSunDirectionWorld',
+  'earthriseEarthDirectionWorld',
+  'earthriseEarthIlluminatedFraction',
+  'earthriseEarthAltitudeDeg',
+  'earthriseEarthAzimuthDeg',
+  'earthriseTextureRotationModel',
+  'moonmoon:lighting-sample-change',
+  'moonmoon:lighting-mode-change',
   'LUNAR_SURFACE_VISUAL_MODEL',
   'curved-lunar-cap',
   'lunarSurfaceVisualModel',
@@ -426,8 +451,36 @@ if (diagnostics.regolithMaterialModel !== 'lola-hillshade-moonsand-microcrater-p
   throw new Error('scene3d.js did not expose the expected moonsand regolith material model')
 }
 
-if (diagnostics.earthriseLightingModel !== 'utc-subsolar-readable-terminator-v2') {
-  throw new Error('scene3d.js did not expose the expected time-based Earthrise lighting model')
+if (diagnostics.earthriseLightingModel !== 'de440s-pck11-moon-observer-earthrise-v1') {
+  throw new Error('scene3d.js did not expose the expected observer-driven Earthrise lighting model')
+}
+
+const earthriseState = diagnostics.earthriseObserverState?.({
+  timestamp_utc: '2026-07-08T00:00:00Z',
+  sun_body_x: -0.15842296233381073,
+  sun_body_y: -0.9871822118971155,
+  sun_body_z: 0.01932473853117367,
+  earth_body_x: 0.9889677018904746,
+  earth_body_y: -0.12120074615222026,
+  earth_body_z: -0.08516609507085991,
+  sun_altitude_deg: -1.1265549209755907,
+  sun_azimuth_deg: 260.7652210485689,
+  earth_altitude_deg: 5.004653925341651,
+  earth_azimuth_deg: 352.89179822233336,
+  earth_illuminated_fraction: 0.5193368924173929,
+})
+if (!earthriseState || Math.abs(Math.hypot(...earthriseState.sunDirectionWorld) - 1) > 1e-9) {
+  throw new Error('scene3d.js did not normalize the observer Sun direction')
+}
+if (Math.abs(earthriseState.earthIlluminatedFraction - 0.5193368924173929) > 1e-12) {
+  throw new Error('scene3d.js did not preserve the observer Earth phase')
+}
+const phaseFromObserverDirections = (1 - earthriseState.sunDirectionWorld.reduce(
+  (sum, value, index) => sum + value * earthriseState.earthDirectionWorld[index],
+  0,
+)) / 2
+if (Math.abs(phaseFromObserverDirections - earthriseState.earthIlluminatedFraction) > 1e-9) {
+  throw new Error('scene3d.js observer directions do not reproduce the Earth phase')
 }
 
 if (!diagnostics?.moonphysReviewFrameEvidence) {

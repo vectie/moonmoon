@@ -23,6 +23,8 @@
    keep product labels tied to validated catalog evidence.
 9. Keep the checked DE440 globe-lighting boundary in
    `docs/LUNAR_LIGHTING_PHASE.md` separate from route-clearance authority.
+10. Keep the third-person Earthrise view synchronized with that same observer
+    timeline; texture rotation remains presentation, not lighting authority.
 
 ## Next
 
@@ -36,10 +38,6 @@
 - Keep the historical `src/dataset` facade removed. Terrain source manifests
   stay in `src/terrain`, lunar facts stay in `src/lunar_data`, and generic
   refs/manifests stay in `src/data_core`.
-- Replace the readable UTC Earthrise shader with a Moon observer model using
-  Sun direction, Moon surface location, Earth phase, camera direction, and real
-  ephemeris. The current Rabbita Earthrise pass is intentionally brighter for
-  readability, but it is not yet the physical lighting authority.
 - Let the route-motion contract become `suite-adapter-ready` only after the
   route gates allow traversal.
 - Add a second lunar site only after the first site has a clean route-gate

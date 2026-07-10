@@ -22,6 +22,7 @@ extrema.
    declination, and prime meridian orientation.
 4. Each sample records body-fixed Sun and Earth vectors, local altitude and
    azimuth, and Earth illuminated fraction at the trusted-square observer.
+   Earth phase is complementary to the Moon phase seen from Earth.
 
 ## Step 2: Keep One Build Boundary
 
@@ -53,10 +54,25 @@ extrema.
 4. The scrubber is hidden in local-terrain mode until that renderer consumes
    the same lighting contract.
 
+## Step 5: Drive Earthrise
+
+1. The lazy adapter scene receives the same typed lighting view and selected
+   sample as the globe.
+2. Local Sun and Earth altitude/azimuth place both directions in the scene's
+   east/up/north frame; Earth phase and the terminator therefore come from the
+   checked observer geometry.
+3. Camera-relative limb shading and approximate physical angular size keep the
+   distant Earth grounded in the lunar landscape.
+4. Physical and Readable remain separate presentation states. GMST-based
+   texture rotation does not replace DE440/PCK11 lighting authority.
+5. Canvas metadata exposes the selected sample, source paths, frame, scene
+   vectors, phase, local angles, and presentation mode.
+
 ## Acceptance
 
 - No hard-coded globe light direction remains.
 - Moving the timeline changes the timestamp and source-backed Sun vector.
+- An open Earthrise preview follows the same timeline and mode.
 - Physical and readable modes remain distinguishable.
 - The 390x844, 768x1024, and 1440x900 layouts have no overlap or horizontal
   overflow.

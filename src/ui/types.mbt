@@ -254,6 +254,8 @@ pub(all) struct LunarLightingView {
   frame_id : String
   source_path : String
   orientation_source_path : String
+  target_lat_deg : Double
+  target_lon_deg : Double
   sample_step_minutes : Int
   default_sample_index : Int
   samples : Array[LunarLightingSampleView]

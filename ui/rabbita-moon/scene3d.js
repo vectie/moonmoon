@@ -48,9 +48,14 @@ const LOLA_TERRAIN_BUMP_REPEAT = 26
 const LOLA_REGOLITH_MATERIAL_MODEL = 'lola-hillshade-moonsand-microcrater-pebbles-v1'
 const LOLA_DISTANT_RIDGE_SAMPLES = 96
 const EARTHRISE_TEXTURE_SOURCE = 'earth-atmos-2048-real-texture'
-const EARTHRISE_LIGHTING_MODEL = 'utc-subsolar-readable-terminator-v2'
-const EARTHRISE_NIGHT_FILL = 0.52
-const EARTHRISE_DAY_BOOST = 1.54
+const EARTHRISE_LIGHTING_MODEL = 'de440s-pck11-moon-observer-earthrise-v1'
+const EARTHRISE_TEXTURE_ROTATION_MODEL = 'gmst-utc-texture-orientation-v1'
+const EARTHRISE_DISTANCE_M = 32
+const EARTHRISE_RADIUS_M = 0.54
+const EARTHRISE_NIGHT_FILL = 0.035
+const EARTHRISE_DAY_BOOST = 1.24
+const EARTHRISE_READABLE_NIGHT_FILL = 0.22
+const EARTHRISE_READABLE_DAY_BOOST = 1.42
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
 
 async function loadAdapterRuntime() {
@@ -825,127 +830,159 @@ function createEarthTexture() {
   return texture
 }
 
-function dayOfYearUtc(date) {
-  const start = Date.UTC(date.getUTCFullYear(), 0, 0)
-  const current = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
-  return Math.floor((current - start) / 86400000)
+function localSkyDirection(altitudeDeg, azimuthDeg) {
+  const altitude = Number(altitudeDeg) * DEG
+  const azimuth = Number(azimuthDeg) * DEG
+  const horizontal = Math.cos(altitude)
+  return normalizeArray3([
+    horizontal * Math.sin(azimuth),
+    Math.sin(altitude),
+    horizontal * Math.cos(azimuth),
+  ])
 }
 
-function earthUtcLightingState(date = new Date()) {
-  const utcHours =
-    date.getUTCHours() +
-    date.getUTCMinutes() / 60 +
-    date.getUTCSeconds() / 3600 +
-    date.getUTCMilliseconds() / 3600000
-  const yearDay = dayOfYearUtc(date)
-  const subsolarLatitudeRad = 23.44 * DEG * Math.sin(((yearDay - 80) / 365.2422) * Math.PI * 2)
-  const subsolarLongitudeRad = (12 - utcHours) / 24 * Math.PI * 2
+function earthTextureRotation(timestampUtc) {
+  const julianDate = new Date(timestampUtc).getTime() / 86400000 + 2440587.5
+  const daysSinceJ2000 = julianDate - 2451545.0
+  const greenwichSiderealDeg = 280.46061837 + 360.98564736629 * daysSinceJ2000
+  return ((greenwichSiderealDeg / 360) % 1 + 1) % 1
+}
+
+function earthriseObserverState(sample) {
+  if (!sample) throw new Error('Earthrise requires a lunar observer lighting sample')
   return {
-    subsolarLongitudeRad,
-    subsolarLatitudeRad,
-    rotationOffset: ((utcHours / 24) + 1) % 1,
-    iso: date.toISOString(),
+    timestampUtc: sample.timestamp_utc,
+    sunBodyFixed: [sample.sun_body_x, sample.sun_body_y, sample.sun_body_z],
+    earthBodyFixed: [sample.earth_body_x, sample.earth_body_y, sample.earth_body_z],
+    sunDirectionWorld: localSkyDirection(sample.sun_altitude_deg, sample.sun_azimuth_deg),
+    earthDirectionWorld: localSkyDirection(sample.earth_altitude_deg, sample.earth_azimuth_deg),
+    earthIlluminatedFraction: Number(sample.earth_illuminated_fraction),
+    earthAltitudeDeg: Number(sample.earth_altitude_deg),
+    earthAzimuthDeg: Number(sample.earth_azimuth_deg),
+    textureRotation: earthTextureRotation(sample.timestamp_utc),
   }
 }
 
-function createEarthMaterial() {
-  const lighting = earthUtcLightingState()
+function createEarthMaterial(sample) {
+  const lighting = earthriseObserverState(sample)
   return new THREE.ShaderMaterial({
     uniforms: {
       earthMap: { value: createEarthTexture() },
-      subsolarLongitude: { value: lighting.subsolarLongitudeRad },
-      subsolarLatitude: { value: lighting.subsolarLatitudeRad },
-      earthRotationOffset: { value: lighting.rotationOffset },
+      sunDirectionWorld: { value: new THREE.Vector3(...lighting.sunDirectionWorld) },
+      earthRotationOffset: { value: lighting.textureRotation },
       nightFill: { value: EARTHRISE_NIGHT_FILL },
       dayBoost: { value: EARTHRISE_DAY_BOOST },
     },
     vertexShader: `
       varying vec2 vUv;
-      varying vec3 vNormal;
+      varying vec3 vWorldNormal;
+      varying vec3 vWorldPosition;
 
       void main() {
         vUv = uv;
-        vNormal = normalize(normalMatrix * normal);
+        vWorldNormal = normalize(mat3(modelMatrix) * normal);
+        vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,
     fragmentShader: `
       uniform sampler2D earthMap;
-      uniform float subsolarLongitude;
-      uniform float subsolarLatitude;
+      uniform vec3 sunDirectionWorld;
       uniform float earthRotationOffset;
       uniform float nightFill;
       uniform float dayBoost;
       varying vec2 vUv;
-      varying vec3 vNormal;
-
-      const float PI = 3.141592653589793;
-
-      vec3 surfaceDirection(vec2 uv) {
-        float lon = (uv.x - 0.5) * PI * 2.0;
-        float lat = (0.5 - uv.y) * PI;
-        return normalize(vec3(cos(lat) * sin(lon), sin(lat), cos(lat) * cos(lon)));
-      }
+      varying vec3 vWorldNormal;
+      varying vec3 vWorldPosition;
 
       void main() {
         vec2 sampleUv = vec2(fract(vUv.x + earthRotationOffset), vUv.y);
         vec3 tex = texture2D(earthMap, sampleUv).rgb;
-        vec3 surface = surfaceDirection(sampleUv);
-        vec3 sun = normalize(vec3(
-          cos(subsolarLatitude) * sin(subsolarLongitude),
-          sin(subsolarLatitude),
-          cos(subsolarLatitude) * cos(subsolarLongitude)
-        ));
-        float daylight = smoothstep(-0.07, 0.18, dot(surface, sun));
-        float limb = smoothstep(-0.18, 0.58, vNormal.z);
-        vec3 nightTint = vec3(0.085, 0.135, 0.19);
+        vec3 normal = normalize(vWorldNormal);
+        float daylight = smoothstep(-0.015, 0.015, dot(normal, normalize(sunDirectionWorld)));
+        float limb = smoothstep(0.0, 0.34, dot(normal, normalize(cameraPosition - vWorldPosition)));
+        vec3 nightTint = vec3(0.004, 0.008, 0.014);
         vec3 dayColor = tex * dayBoost;
         vec3 nightColor = tex * nightFill + nightTint;
         vec3 color = mix(nightColor, dayColor, daylight);
-        color += vec3(0.12, 0.20, 0.28) * (1.0 - abs(daylight - 0.5) * 2.0) * 0.32;
-        color *= mix(0.88, 1.0, limb);
+        color *= mix(0.42, 1.0, limb);
         gl_FragColor = vec4(color, 1.0);
       }
     `,
   })
 }
 
-function updateEarthriseLighting(group, date = new Date()) {
+function updateEarthriseLighting(group, sample) {
   const earth = group.userData.earthMesh
   if (!earth?.material?.uniforms) return
-  const lighting = earthUtcLightingState(date)
-  earth.material.uniforms.subsolarLongitude.value = lighting.subsolarLongitudeRad
-  earth.material.uniforms.subsolarLatitude.value = lighting.subsolarLatitudeRad
-  earth.material.uniforms.earthRotationOffset.value = lighting.rotationOffset
-  group.userData.utcLightingIso = lighting.iso
-  group.userData.subsolarLongitudeDeg = lighting.subsolarLongitudeRad / DEG
-  group.userData.subsolarLatitudeDeg = lighting.subsolarLatitudeRad / DEG
+  const lighting = earthriseObserverState(sample)
+  earth.material.uniforms.sunDirectionWorld.value.set(...lighting.sunDirectionWorld)
+  earth.material.uniforms.earthRotationOffset.value = lighting.textureRotation
+  group.userData.lightingTimestamp = lighting.timestampUtc
+  group.userData.sunBodyFixed = lighting.sunBodyFixed
+  group.userData.earthBodyFixed = lighting.earthBodyFixed
+  group.userData.sunDirectionWorld = lighting.sunDirectionWorld
+  group.userData.earthDirectionWorld = lighting.earthDirectionWorld
+  group.userData.earthIlluminatedFraction = lighting.earthIlluminatedFraction
+  group.userData.earthAltitudeDeg = lighting.earthAltitudeDeg
+  group.userData.earthAzimuthDeg = lighting.earthAzimuthDeg
+  group.userData.textureRotation = lighting.textureRotation
 }
 
-function createEarthrise() {
+function updateEarthriseMode(group, mode) {
+  const earth = group.userData.earthMesh
+  if (!earth?.material?.uniforms) return
+  const lightingMode = mode === 'readable' ? 'readable' : 'physical'
+  earth.material.uniforms.nightFill.value = lightingMode === 'readable'
+    ? EARTHRISE_READABLE_NIGHT_FILL
+    : EARTHRISE_NIGHT_FILL
+  earth.material.uniforms.dayBoost.value = lightingMode === 'readable'
+    ? EARTHRISE_READABLE_DAY_BOOST
+    : EARTHRISE_DAY_BOOST
+  group.userData.lightingMode = lightingMode
+}
+
+function updateEarthrisePosition(group, followZ) {
+  const [x, y, z] = group.userData.earthDirectionWorld
+  group.position.set(
+    x * EARTHRISE_DISTANCE_M,
+    0.55 + y * EARTHRISE_DISTANCE_M,
+    followZ + z * EARTHRISE_DISTANCE_M,
+  )
+}
+
+function createEarthrise(lighting, sample, initialMode) {
   const group = new THREE.Group()
   const earth = new THREE.Mesh(
-    new THREE.SphereGeometry(4.8, 64, 32),
-    createEarthMaterial(),
+    new THREE.SphereGeometry(EARTHRISE_RADIUS_M, 64, 32),
+    createEarthMaterial(sample),
   )
   const atmosphere = new THREE.Mesh(
-    new THREE.SphereGeometry(5.06, 64, 32),
+    new THREE.SphereGeometry(EARTHRISE_RADIUS_M * 1.045, 64, 32),
     new THREE.MeshBasicMaterial({
       color: 0x9ed5ff,
       transparent: true,
-      opacity: 0.24,
+      opacity: 0.18,
       side: THREE.BackSide,
     }),
   )
-  earth.rotation.y = -0.65
-  earth.rotation.z = -0.24
+  earth.rotation.z = -23.44 * DEG
   group.add(atmosphere)
   group.add(earth)
   group.userData.earthMesh = earth
   group.userData.panelRole = 'earthrise-backdrop'
   group.userData.textureSource = EARTHRISE_TEXTURE_SOURCE
   group.userData.lightingModel = EARTHRISE_LIGHTING_MODEL
-  updateEarthriseLighting(group)
+  group.userData.textureRotationModel = EARTHRISE_TEXTURE_ROTATION_MODEL
+  group.userData.lightingFrame = lighting.frame_id
+  group.userData.sceneVectorFrame = 'LOCAL_ENU_SCENE_X_EAST_Y_UP_Z_NORTH'
+  group.userData.lightingSource = lighting.source_path
+  group.userData.orientationSource = lighting.orientation_source_path
+  group.userData.observerLatitudeDeg = lighting.target_lat_deg
+  group.userData.observerLongitudeDeg = lighting.target_lon_deg
+  group.userData.localNormalWorld = [0, 1, 0]
+  updateEarthriseLighting(group, sample)
+  updateEarthriseMode(group, initialMode)
   return group
 }
 
@@ -966,7 +1003,14 @@ function disposeThreeScene(scene, renderer, controls) {
   renderer.forceContextLoss()
 }
 
-function initThirdPersonMoonWalk(canvas) {
+function initThirdPersonMoonWalk(canvas, lighting, initialSampleIndex, initialLightingMode) {
+  const lightingSamples = lighting?.samples || []
+  let lightingSampleIndex = clamp(Number(initialSampleIndex || 0), 0, Math.max(0, lightingSamples.length - 1))
+  const initialLightingSample = lightingSamples[lightingSampleIndex]
+  if (!initialLightingSample) {
+    canvas.dataset.sceneStatus = 'observer-lighting-unavailable'
+    return
+  }
   let renderer
   try {
     renderer = new THREE.WebGLRenderer({
@@ -1002,7 +1046,7 @@ function initThirdPersonMoonWalk(canvas) {
   scene.add(terrain)
   const grid = createThirdPersonGrid()
   scene.add(grid)
-  const earthrise = createEarthrise()
+  const earthrise = createEarthrise(lighting, initialLightingSample, initialLightingMode)
   scene.add(earthrise)
   const distantRidges = createDistantLolaRidges()
   scene.add(distantRidges)
@@ -1014,9 +1058,26 @@ function initThirdPersonMoonWalk(canvas) {
   reportE1SourceReadiness(e1Visuals.visuals, canvas)
   let cachedQuality = null
   let lastQualityRefreshMs = -Infinity
-  let lastEarthLightingRefreshMs = -Infinity
+  const changeEarthriseLighting = event => {
+    const nextIndex = clamp(
+      Number(event.detail?.sampleIndex || 0),
+      0,
+      Math.max(0, lightingSamples.length - 1),
+    )
+    const nextSample = lightingSamples[nextIndex]
+    if (!nextSample) return
+    lightingSampleIndex = nextIndex
+    updateEarthriseLighting(earthrise, nextSample)
+  }
+  const changeEarthriseMode = event => {
+    updateEarthriseMode(earthrise, event.detail?.mode)
+  }
+  window.addEventListener('moonmoon:lighting-sample-change', changeEarthriseLighting)
+  window.addEventListener('moonmoon:lighting-mode-change', changeEarthriseMode)
   function draw(now) {
     if (!canvas.isConnected) {
+      window.removeEventListener('moonmoon:lighting-sample-change', changeEarthriseLighting)
+      window.removeEventListener('moonmoon:lighting-mode-change', changeEarthriseMode)
       disposeThreeScene(scene, renderer, controls)
       canvas.dataset.renderDisposed = 'true'
       return
@@ -1056,11 +1117,7 @@ function initThirdPersonMoonWalk(canvas) {
     updateThirdPersonTerrain(terrain, followZ, geometry.diagnostics)
     updateDistantLolaRidges(distantRidges, followZ, geometry.diagnostics)
     grid.position.z = followZ + 8.5
-    earthrise.position.set(-2.2, 3.65, followZ + 32)
-    if (now - lastEarthLightingRefreshMs >= 10000) {
-      updateEarthriseLighting(earthrise)
-      lastEarthLightingRefreshMs = now
-    }
+    updateEarthrisePosition(earthrise, followZ)
     updateE1ThreeVisuals(
       root,
       geometry.diagnostics,
@@ -1073,6 +1130,11 @@ function initThirdPersonMoonWalk(canvas) {
     camera.position.lerp(desired, 0.12)
     controls.target.lerp(target, 0.18)
     controls.update()
+    const earthriseCameraDirectionWorld = normalizeArray3([
+      camera.position.x - earthrise.position.x,
+      camera.position.y - earthrise.position.y,
+      camera.position.z - earthrise.position.z,
+    ])
     renderer.render(scene, camera)
     canvas.dataset.sceneStatus = 'third-person-moon-walk-rendered'
     canvas.dataset.renderer = 'three-third-person-moon-terrain'
@@ -1102,9 +1164,25 @@ function initThirdPersonMoonWalk(canvas) {
     canvas.dataset.panelBackdrop = earthrise.userData.panelRole
     canvas.dataset.earthriseTextureSource = earthrise.userData.textureSource
     canvas.dataset.earthriseLightingModel = earthrise.userData.lightingModel
-    canvas.dataset.earthriseUtcLightingIso = earthrise.userData.utcLightingIso
-    canvas.dataset.earthriseSubsolarLongitudeDeg = earthrise.userData.subsolarLongitudeDeg.toFixed(2)
-    canvas.dataset.earthriseSubsolarLatitudeDeg = earthrise.userData.subsolarLatitudeDeg.toFixed(2)
+    canvas.dataset.earthriseLightingMode = earthrise.userData.lightingMode
+    canvas.dataset.earthriseLightingTimestamp = earthrise.userData.lightingTimestamp
+    canvas.dataset.earthriseLightingSampleIndex = String(lightingSampleIndex)
+    canvas.dataset.earthriseLightingFrame = earthrise.userData.lightingFrame
+    canvas.dataset.earthriseSceneVectorFrame = earthrise.userData.sceneVectorFrame
+    canvas.dataset.earthriseLightingSource = earthrise.userData.lightingSource
+    canvas.dataset.earthriseOrientationSource = earthrise.userData.orientationSource
+    canvas.dataset.earthriseObserverLatitudeDeg = String(earthrise.userData.observerLatitudeDeg)
+    canvas.dataset.earthriseObserverLongitudeDeg = String(earthrise.userData.observerLongitudeDeg)
+    canvas.dataset.earthriseLocalNormalWorld = JSON.stringify(earthrise.userData.localNormalWorld)
+    canvas.dataset.earthriseCameraDirectionWorld = JSON.stringify(earthriseCameraDirectionWorld)
+    canvas.dataset.earthriseSunBodyFixed = JSON.stringify(earthrise.userData.sunBodyFixed)
+    canvas.dataset.earthriseEarthBodyFixed = JSON.stringify(earthrise.userData.earthBodyFixed)
+    canvas.dataset.earthriseSunDirectionWorld = JSON.stringify(earthrise.userData.sunDirectionWorld)
+    canvas.dataset.earthriseEarthDirectionWorld = JSON.stringify(earthrise.userData.earthDirectionWorld)
+    canvas.dataset.earthriseEarthIlluminatedFraction = String(earthrise.userData.earthIlluminatedFraction)
+    canvas.dataset.earthriseEarthAltitudeDeg = String(earthrise.userData.earthAltitudeDeg)
+    canvas.dataset.earthriseEarthAzimuthDeg = String(earthrise.userData.earthAzimuthDeg)
+    canvas.dataset.earthriseTextureRotationModel = earthrise.userData.textureRotationModel
     canvas.dataset.lunarSurfaceVisualModel = LUNAR_SURFACE_VISUAL_MODEL
     canvas.dataset.e1MeshReductionAlgorithm = E1_MESH_REDUCTION_ALGORITHM
     canvas.dataset.threeRenderTriangles = String(renderer.info.render.triangles)
@@ -3285,14 +3363,14 @@ function initRobot(canvas) {
 
 globalThis.__moonmoonLoadAdapterRuntime = loadAdapterRuntime
 
-export async function mountAdapterPreview(canvas) {
+export async function mountAdapterPreview(canvas, lighting, initialSampleIndex, initialLightingMode) {
   if (canvas.dataset.sceneBooted === 'true') return
   canvas.dataset.adapterRuntime = 'loading-runtime'
   await loadAdapterRuntime()
   canvas.dataset.adapterRuntime = 'ready'
   if (!canvas.isConnected || !canvas.closest('#moonmoon-adapter-preview')?.open) return
   canvas.dataset.sceneBooted = 'true'
-  initThirdPersonMoonWalk(canvas)
+  initThirdPersonMoonWalk(canvas, lighting, initialSampleIndex, initialLightingMode)
 }
 
 globalThis.__moonmoonGaitDiagnostics = {
@@ -3302,6 +3380,7 @@ globalThis.__moonmoonGaitDiagnostics = {
   terrainTextureSource: LOLA_TERRAIN_TEXTURE_SOURCE,
   regolithMaterialModel: LOLA_REGOLITH_MATERIAL_MODEL,
   earthriseLightingModel: EARTHRISE_LIGHTING_MODEL,
+  earthriseObserverState,
   sampleRobotGeometry: null,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,

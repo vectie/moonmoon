@@ -30,7 +30,7 @@
       "sun_azimuth_deg": 59.397599231530315,
       "earth_altitude_deg": -5.996665287834983,
       "earth_azimuth_deg": 4.685790843222153,
-      "earth_illuminated_fraction": 0.78837113317194
+      "earth_illuminated_fraction": 0.21162886682806004
     },
     {
       "timestamp_utc": "2026-06-26T00:00:00Z",
@@ -49,7 +49,7 @@
       "sun_azimuth_deg": 47.19340534469447,
       "earth_altitude_deg": -6.407815624786808,
       "earth_azimuth_deg": 3.535678291367021,
-      "earth_illuminated_fraction": 0.8606257925131422
+      "earth_illuminated_fraction": 0.1393742074868578
     },
     {
       "timestamp_utc": "2026-06-27T00:00:00Z",
@@ -68,7 +68,7 @@
       "sun_azimuth_deg": 34.993054058183965,
       "earth_altitude_deg": -6.532876073478647,
       "earth_azimuth_deg": 2.307134310449171,
-      "earth_illuminated_fraction": 0.9192257209972157
+      "earth_illuminated_fraction": 0.08077427900278439
     },
     {
       "timestamp_utc": "2026-06-28T00:00:00Z",
@@ -87,7 +87,7 @@
       "sun_azimuth_deg": 22.79567826671216,
       "earth_altitude_deg": -6.370987966608698,
       "earth_azimuth_deg": 1.037922356148726,
-      "earth_illuminated_fraction": 0.9625894616291997
+      "earth_illuminated_fraction": 0.03741053837080033
     },
     {
       "timestamp_utc": "2026-06-29T00:00:00Z",
@@ -106,7 +106,7 @@
       "sun_azimuth_deg": 10.600334194708452,
       "earth_altitude_deg": -5.929758690329912,
       "earth_azimuth_deg": 359.75737966936595,
-      "earth_illuminated_fraction": 0.9894207738259004
+      "earth_illuminated_fraction": 0.01057922617409951
     },
     {
       "timestamp_utc": "2026-06-30T00:00:00Z",
@@ -125,7 +125,7 @@
       "sun_azimuth_deg": 358.40601764792666,
       "earth_altitude_deg": -5.225853985108122,
       "earth_azimuth_deg": 358.4898277665803,
-      "earth_illuminated_fraction": 0.9987549515326231
+      "earth_illuminated_fraction": 0.0012450484673769413
     },
     {
       "timestamp_utc": "2026-07-01T00:00:00Z",
@@ -144,7 +144,7 @@
       "sun_azimuth_deg": 346.2116822792938,
       "earth_altitude_deg": -4.285269041575182,
       "earth_azimuth_deg": 357.25869803783763,
-      "earth_illuminated_fraction": 0.9900226294772185
+      "earth_illuminated_fraction": 0.009977370522781526
     },
     {
       "timestamp_utc": "2026-07-02T00:00:00Z",
@@ -163,7 +163,7 @@
       "sun_azimuth_deg": 334.01626070103646,
       "earth_altitude_deg": -3.143094831162777,
       "earth_azimuth_deg": 356.0907201464273,
-      "earth_illuminated_fraction": 0.9631094760088248
+      "earth_illuminated_fraction": 0.03689052399117515
     },
     {
       "timestamp_utc": "2026-07-03T00:00:00Z",
@@ -182,7 +182,7 @@
       "sun_azimuth_deg": 321.81868848936216,
       "earth_altitude_deg": -1.8428462665632535,
       "earth_azimuth_deg": 355.01949185808957,
-      "earth_illuminated_fraction": 0.9183996386395452
+      "earth_illuminated_fraction": 0.08160036136045479
     },
     {
       "timestamp_utc": "2026-07-04T00:00:00Z",
@@ -201,7 +201,7 @@
       "sun_azimuth_deg": 309.6179309674212,
       "earth_altitude_deg": -0.4356193733439604,
       "earth_azimuth_deg": 354.0877953484051,
-      "earth_illuminated_fraction": 0.8568043699369081
+      "earth_illuminated_fraction": 0.14319563006309194
     },
     {
       "timestamp_utc": "2026-07-05T00:00:00Z",
@@ -220,7 +220,7 @@
       "sun_azimuth_deg": 297.41301316765754,
       "earth_altitude_deg": 1.0205877307978688,
       "earth_azimuth_deg": 353.34809865104216,
-      "earth_illuminated_fraction": 0.7797908448635854
+      "earth_illuminated_fraction": 0.2202091551364146
     },
     {
       "timestamp_utc": "2026-07-06T00:00:00Z",
@@ -239,7 +239,7 @@
       "sun_azimuth_deg": 285.2030543712641,
       "earth_altitude_deg": 2.461175744672829,
       "earth_azimuth_deg": 352.8607181988466,
-      "earth_illuminated_fraction": 0.6894344802404148
+      "earth_illuminated_fraction": 0.31056551975958524
     },
     {
       "timestamp_utc": "2026-07-07T00:00:00Z",
@@ -258,7 +258,7 @@
       "sun_azimuth_deg": 272.987309641062,
       "earth_altitude_deg": 3.8149787936970614,
       "earth_azimuth_deg": 352.68910851097365,
-      "earth_illuminated_fraction": 0.5885156164493814
+      "earth_illuminated_fraction": 0.4114843835506186
     },
     {
       "timestamp_utc": "2026-07-08T00:00:00Z",
@@ -277,7 +277,7 @@
       "sun_azimuth_deg": 260.7652210485689,
       "earth_altitude_deg": 5.004653925341651,
       "earth_azimuth_deg": 352.89179822233336,
-      "earth_illuminated_fraction": 0.4806631075826071
+      "earth_illuminated_fraction": 0.5193368924173929
     }
   ]
 }

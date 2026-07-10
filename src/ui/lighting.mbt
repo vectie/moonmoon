@@ -31,6 +31,8 @@ fn lunar_lighting_view(
     frame_id: timeline.frame_id,
     source_path: timeline.source_path,
     orientation_source_path: timeline.orientation_source_path,
+    target_lat_deg: timeline.target_lat_deg,
+    target_lon_deg: timeline.target_lon_deg,
     sample_step_minutes: timeline.sample_step_minutes,
     default_sample_index,
     samples,
