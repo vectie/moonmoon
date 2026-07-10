@@ -501,24 +501,28 @@ p {
   gap: 12px;
 }
 
-.illumination-gate > header > div {
+.illumination-gate > header > div,
+.recommended-window > header > div {
   min-width: 0;
   display: grid;
   gap: 4px;
 }
 
 .illumination-gate > header b,
+.recommended-window > header b,
 .illumination-gate > p {
   overflow-wrap: anywhere;
 }
 
-.illumination-gate > header b {
+.illumination-gate > header b,
+.recommended-window > header b {
   color: #59635c;
   font-size: 11px;
   font-weight: 500;
 }
 
-.illumination-gate > header strong {
+.illumination-gate > header strong,
+.recommended-window > header strong {
   flex: 0 0 auto;
   border: 1px solid currentColor;
   border-radius: 4px;
@@ -527,6 +531,21 @@ p {
   line-height: 1;
   white-space: nowrap;
   text-transform: uppercase;
+}
+
+.recommended-window {
+  display: grid;
+  gap: 8px;
+  border-block: 1px solid #d7dbd4;
+  background: #f7f9f5;
+  padding: 11px 0;
+}
+
+.recommended-window > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .illumination-metrics {

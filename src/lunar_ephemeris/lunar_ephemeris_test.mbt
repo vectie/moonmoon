@@ -19,6 +19,9 @@ test "DE440s observer timeline reproduces the checked polar Sun window" {
   let timeline = @lunar_ephemeris.compute_first_trusted_square_observer_timeline(
     data,
   ).unwrap()
+  let first_day_track = @lunar_ephemeris.compute_solar_geometry_track(
+    data, 1782345600L, 24, -89.88, 0.12,
+  ).unwrap()
   let fixture = @lunar_ephemeris.first_trusted_square_observer_timeline_fixture()
   assert_eq(timeline.method_id, fixture.method_id)
   assert_eq(timeline.frame_id, fixture.frame_id)
@@ -39,6 +42,21 @@ test "DE440s observer timeline reproduces the checked polar Sun window" {
   assert_eq(actual_track.step_minutes, expected_track.step_minutes)
   assert_eq(actual_track.sun_altitude_deg.length(), 336)
   assert_eq(actual_track.sun_azimuth_deg.length(), 336)
+  assert_eq(first_day_track.sun_altitude_deg.length(), 24)
+  for index in 0..<24 {
+    assert_true(
+      close(
+        first_day_track.sun_altitude_deg[index],
+        actual_track.sun_altitude_deg[index],
+      ),
+    )
+    assert_true(
+      close(
+        first_day_track.sun_azimuth_deg[index],
+        actual_track.sun_azimuth_deg[index],
+      ),
+    )
+  }
   for index in 0..<actual_track.sun_altitude_deg.length() {
     assert_true(
       close(

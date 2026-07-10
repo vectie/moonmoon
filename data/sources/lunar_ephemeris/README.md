@@ -35,9 +35,25 @@ The JSON exposes the sampled minimum and maximum Sun altitude as typed fields.
 MoonBit combines that window with each measured route grid to produce an
 eight-sector bounded local-horizon profile.
 
+`first_trusted_square_window_search.json` ranks one 14-day candidate per route
+across a one-year hourly DE440 search beginning at the end of the checked
+window. Windows advance by 24 hours. Ranking prefers windows that satisfy the
+illumination constraint, then higher terrain-visible energy, shorter darkness,
+more sunlight, and stronger minimum solar clearance. The selected
+`northeast-stepout` result is `2026-11-08T00:00:00Z` through
+`2026-11-22T00:00:00Z`, with 336 terrain-visible sunlight hours. This result
+clears only the illumination constraint; it does not alter terrain, energy,
+operator-review, or current-window mission authority.
+
 The MoonBit mirrors are committed under `src/lunar_ephemeris` and `src/mission`
 and checked by `moon test`. Regenerate the observer timeline with:
 
 ```sh
 moon run --target native cmd/ephemeris
+```
+
+Regenerate the one-year route-window search with:
+
+```sh
+moon run --target native cmd/window_search
 ```

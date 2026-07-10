@@ -27,6 +27,9 @@
     timeline; texture rotation remains presentation, not lighting authority.
 11. Keep route illumination tied to all 336 hourly Sun samples and the matching
     measured horizon sector; do not return to extrema-only shadow claims.
+12. Keep the ranked 2026-11-08 to 2026-11-22 selected-route illumination
+    window visible as candidate evidence while current mission authority stays
+    blocked.
 
 ## Next
 
@@ -34,9 +37,9 @@
   `docs/UI_UX_NEXT_PHASE.md`: open on the Moon, make global-to-local controls
   real, show route gates in the first viewport, and keep robot motion in a
   separate adapter preview.
-- Tighten the underlying selected-route evidence around terrain, illumination,
-  energy, and operator review until the clearance decision can move from block
-  to review or allow.
+- Use the ranked future window to review the selected route's illumination
+  constraint, then tighten terrain, mission-energy, and operator-review
+  evidence before any overall clearance can move from block to review or allow.
 - Keep the historical `src/dataset` facade removed. Terrain source manifests
   stay in `src/terrain`, lunar facts stay in `src/lunar_data`, and generic
   refs/manifests stay in `src/data_core`.

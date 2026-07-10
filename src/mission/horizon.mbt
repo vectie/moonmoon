@@ -123,9 +123,29 @@ fn route_solar_exposure(
   horizons : Array[HorizonAzimuthSample],
   solar_track : @lunar_ephemeris.SolarGeometryTrack,
 ) -> RouteSolarExposure {
-  let sample_count = solar_track.sun_altitude_deg
+  route_solar_exposure_range(
+    horizons,
+    solar_track,
+    0,
+    solar_track.sun_altitude_deg
+    .length()
+    .min(solar_track.sun_azimuth_deg.length()),
+  )
+}
+
+///|
+fn route_solar_exposure_range(
+  horizons : Array[HorizonAzimuthSample],
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
+  sample_offset : Int,
+  requested_sample_count : Int,
+) -> RouteSolarExposure {
+  let track_sample_count = solar_track.sun_altitude_deg
     .length()
     .min(solar_track.sun_azimuth_deg.length())
+  let start = sample_offset.max(0).min(track_sample_count)
+  let end = (start + requested_sample_count.max(0)).min(track_sample_count)
+  let sample_count = end - start
   let mut spherical_sunlit_hours = 0.0
   let mut terrain_sunlit_hours = 0.0
   let mut terrain_shadowed_hours = 0.0
@@ -134,7 +154,7 @@ fn route_solar_exposure(
   let mut terrain_available_energy_wh = 0.0
   let mut minimum_solar_clearance_deg = 90.0
   let mut maximum_solar_clearance_deg = -90.0
-  for index in 0..<sample_count {
+  for index in start..<end {
     let sun_altitude_deg = solar_track.sun_altitude_deg[index]
     let sun_azimuth_deg = solar_track.sun_azimuth_deg[index]
     let horizon_angle_deg = horizons[horizon_sector(sun_azimuth_deg)].horizon_angle_deg.max(

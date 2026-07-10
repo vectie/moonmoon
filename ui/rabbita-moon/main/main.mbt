@@ -209,6 +209,7 @@ fn route_picker(view : @ui.TrustedSquareViewModel) -> Html {
 ///|
 fn illumination_gate(route : @ui.RouteView) -> Html {
   let evidence = route.illumination
+  let recommended = evidence.recommended_window
   let horizon_sectors : Array[Html] = []
   for sample in evidence.horizon_profile {
     horizon_sectors.push(
@@ -256,6 +257,52 @@ fn illumination_gate(route : @ui.RouteView) -> Html {
       span([
         b(id="operator-illumination-clearance", "\{evidence.maximum_solar_clearance_deg} deg"),
         span("best clearance"),
+      ]),
+    ]),
+    div(class="recommended-window", [
+      header([
+        div([
+          span(class="eyebrow", "Ranked next window"),
+          b(
+            id="operator-window-range",
+            "\{recommended.time_start_utc} to \{recommended.time_end_utc}",
+          ),
+        ]),
+        strong(
+          id="operator-window-status",
+          class=status_class(recommended.decision),
+          recommended.decision,
+        ),
+      ]),
+      div(class="illumination-metrics", [
+        span([
+          b(
+            id="operator-window-sunlit",
+            "\{recommended.terrain_sunlit_hours} h",
+          ),
+          span("route sun"),
+        ]),
+        span([
+          b(
+            id="operator-window-dark",
+            "\{recommended.longest_dark_hours} h",
+          ),
+          span("longest dark"),
+        ]),
+        span([
+          b(
+            id="operator-window-energy",
+            "\{recommended.terrain_available_energy_wh} Wh",
+          ),
+          span("route energy"),
+        ]),
+        span([
+          b(
+            id="operator-window-clearance",
+            "\{recommended.minimum_solar_clearance_deg} deg",
+          ),
+          span("minimum clearance"),
+        ]),
       ]),
     ]),
     div(

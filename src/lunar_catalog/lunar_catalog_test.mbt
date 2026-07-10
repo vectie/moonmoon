@@ -64,6 +64,11 @@ test "materializes first trusted square into generic catalog root" {
       "/sources/lunar_ephemeris/first_trusted_square_observer_timeline.json",
     ),
   )
+  assert_true(
+    @fsx.path_exists(
+      root + "/sources/lunar_ephemeris/first_trusted_square_window_search.json",
+    ),
+  )
 }
 
 ///|
@@ -86,7 +91,7 @@ test "lists first trusted square evidence from cataloged manifests" {
     datasets[1].dataset_id,
     "naif-lunar-first-trusted-square-power-window-v1",
   )
-  assert_eq(datasets[1].data_ref_count, 2)
+  assert_eq(datasets[1].data_ref_count, 3)
   let validation = @lunar_catalog.first_trusted_square_catalog_validation(root).unwrap()
   assert_eq(validation.artifact.artifact_id, "validation-200")
   assert_true(

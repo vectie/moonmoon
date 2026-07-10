@@ -81,6 +81,27 @@ Status: implemented.
    horizon, and direct the operator to select a viable mission window rather
    than incorrectly blaming terrain coverage.
 
+## Phase 6: Rank The Next Mission Window
+
+Status: implemented.
+
+1. Compute one year of hourly Sun altitude and azimuth from the pinned DE440s
+   and PCK11 observer model beginning at the end of the current window.
+2. Evaluate 14-day windows at a 24-hour stride against every measured route
+   horizon.
+3. Rank each route's best window by constraint compliance, terrain-visible
+   energy, darkness, sunlight, and minimum solar clearance.
+4. Carry the typed result through the site dossier, catalog-backed view, JSON,
+   and operator route projection.
+5. Show the recommendation separately from the current blocked window so an
+   illumination candidate cannot silently change mission authority.
+
+The selected `northeast-stepout` candidate runs from
+`2026-11-08T00:00:00Z` through `2026-11-22T00:00:00Z`. It has 336 hours of
+terrain-visible sunlight, no continuous darkness, and positive minimum solar
+clearance in the bounded route model. Regenerate it with
+`moon run --target native cmd/window_search`.
+
 ## Acceptance
 
 - The UI never says ephemeris is missing when the checked DE440 fixture is
@@ -88,6 +109,8 @@ Status: implemented.
 - The selected route shows its PCK11-corrected hourly exposure summary.
 - Candidate inspection updates illumination values and evidence paths while
   the mission-selected route remains `northeast-stepout`.
+- Candidate inspection also updates that route's ranked next window without
+  changing the current-window gate.
 - Desktop, tablet, and mobile layouts have no horizontal overflow.
 - MoonBit, standalone runtime, adapter contracts, and production build gates
   remain green.

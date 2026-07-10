@@ -27,6 +27,21 @@ fn observer_timeline_bytes() -> Int64 {
 }
 
 ///|
+fn mission_window_search_path() -> String {
+  "sources/lunar_ephemeris/first_trusted_square_window_search.json"
+}
+
+///|
+fn mission_window_search_sha256() -> String {
+  "b3091eb70a50a0750093d6c58e70f84b0adf149f2c6b22da798e0dabe95c42ab"
+}
+
+///|
+fn mission_window_search_bytes() -> Int64 {
+  4741L
+}
+
+///|
 pub fn first_trusted_square_ephemeris_window() -> LunarEphemerisWindow {
   {
     window_id: "lunar-ephemeris-first-trusted-square-power-window-v1",
@@ -79,8 +94,19 @@ pub fn first_trusted_square_ephemeris_dataset() -> @data_core.DatasetManifest {
           observer_timeline_sha256(),
         ),
       ),
+      @data_core.data_ref(
+        "first-trusted-square-mission-window-search-json",
+        "lunar-mission-window-search-json",
+        @data_core.data_uri(mission_window_search_path()),
+        content_type="application/json",
+        byte_count=mission_window_search_bytes(),
+        checksum=@data_core.declared_checksum(
+          @data_core.ChecksumKind::Sha256,
+          mission_window_search_sha256(),
+        ),
+      ),
     ],
-    summary="Curated local Sun/Moon geometry and power-window evidence for the first trusted square.",
+    summary="Curated local Sun/Moon geometry, power-window evidence, and route-window search for the first trusted square.",
   )
 }
 

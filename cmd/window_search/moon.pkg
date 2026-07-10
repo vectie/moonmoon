@@ -1,0 +1,12 @@
+import {
+  "vectie/moonmoon/src/lunar_ephemeris",
+  "vectie/moonmoon/src/mission",
+  "moonbitlang/core/json",
+  "moonbitlang/x/fs",
+}
+
+supported_targets = "native"
+
+options(
+  "is-main": true,
+)

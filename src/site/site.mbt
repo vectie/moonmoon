@@ -14,6 +14,7 @@ pub(all) struct SiteDossier {
   corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
   power_window_evidence : @mission.PowerWindowEvidence
+  window_search_evidence : @mission.MissionWindowSearchEvidence
   energy : @mission.EnergyAssessment
   clearance_plan : @mission.MissionClearancePlan
   summary : String
@@ -224,12 +225,13 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     corridor_scan,
     route_candidates,
     power_window_evidence: @mission.first_trusted_square_power_window_evidence(),
+    window_search_evidence: @mission.first_trusted_square_window_search_evidence(),
     energy,
     clearance_plan,
-    summary: "One small lunar site model with explicit provenance, measured terrain, a reproducible 9x9 corridor scan, hourly azimuth-matched DE440 route exposure, and a conservative rover energy budget.",
+    summary: "One small lunar site model with explicit provenance, measured terrain, a reproducible 9x9 corridor scan, hourly azimuth-matched DE440 route exposure, ranked future mission windows, and a conservative rover energy budget.",
     blockers: mission_blockers(terrain, selected_route, energy),
     next_questions: [
-      "Declare and compute a mission window where the Sun rises above the spherical horizon.",
+      "Review the ranked 2026-11-08 to 2026-11-22 illumination window without changing current mission authority.",
       "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "Review the materialized Operator review workspace entries and close accepted or rejected queue items.",
     ],
@@ -428,6 +430,20 @@ pub fn render_markdown(dossier : SiteDossier) -> String {
     }
   }
   text += "\n"
+  text += "## Mission Window Search\n\n"
+  let search = dossier.window_search_evidence
+  let recommended = search.candidates[search.selected_candidate_index]
+  text += "- evidence: \{search.evidence_id}\n"
+  text += "- search range: \{search.search_start_utc} -> \{search.search_end_utc}\n"
+  text += "- windows per route: \{search.windows_per_route}\n"
+  text += "- selected route: \{recommended.route_id}\n"
+  text += "- recommended window: \{recommended.time_start_utc} -> \{recommended.time_end_utc}\n"
+  text += "- illumination decision: \{@mission.traverse_decision_label(recommended.decision)}\n"
+  text += "- terrain-visible sunlight: \{recommended.terrain_sunlit_hours} h\n"
+  text += "- longest darkness: \{recommended.longest_dark_hours} h\n"
+  text += "- route-available energy: \{recommended.terrain_available_energy_wh} Wh\n"
+  text += "- solar clearance range: \{recommended.minimum_solar_clearance_deg} to \{recommended.maximum_solar_clearance_deg} deg\n"
+  text += "- clears illumination constraint: \{recommended.meets_illumination_constraint}\n\n"
   text += "## Energy Window\n\n"
   let energy = dossier.energy
   text += "- budget: \{energy.budget.label} (\{energy.budget.budget_id})\n"

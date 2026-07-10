@@ -65,6 +65,15 @@ test "first trusted square view model marks selected route" {
           "first_trusted_square_power_window.json",
         ),
       )
+      let recommended = route.illumination.recommended_window
+      assert_eq(recommended.decision, "allow")
+      assert_eq(recommended.time_start_utc, "2026-11-08T00:00:00Z")
+      assert_eq(recommended.time_end_utc, "2026-11-22T00:00:00Z")
+      assert_eq(recommended.terrain_sunlit_hours, 336.0)
+      assert_eq(recommended.longest_dark_hours, 0.0)
+      assert_true(recommended.terrain_available_energy_wh > 3997.0)
+      assert_true(recommended.minimum_solar_clearance_deg > 1.34)
+      assert_true(recommended.meets_illumination_constraint)
     }
   }
   assert_eq(selected_count, 1)
@@ -161,6 +170,9 @@ test "first trusted square view renderers include operator evidence" {
   assert_true(json.contains("terrain_sunlit_hours"))
   assert_true(json.contains("longest_dark_hours"))
   assert_true(json.contains("max_sun_altitude_deg"))
+  assert_true(json.contains("recommended_window"))
+  assert_true(json.contains("2026-11-08T00:00:00Z"))
+  assert_true(json.contains("meets_illumination_constraint"))
   assert_true(json.contains("clear-terrain-grade-northeast-stepout"))
   assert_true(json.contains("clear-energy-margin"))
   assert_true(json.contains("operator-review-transitions.json"))

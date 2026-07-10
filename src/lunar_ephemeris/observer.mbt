@@ -194,32 +194,58 @@ fn observer_geometry_at(
 }
 
 ///|
+fn solar_geometry_track(
+  kernel : SpkKernel,
+  start_unix_s : Int64,
+  duration_hours : Int,
+  latitude_deg : Double,
+  longitude_deg : Double,
+) -> SolarGeometryTrack {
+  let sun_altitude_deg : Array[Double] = []
+  let sun_azimuth_deg : Array[Double] = []
+  for hour in 0..<duration_hours {
+    let sample = observer_geometry_at(
+      kernel,
+      start_unix_s + Int64::from_int(hour) * 3600L,
+      latitude_deg,
+      longitude_deg,
+    )
+    sun_altitude_deg.push(sample.sun_altitude_deg)
+    sun_azimuth_deg.push(sample.sun_azimuth_deg)
+  }
+  {
+    time_start_utc: iso_timestamp(start_unix_s),
+    step_minutes: 60,
+    sun_altitude_deg,
+    sun_azimuth_deg,
+  }
+}
+
+///|
 fn first_trusted_square_observer_timeline(
   kernel : SpkKernel,
 ) -> ObserverGeometryTimeline {
   let samples : Array[ObserverGeometrySample] = []
-  let hourly_sun_altitude_deg : Array[Double] = []
-  let hourly_sun_azimuth_deg : Array[Double] = []
   let start_unix_s = 1782345600L
+  let hourly_solar_track = solar_geometry_track(
+    kernel,
+    start_unix_s,
+    14 * 24,
+    -89.88,
+    0.12,
+  )
   let mut min_sun_altitude_deg = 90.0
   let mut max_sun_altitude_deg = -90.0
   let mut sunlit_hours = 0.0
   let mut dark_hours = 0.0
   let mut available_energy_wh = 0.0
   for hour in 0..<(14 * 24) {
-    let sample = observer_geometry_at(
-      kernel,
-      start_unix_s + Int64::from_int(hour) * 3600L,
-      -89.88,
-      0.12,
-    )
-    hourly_sun_altitude_deg.push(sample.sun_altitude_deg)
-    hourly_sun_azimuth_deg.push(sample.sun_azimuth_deg)
-    min_sun_altitude_deg = min_sun_altitude_deg.min(sample.sun_altitude_deg)
-    max_sun_altitude_deg = max_sun_altitude_deg.max(sample.sun_altitude_deg)
-    if sample.sun_altitude_deg > 0.0 {
+    let sun_altitude_deg = hourly_solar_track.sun_altitude_deg[hour]
+    min_sun_altitude_deg = min_sun_altitude_deg.min(sun_altitude_deg)
+    max_sun_altitude_deg = max_sun_altitude_deg.max(sun_altitude_deg)
+    if sun_altitude_deg > 0.0 {
       sunlit_hours += 1.0
-      available_energy_wh += 450.0 * @math.sin(radians(sample.sun_altitude_deg))
+      available_energy_wh += 450.0 * @math.sin(radians(sun_altitude_deg))
     } else {
       dark_hours += 1.0
     }
@@ -248,12 +274,7 @@ fn first_trusted_square_observer_timeline(
     sunlit_hours,
     dark_hours,
     available_energy_wh,
-    hourly_solar_track: {
-      time_start_utc: iso_timestamp(start_unix_s),
-      step_minutes: 60,
-      sun_altitude_deg: hourly_sun_altitude_deg,
-      sun_azimuth_deg: hourly_sun_azimuth_deg,
-    },
+    hourly_solar_track,
     samples,
   }
 }
@@ -264,6 +285,28 @@ pub fn compute_first_trusted_square_observer_timeline(
 ) -> Result[ObserverGeometryTimeline, String] {
   match parse_de440s(de440s) {
     Ok(kernel) => Ok(first_trusted_square_observer_timeline(kernel))
+    Err(error) => Err(error)
+  }
+}
+
+///|
+pub fn compute_solar_geometry_track(
+  de440s : Bytes,
+  start_unix_s : Int64,
+  duration_hours : Int,
+  latitude_deg : Double,
+  longitude_deg : Double,
+) -> Result[SolarGeometryTrack, String] {
+  if duration_hours <= 0 {
+    return Err("solar track duration must be positive")
+  }
+  match parse_de440s(de440s) {
+    Ok(kernel) =>
+      Ok(
+        solar_geometry_track(
+          kernel, start_unix_s, duration_hours, latitude_deg, longitude_deg,
+        ),
+      )
     Err(error) => Err(error)
   }
 }

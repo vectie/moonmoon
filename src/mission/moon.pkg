@@ -4,4 +4,5 @@ import {
   "vectie/moonmoon/src/terrain",
   "moonbitlang/core/json",
   "moonbitlang/core/math",
+  "moonbitlang/x/time",
 }

@@ -61,6 +61,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate]
 
 pub fn first_trusted_square_traverse_score() -> TraverseScore
 
+pub fn first_trusted_square_window_search_evidence() -> MissionWindowSearchEvidence
+
 pub fn illumination_decision_label(IlluminationAssessment) -> String
 
 pub fn mission_clearance_kind_label(MissionClearanceKind) -> String
@@ -72,6 +74,8 @@ pub fn mission_clearance_status_label(MissionClearanceStatus) -> String
 pub fn mission_readiness_check_kind_label(MissionReadinessCheckKind) -> String
 
 pub fn mission_simulation_readiness_label(MissionSimulationReadiness) -> String
+
+pub fn rank_route_mission_windows(String, String, Array[RouteCandidate], @lunar_ephemeris.SolarGeometryTrack, Int64, Int, Int, String, String, IlluminationConstraint) -> Result[MissionWindowSearchEvidence, String]
 
 pub fn readiness_check(String, MissionReadinessCheckKind, String, TraverseDecision, String, String) -> MissionReadinessCheck
 
@@ -340,6 +344,22 @@ pub(all) struct MissionSimulationReadiness {
   next_action : String
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
+pub(all) struct MissionWindowSearchEvidence {
+  evidence_id : String
+  site_id : String
+  selected_route_id : String
+  selected_candidate_index : Int
+  source_path : String
+  orientation_source_path : String
+  search_start_utc : String
+  search_end_utc : String
+  window_hours : Int
+  stride_hours : Int
+  windows_per_route : Int
+  generated_by : String
+  candidates : Array[RouteMissionWindowCandidate]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct PowerWindowComputation {
   method_id : String
   generated_by : String
@@ -401,6 +421,25 @@ pub(all) struct RouteCandidate {
   score : Int
   reasons : Array[String]
   next_action : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RouteMissionWindowCandidate {
+  route_id : String
+  route_label : String
+  time_start_utc : String
+  time_end_utc : String
+  sample_offset : Int
+  window_hours : Int
+  spherical_sunlit_hours : Double
+  terrain_sunlit_hours : Double
+  terrain_shadowed_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
+  meets_illumination_constraint : Bool
+  decision : TraverseDecision
+  reasons : Array[String]
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct TerrainRemediationEvidence {

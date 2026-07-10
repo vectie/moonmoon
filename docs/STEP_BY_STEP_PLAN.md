@@ -42,7 +42,9 @@ authority after the product path is moving.
 
 Status: implemented for the first trusted square. The selected route clearance
 plan is part of `SiteDossier`, markdown/JSON render paths expose it, and the
-operator view projects both the summary and individual clearance gates.
+operator view projects both the summary and individual clearance gates. A
+one-year DE440 search now ranks the next 14-day illumination window per route
+without changing the blocked current-window decision.
 
 Goal: the first trusted square must explain why the selected
 `northeast-stepout` route is blocked or reviewable before any motion or robot
@@ -101,6 +103,13 @@ Implementation plan:
 5. Commit once the product answer is visible.
    - Commit after route truth appears in the dossier, JSON, and HTML.
    - Push before moving to Moon visualization changes.
+
+6. Rank the next illumination window without weakening authority.
+   - Generate one year of hourly Sun geometry from the pinned source boundary.
+   - Evaluate every route over fixed 14-day windows at a daily stride.
+   - Project the best per-route candidate separately from the current gate.
+   - Keep terrain, mission energy, and operator review blocked until their own
+     evidence changes.
 
 Done when: a user can open the product view and answer: which route is
 selected, which gate blocks it, what evidence backs the decision, and what must

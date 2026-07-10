@@ -9,6 +9,8 @@ import {
 // Values
 pub fn compute_first_trusted_square_observer_timeline(Bytes) -> Result[ObserverGeometryTimeline, String]
 
+pub fn compute_solar_geometry_track(Bytes, Int64, Int, Double, Double) -> Result[SolarGeometryTrack, String]
+
 pub fn first_trusted_square_observer_timeline_fixture() -> ObserverGeometryTimeline
 
 // Errors

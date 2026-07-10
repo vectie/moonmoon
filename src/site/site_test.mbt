@@ -248,6 +248,14 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   )
   assert_true(markdown.contains("power-window source status: ready"))
   assert_true(markdown.contains("verified available energy: 0"))
+  assert_true(markdown.contains("## Mission Window Search"))
+  assert_true(
+    markdown.contains(
+      "recommended window: 2026-11-08T00:00:00Z -> 2026-11-22T00:00:00Z",
+    ),
+  )
+  assert_true(markdown.contains("terrain-visible sunlight: 336 h"))
+  assert_true(markdown.contains("clears illumination constraint: true"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
   assert_true(markdown.contains("north-rim-stepout"))
@@ -342,6 +350,13 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(text.contains("\"window_id\": \"r-12-c+16\""))
   assert_true(text.contains("\"energy\""))
   assert_true(text.contains("\"power_window_evidence\""))
+  assert_true(text.contains("\"window_search_evidence\""))
+  assert_true(
+    text.contains(
+      "\"evidence_id\": \"first-trusted-square-mission-window-search-v1\"",
+    ),
+  )
+  assert_true(text.contains("\"time_start_utc\": \"2026-11-08T00:00:00Z\""))
   assert_true(text.contains("\"file_id\": \"de440s.bsp\""))
   assert_true(text.contains("\"file_id\": \"moon_de440_250416.tf\""))
   assert_true(

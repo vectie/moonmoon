@@ -38,7 +38,11 @@ pub fn from_site_dossier_with_selection(
     selected_cell_id,
     selected_route_id,
     terrain_cells: terrain_cell_views(grid, metrics, dossier.energy, selected),
-    routes: route_views(dossier.route_candidates, selected_route_id),
+    routes: route_views(
+      dossier.route_candidates,
+      selected_route_id,
+      dossier.window_search_evidence,
+    ),
     route_overlays: route_overlays(dossier.route_candidates, selected_route_id),
     globe_overlay: globe_overlay(dossier, grid, selected_route_id),
     corridor_windows: corridor_window_views(dossier.corridor_scan),

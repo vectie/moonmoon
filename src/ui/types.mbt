@@ -59,6 +59,19 @@ pub(all) struct TerrainCellView {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RouteMissionWindowView {
+  decision : String
+  time_start_utc : String
+  time_end_utc : String
+  terrain_sunlit_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
+  meets_illumination_constraint : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RouteIlluminationView {
   decision : String
   confidence : Double
@@ -79,6 +92,7 @@ pub(all) struct RouteIlluminationView {
   power_window_source_path : String
   horizon_evidence_path : String
   horizon_profile : Array[RouteHorizonSampleView]
+  recommended_window : RouteMissionWindowView
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|

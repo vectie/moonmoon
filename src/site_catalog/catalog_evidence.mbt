@@ -98,6 +98,7 @@ pub fn first_trusted_square_dossier_from_catalog_root(
     corridor_scan: dossier.corridor_scan,
     route_candidates: dossier.route_candidates,
     power_window_evidence: dossier.power_window_evidence,
+    window_search_evidence: dossier.window_search_evidence,
     energy: dossier.energy,
     clearance_plan: dossier.clearance_plan,
     summary: dossier.summary,

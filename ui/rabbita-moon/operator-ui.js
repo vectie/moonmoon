@@ -109,6 +109,31 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
     )
     setText('operator-illumination-evidence', illumination.horizon_evidence_path || '')
     updateHorizonProfile(illumination.horizon_profile)
+    const recommended = illumination.recommended_window || {}
+    setStatus(
+      document.getElementById('operator-window-status'),
+      recommended.decision || 'review',
+    )
+    setText(
+      'operator-window-range',
+      `${recommended.time_start_utc || 'unknown'} to ${recommended.time_end_utc || 'unknown'}`,
+    )
+    setText(
+      'operator-window-sunlit',
+      `${compactNumber(recommended.terrain_sunlit_hours)} h`,
+    )
+    setText(
+      'operator-window-dark',
+      `${compactNumber(recommended.longest_dark_hours)} h`,
+    )
+    setText(
+      'operator-window-energy',
+      `${compactNumber(recommended.terrain_available_energy_wh)} Wh`,
+    )
+    setText(
+      'operator-window-clearance',
+      `${compactNumber(recommended.minimum_solar_clearance_deg)} deg`,
+    )
     globalThis.__moonmoonTerrainController?.selectRoute(routeId)
     if (revealTerrain) showTerrain()
   }

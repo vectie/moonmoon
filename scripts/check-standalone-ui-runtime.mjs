@@ -42,6 +42,16 @@ function requireValue(condition, message) {
 requireValue(model.selected_route_id === 'northeast-stepout', 'selected route mismatch')
 requireValue(model.globe_overlay?.corridor_windows?.length === 81, 'corridor window count mismatch')
 requireValue(model.terrain_cells?.length === 16, 'terrain cell count mismatch')
+const selectedRoute = model.routes?.find(route => route.route_id === model.selected_route_id)
+requireValue(selectedRoute != null, 'selected route projection missing')
+requireValue(
+  selectedRoute.illumination?.recommended_window?.time_start_utc === '2026-11-08T00:00:00Z',
+  'selected route recommendation mismatch',
+)
+requireValue(
+  selectedRoute.illumination.recommended_window.meets_illumination_constraint === true,
+  'selected route recommendation must clear illumination',
+)
 requireValue(model.globe_overlay?.source_dataset_id === 'lro-lola-first-trusted-square-dem-v1', 'source dataset mismatch')
 requireValue(model.terrain_cells.some(cell => cell.selected), 'missing selected terrain cell')
 requireValue(html.includes('data-terrain-texture="lola-dem-elevation-hazard"'), 'missing terrain texture marker')

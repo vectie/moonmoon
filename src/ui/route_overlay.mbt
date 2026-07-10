@@ -13,9 +13,33 @@ fn route_horizon_profile(
 }
 
 ///|
+fn route_mission_window_view(
+  search : @mission.MissionWindowSearchEvidence,
+  route_id : String,
+) -> RouteMissionWindowView {
+  for candidate in search.candidates {
+    if candidate.route_id == route_id {
+      return {
+        decision: @mission.traverse_decision_label(candidate.decision),
+        time_start_utc: candidate.time_start_utc,
+        time_end_utc: candidate.time_end_utc,
+        terrain_sunlit_hours: candidate.terrain_sunlit_hours,
+        longest_dark_hours: candidate.longest_dark_hours,
+        terrain_available_energy_wh: candidate.terrain_available_energy_wh,
+        minimum_solar_clearance_deg: candidate.minimum_solar_clearance_deg,
+        maximum_solar_clearance_deg: candidate.maximum_solar_clearance_deg,
+        meets_illumination_constraint: candidate.meets_illumination_constraint,
+      }
+    }
+  }
+  abort("mission-window search is missing route \{route_id}")
+}
+
+///|
 fn route_views(
   routes : Array[@mission.RouteCandidate],
   selected_route_id : String,
+  window_search : @mission.MissionWindowSearchEvidence,
 ) -> Array[RouteView] {
   let views : Array[RouteView] = []
   for route in routes {
@@ -53,6 +77,10 @@ fn route_views(
           route.illumination.constraint.power_window_source_path
         },
         horizon_profile: route_horizon_profile(route.illumination.local_horizon),
+        recommended_window: route_mission_window_view(
+          window_search,
+          route.route_id,
+        ),
       },
       next_action: route.next_action,
     })

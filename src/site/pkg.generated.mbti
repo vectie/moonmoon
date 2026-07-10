@@ -67,6 +67,7 @@ pub(all) struct SiteDossier {
   corridor_scan : Array[@mission.CorridorScanWindow]
   route_candidates : Array[@mission.RouteCandidate]
   power_window_evidence : @mission.PowerWindowEvidence
+  window_search_evidence : @mission.MissionWindowSearchEvidence
   energy : @mission.EnergyAssessment
   clearance_plan : @mission.MissionClearancePlan
   summary : String
