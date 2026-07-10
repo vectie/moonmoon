@@ -3,6 +3,9 @@ import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
+const sceneShell = readFileSync(new URL('./scene-shell.js', import.meta.url), 'utf8')
+const moonGlobe = readFileSync(new URL('./moon-globe.js', import.meta.url), 'utf8')
+const renderLifecycle = readFileSync(new URL('./render-lifecycle.js', import.meta.url), 'utf8')
 const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8')
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
@@ -10,9 +13,10 @@ const e1AssemblyBridge = readFileSync(new URL('./.generated/e1-asm-assembly.js',
 const operatorUi = readFileSync(new URL('./main/main.mbt', import.meta.url), 'utf8')
 const operatorStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8')
 const operatorRuntime = readFileSync(new URL('./operator-ui.js', import.meta.url), 'utf8')
+const bootstrap = readFileSync(new URL('./bootstrap.js', import.meta.url), 'utf8')
 const plan = readFileSync(new URL('../../docs/ANIMATION_FIRST_LOCOMOTION_PLAN.md', import.meta.url), 'utf8')
 const repoRoot = fileURLToPath(new URL('../..', import.meta.url))
-const gaitRuntimeSource = `${liveRuntimeClip}\n${e1AssemblyBridge}\n${gaitClip}\n${scene}`
+const gaitRuntimeSource = `${liveRuntimeClip}\n${e1AssemblyBridge}\n${gaitClip}\n${scene}\n${sceneShell}\n${moonGlobe}\n${renderLifecycle}`
 const generatedSnapshotSource = generatedClip
 const runHeavyIntegration = process.argv.includes('--heavy') || process.env.RABBITA_GAIT_HEAVY === '1'
 
@@ -68,7 +72,9 @@ const sceneContracts = [
   'moon-toggle-orbit',
   'prefers-reduced-motion: reduce',
   'canvasRenderActive',
+  'startCanvasRenderLoop',
   'renderPaused',
+  'renderDisposed',
   'pausedFrames',
   'renderResumedCount',
   'third-person-moon-walk-rendered',
@@ -123,6 +129,9 @@ const sceneContracts = [
   'curved-lunar-cap',
   'lunarSurfaceVisualModel',
   'OrbitControls',
+  "import('./scene3d.js')",
+  'mountAdapterPreview',
+  'disposeThreeScene',
   'full-stl-source-indexed',
   'convex-hull-plus-sampled-stl',
   'sampled-stl-convex-rigid-hull',
@@ -217,6 +226,10 @@ const operatorRuntimeContracts = [
   'selectCell',
 ]
 
+const bootstrapContracts = [
+  "import '/scene-shell.js'",
+]
+
 const removedUiContracts = [
   'moon-console-page',
   'mission-chat-panel',
@@ -253,6 +266,14 @@ for (const token of operatorStyleContracts) {
 
 for (const token of operatorRuntimeContracts) {
   requireText(operatorRuntime, token, 'canonical operator runtime')
+}
+
+for (const token of bootstrapContracts) {
+  requireText(bootstrap, token, 'canonical runtime bootstrap')
+}
+
+if (bootstrap.includes("import '/scene3d.js'")) {
+  throw new Error('canonical runtime bootstrap eagerly loads the adapter scene')
 }
 
 for (const token of removedUiContracts) {
@@ -665,7 +686,7 @@ function runGate(command, args, cwd, label) {
 
 if (!runHeavyIntegration) {
   console.log(
-    `Rabbita gait fast contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length} contracts, ${sampleTimes.length} runtime samples, viewport mesh reduction gate`,
+    `Rabbita gait fast contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length + bootstrapContracts.length} contracts, ${sampleTimes.length} runtime samples, viewport mesh reduction gate`,
   )
   process.exit(0)
 }
@@ -678,5 +699,5 @@ runGate(process.execPath, ['check-live-suite-payload.mjs'], checkDir, 'live suit
 runGate(process.env.MOON_BIN ?? 'moon', ['test', 'src/suite_adapter_preview', '--target', 'js'], repoRoot, 'compiled Moonphys gate')
 
 console.log(
-  `Rabbita gait heavy contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, Moonrobo contract gate, live Moonrobo suite gate, live suite payload command gate, compiled Moonphys gate`,
+  `Rabbita gait heavy contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length + bootstrapContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, Moonrobo contract gate, live Moonrobo suite gate, live suite payload command gate, compiled Moonphys gate`,
 )

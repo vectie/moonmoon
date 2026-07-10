@@ -82,6 +82,12 @@ Acceptance:
 
 ## Checkpoint 4: Responsive And Runtime Hardening
 
+Status: implemented. `scene-shell.js` owns the MoonBit-facing entry point,
+`moon-globe.js` owns the immediate lightweight globe, and the adapter scene,
+Three.js, gait clip, and E1 assembly load only after the preview opens. A
+shared render lifecycle pauses hidden canvases and disposes GPU resources when
+their canvas is unmounted.
+
 1. Use a spatial stage plus evidence rail on desktop and a stage plus normal
    document-flow evidence on mobile.
 2. Use `100dvh`, bounded grid tracks, `min-width: 0`, and wrapping evidence
@@ -117,6 +123,9 @@ canvas nonblank checks, control reachability, focus/reset behavior, view
 switching, reduced-motion behavior, and no-overflow assertions.
 
 ## Completion
+
+Status: complete. The canonical lunar operator phase meets its four
+checkpoints and verification gate.
 
 This phase is complete when Moonmoon opens on a recognizable movable Moon,
 reaches the first trusted square through an understandable global-to-local

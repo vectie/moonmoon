@@ -1,4 +1,5 @@
 import LOLA_TERRAIN_TILE from './assets/lro_lola/first_trusted_square_lola_5m_129.json' with { type: 'json' }
+import { canvasRenderActive, markCanvasRenderActive, markCanvasRenderPaused } from './render-lifecycle.js'
 
 let THREE
 let OrbitControls
@@ -25,7 +26,6 @@ let E1_ASM_ASSEMBLY = {
 let adapterRuntimePromise
 
 const DEG = Math.PI / 180
-const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
 const EARTH_TEXTURE_URL = new URL('./assets/earth/earth_atmos_2048.jpg', import.meta.url).href
 const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
@@ -242,69 +242,10 @@ function createProgram(gl) {
   }
 }
 
-function createMoonProgram(gl) {
-  const vertex = gl.createShader(gl.VERTEX_SHADER)
-  gl.shaderSource(vertex, `
-    attribute vec3 a_position;
-    attribute vec2 a_uv;
-    uniform mat4 u_mvp;
-    varying vec2 v_uv;
-    varying vec3 v_normal;
-    void main() {
-      gl_Position = u_mvp * vec4(a_position, 1.0);
-      v_uv = a_uv;
-      v_normal = normalize(a_position);
-    }
-  `)
-  gl.compileShader(vertex)
-  if (!gl.getShaderParameter(vertex, gl.COMPILE_STATUS)) {
-    throw new Error(gl.getShaderInfoLog(vertex) || 'moon vertex shader failed')
-  }
-  const fragment = gl.createShader(gl.FRAGMENT_SHADER)
-  gl.shaderSource(fragment, `
-    precision mediump float;
-    uniform sampler2D u_texture;
-    varying vec2 v_uv;
-    varying vec3 v_normal;
-    void main() {
-      vec3 tex = texture2D(u_texture, v_uv).rgb;
-      vec3 light = normalize(vec3(-0.35, 0.42, 0.84));
-      float shade = 0.32 + max(dot(normalize(v_normal), light), 0.0) * 0.78;
-      float polar = pow(abs(v_normal.y), 3.0) * 0.10;
-      gl_FragColor = vec4(tex * shade + vec3(polar), 1.0);
-    }
-  `)
-  gl.compileShader(fragment)
-  if (!gl.getShaderParameter(fragment, gl.COMPILE_STATUS)) {
-    throw new Error(gl.getShaderInfoLog(fragment) || 'moon fragment shader failed')
-  }
-  const program = gl.createProgram()
-  gl.attachShader(program, vertex)
-  gl.attachShader(program, fragment)
-  gl.linkProgram(program)
-  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-    throw new Error(gl.getProgramInfoLog(program) || 'moon program failed')
-  }
-  return {
-    program,
-    position: gl.getAttribLocation(program, 'a_position'),
-    uv: gl.getAttribLocation(program, 'a_uv'),
-    mvp: gl.getUniformLocation(program, 'u_mvp'),
-    texture: gl.getUniformLocation(program, 'u_texture'),
-  }
-}
-
 function createBuffers(gl) {
   return {
     positions: gl.createBuffer(),
     colors: gl.createBuffer(),
-  }
-}
-
-function createMoonBuffers(gl) {
-  return {
-    positions: gl.createBuffer(),
-    uvs: gl.createBuffer(),
   }
 }
 
@@ -319,22 +260,6 @@ function upload(gl, shader, buffers, vertices, colors, mvp) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.DYNAMIC_DRAW)
   gl.enableVertexAttribArray(shader.color)
   gl.vertexAttribPointer(shader.color, 3, gl.FLOAT, false, 0, 0)
-}
-
-function uploadMoon(gl, shader, buffers, mesh, texture, mvp) {
-  gl.useProgram(shader.program)
-  gl.uniformMatrix4fv(shader.mvp, false, new Float32Array(mvp))
-  gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.uniform1i(shader.texture, 0)
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.positions)
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertices), gl.STATIC_DRAW)
-  gl.enableVertexAttribArray(shader.position)
-  gl.vertexAttribPointer(shader.position, 3, gl.FLOAT, false, 0, 0)
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.uvs)
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.uvs), gl.STATIC_DRAW)
-  gl.enableVertexAttribArray(shader.uv)
-  gl.vertexAttribPointer(shader.uv, 2, gl.FLOAT, false, 0, 0)
 }
 
 function resizeCanvas(canvas, gl) {
@@ -357,208 +282,6 @@ function addTri(vertices, colors, a, b, c, color) {
 function addQuad(vertices, colors, a, b, c, d, color) {
   addTri(vertices, colors, a, b, c, color)
   addTri(vertices, colors, a, c, d, color)
-}
-
-function sphereMesh(latBands, lonBands) {
-  const vertices = []
-  const uvs = []
-  function push(point, u, v) {
-    vertices.push(...point)
-    uvs.push(u, v)
-  }
-  for (let lat = 0; lat < latBands; lat += 1) {
-    const t0 = -Math.PI / 2 + (lat / latBands) * Math.PI
-    const t1 = -Math.PI / 2 + ((lat + 1) / latBands) * Math.PI
-    for (let lon = 0; lon < lonBands; lon += 1) {
-      const p0 = (lon / lonBands) * Math.PI * 2
-      const p1 = ((lon + 1) / lonBands) * Math.PI * 2
-      const a = spherePoint(t0, p0)
-      const b = spherePoint(t1, p0)
-      const c = spherePoint(t1, p1)
-      const d = spherePoint(t0, p1)
-      const u0 = 1 - lon / lonBands
-      const u1 = 1 - (lon + 1) / lonBands
-      const v0 = 1 - lat / latBands
-      const v1 = 1 - (lat + 1) / latBands
-      push(a, u0, v0)
-      push(b, u0, v1)
-      push(c, u1, v1)
-      push(a, u0, v0)
-      push(c, u1, v1)
-      push(d, u1, v0)
-    }
-  }
-  return { vertices, uvs }
-}
-
-function spherePoint(theta, phi) {
-  const ct = Math.cos(theta)
-  return [ct * Math.cos(phi), Math.sin(theta), ct * Math.sin(phi)]
-}
-
-function latLonPoint(latDeg, lonDeg, radius = 1.025) {
-  const lat = latDeg * DEG
-  const lon = lonDeg * DEG
-  const cl = Math.cos(lat)
-  return [radius * cl * Math.cos(lon), radius * Math.sin(lat), radius * cl * Math.sin(lon)]
-}
-
-function loadMoonTexture(gl, canvas) {
-  const texture = gl.createTexture()
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,
-    gl.RGBA,
-    1,
-    1,
-    0,
-    gl.RGBA,
-    gl.UNSIGNED_BYTE,
-    new Uint8Array([86, 84, 78, 255]),
-  )
-  const image = new Image()
-  image.onload = () => {
-    gl.bindTexture(gl.TEXTURE_2D, texture)
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
-    canvas.dataset.textureStatus = 'lunar-global-texture-loaded'
-  }
-  image.onerror = () => {
-    canvas.dataset.textureStatus = 'lunar-global-texture-unavailable'
-  }
-  image.src = LUNAR_TEXTURE_URL
-  canvas.dataset.textureStatus = 'lunar-global-texture-loading'
-  return texture
-}
-
-function canvasRenderActive(canvas) {
-  if (!canvas.isConnected) return false
-  const rect = canvas.getBoundingClientRect()
-  if (rect.width < 2 || rect.height < 2) return false
-  const style = getComputedStyle(canvas)
-  return style.display !== 'none' && style.visibility !== 'hidden'
-}
-
-function markCanvasRenderPaused(canvas) {
-  canvas.dataset.renderPaused = 'true'
-  canvas.dataset.pausedFrames = String(Number(canvas.dataset.pausedFrames || 0) + 1)
-}
-
-function markCanvasRenderActive(canvas) {
-  if (canvas.dataset.renderPaused === 'true') {
-    canvas.dataset.renderResumedCount = String(Number(canvas.dataset.renderResumedCount || 0) + 1)
-  }
-  canvas.dataset.renderPaused = 'false'
-}
-
-function initMoon(canvas, view) {
-  const gl = canvas.getContext('webgl', { antialias: true })
-  if (!gl) {
-    canvas.dataset.sceneStatus = 'webgl-unavailable'
-    return
-  }
-  const moonShader = createMoonProgram(gl)
-  const moonBuffers = createMoonBuffers(gl)
-  const pointShader = createProgram(gl)
-  const pointBuffers = createBuffers(gl)
-  const texture = loadMoonTexture(gl, canvas)
-  const mesh = sphereMesh(44, 88)
-  const site = {
-    lat: Number(view.site_latitude_deg || -89.88),
-    lon: Number(view.site_longitude_deg || 0.12),
-  }
-  const defaultYaw = 0.35
-  const defaultPitch = -0.92
-  const defaultDistance = 4.05
-  const terrainSwitch = document.getElementById('moon-terrain-switch')
-  const focusButton = document.getElementById('moon-focus-site')
-  const resetButton = document.getElementById('moon-reset-view')
-  const orbitButton = document.getElementById('moon-toggle-orbit')
-  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
-  let yaw = defaultYaw
-  let pitch = defaultPitch
-  let distance = defaultDistance
-  let orbit = !reduceMotion
-  let dragging = false
-  let lastX = 0
-  let lastY = 0
-  function updateOrbitButton() {
-    if (!orbitButton) return
-    orbitButton.textContent = orbit ? 'Pause orbit' : 'Resume orbit'
-    orbitButton.setAttribute('aria-pressed', String(orbit))
-  }
-  focusButton?.addEventListener('click', () => {
-    if (terrainSwitch) terrainSwitch.checked = true
-  })
-  resetButton?.addEventListener('click', () => {
-    if (terrainSwitch) terrainSwitch.checked = false
-    yaw = defaultYaw
-    pitch = defaultPitch
-    distance = defaultDistance
-  })
-  orbitButton?.addEventListener('click', () => {
-    orbit = !orbit
-    updateOrbitButton()
-  })
-  updateOrbitButton()
-  canvas.onpointerdown = event => {
-    dragging = true
-    lastX = event.clientX
-    lastY = event.clientY
-    canvas.setPointerCapture(event.pointerId)
-  }
-  canvas.onpointermove = event => {
-    if (!dragging) return
-    yaw += (event.clientX - lastX) * 0.008
-    pitch = clamp(pitch + (event.clientY - lastY) * 0.006, -1.45, 1.45)
-    lastX = event.clientX
-    lastY = event.clientY
-  }
-  canvas.onpointerup = event => {
-    dragging = false
-    canvas.releasePointerCapture(event.pointerId)
-  }
-  canvas.onpointercancel = () => {
-    dragging = false
-  }
-  canvas.onwheel = event => {
-    event.preventDefault()
-    distance = clamp(distance + event.deltaY * 0.003, 2.45, 6.2)
-  }
-  function draw() {
-    if (!canvasRenderActive(canvas)) {
-      markCanvasRenderPaused(canvas)
-      requestAnimationFrame(draw)
-      return
-    }
-    markCanvasRenderActive(canvas)
-    resizeCanvas(canvas, gl)
-    gl.clearColor(0.02, 0.026, 0.024, 1)
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-    gl.enable(gl.DEPTH_TEST)
-    const aspect = canvas.width / Math.max(1, canvas.height)
-    let model = mat4Identity()
-    model = mat4RotateX(model, pitch)
-    model = mat4RotateY(model, yaw)
-    const viewMat = mat4Translate(mat4Identity(), 0, 0, -distance)
-    const mvp = mat4Multiply(mat4Perspective(44 * DEG, aspect, 0.1, 20), mat4Multiply(viewMat, model))
-    uploadMoon(gl, moonShader, moonBuffers, mesh, texture, mvp)
-    gl.drawArrays(gl.TRIANGLES, 0, mesh.vertices.length / 3)
-
-    const point = latLonPoint(site.lat, site.lon)
-    upload(gl, pointShader, pointBuffers, point, [0.94, 0.76, 0.25], mvp)
-    gl.drawArrays(gl.POINTS, 0, 1)
-    canvas.dataset.sceneStatus = 'moon-globe-webgl-rendered'
-    canvas.dataset.renderedFrames = String(Number(canvas.dataset.renderedFrames || 0) + 1)
-    if (!dragging && orbit) yaw += 0.0015
-    requestAnimationFrame(draw)
-  }
-  draw()
 }
 
 function cubeTriangles(center, size, matrix) {
@@ -1226,6 +949,23 @@ function createEarthrise() {
   return group
 }
 
+function disposeThreeScene(scene, renderer, controls) {
+  controls.dispose()
+  scene.traverse(object => {
+    object.geometry?.dispose()
+    const materials = Array.isArray(object.material) ? object.material : [object.material]
+    for (const material of materials) {
+      if (!material) continue
+      for (const value of Object.values(material)) {
+        if (value?.isTexture) value.dispose()
+      }
+      material.dispose?.()
+    }
+  })
+  renderer.dispose()
+  renderer.forceContextLoss()
+}
+
 function initThirdPersonMoonWalk(canvas) {
   let renderer
   try {
@@ -1276,6 +1016,11 @@ function initThirdPersonMoonWalk(canvas) {
   let lastQualityRefreshMs = -Infinity
   let lastEarthLightingRefreshMs = -Infinity
   function draw(now) {
+    if (!canvas.isConnected) {
+      disposeThreeScene(scene, renderer, controls)
+      canvas.dataset.renderDisposed = 'true'
+      return
+    }
     if (!canvasRenderActive(canvas)) {
       markCanvasRenderPaused(canvas)
       requestAnimationFrame(draw)
@@ -3540,31 +3285,14 @@ function initRobot(canvas) {
 
 globalThis.__moonmoonLoadAdapterRuntime = loadAdapterRuntime
 
-globalThis.__moonmoonRenderScene3d = modelJson => {
-  const view = JSON.parse(modelJson)
-  const thirdPerson = document.getElementById('moonmoon-third-person-3d')
-  const moon = document.getElementById('moonmoon-globe-3d')
-  const adapterPreview = document.getElementById('moonmoon-adapter-preview')
-  const bootAdapterPreview = async () => {
-    if (!adapterPreview?.open || !thirdPerson || thirdPerson.dataset.sceneBooted === 'true') return
-    thirdPerson.dataset.adapterRuntime = 'loading'
-    try {
-      await loadAdapterRuntime()
-      thirdPerson.dataset.adapterRuntime = 'ready'
-      if (!adapterPreview.open || thirdPerson.dataset.sceneBooted === 'true') return
-      thirdPerson.dataset.sceneBooted = 'true'
-      initThirdPersonMoonWalk(thirdPerson)
-    } catch (error) {
-      thirdPerson.dataset.adapterRuntime = 'failed'
-      thirdPerson.dataset.sceneError = error instanceof Error ? error.message : String(error)
-    }
-  }
-  if (moon && moon.dataset.sceneBooted !== 'true') {
-    moon.dataset.sceneBooted = 'true'
-    initMoon(moon, view)
-  }
-  adapterPreview?.addEventListener('toggle', bootAdapterPreview)
-  bootAdapterPreview()
+export async function mountAdapterPreview(canvas) {
+  if (canvas.dataset.sceneBooted === 'true') return
+  canvas.dataset.adapterRuntime = 'loading-runtime'
+  await loadAdapterRuntime()
+  canvas.dataset.adapterRuntime = 'ready'
+  if (!canvas.isConnected || !canvas.closest('#moonmoon-adapter-preview')?.open) return
+  canvas.dataset.sceneBooted = 'true'
+  initThirdPersonMoonWalk(canvas)
 }
 
 globalThis.__moonmoonGaitDiagnostics = {
