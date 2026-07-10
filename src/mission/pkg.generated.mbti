@@ -11,9 +11,9 @@ import {
 // Values
 pub fn assess_energy_window(Array[RouteCandidate], EnergyBudget) -> EnergyAssessment
 
-pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint) -> IlluminationAssessment
+pub fn assess_illumination(@terrain.TerrainGrid, IlluminationConstraint, @lunar_ephemeris.SolarGeometryTrack) -> IlluminationAssessment
 
-pub fn bounded_local_horizon_evidence(@terrain.TerrainGrid, IlluminationConstraint) -> LocalHorizonEvidence
+pub fn bounded_local_horizon_evidence(@terrain.TerrainGrid, IlluminationConstraint, @lunar_ephemeris.SolarGeometryTrack) -> LocalHorizonEvidence
 
 pub fn clearance_transition(String, String, MissionClearanceReviewDecision, String, String, String, String) -> MissionClearanceTransition
 
@@ -196,7 +196,6 @@ pub(all) struct IlluminationAssessment {
   evidence_tile_id : String
   local_horizon : LocalHorizonEvidence
   relief_shadow_risk : Double
-  terrain_shadow_margin_deg : Double
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
@@ -241,7 +240,14 @@ pub(all) struct LocalHorizonEvidence {
   max_horizon_angle_deg : Double
   min_sun_altitude_deg : Double
   max_sun_altitude_deg : Double
-  terrain_shadow_margin_deg : Double
+  evaluated_sample_count : Int
+  spherical_sunlit_hours : Double
+  terrain_sunlit_hours : Double
+  terrain_shadowed_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
   azimuth_samples : Array[HorizonAzimuthSample]
   confidence : Double
   decision : TraverseDecision

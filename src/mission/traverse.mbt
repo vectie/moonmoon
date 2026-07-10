@@ -65,7 +65,14 @@ pub(all) struct LocalHorizonEvidence {
   max_horizon_angle_deg : Double
   min_sun_altitude_deg : Double
   max_sun_altitude_deg : Double
-  terrain_shadow_margin_deg : Double
+  evaluated_sample_count : Int
+  spherical_sunlit_hours : Double
+  terrain_sunlit_hours : Double
+  terrain_shadowed_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
   azimuth_samples : Array[HorizonAzimuthSample]
   confidence : Double
   decision : TraverseDecision
@@ -92,7 +99,6 @@ pub(all) struct IlluminationAssessment {
   evidence_tile_id : String
   local_horizon : LocalHorizonEvidence
   relief_shadow_risk : Double
-  terrain_shadow_margin_deg : Double
   confidence : Double
   decision : TraverseDecision
   reasons : Array[String]
@@ -317,9 +323,11 @@ pub fn first_trusted_square_power_window_evidence() -> PowerWindowEvidence {
 
 ///|
 pub fn first_trusted_square_northeast_stepout_horizon_evidence() -> LocalHorizonEvidence {
+  let power = first_trusted_square_power_window_evidence()
   bounded_local_horizon_evidence(
     @terrain.first_trusted_square_northeast_stepout_grid(),
     conservative_illumination_constraint(),
+    power.observer_geometry.hourly_solar_track,
   )
 }
 
@@ -341,7 +349,12 @@ pub fn first_trusted_square_northeast_stepout_horizon_markdown() -> String {
   text += "- decision: \{traverse_decision_label(evidence.decision)}\n"
   text += "- max horizon angle: \{evidence.max_horizon_angle_deg} deg\n"
   text += "- max sun altitude: \{evidence.max_sun_altitude_deg} deg\n"
-  text += "- terrain-shadow margin: \{evidence.terrain_shadow_margin_deg} deg\n"
+  text += "- evaluated hourly samples: \{evidence.evaluated_sample_count}\n"
+  text += "- terrain-visible sunlight: \{evidence.terrain_sunlit_hours} h\n"
+  text += "- terrain-shadowed daylight: \{evidence.terrain_shadowed_hours} h\n"
+  text += "- longest darkness: \{evidence.longest_dark_hours} h\n"
+  text += "- route-available energy: \{evidence.terrain_available_energy_wh} Wh\n"
+  text += "- solar clearance range: \{evidence.minimum_solar_clearance_deg} to \{evidence.maximum_solar_clearance_deg} deg\n"
   text += "- confidence: \{evidence.confidence}\n\n"
   text += "## Azimuth Profile\n\n"
   for sample in evidence.azimuth_samples {
@@ -623,18 +636,20 @@ fn relief_shadow_risk(
 fn local_horizon_evidence(
   grid : @terrain.TerrainGrid,
   constraint : IlluminationConstraint,
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
 ) -> LocalHorizonEvidence {
-  bounded_local_horizon_evidence(grid, constraint)
+  bounded_local_horizon_evidence(grid, constraint, solar_track)
 }
 
 ///|
 pub fn assess_illumination(
   grid : @terrain.TerrainGrid,
   constraint : IlluminationConstraint,
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
 ) -> IlluminationAssessment {
   let metrics = @terrain.analyze(grid)
   let risk = relief_shadow_risk(grid, metrics)
-  let local_horizon = local_horizon_evidence(grid, constraint)
+  let local_horizon = local_horizon_evidence(grid, constraint, solar_track)
   let confidence = metrics.uncertainty.confidence * 0.6
   let reasons : Array[String] = []
   let missing_ephemeris = !constraint.has_time_window_ephemeris
@@ -657,7 +672,7 @@ pub fn assess_illumination(
   add_reason_if(
     reasons,
     horizon_blocked,
-    "bounded local horizon angle \{local_horizon.max_horizon_angle_deg} deg exceeds max sun altitude \{local_horizon.max_sun_altitude_deg} deg",
+    "hourly route exposure has \{local_horizon.terrain_sunlit_hours} sunlit hours and \{local_horizon.longest_dark_hours} continuous dark hours",
   )
   add_reason_if(
     reasons,
@@ -685,7 +700,6 @@ pub fn assess_illumination(
     evidence_tile_id: grid.tile_id,
     local_horizon,
     relief_shadow_risk: risk,
-    terrain_shadow_margin_deg: local_horizon.terrain_shadow_margin_deg,
     confidence,
     decision,
     reasons,
@@ -696,7 +710,7 @@ pub fn assess_illumination(
         if missing_ephemeris {
           "attach time-windowed solar ephemeris and widen terrain evidence before route simulation"
         } else if horizon_blocked {
-          "local horizon evidence records terrain-shadow blockage; collect wider horizon evidence before route simulation"
+          local_horizon.next_action
         } else {
           "widen local horizon and terrain-shadow evidence before route simulation"
         }
@@ -946,6 +960,8 @@ fn make_route_candidate(
   strategy : String,
   grid : @terrain.TerrainGrid,
   profile : TraverseProfile,
+  illumination_constraint : IlluminationConstraint,
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
   extra_reason : String,
   next_action : String,
 ) -> RouteCandidate {
@@ -958,8 +974,7 @@ fn make_route_candidate(
     route_id, grid, metrics, profile,
   )
   let illumination = assess_illumination(
-    grid,
-    conservative_illumination_constraint(),
+    grid, illumination_constraint, solar_track,
   )
   let grade_blocked = expected_max_grade >= profile.max_grade
   let roughness_blocked = expected_roughness_m >= profile.max_roughness_m
@@ -1018,6 +1033,8 @@ fn make_route_candidate(
 ///|
 pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
   let profile = conservative_rover_profile()
+  let illumination_constraint = conservative_illumination_constraint()
+  let solar_track = first_trusted_square_power_window_evidence().observer_geometry.hourly_solar_track
   [
     make_route_candidate(
       "direct-lola-window",
@@ -1025,6 +1042,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Use the active 4x4 measured window as-is.",
       @terrain.first_trusted_square_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "active LOLA patch is blocked",
       "do not traverse directly; use this as the baseline hazard case",
     ),
@@ -1034,6 +1053,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Test the west-adjacent LOLA window as a possible contour route around the active patch.",
       @terrain.first_trusted_square_west_contour_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "west-adjacent LOLA window is measured but still blocked at this scale",
       "widen the west corridor extraction before simulation",
     ),
@@ -1043,6 +1064,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Test the north-adjacent LOLA window as a possible step-out toward a smoother rim approach.",
       @terrain.first_trusted_square_north_rim_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "north-adjacent LOLA window is measured but still blocked at this scale",
       "widen the north corridor extraction before simulation",
     ),
@@ -1052,6 +1075,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Use the lowest-grade measured window from the first 5x5 corridor scan as a possible bypass direction.",
       @terrain.first_trusted_square_southwest_bypass_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "southwest widened corridor is measured and lower risk but still blocked",
       "continue corridor search beyond the southwest bypass before simulation",
     ),
@@ -1061,6 +1086,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Use the south measured window from the first 5x5 corridor scan as a second widened route direction.",
       @terrain.first_trusted_square_south_stepout_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "south widened corridor is measured and smoother than the active patch but still blocked",
       "continue south corridor extraction before simulation",
     ),
@@ -1070,6 +1097,8 @@ pub fn first_trusted_square_route_candidates() -> Array[RouteCandidate] {
       "Promote the best measured window from the active 9x9 corridor scan into a named route fixture.",
       @terrain.first_trusted_square_northeast_stepout_grid(),
       profile,
+      illumination_constraint,
+      solar_track,
       "best active 9x9 corridor window is measured and selected but still blocked",
       "review the promoted route fixture before simulation",
     ),

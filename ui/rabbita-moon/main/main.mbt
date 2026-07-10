@@ -242,20 +242,20 @@ fn illumination_gate(route : @ui.RouteView) -> Html {
     ]),
     div(class="illumination-metrics", [
       span([
-        b(id="operator-illumination-horizon", "\{evidence.max_horizon_angle_deg} deg"),
-        span("max horizon"),
+        b(id="operator-illumination-sunlit", "\{evidence.terrain_sunlit_hours} h"),
+        span("route sun"),
       ]),
       span([
-        b(id="operator-illumination-sun", "\{evidence.max_sun_altitude_deg} deg"),
-        span("max sun"),
+        b(id="operator-illumination-dark", "\{evidence.longest_dark_hours} h"),
+        span("longest dark"),
       ]),
       span([
-        b(id="operator-illumination-margin", "\{evidence.terrain_shadow_margin_deg} deg"),
-        span("shadow margin"),
+        b(id="operator-illumination-energy", "\{evidence.terrain_available_energy_wh} Wh"),
+        span("route energy"),
       ]),
       span([
-        b(id="operator-illumination-confidence", "\{evidence.confidence}"),
-        span("confidence"),
+        b(id="operator-illumination-clearance", "\{evidence.maximum_solar_clearance_deg} deg"),
+        span("best clearance"),
       ]),
     ]),
     div(

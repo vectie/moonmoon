@@ -92,22 +92,20 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
       `${illumination.time_start_utc || 'unknown'} to ${illumination.time_end_utc || 'unknown'}`,
     )
     setText(
-      'operator-illumination-horizon',
-      `${compactNumber(illumination.max_horizon_angle_deg)} deg`,
+      'operator-illumination-sunlit',
+      `${compactNumber(illumination.terrain_sunlit_hours)} h`,
     )
     setText(
-      'operator-illumination-sun',
-      illumination.bounded_horizon
-        ? `${compactNumber(illumination.max_sun_altitude_deg)} deg`
-        : 'not bounded',
+      'operator-illumination-dark',
+      `${compactNumber(illumination.longest_dark_hours)} h`,
     )
     setText(
-      'operator-illumination-margin',
-      `${compactNumber(illumination.terrain_shadow_margin_deg)} deg`,
+      'operator-illumination-energy',
+      `${compactNumber(illumination.terrain_available_energy_wh)} Wh`,
     )
     setText(
-      'operator-illumination-confidence',
-      compactNumber(illumination.confidence, 2),
+      'operator-illumination-clearance',
+      `${compactNumber(illumination.maximum_solar_clearance_deg)} deg`,
     )
     setText('operator-illumination-evidence', illumination.horizon_evidence_path || '')
     updateHorizonProfile(illumination.horizon_profile)

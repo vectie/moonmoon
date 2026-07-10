@@ -146,8 +146,9 @@ fn mission_blockers(
 ) -> Array[String] {
   let blockers = terrain_blockers(terrain)
   if route.illumination.decision != Allow {
+    let horizon = route.illumination.local_horizon
     blockers.push(
-      "selected-route terrain-shadow margin is \{route.illumination.terrain_shadow_margin_deg} deg",
+      "selected route receives \{horizon.terrain_sunlit_hours} terrain-visible hours; longest darkness is \{horizon.longest_dark_hours} hours",
     )
   }
   if energy.decision != Allow {
@@ -225,10 +226,10 @@ pub fn first_trusted_square_dossier() -> SiteDossier {
     power_window_evidence: @mission.first_trusted_square_power_window_evidence(),
     energy,
     clearance_plan,
-    summary: "One small lunar site model with explicit provenance, measured terrain, a reproducible 9x9 corridor scan, DE440 power-window evidence, selected-route local horizon evidence, and a conservative rover energy budget.",
+    summary: "One small lunar site model with explicit provenance, measured terrain, a reproducible 9x9 corridor scan, hourly azimuth-matched DE440 route exposure, and a conservative rover energy budget.",
     blockers: mission_blockers(terrain, selected_route, energy),
     next_questions: [
-      "Collect wider local horizon and terrain-shadow evidence for the selected route.",
+      "Declare and compute a mission window where the Sun rises above the spherical horizon.",
       "Review the promoted northeast-stepout route fixture and decide whether wider sampling should continue around the same corridor.",
       "Review the materialized Operator review workspace entries and close accepted or rejected queue items.",
     ],

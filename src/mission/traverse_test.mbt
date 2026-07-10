@@ -41,7 +41,7 @@ test "first trusted square route candidates use measured adjacent windows" {
   assert_eq(routes[2].route_id, "north-rim-stepout")
   assert_true(routes[2].decision == Block)
   assert_eq(routes[2].evidence_tile_id, "first-trusted-square-north-rim-lola")
-  assert_true(routes[2].next_action.contains("local horizon"))
+  assert_true(routes[2].next_action.contains("mission window"))
   assert_eq(routes[3].route_id, "southwest-bypass")
   assert_true(routes[3].decision == Block)
   assert_eq(
@@ -68,8 +68,9 @@ test "first trusted square route candidates use measured adjacent windows" {
   for route in routes {
     assert_eq(
       route.illumination.local_horizon.method_id,
-      "azimuth-binned-local-horizon-v2",
+      "hourly-azimuth-matched-local-horizon-v3",
     )
+    assert_eq(route.illumination.local_horizon.evaluated_sample_count, 336)
     assert_eq(route.illumination.local_horizon.azimuth_samples.length(), 8)
     assert_true(route.illumination.local_horizon.output_path != "")
   }
@@ -143,6 +144,10 @@ test "first trusted square illumination gate uses computed time window evidence"
   assert_eq(evidence.observer_geometry.samples.length(), 14)
   assert_eq(evidence.observer_geometry.frame_id, "IAU_MOON")
   assert_true(evidence.observer_geometry.samples[13].sun_altitude_deg < -1.12)
+  assert_eq(
+    evidence.observer_geometry.hourly_solar_track.sun_altitude_deg.length(),
+    336,
+  )
   assert_eq(evidence.time_start_utc, "2026-06-25T00:00:00Z")
   assert_eq(evidence.time_end_utc, "2026-07-09T00:00:00Z")
   assert_true(evidence.min_sun_altitude_deg < -1.29)
@@ -153,6 +158,7 @@ test "first trusted square illumination gate uses computed time window evidence"
   let assessment = @mission.assess_illumination(
     @terrain.first_trusted_square_grid(),
     @mission.conservative_illumination_constraint(),
+    evidence.observer_geometry.hourly_solar_track,
   )
   assert_true(assessment.decision == Block)
   assert_eq(
@@ -169,11 +175,11 @@ test "first trusted square illumination gate uses computed time window evidence"
   assert_true(
     assessment.reasons.any(fn(reason) { reason.contains("local relief shadow") }),
   )
-  assert_true(assessment.next_action.contains("local horizon"))
+  assert_true(assessment.next_action.contains("spherical horizon"))
   let horizon = @mission.first_trusted_square_route_candidates()[5].illumination.local_horizon
   assert_eq(
     horizon.evidence_id,
-    "first-trusted-square-northeast-stepout-local-horizon-v2",
+    "first-trusted-square-northeast-stepout-local-horizon-v3",
   )
   assert_eq(
     horizon.output_path,
@@ -182,17 +188,24 @@ test "first trusted square illumination gate uses computed time window evidence"
   assert_true(horizon.max_horizon_angle_deg > horizon.max_sun_altitude_deg)
   assert_true(horizon.max_horizon_angle_deg > 26.48)
   assert_true(horizon.max_horizon_angle_deg < 26.49)
-  assert_true(horizon.terrain_shadow_margin_deg > 0.0)
+  assert_eq(horizon.evaluated_sample_count, 336)
+  assert_eq(horizon.spherical_sunlit_hours, 0.0)
+  assert_eq(horizon.terrain_sunlit_hours, 0.0)
+  assert_eq(horizon.terrain_shadowed_hours, 0.0)
+  assert_eq(horizon.longest_dark_hours, 336.0)
+  assert_eq(horizon.terrain_available_energy_wh, 0.0)
+  assert_true(horizon.maximum_solar_clearance_deg < 0.0)
+  assert_true(horizon.minimum_solar_clearance_deg < -20.0)
   assert_eq(horizon.azimuth_samples.length(), 8)
   assert_eq(horizon.azimuth_samples[6].label, "W")
   assert_true(horizon.azimuth_samples[6].horizon_angle_deg > 26.48)
 }
 
 ///|
-test "selected route action distinguishes attached ephemeris from terrain shadow" {
+test "selected route action distinguishes attached ephemeris from solar window" {
   let selected = @mission.first_trusted_square_route_candidates()[5]
   assert_true(selected.illumination.constraint.has_time_window_ephemeris)
-  assert_true(selected.next_action.contains("local horizon"))
+  assert_true(selected.next_action.contains("mission window"))
   assert_true(!selected.next_action.contains("attach ephemeris"))
 }
 

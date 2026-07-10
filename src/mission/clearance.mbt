@@ -384,9 +384,9 @@ fn illumination_clearance_item(
       check_id,
       route.illumination.local_horizon.output_path,
     ),
-    "illumination confidence \{route.illumination.confidence}, relief-shadow risk \{route.illumination.relief_shadow_risk}, terrain-shadow margin \{route.illumination.terrain_shadow_margin_deg} deg",
-    "confidence >= \{route.illumination.constraint.min_confidence}, relief-shadow risk < \{route.illumination.constraint.max_relief_shadow_risk}, terrain-shadow margin <= 0 deg",
-    "accept local-horizon and terrain-shadow evidence for \{route.route_id} before any Simulation packet is consumable",
+    "illumination confidence \{route.illumination.confidence}, relief-shadow risk \{route.illumination.relief_shadow_risk}, terrain-visible sunlight \{route.illumination.local_horizon.terrain_sunlit_hours} h, longest darkness \{route.illumination.local_horizon.longest_dark_hours} h",
+    "confidence >= \{route.illumination.constraint.min_confidence}, relief-shadow risk < \{route.illumination.constraint.max_relief_shadow_risk}, terrain-visible sunlight >= \{route.illumination.constraint.min_sunlit_hours} h, longest darkness <= \{route.illumination.constraint.max_dark_hours} h",
+    "accept hourly azimuth-matched route exposure for \{route.route_id} before any Simulation packet is consumable",
   )
 }
 

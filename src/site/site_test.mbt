@@ -172,7 +172,7 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_eq(dossier.blockers.length(), 4)
   assert_true(
     dossier.blockers.any(fn(blocker) {
-      blocker.contains("terrain-shadow margin")
+      blocker.contains("terrain-visible hours")
     }),
   )
   assert_true(
@@ -207,7 +207,9 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("lunar-solar-ephemeris-power-window"))
   assert_true(markdown.contains("source metadata sha256"))
   assert_true(markdown.contains("active software-proof fixtures"))
-  assert_true(markdown.contains("local horizon and rover power assumptions"))
+  assert_true(
+    markdown.contains("mission-window selection and rover power assumptions"),
+  )
   assert_true(markdown.contains("## Source Product Selections"))
   assert_true(markdown.contains("ldem_875s_20m_float"))
   assert_true(markdown.contains("Polar Stereographic"))

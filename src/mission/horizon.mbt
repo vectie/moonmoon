@@ -8,6 +8,18 @@ priv struct HorizonCandidate {
 }
 
 ///|
+priv struct RouteSolarExposure {
+  evaluated_sample_count : Int
+  spherical_sunlit_hours : Double
+  terrain_sunlit_hours : Double
+  terrain_shadowed_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
+}
+
+///|
 fn horizon_cell(
   grid : @terrain.TerrainGrid,
   row : Int,
@@ -107,9 +119,69 @@ fn empty_horizon_sample(sector : Int) -> HorizonAzimuthSample {
 }
 
 ///|
+fn route_solar_exposure(
+  horizons : Array[HorizonAzimuthSample],
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
+) -> RouteSolarExposure {
+  let sample_count = solar_track.sun_altitude_deg
+    .length()
+    .min(solar_track.sun_azimuth_deg.length())
+  let mut spherical_sunlit_hours = 0.0
+  let mut terrain_sunlit_hours = 0.0
+  let mut terrain_shadowed_hours = 0.0
+  let mut current_dark_hours = 0.0
+  let mut longest_dark_hours = 0.0
+  let mut terrain_available_energy_wh = 0.0
+  let mut minimum_solar_clearance_deg = 90.0
+  let mut maximum_solar_clearance_deg = -90.0
+  for index in 0..<sample_count {
+    let sun_altitude_deg = solar_track.sun_altitude_deg[index]
+    let sun_azimuth_deg = solar_track.sun_azimuth_deg[index]
+    let horizon_angle_deg = horizons[horizon_sector(sun_azimuth_deg)].horizon_angle_deg.max(
+      0.0,
+    )
+    let clearance_deg = sun_altitude_deg - horizon_angle_deg
+    minimum_solar_clearance_deg = minimum_solar_clearance_deg.min(clearance_deg)
+    maximum_solar_clearance_deg = maximum_solar_clearance_deg.max(clearance_deg)
+    let spherical_sunlit = sun_altitude_deg > 0.0
+    let terrain_sunlit = clearance_deg > 0.0
+    if spherical_sunlit {
+      spherical_sunlit_hours += 1.0
+    }
+    if terrain_sunlit {
+      terrain_sunlit_hours += 1.0
+      current_dark_hours = 0.0
+      terrain_available_energy_wh += 450.0 *
+        @math.sin(sun_altitude_deg * 3.141592653589793 / 180.0)
+    } else {
+      current_dark_hours += 1.0
+      longest_dark_hours = longest_dark_hours.max(current_dark_hours)
+      if spherical_sunlit {
+        terrain_shadowed_hours += 1.0
+      }
+    }
+  }
+  if sample_count == 0 {
+    minimum_solar_clearance_deg = 0.0
+    maximum_solar_clearance_deg = 0.0
+  }
+  {
+    evaluated_sample_count: sample_count,
+    spherical_sunlit_hours,
+    terrain_sunlit_hours,
+    terrain_shadowed_hours,
+    longest_dark_hours,
+    terrain_available_energy_wh,
+    minimum_solar_clearance_deg,
+    maximum_solar_clearance_deg,
+  }
+}
+
+///|
 pub fn bounded_local_horizon_evidence(
   grid : @terrain.TerrainGrid,
   constraint : IlluminationConstraint,
+  solar_track : @lunar_ephemeris.SolarGeometryTrack,
 ) -> LocalHorizonEvidence {
   let center_elevation_m = horizon_center_elevation(grid)
   let center_row = (grid.rows - 1).to_double() / 2.0
@@ -167,18 +239,22 @@ pub fn bounded_local_horizon_evidence(
     }
   }
   let maximum = maximum.unwrap()
-  let terrain_shadow_margin_deg = maximum.horizon_angle_deg -
-    constraint.max_sun_altitude_deg
-  let decision = if terrain_shadow_margin_deg > 0.0 {
+  let exposure = route_solar_exposure(azimuth_samples, solar_track)
+  let missing_samples = exposure.evaluated_sample_count == 0
+  let insufficient_sun = exposure.terrain_sunlit_hours <
+    constraint.min_sunlit_hours
+  let excessive_darkness = exposure.longest_dark_hours >
+    constraint.max_dark_hours
+  let decision = if missing_samples || insufficient_sun || excessive_darkness {
     Block
-  } else if maximum.horizon_angle_deg > constraint.min_sun_altitude_deg {
+  } else if exposure.terrain_shadowed_hours > 0.0 {
     Review
   } else {
     Allow
   }
   let route_id = horizon_route_id(grid.tile_id)
   {
-    evidence_id: "first-trusted-square-\{route_id}-local-horizon-v2",
+    evidence_id: "first-trusted-square-\{route_id}-local-horizon-v3",
     route_id,
     site_id: "first-trusted-square",
     source_dataset_id: grid.source_manifest.dataset_id,
@@ -187,7 +263,7 @@ pub fn bounded_local_horizon_evidence(
     power_window_evidence_id: constraint.power_window_evidence_id,
     power_window_source_path: constraint.power_window_source_path,
     output_path: horizon_artifact_path(route_id),
-    method_id: "azimuth-binned-local-horizon-v2",
+    method_id: "hourly-azimuth-matched-local-horizon-v3",
     generated_by: "vectie/moonmoon/src/mission/horizon.mbt",
     rows: grid.rows,
     cols: grid.cols,
@@ -197,20 +273,35 @@ pub fn bounded_local_horizon_evidence(
     max_horizon_angle_deg: maximum.horizon_angle_deg,
     min_sun_altitude_deg: constraint.min_sun_altitude_deg,
     max_sun_altitude_deg: constraint.max_sun_altitude_deg,
-    terrain_shadow_margin_deg,
+    evaluated_sample_count: exposure.evaluated_sample_count,
+    spherical_sunlit_hours: exposure.spherical_sunlit_hours,
+    terrain_sunlit_hours: exposure.terrain_sunlit_hours,
+    terrain_shadowed_hours: exposure.terrain_shadowed_hours,
+    longest_dark_hours: exposure.longest_dark_hours,
+    terrain_available_energy_wh: exposure.terrain_available_energy_wh,
+    minimum_solar_clearance_deg: exposure.minimum_solar_clearance_deg,
+    maximum_solar_clearance_deg: exposure.maximum_solar_clearance_deg,
     azimuth_samples,
     confidence: @terrain.analyze(grid).uncertainty.confidence * 0.875,
     decision,
     reasons: [
       "eight-sector bounded local horizon computed from \{grid.source_manifest.source_path}",
-      "maximum horizon angle \{maximum.horizon_angle_deg} deg is compared with sampled Sun altitude \{constraint.max_sun_altitude_deg} deg",
-      "terrain-shadow margin is \{terrain_shadow_margin_deg} deg",
+      "\{exposure.evaluated_sample_count} hourly Sun samples were matched to terrain horizon by azimuth",
+      "route receives \{exposure.terrain_sunlit_hours} terrain-visible hours and \{exposure.terrain_available_energy_wh} Wh",
+      "longest continuous darkness is \{exposure.longest_dark_hours} hours",
     ],
     next_action: match decision {
-      Allow => "local terrain horizon clears the sampled Sun altitude window"
-      Review => "review low-margin azimuth sectors before route simulation"
+      Allow => "hourly route exposure clears the illumination window"
+      Review =>
+        "review terrain-shadowed daylight intervals before route simulation"
       Block =>
-        "bounded local horizon measures terrain-shadow blockage; widen the horizon grid or select a lower-obstruction route"
+        if missing_samples {
+          "attach hourly Sun geometry before route simulation"
+        } else if exposure.spherical_sunlit_hours == 0.0 {
+          "select a mission window where the Sun rises above the spherical horizon"
+        } else {
+          "select a lower-obstruction route or a window with enough terrain-visible sunlight"
+        }
     },
   }
 }

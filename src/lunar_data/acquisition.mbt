@@ -99,7 +99,7 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> LunarAcquisitionPlan
     local_source_directory: "data/sources/lunar_ephemeris/",
     local_metadata_path: "data/sources/lunar_ephemeris/README.md",
     extracted_fixture_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    trust_gate: "Computed from cited NAIF ephemeris/orientation sources with pinned checksums; local horizon and rover power assumptions still require review before energy can move out of block.",
+    trust_gate: "Computed from cited NAIF ephemeris/orientation sources with pinned checksums; mission-window selection and rover power assumptions still require review before energy can move out of block.",
     steps: [
       {
         step_id: "discover-source",

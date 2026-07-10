@@ -21,10 +21,12 @@ the Sun below the spherical horizon throughout, so verified solar energy is
 zero before local terrain shadow is applied. Panel attitude and wider terrain
 evidence remain explicit blockers.
 
-`first_trusted_square_observer_timeline.json` contains 14 daily samples over
-the same half-open UTC window. Each sample records body-fixed Sun and Earth
-vectors, local altitude and azimuth, and Earth illuminated fraction for the
-trusted-square observer. `cmd/ephemeris` computes both the JSON artifact and
+`first_trusted_square_observer_timeline.json` contains 14 daily full-observer
+samples and 336 compact hourly Sun samples over the same half-open UTC window.
+Daily samples record body-fixed Sun and Earth vectors, local altitude and
+azimuth, and Earth illuminated fraction. The hourly track stores one start
+time, one fixed cadence, and parallel Sun altitude/azimuth arrays for
+route-horizon evaluation. `cmd/ephemeris` computes both the JSON artifact and
 its typed MoonBit fixture directly from the pinned DE440s kernel.
 The phase fraction is the illuminated Earth disc seen from the Moon, so it is
 complementary to the Moon phase seen from Earth.

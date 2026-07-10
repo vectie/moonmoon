@@ -19,6 +19,14 @@ pub(all) struct ObserverGeometrySample {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct SolarGeometryTrack {
+  time_start_utc : String
+  step_minutes : Int
+  sun_altitude_deg : Array[Double]
+  sun_azimuth_deg : Array[Double]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct ObserverGeometryTimeline {
   method_id : String
   frame_id : String
@@ -33,6 +41,7 @@ pub(all) struct ObserverGeometryTimeline {
   sunlit_hours : Double
   dark_hours : Double
   available_energy_wh : Double
+  hourly_solar_track : SolarGeometryTrack
   samples : Array[ObserverGeometrySample]
 } derive(Debug, Eq, ToJson, FromJson)
 

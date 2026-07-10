@@ -198,6 +198,8 @@ fn first_trusted_square_observer_timeline(
   kernel : SpkKernel,
 ) -> ObserverGeometryTimeline {
   let samples : Array[ObserverGeometrySample] = []
+  let hourly_sun_altitude_deg : Array[Double] = []
+  let hourly_sun_azimuth_deg : Array[Double] = []
   let start_unix_s = 1782345600L
   let mut min_sun_altitude_deg = 90.0
   let mut max_sun_altitude_deg = -90.0
@@ -211,6 +213,8 @@ fn first_trusted_square_observer_timeline(
       -89.88,
       0.12,
     )
+    hourly_sun_altitude_deg.push(sample.sun_altitude_deg)
+    hourly_sun_azimuth_deg.push(sample.sun_azimuth_deg)
     min_sun_altitude_deg = min_sun_altitude_deg.min(sample.sun_altitude_deg)
     max_sun_altitude_deg = max_sun_altitude_deg.max(sample.sun_altitude_deg)
     if sample.sun_altitude_deg > 0.0 {
@@ -244,6 +248,12 @@ fn first_trusted_square_observer_timeline(
     sunlit_hours,
     dark_hours,
     available_energy_wh,
+    hourly_solar_track: {
+      time_start_utc: iso_timestamp(start_unix_s),
+      step_minutes: 60,
+      sun_altitude_deg: hourly_sun_altitude_deg,
+      sun_azimuth_deg: hourly_sun_azimuth_deg,
+    },
     samples,
   }
 }

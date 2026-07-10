@@ -33,6 +33,26 @@ test "DE440s observer timeline reproduces the checked polar Sun window" {
   assert_true(close(timeline.sunlit_hours, fixture.sunlit_hours))
   assert_true(close(timeline.dark_hours, fixture.dark_hours))
   assert_true(close(timeline.available_energy_wh, fixture.available_energy_wh))
+  let actual_track = timeline.hourly_solar_track
+  let expected_track = fixture.hourly_solar_track
+  assert_eq(actual_track.time_start_utc, expected_track.time_start_utc)
+  assert_eq(actual_track.step_minutes, expected_track.step_minutes)
+  assert_eq(actual_track.sun_altitude_deg.length(), 336)
+  assert_eq(actual_track.sun_azimuth_deg.length(), 336)
+  for index in 0..<actual_track.sun_altitude_deg.length() {
+    assert_true(
+      close(
+        actual_track.sun_altitude_deg[index],
+        expected_track.sun_altitude_deg[index],
+      ),
+    )
+    assert_true(
+      close(
+        actual_track.sun_azimuth_deg[index],
+        expected_track.sun_azimuth_deg[index],
+      ),
+    )
+  }
   assert_eq(timeline.samples.length(), fixture.samples.length())
   for index in 0..<timeline.samples.length() {
     let actual = timeline.samples[index]

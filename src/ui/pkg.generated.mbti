@@ -224,7 +224,14 @@ pub(all) struct RouteIlluminationView {
   relief_shadow_risk : Double
   max_horizon_angle_deg : Double
   max_sun_altitude_deg : Double
-  terrain_shadow_margin_deg : Double
+  evaluated_sample_count : Int
+  spherical_sunlit_hours : Double
+  terrain_sunlit_hours : Double
+  terrain_shadowed_hours : Double
+  longest_dark_hours : Double
+  terrain_available_energy_wh : Double
+  minimum_solar_clearance_deg : Double
+  maximum_solar_clearance_deg : Double
   bounded_horizon : Bool
   time_start_utc : String
   time_end_utc : String

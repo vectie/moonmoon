@@ -9,9 +9,9 @@ hard-coded light vector. The operator can scrub 14 daily samples across the
 existing half-open power window and switch between physical illumination and
 an explicitly readable ambient-fill mode.
 
-This is visualization evidence, not route clearance. Terrain-shadow decisions
-continue to use the bounded route horizon profiles and the hourly power-window
-extrema.
+The 14 full samples are visualization evidence. A compact 336-sample hourly
+Sun track drives route clearance by matching each Sun azimuth to the measured
+terrain horizon sector.
 
 ## Step 1: Compute Observer Geometry
 
@@ -23,6 +23,8 @@ extrema.
 4. Each sample records body-fixed Sun and Earth vectors, local altitude and
    azimuth, and Earth illuminated fraction at the trusted-square observer.
    Earth phase is complementary to the Moon phase seen from Earth.
+5. A separate compact hourly track stores one start time, one fixed cadence,
+   and parallel Sun altitude/azimuth arrays for mission calculations.
 
 ## Step 2: Keep One Build Boundary
 
@@ -31,8 +33,8 @@ extrema.
    `data/sources/lunar_ephemeris`.
 3. It writes the typed MoonBit fixture consumed by mission and browser builds.
 4. The same command recomputes the hourly power-window summary.
-5. Tests recompute the timeline from the binary kernel and compare every field
-   with tight floating-point tolerances.
+5. Tests recompute both daily and hourly samples from the binary kernel and
+   compare every field with tight floating-point tolerances.
 
 ## Step 3: Project Product State
 
@@ -42,6 +44,9 @@ extrema.
    into every route.
 4. The highest daily Sun sample is the initial timestamp; it remains below the
    spherical horizon in this declared window.
+5. `src/mission` matches every hourly Sun sample to the corresponding
+   eight-sector route horizon and computes visible hours, longest darkness,
+   route energy, and solar-clearance range.
 
 ## Step 4: Drive The Globe
 
@@ -73,6 +78,8 @@ extrema.
 - No hard-coded globe light direction remains.
 - Moving the timeline changes the timestamp and source-backed Sun vector.
 - An open Earthrise preview follows the same timeline and mode.
+- Route evidence evaluates all 336 hourly samples against azimuth-matched
+  terrain horizons.
 - Physical and readable modes remain distinguishable.
 - The 390x844, 768x1024, and 1440x900 layouts have no overlap or horizontal
   overflow.

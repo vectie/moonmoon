@@ -25,6 +25,8 @@
    `docs/LUNAR_LIGHTING_PHASE.md` separate from route-clearance authority.
 10. Keep the third-person Earthrise view synchronized with that same observer
     timeline; texture rotation remains presentation, not lighting authority.
+11. Keep route illumination tied to all 336 hourly Sun samples and the matching
+    measured horizon sector; do not return to extrema-only shadow claims.
 
 ## Next
 

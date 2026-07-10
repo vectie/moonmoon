@@ -108,11 +108,10 @@ change before traversal is allowed.
 
 ## Phase 2: Deliver the Canonical Lunar Operator Experience
 
-Status: active. The generated inspection page proved the movable Moon and
-view-model boundary. The next step is to make `ui/rabbita-moon` the canonical
-interactive product, retain the generated page as a static report, and remove
-the current conflict between a blocked route and an always-on robot scene. The
-detailed checkpoint plan is in `docs/UI_UX_NEXT_PHASE.md`.
+Status: complete. `ui/rabbita-moon` is the canonical interactive product,
+the generated page remains a static report, and robot motion stays behind a
+mission-gated adapter preview. The completed checkpoint record is in
+`docs/UI_UX_NEXT_PHASE.md`.
 Checkpoint 2 now supports route-candidate inspection and terrain-cell
 selection without changing the mission-selected route authority.
 

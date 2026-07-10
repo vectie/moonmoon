@@ -18,12 +18,12 @@ fn observer_timeline_path() -> String {
 
 ///|
 fn observer_timeline_sha256() -> String {
-  "449c8f3ab8aadc8a0a8d623d8c6cf92d04897167654e8d5b17aa5fa74cd797ea"
+  "1530b15db38912e266461ff7e1f64197521c4002d15358052eeb48b2d960950a"
 }
 
 ///|
 fn observer_timeline_bytes() -> Int64 {
-  9172L
+  26853L
 }
 
 ///|
