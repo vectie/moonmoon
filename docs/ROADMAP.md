@@ -21,6 +21,8 @@
 8. Follow the immediate step-by-step data plan in `docs/DATA_LAYER.md`: keep
    the generic root readable, migrate one robot dataset family at a time, and
    keep product labels tied to validated catalog evidence.
+9. Keep the checked DE440 globe-lighting boundary in
+   `docs/LUNAR_LIGHTING_PHASE.md` separate from route-clearance authority.
 
 ## Next
 

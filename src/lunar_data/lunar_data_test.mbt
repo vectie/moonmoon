@@ -4,7 +4,7 @@ test "first trusted square projects lunar records into generic data contracts" {
   assert_eq(sources.length(), 2)
   assert_eq(sources[0].source_id, "source-lro-lola-gdr-south-pole-v1")
   assert_eq(sources[0].source_refs.length(), 2)
-  assert_eq(sources[1].source_refs[0].byte_count, 1191L)
+  assert_eq(sources[1].source_refs[0].byte_count, 1669L)
   let datasets = @lunar_data.first_trusted_square_lunar_datasets()
   assert_eq(datasets.length(), 2)
   assert_eq(datasets[0].source_ids[0], sources[0].source_id)
@@ -14,6 +14,9 @@ test "first trusted square projects lunar records into generic data contracts" {
     "sources/lro_lola/first_trusted_square_dem.csv",
   )
   assert_true(datasets[1].status == @data_core.DataStatus::Curated)
+  assert_eq(datasets[1].data_refs.length(), 2)
+  assert_eq(datasets[1].data_refs[0].byte_count, 3883L)
+  assert_eq(datasets[1].data_refs[1].byte_count, 9157L)
 }
 
 ///|

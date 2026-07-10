@@ -126,6 +126,57 @@ fn selected_route_view(view : @ui.TrustedSquareViewModel) -> @ui.RouteView {
 }
 
 ///|
+fn lunar_lighting_control(view : @ui.TrustedSquareViewModel) -> Html {
+  let lighting = view.lighting
+  let sample = lighting.samples[lighting.default_sample_index]
+  div(
+    class="stage-lighting",
+    attrs=@html.Attrs::build().aria_label("DE440 lunar lighting timeline"),
+    [
+      div(class="stage-lighting-head", [
+        div([
+          span(class="eyebrow", "DE440 Sun"),
+          b(id="moon-lighting-time", sample.timestamp_utc),
+        ]),
+        button(
+          id="moon-lighting-mode",
+          class="lighting-mode",
+          type_="button",
+          attrs=@html.Attrs::build()
+            .aria_label("Toggle readable lighting")
+            .aria_pressed("false"),
+          "Physical",
+        ),
+      ]),
+      input(
+        input_type=@html.Range,
+        id="moon-lighting-time-index",
+        class="lighting-scrubber",
+        min=0,
+        max=lighting.samples.length() - 1,
+        step=1,
+        value="\{lighting.default_sample_index}",
+        attrs=@html.Attrs::build().aria_label("Lighting timestamp"),
+      ),
+      div(class="lighting-readout", [
+        span([
+          b(id="moon-lighting-altitude", "\{sample.sun_altitude_deg}"),
+          span("sun alt"),
+        ]),
+        span([
+          b(id="moon-lighting-azimuth", "\{sample.sun_azimuth_deg}"),
+          span("azimuth"),
+        ]),
+        span([
+          b(id="moon-earth-phase", "\{sample.earth_illuminated_fraction}"),
+          span("Earth lit"),
+        ]),
+      ]),
+    ],
+  )
+}
+
+///|
 fn route_picker(view : @ui.TrustedSquareViewModel) -> Html {
   let choices : Array[Html] = []
   for route in view.routes {
@@ -310,6 +361,7 @@ fn operator_scene(model : Model) -> Html {
             ),
           ]),
         ]),
+        lunar_lighting_control(view),
         div(
           class="stage-controls",
           attrs=@html.Attrs::build().aria_label("Moon view controls"),

@@ -22,6 +22,14 @@ test "first trusted square view model exposes terrain and routes" {
   assert_eq(view.corridor_windows[0].window_id, "r-12-c+16")
   assert_eq(view.corridor_windows[0].selected_route_id, "northeast-stepout")
   assert_eq(view.selected_route_id, "northeast-stepout")
+  assert_eq(
+    view.lighting.method_id,
+    "de440s-iau-moon-pck11-observer-geometry-v2",
+  )
+  assert_eq(view.lighting.samples.length(), 14)
+  assert_eq(view.lighting.default_sample_index, 13)
+  assert_true(view.lighting.orientation_source_path.contains("pck00011.tpc"))
+  assert_true(view.lighting.samples[13].sun_altitude_deg < -1.12)
   assert_eq(view.active_layer_id, "hazard")
   assert_true(view.scorecard.next_action.contains("terrain grade"))
   assert_true(view.layers.length() >= 7)
@@ -112,7 +120,7 @@ test "first trusted square view model exposes layer intensities" {
     if value.layer_id == "power" {
       saw_power = true
       assert_eq(value.status, "block")
-      assert_true(value.value > 230.0)
+      assert_eq(value.value, 0.0)
     }
   }
   assert_true(saw_elevation)

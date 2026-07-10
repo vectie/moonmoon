@@ -1,0 +1,283 @@
+{
+  "method_id": "de440s-iau-moon-pck11-observer-geometry-v2",
+  "frame_id": "IAU_MOON",
+  "source_path": "data/sources/lunar_ephemeris/kernels/de440s.bsp",
+  "orientation_source_path": "data/sources/lunar_ephemeris/kernels/pck00011.tpc",
+  "target_lat_deg": -89.88,
+  "target_lon_deg": 0.12,
+  "sample_step_minutes": 1440,
+  "aggregate_step_minutes": 60,
+  "min_sun_altitude_deg": -1.2948022197016666,
+  "max_sun_altitude_deg": -1.1251495974168213,
+  "sunlit_hours": 0,
+  "dark_hours": 336,
+  "available_energy_wh": 0,
+  "samples": [
+    {
+      "timestamp_utc": "2026-06-25T00:00:00Z",
+      "ephemeris_time_s": 835617669.184,
+      "sun_body_fixed": {
+        "x": 0.5070957091533028,
+        "y": 0.8615648708350423,
+        "z": 0.023662525252102717
+      },
+      "earth_body_fixed": {
+        "x": 0.9908106357991993,
+        "y": 0.08331965674990333,
+        "z": 0.10654632225593161
+      },
+      "sun_altitude_deg": -1.2948022197016666,
+      "sun_azimuth_deg": 59.397599231530315,
+      "earth_altitude_deg": -5.996665287834983,
+      "earth_azimuth_deg": 4.685790843222153,
+      "earth_illuminated_fraction": 0.78837113317194
+    },
+    {
+      "timestamp_utc": "2026-06-26T00:00:00Z",
+      "ephemeris_time_s": 835704069.184,
+      "sun_body_fixed": {
+        "x": 0.6777736606035116,
+        "y": 0.7348929642160403,
+        "z": 0.023562600405675926
+      },
+      "earth_body_fixed": {
+        "x": 0.9914947370565856,
+        "y": 0.06336151787453342,
+        "z": 0.11368159236097747
+      },
+      "sun_altitude_deg": -1.2686209513056752,
+      "sun_azimuth_deg": 47.19340534469447,
+      "earth_altitude_deg": -6.407815624786808,
+      "earth_azimuth_deg": 3.535678291367021,
+      "earth_illuminated_fraction": 0.8606257925131422
+    },
+    {
+      "timestamp_utc": "2026-06-27T00:00:00Z",
+      "ephemeris_time_s": 835790469.184,
+      "sun_body_fixed": {
+        "x": 0.8177786256423765,
+        "y": 0.5750559759555927,
+        "z": 0.02342528463491056
+      },
+      "earth_body_fixed": {
+        "x": 0.9923749854664439,
+        "y": 0.04207333101416755,
+        "z": 0.11585216026405287
+      },
+      "sun_altitude_deg": -1.2439870574548826,
+      "sun_azimuth_deg": 34.993054058183965,
+      "earth_altitude_deg": -6.532876073478647,
+      "earth_azimuth_deg": 2.307134310449171,
+      "earth_illuminated_fraction": 0.9192257209972157
+    },
+    {
+      "timestamp_utc": "2026-06-28T00:00:00Z",
+      "ephemeris_time_s": 835876869.184,
+      "sun_body_fixed": {
+        "x": 0.920823014330798,
+        "y": 0.38928746359254296,
+        "z": 0.02324321338428681
+      },
+      "earth_body_fixed": {
+        "x": 0.9933867049231678,
+        "y": 0.020082889636540313,
+        "z": 0.1130465922783066
+      },
+      "sun_altitude_deg": -1.2212312984953286,
+      "sun_azimuth_deg": 22.79567826671216,
+      "earth_altitude_deg": -6.370987966608698,
+      "earth_azimuth_deg": 1.037922356148726,
+      "earth_illuminated_fraction": 0.9625894616291997
+    },
+    {
+      "timestamp_utc": "2026-06-29T00:00:00Z",
+      "ephemeris_time_s": 835963269.184,
+      "sun_body_fixed": {
+        "x": 0.9822850803638236,
+        "y": 0.18597439501970406,
+        "z": 0.023011851113977466
+      },
+      "earth_body_fixed": {
+        "x": 0.9944284649633458,
+        "y": -0.002129133408657849,
+        "z": 0.10539210056532539
+      },
+      "sun_altitude_deg": -1.200646320242428,
+      "sun_azimuth_deg": 10.600334194708452,
+      "earth_altitude_deg": -5.929758690329912,
+      "earth_azimuth_deg": 359.75737966936595,
+      "earth_illuminated_fraction": 0.9894207738259004
+    },
+    {
+      "timestamp_utc": "2026-06-30T00:00:00Z",
+      "ephemeris_time_s": 836049669.184,
+      "sun_body_fixed": {
+        "x": 0.9994108030228226,
+        "y": -0.025717624686395213,
+        "z": 0.022729949004927363
+      },
+      "earth_body_fixed": {
+        "x": 0.9953573453207396,
+        "y": -0.024160264190343825,
+        "z": 0.09316671481974065
+      },
+      "sun_altitude_deg": -1.1824887512407338,
+      "sun_azimuth_deg": 358.40601764792666,
+      "earth_altitude_deg": -5.225853985108122,
+      "earth_azimuth_deg": 358.4898277665803,
+      "earth_illuminated_fraction": 0.9987549515326231
+    },
+    {
+      "timestamp_utc": "2026-07-01T00:00:00Z",
+      "ephemeris_time_s": 836136069.184,
+      "sun_body_fixed": {
+        "x": 0.9714336145473089,
+        "y": -0.23625196490380956,
+        "z": 0.022399589430152467
+      },
+      "earth_body_fixed": {
+        "x": 0.9960022561288155,
+        "y": -0.045606867897948156,
+        "z": 0.07680832888983169
+      },
+      "sun_altitude_deg": -1.1669674869182771,
+      "sun_azimuth_deg": 346.2116822792938,
+      "earth_altitude_deg": -4.285269041575182,
+      "earth_azimuth_deg": 357.25869803783763,
+      "earth_illuminated_fraction": 0.9900226294772185
+    },
+    {
+      "timestamp_utc": "2026-07-02T00:00:00Z",
+      "ephemeris_time_s": 836222469.184,
+      "sun_body_fixed": {
+        "x": 0.8996072992180296,
+        "y": -0.43614397909717,
+        "z": 0.022025818734609404
+      },
+      "earth_body_fixed": {
+        "x": 0.9961958322087933,
+        "y": -0.06598803967511385,
+        "z": 0.05691610061894131
+      },
+      "sun_altitude_deg": -1.1542188060225158,
+      "sun_azimuth_deg": 334.01626070103646,
+      "earth_altitude_deg": -3.143094831162777,
+      "earth_azimuth_deg": 356.0907201464273,
+      "earth_illuminated_fraction": 0.9631094760088248
+    },
+    {
+      "timestamp_utc": "2026-07-03T00:00:00Z",
+      "ephemeris_time_s": 836308869.184,
+      "sun_body_fixed": {
+        "x": 0.7871509282982949,
+        "y": -0.6163815110421523,
+        "z": 0.02161594144435086
+      },
+      "earth_body_fixed": {
+        "x": 0.9958190502287192,
+        "y": -0.08468648149311264,
+        "z": 0.034243525722224666
+      },
+      "sun_altitude_deg": -1.1442726415358058,
+      "sun_azimuth_deg": 321.81868848936216,
+      "earth_altitude_deg": -1.8428462665632535,
+      "earth_azimuth_deg": 355.01949185808957,
+      "earth_illuminated_fraction": 0.9183996386395452
+    },
+    {
+      "timestamp_utc": "2026-07-04T00:00:00Z",
+      "ephemeris_time_s": 836395269.184,
+      "sun_body_fixed": {
+        "x": 0.6391082042476846,
+        "y": -0.7688251881476157,
+        "z": 0.02117860555095663
+      },
+      "earth_body_fixed": {
+        "x": 0.9948475887602681,
+        "y": -0.10091805929542769,
+        "z": 0.00968609549429239
+      },
+      "sun_altitude_deg": -1.1370171459875411,
+      "sun_azimuth_deg": 309.6179309674212,
+      "earth_altitude_deg": -0.4356193733439604,
+      "earth_azimuth_deg": 354.0877953484051,
+      "earth_illuminated_fraction": 0.8568043699369081
+    },
+    {
+      "timestamp_utc": "2026-07-05T00:00:00Z",
+      "ephemeris_time_s": 836481669.184,
+      "sun_body_fixed": {
+        "x": 0.46212698544866926,
+        "y": -0.8865716063915259,
+        "z": 0.02072283910265127
+      },
+      "earth_body_fixed": {
+        "x": 0.9933861877603567,
+        "y": -0.11373828074659292,
+        "z": -0.01573167059643349
+      },
+      "sun_altitude_deg": -1.1321700360077633,
+      "sun_azimuth_deg": 297.41301316765754,
+      "earth_altitude_deg": 1.0205877307978688,
+      "earth_azimuth_deg": 353.34809865104216,
+      "earth_illuminated_fraction": 0.7797908448635854
+    },
+    {
+      "timestamp_utc": "2026-07-06T00:00:00Z",
+      "ephemeris_time_s": 836568069.184,
+      "sun_body_fixed": {
+        "x": 0.2641679648087699,
+        "y": -0.9642639329250318,
+        "z": 0.020257196961638302
+      },
+      "earth_body_fixed": {
+        "x": 0.9916773094132796,
+        "y": -0.12209044856448935,
+        "z": -0.04086607840447182
+      },
+      "sun_altitude_deg": -1.1292647385400811,
+      "sun_azimuth_deg": 285.2030543712641,
+      "earth_altitude_deg": 2.461175744672829,
+      "earth_azimuth_deg": 352.8607181988466,
+      "earth_illuminated_fraction": 0.6894344802404148
+    },
+    {
+      "timestamp_utc": "2026-07-07T00:00:00Z",
+      "ephemeris_time_s": 836654469.184,
+      "sun_body_fixed": {
+        "x": 0.05415437300809406,
+        "y": -0.9983364631653678,
+        "z": 0.019789143452010383
+      },
+      "earth_body_fixed": {
+        "x": 0.9900733296076355,
+        "y": -0.12489784933730991,
+        "z": -0.0644618432141463
+      },
+      "sun_altitude_deg": -1.1276571155418953,
+      "sun_azimuth_deg": 272.987309641062,
+      "earth_altitude_deg": 3.8149787936970614,
+      "earth_azimuth_deg": 352.68910851097365,
+      "earth_illuminated_fraction": 0.5885156164493814
+    },
+    {
+      "timestamp_utc": "2026-07-08T00:00:00Z",
+      "ephemeris_time_s": 836740869.184,
+      "sun_body_fixed": {
+        "x": -0.15842296233381073,
+        "y": -0.9871822118971155,
+        "z": 0.01932473853117367
+      },
+      "earth_body_fixed": {
+        "x": 0.9889677018904746,
+        "y": -0.12120074615222026,
+        "z": -0.08516609507085991
+      },
+      "sun_altitude_deg": -1.1265549209755907,
+      "sun_azimuth_deg": 260.7652210485689,
+      "earth_altitude_deg": 5.004653925341651,
+      "earth_azimuth_deg": 352.89179822233336,
+      "earth_illuminated_fraction": 0.4806631075826071
+    }
+  ]
+}

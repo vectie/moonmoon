@@ -128,7 +128,7 @@ pub fn first_trusted_square_ephemeris_source() -> @data_core.DataSource {
     source_refs=[
       source_ref(
         "lunar-ephemeris-readme", "source-readme", "sources/lunar_ephemeris/README.md",
-        "text/markdown", 1191L, "b1686be89429b6b4a0c66bd6f7dc48ae547ec7f87bbc76fd4eade5b098f6d874",
+        "text/markdown", 1669L, "df09ba50641fa6d4a4caf5b0213ad05b492973afe255103122d3b52f07469906",
       ),
     ],
   )

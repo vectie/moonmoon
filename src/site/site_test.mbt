@@ -143,10 +143,10 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(dossier.energy.decision == @mission.TraverseDecision::Block)
   assert_eq(
     dossier.power_window_evidence.evidence_id,
-    "first-trusted-square-power-window-computed-v1",
+    "first-trusted-square-power-window-computed-v2",
   )
   assert_eq(dossier.power_window_evidence.source_status, "ready")
-  assert_true(dossier.power_window_evidence.available_energy_wh > 230.0)
+  assert_eq(dossier.power_window_evidence.available_energy_wh, 0.0)
   assert_eq(dossier.energy.route_count, 6)
   assert_eq(dossier.energy.blocked_route_count, 6)
   assert_eq(dossier.clearance_plan.route_id, "northeast-stepout")
@@ -238,14 +238,14 @@ test "first trusted square dossier renders the first Moonmoon evidence surface" 
   assert_true(markdown.contains("naif0012.tls"))
   assert_true(markdown.contains("de440s.bsp"))
   assert_true(markdown.contains("moon_de440_250416.tf"))
-  assert_true(markdown.contains("south-pole-power-window-v1"))
+  assert_true(markdown.contains("south-pole-power-window-v2"))
   assert_true(markdown.contains("has time-windowed ephemeris: true"))
   assert_true(markdown.contains("conservative-south-pole-energy-v1"))
   assert_true(
-    markdown.contains("first-trusted-square-power-window-computed-v1"),
+    markdown.contains("first-trusted-square-power-window-computed-v2"),
   )
   assert_true(markdown.contains("power-window source status: ready"))
-  assert_true(markdown.contains("verified available energy: 234.938073"))
+  assert_true(markdown.contains("verified available energy: 0"))
   assert_true(markdown.contains("## Route Candidates"))
   assert_true(markdown.contains("west-contour-detour"))
   assert_true(markdown.contains("north-rim-stepout"))
@@ -345,11 +345,11 @@ test "first trusted square dossier exports machine-readable evidence" {
   assert_true(
     text.contains("\"budget_id\": \"conservative-south-pole-energy-v1\""),
   )
-  assert_true(text.contains("\"available_energy_wh\": 234.938073"))
+  assert_true(text.contains("\"available_energy_wh\": 0"))
   assert_true(text.contains("\"power_window_source_status\": \"ready\""))
   assert_true(
     text.contains(
-      "\"power_window_evidence_id\": \"first-trusted-square-power-window-computed-v1\"",
+      "\"power_window_evidence_id\": \"first-trusted-square-power-window-computed-v2\"",
     ),
   )
   assert_true(text.contains("\"route_candidates\""))

@@ -113,7 +113,7 @@ test "first trusted square illumination gate uses computed time window evidence"
   let evidence = @mission.first_trusted_square_power_window_evidence()
   assert_eq(
     evidence.evidence_id,
-    "first-trusted-square-power-window-computed-v1",
+    "first-trusted-square-power-window-computed-v2",
   )
   assert_eq(evidence.source_status, "ready")
   assert_eq(
@@ -138,16 +138,18 @@ test "first trusted square illumination gate uses computed time window evidence"
     evidence.source_sha256,
     "d1a84599750c76ae4b93afec9ae2e6a002e5a0fba9c6704ca8cd32a530eacf59",
   )
-  assert_eq(evidence.computation.method_id, "south-pole-power-window-v1")
+  assert_eq(evidence.computation.method_id, "south-pole-power-window-v2")
   assert_eq(evidence.computation.status, "computed")
+  assert_eq(evidence.observer_geometry.samples.length(), 14)
+  assert_eq(evidence.observer_geometry.frame_id, "IAU_MOON")
+  assert_true(evidence.observer_geometry.samples[13].sun_altitude_deg < -1.12)
   assert_eq(evidence.time_start_utc, "2026-06-25T00:00:00Z")
   assert_eq(evidence.time_end_utc, "2026-07-09T00:00:00Z")
-  assert_eq(evidence.min_sun_altitude_deg, -0.012003)
-  assert_eq(evidence.max_sun_altitude_deg, 0.130418)
-  assert_eq(evidence.sunlit_hours, 323.0)
-  assert_eq(evidence.dark_hours, 13.0)
-  assert_true(evidence.available_energy_wh > 230.0)
-  assert_true(evidence.available_energy_wh < 240.0)
+  assert_true(evidence.min_sun_altitude_deg < -1.29)
+  assert_true(evidence.max_sun_altitude_deg < -1.12)
+  assert_eq(evidence.sunlit_hours, 0.0)
+  assert_eq(evidence.dark_hours, 336.0)
+  assert_eq(evidence.available_energy_wh, 0.0)
   let assessment = @mission.assess_illumination(
     @terrain.first_trusted_square_grid(),
     @mission.conservative_illumination_constraint(),
@@ -201,7 +203,7 @@ test "first trusted square energy window blocks insufficient computed power" {
   assert_eq(assessment.budget.budget_id, "conservative-south-pole-energy-v1")
   assert_eq(
     assessment.budget.power_window_evidence_id,
-    "first-trusted-square-power-window-computed-v1",
+    "first-trusted-square-power-window-computed-v2",
   )
   assert_eq(assessment.budget.power_window_source_status, "ready")
   assert_eq(
@@ -210,10 +212,9 @@ test "first trusted square energy window blocks insufficient computed power" {
   )
   assert_eq(assessment.route_count, 6)
   assert_eq(assessment.blocked_route_count, 6)
-  assert_eq(assessment.budget.assumed_dark_survival_hours, 13.0)
+  assert_eq(assessment.budget.assumed_dark_survival_hours, 336.0)
   assert_true(assessment.required_energy_wh > 1200.0)
-  assert_true(assessment.available_energy_wh > 230.0)
-  assert_true(assessment.available_energy_wh < 240.0)
+  assert_eq(assessment.available_energy_wh, 0.0)
   assert_true(assessment.margin_wh < 0.0)
   assert_true(
     assessment.reasons.any(fn(reason) {

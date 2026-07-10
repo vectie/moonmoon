@@ -152,6 +152,7 @@ pub(all) struct PowerWindowEvidence {
   source_bytes : Int
   source_files : Array[PowerWindowSourceFile]
   computation : PowerWindowComputation
+  observer_geometry : @lunar_ephemeris.ObserverGeometryTimeline
   time_start_utc : String
   time_end_utc : String
   target_lat_deg : Double

@@ -51,6 +51,7 @@ pub fn from_site_dossier_with_selection(
     ),
     source_panel: source_panel(dossier, grid),
     scorecard: site_scorecard(dossier, selected_route_id),
+    lighting: lunar_lighting_view(dossier.power_window_evidence),
     inspector_facts: inspector_facts(
       dossier, selected_route_id, selected_cell_id,
     ),

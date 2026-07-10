@@ -12,13 +12,28 @@ pub(all) struct LunarEphemerisWindow {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+fn observer_timeline_path() -> String {
+  "sources/lunar_ephemeris/first_trusted_square_observer_timeline.json"
+}
+
+///|
+fn observer_timeline_sha256() -> String {
+  "023556bf9a904c20fda18bf3ec4a595c5ebe16450eb94633e1389e4ae39063c7"
+}
+
+///|
+fn observer_timeline_bytes() -> Int64 {
+  9157L
+}
+
+///|
 pub fn first_trusted_square_ephemeris_window() -> LunarEphemerisWindow {
   {
     window_id: "lunar-ephemeris-first-trusted-square-power-window-v1",
     source_id: first_trusted_square_ephemeris_source_candidate().source_id,
     output_path: "data/sources/lunar_ephemeris/first_trusted_square_power_window.json",
-    output_sha256: "b741b563b81fa2087d2d9f6056ed953f5ba3a4fcc9bf5272376152f34463137c",
-    output_bytes: 3841L,
+    output_sha256: "724d317a10196f52113bacc0140aef3e3f9660b32fddaa130da1ff7fb69a6fd2",
+    output_bytes: 3883L,
     coverage: lunar_coverage(-89.90, -89.86, 0.10, 0.14, -89.88, 0.12, 20.0),
     time_basis: "Pinned local Sun/Moon geometry fixture",
     review_status: NeedsHumanReview,
@@ -51,6 +66,17 @@ pub fn first_trusted_square_ephemeris_dataset() -> @data_core.DatasetManifest {
         checksum=@data_core.declared_checksum(
           @data_core.ChecksumKind::Sha256,
           window.output_sha256,
+        ),
+      ),
+      @data_core.data_ref(
+        "first-trusted-square-observer-timeline-json",
+        "lunar-observer-geometry-json",
+        @data_core.data_uri(observer_timeline_path()),
+        content_type="application/json",
+        byte_count=observer_timeline_bytes(),
+        checksum=@data_core.declared_checksum(
+          @data_core.ChecksumKind::Sha256,
+          observer_timeline_sha256(),
         ),
       ),
     ],

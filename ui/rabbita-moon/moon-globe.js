@@ -177,16 +177,17 @@ export function initMoonGlobe(canvas, view) {
   `, `
     precision mediump float;
     uniform sampler2D u_texture;
+    uniform vec3 u_sun_direction;
+    uniform float u_ambient_light;
     varying vec2 v_uv;
     varying vec3 v_normal;
     void main() {
       vec3 tex = texture2D(u_texture, v_uv).rgb;
-      vec3 light = normalize(vec3(-0.35, 0.42, 0.84));
-      float shade = 0.32 + max(dot(normalize(v_normal), light), 0.0) * 0.78;
-      float polar = pow(abs(v_normal.y), 3.0) * 0.10;
-      gl_FragColor = vec4(tex * shade + vec3(polar), 1.0);
+      float daylight = max(dot(normalize(v_normal), normalize(u_sun_direction)), 0.0);
+      float shade = u_ambient_light + daylight * (1.0 - u_ambient_light);
+      gl_FragColor = vec4(tex * shade, 1.0);
     }
-  `, ['a_position', 'a_uv'], ['u_mvp', 'u_texture'])
+  `, ['a_position', 'a_uv'], ['u_mvp', 'u_texture', 'u_sun_direction', 'u_ambient_light'])
   const pointProgram = compileProgram(gl, `
     attribute vec3 a_position;
     uniform mat4 u_mvp;
@@ -215,6 +216,13 @@ export function initMoonGlobe(canvas, view) {
   const focusButton = document.getElementById('moon-focus-site')
   const resetButton = document.getElementById('moon-reset-view')
   const orbitButton = document.getElementById('moon-toggle-orbit')
+  const lightingInput = document.getElementById('moon-lighting-time-index')
+  const lightingModeButton = document.getElementById('moon-lighting-mode')
+  const lighting = view.lighting || {}
+  const lightingSamples = lighting.samples || []
+  let lightingSampleIndex = clamp(Number(lighting.default_sample_index || 0), 0, Math.max(0, lightingSamples.length - 1))
+  let readableLighting = false
+  let sunDirection = [1, 0, 0]
   const defaultView = { yaw: 0.35, pitch: -0.92, distance: 4.05 }
   let { yaw, pitch, distance } = defaultView
   let orbit = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches !== true
@@ -237,10 +245,49 @@ export function initMoonGlobe(canvas, view) {
     orbit = !orbit
     updateOrbitButton()
   }
+  const updateLighting = () => {
+    const sample = lightingSamples[lightingSampleIndex]
+    if (!sample) return
+    sunDirection = [sample.sun_body_x, sample.sun_body_z, sample.sun_body_y]
+    const setText = (id, value) => {
+      const element = document.getElementById(id)
+      if (element) element.textContent = value
+    }
+    setText('moon-lighting-time', sample.timestamp_utc)
+    setText('moon-lighting-altitude', `${Number(sample.sun_altitude_deg).toFixed(3)} deg`)
+    setText('moon-lighting-azimuth', `${Number(sample.sun_azimuth_deg).toFixed(1)} deg`)
+    setText('moon-earth-phase', `${Math.round(Number(sample.earth_illuminated_fraction) * 100)}%`)
+    canvas.dataset.lightingTimestamp = sample.timestamp_utc
+    canvas.dataset.sunBodyFixed = JSON.stringify([sample.sun_body_x, sample.sun_body_y, sample.sun_body_z])
+    canvas.dataset.earthBodyFixed = JSON.stringify([sample.earth_body_x, sample.earth_body_y, sample.earth_body_z])
+    canvas.dataset.sunAltitudeDeg = String(sample.sun_altitude_deg)
+    canvas.dataset.sunAzimuthDeg = String(sample.sun_azimuth_deg)
+    canvas.dataset.earthAltitudeDeg = String(sample.earth_altitude_deg)
+    canvas.dataset.earthAzimuthDeg = String(sample.earth_azimuth_deg)
+    canvas.dataset.earthIlluminatedFraction = String(sample.earth_illuminated_fraction)
+  }
+  const changeLightingTime = event => {
+    lightingSampleIndex = clamp(Number(event.currentTarget.value), 0, Math.max(0, lightingSamples.length - 1))
+    updateLighting()
+  }
+  const toggleLightingMode = () => {
+    readableLighting = !readableLighting
+    lightingModeButton.textContent = readableLighting ? 'Readable' : 'Physical'
+    lightingModeButton.setAttribute('aria-pressed', String(readableLighting))
+    canvas.dataset.lightingMode = readableLighting ? 'readable' : 'physical'
+  }
   focusButton?.addEventListener('click', focusSite)
   resetButton?.addEventListener('click', resetView)
   orbitButton?.addEventListener('click', toggleOrbit)
+  lightingInput?.addEventListener('input', changeLightingTime)
+  lightingModeButton?.addEventListener('click', toggleLightingMode)
   updateOrbitButton()
+  canvas.dataset.lightingModel = lighting.method_id || 'unavailable'
+  canvas.dataset.lightingFrame = lighting.frame_id || 'unavailable'
+  canvas.dataset.lightingSource = lighting.source_path || 'unavailable'
+  canvas.dataset.lightingOrientationSource = lighting.orientation_source_path || 'unavailable'
+  canvas.dataset.lightingMode = 'physical'
+  updateLighting()
   canvas.onpointerdown = event => {
     dragging = true
     lastX = event.clientX
@@ -285,6 +332,8 @@ export function initMoonGlobe(canvas, view) {
     gl.activeTexture(gl.TEXTURE0)
     gl.bindTexture(gl.TEXTURE_2D, texture)
     gl.uniform1i(moonProgram.uniforms.u_texture, 0)
+    gl.uniform3f(moonProgram.uniforms.u_sun_direction, sunDirection[0], sunDirection[1], sunDirection[2])
+    gl.uniform1f(moonProgram.uniforms.u_ambient_light, readableLighting ? 0.28 : 0.035)
     bindAttribute(moonProgram.attributes.a_position, positionBuffer, 3)
     bindAttribute(moonProgram.attributes.a_uv, uvBuffer, 2)
     gl.drawArrays(gl.TRIANGLES, 0, sphere.positions.length / 3)
@@ -299,6 +348,8 @@ export function initMoonGlobe(canvas, view) {
     focusButton?.removeEventListener('click', focusSite)
     resetButton?.removeEventListener('click', resetView)
     orbitButton?.removeEventListener('click', toggleOrbit)
+    lightingInput?.removeEventListener('input', changeLightingTime)
+    lightingModeButton?.removeEventListener('click', toggleLightingMode)
     canvas.onpointerdown = null
     canvas.onpointermove = null
     canvas.onpointerup = null

@@ -70,6 +70,10 @@ const sceneContracts = [
   'moon-focus-site',
   'moon-reset-view',
   'moon-toggle-orbit',
+  'u_sun_direction',
+  'lightingTimestamp',
+  'sunBodyFixed',
+  'lightingOrientationSource',
   'prefers-reduced-motion: reduce',
   'canvasRenderActive',
   'startCanvasRenderLoop',
@@ -198,6 +202,9 @@ const operatorContracts = [
   'moon-focus-site',
   'moon-reset-view',
   'moon-toggle-orbit',
+  'moon-lighting-time-index',
+  'moon-lighting-mode',
+  'moon-lighting-altitude',
   'evidence-dossier',
   'moonmoon-adapter-preview',
   'explicit non-authoritative simulation',
@@ -222,6 +229,7 @@ const operatorStyleContracts = [
   '@media (prefers-reduced-motion: reduce)',
   '.route-choice.active',
   '.terrain-cell-choice',
+  '.stage-lighting',
 ]
 
 const operatorRuntimeContracts = [

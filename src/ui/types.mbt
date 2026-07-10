@@ -233,6 +233,33 @@ pub(all) struct SiteScorecard {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct LunarLightingSampleView {
+  timestamp_utc : String
+  sun_body_x : Double
+  sun_body_y : Double
+  sun_body_z : Double
+  earth_body_x : Double
+  earth_body_y : Double
+  earth_body_z : Double
+  sun_altitude_deg : Double
+  sun_azimuth_deg : Double
+  earth_altitude_deg : Double
+  earth_azimuth_deg : Double
+  earth_illuminated_fraction : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct LunarLightingView {
+  method_id : String
+  frame_id : String
+  source_path : String
+  orientation_source_path : String
+  sample_step_minutes : Int
+  default_sample_index : Int
+  samples : Array[LunarLightingSampleView]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct TrustedSquareViewModel {
   view_id : String
   site_id : String
@@ -252,6 +279,7 @@ pub(all) struct TrustedSquareViewModel {
   selected_tile : TileInspector
   source_panel : SourcePanel
   scorecard : SiteScorecard
+  lighting : LunarLightingView
   inspector_facts : Array[InspectorFact]
   blockers : Array[String]
 } derive(Debug, Eq, ToJson, FromJson)

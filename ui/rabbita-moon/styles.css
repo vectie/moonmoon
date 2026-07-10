@@ -201,6 +201,10 @@ p {
   display: block;
 }
 
+.view-switch-input:checked ~ .stage-lighting {
+  display: none;
+}
+
 .scene-canvas,
 .terrain-canvas {
   display: block;
@@ -217,6 +221,82 @@ p {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.stage-lighting {
+  position: absolute;
+  z-index: 5;
+  left: 22px;
+  bottom: 80px;
+  width: min(420px, calc(100% - 44px));
+  display: grid;
+  gap: 8px;
+  border: 1px solid rgba(242, 243, 238, .24);
+  border-radius: 7px;
+  background: rgba(8, 11, 10, .88);
+  color: #eef1ec;
+  padding: 10px 12px;
+}
+
+.stage-lighting-head,
+.lighting-readout {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stage-lighting-head > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.stage-lighting-head b {
+  display: block;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.lighting-mode {
+  flex: 0 0 auto;
+  min-height: 44px;
+  border: 1px solid #91d0ba;
+  border-radius: 5px;
+  background: transparent;
+  color: #b9ebda;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.lighting-mode[aria-pressed="true"] {
+  background: #dfe9e3;
+  color: #1d3029;
+}
+
+.lighting-scrubber {
+  width: 100%;
+  min-height: 24px;
+  accent-color: #e7b84f;
+  cursor: pointer;
+}
+
+.lighting-readout > span {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.lighting-readout b {
+  font-size: 11px;
+}
+
+.lighting-readout span span {
+  color: #aeb7b0;
+  font-size: 9px;
+  text-transform: uppercase;
 }
 
 .control {
@@ -965,6 +1045,13 @@ p {
     left: 12px;
     right: 12px;
     bottom: 12px;
+  }
+
+  .stage-lighting {
+    left: 12px;
+    right: 12px;
+    bottom: 70px;
+    width: auto;
   }
 
   .control {

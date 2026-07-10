@@ -51,14 +51,25 @@ Status: implemented for the six measured 4x4 route fixtures.
 4. Show the profile while inspecting candidates without changing mission
    selection.
 
-The next data expansion is a wider horizon grid and a newly declared UTC power
-window from the pinned kernel boundary.
+## Phase 4: Drive Source-Backed Globe Lighting
+
+Status: implemented.
+
+1. Parse the pinned DE440s kernel in MoonBit.
+2. Generate a compact body-fixed Sun/Earth observer timeline for the declared
+   half-open UTC window.
+3. Project one site-level lighting model into the canonical operator UI.
+4. Drive the globe shader and timeline control from that checked evidence.
+
+The implementation and regeneration boundary are documented in
+`docs/LUNAR_LIGHTING_PHASE.md`. The next scientific expansion remains a wider
+horizon grid and a newly declared UTC power window.
 
 ## Acceptance
 
 - The UI never says ephemeris is missing when the checked DE440 fixture is
   attached.
-- The selected route shows its 26.356833 degree terrain-shadow margin.
+- The selected route shows its PCK11-corrected terrain-shadow margin.
 - Candidate inspection updates illumination values and evidence paths while
   the mission-selected route remains `northeast-stepout`.
 - Desktop, tablet, and mobile layouts have no horizontal overflow.
