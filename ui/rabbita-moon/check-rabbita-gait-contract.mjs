@@ -124,7 +124,8 @@ const sceneContracts = [
   'lunarSurfaceVisualModel',
   'OrbitControls',
   'full-stl-source-indexed',
-  'realtime-sampled-stl',
+  'convex-hull-plus-sampled-stl',
+  'sampled-stl-convex-rigid-hull',
   'viewport-voxel-area-silhouette-v1',
   'e1FullStlStatus',
   'e1RenderDetailMode',
@@ -363,6 +364,7 @@ if (Math.abs(swingJoints.left.shoulder) <= 0.001) {
 }
 
 await import(new URL('./scene3d.js', import.meta.url).href)
+await globalThis.__moonmoonLoadAdapterRuntime?.()
 
 const diagnostics = globalThis.__moonmoonGaitDiagnostics
 if (!diagnostics?.sampleRobotGeometry) {

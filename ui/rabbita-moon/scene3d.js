@@ -1,22 +1,28 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import {
-  FOOT_PHASE_SEQUENCE,
-  NOETIX_URDF_LIMIT_SOURCE,
-  NOETIX_VISUAL_RIG,
-  NOETIX_WALK_CLIP,
-  authoredMotionSample,
-  cloneJointSamples,
-  cycle01,
-  emptyJointCorrections,
-  footRoleColor,
-  jointSamples,
-  near,
-  supportMassTransferX,
-  walkClipSample,
-} from './gait-clip.js'
-import { E1_ASM_ASSEMBLY } from './.generated/e1-asm-assembly.js'
 import LOLA_TERRAIN_TILE from './assets/lro_lola/first_trusted_square_lola_5m_129.json' with { type: 'json' }
+
+let THREE
+let OrbitControls
+let ConvexGeometry
+let FOOT_PHASE_SEQUENCE
+let NOETIX_URDF_LIMIT_SOURCE
+let NOETIX_VISUAL_RIG
+let NOETIX_WALK_CLIP
+let authoredMotionSample
+let cloneJointSamples
+let cycle01
+let emptyJointCorrections
+let footRoleColor
+let jointSamples
+let near
+let supportMassTransferX
+let walkClipSample
+let E1_ASM_ASSEMBLY = {
+  ready: false,
+  status: 'adapter-runtime-not-loaded',
+  visuals: [],
+  joints: [],
+}
+let adapterRuntimePromise
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
@@ -25,8 +31,8 @@ const ROBOT_QUALITY_REFRESH_MS = 1000
 const ROBOT_DATASET_REFRESH_MS = 250
 const E1_ASM_DUPLICATE_OFFSET_X = 0.74
 const URDF_TO_SCENE_MATRIX = [0, 0, 1, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]
-const E1_RENDER_DETAIL_MODE = 'realtime-sampled-stl'
-const E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
+const E1_RENDER_DETAIL_MODE = 'convex-hull-plus-sampled-stl'
+let E1_MESH_REDUCTION_ALGORITHM = 'adapter-runtime-not-loaded'
 const THIRD_PERSON_TERRAIN_COLS = 96
 const THIRD_PERSON_TERRAIN_ROWS = 112
 const THIRD_PERSON_TERRAIN_WIDTH_M = 52
@@ -46,6 +52,46 @@ const EARTHRISE_LIGHTING_MODEL = 'utc-subsolar-readable-terminator-v2'
 const EARTHRISE_NIGHT_FILL = 0.52
 const EARTHRISE_DAY_BOOST = 1.54
 const LUNAR_SURFACE_VISUAL_MODEL = 'curved-lunar-cap'
+
+async function loadAdapterRuntime() {
+  if (adapterRuntimePromise) return adapterRuntimePromise
+  adapterRuntimePromise = Promise.all([
+    import('three'),
+    import('three/examples/jsm/controls/OrbitControls.js'),
+    import('three/examples/jsm/geometries/ConvexGeometry.js'),
+    import('./gait-clip.js'),
+    import('./.generated/e1-asm-assembly.js'),
+  ]).then(([threeModule, controlsModule, convexModule, gaitModule, assemblyModule]) => {
+    THREE = threeModule
+    OrbitControls = controlsModule.OrbitControls
+    ConvexGeometry = convexModule.ConvexGeometry
+    ;({
+      FOOT_PHASE_SEQUENCE,
+      NOETIX_URDF_LIMIT_SOURCE,
+      NOETIX_VISUAL_RIG,
+      NOETIX_WALK_CLIP,
+      authoredMotionSample,
+      cloneJointSamples,
+      cycle01,
+      emptyJointCorrections,
+      footRoleColor,
+      jointSamples,
+      near,
+      supportMassTransferX,
+      walkClipSample,
+    } = gaitModule)
+    E1_ASM_ASSEMBLY = assemblyModule.E1_ASM_ASSEMBLY
+    E1_MESH_REDUCTION_ALGORITHM = E1_ASM_ASSEMBLY.reduction_algorithm || 'unknown-reduction'
+    Object.assign(globalThis.__moonmoonGaitDiagnostics, {
+      rig: NOETIX_VISUAL_RIG,
+      sampleRobotGeometry: robotGeometry,
+    })
+  }).catch(error => {
+    adapterRuntimePromise = undefined
+    throw error
+  })
+  return adapterRuntimePromise
+}
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value))
@@ -588,11 +634,45 @@ function e1ThreeGeometry(visual) {
 function e1ThreeMaterial(visual) {
   const color = e1Color(visual, visual.link_id.includes('_leg_') ? 0.05 : 0)
   return new THREE.MeshStandardMaterial({
-    color: new THREE.Color(color[0], color[1], color[2]),
-    roughness: 0.64,
-    metalness: 0.08,
+    color: new THREE.Color(color[0] * 0.66, color[1] * 0.68, color[2] * 0.72),
+    roughness: 0.96,
+    metalness: 0,
     side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.34,
+    depthWrite: false,
   })
+}
+
+function e1RigidHull(visual) {
+  const bounds = visual.source_bounds_m
+  if (!bounds) return null
+  const uniquePoints = new Map()
+  for (const triangle of visual.sampled_triangles ?? []) {
+    for (const point of triangle) {
+      uniquePoints.set(point.map(value => value.toFixed(5)).join(':'), new THREE.Vector3(...point))
+    }
+  }
+  let geometry
+  try {
+    geometry = new ConvexGeometry([...uniquePoints.values()])
+  } catch {
+    const size = bounds.max.map((value, index) => Math.max(0.014, value - bounds.min[index]))
+    const center = bounds.max.map((value, index) => (value + bounds.min[index]) * 0.5)
+    geometry = new THREE.BoxGeometry(size[0] * 0.92, size[1] * 0.92, size[2] * 0.94)
+    geometry.translate(center[0], center[1], center[2])
+  }
+  const isJoint = /_(yaw|roll|pitch)_link$/.test(visual.link_id)
+  const isFoot = visual.link_id.includes('ankle_roll')
+  const color = isJoint ? 0x69716f : isFoot ? 0xb9bdb8 : 0x9da39f
+  const material = new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.84,
+    metalness: 0.04,
+  })
+  const hull = new THREE.Mesh(geometry, material)
+  hull.userData.detailMode = 'sampled-stl-convex-rigid-hull'
+  return hull
 }
 
 function createE1ThreeVisuals() {
@@ -601,14 +681,16 @@ function createE1ThreeVisuals() {
   if (!E1_ASM_ASSEMBLY.ready) return { group, visuals }
   for (const visual of E1_ASM_ASSEMBLY.visuals) {
     const mesh = new THREE.Mesh(e1ThreeGeometry(visual), e1ThreeMaterial(visual))
-    mesh.userData.detailMode = 'sampled-stl'
+    mesh.userData.detailMode = 'sampled-stl-overlay'
     mesh.userData.reductionAlgorithm = visual.reduction_algorithm
     const linkGroup = new THREE.Group()
     linkGroup.matrixAutoUpdate = false
+    const hull = e1RigidHull(visual)
+    if (hull) linkGroup.add(hull)
     linkGroup.add(mesh)
     linkGroup.userData.linkId = visual.link_id
     group.add(linkGroup)
-    visuals.set(visual.link_id, { group: linkGroup, mesh, visual })
+    visuals.set(visual.link_id, { group: linkGroup, hull, mesh, visual })
   }
   return { group, visuals }
 }
@@ -3456,15 +3538,26 @@ function initRobot(canvas) {
   requestAnimationFrame(draw)
 }
 
+globalThis.__moonmoonLoadAdapterRuntime = loadAdapterRuntime
+
 globalThis.__moonmoonRenderScene3d = modelJson => {
   const view = JSON.parse(modelJson)
   const thirdPerson = document.getElementById('moonmoon-third-person-3d')
   const moon = document.getElementById('moonmoon-globe-3d')
   const adapterPreview = document.getElementById('moonmoon-adapter-preview')
-  const bootAdapterPreview = () => {
+  const bootAdapterPreview = async () => {
     if (!adapterPreview?.open || !thirdPerson || thirdPerson.dataset.sceneBooted === 'true') return
-    thirdPerson.dataset.sceneBooted = 'true'
-    initThirdPersonMoonWalk(thirdPerson)
+    thirdPerson.dataset.adapterRuntime = 'loading'
+    try {
+      await loadAdapterRuntime()
+      thirdPerson.dataset.adapterRuntime = 'ready'
+      if (!adapterPreview.open || thirdPerson.dataset.sceneBooted === 'true') return
+      thirdPerson.dataset.sceneBooted = 'true'
+      initThirdPersonMoonWalk(thirdPerson)
+    } catch (error) {
+      thirdPerson.dataset.adapterRuntime = 'failed'
+      thirdPerson.dataset.sceneError = error instanceof Error ? error.message : String(error)
+    }
   }
   if (moon && moon.dataset.sceneBooted !== 'true') {
     moon.dataset.sceneBooted = 'true'
@@ -3475,13 +3568,13 @@ globalThis.__moonmoonRenderScene3d = modelJson => {
 }
 
 globalThis.__moonmoonGaitDiagnostics = {
-  rig: NOETIX_VISUAL_RIG,
+  rig: null,
   terrainTile: LOLA_TERRAIN_TILE,
   terrainHeightScale: LOLA_TERRAIN_HEIGHT_SCALE,
   terrainTextureSource: LOLA_TERRAIN_TEXTURE_SOURCE,
   regolithMaterialModel: LOLA_REGOLITH_MATERIAL_MODEL,
   earthriseLightingModel: EARTHRISE_LIGHTING_MODEL,
-  sampleRobotGeometry: robotGeometry,
+  sampleRobotGeometry: null,
   moonphysReviewFrameEvidence,
   moonphysReviewTraceEvidence,
   moonphysHingeMotorReplayEvidence,

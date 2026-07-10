@@ -61,6 +61,11 @@ Acceptance:
 
 ## Checkpoint 3: Repair the Adapter Preview
 
+Status: implemented. The preview remains outside mission authority. Its robot
+runtime now loads on first disclosure, hidden canvases retain the existing
+render pause, and each URDF-linked E1 visual receives a solid convex hull
+derived from sampled source STL points beneath matte mesh detail.
+
 1. Keep the adapter preview separate from lunar mission authority.
 2. Fix E1 mesh attachment and materials until the robot reads as one rigid,
    recognizable assembly.
