@@ -5,6 +5,30 @@ pub(all) struct MissionPayload {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct RobotArtifactBinding {
+  robot_id : String
+  robot_revision : String
+  artifact_root : String
+  robot_json_path : String
+  robot_urdf_path : String
+  validation_receipt_path : String
+  bridge_config_path : String
+  robot_json_sha256 : String
+  robot_urdf_sha256 : String
+  validation_receipt_sha256 : String
+  validation_status : String
+  physical_transport_enabled : Bool
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct MissionScenario {
+  scenario_id : String
+  seed : Int
+  scenario_kind : String
+  injected_faults : Array[String]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct MissionIdentity {
   authority : String
   payload : MissionPayload
@@ -118,6 +142,8 @@ pub(all) struct RobotMissionDesign {
   contract_id : String
   design_id : String
   revision : String
+  robot_artifact : RobotArtifactBinding
+  scenario : MissionScenario
   mission : MissionIdentity
   environment : MissionEnvironment
   subsystems : Array[Subsystem]
@@ -153,6 +179,13 @@ pub(all) struct RobotMissionResult {
   contract_id : String
   design_id : String
   revision : String
+  robot_id : String
+  robot_revision : String
+  artifact_binding_verified : Bool
+  scenario_id : String
+  seed : Int
+  scenario_kind : String
+  injected_faults : Array[String]
   route_id : String
   authority : String
   result : String
@@ -250,6 +283,36 @@ fn required_double(
 }
 
 ///|
+fn lowercase_sha256(value : String) -> Bool {
+  if value.length() != 64 {
+    return false
+  }
+  for char in value {
+    if !(char >= '0' && char <= '9') && !(char >= 'a' && char <= 'f') {
+      return false
+    }
+  }
+  true
+}
+
+///|
+fn artifact_binding_valid(design : RobotMissionDesign) -> Bool {
+  let binding = design.robot_artifact
+  binding.robot_id == design.design_id &&
+  binding.robot_revision == design.revision &&
+  binding.validation_status == "accepted" &&
+  !binding.physical_transport_enabled &&
+  !binding.artifact_root.trim().is_empty() &&
+  !binding.robot_json_path.trim().is_empty() &&
+  !binding.robot_urdf_path.trim().is_empty() &&
+  !binding.validation_receipt_path.trim().is_empty() &&
+  !binding.bridge_config_path.trim().is_empty() &&
+  lowercase_sha256(binding.robot_json_sha256) &&
+  lowercase_sha256(binding.robot_urdf_sha256) &&
+  lowercase_sha256(binding.validation_receipt_sha256)
+}
+
+///|
 pub fn simulate(
   design : RobotMissionDesign,
   terrain_csv : String,
@@ -260,6 +323,37 @@ pub fn simulate(
     design.contract_id != "moonsuite.robot-design.v1",
     "unsupported design contract",
   )
+  let binding_valid = artifact_binding_valid(design)
+  add_blocker(
+    blockers,
+    !binding_valid,
+    "MoonRobo artifact binding is incomplete, mismatched, unsafe, or unvalidated",
+  )
+  add_blocker(
+    blockers,
+    design.scenario.scenario_id.trim().is_empty() || design.scenario.seed <= 0,
+    "scenario id and positive deterministic seed are required",
+  )
+  for fault in design.scenario.injected_faults {
+    match fault {
+      "low-traction" =>
+        blockers.push("low-traction fault triggered a fail-closed stop")
+      "dust-degradation" =>
+        blockers.push("dust-degradation fault triggered a fail-closed stop")
+      "power-scarcity" =>
+        blockers.push("power-scarcity fault triggered a fail-closed stop")
+      "blocked-route" =>
+        blockers.push("blocked-route fault triggered a fail-closed stop")
+      "sensor-loss" =>
+        blockers.push("sensor-loss fault triggered a fail-closed stop")
+      "actuator-fault" =>
+        blockers.push("actuator-fault triggered a fail-closed stop")
+      other =>
+        blockers.push(
+          "unknown injected fault \{other} cannot be handled safely",
+        )
+    }
+  }
   add_blocker(
     blockers,
     design.mission.authority != "digital-only",
@@ -570,6 +664,13 @@ pub fn simulate(
     contract_id: "moonmoon.robot-mission-result.v1",
     design_id: design.design_id,
     revision: design.revision,
+    robot_id: design.robot_artifact.robot_id,
+    robot_revision: design.robot_artifact.robot_revision,
+    artifact_binding_verified: binding_valid,
+    scenario_id: design.scenario.scenario_id,
+    seed: design.scenario.seed,
+    scenario_kind: design.scenario.scenario_kind,
+    injected_faults: design.scenario.injected_faults.copy(),
     route_id: design.mission.route_id,
     authority: design.mission.authority,
     result: if accepted {
@@ -624,6 +725,68 @@ pub fn simulate(
 }
 
 ///|
+fn safe_relative_artifact_path(path : String) -> Bool {
+  let normalized = path.trim().replace(old="\\", new="/")
+  !normalized.is_empty() &&
+  !normalized.has_prefix("/") &&
+  !normalized.split("/").any(segment => segment == "..")
+}
+
+///|
+fn staged_binding_issue(
+  design : RobotMissionDesign,
+  moonmoon_root : String,
+) -> String? {
+  let binding = design.robot_artifact
+  for
+    path in [
+      binding.artifact_root,
+      binding.robot_json_path,
+      binding.robot_urdf_path,
+      binding.validation_receipt_path,
+      binding.bridge_config_path,
+    ] {
+    if !safe_relative_artifact_path(path) {
+      return Some("robot artifact binding contains an unsafe relative path")
+    }
+  }
+  let base = moonmoon_root + "/" + binding.artifact_root
+  let robot_json = @fsx.read_file_to_string(
+    base + "/" + binding.robot_json_path,
+  ) catch {
+    _ => return Some("failed to read staged MoonRobo robot.json")
+  }
+  if !robot_json.contains("\"id\": \"\{binding.robot_id}\"") {
+    return Some("staged robot.json does not match the bound robot id")
+  }
+  let urdf = @fsx.read_file_to_string(base + "/" + binding.robot_urdf_path) catch {
+    _ => return Some("failed to read staged MoonRobo URDF")
+  }
+  if !urdf.contains("<robot name=\"\{binding.robot_id}\">") {
+    return Some("staged URDF does not match the bound robot id")
+  }
+  let receipt = @fsx.read_file_to_string(
+    base + "/" + binding.validation_receipt_path,
+  ) catch {
+    _ => return Some("failed to read staged MoonRobo validation receipt")
+  }
+  if !receipt.contains("\"status\": \"accepted\"") ||
+    !receipt.contains("\"physical_transport_enabled\": false") ||
+    !receipt.contains("\"book_id\": \"\{binding.robot_id}\"") {
+    return Some("staged MoonRobo receipt is not accepted and simulation-only")
+  }
+  let bridge = @fsx.read_file_to_string(base + "/" + binding.bridge_config_path) catch {
+    _ => return Some("failed to read staged MoonRobo bridge config")
+  }
+  if !bridge.contains("\"mode\": \"simulation-only\"") ||
+    !bridge.contains("\"physical_transport_enabled\": false") ||
+    !bridge.contains("\"design_id\": \"\{binding.robot_id}\"") {
+    return Some("staged MoonRobo bridge is not simulation-only")
+  }
+  None
+}
+
+///|
 pub fn simulate_files(
   design_path : String,
   moonmoon_root : String,
@@ -641,7 +804,22 @@ pub fn simulate_files(
   let terrain_csv = @fsx.read_file_to_string(terrain_path) catch {
     _ => return Err("failed to read terrain source: \{terrain_path}")
   }
-  let result = simulate(design, terrain_csv)
+  let simulated = simulate(design, terrain_csv)
+  let result = match staged_binding_issue(design, moonmoon_root) {
+    None => simulated
+    Some(error) => {
+      let blockers = simulated.blockers.copy()
+      blockers.push(error)
+      {
+        ..simulated,
+        result: "rejected",
+        artifact_binding_verified: false,
+        delivery_count: 0,
+        final_state: "stopped-with-blocker",
+        blockers,
+      }
+    }
+  }
   @fsx.write_string_to_file(
     output_path,
     result.to_json().stringify(indent=2) + "\n",

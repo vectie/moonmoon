@@ -50,6 +50,7 @@ moon run cmd/main -- terrain
 moon run cmd/main -- mission horizon
 moon run cmd/main -- mission terrain
 moon run cmd/main -- mission energy
+moon run cmd/main -- robot-mission simulate <design-json> <moonmoon-root> <output-json>
 moon run cmd/main -- data root-json target/data-roots/first-trusted-square
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square
 moon run cmd/main -- data ingest-first-site target/data-roots/first-trusted-square json
@@ -64,6 +65,25 @@ moon run cmd/main -- ui
 moon run cmd/main -- ui json
 moon run cmd/main -- ui html
 ```
+
+## Bound robot mission simulation
+
+`robot-mission simulate` requires a typed `moonsuite.robot-design.v1` mission
+that binds the MoonRobo robot/revision, staged `robot.json`, URDF, accepted
+validation receipt, simulation bridge, and their SHA-256 identities. All staged
+paths must remain relative to the supplied MoonMoon root. MoonMoon inspects the
+profile, URDF identity, accepted simulation-only receipt, and disabled physical
+bridge before a scenario can be accepted.
+
+Every scenario records an ID, positive deterministic seed, kind, and injected
+faults. Low traction, dust degradation, power scarcity, blocked route, sensor
+loss, actuator fault, and unknown faults fail closed with zero delivery and an
+explicit blocker. Identical inputs produce byte-equivalent receipts.
+
+An accepted result is bounded digital evidence for the enumerated terrain path.
+It preserves broader-terrain blockers and explicitly does not establish slip,
+sinkage, localization, dust, thermal-vacuum, manufacturing, launch, landing,
+or physical lunar readiness.
 
 Robot episode imports read top-level text payloads as signal frames. Optional
 `replays/` and `quality/` subdirectories are staged as replay and quality

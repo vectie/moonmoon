@@ -4,6 +4,26 @@ fn test_design(path_cells : Array[Array[Int]]) -> RobotMissionDesign {
     contract_id: "moonsuite.robot-design.v1",
     design_id: "test-rover",
     revision: "r1",
+    robot_artifact: {
+      robot_id: "test-rover",
+      robot_revision: "r1",
+      artifact_root: "artifacts/test-rover",
+      robot_json_path: "robot.json",
+      robot_urdf_path: "model/robot.urdf",
+      validation_receipt_path: "design/validation-receipt.json",
+      bridge_config_path: "bridge/bridge.json",
+      robot_json_sha256: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      robot_urdf_sha256: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      validation_receipt_sha256: "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      validation_status: "accepted",
+      physical_transport_enabled: false,
+    },
+    scenario: {
+      scenario_id: "nominal-cycle",
+      seed: 1101,
+      scenario_kind: "nominal",
+      injected_faults: [],
+    },
     mission: {
       authority: "digital-only",
       payload: { mass_kg: 5.0, delivery_count: 1 },
@@ -113,7 +133,51 @@ test "path-aware simulation accepts only the measured corridor and preserves the
   assert_true(result.maximum_measured_segment_slope_deg < 15.0)
   assert_eq(result.distance_m, 60.0)
   assert_eq(result.delivery_count, 1)
+  assert_true(result.artifact_binding_verified)
+  assert_eq(result.scenario_id, "nominal-cycle")
+  assert_eq(result.seed, 1101)
   assert_true(result.blockers.is_empty())
+}
+
+///|
+test "simulation rejects an unvalidated or physical MoonRobo binding" {
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  let robot_artifact = {
+    ..design.robot_artifact,
+    validation_status: "pending",
+    physical_transport_enabled: true,
+  }
+  let unqualified = { ..design, robot_artifact, }
+  let result = simulate(unqualified, test_dem())
+  assert_eq(result.result, "rejected")
+  assert_false(result.artifact_binding_verified)
+  assert_true(
+    result.blockers.contains(
+      "MoonRobo artifact binding is incomplete, mismatched, unsafe, or unvalidated",
+    ),
+  )
+}
+
+///|
+test "adverse fault injection is explicit and fails closed" {
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  let scenario : MissionScenario = {
+    scenario_id: "sensor-loss-actuator-fault",
+    seed: 4404,
+    scenario_kind: "adverse",
+    injected_faults: ["sensor-loss", "actuator-fault"],
+  }
+  let adverse = { ..design, scenario, }
+  let result = simulate(adverse, test_dem())
+  assert_eq(result.result, "rejected")
+  assert_eq(result.delivery_count, 0)
+  assert_eq(result.final_state, "stopped-with-blocker")
+  assert_true(
+    result.blockers.contains("sensor-loss fault triggered a fail-closed stop"),
+  )
+  assert_true(
+    result.blockers.contains("actuator-fault triggered a fail-closed stop"),
+  )
 }
 
 ///|
@@ -148,4 +212,72 @@ test "identical inputs produce byte-equivalent deterministic receipts" {
   let first = simulate(design, test_dem()).to_json().stringify()
   let second = simulate(design, test_dem()).to_json().stringify()
   assert_eq(first, second)
+}
+
+///|
+fn ensure_test_dir(path : String) -> Unit {
+  if !@fsx.path_exists(path) {
+    @fsx.create_dir(path) catch {
+      _ => ()
+    }
+  }
+}
+
+///|
+test "file simulation verifies staged MoonRobo identity and bridge safety" {
+  let root = "/tmp/moonmoon-bound-robot-mission-test"
+  let artifact = root + "/artifacts/test-rover"
+  ensure_test_dir(root)
+  ensure_test_dir(root + "/artifacts")
+  ensure_test_dir(artifact)
+  ensure_test_dir(artifact + "/model")
+  ensure_test_dir(artifact + "/design")
+  ensure_test_dir(artifact + "/bridge")
+  ensure_test_dir(root + "/terrain")
+  @fsx.write_string_to_file(
+    artifact + "/robot.json",
+    "{ \"id\": \"test-rover\" }",
+  )
+  @fsx.write_string_to_file(
+    artifact + "/model/robot.urdf",
+    "<robot name=\"test-rover\"></robot>",
+  )
+  @fsx.write_string_to_file(
+    artifact + "/design/validation-receipt.json",
+    "{ \"status\": \"accepted\", \"book_id\": \"test-rover\", \"physical_transport_enabled\": false }",
+  )
+  @fsx.write_string_to_file(
+    artifact + "/bridge/bridge.json",
+    "{ \"mode\": \"simulation-only\", \"physical_transport_enabled\": false, \"design_id\": \"test-rover\" }",
+  )
+  @fsx.write_string_to_file(root + "/terrain.csv", test_dem())
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  @fsx.write_string_to_file(root + "/design.json", design.to_json().stringify())
+  guard simulate_files(
+      root + "/design.json",
+      root,
+      root + "/accepted-result.json",
+    )
+    is Ok(accepted) else {
+    fail("expected bound simulation success")
+  }
+  assert_eq(accepted.result, "accepted")
+  assert_true(accepted.artifact_binding_verified)
+  @fsx.write_string_to_file(
+    artifact + "/bridge/bridge.json",
+    "{ \"mode\": \"simulation-only\", \"physical_transport_enabled\": true, \"design_id\": \"test-rover\" }",
+  )
+  guard simulate_files(
+      root + "/design.json",
+      root,
+      root + "/rejected-result.json",
+    )
+    is Ok(rejected) else {
+    fail("expected a persisted rejection receipt")
+  }
+  assert_eq(rejected.result, "rejected")
+  assert_false(rejected.artifact_binding_verified)
+  assert_true(
+    rejected.blockers.contains("staged MoonRobo bridge is not simulation-only"),
+  )
 }
