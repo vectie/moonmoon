@@ -16,6 +16,7 @@ fn print_help() -> Unit {
     #|  moon run cmd/main -- mission terrain json
     #|  moon run cmd/main -- mission energy
     #|  moon run cmd/main -- mission energy json
+    #|  moon run cmd/main -- robot-mission simulate <design-json> <moonmoon-root> <output-json>
     #|  moon run cmd/main -- layout [workspace-root] [book-id]
     #|  moon run cmd/main -- data root-json [data-root]
     #|  moon run cmd/main -- data ingest-first-site [data-root] [json]
@@ -1057,6 +1058,22 @@ fn main {
   let output_json = args.contains("json")
   if args.contains("help") {
     print_help()
+  } else if args.contains("robot-mission") && args.contains("simulate") {
+    let design_path = arg_offset(args, "simulate", 1, "")
+    let moonmoon_root = arg_offset(args, "simulate", 2, ".")
+    let output_path = arg_offset(
+      args, "simulate", 3, "robot-mission-result.json",
+    )
+    match
+      @robot_mission.simulate_files(design_path, moonmoon_root, output_path) {
+      Ok(result) => println(result.to_json().stringify(indent=2))
+      Err(error) =>
+        println(
+          Json::object({ "result": "error", "error": error }).stringify(
+            indent=2,
+          ),
+        )
+    }
   } else if args.contains("data") && args.contains("ingest-robot-rollout") {
     print_data_robot_rollout_ingest(args, output_json)
   } else if args.contains("data") && args.contains("ingest-robot-task-label") {
