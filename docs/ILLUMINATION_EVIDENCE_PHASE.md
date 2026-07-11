@@ -1,6 +1,6 @@
 # Route Illumination Evidence
 
-This phase turns Moonmoon's existing pinned ephemeris and local-horizon data
+This phase turns MoonMoon's existing pinned ephemeris and local-horizon data
 into operator-visible route evidence. It does not claim live lighting or route
 clearance: the active power window is the checked fixture from
 `2026-06-25T00:00:00Z` through `2026-07-09T00:00:00Z`.

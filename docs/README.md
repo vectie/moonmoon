@@ -1,13 +1,13 @@
-# Moonmoon Documentation Guide
+# MoonMoon Documentation Guide
 
-Moonmoon is the MoonSuite lunar terrain and mission model. Its docs should keep
+MoonMoon is the MoonSuite lunar terrain and mission model. Its docs should keep
 the product small and testable: lunar claims, data roots, terrain analysis,
 mission scoring, robot-data adapters, and inspection UI belong here; desktop
 shells, agent execution, and suite scheduling belong elsewhere.
 
 ## Scope And Boundary
 
-Moonmoon owns:
+MoonMoon owns:
 
 - lunar coordinate, provenance, uncertainty, and source-claim contracts
 - data-root persistence and validation for lunar and robot-derived evidence
@@ -16,8 +16,8 @@ Moonmoon owns:
 - mission corridor, horizon, remediation, energy, and route-clearance evidence
 - renderer-neutral UI models and Rabbita terrain inspection app
 
-Moonmoon does not own Moondesk UI, MoonClaw execution, Moontown scheduling,
-MoonRobo control, or MoonStat observability. Adapters to those products should
+MoonMoon does not own MoonDesk UI, MoonClaw execution, MoonTown scheduling,
+MoonRobo control, or MoonGate observability. Adapters to those products should
 be explicit boundary packages or exported records.
 
 ## Reading Order
@@ -55,7 +55,7 @@ changes, verify the CLI JSON/HTML paths and the Rabbita terrain app separately.
 
 ## Worth Noticing
 
-- Moonmoon owns lunar world claims, not robot actuation.
+- MoonMoon owns lunar world claims, not robot actuation.
 - Robot data contracts are useful for MoonRobo, but MoonRobo owns safety,
   control, and bridge dispatch.
 - Data roots should be inspectable and reproducible; avoid hidden generated

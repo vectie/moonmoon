@@ -343,7 +343,7 @@ test "Rabbita Noetix evidence feeds compiled Moonphys review" {
 }
 
 ///|
-test "Moonrobo live contract JSON ingestion builds suite payload explicitly" {
+test "MoonRobo live contract JSON ingestion builds suite payload explicitly" {
   let payload = try
     moonrobo_noetix_suite_adapter_payload_from_live_json(
       fixture_live_contract().to_json(),
@@ -395,7 +395,7 @@ test "Moonrobo live contract JSON ingestion builds suite payload explicitly" {
 }
 
 ///|
-test "Moonrobo live contract JSON text ingestion reports blockers" {
+test "MoonRobo live contract JSON text ingestion reports blockers" {
   let blocked = fixture_live_contract()
   let blocked = { ..blocked, target_payload_type: "wrong.Payload" }
   let payload = try

@@ -131,10 +131,10 @@ pub fn first_trusted_square_ephemeris_acquisition_plan() -> LunarAcquisitionPlan
       },
       {
         step_id: "review-energy-gate",
-        title: "Review before unblocking Moonrobo",
+        title: "Review before unblocking MoonRobo",
         action: "Have Operator review record reviewer acceptance that the ephemeris source, local horizon assumptions, and rover power model are coherent.",
         expected_evidence: "A review transition moving the ephemeris source candidate and energy-window item out of needs-evidence.",
-        done_when: "Moonrobo handoff remains blocked or becomes reviewable based on measured terrain plus accepted time-windowed power evidence.",
+        done_when: "MoonRobo handoff remains blocked or becomes reviewable based on measured terrain plus accepted time-windowed power evidence.",
       },
     ],
   }

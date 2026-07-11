@@ -2643,7 +2643,7 @@ function moonphysReviewTraceEvidence(sampleCount = 24) {
 function moonphysHingeMotorReplayEvidence(sampleCount = 24) {
   const moonroboFrames = NOETIX_WALK_CLIP.authored_motor_frames
   if (!Array.isArray(moonroboFrames) || moonroboFrames.length !== sampleCount) {
-    throw new Error(`Moonrobo authored motor frames must match requested sample count ${sampleCount}`)
+    throw new Error(`MoonRobo authored motor frames must match requested sample count ${sampleCount}`)
   }
   const frames = moonroboFrames.map(moonroboMotorFrameEvidence)
   const drivenJointCount = frames.reduce((sum, frame) => sum + frame.driven_joint_count, 0)

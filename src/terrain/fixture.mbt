@@ -8,7 +8,7 @@ fn build_grid(
 ) -> TerrainGrid {
   let provenance = terrain_source_provenance(source_manifest)
   let uncertainty = @core.uncertainty(
-    0.82, "LOLA GDR byte-range extraction accepted for Moonmoon software proof; not mission certification.",
+    0.82, "LOLA GDR byte-range extraction accepted for MoonMoon software proof; not mission certification.",
   )
   let cells : Array[@core.TerrainCell] = []
   for row in 0..<rows {

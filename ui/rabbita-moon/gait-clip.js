@@ -194,7 +194,7 @@ function interp(a, b, t) {
 function authoredSampleAtPhase(phase) {
   const samples = MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples
   if (!Array.isArray(samples) || samples.length === 0) {
-    throw new Error('Moonrobo Noetix walk clip is missing authored joint samples')
+    throw new Error('MoonRobo Noetix walk clip is missing authored joint samples')
   }
   const normalized = cycle01(phase)
   const scaled = normalized * samples.length
@@ -221,7 +221,7 @@ function authoredSampleAtPhase(phase) {
 function authoredMotionSampleAtPhase(phase) {
   const samples = MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples
   if (!Array.isArray(samples) || samples.length === 0) {
-    throw new Error('Moonrobo Noetix walk clip is missing authored motion samples')
+    throw new Error('MoonRobo Noetix walk clip is missing authored motion samples')
   }
   const normalized = cycle01(phase)
   const scaled = normalized * samples.length

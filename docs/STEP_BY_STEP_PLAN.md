@@ -1,6 +1,6 @@
 # Step-by-Step Build Plan
 
-Moonmoon is a new standalone product, not a compatibility shell around older
+MoonMoon is a new standalone product, not a compatibility shell around older
 projects. The build order should keep the product credible at every checkpoint:
 one inspectable Moon site, real evidence boundaries, clear route gates, and a
 generic data layer that can later accept robot data without becoming
@@ -189,7 +189,7 @@ the trusted square, and visible evidence labels match catalog-backed records.
 
 ## Phase 3: Migrate Robot Data Through the General Layer
 
-Goal: robot data should move in quickly without turning Moonmoon into a robot
+Goal: robot data should move in quickly without turning MoonMoon into a robot
 project.
 
 Steps:
@@ -251,7 +251,7 @@ remain reusable for non-robot datasets.
 
 ## Phase 4: Add Suite Adapters After Route Readiness
 
-Goal: Moonmoon should expose route-motion readiness, then external adapters can
+Goal: MoonMoon should expose route-motion readiness, then external adapters can
 consume it for robot walking or richer simulation.
 
 Steps:
@@ -265,9 +265,9 @@ Steps:
    - It should not own Noetix, URDF walking clips, or robot-specific gait
      policy.
 
-3. Let suite adapters consume Moonmoon evidence later.
+3. Let suite adapters consume MoonMoon evidence later.
    - Robot model ingestion, URDF/FK mapping, gait clips, mesh assets, and
-     browser animation belong outside standalone Moonmoon domain packages.
+     browser animation belong outside standalone MoonMoon domain packages.
 
 Implementation plan:
 

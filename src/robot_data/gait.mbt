@@ -185,7 +185,7 @@ pub fn robot_gait_clip_data_source(
     clip.source_label,
     clip.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     clip.created_at_ms,
     source_refs=gait_payload_data_refs(clip.payload_refs),
   )
@@ -201,7 +201,7 @@ pub fn robot_gait_annotation_data_source(
     annotation.source_label,
     annotation.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     annotation.created_at_ms,
     source_refs=annotation_payload_data_refs(annotation.payload_refs),
   )

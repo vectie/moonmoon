@@ -352,7 +352,7 @@ pub fn import_robot_model_package(
     request.source_label,
     request.source_dir,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     request.imported_at_ms,
     source_refs=[urdf.data_ref],
   )

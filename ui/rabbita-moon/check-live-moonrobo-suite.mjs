@@ -23,7 +23,7 @@ function runLiveEvidence() {
   }
   if (result.status !== 0) {
     throw new Error([
-      'Moonrobo live suite evidence export failed',
+      'MoonRobo live suite evidence export failed',
       result.stdout,
       result.stderr,
     ].filter(Boolean).join('\n'))
@@ -33,7 +33,7 @@ function runLiveEvidence() {
 
 function requireField(value, field, type) {
   if (typeof value[field] !== type) {
-    throw new Error(`live Moonrobo suite evidence field ${field} must be ${type}`)
+    throw new Error(`live MoonRobo suite evidence field ${field} must be ${type}`)
   }
 }
 
@@ -68,82 +68,82 @@ function validateLiveEvidence(evidence) {
   }
   requireField(evidence, 'ready', 'boolean')
   if (!Array.isArray(evidence.blockers)) {
-    throw new Error('live Moonrobo suite evidence blockers must be an array')
+    throw new Error('live MoonRobo suite evidence blockers must be an array')
   }
   if (evidence.regeneration_mode !== 'live-moonrobo-typed-adapter') {
-    throw new Error(`unexpected live Moonrobo regeneration mode: ${evidence.regeneration_mode}`)
+    throw new Error(`unexpected live MoonRobo regeneration mode: ${evidence.regeneration_mode}`)
   }
   if (!evidence.ready || evidence.status !== 'moonmoon-noetix-live-suite-evidence-ready') {
-    throw new Error(`live Moonrobo suite evidence is not ready: ${evidence.status}`)
+    throw new Error(`live MoonRobo suite evidence is not ready: ${evidence.status}`)
   }
   if (evidence.blocker_count !== 0 || evidence.blockers.length !== 0) {
-    throw new Error(`live Moonrobo suite evidence reported blockers: ${evidence.blockers.join(', ')}`)
+    throw new Error(`live MoonRobo suite evidence reported blockers: ${evidence.blockers.join(', ')}`)
   }
   if (evidence.sample_count !== 24) {
-    throw new Error(`live Moonrobo suite evidence sample_count must be 24, got ${evidence.sample_count}`)
+    throw new Error(`live MoonRobo suite evidence sample_count must be 24, got ${evidence.sample_count}`)
   }
   if (evidence.authored_joint_sample_count !== evidence.sample_count ||
     evidence.authored_motion_sample_count !== evidence.sample_count ||
     evidence.authored_contact_frame_count !== evidence.sample_count ||
     evidence.authored_motor_frame_count !== evidence.sample_count) {
-    throw new Error('live Moonrobo suite evidence sample tables are not aligned')
+    throw new Error('live MoonRobo suite evidence sample tables are not aligned')
   }
   if (evidence.active_contact_frame_count !== evidence.sample_count) {
-    throw new Error('live Moonrobo suite evidence did not keep every frame supported')
+    throw new Error('live MoonRobo suite evidence did not keep every frame supported')
   }
   if (evidence.loaded_contact_count < evidence.sample_count) {
-    throw new Error('live Moonrobo suite evidence did not load enough active contacts')
+    throw new Error('live MoonRobo suite evidence did not load enough active contacts')
   }
   if (evidence.driven_motor_frame_count !== evidence.sample_count) {
-    throw new Error('live Moonrobo suite evidence did not drive every motor frame')
+    throw new Error('live MoonRobo suite evidence did not drive every motor frame')
   }
   if (evidence.motor_review_count !== 0 || evidence.contact_review_count !== 0) {
-    throw new Error('live Moonrobo suite evidence reported contact or motor reviews')
+    throw new Error('live MoonRobo suite evidence reported contact or motor reviews')
   }
 }
 
 function validateAgainstRuntimeBridge(evidence) {
   if (MOONROBO_NOETIX_LIVE_SUITE_EVIDENCE.regeneration_mode !== 'live-moonrobo-typed-adapter') {
-    throw new Error('runtime Moonrobo bridge did not carry live suite evidence')
+    throw new Error('runtime MoonRobo bridge did not carry live suite evidence')
   }
   if (evidence.walk_clip_id !== LIVE_MOONROBO_NOETIX_WALK_CLIP.clip_id) {
-    throw new Error('runtime Moonrobo clip id does not match live suite evidence')
+    throw new Error('runtime MoonRobo clip id does not match live suite evidence')
   }
   if (!LIVE_MOONROBO_NOETIX_WALK_CLIP.source.endsWith('#live-runtime')) {
-    throw new Error('runtime Moonrobo clip source does not mark live runtime generation')
+    throw new Error('runtime MoonRobo clip source does not mark live runtime generation')
   }
   if (evidence.sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.sample_count) {
-    throw new Error('runtime Moonrobo sample count does not match live suite evidence')
+    throw new Error('runtime MoonRobo sample count does not match live suite evidence')
   }
   if (evidence.required_motion_joint_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.required_joint_ids.length) {
-    throw new Error('runtime Moonrobo required joint count does not match live suite evidence')
+    throw new Error('runtime MoonRobo required joint count does not match live suite evidence')
   }
   if (evidence.authored_joint_sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples.length ||
     evidence.authored_motion_sample_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples.length ||
     evidence.authored_contact_frame_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
     evidence.authored_motor_frame_count !== LIVE_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
-    throw new Error('runtime Moonrobo authored sample tables do not match live suite evidence')
+    throw new Error('runtime MoonRobo authored sample tables do not match live suite evidence')
   }
-  validateMeshAssets(LIVE_MOONROBO_NOETIX_WALK_CLIP, 'runtime Moonrobo')
+  validateMeshAssets(LIVE_MOONROBO_NOETIX_WALK_CLIP, 'runtime MoonRobo')
 }
 
 function validateAgainstGeneratedBridge(evidence) {
   if (evidence.walk_clip_id !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.clip_id) {
-    throw new Error('generated Moonrobo clip id does not match live suite evidence')
+    throw new Error('generated MoonRobo clip id does not match live suite evidence')
   }
   if (evidence.sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.sample_count) {
-    throw new Error('generated Moonrobo sample count does not match live suite evidence')
+    throw new Error('generated MoonRobo sample count does not match live suite evidence')
   }
   if (evidence.required_motion_joint_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.required_joint_ids.length) {
-    throw new Error('generated Moonrobo required joint count does not match live suite evidence')
+    throw new Error('generated MoonRobo required joint count does not match live suite evidence')
   }
   if (evidence.authored_joint_sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_joint_samples.length ||
     evidence.authored_motion_sample_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_motion_samples.length ||
     evidence.authored_contact_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_contact_frames.length ||
     evidence.authored_motor_frame_count !== GENERATED_MOONROBO_NOETIX_WALK_CLIP.authored_motor_frames.length) {
-    throw new Error('generated Moonrobo authored sample tables do not match live suite evidence')
+    throw new Error('generated MoonRobo authored sample tables do not match live suite evidence')
   }
-  validateMeshAssets(GENERATED_MOONROBO_NOETIX_WALK_CLIP, 'generated Moonrobo')
+  validateMeshAssets(GENERATED_MOONROBO_NOETIX_WALK_CLIP, 'generated MoonRobo')
 }
 
 function validateMeshAssets(clip, label) {
@@ -174,5 +174,5 @@ validateAgainstRuntimeBridge(evidence)
 validateAgainstGeneratedBridge(evidence)
 
 console.log(
-  `Live Moonrobo suite evidence check passed: ${evidence.sample_count} samples, ${evidence.loaded_contact_count} loaded contacts, ${evidence.driven_motor_frame_count} driven motor frames`,
+  `Live MoonRobo suite evidence check passed: ${evidence.sample_count} samples, ${evidence.loaded_contact_count} loaded contacts, ${evidence.driven_motor_frame_count} driven motor frames`,
 )

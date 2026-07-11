@@ -1,5 +1,5 @@
 ///|
-test "system kernel keeps Moonmoon standalone boundaries explicit" {
+test "system kernel keeps MoonMoon standalone boundaries explicit" {
   let kernel = @kernel.system_kernel()
   assert_eq(kernel.product_name, "MoonMoon")
   assert_eq(kernel.current_site_id, "first-trusted-square")

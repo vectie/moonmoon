@@ -269,7 +269,7 @@ fn build_queue(dossier : @site.SiteDossier) -> Array[BuildTask] {
       priority: 50,
       lane: ViewerLane,
       title: "Keep the live terrain viewer in the Rabbita UI package",
-      outcome: "Moonmoon keeps browser behavior in an explicit Rabbita package without hiding assets in domain packages",
+      outcome: "MoonMoon keeps browser behavior in an explicit Rabbita package without hiding assets in domain packages",
       depends_on: ["src/ui", "ui/rabbita-moon/main"],
       evidence: ["cd ui/rabbita-moon && moon build --target js"],
       done_when: "ui/rabbita-moon owns live browser behavior and src/ui remains renderer-neutral data",
@@ -284,7 +284,7 @@ pub fn system_kernel() -> MoonMoonKernel {
     kernel_id: "moonmoon/kernel/standalone-v1",
     product_name: "MoonMoon",
     current_site_id: dossier.site.site_id,
-    thesis: "Moonmoon is a MoonBit-native lunar terrain and mission model, not a generated artifact bundle.",
+    thesis: "MoonMoon is a MoonBit-native lunar terrain and mission model, not a generated artifact bundle.",
     operating_rule: "Domain claims live in typed MoonBit packages; generated outputs are build products, not source architecture.",
     layers: kernel_layers(dossier),
     evidence_gates: [

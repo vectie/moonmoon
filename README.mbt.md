@@ -1,6 +1,6 @@
-# Moonmoon
+# MoonMoon
 
-Moonmoon is a MoonBit-native lunar terrain and mission model.
+MoonMoon is a MoonBit-native lunar terrain and mission model.
 
 The project is intentionally small: source data lives under `data/`, domain
 logic lives under `src/`, and the root package is only a facade. Generated
@@ -106,7 +106,7 @@ development loop unless they guard a true external data or build boundary.
 
 ## Product Rule
 
-Moonmoon owns lunar world claims. It may later export evidence to other Moon
+MoonMoon owns lunar world claims. It may later export evidence to other Moon
 suite products, but those adapters should be explicit boundary packages or
 separate tools. The core repository should stay MoonBit-first and should not
 grow around Python check scripts, committed `output/` trees, generated browser

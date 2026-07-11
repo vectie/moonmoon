@@ -49,14 +49,14 @@ mkdirSync(generatedDir, { recursive: true })
 const contractJson = runMoon(
   moonroboRoot,
   ['run', 'cmd/moonmoon_contract', '--target', 'native'],
-  'Moonrobo live contract export',
+  'MoonRobo live contract export',
 )
 writeFileSync(contractPath, contractJson)
 
 const payloadJson = runMoon(
   repoRoot,
   ['run', 'cmd/suite_preview', '--target', 'native', '--', '--contract-json', contractPath],
-  'Moonmoon live suite-preview payload command',
+  'MoonMoon live suite-preview payload command',
 )
 writeFileSync(payloadPath, payloadJson)
 
@@ -166,15 +166,15 @@ if (evidence.motor_review_count !== 0 ||
 
 const contractRef = sourceRef(payload, 'moonrobo.moonmoon-adapter-contract')
 if (!contractRef || contractRef.status !== 'live-typed-source') {
-  throw new Error('live suite-preview payload did not cite the live Moonrobo contract source')
+  throw new Error('live suite-preview payload did not cite the live MoonRobo contract source')
 }
 const contactRef = sourceRef(payload, 'moonrobo.moonmoon-adapter-contact-evidence')
 if (!contactRef || contactRef.status !== 'live-typed-source') {
-  throw new Error('live suite-preview payload did not cite live Moonrobo contact evidence')
+  throw new Error('live suite-preview payload did not cite live MoonRobo contact evidence')
 }
 const liveEvidenceRef = sourceRef(payload, 'moonrobo.moonmoon-live-suite-evidence')
 if (!liveEvidenceRef || liveEvidenceRef.status !== 'live-typed-source') {
-  throw new Error('live suite-preview payload did not cite live Moonrobo suite evidence')
+  throw new Error('live suite-preview payload did not cite live MoonRobo suite evidence')
 }
 if (sourceRef(payload, 'moonmoon.rabbita.generated-evidence')) {
   throw new Error('live suite-preview payload must not depend on Rabbita generated evidence')

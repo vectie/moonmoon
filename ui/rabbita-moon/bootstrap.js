@@ -9,7 +9,7 @@ if (app) {
   app.innerHTML = `
     <main class="boot-shell">
       <div>
-        <p class="eyebrow">Moonmoon</p>
+        <p class="eyebrow">MoonMoon</p>
         <h1>Loading Rabbita 3D Moon viewer</h1>
       </div>
     </main>

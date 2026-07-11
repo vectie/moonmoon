@@ -79,7 +79,7 @@ pub fn robot_telemetry_data_source(
     stream.source_label,
     stream.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     stream.created_at_ms,
     source_refs=robot_telemetry_data_refs(stream),
   )

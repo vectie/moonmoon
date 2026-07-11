@@ -1,7 +1,7 @@
 # Animation-First Locomotion Plan
 
 This restores the larger gait plan from the pre-standalone history and updates
-it for the current Moonmoon boundary. The goal is to make the robot walk in a
+it for the current MoonMoon boundary. The goal is to make the robot walk in a
 way that reads as a believable biped while still respecting the real robot
 definition.
 
@@ -57,7 +57,7 @@ markers.
   probes, support/capture review, joints, motors, and future constraints.
 - `src/moonphys` must not contain robot names, walk phases, gait style,
   animation clip choices, or Rabbita labels.
-- The future Moonrobo adapter owns robot model ingestion, URDF/FK rig mapping,
+- The future MoonRobo adapter owns robot model ingestion, URDF/FK rig mapping,
   gait clips, joint target generation, foot locks, and terrain adaptation.
 - `ui/rabbita-moon` may host the current standalone preview and browser
   diagnostics, but it must label that preview as adapter-style evidence.
@@ -238,7 +238,7 @@ Deliverables:
 - cycle repeat, mirroring, stride, and limit tests
 
 Current status: active preview in `ui/rabbita-moon`; future adapter should move
-this into a typed Moonrobo clip package.
+this into a typed MoonRobo clip package.
 
 ### Phase B: Walk Frame Authority
 
@@ -254,7 +254,7 @@ Current status: active preview. `ui/rabbita-moon/gait-clip.js` owns the local
 adapter-style clip contract for root motion, phase labels, foot lock/support
 channels, joint target samples, and URDF limit metadata. `scene3d.js` renders
 and reviews that contract instead of owning hidden gait authority. The future
-Moonrobo adapter should move the same contract shape into a typed adapter
+MoonRobo adapter should move the same contract shape into a typed adapter
 package.
 
 ### Phase C: Rabbita Locomotion Overlay
@@ -361,13 +361,13 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `moonphysHingeMotorTrace` from corrected FK joint samples and a
    `moonphysMotionHingeReview` that checks frame alignment, driven joints,
    motor limit status, torque, velocity, and work envelopes against the
-   motion-frame trace. The hinge replay table now cites the Moonrobo Noetix
+   motion-frame trace. The hinge replay table now cites the MoonRobo Noetix
    profile and URDF sources, uses URDF joint ids such as `leg_l1_joint`,
    `leg_l4_joint`, `leg_l6_joint`, `arm_l1_joint`, and `arm_l4_joint`, and
    verifies velocity and effort against those URDF limits. `src/suite_adapter_preview`
    now consumes a generated MoonBit evidence artifact emitted from
    `ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics`, then runs that live
-   Rabbita/Moonrobo Noetix payload through compiled Moonphys using
+   Rabbita/MoonRobo Noetix payload through compiled Moonphys using
    `motion_hinge_replay_review_with_replay`. `npm run check:gait:heavy` verifies
    the generated artifact is fresh before invoking the compiled gate. The
    Rabbita preview now emits an explicit load-bearing support channel, wider
@@ -380,7 +380,7 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    toe-off/contact foot-roll channel rendered through separate toe/heel blocks,
    lagged arm counter-swing with visible hands, and torso/waist
    counter-rotation above the pelvis while the legs remain rigid FK from the
-   Moonrobo Noetix proportions. The browser contract exposes `toeRollStatus`,
+   MoonRobo Noetix proportions. The browser contract exposes `toeRollStatus`,
    `toeRollRad`, `torsoCounterRotationStatus`, and
    `torsoCounterRotationRad`, so this slice is measured as live motion, not as
    a separate fixture mirror. The Rabbita preview also promotes the six
@@ -398,50 +398,50 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    `visualLinkAttachments` and `visualAttachmentStatus`, separating Noetix link
    visuals from foot markers, target cubes, terrain rails, and other debug
    overlays. `src/suite_adapter_preview` now wraps the generated review in a
-   typed `NoetixSuiteAdapterPayload` that records Moonrobo source references
+   typed `NoetixSuiteAdapterPayload` that records MoonRobo source references
    for the Noetix robot profile, URDF, mesh asset, generated evidence source,
-   driven joint ids, compiled review status, and blockers. Moonrobo now has a
+   driven joint ids, compiled review status, and blockers. MoonRobo now has a
    typed source-side `src/moonmoon_adapter` contract for the same Noetix
    profile, URDF, mesh, required motion joints, blockers, readiness fields, and
    a typed `noetix_walk_clip` authority for the endless forward walk cycle.
-   Moonrobo also exposes `cmd/moonmoon_contract`, and
+   MoonRobo also exposes `cmd/moonmoon_contract`, and
    `ui/rabbita-moon/export-moonrobo-contract.mjs` keeps the Rabbita JS clip
    bridge fresh from that typed source package. The committed MoonBit table
-   snapshot has been removed; Moonmoon suite-preview ingestion now consumes
-   live Moonrobo contract JSON through `cmd/suite_preview`. Rabbita runtime
+   snapshot has been removed; MoonMoon suite-preview ingestion now consumes
+   live MoonRobo contract JSON through `cmd/suite_preview`. Rabbita runtime
    imports the live/generated JS clip for cycle
    rate, root speed, stride, foot phase sequence, foot roles, support windows,
-   curve metadata, the typed Moonrobo-authored joint sample table, typed
+   curve metadata, the typed MoonRobo-authored joint sample table, typed
    authored motion samples for root bob/sway, torso counter-rotation, foot roll,
    root-local foot targets, typed authored FK/contact frames, and typed authored
    motor frames for Moonphys review. Rabbita interpolates those
    generated samples instead of owning the leg/arm, root, torso, foot-roll,
    authored foot-target, FK/contact, or hinge motor target formulas in
    `gait-clip.js` and `scene3d.js`. The compiled Moonphys bridge now consumes
-   Moonrobo-authored contact frames and Moonrobo-authored motor frames directly;
+   MoonRobo-authored contact frames and MoonRobo-authored motor frames directly;
    Rabbita-generated evidence remains a browser/UI freshness gate. `npm run
    check:gait` is the fast viewport/runtime gate for authored-sample
    consumption, mesh-reduction metadata, gait phases, foot lock, terrain IK,
    and motion continuity. `npm run check:gait:heavy` adds contract bridge
-   freshness, Moonrobo-authored contact and hinge motor trace consumption, live
-   Moonrobo typed adapter evidence, Rabbita UI evidence freshness, the live
+   freshness, MoonRobo-authored contact and hinge motor trace consumption, live
+   MoonRobo typed adapter evidence, Rabbita UI evidence freshness, the live
    suite payload command, and the compiled Moonphys review. The
    first live regeneration gate is `../moonrobo/cmd/moonmoon_suite_evidence`,
    checked by `ui/rabbita-moon/check-live-moonrobo-suite.mjs`.
    `ui/rabbita-moon/prepare-live-moonrobo-clip.mjs` now writes the live runtime
    bridge at `ui/rabbita-moon/.generated/live-moonrobo-noetix-clip.js`, and
    Rabbita imports that bridge for runtime gait data. The MoonBit suite-preview
-   payload also carries the live Moonrobo evidence summary, records its typed
+   payload also carries the live MoonRobo evidence summary, records its typed
    source, and blocks readiness when the live summary diverges from the
    generated bridge. `src/suite_adapter_preview/moonrobo_live_ingestion.mbt`
-   now accepts a full live Moonrobo contract JSON value, decodes the authored
+   now accepts a full live MoonRobo contract JSON value, decodes the authored
    joint, motion, contact, and motor tables, and runs the compiled Moonphys
    review from the parsed contact/motor frames. `cmd/suite_preview` now exposes
    that ingestion as a native command, and
-   `ui/rabbita-moon/check-live-suite-payload.mjs` runs Moonrobo's live contract
+   `ui/rabbita-moon/check-live-suite-payload.mjs` runs MoonRobo's live contract
    exporter through that command before validating the emitted suite payload.
    Plain MoonBit tests now use compact fixture data for parser and review
-   coverage, while full Moonrobo integration coverage is owned by the live
+   coverage, while full MoonRobo integration coverage is owned by the live
    command gate. Rabbita now also generates a local E1 assembly bridge from
    `~/Downloads/e1_asm_251028.tar.gz`, extracts the ignored 25 STL mesh assets
    under `ui/rabbita-moon/.generated`, and renders a second 3D character with

@@ -1,12 +1,12 @@
 # LRO LOLA Source Acquisition Plan
 
-This directory stores reproducible LOLA source evidence for Moonmoon's first
+This directory stores reproducible LOLA source evidence for MoonMoon's first
 authoritative lunar terrain fixture.
 
 The current repository does not commit the raw LOLA product. It commits tiny
 CSVs extracted through HTTP byte ranges. Those CSVs are now the active
 first-trusted-square terrain source and the first adjacent route-window sources
-for Moonmoon software proof.
+for MoonMoon software proof.
 
 ## First Target
 
@@ -48,7 +48,7 @@ for Moonmoon software proof.
 - Source window: row `3972`, column `3790`, size `4x4`
 - Center: `89.88S`, `0.12E`
 - Cell size: 20 m
-- Status: accepted for Moonmoon software proof
+- Status: accepted for MoonMoon software proof
 
 Route-window evidence:
 
