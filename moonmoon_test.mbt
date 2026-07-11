@@ -8,6 +8,27 @@ test "root facade exposes the standalone product kernel" {
 }
 
 ///|
+test "MoonMoon adapter reports digital evidence without deployment authority" {
+  guard @moonmoon.moonflow_adapter_capability_json() is Object(capability) else {
+    fail("expected MoonMoon adapter capability")
+  }
+  assert_true(capability["protocol"] == Json::string("moonflow.adapter.v1"))
+  assert_true(capability["product_id"] == Json::string("moonmoon"))
+  assert_true(capability["supports_cancel"] == Json::boolean(false))
+  assert_true(capability["supports_reconcile"] == Json::boolean(true))
+  assert_true(capability["correct_refusal_is_success"] == Json::boolean(true))
+  assert_true(
+    capability["physical_deployment_claim_forbidden"] == Json::boolean(true),
+  )
+  guard capability["authority_classes"] is Array(authorities) else {
+    fail("expected MoonMoon authorities")
+  }
+  assert_true(authorities.contains(Json::string("sandbox-execution")))
+  assert_false(authorities.contains(Json::string("external-effect")))
+  assert_false(authorities.contains(Json::string("physical-effect")))
+}
+
+///|
 test "root facade exposes moonsuite product home contract" {
   let home = @moonmoon.moonsuite_product_home(book_id="lunar-site")
   assert_eq(home.product_id, "moonmoon")
