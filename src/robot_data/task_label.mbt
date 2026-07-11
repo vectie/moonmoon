@@ -104,7 +104,7 @@ pub fn robot_task_label_data_source(
     task_label.source_label,
     task_label.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     task_label.created_at_ms,
     source_refs=task_label_payload_data_refs(task_label.payload_refs),
   )

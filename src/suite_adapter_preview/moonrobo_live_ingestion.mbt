@@ -502,7 +502,7 @@ fn live_contract_source_refs(
     noetix_suite_source_ref(
       "moonrobo-noetix-e1-moonmoon-contract", "moonrobo.moonmoon-adapter-contract",
       "../moonrobo/src/moonmoon_adapter/noetix_contract.mbt#noetix_e1_moonmoon_locomotion_contract",
-      "live Moonrobo source contract used to ingest Moonmoon suite evidence", "live-typed-source",
+      "live MoonRobo source contract used to ingest MoonMoon suite evidence", "live-typed-source",
     ),
   )
   for source in contract.source_refs {
@@ -521,7 +521,7 @@ fn live_contract_source_refs(
       "moonrobo-noetix-authored-contact-frames",
       "moonrobo.moonmoon-adapter-contact-evidence",
       live_contract_contact_frame_source(contract),
-      "live Moonrobo FK/contact evidence consumed by compiled Moonphys",
+      "live MoonRobo FK/contact evidence consumed by compiled Moonphys",
       "live-typed-source",
     ),
   )
@@ -530,7 +530,7 @@ fn live_contract_source_refs(
       "moonrobo-noetix-live-suite-evidence",
       "moonrobo.moonmoon-live-suite-evidence",
       live_contract_evidence_source(),
-      "live Moonrobo typed adapter suite evidence ingested by Moonmoon",
+      "live MoonRobo typed adapter suite evidence ingested by MoonMoon",
       "live-typed-source",
     ),
   )

@@ -378,7 +378,7 @@ fn operator_scene(model : Model) -> Html {
           class="view-switch-input",
         ),
         header(class="stage-header", [
-          div([span(class="eyebrow", "Moonmoon"), b("Lunar operator")]),
+          div([span(class="eyebrow", "MoonMoon"), b("Lunar operator")]),
           label(for_="moon-terrain-switch", class="view-switch", [
             span("Moon"),
             b("Site terrain"),

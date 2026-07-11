@@ -1,7 +1,7 @@
 ///|
 fn print_help() -> Unit {
   let help =
-    #|Moonmoon CLI
+    #|MoonMoon CLI
     #|
     #|Commands:
     #|  moon run cmd/main
@@ -485,7 +485,7 @@ fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
         println(ingest.to_json().stringify(indent=2))
       } else {
         let materialization = ingest.materialization
-        println("Moonmoon first-site data ingest")
+        println("MoonMoon first-site data ingest")
         println("- root: \{materialization.root}")
         println("- catalog: \{materialization.catalog_path}")
         println(
@@ -500,7 +500,7 @@ fn print_data_ingest(args : Array[String], output_json : Bool) -> Unit {
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon data ingest failed")
+        println("MoonMoon data ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -528,7 +528,7 @@ fn print_data_robot_model_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot model data ingest")
+        println("MoonMoon robot model data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- model: \{result.model_id}")
@@ -544,7 +544,7 @@ fn print_data_robot_model_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot model ingest failed")
+        println("MoonMoon robot model ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -574,7 +574,7 @@ fn print_data_robot_episode_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot episode data ingest")
+        println("MoonMoon robot episode data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- episode: \{result.episode_id}")
@@ -590,7 +590,7 @@ fn print_data_robot_episode_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot episode ingest failed")
+        println("MoonMoon robot episode ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -619,7 +619,7 @@ fn print_data_robot_telemetry_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot telemetry data ingest")
+        println("MoonMoon robot telemetry data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- stream: \{result.stream_id}")
@@ -635,7 +635,7 @@ fn print_data_robot_telemetry_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot telemetry ingest failed")
+        println("MoonMoon robot telemetry ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -664,7 +664,7 @@ fn print_data_robot_gait_clip_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot gait clip data ingest")
+        println("MoonMoon robot gait clip data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- clip: \{result.clip_id}")
@@ -680,7 +680,7 @@ fn print_data_robot_gait_clip_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot gait clip ingest failed")
+        println("MoonMoon robot gait clip ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -710,7 +710,7 @@ fn print_data_robot_gait_annotation_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot gait annotation data ingest")
+        println("MoonMoon robot gait annotation data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- annotation: \{result.annotation_id}")
@@ -727,7 +727,7 @@ fn print_data_robot_gait_annotation_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot gait annotation ingest failed")
+        println("MoonMoon robot gait annotation ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -760,7 +760,7 @@ fn print_data_robot_gait_alignment_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot gait alignment data ingest")
+        println("MoonMoon robot gait alignment data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- alignment: \{result.alignment_id}")
@@ -779,7 +779,7 @@ fn print_data_robot_gait_alignment_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot gait alignment ingest failed")
+        println("MoonMoon robot gait alignment ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -811,7 +811,7 @@ fn print_data_robot_task_label_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot task label data ingest")
+        println("MoonMoon robot task label data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- task-label: \{result.task_label_id}")
@@ -829,7 +829,7 @@ fn print_data_robot_task_label_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot task label ingest failed")
+        println("MoonMoon robot task label ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")
@@ -861,7 +861,7 @@ fn print_data_robot_rollout_ingest(
         println(result.to_json().stringify(indent=2))
       } else {
         let materialization = result.materialization
-        println("Moonmoon robot rollout summary data ingest")
+        println("MoonMoon robot rollout summary data ingest")
         println("- root: \{materialization.root}")
         println("- source: \{result.source_dir}")
         println("- rollout: \{result.rollout_id}")
@@ -879,7 +879,7 @@ fn print_data_robot_rollout_ingest(
       if output_json {
         println(error.to_json().stringify(indent=2))
       } else {
-        println("Moonmoon robot rollout summary ingest failed")
+        println("MoonMoon robot rollout summary ingest failed")
         println("- code: \{error.code}")
         println("- path: \{error.path}")
         println("- message: \{error.message}")

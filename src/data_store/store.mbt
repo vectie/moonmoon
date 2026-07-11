@@ -102,13 +102,45 @@ fn ensure_dir(path : String) -> Result[Bool, DataStoreIssue] {
 }
 
 ///|
+fn ensure_directory_tree(
+  path : String,
+) -> Result[Array[String], DataStoreIssue] {
+  let absolute = path.has_prefix("/")
+  let mut current = if absolute { "" } else { "." }
+  let created : Array[String] = []
+  for component in path.split("/") {
+    if component == "" || component == "." {
+      continue
+    }
+    let component = component.to_owned()
+    current = if current == "" || current == "/" {
+      "/" + component
+    } else {
+      current + "/" + component
+    }
+    match ensure_dir(current) {
+      Ok(value) => if value { created.push(current) }
+      Err(error) => return Err(error)
+    }
+  }
+  Ok(created)
+}
+
+///|
 pub fn initialize_root(root : String) -> Result[DataStoreInit, DataStoreIssue] {
   let dirs = [
     "", "sources", "datasets", "versions", "artifacts", "payloads", "lineage", "validations",
     "indexes",
   ]
   let created : Array[String] = []
+  match ensure_directory_tree(root) {
+    Ok(paths) => created.push_iter(paths.iter())
+    Err(error) => return Err(error)
+  }
   for relative in dirs {
+    if relative == "" {
+      continue
+    }
     let path = if relative == "" { root } else { join(root, relative) }
     match ensure_dir(path) {
       Ok(value) => if value { created.push(path) }

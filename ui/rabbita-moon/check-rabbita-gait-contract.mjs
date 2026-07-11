@@ -300,7 +300,7 @@ for (const token of sceneContracts) {
   requireText(gaitRuntimeSource, token, 'gait runtime source')
 }
 
-requireText(generatedSnapshotSource, 'export const MOONROBO_NOETIX_WALK_CLIP', 'generated Moonrobo snapshot source')
+requireText(generatedSnapshotSource, 'export const MOONROBO_NOETIX_WALK_CLIP', 'generated MoonRobo snapshot source')
 
 for (const token of planContracts) {
   requireText(plan, token, 'ANIMATION_FIRST_LOCOMOTION_PLAN.md')
@@ -362,76 +362,76 @@ if (!e1AssemblyModule.E1_ASM_ASSEMBLY.visuals.every(visual =>
   throw new Error('E1 assembly bridge did not expose bounded viewport-reduced STL visuals')
 }
 if (!gaitModule.NOETIX_WALK_CLIP?.ready) {
-  throw new Error(`generated Moonrobo walk clip was not ready: ${gaitModule.NOETIX_WALK_CLIP?.status}`)
+  throw new Error(`generated MoonRobo walk clip was not ready: ${gaitModule.NOETIX_WALK_CLIP?.status}`)
 }
 if (gaitModule.NOETIX_VISUAL_RIG.source !== gaitModule.NOETIX_WALK_CLIP.source) {
-  throw new Error('Rabbita visual rig source does not come from the generated Moonrobo walk clip')
+  throw new Error('Rabbita visual rig source does not come from the generated MoonRobo walk clip')
 }
 if (gaitModule.NOETIX_VISUAL_RIG.cycleHz !== gaitModule.NOETIX_WALK_CLIP.cycle_hz) {
-  throw new Error('Rabbita visual rig cycle rate does not come from the generated Moonrobo walk clip')
+  throw new Error('Rabbita visual rig cycle rate does not come from the generated MoonRobo walk clip')
 }
 if (gaitModule.NOETIX_VISUAL_RIG.rootSpeedMps !== gaitModule.NOETIX_WALK_CLIP.root_speed_mps) {
-  throw new Error('Rabbita visual rig root speed does not come from the generated Moonrobo walk clip')
+  throw new Error('Rabbita visual rig root speed does not come from the generated MoonRobo walk clip')
 }
 if (gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus !== 'moonrobo-noetix-mesh-assets-ready') {
-  throw new Error(`Rabbita visual rig did not load Moonrobo mesh assets: ${gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus}`)
+  throw new Error(`Rabbita visual rig did not load MoonRobo mesh assets: ${gaitModule.NOETIX_VISUAL_RIG.meshAssetStatus}`)
 }
 const baseMeshAsset = gaitModule.visualMeshAsset('base_link')
 if (!baseMeshAsset?.local_path?.endsWith('base_link.STL') ||
   baseMeshAsset.format !== 'stl' ||
   baseMeshAsset.status !== 'moonrobo-stl-mesh-referenced') {
-  throw new Error('Rabbita visual rig did not expose Moonrobo Noetix base_link STL reference')
+  throw new Error('Rabbita visual rig did not expose MoonRobo Noetix base_link STL reference')
 }
 if (gaitModule.NOETIX_VISUAL_RIG.visualMeshAssets.length !== 25) {
-  throw new Error(`Rabbita visual rig did not expose all 25 Moonrobo E1 STL mesh references: ${gaitModule.NOETIX_VISUAL_RIG.visualMeshAssets.length}`)
+  throw new Error(`Rabbita visual rig did not expose all 25 MoonRobo E1 STL mesh references: ${gaitModule.NOETIX_VISUAL_RIG.visualMeshAssets.length}`)
 }
 if (JSON.stringify(gaitModule.FOOT_PHASE_SEQUENCE) !== JSON.stringify(gaitModule.NOETIX_WALK_CLIP.foot_phase_sequence)) {
-  throw new Error('Rabbita foot phase sequence does not come from the generated Moonrobo walk clip')
+  throw new Error('Rabbita foot phase sequence does not come from the generated MoonRobo walk clip')
 }
 const clipZero = gaitModule.walkClipSample(0)
 if (clipZero.strideM !== gaitModule.NOETIX_WALK_CLIP.stride_m) {
-  throw new Error('Rabbita walk sample stride does not come from the generated Moonrobo walk clip')
+  throw new Error('Rabbita walk sample stride does not come from the generated MoonRobo walk clip')
 }
 if (clipZero.footChannels.left.role !== gaitModule.NOETIX_WALK_CLIP.foot_phase_specs[0].role) {
-  throw new Error('Rabbita foot role did not resolve through the generated Moonrobo foot phase specs')
+  throw new Error('Rabbita foot role did not resolve through the generated MoonRobo foot phase specs')
 }
 const curveParams = new Map(gaitModule.NOETIX_WALK_CLIP.joint_curve_params.map(param => [param.name, param.value]))
 for (const paramName of ['knee_swing_lift_rad', 'arm_phase_lag', 'shoulder_hip_scale', 'elbow_base_rad']) {
   if (!curveParams.has(paramName)) {
-    throw new Error(`generated Moonrobo walk clip omitted runtime curve parameter: ${paramName}`)
+    throw new Error(`generated MoonRobo walk clip omitted runtime curve parameter: ${paramName}`)
   }
 }
 if (gaitModule.NOETIX_WALK_CLIP.authored_joint_samples.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
-  throw new Error('generated Moonrobo authored joint samples do not match sample_count')
+  throw new Error('generated MoonRobo authored joint samples do not match sample_count')
 }
 if (gaitModule.NOETIX_WALK_CLIP.authored_motion_samples.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
-  throw new Error('generated Moonrobo authored motion samples do not match sample_count')
+  throw new Error('generated MoonRobo authored motion samples do not match sample_count')
 }
 if (gaitModule.NOETIX_WALK_CLIP.authored_motor_frames.length !== gaitModule.NOETIX_WALK_CLIP.sample_count) {
-  throw new Error('generated Moonrobo authored motor frames do not match sample_count')
+  throw new Error('generated MoonRobo authored motor frames do not match sample_count')
 }
 const firstAuthoredSample = gaitModule.NOETIX_WALK_CLIP.authored_joint_samples[0]
 const firstMotionSample = gaitModule.NOETIX_WALK_CLIP.authored_motion_samples[0]
 const firstJoints = gaitModule.jointSamples(gaitModule.walkClipSample(0))
 if (Math.abs(firstJoints.left.knee - firstAuthoredSample.left_knee_rad) > 0.000001) {
-  throw new Error('Rabbita left knee did not come from the generated Moonrobo authored sample')
+  throw new Error('Rabbita left knee did not come from the generated MoonRobo authored sample')
 }
 if (Math.abs(firstJoints.right.shoulder - firstAuthoredSample.right_shoulder_rad) > 0.000001) {
-  throw new Error('Rabbita right shoulder did not come from the generated Moonrobo authored sample')
+  throw new Error('Rabbita right shoulder did not come from the generated MoonRobo authored sample')
 }
 const firstClip = gaitModule.walkClipSample(0)
 if (Math.abs(firstClip.bob - firstMotionSample.root_bob_m) > 0.000001) {
-  throw new Error('Rabbita root bob did not come from the generated Moonrobo motion sample')
+  throw new Error('Rabbita root bob did not come from the generated MoonRobo motion sample')
 }
 if (Math.abs(firstClip.footChannels.left.rollPitch - firstMotionSample.left_foot_roll_pitch_rad) > 0.000001) {
-  throw new Error('Rabbita left foot roll did not come from the generated Moonrobo motion sample')
+  throw new Error('Rabbita left foot roll did not come from the generated MoonRobo motion sample')
 }
 const swingJoints = gaitModule.jointSamples(gaitModule.walkClipSample(0.25))
 if (Math.abs(swingJoints.left.knee) <= curveParams.get('knee_base_rad')) {
-  throw new Error('Rabbita joint sampling did not preserve generated Moonrobo knee swing depth')
+  throw new Error('Rabbita joint sampling did not preserve generated MoonRobo knee swing depth')
 }
 if (Math.abs(swingJoints.left.shoulder) <= 0.001) {
-  throw new Error('Rabbita joint sampling did not preserve generated Moonrobo shoulder motion')
+  throw new Error('Rabbita joint sampling did not preserve generated MoonRobo shoulder motion')
 }
 
 await import(new URL('./scene3d.js', import.meta.url).href)
@@ -550,13 +550,13 @@ if (runHeavyIntegration) {
     throw new Error('Moonphys hinge motor trace used an unexpected environment')
   }
   if (hingeTrace.sample_source !== 'moonrobo-authored-motor-frames') {
-    throw new Error('Moonphys hinge motor trace did not use Moonrobo authored motor frames')
+    throw new Error('Moonphys hinge motor trace did not use MoonRobo authored motor frames')
   }
   if (hingeTrace.limit_source?.urdf_path !== '../moonrobo/examples/noetix-e1/model/robot.urdf') {
-    throw new Error('Moonphys hinge motor trace did not cite the Moonrobo Noetix URDF limit source')
+    throw new Error('Moonphys hinge motor trace did not cite the MoonRobo Noetix URDF limit source')
   }
   if (hingeTrace.limit_source?.robot_profile_path !== '../moonrobo/examples/noetix-e1/robot.json') {
-    throw new Error('Moonphys hinge motor trace did not cite the Moonrobo Noetix robot profile')
+    throw new Error('Moonphys hinge motor trace did not cite the MoonRobo Noetix robot profile')
   }
   if (hingeTrace.frame_count !== sampleTimes.length || hingeTrace.motor_frame_count !== sampleTimes.length) {
     throw new Error('Moonphys hinge motor trace frame count did not match runtime sampling')
@@ -771,11 +771,11 @@ if (!runHeavyIntegration) {
 
 const checkDir = fileURLToPath(new URL('.', import.meta.url))
 runGate(process.execPath, ['export-rabbita-gait-evidence.mjs', '--check'], checkDir, 'generated Rabbita gait evidence is stale')
-runGate(process.execPath, ['export-moonrobo-contract.mjs', '--check'], checkDir, 'generated Moonrobo Noetix contract bridge is stale')
-runGate(process.execPath, ['check-live-moonrobo-suite.mjs'], checkDir, 'live Moonrobo suite evidence gate')
+runGate(process.execPath, ['export-moonrobo-contract.mjs', '--check'], checkDir, 'generated MoonRobo Noetix contract bridge is stale')
+runGate(process.execPath, ['check-live-moonrobo-suite.mjs'], checkDir, 'live MoonRobo suite evidence gate')
 runGate(process.execPath, ['check-live-suite-payload.mjs'], checkDir, 'live suite payload command gate')
 runGate(process.env.MOON_BIN ?? 'moon', ['test', 'src/suite_adapter_preview', '--target', 'js'], repoRoot, 'compiled Moonphys gate')
 
 console.log(
-  `Rabbita gait heavy contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length + bootstrapContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, Moonrobo contract gate, live Moonrobo suite gate, live suite payload command gate, compiled Moonphys gate`,
+  `Rabbita gait heavy contract passed: ${sceneContracts.length + planContracts.length + operatorContracts.length + operatorStyleContracts.length + operatorRuntimeContracts.length + bootstrapContracts.length} contracts, ${sampleTimes.length} runtime samples, generated evidence gate, MoonRobo contract gate, live MoonRobo suite gate, live suite payload command gate, compiled Moonphys gate`,
 )

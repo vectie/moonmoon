@@ -272,7 +272,7 @@ test "terrain owns terrain source manifests without dataset facade" {
 ///|
 test "robot_data is a pure robot domain projection over data_core" {
   let forbidden = [
-    "lunar", "Lunar", "Moonrobo", "Noetix", "Rabbita", "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store",
+    "lunar", "Lunar", "MoonRobo", "Noetix", "Rabbita", "\"moonbitlang/x/fs\"", "\"vectie/moonmoon/src/data_store",
     "\"vectie/moonmoon/src/data_validate", "\"vectie/moonmoon/src/lunar_data", "\"vectie/moonmoon/src/lunar_catalog",
     "\"vectie/moonmoon/src/site", "\"vectie/moonmoon/src/site_catalog", "\"vectie/moonmoon/src/ui",
     "\"vectie/moonmoon/src/kernel", "\"vectie/moonmoon/src/suite_adapter_preview",
@@ -292,7 +292,7 @@ test "robot_data is a pure robot domain projection over data_core" {
 ///|
 test "robot_catalog is the robot store validate adapter" {
   let forbidden = [
-    "lunar", "Lunar", "Moonrobo", "Noetix", "Rabbita", "\"vectie/moonmoon/src/lunar_data",
+    "lunar", "Lunar", "MoonRobo", "Noetix", "Rabbita", "\"vectie/moonmoon/src/lunar_data",
     "\"vectie/moonmoon/src/lunar_catalog", "\"vectie/moonmoon/src/dataset", "\"vectie/moonmoon/src/site",
     "\"vectie/moonmoon/src/site_catalog", "\"vectie/moonmoon/src/ui", "\"vectie/moonmoon/src/kernel",
     "\"vectie/moonmoon/src/suite_adapter_preview",

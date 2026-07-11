@@ -1,6 +1,6 @@
 # Architecture
 
-Moonmoon is organized as a standalone MoonBit module.
+MoonMoon is organized as a standalone MoonBit module.
 
 ```text
 data/sources
@@ -36,7 +36,7 @@ by responsibility, but package imports define the actual dependency graph.
 - `robot_data` maps robot episodes, model refs, signal payloads, replay
   artifacts, telemetry streams, gait clips, task labels, rollout summaries, and
   quality reports onto `data_core` without importing lunar, store, validation,
-  UI, or Moonrobo packages.
+  UI, or MoonRobo packages.
 - `robot_catalog` materializes robot data bundles into the generic data root
   and validates them through the same store/validation boundary as lunar data.
 - `terrain` owns terrain source manifests and turns checked source fixtures
@@ -54,7 +54,7 @@ by responsibility, but package imports define the actual dependency graph.
 ## Locomotion Boundary
 
 The current locomotion surface is deliberately not a robot gait implementation.
-Moonmoon exposes `TraverseMotionContract` from `src/ui` to state whether the
+MoonMoon exposes `TraverseMotionContract` from `src/ui` to state whether the
 selected route is ready for a future motion adapter. The contract names
 `src/moonphys` as the generic physics core and `future-suite-adapter` as the
 owner of robot-specific gait assets.
@@ -62,7 +62,7 @@ owner of robot-specific gait assets.
 This keeps Moonphys clean: it may model vectors, transforms, articulated
 kinematics, contacts, joints, and rigid-body worlds, but it does not own Noetix,
 URDF walking clips, Rabbita browser bundles, or any robot-specific walk
-primitive. When Moonrobo returns as a suite adapter, it should consume the
+primitive. When MoonRobo returns as a suite adapter, it should consume the
 route-motion contract and provide robot gait assets outside the standalone
 domain packages.
 

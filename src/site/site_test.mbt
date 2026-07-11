@@ -1,5 +1,5 @@
 ///|
-test "first trusted square dossier renders the first Moonmoon evidence surface" {
+test "first trusted square dossier renders the first MoonMoon evidence surface" {
   let dossier = @site.first_trusted_square_dossier()
   assert_eq(dossier.site.site_id, "first-trusted-square")
   assert_eq(dossier.datasets.length(), 6)

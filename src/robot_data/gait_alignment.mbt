@@ -107,7 +107,7 @@ pub fn robot_gait_alignment_data_source(
     alignment.source_label,
     alignment.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     alignment.created_at_ms,
     source_refs=alignment_payload_data_refs(alignment.payload_refs),
   )

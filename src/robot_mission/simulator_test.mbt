@@ -128,6 +128,21 @@ test "path-aware simulation rejects a steep segment without bypassing it" {
 }
 
 ///|
+test "simulation rejects drift in declared component energy instead of trusting totals" {
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  let energy = { ..design.verification_criteria.energy, drive_energy_wh: 1.0 }
+  let verification = { ..design.verification_criteria, energy, }
+  let drifted = { ..design, verification_criteria: verification }
+  let result = simulate(drifted, test_dem())
+  assert_eq(result.result, "rejected")
+  assert_true(
+    result.blockers.contains(
+      "computed drive energy does not match verification criteria",
+    ),
+  )
+}
+
+///|
 test "identical inputs produce byte-equivalent deterministic receipts" {
   let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
   let first = simulate(design, test_dem()).to_json().stringify()

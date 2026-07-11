@@ -267,8 +267,9 @@ pub fn simulate(
   )
   add_blocker(
     blockers,
-    design.environment.whole_grid_status != "blocked",
-    "whole-grid blocker must remain explicitly preserved",
+    design.environment.whole_grid_status != "blocked" &&
+    design.environment.whole_grid_status != "verified",
+    "whole-grid status must be explicitly blocked or verified",
   )
   add_blocker(
     blockers,
@@ -285,10 +286,13 @@ pub fn simulate(
     design.verification_criteria.safety.physical_deployment_claim_allowed,
     "physical deployment claims are forbidden",
   )
+  let required_replays = design.verification_criteria.replay.required_runs
   add_blocker(
     blockers,
-    design.verification_criteria.replay.required_runs != 2,
-    "exactly two deterministic replay runs are required",
+    required_replays < 1 ||
+    required_replays.to_double() < design.constraints.replay_count.min ||
+    required_replays.to_double() > design.constraints.replay_count.max,
+    "deterministic replay count is outside design constraints",
   )
   let elevations = match parse_dem(terrain_csv) {
     Ok(value) => value
@@ -378,6 +382,12 @@ pub fn simulate(
     blockers,
     !close(distance_m, path.distance_m),
     "measured route distance does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    distance_m < design.constraints.route_length_m.min ||
+    distance_m > design.constraints.route_length_m.max,
+    "measured route distance is outside design constraints",
   )
   add_blocker(
     blockers,
@@ -476,6 +486,11 @@ pub fn simulate(
   let required_wh = drive_wh + comms_wh + thermal_wh + reserve_wh
   let available_wh = design.environment.illumination.terrain_available_energy_wh
   let margin_wh = available_wh - required_wh
+  let battery_capacity_wh = required_double(
+    power.battery_capacity_wh,
+    "battery_capacity_wh",
+    blockers,
+  )
   add_blocker(
     blockers,
     design.environment.illumination.decision != "Allow",
@@ -489,6 +504,30 @@ pub fn simulate(
   let expected_energy = design.verification_criteria.energy
   add_blocker(
     blockers,
+    !close(drive_wh, expected_energy.drive_energy_wh, tolerance=0.00001),
+    "computed drive energy does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    !close(comms_wh, expected_energy.comms_energy_wh, tolerance=0.00001),
+    "computed communications energy does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    !close(
+      thermal_wh,
+      expected_energy.thermal_survival_energy_wh,
+      tolerance=0.00001,
+    ),
+    "computed thermal survival energy does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    !close(reserve_wh, expected_energy.reserve_wh, tolerance=0.00001),
+    "configured reserve does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
     !close(
       required_wh,
       expected_energy.bounded_required_energy_wh,
@@ -500,6 +539,20 @@ pub fn simulate(
     blockers,
     !close(margin_wh, expected_energy.expected_margin_wh, tolerance=0.00001),
     "computed energy margin does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    !close(
+      available_wh,
+      expected_energy.verified_available_energy_wh,
+      tolerance=0.00001,
+    ),
+    "available terrain energy does not match verification criteria",
+  )
+  add_blocker(
+    blockers,
+    required_wh - reserve_wh > battery_capacity_wh,
+    "active mission energy exceeds modeled battery capacity",
   )
   let delivery = design.verification_criteria.delivery
   add_blocker(
@@ -529,7 +582,8 @@ pub fn simulate(
     whole_grid_status: design.environment.whole_grid_status,
     whole_grid_max_neighbor_grade_deg: design.environment.whole_grid_max_neighbor_grade_deg,
     whole_grid_blocker_preserved: design.environment.whole_grid_status ==
-    "blocked",
+    "blocked" ||
+    design.environment.whole_grid_status == "verified",
     segment_evidence: segments,
     maximum_measured_segment_slope_deg: max_slope_deg,
     distance_m,
@@ -555,11 +609,15 @@ pub fn simulate(
     } else {
       "stopped-with-blocker"
     },
-    replay_count: design.verification_criteria.replay.required_runs,
+    replay_count: required_replays,
     deterministic_replay_required: true,
     blockers,
     limitations: [
-      "The whole 4x4 terrain window remains blocked; acceptance applies only to the enumerated path cells.",
+      if design.environment.whole_grid_status == "blocked" {
+        "The broader terrain source remains blocked; acceptance applies only to the enumerated and measured path cells."
+      } else {
+        "The broader terrain source is verified only to the declared source quality; path acceptance remains bounded to enumerated cells."
+      },
       "This deterministic digital simulation does not establish obstacle, slip, sinkage, localization, dust, thermal-vacuum, manufacturing, launch, landing, or physical lunar readiness.",
     ],
   }

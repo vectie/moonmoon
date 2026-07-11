@@ -1,14 +1,14 @@
 # General Data Layer Plan
 
-Moonmoon should grow a general data layer before adding more lunar products or
+MoonMoon should grow a general data layer before adding more lunar products or
 migrating robot data. The layer must be domain-neutral: it owns artifact
 identity, provenance, payload references, cataloging, lineage, storage, and
 validation. It must not know about lunar terrain, SPICE, craters, robots, URDF,
 telemetry, browser UI, or runtime control.
 
-The goal is one shared data substrate that Moonmoon can use now for lunar
-sources and that Moonrobo can later use for robot data without carrying
-Moonmoon-specific concepts.
+The goal is one shared data substrate that MoonMoon can use now for lunar
+sources and that MoonRobo can later use for robot data without carrying
+MoonMoon-specific concepts.
 
 ## Target Boundary
 
@@ -325,7 +325,7 @@ Implementation:
 
 Exit criteria:
 
-- `data_core` imports no Moonmoon domain packages.
+- `data_core` imports no MoonMoon domain packages.
 - `data_core` contains no lunar, robot, UI, telemetry, or runtime-control
   vocabulary.
 - Tests prove stable refs, catalog refs, lineage refs, and validation reports.
@@ -637,7 +637,7 @@ Exit criteria:
 - Robot data can share refs, manifests, cataloging, lineage, storage, and
   validation with lunar data.
 - Robot-specific data remains outside standalone lunar packages.
-- The migration path does not require Moonmoon to import Moonrobo packages.
+- The migration path does not require MoonMoon to import MoonRobo packages.
 
 ### Phase 7: Product Loop
 
@@ -778,7 +778,7 @@ Tests:
 
 ## Step 4: `lunar_data`
 
-Move Moonmoon-specific source concepts out of the generic layer.
+Move MoonMoon-specific source concepts out of the generic layer.
 
 Initial lunar contracts:
 
@@ -806,21 +806,21 @@ Done when:
   `src/dataset` compatibility package.
 - LOLA/SPICE source metadata can be listed through the generic catalog.
 
-## Step 5: Moonrobo Migration Path
+## Step 5: MoonRobo Migration Path
 
-After Moonmoon proves the generic core, Moonrobo can migrate its robot data
+After MoonMoon proves the generic core, MoonRobo can migrate its robot data
 layer without copying lunar concepts.
 
 Likely mapping:
 
-- Moonrobo `DataRef`, catalog refs, lineage, validation reports, dataset
+- MoonRobo `DataRef`, catalog refs, lineage, validation reports, dataset
   manifests, dataset versions, and source manifests move toward `data_core`.
 - Robot-specific episodes, frames, signals, URDF manifests, replay artifacts,
   and robot quality rules move toward `robot_data`.
-- Existing Moonrobo `moondata://` refs can either remain as a domain alias or
+- Existing MoonRobo `moondata://` refs can either remain as a domain alias or
   be migrated to `data://` with an adapter.
 
-Do not start this migration until Moonmoon has:
+Do not start this migration until MoonMoon has:
 
 - `data_core`
 - `data_store`
@@ -846,4 +846,4 @@ Add explicit tests early:
 3. `data_validate`.
 4. First `lunar_data` migration.
 5. Catalog-backed first trusted square source listing.
-6. Moonrobo migration plan after the Moonmoon data root is proven.
+6. MoonRobo migration plan after the MoonMoon data root is proven.

@@ -4,7 +4,7 @@ This directory holds the first trusted square power-window evidence boundary.
 
 `first_trusted_square_power_window.json` is a checked computed fixture. It
 records the target site, the official NAIF SPICE source family, local output
-contract, pinned source files, computed time window, and the reason Moonmoon
+contract, pinned source files, computed time window, and the reason MoonMoon
 must keep the energy gate blocked until the low-margin power result is reviewed.
 
 Current pinned files:

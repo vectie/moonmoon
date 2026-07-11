@@ -17,7 +17,7 @@ function runMoonroboJson(command) {
   }
   if (result.status !== 0) {
     throw new Error([
-      `Moonrobo export failed: ${command}`,
+      `MoonRobo export failed: ${command}`,
       result.stdout,
       result.stderr,
     ].filter(Boolean).join('\n'))
@@ -35,13 +35,13 @@ function runMoonroboLiveEvidence() {
 
 function requireField(value, field, type) {
   if (typeof value[field] !== type) {
-    throw new Error(`Moonrobo contract field ${field} must be ${type}`)
+    throw new Error(`MoonRobo contract field ${field} must be ${type}`)
   }
 }
 
 function requireArray(value, field) {
   if (!Array.isArray(value[field])) {
-    throw new Error(`Moonrobo contract field ${field} must be an array`)
+    throw new Error(`MoonRobo contract field ${field} must be an array`)
   }
 }
 
@@ -71,23 +71,23 @@ function validateContract(contract) {
     requireArray(contract, field)
   }
   if (!contract.walk_clip || typeof contract.walk_clip !== 'object') {
-    throw new Error('Moonrobo contract must include walk_clip')
+    throw new Error('MoonRobo contract must include walk_clip')
   }
   if (contract.target_payload_type !== 'vectie/moonmoon/src/suite_adapter_preview.NoetixSuiteAdapterPayload') {
-    throw new Error(`Moonrobo contract targets unexpected payload type: ${contract.target_payload_type}`)
+    throw new Error(`MoonRobo contract targets unexpected payload type: ${contract.target_payload_type}`)
   }
   if (contract.platform !== 'noetix-e1') {
-    throw new Error(`Moonrobo contract targets unexpected platform: ${contract.platform}`)
+    throw new Error(`MoonRobo contract targets unexpected platform: ${contract.platform}`)
   }
   if (contract.expected_profile_joint_count !== contract.profile_joint_ids.length) {
-    throw new Error('Moonrobo contract profile joint count does not match profile_joint_ids')
+    throw new Error('MoonRobo contract profile joint count does not match profile_joint_ids')
   }
   if (contract.blocker_count !== contract.blockers.length) {
-    throw new Error('Moonrobo contract blocker count does not match blockers')
+    throw new Error('MoonRobo contract blocker count does not match blockers')
   }
   for (const jointId of contract.required_motion_joint_ids) {
     if (!contract.profile_joint_ids.includes(jointId)) {
-      throw new Error(`Moonrobo contract requires joint outside profile: ${jointId}`)
+      throw new Error(`MoonRobo contract requires joint outside profile: ${jointId}`)
     }
   }
   for (const source of contract.source_refs) {
@@ -130,19 +130,19 @@ function validateLiveEvidence(evidence, contract) {
   requireField(evidence, 'ready', 'boolean')
   requireArray(evidence, 'blockers')
   if (evidence.contract_id !== contract.contract_id) {
-    throw new Error('Moonrobo live suite evidence contract_id does not match contract')
+    throw new Error('MoonRobo live suite evidence contract_id does not match contract')
   }
   if (evidence.walk_clip_id !== contract.walk_clip.clip_id) {
-    throw new Error('Moonrobo live suite evidence walk_clip_id does not match contract')
+    throw new Error('MoonRobo live suite evidence walk_clip_id does not match contract')
   }
   if (evidence.regeneration_mode !== 'live-moonrobo-typed-adapter') {
-    throw new Error(`Moonrobo live suite evidence used unexpected mode: ${evidence.regeneration_mode}`)
+    throw new Error(`MoonRobo live suite evidence used unexpected mode: ${evidence.regeneration_mode}`)
   }
   if (!evidence.ready || evidence.status !== 'moonmoon-noetix-live-suite-evidence-ready') {
-    throw new Error(`Moonrobo live suite evidence is not ready: ${evidence.status}`)
+    throw new Error(`MoonRobo live suite evidence is not ready: ${evidence.status}`)
   }
   if (evidence.blocker_count !== 0 || evidence.blockers.length !== 0) {
-    throw new Error(`Moonrobo live suite evidence reported blockers: ${evidence.blockers.join(', ')}`)
+    throw new Error(`MoonRobo live suite evidence reported blockers: ${evidence.blockers.join(', ')}`)
   }
   if (evidence.sample_count !== contract.walk_clip.sample_count ||
     evidence.profile_joint_count !== contract.profile_joint_ids.length ||
@@ -151,7 +151,7 @@ function validateLiveEvidence(evidence, contract) {
     evidence.authored_motion_sample_count !== contract.walk_clip.authored_motion_samples.length ||
     evidence.authored_contact_frame_count !== contract.walk_clip.authored_contact_frames.length ||
     evidence.authored_motor_frame_count !== contract.walk_clip.authored_motor_frames.length) {
-    throw new Error('Moonrobo live suite evidence counts do not match contract payload')
+    throw new Error('MoonRobo live suite evidence counts do not match contract payload')
   }
 }
 
@@ -181,17 +181,17 @@ function validateWalkClip(clip, requiredJointIds) {
     requireArray(clip, field)
   }
   if (clip.blocker_count !== clip.blockers.length) {
-    throw new Error('Moonrobo walk clip blocker count does not match blockers')
+    throw new Error('MoonRobo walk clip blocker count does not match blockers')
   }
   if (clip.sample_count !== 24) {
-    throw new Error(`Moonrobo walk clip sample_count must be 24, got ${clip.sample_count}`)
+    throw new Error(`MoonRobo walk clip sample_count must be 24, got ${clip.sample_count}`)
   }
   for (const jointId of requiredJointIds) {
     if (!clip.required_joint_ids.includes(jointId)) {
-      throw new Error(`Moonrobo walk clip omits required joint ${jointId}`)
+      throw new Error(`MoonRobo walk clip omits required joint ${jointId}`)
     }
     if (!clip.joint_anchors.some(anchor => anchor.joint_id === jointId)) {
-      throw new Error(`Moonrobo walk clip omits joint anchor ${jointId}`)
+      throw new Error(`MoonRobo walk clip omits joint anchor ${jointId}`)
     }
   }
   for (const spec of clip.foot_phase_specs) {
@@ -217,16 +217,16 @@ function validateWalkClip(clip, requiredJointIds) {
     requireField(param, 'value', 'number')
   }
   if (clip.authored_joint_samples.length !== clip.sample_count) {
-    throw new Error('Moonrobo walk clip authored_joint_samples length must match sample_count')
+    throw new Error('MoonRobo walk clip authored_joint_samples length must match sample_count')
   }
   if (clip.authored_motion_samples.length !== clip.sample_count) {
-    throw new Error('Moonrobo walk clip authored_motion_samples length must match sample_count')
+    throw new Error('MoonRobo walk clip authored_motion_samples length must match sample_count')
   }
   if (clip.authored_contact_frames.length !== clip.sample_count) {
-    throw new Error('Moonrobo walk clip authored_contact_frames length must match sample_count')
+    throw new Error('MoonRobo walk clip authored_contact_frames length must match sample_count')
   }
   if (clip.authored_motor_frames.length !== clip.sample_count) {
-    throw new Error('Moonrobo walk clip authored_motor_frames length must match sample_count')
+    throw new Error('MoonRobo walk clip authored_motor_frames length must match sample_count')
   }
   for (const sample of clip.authored_joint_samples) {
     for (const field of [
@@ -245,7 +245,7 @@ function validateWalkClip(clip, requiredJointIds) {
       requireField(sample, field, 'number')
     }
     if (sample.left_knee_rad > 0 || sample.right_knee_rad > 0) {
-      throw new Error(`Moonrobo walk clip authored sample has backward knee sign at phase ${sample.phase}`)
+      throw new Error(`MoonRobo walk clip authored sample has backward knee sign at phase ${sample.phase}`)
     }
   }
   for (const sample of clip.authored_motion_samples) {
@@ -267,7 +267,7 @@ function validateWalkClip(clip, requiredJointIds) {
       requireField(sample, field, 'number')
     }
     if (sample.left_foot_x_m < 0 || sample.right_foot_x_m > 0) {
-      throw new Error(`Moonrobo walk clip authored foot sample has wrong side sign at phase ${sample.phase}`)
+      throw new Error(`MoonRobo walk clip authored foot sample has wrong side sign at phase ${sample.phase}`)
     }
   }
   for (const frame of clip.authored_contact_frames) {
@@ -284,10 +284,10 @@ function validateWalkClip(clip, requiredJointIds) {
     validateVec3(frame.center_of_mass_velocity, `contact frame ${frame.frame_index} center_of_mass_velocity`)
     requireArray(frame, 'contacts')
     if (frame.contacts.length !== 2) {
-      throw new Error(`Moonrobo contact frame ${frame.frame_index} must include both feet`)
+      throw new Error(`MoonRobo contact frame ${frame.frame_index} must include both feet`)
     }
     if (frame.active_footprint_count <= 0 || frame.status.includes('review')) {
-      throw new Error(`Moonrobo contact frame ${frame.frame_index} is not support-ready: ${frame.status}`)
+      throw new Error(`MoonRobo contact frame ${frame.frame_index} is not support-ready: ${frame.status}`)
     }
     for (const contact of frame.contacts) {
       validateContact(contact, frame.frame_index)
@@ -314,10 +314,10 @@ function validateWalkClip(clip, requiredJointIds) {
     }
     requireArray(frame, 'steps')
     if (frame.steps.length !== requiredJointIds.length) {
-      throw new Error(`Moonrobo motor frame ${frame.frame_index} has wrong step count`)
+      throw new Error(`MoonRobo motor frame ${frame.frame_index} has wrong step count`)
     }
     if (frame.review_count !== 0 || frame.status.includes('review')) {
-      throw new Error(`Moonrobo motor frame ${frame.frame_index} is not command-ready: ${frame.status}`)
+      throw new Error(`MoonRobo motor frame ${frame.frame_index} is not command-ready: ${frame.status}`)
     }
     for (const step of frame.steps) {
       for (const field of ['joint_id', 'parent_link', 'child_link', 'side', 'field', 'status']) {
@@ -344,7 +344,7 @@ function validateWalkClip(clip, requiredJointIds) {
         requireField(step, field, 'boolean')
       }
       if (!step.position_within_limits || !step.velocity_within_limits || step.torque_saturated) {
-        throw new Error(`Moonrobo motor step ${step.joint_id} failed limits at frame ${frame.frame_index}`)
+        throw new Error(`MoonRobo motor step ${step.joint_id} failed limits at frame ${frame.frame_index}`)
       }
     }
   }
@@ -360,14 +360,14 @@ function validateWalkClip(clip, requiredJointIds) {
     'elbow_base_rad',
   ]) {
     if (!clip.joint_curve_params.some(param => param.name === required)) {
-      throw new Error(`Moonrobo walk clip omits joint curve parameter ${required}`)
+      throw new Error(`MoonRobo walk clip omits joint curve parameter ${required}`)
     }
   }
 }
 
 function validateVec3(value, label) {
   if (!value || typeof value !== 'object') {
-    throw new Error(`Moonrobo ${label} must be an object`)
+    throw new Error(`MoonRobo ${label} must be an object`)
   }
   for (const field of ['x', 'y', 'z']) {
     requireField(value, field, 'number')
@@ -378,7 +378,7 @@ function validateContact(contact, frameIndex) {
   requireField(contact, 'contact_id', 'string')
   validateVec3(contact.applied_force_n, `contact ${contact.contact_id} applied_force_n`)
   if (!contact.footprint || typeof contact.footprint !== 'object') {
-    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} needs a footprint`)
+    throw new Error(`MoonRobo contact ${contact.contact_id} in frame ${frameIndex} needs a footprint`)
   }
   requireField(contact.footprint, 'footprint_id', 'string')
   validateVec3(contact.footprint.center, `contact ${contact.contact_id} footprint center`)
@@ -387,7 +387,7 @@ function validateContact(contact, frameIndex) {
   }
   requireField(contact.footprint, 'active', 'boolean')
   if (!contact.patch || typeof contact.patch !== 'object') {
-    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} needs a patch`)
+    throw new Error(`MoonRobo contact ${contact.contact_id} in frame ${frameIndex} needs a patch`)
   }
   requireField(contact.patch, 'patch_id', 'string')
   validateVec3(contact.patch.center, `contact ${contact.contact_id} patch center`)
@@ -406,14 +406,14 @@ function validateContact(contact, frameIndex) {
   requireField(contact.patch, 'status', 'string')
   requireArray(contact.patch, 'samples')
   if (contact.patch.samples.length !== 4) {
-    throw new Error(`Moonrobo contact ${contact.contact_id} in frame ${frameIndex} must have four patch samples`)
+    throw new Error(`MoonRobo contact ${contact.contact_id} in frame ${frameIndex} must have four patch samples`)
   }
   if (contact.footprint.active) {
     if (contact.patch.contact_count !== contact.patch.samples.length || contact.patch.status !== 'patch-contact') {
-      throw new Error(`Moonrobo active contact ${contact.contact_id} in frame ${frameIndex} is not patch-contact`)
+      throw new Error(`MoonRobo active contact ${contact.contact_id} in frame ${frameIndex} is not patch-contact`)
     }
     if (contact.applied_force_n.z <= 0) {
-      throw new Error(`Moonrobo active contact ${contact.contact_id} in frame ${frameIndex} has no normal load`)
+      throw new Error(`MoonRobo active contact ${contact.contact_id} in frame ${frameIndex} has no normal load`)
     }
   }
   for (const sample of contact.patch.samples) {
@@ -448,7 +448,7 @@ function visualMeshAssets(contract) {
     }
   })
   if (!assets.some(asset => asset.link_id === 'base_link' && asset.format === 'stl')) {
-    throw new Error('Moonrobo Noetix contract did not expose base_link STL mesh')
+    throw new Error('MoonRobo Noetix contract did not expose base_link STL mesh')
   }
   return assets
 }

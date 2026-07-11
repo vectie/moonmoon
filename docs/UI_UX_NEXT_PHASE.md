@@ -1,6 +1,6 @@
 # Canonical Lunar Operator Experience
 
-This is the active UI/UX delivery phase for Moonmoon. It resolves the current
+This is the active UI/UX delivery phase for MoonMoon. It resolves the current
 split between the generated inspection page and the Rabbita browser app by
 making one product surface authoritative while preserving MoonBit-owned data
 and mission policy.
@@ -127,7 +127,7 @@ switching, reduced-motion behavior, and no-overflow assertions.
 Status: complete. The canonical lunar operator phase meets its four
 checkpoints and verification gate.
 
-This phase is complete when Moonmoon opens on a recognizable movable Moon,
+This phase is complete when MoonMoon opens on a recognizable movable Moon,
 reaches the first trusted square through an understandable global-to-local
 flow, explains the selected route gate, contains no fake controls, and keeps
 robot animation in a truthful, gated adapter preview.

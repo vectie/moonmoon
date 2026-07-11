@@ -103,7 +103,7 @@ pub fn robot_rollout_data_source(
     rollout.source_label,
     rollout.source_url,
     "local import",
-    "Imported by Moonmoon robot_catalog",
+    "Imported by MoonMoon robot_catalog",
     rollout.created_at_ms,
     source_refs=rollout_payload_data_refs(rollout.payload_refs),
   )

@@ -40,7 +40,7 @@ pub fn first_trusted_square_lola_extraction_candidate() -> LunarExtractionCandid
     review_status: AcceptedForSoftwareProof,
     notes: [
       "Generated from HTTP byte ranges against ldem_875s_20m_float.img, not from a committed raw image.",
-      "This extraction is the active Moonmoon trusted-square fixture for software proof.",
+      "This extraction is the active MoonMoon trusted-square fixture for software proof.",
     ],
   }
 }

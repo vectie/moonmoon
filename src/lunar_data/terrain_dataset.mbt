@@ -38,7 +38,7 @@ pub fn first_trusted_square_lola_terrain_dataset_record() -> LunarTerrainDataset
     "lola-gdr-byte-range-dem-fixture",
     first_trusted_square_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=499.693:last=441.521",
-    "LRO LOLA GDR product ldem_875s_20m_float, extracted from official PDS Geosciences byte ranges for Moonmoon software proof.",
+    "LRO LOLA GDR product ldem_875s_20m_float, extracted from official PDS Geosciences byte ranges for MoonMoon software proof.",
     [
       "Elevation values are measured LOLA DEM samples converted from kilometers to meters relative to the 1737.4 km reference radius.",
       "Do not use this dataset for mission-grade traverse planning without independent geospatial review.",
@@ -54,7 +54,7 @@ pub fn first_trusted_square_west_contour_lola_terrain_dataset_record() -> LunarT
     "lola-gdr-byte-range-route-window-dem-fixture",
     first_trusted_square_west_contour_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-west-contour-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=544.454:last=492.629",
-    "LRO LOLA GDR product ldem_875s_20m_float, west-adjacent byte-range extraction for Moonmoon route evidence.",
+    "LRO LOLA GDR product ldem_875s_20m_float, west-adjacent byte-range extraction for MoonMoon route evidence.",
     [
       "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
       "The adjacent window remains a tiny software-proof sample and must be expanded before traverse planning.",
@@ -70,7 +70,7 @@ pub fn first_trusted_square_north_rim_lola_terrain_dataset_record() -> LunarTerr
     "lola-gdr-byte-range-route-window-dem-fixture",
     first_trusted_square_north_rim_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-north-rim-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=506.517:last=460.176",
-    "LRO LOLA GDR product ldem_875s_20m_float, north-adjacent byte-range extraction for Moonmoon route evidence.",
+    "LRO LOLA GDR product ldem_875s_20m_float, north-adjacent byte-range extraction for MoonMoon route evidence.",
     [
       "This is measured local terrain evidence for a route alternative, not proof that the route is safe.",
       "Illumination and a wider corridor search are still required before traverse planning.",
@@ -86,7 +86,7 @@ pub fn first_trusted_square_southwest_bypass_lola_terrain_dataset_record() -> Lu
     "lola-gdr-byte-range-corridor-dem-fixture",
     first_trusted_square_southwest_bypass_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-southwest-bypass-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=548.224:last=505.456",
-    "LRO LOLA GDR product ldem_875s_20m_float, southwest widened corridor byte-range extraction for Moonmoon route evidence.",
+    "LRO LOLA GDR product ldem_875s_20m_float, southwest widened corridor byte-range extraction for MoonMoon route evidence.",
     [
       "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
       "The window is the best sampled local grade among the first 5x5 scan but remains blocked by conservative rover limits.",
@@ -102,7 +102,7 @@ pub fn first_trusted_square_south_stepout_lola_terrain_dataset_record() -> Lunar
     "lola-gdr-byte-range-corridor-dem-fixture",
     first_trusted_square_south_stepout_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-south-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=453.571:last=409.003",
-    "LRO LOLA GDR product ldem_875s_20m_float, south widened corridor byte-range extraction for Moonmoon route evidence.",
+    "LRO LOLA GDR product ldem_875s_20m_float, south widened corridor byte-range extraction for MoonMoon route evidence.",
     [
       "This is measured local terrain evidence from the first widened corridor scan, not proof that the route is safe.",
       "The window is smoother than the active patch but remains blocked by conservative rover limits.",
@@ -118,7 +118,7 @@ pub fn first_trusted_square_northeast_stepout_lola_terrain_dataset_record() -> L
     "lola-gdr-byte-range-corridor-dem-fixture",
     first_trusted_square_northeast_stepout_lola_extraction_candidate(),
     "inline-grid-v1:tile=first-trusted-square-northeast-stepout-lola:rows=4:cols=4:cell-size-m=20:cells=16:first=341.536:last=305.726",
-    "LRO LOLA GDR product ldem_875s_20m_float, northeast 9x9 corridor byte-range extraction for Moonmoon route evidence.",
+    "LRO LOLA GDR product ldem_875s_20m_float, northeast 9x9 corridor byte-range extraction for MoonMoon route evidence.",
     [
       "This is measured local terrain evidence for the best ranked window in the active 9x9 scan, not proof that the route is safe.",
       "The selected route remains blocked until terrain review, wider sampling, and time-windowed power evidence improve.",
