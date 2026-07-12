@@ -1,0 +1,11 @@
+import {
+  "moonbitlang/core/json",
+  "moonbitlang/x/fs" @fsx,
+  "vectie/moonlib/pathx",
+}
+
+supported_targets = "native"
+
+import {
+  "moonbitlang/core/test",
+} for "wbtest"

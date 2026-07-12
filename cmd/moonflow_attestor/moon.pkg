@@ -1,0 +1,12 @@
+import {
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x/sys",
+  "vectie/moonmoon/src/flow_attestor",
+}
+
+supported_targets = "native"
+
+options(
+  "is-main": true,
+)
