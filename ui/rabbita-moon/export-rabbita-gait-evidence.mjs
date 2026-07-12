@@ -3,6 +3,7 @@ import { readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 await import(new URL('./scene3d.js', import.meta.url).href)
+await globalThis.__moonmoonLoadAdapterRuntime?.()
 
 const diagnostics = globalThis.__moonmoonGaitDiagnostics
 if (!diagnostics?.moonphysReviewTraceEvidence || !diagnostics?.moonphysHingeMotorReplayEvidence) {

@@ -162,8 +162,19 @@ function validateMeshAssets(clip, label) {
     baseMesh.byte_length <= 0) {
     throw new Error(`${label} bridge carried an invalid base_link STL mesh reference`)
   }
+  if (!['moonrobo-repository', 'moonsuite-input-cache'].includes(baseMesh.resolved_from) ||
+    !baseMesh.moonrobo_path.startsWith('moonrobo://') &&
+      !baseMesh.moonrobo_path.startsWith('moonsuite-input://')) {
+    throw new Error(`${label} bridge carried an unqualified base_link asset identity`)
+  }
   if (clip.visual_mesh_assets.length !== 25 ||
-    clip.visual_mesh_assets.some(asset => asset.format !== 'stl' || asset.status !== 'moonrobo-stl-mesh-referenced')) {
+    clip.visual_mesh_assets.some(asset =>
+      asset.format !== 'stl' ||
+      asset.status !== 'moonrobo-stl-mesh-referenced' ||
+      asset.moonrobo_path.startsWith('/') ||
+      asset.moonrobo_path.includes('/Workspace/') ||
+      asset.moonrobo_path.includes('/Downloads/')
+    )) {
     throw new Error(`${label} bridge must carry 25 referenced E1 STL mesh assets`)
   }
 }

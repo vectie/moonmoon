@@ -443,8 +443,9 @@ stop, and turn. Motion matching only makes sense after enough asset data exists.
    Plain MoonBit tests now use compact fixture data for parser and review
    coverage, while full MoonRobo integration coverage is owned by the live
    command gate. Rabbita now also generates a local E1 assembly bridge from
-   `~/Downloads/e1_asm_251028.tar.gz`, extracts the ignored 25 STL mesh assets
-   under `ui/rabbita-moon/.generated`, and renders a second 3D character with
+   `~/moonsuite/inputs/noetix-e1/e1_asm_251028.tar.gz`, extracts the ignored 25
+   STL mesh assets under `ui/rabbita-moon/.generated`, and renders a second 3D
+   character with
    Three.js by applying URDF forward kinematics to one scene-graph group per
    link visual. The browser renders bounded viewport-reduced STL geometry for
    realtime walking: `prepare-e1-asm-assets.mjs` uses

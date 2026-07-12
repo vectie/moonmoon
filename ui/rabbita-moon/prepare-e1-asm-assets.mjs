@@ -1,11 +1,16 @@
 import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { homedir } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const archivePath = process.env.E1_ASM_ARCHIVE ||
-  path.join(homedir(), 'Downloads', 'e1_asm_251028.tar.gz')
+const suiteRoot = process.env.MOONSUITE_ROOT ||
+  fileURLToPath(new URL('../../../../../', import.meta.url))
+const archivePath = process.env.E1_ASM_ARCHIVE || path.join(
+  suiteRoot,
+  'inputs',
+  'noetix-e1',
+  'e1_asm_251028.tar.gz',
+)
 const packageRoot = 'e1_asm_251028'
 const urdfEntry = `${packageRoot}/urdf/e1_asm.urdf`
 const generatedDir = fileURLToPath(new URL('./.generated/', import.meta.url))

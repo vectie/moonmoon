@@ -1,8 +1,8 @@
 import { spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
+import { moonroboRoot, visualMeshAssets } from './moonrobo-asset-paths.mjs'
 
-const moonroboRoot = fileURLToPath(new URL('../../../moonrobo', import.meta.url))
 const targetPath = fileURLToPath(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url))
 const moonBin = process.env.MOON_BIN ?? 'moon'
 
@@ -95,31 +95,6 @@ function validateEvidence(evidence, clip) {
     evidence.driven_motor_frame_count !== clip.sample_count) {
     throw new Error('MoonRobo live suite evidence did not clear review gates')
   }
-}
-
-function linkIdForMeshPath(path) {
-  return path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? 'unknown_link'
-}
-
-function visualMeshAssets(contract) {
-  const assets = contract.mesh_paths.map(localPath => {
-    const absolutePath = fileURLToPath(new URL(`../../../moonrobo/${localPath}`, import.meta.url))
-    const format = localPath.split('.').pop()?.toLowerCase() ?? ''
-    const exists = existsSync(absolutePath)
-    return {
-      link_id: linkIdForMeshPath(localPath),
-      local_path: localPath,
-      moonrobo_path: `../moonrobo/${localPath}`,
-      format,
-      byte_length: exists ? statSync(absolutePath).size : 0,
-      source: `moonrobo:${localPath}`,
-      status: exists ? `moonrobo-${format}-mesh-referenced` : 'moonrobo-mesh-missing',
-    }
-  })
-  if (!assets.some(asset => asset.link_id === 'base_link' && asset.format === 'stl')) {
-    throw new Error('MoonRobo Noetix contract did not expose base_link STL mesh')
-  }
-  return assets
 }
 
 const contract = runMoonroboJson('cmd/moonmoon_contract')
