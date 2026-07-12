@@ -56,4 +56,7 @@ test "MoonMoon owns deterministic nominal and adverse final evidence" {
   assert_true(text.contains("\"deterministic_replay\":true"))
   assert_true(text.contains("\"physical_readiness\":false"))
   assert_true(text.contains("\"correct-refusal\""))
+  assert_true(text.contains("\"resolved_inputs\""))
+  assert_true(text.contains("\"hazard_script\""))
+  assert_true(text.contains("\"initial_energy_wh\":100"))
 }

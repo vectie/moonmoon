@@ -139,6 +139,24 @@ fn simulate_scenario(
       "progress": progress,
       "energy_remaining_wh": energy,
       "reserve_energy_wh": reserve_energy_wh,
+      "resolved_inputs": {
+        "initial_energy_wh": initial_energy_wh,
+        "reserve_energy_wh": reserve_energy_wh,
+        "seed": seed,
+        "steps": steps.to_json(),
+      },
+      "hazard_script": steps
+      .map(step => {
+        let step_fields = object(step, "scenario step")
+        let recovery = match step_fields.get("recovery") {
+          Some(String(value)) => Json::string(value)
+          _ => Json::string("")
+        }
+        (
+          { "hazard": bool_field(step_fields, "hazard"), "recovery": recovery } :
+          Json)
+      })
+      .to_json(),
       "trace": traces.to_json(),
     } : Json)
 }
@@ -200,6 +218,7 @@ pub fn attest(
     "contract_id": "moonmoon.scenario-evidence.v1",
     "product_id": "moonmoon",
     "operation": "simulate-mission",
+    "simulation_model": Json::object(model),
     "scenario_results": first.to_json(),
     "deterministic_replay": true,
     "model_limitations": limitations.to_json(),
