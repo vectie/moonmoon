@@ -42,6 +42,36 @@ fn test_design(path_cells : Array[Array[Int]]) -> RobotMissionDesign {
         decision: "Allow",
       },
       dust_and_thermal: { thermal_survival_power_w: 35.0 },
+      calibration: {
+        contract_id: "moonmoon.digital-twin-calibration.v1",
+        testbed_reference: "testbed://traction-rig/run-42",
+        authoritative_source: "evidence/calibration/manifest.json",
+        qualified: true,
+        fault_models: [
+          {
+            fault_id: "low-traction",
+            severity: 3,
+            observable: true,
+            recoverable: true,
+            retained_performance: 0.8,
+            energy_multiplier: 1.0,
+            recovery_action: "reduce wheel torque and replan",
+            calibration_reference: "testbed://traction-rig/run-42#low-traction",
+            uncertainty_fraction: 0.08,
+          },
+          {
+            fault_id: "sensor-loss",
+            severity: 8,
+            observable: false,
+            recoverable: false,
+            retained_performance: 0.0,
+            energy_multiplier: 1.0,
+            recovery_action: "return using independent localization",
+            calibration_reference: "testbed://sensor-rig/run-7",
+            uncertainty_fraction: 0.12,
+          },
+        ],
+      },
     },
     subsystems: [
       {
@@ -159,25 +189,53 @@ test "simulation rejects an unvalidated or physical MoonRobo binding" {
 }
 
 ///|
-test "adverse fault injection is explicit and fails closed" {
+test "calibrated adverse fault recovers with an auditable state transition" {
   let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
   let scenario : MissionScenario = {
-    scenario_id: "sensor-loss-actuator-fault",
+    scenario_id: "low-traction-recovery",
     seed: 4404,
     scenario_kind: "adverse",
-    injected_faults: ["sensor-loss", "actuator-fault"],
+    injected_faults: ["low-traction"],
   }
   let adverse = { ..design, scenario, }
   let result = simulate(adverse, test_dem())
-  assert_eq(result.result, "rejected")
-  assert_eq(result.delivery_count, 0)
-  assert_eq(result.final_state, "stopped-with-blocker")
-  assert_true(
-    result.blockers.contains("sensor-loss fault triggered a fail-closed stop"),
-  )
-  assert_true(
-    result.blockers.contains("actuator-fault triggered a fail-closed stop"),
-  )
+  assert_eq(result.result, "accepted")
+  assert_eq(result.scenario_outcome, "recovered")
+  assert_eq(result.evidence_claim, "calibrated-digital-twin")
+  assert_false(result.physical_readiness)
+  assert_eq(result.fault_responses[0].states, [
+    "normal", "degraded", "diagnosis", "recovery-attempt", "recovered",
+  ])
+}
+
+///|
+test "unobservable fault returns safely and unknown fault fails closed" {
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  let safe = {
+    ..design,
+    scenario: {
+      scenario_id: "sensor-loss",
+      seed: 5505,
+      scenario_kind: "adverse",
+      injected_faults: ["sensor-loss"],
+    },
+  }
+  let safe_result = simulate(safe, test_dem())
+  assert_eq(safe_result.result, "rejected")
+  assert_eq(safe_result.scenario_outcome, "safe-return")
+  assert_eq(safe_result.final_state, "safe-return")
+  let unknown = {
+    ..design,
+    scenario: {
+      scenario_id: "unknown",
+      seed: 6606,
+      scenario_kind: "adverse",
+      injected_faults: ["unmodeled-fault"],
+    },
+  }
+  let unknown_result = simulate(unknown, test_dem())
+  assert_eq(unknown_result.scenario_outcome, "fail-closed")
+  assert_true(!unknown_result.blockers.is_empty())
 }
 
 ///|

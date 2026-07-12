@@ -76,11 +76,17 @@ profile, URDF identity, accepted simulation-only receipt, and disabled physical
 bridge before a scenario can be accepted.
 
 Every scenario records an ID, positive deterministic seed, kind, and injected
-faults. Low traction, dust degradation, power scarcity, blocked route, sensor
-loss, actuator fault, and unknown faults fail closed with zero delivery and an
-explicit blocker. Identical inputs produce byte-equivalent receipts.
+faults. A qualified `moonmoon.digital-twin-calibration.v1` input supplies the
+testbed/source references, uncertainty, severity, observability, retained
+performance, energy multiplier, and recovery action for each modeled fault.
+The simulator records `normal -> degraded -> diagnosis -> recovery-attempt`
+transitions and distinguishes recovered, reduced-mission, safe-return, and
+fail-closed outcomes. Unknown or invalidly calibrated faults still fail closed.
+Identical inputs produce byte-equivalent receipts.
 
-An accepted result is bounded digital evidence for the enumerated terrain path.
+An accepted result may claim `calibrated-digital-twin` only when its calibration
+is qualified and referenced. This remains bounded digital evidence for the
+enumerated terrain path; `physical_readiness` is always false.
 It preserves broader-terrain blockers and explicitly does not establish slip,
 sinkage, localization, dust, thermal-vacuum, manufacturing, launch, landing,
 or physical lunar readiness.

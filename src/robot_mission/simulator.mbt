@@ -29,6 +29,28 @@ pub(all) struct MissionScenario {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct FaultCalibration {
+  fault_id : String
+  severity : Int
+  observable : Bool
+  recoverable : Bool
+  retained_performance : Double
+  energy_multiplier : Double
+  recovery_action : String
+  calibration_reference : String
+  uncertainty_fraction : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
+pub(all) struct DigitalTwinCalibration {
+  contract_id : String
+  testbed_reference : String
+  authoritative_source : String
+  qualified : Bool
+  fault_models : Array[FaultCalibration]
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct MissionIdentity {
   authority : String
   payload : MissionPayload
@@ -57,6 +79,7 @@ pub(all) struct MissionEnvironment {
   whole_grid_status : String
   illumination : IlluminationEvidence
   dust_and_thermal : DustAndThermal
+  calibration : DigitalTwinCalibration
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
@@ -175,6 +198,19 @@ pub(all) struct EnergyResult {
 } derive(Debug, Eq, ToJson, FromJson)
 
 ///|
+pub(all) struct FaultResponseEvidence {
+  fault_id : String
+  severity : Int
+  states : Array[String]
+  outcome : String
+  retained_performance : Double
+  energy_multiplier : Double
+  recovery_action : String
+  calibration_reference : String
+  uncertainty_fraction : Double
+} derive(Debug, Eq, ToJson, FromJson)
+
+///|
 pub(all) struct RobotMissionResult {
   contract_id : String
   design_id : String
@@ -186,6 +222,10 @@ pub(all) struct RobotMissionResult {
   seed : Int
   scenario_kind : String
   injected_faults : Array[String]
+  fault_responses : Array[FaultResponseEvidence]
+  scenario_outcome : String
+  evidence_claim : String
+  physical_readiness : Bool
   route_id : String
   authority : String
   result : String
@@ -313,6 +353,106 @@ fn artifact_binding_valid(design : RobotMissionDesign) -> Bool {
 }
 
 ///|
+fn calibrated_fault(
+  calibration : DigitalTwinCalibration,
+  fault_id : String,
+) -> FaultCalibration? {
+  for model in calibration.fault_models {
+    if model.fault_id == fault_id {
+      return Some(model)
+    }
+  }
+  None
+}
+
+///|
+fn evaluate_faults(
+  design : RobotMissionDesign,
+  blockers : Array[String],
+) -> (Array[FaultResponseEvidence], String, Double) {
+  let calibration = design.environment.calibration
+  let responses : Array[FaultResponseEvidence] = []
+  let mut aggregate = "nominal"
+  let mut energy_multiplier = 1.0
+  for fault_id in design.scenario.injected_faults {
+    match calibrated_fault(calibration, fault_id) {
+      None => {
+        blockers.push(
+          "fault \{fault_id} has no qualified calibration and cannot be simulated safely",
+        )
+        responses.push({
+          fault_id,
+          severity: 10,
+          states: ["normal", "degraded", "fail-closed"],
+          outcome: "fail-closed",
+          retained_performance: 0.0,
+          energy_multiplier: 1.0,
+          recovery_action: "none",
+          calibration_reference: "",
+          uncertainty_fraction: 1.0,
+        })
+        aggregate = "fail-closed"
+      }
+      Some(model) => {
+        let valid = model.severity >= 1 &&
+          model.severity <= 10 &&
+          model.retained_performance >= 0.0 &&
+          model.retained_performance <= 1.0 &&
+          model.energy_multiplier >= 1.0 &&
+          model.uncertainty_fraction >= 0.0 &&
+          model.uncertainty_fraction <= 0.25 &&
+          !model.calibration_reference.trim().is_empty()
+        if !valid {
+          blockers.push("fault \{fault_id} has an invalid calibration model")
+        }
+        let states : Array[String] = ["normal", "degraded"]
+        let outcome = if !valid || !model.observable {
+          states.push("safe-return")
+          "safe-return"
+        } else if model.recoverable && model.retained_performance >= 0.75 {
+          states.push("diagnosis")
+          states.push("recovery-attempt")
+          states.push("recovered")
+          "recovered"
+        } else if model.recoverable && model.retained_performance >= 0.4 {
+          states.push("diagnosis")
+          states.push("recovery-attempt")
+          states.push("reduced-mission")
+          "reduced-mission"
+        } else {
+          states.push("safe-return")
+          "safe-return"
+        }
+        if outcome == "safe-return" && aggregate != "fail-closed" {
+          aggregate = "safe-return"
+        } else if outcome == "reduced-mission" &&
+          aggregate != "safe-return" &&
+          aggregate != "fail-closed" {
+          aggregate = "reduced-mission"
+        } else if outcome == "recovered" && aggregate == "nominal" {
+          aggregate = "recovered"
+        }
+        if model.energy_multiplier > energy_multiplier {
+          energy_multiplier = model.energy_multiplier
+        }
+        responses.push({
+          fault_id,
+          severity: model.severity,
+          states,
+          outcome,
+          retained_performance: model.retained_performance,
+          energy_multiplier: model.energy_multiplier,
+          recovery_action: model.recovery_action,
+          calibration_reference: model.calibration_reference,
+          uncertainty_fraction: model.uncertainty_fraction,
+        })
+      }
+    }
+  }
+  (responses, aggregate, energy_multiplier)
+}
+
+///|
 pub fn simulate(
   design : RobotMissionDesign,
   terrain_csv : String,
@@ -334,26 +474,18 @@ pub fn simulate(
     design.scenario.scenario_id.trim().is_empty() || design.scenario.seed <= 0,
     "scenario id and positive deterministic seed are required",
   )
-  for fault in design.scenario.injected_faults {
-    match fault {
-      "low-traction" =>
-        blockers.push("low-traction fault triggered a fail-closed stop")
-      "dust-degradation" =>
-        blockers.push("dust-degradation fault triggered a fail-closed stop")
-      "power-scarcity" =>
-        blockers.push("power-scarcity fault triggered a fail-closed stop")
-      "blocked-route" =>
-        blockers.push("blocked-route fault triggered a fail-closed stop")
-      "sensor-loss" =>
-        blockers.push("sensor-loss fault triggered a fail-closed stop")
-      "actuator-fault" =>
-        blockers.push("actuator-fault triggered a fail-closed stop")
-      other =>
-        blockers.push(
-          "unknown injected fault \{other} cannot be handled safely",
-        )
-    }
-  }
+  let calibration = design.environment.calibration
+  add_blocker(
+    blockers,
+    calibration.contract_id != "moonmoon.digital-twin-calibration.v1" ||
+    !calibration.qualified ||
+    calibration.testbed_reference.trim().is_empty() ||
+    calibration.authoritative_source.trim().is_empty(),
+    "qualified calibration with testbed and authoritative references is required",
+  )
+  let (fault_responses, scenario_outcome, fault_energy_multiplier) = evaluate_faults(
+    design, blockers,
+  )
   add_blocker(
     blockers,
     design.mission.authority != "digital-only",
@@ -573,7 +705,7 @@ pub fn simulate(
     "minimum_energy_margin_wh",
     blockers,
   )
-  let drive_wh = drive_power_w * duration_s / 3600.0
+  let drive_wh = drive_power_w * duration_s / 3600.0 * fault_energy_multiplier
   let comms_wh = comms_power_w * duration_s / 3600.0
   let thermal_wh = design.environment.dust_and_thermal.thermal_survival_power_w *
     design.environment.illumination.longest_dark_hours
@@ -659,7 +791,9 @@ pub fn simulate(
     design.mission.payload.delivery_count != delivery.expected_delivery_count,
     "delivery count does not match delivery criteria",
   )
-  let accepted = blockers.is_empty()
+  let mission_continues = scenario_outcome != "safe-return" &&
+    scenario_outcome != "fail-closed"
+  let accepted = blockers.is_empty() && mission_continues
   {
     contract_id: "moonmoon.robot-mission-result.v1",
     design_id: design.design_id,
@@ -671,6 +805,14 @@ pub fn simulate(
     seed: design.scenario.seed,
     scenario_kind: design.scenario.scenario_kind,
     injected_faults: design.scenario.injected_faults.copy(),
+    fault_responses,
+    scenario_outcome,
+    evidence_claim: if accepted && calibration.qualified {
+      "calibrated-digital-twin"
+    } else {
+      "bounded-digital-simulation"
+    },
+    physical_readiness: false,
     route_id: design.mission.route_id,
     authority: design.mission.authority,
     result: if accepted {
@@ -706,7 +848,13 @@ pub fn simulate(
       0
     },
     final_state: if accepted {
-      delivery.final_state
+      if scenario_outcome == "reduced-mission" {
+        "completed-reduced-mission"
+      } else {
+        delivery.final_state
+      }
+    } else if scenario_outcome == "safe-return" {
+      "safe-return"
     } else {
       "stopped-with-blocker"
     },
