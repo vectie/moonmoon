@@ -17,3 +17,8 @@ The receipt exposes every state transition and never grants physical authority.
 Calibration evidence should be content-addressed, independently reviewable, and
 traceable to a testbed or authoritative source. Re-running the same design and
 terrain must produce the same receipt.
+
+A referenced but provisional model may produce `scenario-qualified` evidence.
+It must set `qualified: false`; MoonMoon will not raise it to
+`calibrated-digital-twin`. This lets early design simulations remain useful
+without laundering deterministic MoonRobo evidence into a calibration claim.

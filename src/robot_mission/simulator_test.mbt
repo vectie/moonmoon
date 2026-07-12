@@ -239,6 +239,27 @@ test "unobservable fault returns safely and unknown fault fails closed" {
 }
 
 ///|
+test "provisional referenced model remains scenario-qualified" {
+  let design = test_design([[0, 3], [1, 3], [2, 3], [3, 3]])
+  let calibration = { ..design.environment.calibration, qualified: false }
+  let provisional = {
+    ..design,
+    environment: { ..design.environment, calibration, },
+    scenario: {
+      scenario_id: "provisional-low-traction",
+      seed: 7707,
+      scenario_kind: "adverse",
+      injected_faults: ["low-traction"],
+    },
+  }
+  let result = simulate(provisional, test_dem())
+  assert_eq(result.result, "accepted")
+  assert_eq(result.scenario_outcome, "recovered")
+  assert_eq(result.evidence_claim, "scenario-qualified")
+  assert_false(result.physical_readiness)
+}
+
+///|
 test "path-aware simulation rejects a steep segment without bypassing it" {
   let design = test_design([[0, 3], [0, 2], [0, 1], [0, 0]])
   let result = simulate(design, test_dem())

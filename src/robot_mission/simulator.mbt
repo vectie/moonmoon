@@ -478,7 +478,6 @@ pub fn simulate(
   add_blocker(
     blockers,
     calibration.contract_id != "moonmoon.digital-twin-calibration.v1" ||
-    !calibration.qualified ||
     calibration.testbed_reference.trim().is_empty() ||
     calibration.authoritative_source.trim().is_empty(),
     "qualified calibration with testbed and authoritative references is required",
@@ -809,6 +808,8 @@ pub fn simulate(
     scenario_outcome,
     evidence_claim: if accepted && calibration.qualified {
       "calibrated-digital-twin"
+    } else if accepted {
+      "scenario-qualified"
     } else {
       "bounded-digital-simulation"
     },
