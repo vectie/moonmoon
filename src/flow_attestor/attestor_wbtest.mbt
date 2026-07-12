@@ -20,6 +20,8 @@ test "MoonMoon owns deterministic nominal and adverse final evidence" {
           "scenario_id": "nominal",
           "kind": "nominal",
           "seed": 11,
+          "initial_state": { "energy_wh": 1.0 },
+          "unverified_result": { "energy_wh": 1.0 },
           "steps": [
             {
               "energy_use_wh": 10.0,
@@ -59,4 +61,6 @@ test "MoonMoon owns deterministic nominal and adverse final evidence" {
   assert_true(text.contains("\"resolved_inputs\""))
   assert_true(text.contains("\"hazard_script\""))
   assert_true(text.contains("\"initial_energy_wh\":100"))
+  assert_false(text.contains("\"initial_state\""))
+  assert_false(text.contains("\"unverified_result\""))
 }

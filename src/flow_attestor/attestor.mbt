@@ -214,11 +214,30 @@ pub fn attest(
   }
   let limitations = array_field(draft_fields, "model_limitations")
   let uncertainty = array_field(draft_fields, "uncertainty")
+  let executed_scenarios = scenarios.map(scenario => {
+    let fields = object(scenario, "scenario")
+    let seed = match fields.get("seed") {
+      Some(Number(value, ..)) => value.to_int()
+      _ => fail("MoonMoon scenario requires integer seed")
+    }
+    (
+      {
+        "scenario_id": string_field(fields, "scenario_id"),
+        "kind": string_field(fields, "kind"),
+        "seed": seed,
+        "steps": array_field(fields, "steps").to_json(),
+      } : Json)
+  })
+  let executed_model : Json = {
+    "initial_energy_wh": initial_energy_wh,
+    "reserve_energy_wh": reserve_energy_wh,
+    "scenarios": executed_scenarios.to_json(),
+  }
   let final_artifact : Json = {
     "contract_id": "moonmoon.scenario-evidence.v1",
     "product_id": "moonmoon",
     "operation": "simulate-mission",
-    "simulation_model": Json::object(model),
+    "simulation_model": executed_model,
     "scenario_results": first.to_json(),
     "deterministic_replay": true,
     "model_limitations": limitations.to_json(),
