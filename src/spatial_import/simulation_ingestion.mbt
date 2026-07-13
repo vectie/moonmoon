@@ -163,7 +163,7 @@ pub fn ingest_moonmold_simulation(
           "missing-simulation-uncertainty", "simulation assumptions and representation losses must be explicit",
         )
       }
-      if claim_ceiling != "simulation-evidence" {
+      if claim_ceiling != "digital-artifact" {
         return issue(
           "claim-ceiling-mismatch", "simulation input cannot claim physical readiness or calibrated truth",
         )
@@ -213,7 +213,7 @@ pub fn ingest_moonmold_simulation(
         assumptions,
         declared_losses: losses,
         authority_envelope_id,
-        evidence_claim: claim_ceiling,
+        evidence_claim: "simulation-input-candidate",
       })
     }
     _ =>

@@ -58,12 +58,20 @@ test "MoonMoon rejects stale, styled, and physical-claim inputs" {
     Ok(_) => fail("expected styled rejection")
   }
   let physical = fixture().replace(
-    old="\"claim_ceiling\":\"simulation-evidence\"",
+    old="\"claim_ceiling\":\"digital-artifact\"",
     new="\"claim_ceiling\":\"physical-readiness\"",
   )
   match ingest(physical) {
     Err(problem) => assert_eq(problem.code, "claim-ceiling-mismatch")
     Ok(_) => fail("expected claim rejection")
+  }
+  let premature_evidence = fixture().replace(
+    old="\"claim_ceiling\":\"digital-artifact\"",
+    new="\"claim_ceiling\":\"simulation-evidence\"",
+  )
+  match ingest(premature_evidence) {
+    Err(problem) => assert_eq(problem.code, "claim-ceiling-mismatch")
+    Ok(_) => fail("expected premature evidence rejection")
   }
 }
 
