@@ -1,0 +1,6 @@
+import {
+  "vectie/moonmoon/src/spatial_import",
+  "moonbitlang/x/fs",
+} for "test"
+
+supported_targets = "native"

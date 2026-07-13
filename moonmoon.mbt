@@ -1,4 +1,11 @@
 ///|
+pub using @spatial_import {
+  type SimulationImportIssue,
+  type SimulationSpatialInput,
+  ingest_moonmold_simulation,
+}
+
+///|
 pub fn product_kernel() -> @kernel.MoonMoonKernel {
   @kernel.system_kernel()
 }

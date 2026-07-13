@@ -6,10 +6,13 @@ import {
   "moonbitlang/core/json",
   "vectie/moonmoon/src/kernel",
   "vectie/moonmoon/src/site",
+  "vectie/moonmoon/src/spatial_import",
   "vectie/moonmoon/src/ui",
 }
 
 // Values
+pub fn ingest_moonmold_simulation(String, expected_engineering_digest~ : String) -> Result[@spatial_import.SimulationSpatialInput, @spatial_import.SimulationImportIssue]
+
 pub fn moonflow_adapter_capability_json() -> Json
 
 pub fn moonsuite_product_accepted_output_path(book_id? : String) -> String
@@ -71,6 +74,9 @@ pub(all) struct MoonMoonMoonSuiteProductHome {
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 // Type aliases
+pub using @spatial_import {type SimulationImportIssue}
+
+pub using @spatial_import {type SimulationSpatialInput}
 
 // Traits
 

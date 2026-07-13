@@ -4,4 +4,5 @@ import {
   "vectie/moonmoon/src/ui",
   "vectie/moonlib/moonsuite",
   "moonbitlang/core/json",
+  "vectie/moonmoon/src/spatial_import",
 }

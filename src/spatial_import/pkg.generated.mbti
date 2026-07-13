@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/spatial_import"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn ingest_moonmold_simulation(String, expected_engineering_digest~ : String) -> Result[SimulationSpatialInput, SimulationImportIssue]
+
+// Errors
+
+// Types and methods
+pub(all) struct SimulationImportIssue {
+  code : String
+  message : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct SimulationSpatialInput {
+  artifact_id : String
+  artifact_digest : String
+  engineering_parent_id : String
+  engineering_parent_digest : String
+  payload_ref : String
+  units : String
+  scale_to_meters : Double
+  coordinate_system : String
+  up_axis : String
+  handedness : String
+  transform_id : String
+  assumptions : Array[String]
+  declared_losses : Array[String]
+  authority_envelope_id : String
+  evidence_claim : String
+} derive(Eq, ToJson, @debug.Debug)
+
+// Type aliases
+
+// Traits
+
