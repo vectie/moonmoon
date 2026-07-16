@@ -257,6 +257,7 @@ export function initMoonGlobe(canvas, view) {
     setText('moon-lighting-altitude', `${Number(sample.sun_altitude_deg).toFixed(3)} deg`)
     setText('moon-lighting-azimuth', `${Number(sample.sun_azimuth_deg).toFixed(1)} deg`)
     setText('moon-earth-phase', `${Math.round(Number(sample.earth_illuminated_fraction) * 100)}%`)
+    lightingInput?.setAttribute('aria-valuetext', sample.timestamp_utc)
     canvas.dataset.lightingTimestamp = sample.timestamp_utc
     canvas.dataset.sunBodyFixed = JSON.stringify([sample.sun_body_x, sample.sun_body_y, sample.sun_body_z])
     canvas.dataset.earthBodyFixed = JSON.stringify([sample.earth_body_x, sample.earth_body_y, sample.earth_body_z])

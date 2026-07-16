@@ -229,7 +229,10 @@ fn illumination_gate(route : @ui.RouteView) -> Html {
       ]),
     )
   }
-  section(class="illumination-gate", [
+  section(
+    class="illumination-gate",
+    attrs=@html.Attrs::build().aria_live("polite"),
+    [
     header([
       div([
         span(class="eyebrow", "Illumination gate"),
@@ -314,7 +317,8 @@ fn illumination_gate(route : @ui.RouteView) -> Html {
       id="operator-illumination-evidence",
       evidence.horizon_evidence_path,
     ),
-  ])
+    ],
+  )
 }
 
 ///|
@@ -364,6 +368,25 @@ fn blocker_list(view : @ui.TrustedSquareViewModel) -> Html {
 }
 
 ///|
+fn suite_bar(view : @ui.TrustedSquareViewModel) -> Html {
+  header(class="suite-bar", [
+    div(class="suite-brand", [
+      span(class="suite-wordmark", "MM"),
+      div([b("Moonmoon"), span("Lunar operator")]),
+    ]),
+    div(class="suite-context", [
+      span(class="eyebrow", "First trusted square"),
+      b(view.title),
+    ]),
+    div(class="suite-health", [
+      span(class="signal-dot", ""),
+      span("Live"),
+      strong(class=status_class(view.scorecard.decision), view.scorecard.decision),
+    ]),
+  ])
+}
+
+///|
 fn operator_scene(model : Model) -> Html {
   let view = model.view
   let selected_route = selected_route_view(view)
@@ -371,14 +394,16 @@ fn operator_scene(model : Model) -> Html {
     class="operator-shell",
     attrs=@html.Attrs::build().aria_label("lunar site operator view"),
     [
-      section(class="lunar-stage", [
+      suite_bar(view),
+      div(class="operator-workspace", [
+        section(class="lunar-stage", [
         input(
           input_type=@html.Checkbox,
           id="moon-terrain-switch",
           class="view-switch-input",
         ),
         header(class="stage-header", [
-          div([span(class="eyebrow", "MoonMoon"), b("Lunar operator")]),
+          div([span(class="eyebrow", "MoonMoon"), b(view.title)]),
           label(for_="moon-terrain-switch", class="view-switch", [
             span("Moon"),
             b("Site terrain"),
@@ -437,8 +462,8 @@ fn operator_scene(model : Model) -> Html {
           span("source \{view.globe_overlay.source_dataset_id}"),
           span("site \{view.site_latitude_deg}, \{view.site_longitude_deg}"),
         ]),
-      ]),
-      aside(class="decision-rail", [
+        ]),
+        aside(class="decision-rail", [
         header(class="rail-header", [
           div([span(class="eyebrow", "First trusted square"), h1(view.title)]),
           strong(
@@ -446,7 +471,10 @@ fn operator_scene(model : Model) -> Html {
             view.scorecard.decision,
           ),
         ]),
-        section(class="route-gate", [
+        section(
+          class="route-gate",
+          attrs=@html.Attrs::build().aria_live("polite"),
+          [
           span(id="operator-route-context", "Mission selected route"),
           h2(id="operator-route-label", selected_route.label),
           span(id="operator-route-id", selected_route.route_id),
@@ -467,7 +495,8 @@ fn operator_scene(model : Model) -> Html {
             ]),
           ]),
           p(id="operator-route-action", selected_route.next_action),
-        ]),
+          ],
+        ),
         illumination_gate(selected_route),
         route_picker(view),
         div(class="rail-metrics", [
@@ -488,6 +517,7 @@ fn operator_scene(model : Model) -> Html {
         section(class="rail-blockers", [
           span(class="eyebrow", "Current blockers"),
           blocker_list(view),
+        ]),
         ]),
       ]),
     ],
