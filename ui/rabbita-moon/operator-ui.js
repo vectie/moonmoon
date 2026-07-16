@@ -1,11 +1,20 @@
+import {
+  createIcons,
+  Crosshair,
+  Pause,
+  Play,
+  RotateCcw,
+} from 'lucide'
+
 function setText(id, value) {
   const element = document.getElementById(id)
   if (element) element.textContent = String(value)
 }
 
 function statusClass(status) {
-  if (status.includes('block') || status.includes('gated')) return 'is-blocked'
-  if (status.includes('review') || status.includes('caution')) return 'is-review'
+  const normalized = String(status).toLowerCase()
+  if (normalized.includes('block') || normalized.includes('gated')) return 'is-blocked'
+  if (normalized.includes('review') || normalized.includes('caution')) return 'is-review'
   return 'is-ready'
 }
 
@@ -14,6 +23,25 @@ function setStatus(element, status) {
   element.classList.remove('is-blocked', 'is-review', 'is-ready')
   element.classList.add(statusClass(status))
   element.textContent = status
+}
+
+function setIlluminationStatus(element, status) {
+  setStatus(element, status)
+  if (!element) return
+  const normalized = String(status).toLowerCase()
+  element.textContent = normalized.includes('block')
+    ? 'illumination block'
+    : normalized.includes('review') || normalized.includes('caution')
+      ? 'illumination review'
+      : 'illumination pass'
+}
+
+function setCandidateStatus(element, status) {
+  if (!element) return
+  const blocked = String(status).toLowerCase().includes('block')
+  element.classList.remove('is-blocked', 'is-review', 'is-ready')
+  element.classList.add(blocked ? 'is-blocked' : 'is-review')
+  element.textContent = blocked ? 'not viable' : 'candidate'
 }
 
 function compactNumber(value, digits = 3) {
@@ -41,6 +69,11 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
   const root = document.querySelector('.operator-shell')
   if (!root || root.dataset.operatorBound === 'true') return
   root.dataset.operatorBound = 'true'
+
+  createIcons({
+    icons: { Crosshair, Pause, Play, RotateCcw },
+    attrs: { 'aria-hidden': 'true', 'stroke-width': 1.5 },
+  })
 
   const view = JSON.parse(modelJson)
   const routes = new Map((view.routes || []).map(route => [route.route_id, route]))
@@ -83,7 +116,7 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
     setText('operator-route-roughness', `${compactNumber(route.roughness_m)} m`)
     setText('operator-route-action', route.next_action)
     const illumination = route.illumination || {}
-    setStatus(
+    setIlluminationStatus(
       document.getElementById('operator-illumination-status'),
       illumination.decision || 'blocked',
     )
@@ -110,7 +143,7 @@ globalThis.__moonmoonBindOperatorUi = modelJson => {
     setText('operator-illumination-evidence', illumination.horizon_evidence_path || '')
     updateHorizonProfile(illumination.horizon_profile)
     const recommended = illumination.recommended_window || {}
-    setStatus(
+    setCandidateStatus(
       document.getElementById('operator-window-status'),
       recommended.decision || 'review',
     )

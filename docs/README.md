@@ -32,6 +32,8 @@ be explicit boundary packages or exported records.
    gate criteria.
 6. [UI_UX_NEXT_PHASE.md](UI_UX_NEXT_PHASE.md): canonical lunar operator UI
    checkpoints and browser acceptance criteria.
+7. [UI_SPATIAL_COCKPIT_PLAN.md](UI_SPATIAL_COCKPIT_PLAN.md): active feature-first
+   cockpit upgrade, spatial modes, and quality gates.
 
 ## Implementation Guidance
 

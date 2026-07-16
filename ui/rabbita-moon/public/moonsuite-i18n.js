@@ -70,7 +70,19 @@ const catalogs = {
     "moon.simulation": "Simulation",
     "moon.facts": "Facts",
     "moon.catalog_evidence": "Catalog evidence",
-    "moon.catalog_validation": "Catalog validation"
+    "moon.catalog_validation": "Catalog validation",
+    "moon.evidence_loaded": "Evidence loaded",
+    "moon.reset_view": "Reset view",
+    "moon.mission_decision": "Mission decision",
+    "moon.next_action": "Next required action",
+    "moon.controlling_blockers": "Controlling blockers",
+    "moon.illumination_evidence": "Illumination evidence",
+    "moon.illumination_block": "Illumination block",
+    "moon.illumination_review": "Illumination review",
+    "moon.illumination_pass": "Illumination pass",
+    "moon.current_route_window": "Current route window",
+    "moon.evidence_handoff": "Evidence and handoff",
+    "moon.not_viable": "Not viable"
   },
   "zh-Hans": {
     "common.refresh": "刷新",
@@ -142,7 +154,19 @@ const catalogs = {
     "moon.simulation": "仿真",
     "moon.facts": "事实",
     "moon.catalog_evidence": "目录证据",
-    "moon.catalog_validation": "目录验证"
+    "moon.catalog_validation": "目录验证",
+    "moon.evidence_loaded": "证据已加载",
+    "moon.reset_view": "重置视图",
+    "moon.mission_decision": "任务决策",
+    "moon.next_action": "下一项必要操作",
+    "moon.controlling_blockers": "控制性阻碍",
+    "moon.illumination_evidence": "光照证据",
+    "moon.illumination_block": "光照受阻",
+    "moon.illumination_review": "光照待审",
+    "moon.illumination_pass": "光照通过",
+    "moon.current_route_window": "当前路线窗口",
+    "moon.evidence_handoff": "证据与交接",
+    "moon.not_viable": "不可行"
   }
 };
 const zhHans = {
@@ -215,9 +239,27 @@ const zhHans = {
   "Simulation": "仿真",
   "Facts": "事实",
   "Catalog evidence": "目录证据",
-  "Catalog validation": "目录验证"
+  "Catalog validation": "目录验证",
+  "Evidence loaded": "证据已加载",
+  "Reset view": "重置视图",
+  "Mission decision": "任务决策",
+  "Next required action": "下一项必要操作",
+  "Energy margin": "能量余量",
+  "Controlling blockers": "控制性阻碍",
+  "Illumination evidence": "光照证据",
+  "current and ranked window": "当前与排名窗口",
+  "illumination block": "光照受阻",
+  "illumination review": "光照待审",
+  "illumination pass": "光照通过",
+  "Current route window": "当前路线窗口",
+  "candidate": "候选",
+  "not viable": "不可行",
+  "Evidence and handoff": "证据与交接",
+  "source authority and adapter boundary": "来源权威与适配器边界"
 };
-const zhHansTemplates = [];
+const zhHansTemplates = [
+  { source: "{count} measured corridors", target: "{count} 条实测路线" },
+];
 
 const COOKIE = "moonsuite_interface_locale";
 const STORAGE = "moonsuite.interfaceLocale";

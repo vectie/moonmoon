@@ -231,8 +231,11 @@ export function initMoonGlobe(canvas, view) {
   let lastY = 0
   const updateOrbitButton = () => {
     if (!orbitButton) return
-    orbitButton.textContent = orbit ? 'Pause orbit' : 'Resume orbit'
+    const label = orbit ? 'Pause orbit' : 'Resume orbit'
+    orbitButton.setAttribute('aria-label', label)
     orbitButton.setAttribute('aria-pressed', String(orbit))
+    const tooltip = orbitButton.querySelector('.control-tooltip')
+    if (tooltip) tooltip.textContent = label
   }
   const focusSite = () => {
     if (terrainSwitch) terrainSwitch.checked = true

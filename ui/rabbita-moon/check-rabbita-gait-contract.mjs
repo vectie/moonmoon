@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 
 const scene = readFileSync(new URL('./scene3d.js', import.meta.url), 'utf8')
@@ -10,7 +10,12 @@ const gaitClip = readFileSync(new URL('./gait-clip.js', import.meta.url), 'utf8'
 const generatedClip = readFileSync(new URL('./generated-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const liveRuntimeClip = readFileSync(new URL('./.generated/live-moonrobo-noetix-clip.js', import.meta.url), 'utf8')
 const e1AssemblyBridge = readFileSync(new URL('./.generated/e1-asm-assembly.js', import.meta.url), 'utf8')
-const operatorUi = readFileSync(new URL('./main/main.mbt', import.meta.url), 'utf8')
+const operatorUiDirectory = new URL('./main/', import.meta.url)
+const operatorUi = readdirSync(operatorUiDirectory)
+  .filter(name => name.endsWith('.mbt'))
+  .sort()
+  .map(name => readFileSync(new URL(name, operatorUiDirectory), 'utf8'))
+  .join('\n')
 const operatorStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8')
 const operatorRuntime = readFileSync(new URL('./operator-ui.js', import.meta.url), 'utf8')
 const bootstrap = readFileSync(new URL('./bootstrap.js', import.meta.url), 'utf8')
@@ -251,6 +256,9 @@ const operatorContracts = [
   'operator-horizon-bar-',
   'azimuth horizon profile',
   'operator-selected-cell',
+  'decision-overview',
+  'rail-disclosure',
+  'candidate_status_label',
 ]
 
 const operatorStyleContracts = [
@@ -262,6 +270,9 @@ const operatorStyleContracts = [
   '.route-choice.active',
   '.terrain-cell-choice',
   '.stage-lighting',
+  '.decision-overview',
+  '.rail-disclosure',
+  '.icon-control',
 ]
 
 const operatorRuntimeContracts = [
@@ -274,6 +285,8 @@ const operatorRuntimeContracts = [
   'recommended_window',
   'updateHorizonProfile',
   'selectCell',
+  'setCandidateStatus',
+  'createIcons',
 ]
 
 const bootstrapContracts = [
