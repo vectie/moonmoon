@@ -25,6 +25,6 @@ description = "MoonBit-native lunar world model for measured terrain evidence, m
 
 import {
   "moonbitlang/x@0.4.46",
-  "vectie/moonlib@0.1.8",
+  "vectie/moonlib@0.1.19",
   "vectie/lepusa@0.1.4",
 }
