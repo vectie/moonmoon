@@ -43,6 +43,9 @@ be explicit boundary packages or exported records.
    Lepusa acceptance evidence, artifact checksum, and public-signing status.
 10. [CAPABILITY_PACK.md](CAPABILITY_PACK.md): versioned MoonFlow operations,
     durable simulation sessions, portable MoonRobo handoff, and claim limits.
+11. [qualification/UI_TO_UI_USE_CASES.md](qualification/UI_TO_UI_USE_CASES.md):
+    repeatable Operator/Moonbook UI qualification, governed negative cases, and
+    the honest boundary excluding MoonMoon from the current creative flow.
 
 ## Implementation Guidance
 
