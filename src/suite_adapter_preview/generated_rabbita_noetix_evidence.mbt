@@ -5,6 +5,7 @@
 ///| Generated from ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics.
 
 ///|
+#warnings("-unused_value")
 fn generated_rabbita_noetix_evidence_source() -> String {
   "ui/rabbita-moon/scene3d.js#__moonmoonGaitDiagnostics"
 }

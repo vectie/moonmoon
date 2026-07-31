@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/mission-result-ref.v1.json",
+  "title": "MoonMoon mission result reference",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "session_id",
+    "result_ref",
+    "provenance_ref",
+    "replay_receipt_ref"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.mission-result-ref.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "result_ref": {
+      "$ref": "#/$defs/workspaceRef"
+    },
+    "provenance_ref": {
+      "$ref": "#/$defs/workspaceRef"
+    },
+    "replay_receipt_ref": {
+      "$ref": "#/$defs/workspaceRef"
+    }
+  },
+  "$defs": {
+    "workspaceRef": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"
+      }
+    }
+  }
+}

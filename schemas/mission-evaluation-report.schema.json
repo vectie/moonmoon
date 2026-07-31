@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/mission-evaluation-report.v1.json",
+  "title": "MoonMoon mission evaluation report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "session_id",
+    "design_id",
+    "revision",
+    "scenario_id",
+    "seed",
+    "decision",
+    "result_ref",
+    "provenance_ref",
+    "replay_receipt_ref",
+    "replay_verified",
+    "result_claim",
+    "claim_ceiling",
+    "physical_readiness",
+    "uncertainty",
+    "blockers",
+    "limitations",
+    "review_required",
+    "recorded_at"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.mission-evaluation-report.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "design_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "decision": {
+      "enum": ["accepted", "rejected"]
+    },
+    "result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_receipt_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_verified": {
+      "type": "boolean"
+    },
+    "result_claim": {
+      "enum": [
+        "bounded-digital-simulation",
+        "scenario-qualified",
+        "calibrated-digital-twin"
+      ]
+    },
+    "claim_ceiling": {
+      "const": "calibrated-digital-twin"
+    },
+    "physical_readiness": {
+      "const": false
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_modeled_fraction",
+        "modeled_fault_count",
+        "calibration_claim",
+        "external_dataset_coverage",
+        "route_coverage"
+      ],
+      "properties": {
+        "maximum_modeled_fraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "modeled_fault_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "calibration_claim": {
+          "type": "string"
+        },
+        "external_dataset_coverage": {
+          "enum": [
+            "conditional-not-declared",
+            "conditional-incomplete",
+            "declared-available"
+          ]
+        },
+        "route_coverage": {
+          "enum": [
+            "enumerated-path-only",
+            "enumerated-path-with-declared-grid-verification"
+          ]
+        }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "review_required": {
+      "const": true
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

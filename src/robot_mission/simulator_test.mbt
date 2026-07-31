@@ -203,9 +203,10 @@ test "calibrated adverse fault recovers with an auditable state transition" {
   assert_eq(result.scenario_outcome, "recovered")
   assert_eq(result.evidence_claim, "calibrated-digital-twin")
   assert_false(result.physical_readiness)
-  assert_eq(result.fault_responses[0].states, [
-    "normal", "degraded", "diagnosis", "recovery-attempt", "recovered",
-  ])
+  assert_true(
+    result.fault_responses[0].states ==
+    ["normal", "degraded", "diagnosis", "recovery-attempt", "recovered"],
+  )
 }
 
 ///|

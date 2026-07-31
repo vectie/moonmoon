@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/mission-replay-receipt.v1.json",
+  "title": "MoonMoon deterministic replay receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "session_id",
+    "design_id",
+    "scenario_id",
+    "seed",
+    "required_replays",
+    "completed_replays",
+    "byte_equivalent",
+    "first_result_ref",
+    "replay_result_ref",
+    "first_result_digest",
+    "replay_result_digest",
+    "recorded_at"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.mission-replay-receipt.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "design_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "required_replays": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "completed_replays": {
+      "type": "integer",
+      "minimum": 2
+    },
+    "byte_equivalent": {
+      "type": "boolean"
+    },
+    "first_result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "first_result_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "replay_result_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

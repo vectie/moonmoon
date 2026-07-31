@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/robot-mission-run-request.v1.json",
+  "title": "MoonMoon robot mission run request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "session_id",
+    "moonrobo_integration_receipt_ref",
+    "mission_design_ref",
+    "dataset_evidence"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.robot-mission-run-request.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "moonrobo_integration_receipt_ref": {
+      "$ref": "#/$defs/workspaceRef"
+    },
+    "mission_design_ref": {
+      "$ref": "#/$defs/workspaceRef"
+    },
+    "dataset_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/datasetEvidence"
+      }
+    }
+  },
+  "$defs": {
+    "workspaceRef": {
+      "type": "string",
+      "minLength": 1,
+      "not": {
+        "pattern": "(^/|(^|/)\\.\\.(/|$)|\\\\)"
+      }
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "datasetEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dataset_id",
+        "evidence_ref",
+        "license_class",
+        "status",
+        "digest"
+      ],
+      "properties": {
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_ref": {
+          "$ref": "#/$defs/workspaceRef"
+        },
+        "license_class": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": ["available", "conditional", "fixture", "blocked"]
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    }
+  }
+}

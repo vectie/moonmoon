@@ -220,8 +220,13 @@ export function initMoonGlobe(canvas, view) {
   const lightingModeButton = document.getElementById('moon-lighting-mode')
   const lighting = view.lighting || {}
   const lightingSamples = lighting.samples || []
-  let lightingSampleIndex = clamp(Number(lighting.default_sample_index || 0), 0, Math.max(0, lightingSamples.length - 1))
-  let readableLighting = false
+  const storedLightingIndex = sessionStorage.getItem('moonmoon.lightingSampleIndex')
+  let lightingSampleIndex = clamp(
+    Number(storedLightingIndex ?? lighting.default_sample_index ?? 0),
+    0,
+    Math.max(0, lightingSamples.length - 1),
+  )
+  let readableLighting = sessionStorage.getItem('moonmoon.lightingMode') === 'readable'
   let sunDirection = [1, 0, 0]
   const defaultView = { yaw: 0.35, pitch: -0.92, distance: 4.05 }
   let { yaw, pitch, distance } = defaultView
@@ -238,10 +243,16 @@ export function initMoonGlobe(canvas, view) {
     if (tooltip) tooltip.textContent = label
   }
   const focusSite = () => {
-    if (terrainSwitch) terrainSwitch.checked = true
+    if (terrainSwitch) {
+      terrainSwitch.checked = true
+      sessionStorage.setItem('moonmoon.terrainView', 'terrain')
+    }
   }
   const resetView = () => {
-    if (terrainSwitch) terrainSwitch.checked = false
+    if (terrainSwitch) {
+      terrainSwitch.checked = false
+      sessionStorage.setItem('moonmoon.terrainView', 'moon')
+    }
     ;({ yaw, pitch, distance } = defaultView)
   }
   const toggleOrbit = () => {
@@ -261,6 +272,8 @@ export function initMoonGlobe(canvas, view) {
     setText('moon-lighting-azimuth', `${Number(sample.sun_azimuth_deg).toFixed(1)} deg`)
     setText('moon-earth-phase', `${Math.round(Number(sample.earth_illuminated_fraction) * 100)}%`)
     lightingInput?.setAttribute('aria-valuetext', sample.timestamp_utc)
+    if (lightingInput) lightingInput.value = String(lightingSampleIndex)
+    sessionStorage.setItem('moonmoon.lightingSampleIndex', String(lightingSampleIndex))
     canvas.dataset.lightingTimestamp = sample.timestamp_utc
     canvas.dataset.sunBodyFixed = JSON.stringify([sample.sun_body_x, sample.sun_body_y, sample.sun_body_z])
     canvas.dataset.earthBodyFixed = JSON.stringify([sample.earth_body_x, sample.earth_body_y, sample.earth_body_z])
@@ -276,28 +289,67 @@ export function initMoonGlobe(canvas, view) {
   }
   const changeLightingTime = event => {
     lightingSampleIndex = clamp(Number(event.currentTarget.value), 0, Math.max(0, lightingSamples.length - 1))
+    event.currentTarget.value = String(lightingSampleIndex)
     updateLighting()
+  }
+  const setLightingFromPointer = event => {
+    if (!lightingInput || lightingSamples.length < 2) return
+    const bounds = lightingInput.getBoundingClientRect()
+    const ratio = clamp((event.clientX - bounds.left) / Math.max(1, bounds.width), 0, 1)
+    lightingInput.value = String(Math.round(ratio * (lightingSamples.length - 1)))
+    changeLightingTime({ currentTarget: lightingInput })
+  }
+  const stepLightingFromKeyboard = event => {
+    if (!lightingInput) return
+    const delta = event.key === 'ArrowLeft' || event.key === 'ArrowDown'
+      ? -1
+      : event.key === 'ArrowRight' || event.key === 'ArrowUp'
+        ? 1
+        : 0
+    if (delta === 0) return
+    event.preventDefault()
+    lightingInput.value = String(clamp(
+      Number(lightingInput.value) + delta,
+      0,
+      Math.max(0, lightingSamples.length - 1),
+    ))
+    changeLightingTime({ currentTarget: lightingInput })
   }
   const toggleLightingMode = () => {
     readableLighting = !readableLighting
     lightingModeButton.textContent = readableLighting ? 'Readable' : 'Physical'
     lightingModeButton.setAttribute('aria-pressed', String(readableLighting))
     canvas.dataset.lightingMode = readableLighting ? 'readable' : 'physical'
+    sessionStorage.setItem('moonmoon.lightingMode', canvas.dataset.lightingMode)
     window.dispatchEvent(new CustomEvent('moonmoon:lighting-mode-change', {
       detail: { mode: canvas.dataset.lightingMode },
     }))
+  }
+  const changeTerrainView = () => {
+    if (!terrainSwitch) return
+    sessionStorage.setItem('moonmoon.terrainView', terrainSwitch.checked ? 'terrain' : 'moon')
   }
   focusButton?.addEventListener('click', focusSite)
   resetButton?.addEventListener('click', resetView)
   orbitButton?.addEventListener('click', toggleOrbit)
   lightingInput?.addEventListener('input', changeLightingTime)
+  lightingInput?.addEventListener('pointerdown', setLightingFromPointer)
+  lightingInput?.addEventListener('keydown', stepLightingFromKeyboard)
   lightingModeButton?.addEventListener('click', toggleLightingMode)
+  if (terrainSwitch) {
+    terrainSwitch.checked = sessionStorage.getItem('moonmoon.terrainView') === 'terrain'
+    terrainSwitch.addEventListener('change', changeTerrainView)
+  }
+  if (lightingModeButton && readableLighting) {
+    lightingModeButton.textContent = 'Readable'
+    lightingModeButton.setAttribute('aria-pressed', 'true')
+  }
   updateOrbitButton()
   canvas.dataset.lightingModel = lighting.method_id || 'unavailable'
   canvas.dataset.lightingFrame = lighting.frame_id || 'unavailable'
   canvas.dataset.lightingSource = lighting.source_path || 'unavailable'
   canvas.dataset.lightingOrientationSource = lighting.orientation_source_path || 'unavailable'
-  canvas.dataset.lightingMode = 'physical'
+  canvas.dataset.lightingMode = readableLighting ? 'readable' : 'physical'
   updateLighting()
   canvas.onpointerdown = event => {
     dragging = true
@@ -360,7 +412,10 @@ export function initMoonGlobe(canvas, view) {
     resetButton?.removeEventListener('click', resetView)
     orbitButton?.removeEventListener('click', toggleOrbit)
     lightingInput?.removeEventListener('input', changeLightingTime)
+    lightingInput?.removeEventListener('pointerdown', setLightingFromPointer)
+    lightingInput?.removeEventListener('keydown', stepLightingFromKeyboard)
     lightingModeButton?.removeEventListener('click', toggleLightingMode)
+    terrainSwitch?.removeEventListener('change', changeTerrainView)
     canvas.onpointerdown = null
     canvas.onpointermove = null
     canvas.onpointerup = null

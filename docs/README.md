@@ -1,5 +1,8 @@
 # MoonMoon Documentation Guide
 
+Start with the [product contract](PRODUCT_CONTRACT.md) for current maturity,
+evidence claims, the MoonRobo boundary and release gates.
+
 MoonMoon is the MoonSuite lunar terrain and mission model. Its docs should keep
 the product small and testable: lunar claims, data roots, terrain analysis,
 mission scoring, robot-data adapters, and inspection UI belong here; desktop
@@ -34,6 +37,12 @@ be explicit boundary packages or exported records.
    checkpoints and browser acceptance criteria.
 7. [UI_SPATIAL_COCKPIT_PLAN.md](UI_SPATIAL_COCKPIT_PLAN.md): active feature-first
    cockpit upgrade, spatial modes, and quality gates.
+8. [UI_GUIDE.md](UI_GUIDE.md): operator, evidence, Moonbook, and bookkeeper
+   guide.
+9. [UI_RELEASE_READINESS.md](UI_RELEASE_READINESS.md): browser and installed
+   Lepusa acceptance evidence, artifact checksum, and public-signing status.
+10. [CAPABILITY_PACK.md](CAPABILITY_PACK.md): versioned MoonFlow operations,
+    durable simulation sessions, portable MoonRobo handoff, and claim limits.
 
 ## Implementation Guidance
 

@@ -9,6 +9,8 @@ import {
 }
 
 // Values
+pub fn adapter_session_truth() -> AdapterSessionTruth
+
 pub fn first_trusted_square_catalog_html(String) -> Result[String, CatalogBackedViewIssue]
 
 pub fn first_trusted_square_catalog_json(String) -> Result[Json, CatalogBackedViewIssue]
@@ -37,6 +39,10 @@ pub fn from_site_dossier(@site.SiteDossier) -> TrustedSquareViewModel
 
 pub fn from_site_dossier_with_selection(@site.SiteDossier, Int, Int) -> TrustedSquareViewModel
 
+pub fn moonbook_registry(TrustedSquareViewModel) -> MoonbookRegistry
+
+pub fn moonbook_registry_json(TrustedSquareViewModel) -> Json
+
 pub fn render_html(TrustedSquareViewModel) -> String
 
 pub fn render_json(TrustedSquareViewModel) -> Json
@@ -60,6 +66,18 @@ pub fn view_layer_kind_label(ViewLayerKind) -> String
 // Errors
 
 // Types and methods
+pub(all) struct AdapterSessionTruth {
+  protocol : String
+  simulation_operation : String
+  inspection_operation : String
+  session_status : String
+  replay_status : String
+  provenance_status : String
+  uncertainty_status : String
+  evidence_root : String
+  physical_readiness : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
 pub(all) struct CatalogBackedViewIssue {
   code : String
   path : String
@@ -177,6 +195,29 @@ pub(all) struct LunarLightingView {
   sample_step_minutes : Int
   default_sample_index : Int
   samples : Array[LunarLightingSampleView]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonbookAnswer {
+  kind : String
+  title : String
+  body : String
+  sources : Array[String]
+  state : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonbookLocalizedAnswer {
+  en_us : MoonbookAnswer
+  zh_hans : MoonbookAnswer
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MoonbookRegistry {
+  empty : MoonbookLocalizedAnswer
+  blocked : MoonbookLocalizedAnswer
+  window : MoonbookLocalizedAnswer
+  terrain_source : MoonbookLocalizedAnswer
+  robot_authority : MoonbookLocalizedAnswer
+  project : MoonbookLocalizedAnswer
+  unknown : MoonbookLocalizedAnswer
 } derive(Eq, ToJson, @debug.Debug, @json.FromJson)
 
 pub(all) struct RobotReadinessEvidenceView {

@@ -12,7 +12,7 @@ test "MoonMoon adapter reports digital evidence without deployment authority" {
   guard @moonmoon.moonflow_adapter_capability_json() is Object(capability) else {
     fail("expected MoonMoon adapter capability")
   }
-  assert_true(capability["protocol"] == Json::string("moonflow.adapter.v1"))
+  assert_true(capability["protocol"] == Json::string("moonflow.adapter.v2"))
   assert_true(capability["product_id"] == Json::string("moonmoon"))
   assert_true(capability["supports_cancel"] == Json::boolean(false))
   assert_true(capability["supports_reconcile"] == Json::boolean(true))

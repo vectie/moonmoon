@@ -1,0 +1,26 @@
+{
+  "identifier": "dev.vectie.moonmoon",
+  "productName": "MoonMoon",
+  "version": "0.1.0",
+  "icon": "assets/moonmoon.icns",
+  "signing": {
+    "identity": "-"
+  },
+  "runtime": {
+    "backend": "system-webview",
+    "assetProtocol": "lepusa",
+    "devtools": false
+  },
+  "window": {
+    "label": "main",
+    "title": "MoonMoon",
+    "width": 1180,
+    "height": 780,
+    "resizable": true,
+    "source": {
+      "packaged": "ui/rabbita-moon/dist"
+    }
+  },
+  "plugins": [],
+  "capabilities": []
+}

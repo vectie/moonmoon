@@ -1,0 +1,118 @@
+{
+  "id": "moonmoon",
+  "version": "0.1.0",
+  "display_name": "MoonMoon Digital Mission Simulation",
+  "product_id": "moonmoon",
+  "kind": "DomainPack",
+  "required_runtime_extensions": ["moonflow"],
+  "book_templates": [],
+  "schemas": [
+    {
+      "id": "robot-mission-run-request",
+      "version": "1.0.0",
+      "path": "schemas/robot-mission-run-request.schema.json"
+    },
+    {
+      "id": "mission-result-ref",
+      "version": "1.0.0",
+      "path": "schemas/mission-result-ref.schema.json"
+    },
+    {
+      "id": "mission-simulation-receipt",
+      "version": "1.0.0",
+      "path": "schemas/mission-simulation-receipt.schema.json"
+    },
+    {
+      "id": "mission-inspection-receipt",
+      "version": "1.0.0",
+      "path": "schemas/mission-inspection-receipt.schema.json"
+    },
+    {
+      "id": "robot-mission-result",
+      "version": "1.0.0",
+      "path": "schemas/robot-mission-result.schema.json"
+    },
+    {
+      "id": "mission-replay-receipt",
+      "version": "1.0.0",
+      "path": "schemas/mission-replay-receipt.schema.json"
+    },
+    {
+      "id": "mission-provenance",
+      "version": "1.0.0",
+      "path": "schemas/mission-provenance.schema.json"
+    },
+    {
+      "id": "mission-evaluation-report",
+      "version": "1.0.0",
+      "path": "schemas/mission-evaluation-report.schema.json"
+    }
+  ],
+  "tools": [
+    {
+      "id": "simulation.robot-mission",
+      "owner_product": "moonmoon",
+      "input_schema_id": "robot-mission-run-request",
+      "output_schema_id": "mission-simulation-receipt",
+      "authority": "SandboxExecution",
+      "idempotent": true,
+      "evidence_outputs": [
+        ".moonsuite/products/moonmoon/mission-sessions",
+        ".moonsuite/products/moonmoon/adapter-attempts"
+      ],
+      "review_required": true
+    },
+    {
+      "id": "simulation.mission-result.inspect",
+      "owner_product": "moonmoon",
+      "input_schema_id": "mission-result-ref",
+      "output_schema_id": "mission-inspection-receipt",
+      "authority": "Observe",
+      "idempotent": true,
+      "evidence_outputs": [
+        ".moonsuite/products/moonmoon/mission-sessions",
+        ".moonsuite/products/moonmoon/adapter-attempts"
+      ],
+      "review_required": true
+    }
+  ],
+  "workflows": [
+    {
+      "id": "moonrobo-design-to-digital-mission",
+      "version": "1.0.0",
+      "path": "workflows/moonrobo-design-to-digital-mission.md"
+    }
+  ],
+  "skills": [],
+  "policies": [
+    {
+      "id": "digital-mission-authority",
+      "version": "1.0.0",
+      "path": "policies/digital-mission-authority.md"
+    }
+  ],
+  "provider_ports": [
+    {
+      "id": "moonflow-local-adapter",
+      "version": "1.0.0",
+      "path": "providers/moonflow-local-adapter.port.md"
+    }
+  ],
+  "schedules": [],
+  "app_entrypoints": [
+    {
+      "id": "lunar-operator",
+      "path": "ui/rabbita-moon",
+      "audience": "simulation-reviewer"
+    }
+  ],
+  "migrations": [],
+  "evaluations": [],
+  "adapter_declarations": [
+    {
+      "id": "moonmoon-local-v1",
+      "version": "1.0.0",
+      "path": "adapters/moonmoon-local-v1.declaration.json"
+    }
+  ]
+}

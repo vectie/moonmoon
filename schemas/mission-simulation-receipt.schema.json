@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/mission-simulation-receipt.v1.json",
+  "title": "MoonMoon mission simulation operation receipt",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "contract_id",
+    "adapter_id",
+    "operation_id",
+    "request_id",
+    "attempt_id",
+    "idempotency_key",
+    "status",
+    "physical_execution_performed",
+    "evidence_refs",
+    "output"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.mission-simulation-receipt.v1"
+    },
+    "adapter_id": {
+      "const": "moonmoon-local-v1"
+    },
+    "operation_id": {
+      "const": "simulation.robot-mission"
+    },
+    "status": {
+      "enum": ["succeeded", "failed"]
+    },
+    "physical_execution_performed": {
+      "const": false
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "physical_readiness": {
+          "const": false
+        }
+      }
+    }
+  }
+}

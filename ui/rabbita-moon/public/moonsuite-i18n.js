@@ -255,7 +255,70 @@ const zhHans = {
   "candidate": "候选",
   "not viable": "不可行",
   "Evidence and handoff": "证据与交接",
-  "source authority and adapter boundary": "来源权威与适配器边界"
+  "source authority and adapter boundary": "来源权威与适配器边界",
+  "Primary navigation": "主导航",
+  "Moonbook & Guide": "月球知识库与指南",
+  "Return to Moon view": "返回月球视图",
+  "Review blocking evidence": "查看阻碍证据",
+  "Moon view controls": "月球视图控制",
+  "DE440 lunar lighting timeline": "DE440 月球光照时间线",
+  "Toggle readable lighting": "切换可读光照",
+  "score": "评分",
+  "max grade": "最大坡度",
+  "roughness": "粗糙度",
+  "terrain, routes, source, and clearance": "地形、路线、来源与净空",
+  "Adapter preview": "适配器预览",
+  "Noetix E1 / explicit non-authoritative simulation": "Noetix E1 / 明确的非权威仿真",
+  "Mission selected route": "任务所选路线",
+  "Mission gate; not a robot preview": "任务门控；不是机器人预览",
+  "Moonbook knowledge base": "月球知识库",
+  "Ask what the Moon means for this mission": "了解月球对本次任务意味着什么",
+  "Evidence-grounded answers for lunar facts, mission decisions, and project boundaries.": "基于证据回答月球事实、任务决策和项目边界。",
+  "Local knowledge": "本地知识",
+  "Source cited": "标注来源",
+  "No network inference": "无网络推断",
+  "Browse the guide": "浏览指南",
+  "Operational topics": "操作主题",
+  "Mission status": "任务状态",
+  "Decision, blockers, and first action": "决策、阻碍与第一步行动",
+  "Terrain evidence": "地形证据",
+  "LOLA cells, hazards, and confidence": "LOLA 网格、危险与置信度",
+  "Illumination": "光照",
+  "Current and ranked mission windows": "当前与排名任务窗口",
+  "Route authority": "路线权限",
+  "Selected route versus inspected candidates": "所选路线与查看中的候选路线",
+  "Robot boundary": "机器人边界",
+  "Why previews cannot authorize motion": "为何预览不能批准运动",
+  "Project architecture": "项目架构",
+  "MoonBit, Rabbita, and evidence flow": "MoonBit、Rabbita 与证据流",
+  "Mission guide": "任务指南",
+  "Why the mission is blocked": "任务为何受阻",
+  "First action": "第一步行动",
+  "Current authority": "当前权限",
+  "Evidence source": "证据来源",
+  "Bookkeeper agent": "知识管理员",
+  "Ask a Moon or project question": "询问月球或项目问题",
+  "The bookkeeper answers only from the loaded mission model and the project knowledge registry.": "知识管理员只根据已加载的任务模型和项目知识登记表回答。",
+  "Evidence-grounded local answer": "基于证据的本地回答",
+  "Why is the mission blocked?": "任务为什么受阻？",
+  "What is the best illumination window?": "最佳光照窗口是什么？",
+  "Where does terrain data come from?": "地形数据来自哪里？",
+  "Can robot motion authorize a route?": "机器人运动能批准路线吗？",
+  "Ask about the Moon, this mission, its evidence, or this project…": "询问月球、本次任务、证据或项目……",
+  "Ask bookkeeper": "询问知识管理员",
+  "Clear": "清除",
+  "Bookkeeper answer": "知识管理员回答",
+  "Ready": "就绪",
+  "Ask a question to begin": "输入问题以开始",
+  "Choose a common question or write your own. Answers distinguish Moon facts from project facts and cite their evidence.": "选择常见问题或自行输入。回答会区分月球事实与项目事实，并列出证据来源。",
+  "Knowledge registry": "知识登记表",
+  "What the bookkeeper is allowed to know": "知识管理员允许使用的知识",
+  "Moon facts": "月球事实",
+  "Mission facts": "任务事实",
+  "Project facts": "项目事实",
+  "Hard boundary": "硬边界",
+  "The bookkeeper does not invent telemetry, fetch remote sources, or grant route authority.": "知识管理员不会编造遥测、获取远程来源或授予路线权限。",
+  "Moonbook knowledge base and guide": "月球知识库与指南"
 };
 const zhHansTemplates = [
   { source: "{count} measured corridors", target: "{count} 条实测路线" },
@@ -297,7 +360,9 @@ function storeLocale(locale) {
   document.cookie = COOKIE + "=" + encodeURIComponent(locale) + "; Path=/; Max-Age=31536000; SameSite=Lax";
   localStorage.setItem(STORAGE, locale);
   window.name = WINDOW_NAME_PREFIX + locale;
-  location.reload();
+  const url = new URL(location.href);
+  url.searchParams.set("locale", locale);
+  location.assign(url);
 }
 
 function escapeRegex(value) {

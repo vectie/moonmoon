@@ -1,0 +1,10 @@
+import {
+  "vectie/moonmoon/src/robot_mission",
+  "vectie/moonlib/pathx",
+  "moonbitlang/core/encoding/utf8",
+  "moonbitlang/core/json",
+  "moonbitlang/x/crypto",
+  "moonbitlang/x/fs" @fsx,
+}
+
+supported_targets = "native"

@@ -1,5 +1,6 @@
 ///|
 using @html {
+  a,
   article,
   aside,
   b,
@@ -14,12 +15,15 @@ using @html {
   label,
   li,
   main_,
+  nav,
   p,
   section,
   span,
   strong,
   summary,
+  textarea,
   ul,
+  form,
 }
 
 ///|
@@ -29,7 +33,9 @@ using @rabbita {type Html}
 struct Model {
   view : @ui.TrustedSquareViewModel
   contract : @ui.TraverseMotionContract
+  adapter_truth : @ui.AdapterSessionTruth
   model_json : String
+  bookkeeper_json : String
 }
 
 ///|
@@ -42,7 +48,10 @@ extern "js" fn render_3d_scene(model_json : String) -> Unit = "(modelJson) => gl
 
 ///|
 #cfg(target="js")
-extern "js" fn bind_operator_ui(model_json : String) -> Unit = "(modelJson) => globalThis.__moonmoonBindOperatorUi?.(modelJson)"
+extern "js" fn bind_operator_ui(
+  model_json : String,
+  bookkeeper_json : String,
+) -> Unit = "(modelJson, bookkeeperJson) => globalThis.__moonmoonBindOperatorUi?.(modelJson, bookkeeperJson)"
 
 ///|
 fn init_model() -> Model {
@@ -50,7 +59,9 @@ fn init_model() -> Model {
   {
     view,
     contract: @ui.traverse_motion_contract(view),
+    adapter_truth: @ui.adapter_session_truth(),
     model_json: @ui.render_json(view).stringify(),
+    bookkeeper_json: @ui.moonbook_registry_json(view).stringify(),
   }
 }
 
@@ -423,7 +434,6 @@ fn operator_scene(model : Model) -> Html {
     class="operator-shell",
     attrs=@html.Attrs::build().aria_label("lunar site operator view"),
     [
-      suite_bar(view),
       div(class="operator-workspace", [
         section(class="lunar-stage", [
           input(
@@ -473,7 +483,9 @@ fn operator_scene(model : Model) -> Html {
                   "crosshair",
                   primary=true,
                 ),
-                stage_control("moon-reset-view", "Reset view", "rotate-ccw"),
+                stage_control(
+                  "moon-reset-view", "Return to Moon view", "rotate-ccw",
+                ),
                 button(
                   id="moon-toggle-orbit",
                   class="control icon-control orbit-control",
@@ -673,6 +685,7 @@ fn evidence_dossier(model : Model) -> Html {
 
 ///|
 fn adapter_preview(model : Model) -> Html {
+  let truth = model.adapter_truth
   details(id="moonmoon-adapter-preview", class="adapter-preview", [
     summary([
       div([
@@ -686,6 +699,15 @@ fn adapter_preview(model : Model) -> Html {
         span(class="eyebrow", "Preview boundary"),
         h2("Robot motion is not route authority"),
         p(model.contract.next_action),
+        div(class="illumination-metrics", [
+          span([b(truth.session_status), span("session")]),
+          span([b(truth.replay_status), span("replay")]),
+          span([b(truth.provenance_status), span("provenance")]),
+          span([b(truth.uncertainty_status), span("uncertainty")]),
+        ]),
+        p(
+          "\{truth.protocol} · \{truth.evidence_root} · physical readiness \{truth.physical_readiness}",
+        ),
       ]),
       div(class="adapter-viewport", [
         canvas(
@@ -709,9 +731,13 @@ fn adapter_preview(model : Model) -> Html {
 ///|
 fn view(model : Model) -> Html {
   main_(class="moon-shell", [
-    operator_scene(model),
-    evidence_dossier(model),
-    adapter_preview(model),
+    suite_bar(model.view),
+    section(id="operator-page", class="app-page operator-page", [
+      operator_scene(model),
+      evidence_dossier(model),
+      adapter_preview(model),
+    ]),
+    moonbook_page(model),
   ])
 }
 
@@ -722,7 +748,7 @@ fn start_renderer(model : Model) -> @rabbita.Cmd {
     _ => {
       render_terrain_canvas(model.model_json)
       render_3d_scene(model.model_json)
-      bind_operator_ui(model.model_json)
+      bind_operator_ui(model.model_json, model.bookkeeper_json)
     },
     kind=@cmd.after_render,
   )

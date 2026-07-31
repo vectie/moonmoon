@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/mission-provenance.v1.json",
+  "title": "MoonMoon mission provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_id",
+    "session_id",
+    "moonrobo_integration_receipt_ref",
+    "mission_design_ref",
+    "terrain_ref",
+    "result_ref",
+    "replay_receipt_ref",
+    "source_refs",
+    "source_digests",
+    "dataset_evidence",
+    "recorded_at"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.mission-provenance.v1"
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "moonrobo_integration_receipt_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mission_design_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terrain_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "replay_receipt_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source_digests": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$"
+      }
+    },
+    "dataset_evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "recorded_at": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

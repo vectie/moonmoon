@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vectie.github.io/schemas/moonmoon/robot-mission-result.v1.json",
+  "title": "MoonMoon deterministic robot mission result",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "contract_id",
+    "design_id",
+    "revision",
+    "robot_id",
+    "scenario_id",
+    "seed",
+    "evidence_claim",
+    "physical_readiness",
+    "result",
+    "segment_evidence",
+    "energy",
+    "replay_count",
+    "deterministic_replay_required",
+    "blockers",
+    "limitations"
+  ],
+  "properties": {
+    "contract_id": {
+      "const": "moonmoon.robot-mission-result.v1"
+    },
+    "design_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "robot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scenario_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "seed": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "evidence_claim": {
+      "enum": [
+        "bounded-digital-simulation",
+        "scenario-qualified",
+        "calibrated-digital-twin"
+      ]
+    },
+    "physical_readiness": {
+      "const": false
+    },
+    "result": {
+      "enum": ["accepted", "rejected"]
+    },
+    "segment_evidence": {
+      "type": "array"
+    },
+    "energy": {
+      "type": "object"
+    },
+    "replay_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "deterministic_replay_required": {
+      "const": true
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

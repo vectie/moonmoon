@@ -35,6 +35,26 @@ fn suite_bar(view : @ui.TrustedSquareViewModel) -> Html {
       span(class="suite-wordmark", "MM"),
       div([b("Moonmoon"), span("Lunar operator")]),
     ]),
+    nav(
+      class="suite-navigation",
+      attrs=@html.Attrs::build().aria_label("Primary navigation"),
+      [
+        a(
+          class="suite-nav-link active",
+          href="#operator",
+          attrs=@html.Attrs::build()
+            .data_set("app-page", "operator")
+            .aria_current("page"),
+          "Operator",
+        ),
+        a(
+          class="suite-nav-link",
+          href="#moonbook",
+          attrs=@html.Attrs::build().data_set("app-page", "moonbook"),
+          "Moonbook & Guide",
+        ),
+      ],
+    ),
     div(class="suite-context", [
       span(class="eyebrow", "First trusted square"),
       b(view.title),
@@ -52,10 +72,16 @@ fn suite_bar(view : @ui.TrustedSquareViewModel) -> Html {
 
 ///|
 fn decision_overview(view : @ui.TrustedSquareViewModel) -> Html {
-  section(class="decision-overview", [
+  section(class="decision-overview \{status_class(view.scorecard.decision)}", [
     div(class="decision-action", [
       span(class="eyebrow", "Next required action"),
       p(view.scorecard.next_action),
+      button(
+        id="review-blocking-evidence",
+        class="decision-primary-action",
+        type_="button",
+        "Review blocking evidence",
+      ),
     ]),
     div(class="decision-facts", [
       span([b("\{view.scorecard.score}"), span("Site score")]),

@@ -1,0 +1,22 @@
+{
+  "contract_id": "moonflow.adapter-declaration.v1",
+  "adapter_id": "moonmoon-local-v1",
+  "product_id": "moonmoon",
+  "pack_id": "moonmoon",
+  "pack_version": "0.1.0",
+  "protocol": "moonflow.adapter.v2",
+  "operations": [
+    {
+      "operation_id": "simulation.robot-mission",
+      "claim_ceiling": "calibrated-digital-twin",
+      "supports_cancel": false,
+      "supports_reconcile": true
+    },
+    {
+      "operation_id": "simulation.mission-result.inspect",
+      "claim_ceiling": "simulation-evidence",
+      "supports_cancel": false,
+      "supports_reconcile": true
+    }
+  ]
+}

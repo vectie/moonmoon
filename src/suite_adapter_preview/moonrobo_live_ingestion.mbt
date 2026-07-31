@@ -92,6 +92,7 @@ priv struct SuiteAdapterLiveNoetixWalkClip {
 } derive(ToJson, FromJson)
 
 ///|
+#warnings("-unused_value")
 priv struct SuiteAdapterLiveNoetixContract {
   contract_id : String
   target_payload_type : String

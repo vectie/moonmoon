@@ -1,5 +1,9 @@
 # MoonMoon
 
+> **Domain product · digital simulation alpha.** Read the
+> [product contract](docs/PRODUCT_CONTRACT.md) for evidence claims, the
+> MoonRobo boundary, capability status and release gates.
+
 MoonMoon is a MoonBit-native lunar terrain and mission model.
 
 The project is intentionally small: source data lives under `data/`, domain
@@ -25,7 +29,10 @@ committed as source.
 - `src/site`: the assembled first trusted square dossier.
 - `src/ui`: renderer-neutral view models plus a standalone MoonBit-rendered
   HTML inspection page.
-- `ui/rabbita-moon`: Rabbita-native browser app for the live 3D terrain view.
+- `ui/rabbita-moon`: Rabbita-native app for the live 3D terrain view, built as
+  relative static assets for browser or Lepusa packaging.
+- `lepusa.json`: least-privilege static desktop manifest; domain and UI behavior
+  remain in MoonBit and Rabbita.
 - `src/kernel`: the compact product kernel, evidence gates, and near-term build
   queue.
 - `cmd/main`: the native CLI.
@@ -39,6 +46,12 @@ committed as source.
 - [docs/ROADMAP.md](docs/ROADMAP.md): staged product direction.
 - [docs/STEP_BY_STEP_PLAN.md](docs/STEP_BY_STEP_PLAN.md): implementation
   sequence and validation gates.
+- [docs/UI_GUIDE.md](docs/UI_GUIDE.md): operator, Moonbook, and bookkeeper
+  usage.
+- [docs/UI_RELEASE_READINESS.md](docs/UI_RELEASE_READINESS.md): UI acceptance
+  evidence, installed-app smoke results, and public-signing status.
+- [docs/CAPABILITY_PACK.md](docs/CAPABILITY_PACK.md): executable pack tools,
+  serialized MoonRobo handoff, replay/provenance receipts, and reconciliation.
 
 ## Run
 
@@ -64,6 +77,8 @@ moon run cmd/main -- data robot-telemetry-json target/data-roots/robot-telemetry
 moon run cmd/main -- ui
 moon run cmd/main -- ui json
 moon run cmd/main -- ui html
+moon run cmd/moonflow_adapter -- capability
+moon run cmd/moonflow_adapter -- declaration
 ```
 
 ## Bound robot mission simulation
@@ -91,6 +106,14 @@ It preserves broader-terrain blockers and explicitly does not establish slip,
 sinkage, localization, dust, thermal-vacuum, manufacturing, launch, landing,
 or physical lunar readiness.
 
+The product-owned `pack.json` exposes the simulation as
+`moonmoon/simulation.robot-mission@0.1.0` and exposes independent result
+inspection as
+`moonmoon/simulation.mission-result.inspect@0.1.0`. The `moonflow.adapter.v2`
+runtime consumes serialized workspace artifacts, persists replay, provenance,
+evaluation and attempt receipts, and supports restart reconciliation. It never
+loads a sibling MoonRobo source checkout.
+
 Robot episode imports read top-level text payloads as signal frames. Optional
 `replays/` and `quality/` subdirectories are staged as replay and quality
 evidence in the same episode dataset.
@@ -113,6 +136,18 @@ npm run dev
 ```
 
 Open `http://127.0.0.1:8766/first_trusted_square.html`.
+
+The production build uses relative asset URLs so the same Rabbita output works
+inside `lepusa://packaged/main/`:
+
+```bash
+cd ui/rabbita-moon
+npm run build
+```
+
+The desktop release boundary is defined by `lepusa.json`. See
+`docs/UI_RELEASE_READINESS.md` for the strict Lepusa verification, DMG,
+installed-copy UI run, checksum, and signing limitations.
 
 ## Develop
 

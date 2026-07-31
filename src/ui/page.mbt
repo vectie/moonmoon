@@ -86,56 +86,59 @@ fn motion_contract_panel(contract : TraverseMotionContract) -> String {
 fn app_styles() -> String {
   let css =
     #|<style>
-    #|:root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f7f7f4; color: #151917; }
+    #|:root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #080b0d; color: #f0f4f2; }
     #|* { box-sizing: border-box; }
-    #|body { margin: 0; min-height: 100vh; background: #f7f7f4; }
+    #|body { margin: 0; min-height: 100vh; background: #080b0d; }
     #|button { font: inherit; }
     #|.shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) 360px; }
     #|.workspace { padding: 24px; display: grid; gap: 18px; align-content: start; }
-    #|.inspector { border-left: 1px solid #d8d8d0; background: #fbfbf8; padding: 20px; display: grid; gap: 16px; align-content: start; }
+    #|.inspector { border-left: 1px solid rgba(240,246,242,.09); background: rgba(12,16,17,.86); padding: 20px; display: grid; gap: 16px; align-content: start; }
     #|.topbar { display: flex; justify-content: space-between; gap: 16px; align-items: start; }
     #|h1, h2, p { margin: 0; }
-    #|h1 { font-size: 28px; line-height: 1.1; }
-    #|h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0; color: #535b55; margin-bottom: 10px; }
-    #|.summary { color: #555d57; max-width: 760px; margin-top: 8px; line-height: 1.45; }
-    #|.badge { border: 1px solid #b9b9ae; background: #fff; padding: 7px 10px; font-size: 13px; white-space: nowrap; }
+    #|h1 { font-size: 28px; line-height: 1.1; font-weight: 400; letter-spacing: -0.01em; }
+    #|h2 { font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: #98a49f; margin-bottom: 10px; font-family: "IBM Plex Mono", Consolas, monospace; }
+    #|.summary { color: #98a49f; max-width: 760px; margin-top: 8px; line-height: 1.45; }
+    #|.badge { border: 1px solid rgba(240,246,242,.12); background: rgba(230,238,233,.1); padding: 7px 10px; font-size: 12px; white-space: nowrap; border-radius: 999px; }
     #|.hero { min-height: 420px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr); gap: 18px; align-items: stretch; }
-    #|.surface, .panel { border: 1px solid #d8d8d0; background: #fff; border-radius: 6px; }
-    #|.moonstage { min-height: 420px; padding: 14px; display: grid; grid-template-rows: auto minmax(280px, 1fr) auto auto; gap: 10px; background: #090c0f; color: #f4f1e8; overflow: hidden; }
-    #|.moonstage h2 { color: rgba(244,241,232,.7); margin-bottom: 3px; }
+    #|.surface, .panel { border: 1px solid rgba(240,246,242,.09); background: rgba(18,24,23,.66); border-radius: 18px; }
+    #|.moonstage { min-height: 420px; padding: 14px; display: grid; grid-template-rows: auto minmax(280px, 1fr) auto auto; gap: 10px; background: #030506; color: #f0f4f2; overflow: hidden; border-radius: 18px; }
+    #|.moonstage h2 { color: rgba(240,244,242,.55); margin-bottom: 3px; }
     #|.moonstage-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; position: relative; z-index: 1; }
-    #|.moonstage-head b { display: block; font-size: 18px; }
-    #|.moonstage-head span, .moonclaim, .moonhud { color: rgba(244,241,232,.68); font-size: 12px; }
-    #|.moonstage-head strong { border: 1px solid rgba(255,255,255,.26); border-radius: 5px; padding: 6px 8px; text-transform: uppercase; font-size: 12px; }
-    #|.moonviewport { min-height: 280px; border: 1px solid rgba(255,255,255,.14); background: radial-gradient(circle at 50% 45%, #1a2025, #06080a 70%); border-radius: 5px; position: relative; overflow: hidden; touch-action: none; }
+    #|.moonstage-head b { display: block; font-size: 18px; font-weight: 500; }
+    #|.moonstage-head span, .moonclaim, .moonhud { color: rgba(240,244,242,.6); font-size: 12px; }
+    #|.moonstage-head strong { border: 1px solid rgba(240,246,242,.16); border-radius: 999px; padding: 6px 10px; text-transform: uppercase; font-size: 11px; }
+    #|.moonviewport { min-height: 280px; border: 1px solid rgba(240,246,242,.09); background: radial-gradient(circle at 50% 45%, #141b1e, #030506 70%); border-radius: 12px; position: relative; overflow: hidden; touch-action: none; }
     #|#moon-globe-canvas { width: 100%; height: 100%; min-height: 280px; display: block; cursor: grab; }
     #|#moon-globe-canvas:active { cursor: grabbing; }
     #|.moonhud { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; justify-content: space-between; gap: 10px; pointer-events: none; flex-wrap: wrap; }
     #|.mooncontrols { display: flex; gap: 8px; flex-wrap: wrap; }
-    #|.mooncontrols button { border: 1px solid rgba(255,255,255,.22); color: #f4f1e8; background: rgba(255,255,255,.08); border-radius: 5px; padding: 7px 10px; }
-    #|.mooncontrols button:hover { background: rgba(255,255,255,.16); }
+    #|.mooncontrols button { border: 1px solid rgba(240,246,242,.12); color: #f0f4f2; background: rgba(18,24,23,.66); border-radius: 18px; padding: 8px 13px; cursor: pointer; }
+    #|.mooncontrols button:hover { border-color: rgba(240,246,242,.24); background: rgba(28,36,36,.78); }
     #|.moonclaim { line-height: 1.35; }
     #|.metrics { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; padding: 14px; }
-    #|.metric { border: 1px solid #e2e2dc; padding: 12px; border-radius: 5px; background: #fdfdfb; }
-    #|.metric b { display: block; font-size: 20px; margin-top: 4px; }
-    #|.metric span { color: #5b625c; font-size: 12px; }
+    #|.metric { border: 1px solid rgba(240,246,242,.09); padding: 12px; border-radius: 12px; background: rgba(26,34,36,.5); }
+    #|.metric b { display: block; font-size: 20px; margin-top: 4px; font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; }
+    #|.metric span { color: #98a49f; font-size: 12px; }
     #|.toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
-    #|.seg { border: 1px solid #c9c9bf; background: #fff; border-radius: 5px; padding: 8px 10px; }
-    #|.seg.active { background: #1f6f5b; color: #fff; border-color: #1f6f5b; }
+    #|.seg { border: 1px solid rgba(240,246,242,.09); background: rgba(230,238,233,.1); border-radius: 999px; padding: 8px 13px; color: #98a49f; }
+    #|.seg.active { border-color: rgba(142,201,127,.45); color: #a5d997; }
     #|.grid { display: grid; grid-template-columns: repeat(4, minmax(80px, 1fr)); gap: 8px; }
-    #|.tile { min-height: 78px; border: 1px solid #d2d2ca; background: #f9faf6; border-radius: 5px; padding: 10px; text-align: left; display: grid; align-content: space-between; }
-    #|.tile b { font-size: 18px; }
-    #|.tile span { color: #59615a; font-size: 12px; }
-    #|.tile.selected { outline: 3px solid #1f6f5b; }
-    #|.is-blocked { border-color: #c45f4c; background: #fff4ef; }
-    #|.is-review { border-color: #bd9c30; background: #fff9e7; }
-    #|.is-ready { border-color: #6ca38f; }
-    #|.row { border: 1px solid #dfdfd8; border-radius: 5px; padding: 10px; display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 8px; }
-    #|.row span { display: block; color: #626a64; font-size: 12px; margin-top: 3px; }
-    #|.row strong { font-size: 12px; text-transform: uppercase; }
+    #|.tile { min-height: 78px; border: 1px solid rgba(240,246,242,.09); background: rgba(26,34,36,.5); border-radius: 12px; padding: 10px; text-align: left; display: grid; align-content: space-between; color: #f0f4f2; }
+    #|.tile b { font-size: 16px; font-family: "IBM Plex Mono", Consolas, monospace; font-weight: 500; }
+    #|.tile span { color: #98a49f; font-size: 12px; }
+    #|.tile.selected { border-color: rgba(142,201,127,.55); box-shadow: inset 0 0 0 1px rgba(142,201,127,.35); }
+    #|.is-blocked { border-left: 3px solid #ff5b61; }
+    #|.is-review { border-left: 3px solid #d8b56a; }
+    #|.is-ready { border-left: 3px solid rgba(142,201,127,.6); }
+    #|.row { border-top: 1px solid rgba(240,246,242,.09); padding: 10px 2px; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    #|.row span { display: block; color: #98a49f; font-size: 12px; margin-top: 3px; }
+    #|.row strong { font-size: 11px; font-family: "IBM Plex Mono", Consolas, monospace; text-align: right; }
+    #|.row.is-blocked strong { color: #ff8a8f; }
+    #|.row.is-review strong { color: #e3c383; }
+    #|.row.is-ready strong { color: #a5d997; }
     #|.card { padding: 14px; }
-    #|ul { margin: 0; padding-left: 18px; color: #4e5750; line-height: 1.45; }
-    #|@media (max-width: 920px) { .shell { grid-template-columns: 1fr; } .inspector { border-left: 0; border-top: 1px solid #d8d8d0; } .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); } }
+    #|ul { margin: 0; padding-left: 18px; color: #98a49f; line-height: 1.45; }
+    #|@media (max-width: 920px) { .shell { grid-template-columns: 1fr; } .inspector { border-left: 0; border-top: 1px solid rgba(240,246,242,.09); } .hero { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, minmax(120px, 1fr)); } }
     #|</style>
   css
 }
