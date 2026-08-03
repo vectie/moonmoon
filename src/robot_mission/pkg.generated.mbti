@@ -1,0 +1,248 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/robot_mission"
+
+import {
+  "moonbitlang/core/debug",
+  "moonbitlang/core/json",
+}
+
+// Values
+pub fn simulate(RobotMissionDesign, String) -> RobotMissionResult
+
+pub fn simulate_files(String, String, String) -> Result[RobotMissionResult, String]
+
+// Errors
+
+// Types and methods
+pub(all) struct DeliveryCriteria {
+  expected_payload_mass_kg : Double
+  expected_delivery_count : Int
+  final_state : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DigitalTwinCalibration {
+  contract_id : String
+  testbed_reference : String
+  authoritative_source : String
+  qualified : Bool
+  fault_models : Array[FaultCalibration]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct DustAndThermal {
+  thermal_survival_power_w : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct EnergyCriteria {
+  drive_energy_wh : Double
+  comms_energy_wh : Double
+  thermal_survival_energy_wh : Double
+  reserve_wh : Double
+  bounded_required_energy_wh : Double
+  verified_available_energy_wh : Double
+  expected_margin_wh : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct EnergyResult {
+  drive_wh : Double
+  comms_wh : Double
+  thermal_survival_wh : Double
+  reserve_wh : Double
+  required_wh : Double
+  available_wh : Double
+  margin_wh : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct FaultCalibration {
+  fault_id : String
+  severity : Int
+  observable : Bool
+  recoverable : Bool
+  retained_performance : Double
+  energy_multiplier : Double
+  recovery_action : String
+  calibration_reference : String
+  uncertainty_fraction : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct FaultResponseEvidence {
+  fault_id : String
+  severity : Int
+  states : Array[String]
+  outcome : String
+  retained_performance : Double
+  energy_multiplier : Double
+  recovery_action : String
+  calibration_reference : String
+  uncertainty_fraction : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct IlluminationEvidence {
+  terrain_available_energy_wh : Double
+  longest_dark_hours : Double
+  decision : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionConstraints {
+  payload_mass_kg : NumericBound
+  route_length_m : NumericBound
+  max_path_slope_deg : NumericBound
+  waypoint_spacing_m : NumericBound
+  commanded_speed_mps : NumericBound
+  replay_count : NumericBound
+  delivery_count : NumericBound
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionEnvironment {
+  terrain_source_path : String
+  cell_size_m : Double
+  path_cells : Array[Array[Int]]
+  whole_grid_max_neighbor_grade_deg : Double
+  whole_grid_status : String
+  illumination : IlluminationEvidence
+  dust_and_thermal : DustAndThermal
+  calibration : DigitalTwinCalibration
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionIdentity {
+  authority : String
+  payload : MissionPayload
+  route_id : String
+  source_route_id : String
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionPayload {
+  mass_kg : Double
+  delivery_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct MissionScenario {
+  scenario_id : String
+  seed : Int
+  scenario_kind : String
+  injected_faults : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct NumericBound {
+  min : Double
+  max : Double
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct PathCriteria {
+  distance_m : Double
+  waypoint_spacing_m : Double
+  waypoint_count : Int
+  commanded_speed_mps : Double
+  drive_duration_s : Double
+  maximum_measured_segment_slope_deg : Double
+  blocked_cell_count : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct ReplayCriteria {
+  required_runs : Int
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotArtifactBinding {
+  robot_id : String
+  robot_revision : String
+  artifact_root : String
+  robot_json_path : String
+  robot_urdf_path : String
+  validation_receipt_path : String
+  bridge_config_path : String
+  robot_json_sha256 : String
+  robot_urdf_sha256 : String
+  validation_receipt_sha256 : String
+  validation_status : String
+  physical_transport_enabled : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotMissionDesign {
+  contract_id : String
+  design_id : String
+  revision : String
+  robot_artifact : RobotArtifactBinding
+  scenario : MissionScenario
+  mission : MissionIdentity
+  environment : MissionEnvironment
+  subsystems : Array[Subsystem]
+  constraints : MissionConstraints
+  verification_criteria : VerificationCriteria
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct RobotMissionResult {
+  contract_id : String
+  design_id : String
+  revision : String
+  robot_id : String
+  robot_revision : String
+  artifact_binding_verified : Bool
+  scenario_id : String
+  seed : Int
+  scenario_kind : String
+  injected_faults : Array[String]
+  fault_responses : Array[FaultResponseEvidence]
+  scenario_outcome : String
+  evidence_claim : String
+  physical_readiness : Bool
+  route_id : String
+  authority : String
+  result : String
+  terrain_source_path : String
+  terrain_source_verified : Bool
+  whole_grid_status : String
+  whole_grid_max_neighbor_grade_deg : Double
+  whole_grid_blocker_preserved : Bool
+  segment_evidence : Array[SegmentEvidence]
+  maximum_measured_segment_slope_deg : Double
+  distance_m : Double
+  waypoint_spacing_m : Double
+  waypoint_count : Int
+  duration_s : Double
+  energy : EnergyResult
+  delivery_count : Int
+  final_state : String
+  replay_count : Int
+  deterministic_replay_required : Bool
+  blockers : Array[String]
+  limitations : Array[String]
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SafetyCriteria {
+  fail_closed : Bool
+  unverified_route_bypass_allowed : Bool
+  physical_deployment_claim_allowed : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct SegmentEvidence {
+  from_row : Int
+  from_col : Int
+  to_row : Int
+  to_col : Int
+  elevation_delta_m : Double
+  distance_m : Double
+  slope_deg : Double
+  accepted : Bool
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct Subsystem {
+  id : String
+  kind : String
+  battery_capacity_wh : Double?
+  reserve_wh : Double?
+  drive_power_w : Double?
+  comms_power_w : Double?
+  minimum_energy_margin_wh : Double?
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+pub(all) struct VerificationCriteria {
+  path : PathCriteria
+  energy : EnergyCriteria
+  delivery : DeliveryCriteria
+  safety : SafetyCriteria
+  replay : ReplayCriteria
+} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
+
+// Type aliases
+
+// Traits
+

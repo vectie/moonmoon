@@ -20,3 +20,4 @@ pub fn first_trusted_square_dossier_from_catalog_root(String) -> Result[@site.Si
 // Type aliases
 
 // Traits
+

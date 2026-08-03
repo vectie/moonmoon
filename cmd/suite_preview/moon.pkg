@@ -4,6 +4,4 @@ import {
   "vectie/moonmoon/src/suite_adapter_preview",
 }
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")
