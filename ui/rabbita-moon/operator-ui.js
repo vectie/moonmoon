@@ -1,9 +1,15 @@
 import {
   createIcons,
   Crosshair,
+  Database,
+  MapPinned,
   Pause,
   Play,
   RotateCcw,
+  Route,
+  SearchCheck,
+  ShieldCheck,
+  Undo2,
 } from 'lucide'
 
 function setText(id, value) {
@@ -281,7 +287,18 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
   root.dataset.operatorBound = 'true'
 
   createIcons({
-    icons: { Crosshair, Pause, Play, RotateCcw },
+    icons: {
+      Crosshair,
+      Database,
+      MapPinned,
+      Pause,
+      Play,
+      RotateCcw,
+      Route,
+      SearchCheck,
+      ShieldCheck,
+      Undo2,
+    },
     attrs: { 'aria-hidden': 'true', 'stroke-width': 1.5 },
   })
 
@@ -436,6 +453,10 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
     evidenceHandoff.open = true
     evidenceHandoff.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
     evidenceHandoff.querySelector('summary')?.focus()
+  })
+  document.getElementById('return-mission-route')?.addEventListener('click', () => {
+    selectRoute(state.missionSelectedRouteId)
+    document.getElementById('operator-route-label')?.focus?.()
   })
 
   selectRoute(state.inspectedRouteId, false)

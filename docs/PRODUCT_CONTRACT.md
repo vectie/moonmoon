@@ -1,6 +1,7 @@
 # MoonMoon product contract
 
-Class: domain product
+Class: domain pack
+Visible surface: simulation cockpit
 Maturity: digital simulation alpha
 Last reviewed: 2026-07-30
 

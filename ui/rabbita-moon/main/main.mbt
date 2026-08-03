@@ -516,13 +516,18 @@ fn operator_scene(model : Model) -> Html {
               view.scorecard.decision,
             ),
           ]),
+          mission_path(model),
           decision_overview(view),
           section(
             class="route-gate",
             attrs=@html.Attrs::build().aria_live("polite"),
             [
               span(id="operator-route-context", "Mission selected route"),
-              h2(id="operator-route-label", selected_route.label),
+              h2(
+                id="operator-route-label",
+                attrs=@html.Attrs::build().tabindex(-1),
+                selected_route.label,
+              ),
               span(id="operator-route-id", selected_route.route_id),
               strong(
                 id="operator-route-decision",
@@ -547,6 +552,14 @@ fn operator_scene(model : Model) -> Html {
                 ]),
               ]),
               p(id="operator-route-action", selected_route.next_action),
+              button(
+                id="return-mission-route",
+                class="route-recovery-action",
+                type_="button",
+                title="Return to the mission-selected route",
+                attrs=@html.Attrs::build().aria_label("Return to mission route"),
+                [icon("undo-2"), span("Return to mission route")],
+              ),
             ],
           ),
           illumination_gate(selected_route),

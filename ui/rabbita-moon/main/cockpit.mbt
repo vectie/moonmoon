@@ -76,12 +76,6 @@ fn decision_overview(view : @ui.TrustedSquareViewModel) -> Html {
     div(class="decision-action", [
       span(class="eyebrow", "Next required action"),
       p(view.scorecard.next_action),
-      button(
-        id="review-blocking-evidence",
-        class="decision-primary-action",
-        type_="button",
-        "Review blocking evidence",
-      ),
     ]),
     div(class="decision-facts", [
       span([b("\{view.scorecard.score}"), span("Site score")]),
