@@ -28,3 +28,19 @@ import {
   "vectie/moonlib@0.1.19",
   "vectie/lepusa@0.1.4",
 }
+
+// Large SPICE kernels, UI media, and rendered review evidence ship with the
+// application/data distribution. The reusable MoonBit source package keeps
+// their licensed source URLs and typed provenance records, but does not embed
+// those runtime artifacts in the Mooncakes archive.
+options(
+  exclude: [
+    "assets",
+    "data/sources/lunar_ephemeris/kernels",
+    "docs/ui-evidence",
+    "ui/rabbita-moon/_build",
+    "ui/rabbita-moon/assets",
+    "ui/rabbita-moon/dist",
+    "ui/rabbita-moon/node_modules",
+  ],
+)
