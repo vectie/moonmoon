@@ -1,0 +1,10 @@
+import {
+  "vectie/moonmoon/src/mission_adapter",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x/fs" @fsx,
+}
+
+supported_targets = "native"
+
+pkgtype(kind: "executable")

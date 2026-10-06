@@ -517,6 +517,7 @@ fn operator_scene(model : Model) -> Html {
             ),
           ]),
           mission_path(model),
+          mission_study_panel(),
           decision_overview(view),
           section(
             class="route-gate",

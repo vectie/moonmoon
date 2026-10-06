@@ -1,4 +1,5 @@
 import { startCanvasRenderLoop } from './render-lifecycle.js'
+import { readSessionState, writeSessionState } from './session-state.js'
 
 const DEG = Math.PI / 180
 const LUNAR_TEXTURE_URL = new URL('./assets/lunar_global_texture.jpg', import.meta.url).href
@@ -220,13 +221,13 @@ export function initMoonGlobe(canvas, view) {
   const lightingModeButton = document.getElementById('moon-lighting-mode')
   const lighting = view.lighting || {}
   const lightingSamples = lighting.samples || []
-  const storedLightingIndex = sessionStorage.getItem('moonmoon.lightingSampleIndex')
+  const storedLightingIndex = readSessionState('moonmoon.lightingSampleIndex')
   let lightingSampleIndex = clamp(
     Number(storedLightingIndex ?? lighting.default_sample_index ?? 0),
     0,
     Math.max(0, lightingSamples.length - 1),
   )
-  let readableLighting = sessionStorage.getItem('moonmoon.lightingMode') === 'readable'
+  let readableLighting = readSessionState('moonmoon.lightingMode') === 'readable'
   let sunDirection = [1, 0, 0]
   const defaultView = { yaw: 0.35, pitch: -0.92, distance: 4.05 }
   let { yaw, pitch, distance } = defaultView
@@ -245,13 +246,13 @@ export function initMoonGlobe(canvas, view) {
   const focusSite = () => {
     if (terrainSwitch) {
       terrainSwitch.checked = true
-      sessionStorage.setItem('moonmoon.terrainView', 'terrain')
+      writeSessionState('moonmoon.terrainView', 'terrain')
     }
   }
   const resetView = () => {
     if (terrainSwitch) {
       terrainSwitch.checked = false
-      sessionStorage.setItem('moonmoon.terrainView', 'moon')
+      writeSessionState('moonmoon.terrainView', 'moon')
     }
     ;({ yaw, pitch, distance } = defaultView)
   }
@@ -273,7 +274,7 @@ export function initMoonGlobe(canvas, view) {
     setText('moon-earth-phase', `${Math.round(Number(sample.earth_illuminated_fraction) * 100)}%`)
     lightingInput?.setAttribute('aria-valuetext', sample.timestamp_utc)
     if (lightingInput) lightingInput.value = String(lightingSampleIndex)
-    sessionStorage.setItem('moonmoon.lightingSampleIndex', String(lightingSampleIndex))
+    writeSessionState('moonmoon.lightingSampleIndex', String(lightingSampleIndex))
     canvas.dataset.lightingTimestamp = sample.timestamp_utc
     canvas.dataset.sunBodyFixed = JSON.stringify([sample.sun_body_x, sample.sun_body_y, sample.sun_body_z])
     canvas.dataset.earthBodyFixed = JSON.stringify([sample.earth_body_x, sample.earth_body_y, sample.earth_body_z])
@@ -320,14 +321,14 @@ export function initMoonGlobe(canvas, view) {
     lightingModeButton.textContent = readableLighting ? 'Readable' : 'Physical'
     lightingModeButton.setAttribute('aria-pressed', String(readableLighting))
     canvas.dataset.lightingMode = readableLighting ? 'readable' : 'physical'
-    sessionStorage.setItem('moonmoon.lightingMode', canvas.dataset.lightingMode)
+    writeSessionState('moonmoon.lightingMode', canvas.dataset.lightingMode)
     window.dispatchEvent(new CustomEvent('moonmoon:lighting-mode-change', {
       detail: { mode: canvas.dataset.lightingMode },
     }))
   }
   const changeTerrainView = () => {
     if (!terrainSwitch) return
-    sessionStorage.setItem('moonmoon.terrainView', terrainSwitch.checked ? 'terrain' : 'moon')
+    writeSessionState('moonmoon.terrainView', terrainSwitch.checked ? 'terrain' : 'moon')
   }
   focusButton?.addEventListener('click', focusSite)
   resetButton?.addEventListener('click', resetView)
@@ -337,7 +338,7 @@ export function initMoonGlobe(canvas, view) {
   lightingInput?.addEventListener('keydown', stepLightingFromKeyboard)
   lightingModeButton?.addEventListener('click', toggleLightingMode)
   if (terrainSwitch) {
-    terrainSwitch.checked = sessionStorage.getItem('moonmoon.terrainView') === 'terrain'
+    terrainSwitch.checked = readSessionState('moonmoon.terrainView') === 'terrain'
     terrainSwitch.addEventListener('change', changeTerrainView)
   }
   if (lightingModeButton && readableLighting) {

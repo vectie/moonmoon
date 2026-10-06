@@ -24,7 +24,7 @@ keywords = [ "moonbit", "lunar", "terrain", "mission-planning", "robotics" ]
 description = "MoonBit-native lunar world model for measured terrain evidence, mission constraints, and robot-facing MoonSuite boundaries."
 
 import {
-  "moonbitlang/x@0.4.46",
+  "moonbitlang/x@0.4.50",
   "vectie/moonlib@0.1.19",
   "vectie/lepusa@0.1.4",
 }

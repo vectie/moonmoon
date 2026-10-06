@@ -13,6 +13,307 @@ fn test_workspace() -> String {
 }
 
 ///|
+fn study_hash(text : String) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(@utf8.encode(text)))
+}
+
+///|
+test "mission dossier freezes two adapter sessions and reopens without live sources" {
+  let root = "/tmp/moonmoon-q11-study-20261004-v3"
+  for
+    path in [
+      root,
+      root + "/books",
+      root + "/books/test-rover",
+      root + "/books/test-rover/model",
+      root + "/books/test-rover/design",
+      root + "/books/test-rover/bridge",
+      root + "/terrain",
+      root + "/inputs",
+      root + "/evidence",
+    ] {
+    test_ensure_dir(path)
+  }
+  let profile = "{ \"id\": \"test-rover\" }"
+  let urdf = "<robot name=\"test-rover\"></robot>"
+  let validation = "{ \"status\": \"accepted\", \"book_id\": \"test-rover\", \"physical_transport_enabled\": false }"
+  let bridge = "{ \"mode\": \"simulation-only\", \"physical_transport_enabled\": false, \"design_id\": \"test-rover\" }"
+  for
+    (path, text) in [
+      ("books/test-rover/robot.json", profile),
+      ("books/test-rover/model/robot.urdf", urdf),
+      ("books/test-rover/design/validation-receipt.json", validation),
+      ("books/test-rover/bridge/bridge.json", bridge),
+      ("terrain/route.csv", test_dem()),
+      (
+        "evidence/mission-approval.json", "{\"scope\":\"inert-local-regression-fixture\"}",
+      ),
+    ] {
+    @fsx.write_string_to_file(root + "/" + path, text)
+  }
+  let original = test_design()
+  let design = {
+    ..original,
+    robot_artifact: {
+      ..original.robot_artifact,
+      robot_json_sha256: study_hash(profile),
+      robot_urdf_sha256: study_hash(urdf),
+      validation_receipt_sha256: study_hash(validation),
+    },
+    environment: {
+      ..original.environment,
+      calibration: {
+        ..original.environment.calibration,
+        qualified: false,
+        testbed_reference: "fixture://local-digital-only",
+      },
+    },
+  }
+  let integration : @mission_adapter.MoonroboDigitalIntegrationReceipt = {
+    contract_id: "moonrobo.digital-model-integration-receipt.v1",
+    adapter_id: "moonrobo-local-v1",
+    operation_id: "robot.integrate-digital-model",
+    request_id: "q11-fixture",
+    attempt_id: "q11-fixture",
+    idempotency_key: "q11-fixture",
+    status: "succeeded",
+    physical_execution_performed: false,
+    evidence_refs: [
+      "books/test-rover/robot.json", "books/test-rover/design/validation-receipt.json",
+      "books/test-rover/model/robot.urdf",
+    ],
+    output: {
+      "accepted": true,
+      "robobook_ref": "books/test-rover",
+      "build_receipt_ref": "books/test-rover/robot.json",
+      "validation_receipt_ref": "books/test-rover/design/validation-receipt.json",
+      "model_ref": "books/test-rover/model/robot.urdf",
+      "physical_ready": false,
+    },
+  }
+  @fsx.write_string_to_file(
+    root + "/inputs/moonrobo-integration.json",
+    integration.to_json().stringify(indent=2),
+  )
+  let poor_energy = {
+    ..design,
+    mission: { ..design.mission, route_id: "negative-energy-alternative", },
+    environment: {
+      ..design.environment,
+      path_cells: [[0, 3], [1, 3], [2, 3], [3, 3], [4, 3]],
+      illumination: {
+        ..design.environment.illumination,
+        terrain_available_energy_wh: 1.0,
+      },
+    },
+  }
+  let revised_assumption = {
+    ..design,
+    mission: { ..design.mission, route_id: "revised-energy-assumption", },
+    environment: {
+      ..design.environment,
+      illumination: {
+        ..design.environment.illumination,
+        terrain_available_energy_wh: 2.0,
+      },
+    },
+  }
+  for
+    (session, proposal) in [
+      ("q11-a", design),
+      ("q11-b", poor_energy),
+      ("q11-c", revised_assumption),
+    ] {
+    let design_ref = "inputs/" + session + "-design.json"
+    let run_ref = "inputs/" + session + "-run.json"
+    @fsx.write_string_to_file(
+      root + "/" + design_ref,
+      proposal.to_json().stringify(indent=2),
+    )
+    let run : @mission_adapter.RobotMissionRunRequest = {
+      contract_id: "moonmoon.robot-mission-run-request.v1",
+      session_id: session,
+      moonrobo_integration_receipt_ref: "inputs/moonrobo-integration.json",
+      mission_design_ref: design_ref,
+      dataset_evidence: [],
+    }
+    @fsx.write_string_to_file(
+      root + "/" + run_ref,
+      run.to_json().stringify(indent=2),
+    )
+    let refs = [run_ref, "evidence/mission-approval.json"]
+    let request = {
+      ..simulation_request(
+        "robotics-simulation-v2",
+        test_artifact_set_digest(root, refs),
+      ),
+      request_id: session,
+      attempt_id: session,
+      idempotency_key: session,
+      input_artifacts: refs,
+    }
+    guard @mission_adapter.invoke(root, request) is Ok(result) else {
+      fail("local fixture simulation failed")
+    }
+    assert_eq(result.status, "succeeded")
+  }
+  let site : @mission_adapter.StudySite = {
+    site_id: "local-test-grid",
+    revision: "r1",
+    frame: "local-test-grid row/column",
+    distance_unit: "m",
+    elevation_unit: "m",
+    coverage: "Only enumerated 4x4 fixture cells; outside coverage unknown",
+    uncertainty: "Inert regression fixture, not external lunar truth or calibrated hardware",
+  }
+  let envelope = @mission_adapter.create_study(
+    root,
+    "local-study",
+    "r1",
+    "",
+    site,
+    ["q11-a", "q11-b"],
+  )
+  let reference = @mission_adapter.save_study(root, envelope)
+  assert_eq(@mission_adapter.save_study(root, envelope), reference)
+  let saved = @fsx.read_file_to_string(root + "/" + reference)
+  let revised = @mission_adapter.create_study(
+    root,
+    "local-study",
+    "r2",
+    envelope.dossier_digest,
+    site,
+    ["q11-a", "q11-c"],
+  )
+  ignore(@mission_adapter.save_study(root, revised))
+  assert_true(revised.dossier_digest != envelope.dossier_digest)
+  let revised_study = @mission_adapter.decode_study(
+    revised.to_json().stringify(),
+  )
+  assert_eq(revised_study.parent_digest, envelope.dossier_digest)
+  assert_true(revised_study.review_required)
+  assert_eq(revised_study.alternatives[1].session_id, "q11-c")
+  let reopened = @mission_adapter.decode_study(saved)
+  assert_eq(reopened.alternatives.length(), 2)
+  assert_eq(
+    reopened.alternatives[0].baseline_digest,
+    reopened.alternatives[1].baseline_digest,
+  )
+  assert_false(reopened.physical_readiness)
+  guard reopened.sources
+    .filter(source => source.artifact_ref == reopened.alternatives[1].result_ref)
+    .get(0)
+    is Some(result_source) else {
+    fail("missing exact result")
+  }
+  let result : @robot_mission.RobotMissionResult = @json.from_json(
+    @json.parse(result_source.text),
+  )
+  assert_true(result.energy.margin_wh < 0)
+  assert_eq(result.result, "rejected")
+  assert_true(
+    result.blockers.any(blocker => {
+      blocker.contains("absent from terrain source")
+    }),
+  )
+  @fsx.write_string_to_file(root + "/terrain/route.csv", "changed live source")
+  assert_eq(@mission_adapter.decode_study(saved), reopened)
+  assert_true(
+    (try? @mission_adapter.create_study(
+      root,
+      "local-study",
+      "r2",
+      envelope.dossier_digest,
+      site,
+      ["q11-a", "q11-b"],
+    ))
+    is Err(_),
+  )
+  @fsx.write_string_to_file(root + "/terrain/route.csv", test_dem())
+  let interrupted = @mission_adapter.create_study(
+    root,
+    "interrupted-study",
+    "r1",
+    "",
+    site,
+    ["q11-a", "q11-b"],
+  )
+  let interrupted_ref = @mission_adapter.save_study(root, interrupted)
+  @fsx.remove_file(root + "/" + interrupted_ref)
+  let replacement = @mission_adapter.create_study(
+    root,
+    "interrupted-study",
+    "r1",
+    envelope.dossier_digest,
+    site,
+    ["q11-a", "q11-b"],
+  )
+  assert_true((try? @mission_adapter.save_study(root, replacement)) is Err(_))
+  assert_eq(@mission_adapter.save_study(root, interrupted), interrupted_ref)
+  assert_eq(
+    @mission_adapter.decode_study(
+      @fsx.read_file_to_string(root + "/" + interrupted_ref),
+    ).study_id,
+    "interrupted-study",
+  )
+  let changed = { ..reopened, site: { ..site, frame: "changed-frame", }, }
+  assert_true((try? @mission_adapter.validate_study(changed)) is Err(_))
+  let physical = { ..reopened, physical_readiness: true, }
+  assert_true((try? @mission_adapter.validate_study(physical)) is Err(_))
+  let lowered_replays = reopened.sources.map(source => {
+    if source.artifact_ref == reopened.alternatives[0].replay_ref {
+      let receipt : @mission_adapter.MissionReplayReceipt = @json.from_json(
+        @json.parse(source.text),
+      ) catch {
+        _ => fail("invalid regression replay")
+      }
+      let text = { ..receipt, required_replays: 1, }
+        .to_json()
+        .stringify(indent=2)
+      { ..source, text, digest: "sha256:" + study_hash(text), }
+    } else {
+      source
+    }
+  })
+  assert_true(
+    (try? @mission_adapter.validate_study({
+      ..reopened,
+      sources: lowered_replays,
+    }))
+    is Err(_),
+  )
+  let misleading_bridge = "{\"mode\":\"physical\",\"physical_transport_enabled\":true,\"design_id\":\"test-rover\",\"old\":{\"mode\":\"simulation-only\",\"physical_transport_enabled\": false}}"
+  let misleading_sources = reopened.sources.map(source => {
+    if source.artifact_ref == "books/test-rover/bridge/bridge.json" {
+      {
+        ..source,
+        text: misleading_bridge,
+        digest: "sha256:" + study_hash(misleading_bridge),
+      }
+    } else {
+      source
+    }
+  })
+  assert_true(
+    (try? @mission_adapter.validate_study({
+      ..reopened,
+      sources: misleading_sources,
+    }))
+    is Err(_),
+  )
+  let corrupt = { ..envelope, dossier_json: envelope.dossier_json + " ", }
+  assert_true(
+    (try? @mission_adapter.decode_study(corrupt.to_json().stringify()))
+    is Err(_),
+  )
+  @fsx.write_string_to_file(
+    root + "/site.json",
+    site.to_json().stringify(indent=2),
+  )
+  @fsx.write_string_to_file(root + "/exact-export.json", result_source.text)
+}
+
+///|
 fn test_artifact_set_digest(
   workspace_root : String,
   artifact_refs : Array[String],
@@ -84,7 +385,7 @@ fn test_design() -> @robot_mission.RobotMissionDesign {
     },
     mission: {
       authority: "digital-only",
-      payload: { mass_kg: 5.0, delivery_count: 1 },
+      payload: { mass_kg: 5.0, delivery_count: 1, },
       route_id: "bounded-path",
       source_route_id: "blocked-grid",
     },
@@ -99,7 +400,7 @@ fn test_design() -> @robot_mission.RobotMissionDesign {
         longest_dark_hours: 0.0,
         decision: "Allow",
       },
-      dust_and_thermal: { thermal_survival_power_w: 35.0 },
+      dust_and_thermal: { thermal_survival_power_w: 35.0, },
       calibration: {
         contract_id: "moonmoon.digital-twin-calibration.v1",
         testbed_reference: "testbed://traction-rig/run-42",
@@ -120,13 +421,13 @@ fn test_design() -> @robot_mission.RobotMissionDesign {
       },
     ],
     constraints: {
-      payload_mass_kg: { min: 0.0, max: 5.0 },
-      route_length_m: { min: 60.0, max: 60.0 },
-      max_path_slope_deg: { min: 0.0, max: 15.0 },
-      waypoint_spacing_m: { min: 0.1, max: 4.5 },
-      commanded_speed_mps: { min: 0.01, max: 0.1 },
-      replay_count: { min: 2.0, max: 2.0 },
-      delivery_count: { min: 1.0, max: 1.0 },
+      payload_mass_kg: { min: 0.0, max: 5.0, },
+      route_length_m: { min: 60.0, max: 60.0, },
+      max_path_slope_deg: { min: 0.0, max: 15.0, },
+      waypoint_spacing_m: { min: 0.1, max: 4.5, },
+      commanded_speed_mps: { min: 0.01, max: 0.1, },
+      replay_count: { min: 2.0, max: 2.0, },
+      delivery_count: { min: 1.0, max: 1.0, },
     },
     verification_criteria: {
       path: {
@@ -157,7 +458,7 @@ fn test_design() -> @robot_mission.RobotMissionDesign {
         unverified_route_bypass_allowed: false,
         physical_deployment_claim_allowed: false,
       },
-      replay: { required_runs: 2 },
+      replay: { required_runs: 2, },
     },
   }
 }

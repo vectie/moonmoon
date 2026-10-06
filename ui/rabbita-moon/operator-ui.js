@@ -11,6 +11,8 @@ import {
   ShieldCheck,
   Undo2,
 } from 'lucide'
+import { readSessionState, writeSessionState } from './session-state.js'
+import { bindMissionStudy } from './mission-study.js'
 
 function setText(id, value) {
   const element = document.getElementById(id)
@@ -312,7 +314,8 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
   const evidenceHandoff = document.querySelector('.evidence-handoff')
   let storedState = {}
   try {
-    storedState = JSON.parse(sessionStorage.getItem('moonmoon.operatorState') || '{}')
+    const parsed = JSON.parse(readSessionState('moonmoon.operatorState') || '{}')
+    storedState = parsed && typeof parsed === 'object' ? parsed : {}
   } catch {
     storedState = {}
   }
@@ -325,7 +328,7 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
       ? storedState.selectedCellId
       : view.selected_cell_id,
   }
-  const persistState = () => sessionStorage.setItem(
+  const persistState = () => writeSessionState(
     'moonmoon.operatorState',
     JSON.stringify({
       inspectedRouteId: state.inspectedRouteId,
@@ -336,7 +339,7 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
   function showTerrain() {
     if (terrainSwitch) {
       terrainSwitch.checked = true
-      sessionStorage.setItem('moonmoon.terrainView', 'terrain')
+      writeSessionState('moonmoon.terrainView', 'terrain')
     }
   }
 
@@ -463,6 +466,7 @@ globalThis.__moonmoonBindOperatorUi = (modelJson, bookkeeperJson) => {
   selectCell(state.selectedCellId, false)
   bindPageNavigation()
   bindMoonbook(view, bookkeeperRegistry)
+  bindMissionStudy(document)
   globalThis.MoonSuiteI18n?.translate?.(document.body)
   globalThis.__moonmoonOperatorUi = { state, selectRoute, selectCell }
 }
