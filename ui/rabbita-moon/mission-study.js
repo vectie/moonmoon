@@ -1,5 +1,12 @@
-// Browser boundary for MoonBit-produced dossiers. No network, scientific
-// recalculation, device commands, or receiver acknowledgement is performed here.
+// Browser boundary for MoonBit-produced dossiers. Scientific calculation stays
+// in the native runner; the local host is the only execution transport.
+import { bindMissionAuthoring } from './mission-authoring.js'
+import { bindMissionOutcome } from './mission-outcome.js'
+import { bindStudyRouteMap } from './mission-study-map.js'
+import { bindStudyLibrary } from './mission-study-library.js'
+import { bindStudyScreen } from './mission-study-screen.js'
+import { bindStudyRevisionComparison } from './mission-study-revision.js'
+import { bindStudyArchive, createStudyArchive, readStudyArchive } from './mission-study-archive.js'
 const encoder = new TextEncoder()
 const need = (ok, message) => { if (!ok) throw new Error(message) }
 const localRef = value => typeof value === 'string' && value.length > 0 && !/[\\:]/.test(value) && !value.startsWith('/') && value.split('/').every(part => part && part !== '.' && part !== '..')
@@ -75,10 +82,53 @@ export async function readStudy(text) {
     need(stable(JSON.parse(item.baseline_json)) === current, 'Common baseline does not match the frozen site, terrain and robot')
     if (baseline === undefined) baseline = current
     need(current === baseline && digest(item.baseline_digest) && item.baseline_digest === dossier.alternatives[0].baseline_digest, 'Different source/robot baselines: alternatives are incomparable')
-    need(Number.isFinite(result.energy?.margin_wh) && Number.isFinite(result.distance_m) && Number.isFinite(result.maximum_measured_segment_slope_deg) && Array.isArray(result.blockers), 'Invalid numeric simulation evidence')
+    need(Number.isFinite(result.energy?.margin_wh) && Number.isFinite(result.distance_m) && Number.isFinite(result.duration_s) && Number.isFinite(result.maximum_measured_segment_slope_deg) && Array.isArray(result.blockers), 'Invalid numeric simulation evidence')
     return { ...item, design, result, evaluation, resultText: source(item.result_ref).text }
   })
   return { text, envelope, dossier, alternatives }
+}
+
+export function sensitivityRows(study) {
+  const metadata = new Map()
+  for (const line of study.dossier.limitations) if (line.startsWith('Authored variant: ')) {
+    try {
+      const item = JSON.parse(line.slice('Authored variant: '.length))
+      if (typeof item.variant_id === 'string' && typeof item.name === 'string' && typeof item.assumption_note === 'string') metadata.set(item.variant_id, item)
+    } catch { /* Non-structured legacy limitations remain visible below. */ }
+  }
+  const reference = study.alternatives[0].result
+  return study.alternatives.map((item, index) => {
+    const authored = metadata.get(item.design.scenario.scenario_id.replace(/^authored-/, ''))
+    return { session: item.session_id, name: index === 0 ? 'Reference' : authored?.name || item.session_id,
+      assumption: index === 0 ? 'Frozen reference mission inputs' : authored?.assumption_note || 'See retained study limitations',
+      result: item.result, coverage: item.evaluation.uncertainty.route_coverage,
+      delta: { distance_m: item.result.distance_m - reference.distance_m, duration_s: item.result.duration_s - reference.duration_s, maximum_measured_segment_slope_deg: item.result.maximum_measured_segment_slope_deg - reference.maximum_measured_segment_slope_deg, energy_margin_wh: item.result.energy.margin_wh - reference.energy.margin_wh },
+    }
+  })
+}
+
+const measured = (value, delta, unit) => `${value} ${unit} (Δ ${delta > 0 ? '+' : ''}${Number(delta.toPrecision(12))} ${unit})`
+function renderSensitivityMatrix(document, study) {
+  const container = document.getElementById('study-sensitivity-matrix')
+  if (!container?.replaceChildren) return
+  if (!study) { container.replaceChildren(); return }
+  const element = (tag, text) => { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; return node }
+  const table = element('table'); table.className = 'study-sensitivity-matrix'
+  table.appendChild(element('caption', 'Native sensitivity results · deltas versus reference · digital review required'))
+  const head = element('thead'), headers = element('tr')
+  for (const title of ['Variant / session', 'Outcome', 'Distance', 'Duration', 'Maximum measured slope', 'Energy margin', 'Assumptions', 'Coverage / blockers']) { const cell = element('th', title); cell.scope = 'col'; headers.appendChild(cell) }
+  head.appendChild(headers); table.appendChild(head)
+  const body = element('tbody')
+  for (const row of sensitivityRows(study)) {
+    const tr = element('tr')
+    const values = [row.name + '\n' + row.session, row.result.result,
+      measured(row.result.distance_m, row.delta.distance_m, 'm'), measured(row.result.duration_s, row.delta.duration_s, 's'),
+      measured(row.result.maximum_measured_segment_slope_deg, row.delta.maximum_measured_segment_slope_deg, 'degrees'), measured(row.result.energy.margin_wh, row.delta.energy_margin_wh, 'Wh'),
+      row.assumption, row.coverage + '\n' + (row.result.blockers.join('; ') || 'none in this bounded simulation')]
+    values.forEach((value, index) => { const cell = element(index === 0 ? 'th' : 'td', value); if (index === 0) cell.scope = 'row'; tr.appendChild(cell) })
+    body.appendChild(tr)
+  }
+  table.appendChild(body); container.replaceChildren(table)
 }
 
 const keyFor = (id, revision) => {
@@ -96,20 +146,86 @@ function validateReviewRecord(record, study) {
   for (const review of record.reviewHistory) { need(review !== null, 'Invalid saved review history'); validateReview(review, study) }
 }
 
+// Validate exactly the captured bytes. Discovery budgets this snapshot before
+// parsing; never reread storage between the size check and JSON decoding.
+export async function readStudyRecord(raw) {
+  need(typeof raw === 'string', 'Saved study record must contain exact JSON text')
+  const record = JSON.parse(raw)
+  const study = await readStudy(record.envelopeText)
+  validateReviewRecord(record, study)
+  return { study, review: record.review, reviewHistory: record.reviewHistory, observed: raw }
+}
+async function readSavedRecord(raw, id, revision) {
+  const loaded = await readStudyRecord(raw)
+  need(loaded.study.dossier.study_id === id && loaded.study.dossier.revision === revision, 'Saved study identity mismatch')
+  return loaded
+}
+
 // Readback-confirmed revision storage with an explicit interrupted-write journal.
 // One record per study/revision avoids replacing another study or earlier revision.
+export const STUDY_LIBRARY_LIMITS = Object.freeze({ keys: 512, records: 32, recordBytes: 24 * 1024 * 1024, totalBytes: 32 * 1024 * 1024 })
 export class StudyStore {
   constructor(storage) { this.storage = storage }
-  async open(id, revision) {
+  async catalogue() {
+    const length = this.storage.length
+    need(Number.isSafeInteger(length) && length >= 0 && typeof this.storage.key === 'function', 'Browser storage cannot enumerate saved studies')
+    need(length <= STUDY_LIBRARY_LIMITS.keys, `Browser storage exceeds the ${STUDY_LIBRARY_LIMITS.keys}-key inspection limit; use exact study IDs`)
+    const identities = new Map(), inventory = []
+    let invalidKeys = 0
+    for (let index = 0; index < length; index++) {
+      const key = this.storage.key(index)
+      need(typeof key === 'string', 'Browser storage changed during discovery; refresh the library')
+      inventory.push(key)
+      if (!key.startsWith('moonmoon.study.v1/')) continue
+      const match = /^moonmoon\.study\.v1\/([A-Za-z0-9_-]{1,100})\/([A-Za-z0-9_-]{1,100})(?:\/pending)?$/.exec(key)
+      if (!match) { invalidKeys++; continue }
+      identities.set(keyFor(match[1], match[2]), { id: match[1], revision: match[2] })
+    }
+    const entries = []
+    const keys = [...identities.keys()].sort()
+    let bytes = 0, truncated = keys.length > STUDY_LIBRARY_LIMITS.records
+    for (const key of keys.slice(0, STUDY_LIBRARY_LIMITS.records)) {
+      const identity = identities.get(key)
+      let entry = { ...identity, state: 'unavailable', message: 'Saved revision could not be inspected' }
+      let validating = false
+      try {
+        const pending = this.storage.getItem(key + '/pending'), raw = this.storage.getItem(key)
+        if (pending !== null) entry = { ...identity, state: 'interrupted', message: 'An unresolved save journal is present. Reconcile this exact identity explicitly before reopening; all bytes were retained.' }
+        else if (raw === null) entry = { ...identity, state: 'missing', message: 'This revision disappeared during discovery. Refresh before continuing.' }
+        else {
+          const size = raw.length > STUDY_LIBRARY_LIMITS.recordBytes ? raw.length : encoder.encode(raw).length
+          if (size > STUDY_LIBRARY_LIMITS.recordBytes || bytes + size > STUDY_LIBRARY_LIMITS.totalBytes) {
+            truncated = true
+            entry = { ...identity, state: 'limited', message: 'Saved record exceeds the bounded library inspection budget. Use the exact-ID controls; bytes were not changed.' }
+          } else {
+            bytes += size
+            validating = true
+            const loaded = await readSavedRecord(raw, identity.id, identity.revision)
+            if (loaded.observed !== raw || this.storage.getItem(key) !== raw || this.storage.getItem(key + '/pending') !== null) entry = { ...identity, state: 'changed', message: 'Saved revision changed during inspection. Refresh before opening; no stored data was changed.' }
+            else entry = { ...identity, state: 'verified', observed: raw,
+                message: `${loaded.study.envelope.dossier_digest}\n${loaded.review ? `Digital review by ${loaded.review.reviewer.slice(0, 160)}: ${loaded.review.choice}` : 'No named digital review saved'}. ${loaded.reviewHistory.length} prior review(s) retained. Digital-only; no new simulation or physical readiness.` }
+          }
+        }
+      } catch (error) { entry.state = validating ? 'invalid' : 'unavailable'; entry.message = `Cannot open this revision: ${String(error.message).slice(0, 500)}. Stored evidence was left untouched.` }
+      entries.push(entry)
+    }
+    // Validation awaits digests, so another tab can change the inventory. A
+    // second bounded key-only pass detects additions, removals and replacements.
+    let inventoryChanged = this.storage.length !== length || new Set(inventory).size !== length
+    if (!inventoryChanged) {
+      const current = []
+      for (let index = 0; index < length; index++) current.push(this.storage.key(index))
+      inventoryChanged = this.storage.length !== length || current.some(key => typeof key !== 'string') || JSON.stringify(current.sort()) !== JSON.stringify(inventory.sort())
+    }
+    return { entries, invalidKeys, truncated: truncated || inventoryChanged, inventoryChanged }
+  }
+  async open(id, revision, expectedObserved) {
     const key = keyFor(id, revision)
     need(!this.storage.getItem(key + '/pending'), 'Save outcome unknown. Reconcile this revision before reopening or replacing it')
     const raw = this.storage.getItem(key)
     need(raw, 'No confirmed saved revision with this identity')
-    const record = JSON.parse(raw)
-    const study = await readStudy(record.envelopeText)
-    need(study.dossier.study_id === id && study.dossier.revision === revision, 'Saved study identity mismatch')
-    validateReviewRecord(record, study)
-    return { study, review: record.review, reviewHistory: record.reviewHistory, observed: raw }
+    need(expectedObserved === undefined || raw === expectedObserved, 'Saved revision changed since discovery; refresh the library before opening it')
+    return readSavedRecord(raw, id, revision)
   }
   async save(study, review, observed) {
     const checked = await readStudy(study.text)
@@ -123,8 +239,18 @@ export class StudyStore {
     const reviewHistory = [...(previous?.reviewHistory || [])]
     if (previous?.review && stable(previous.review) !== stable(review)) reviewHistory.push(previous.review)
     const next = JSON.stringify({ envelopeText: checked.text, review, reviewHistory })
+    return this.commitRecord(key, current, next)
+  }
+  async restoreArchive(text) {
+    const loaded = await readStudyArchive(text, readStudyRecord, sha256)
+    const key = keyFor(loaded.study.dossier.study_id, loaded.study.dossier.revision)
+    need(this.storage.getItem(key) === null, 'This study/revision already exists; archives never replace or merge saved evidence')
+    need(this.storage.getItem(key + '/pending') === null, 'This study/revision has an unresolved save journal; reconcile it before restoring')
+    return this.commitRecord(key, null, loaded.observed)
+  }
+  async commitRecord(key, current, next) {
     const journal = JSON.stringify({ previous: current, next, digest: await sha256(next) })
-    need(!this.storage.getItem(key + '/pending') && this.storage.getItem(key) === current, 'This revision changed while preparing the save; keep this draft and reopen')
+    need(this.storage.getItem(key + '/pending') === null && this.storage.getItem(key) === current, 'This revision changed while preparing the save; keep this draft and reopen')
     this.storage.setItem(key + '/pending', journal)
     need(this.storage.getItem(key + '/pending') === journal, 'Save outcome unknown: journal readback failed')
     this.storage.setItem(key, next)
@@ -151,7 +277,7 @@ export class StudyStore {
   }
 }
 
-export function bindMissionStudy(document, storageFactory = () => globalThis.localStorage) {
+export function bindMissionStudy(document, storageFactory = () => globalThis.localStorage, runClient) {
   const panel = document.getElementById('mission-study-panel')
   if (!panel || panel.dataset.bound) return
   panel.dataset.bound = 'true'
@@ -159,15 +285,24 @@ export function bindMissionStudy(document, storageFactory = () => globalThis.loc
   let active = null, review = null, observed = null, dirty = false, busy = false, unknown = false, editVersion = 0
   const status = message => { byId('status').textContent = message }
   const store = () => new StudyStore(storageFactory())
+  const renderMap = bindStudyRouteMap(document)
+  const renderScreen = bindStudyScreen(document, panel, { getCurrent: () => active, readStudy, hash: sha256 })
+  const renderRevision = bindStudyRevisionComparison(document, panel, { getCurrent: () => active, readStudy })
   const render = () => {
     byId('comparison').textContent = active ? [
       `${active.dossier.study_id} / ${active.dossier.revision} · ${active.envelope.dossier_digest}`,
       `Site ${active.dossier.site.site_id} (${active.dossier.site.frame}); coverage: ${active.dossier.site.coverage}; uncertainty: ${active.dossier.site.uncertainty}`,
       `Common frozen baseline: ${active.alternatives[0].baseline_digest}`,
-      ...active.alternatives.map(item => `${item.session_id}: ${item.result.result}; route ${item.result.route_id}; ${item.result.distance_m} m; maximum slope ${item.result.maximum_measured_segment_slope_deg} degrees; energy margin ${item.result.energy.margin_wh} Wh. Coverage: ${item.evaluation.uncertainty.route_coverage}. Blockers: ${item.result.blockers.join('; ') || 'none in this bounded simulation'}`),
+      ...sensitivityRows(active).map(row => `${row.name} (${row.session}): ${row.result.result}; route ${row.result.route_id}; distance ${measured(row.result.distance_m, row.delta.distance_m, 'm')}; duration ${measured(row.result.duration_s, row.delta.duration_s, 's')}; maximum slope ${measured(row.result.maximum_measured_segment_slope_deg, row.delta.maximum_measured_segment_slope_deg, 'degrees')}; energy margin ${measured(row.result.energy.margin_wh, row.delta.energy_margin_wh, 'Wh')}. Assumptions: ${row.assumption}. Coverage: ${row.coverage}. Blockers: ${row.result.blockers.join('; ') || 'none in this bounded simulation'}`),
       `Review: ${review ? `${review.reviewer}: ${review.choice}. ${review.rationale}` : 'Required for this exact revision'}`,
+      'Reviewer names, including restored reviews, are unauthenticated digital claims. Integrity checks do not verify identity or grant authority.',
+      ...active.dossier.limitations,
       'Hazard comparison is limited to measured segment slope. Obstacle, slip, sinkage and other unmodeled hazards remain unknown. Integrity checked locally. Scientific replay is performed by the native mission_study inspect command. No physical authority. Optional E1 assembly is unavailable. Manual export has no receiver acknowledgement.',
     ].join('\n\n') : 'Import a dossier made by the native mission_study command, or reopen a saved study and revision'
+    renderSensitivityMatrix(document, active)
+    renderScreen(active)
+    renderMap(active)
+    renderRevision(active)
   }
   const run = action => async event => {
     event?.preventDefault?.()
@@ -187,18 +322,31 @@ export function bindMissionStudy(document, storageFactory = () => globalThis.loc
     byId('reviewer').value = ''; byId('choice').value = ''; byId('rationale').value = ''
     status('Imported frozen digital evidence. Review is reopened; save to keep this revision in this browser')
   }))
-  const open = async discard => {
+  const open = async (discard, selection = null) => {
     need(!dirty || discard, 'Save edits first, or use Discard edits and reopen')
     need(!unknown, 'Reconcile the unknown save first')
     const version = editVersion
-    const loaded = await store().open(byId('id').value, byId('revision').value)
+    const id = selection?.id || byId('id').value, revision = selection?.revision || byId('revision').value
+    const selectedStore = store()
+    const loaded = await selectedStore.open(id, revision, selection?.observed)
     need(editVersion === version, 'Edits changed during reopen; keep this draft')
+    if (selection) need(loaded.observed === selection.observed && selectedStore.storage.getItem(keyFor(id, revision)) === selection.observed && selectedStore.storage.getItem(keyFor(id, revision) + '/pending') === null, 'Saved revision changed since discovery; refresh the library before opening it')
     active = loaded.study; review = loaded.review; observed = loaded.observed; dirty = false
+    byId('id').value = id; byId('revision').value = revision
     byId('reviewer').value = review?.reviewer || ''; byId('choice').value = review?.choice || ''; byId('rationale').value = review?.rationale || ''
     status('Reopened the exact confirmed revision and its digital review')
   }
   byId('reopen').addEventListener('click', run(() => open(false)))
   byId('discard').addEventListener('click', run(() => open(true)))
+  for (const name of ['id', 'revision']) byId(name).addEventListener('input', () => { editVersion += 1 })
+  bindStudyLibrary(document, panel, {
+    catalogue: () => store().catalogue(),
+    open: async entry => {
+      need(!busy, 'Wait for the current study operation before opening another revision')
+      busy = true
+      try { await open(false, entry); render() } finally { busy = false }
+    },
+  })
   for (const name of ['reviewer', 'choice', 'rationale']) byId(name).addEventListener('input', () => { editVersion += 1; if (active) { dirty = true; review = null; status('Review edits are unsaved') } })
   byId('save').addEventListener('click', run(async () => {
     need(active, 'Import or reopen a dossier first')
@@ -227,5 +375,78 @@ export function bindMissionStudy(document, storageFactory = () => globalThis.loc
     link.click(); URL.revokeObjectURL(url)
     status(`Prepared exact digital result download ${item.result_digest}. MoonFlow delivery and MoonRobo acknowledgement remain pending; no physical authority`)
   }))
+  bindStudyArchive(document, panel, {
+    inspect: text => readStudyArchive(text, readStudyRecord, sha256),
+    export: async () => {
+      need(active && !dirty && !unknown && !busy, 'Save and confirm the open study before exporting its archive')
+      busy = true
+      try {
+        const selected = active, version = editVersion, selectedStore = store()
+        const id = selected.dossier.study_id, revision = selected.dossier.revision, key = keyFor(id, revision)
+        need(selectedStore.storage.getItem(key + '/pending') === null, 'Reconcile the unresolved save before exporting')
+        const loaded = await selectedStore.open(id, revision, observed)
+        const text = await createStudyArchive(loaded.observed, readStudyRecord, sha256)
+        need(selected === active && version === editVersion && !dirty && !unknown, 'Review edits changed during export; save them before trying again')
+        need(selectedStore.storage.getItem(key) === observed && selectedStore.storage.getItem(key + '/pending') === null, 'Saved review changed during export; reopen before trying again')
+        return { text, filename: `${id}-${revision}-reviewed-study.json` }
+      } finally { busy = false }
+    },
+    restore: async text => {
+      need(!dirty && !unknown && !busy, 'Save or explicitly discard current edits and reconcile unknown saves before restoring an archive')
+      busy = true
+      try {
+        const version = editVersion, selected = active, checked = await readStudyArchive(text, readStudyRecord, sha256)
+        need(version === editVersion && selected === active && !dirty && !unknown, 'Current edits changed during archive checking; keep this draft and retry')
+        // Restore writes a separate unused identity. It never replaces the open
+        // panel, even if the operator starts typing while persistence awaits.
+        await store().restoreArchive(text)
+        return `${checked.study.dossier.study_id} / ${checked.study.dossier.revision}`
+      } finally { busy = false }
+    },
+  })
+  bindMissionAuthoring(document, () => active, {
+    storageFactory, ...(runClient ? { client: runClient } : {}),
+    context: () => [editVersion, dirty, unknown, busy],
+    deliver: async checked => {
+      need(!dirty && !unknown && !busy, 'Save or explicitly discard current study edits before opening the retained run result')
+      busy = true
+      try {
+        const version = editVersion, selected = active, storage = storageFactory()
+        const key = keyFor(checked.dossier.study_id, checked.dossier.revision)
+        need(!storage.getItem(key + '/pending'), 'Target result has an interrupted save. Reconcile it before opening the retained result')
+        const saved = storage.getItem(key) ? await new StudyStore(storage).open(checked.dossier.study_id, checked.dossier.revision) : null
+        need(!saved || saved.study.text === checked.text, 'Different local evidence already uses this study/revision; preserve both and choose a new revision')
+        need(version === editVersion && selected === active && !dirty && !unknown, 'Current review changed while importing; retained result remains available')
+        active = checked; review = saved?.review || null; observed = saved?.observed || null; dirty = !saved
+        byId('id').value = checked.dossier.study_id; byId('revision').value = checked.dossier.revision
+        byId('reviewer').value = review?.reviewer || ''; byId('choice').value = review?.choice || ''; byId('rationale').value = review?.rationale || ''
+        status(saved ? 'Reopened actual native result and its own saved digital review' : 'Imported actual native result automatically. Inspect the comparison, then save a new digital review before authoring a Book outcome')
+      } finally { busy = false; render() }
+    },
+  })
+  bindMissionOutcome(document, async () => {
+    need(active && !dirty && !unknown && !busy, 'Save and confirm the study and named digital review first')
+    const selected = active, version = editVersion
+    const loaded = await store().open(active.dossier.study_id, active.dossier.revision)
+    need(selected === active && editVersion === version && !dirty && !unknown && loaded.observed === observed, 'Study changed during outcome export; reopen and save before retrying')
+    return loaded
+  }, async received => {
+    need(!dirty && !unknown && !busy, 'Save or explicitly discard current study edits before reopening a received outcome')
+    busy = true
+    try {
+      const version = editVersion, selected = active
+      const checked = await readStudy(received.text), storage = storageFactory()
+      const key = keyFor(checked.dossier.study_id, checked.dossier.revision)
+      need(!storage.getItem(key + '/pending'), 'Target study has an interrupted save. Reconcile it before reopening this received outcome')
+      const raw = storage.getItem(key)
+      const saved = raw ? await new StudyStore(storage).open(checked.dossier.study_id, checked.dossier.revision) : null
+      need(!saved || saved.study.text === checked.text, 'A different local study uses this identity; keep both files and resolve explicitly')
+      need(version === editVersion && selected === active && !dirty && !unknown, 'Current study changed during reopen; your edits were kept')
+      active = checked; review = saved?.review || null; observed = saved?.observed || null; dirty = !saved
+      byId('id').value = checked.dossier.study_id; byId('revision').value = checked.dossier.revision
+      byId('reviewer').value = review?.reviewer || ''; byId('choice').value = review?.choice || ''; byId('rationale').value = review?.rationale || ''
+      status(saved ? 'Reopened original source study and its independently saved digital review' : 'Reopened original source study from Book receipt. Save this local study when ready; Book review was not copied into digital reviewer controls')
+    } finally { busy = false; render() }
+  })
   render()
 }

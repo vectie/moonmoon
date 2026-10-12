@@ -1,0 +1,12 @@
+{
+  "contract_id": "moonmoon.xyz-grid.v1",
+  "tile_id": "synthetic-xyz",
+  "coordinate_frame": "Synthetic local Cartesian frame; not lunar coordinates",
+  "horizontal_unit": "m",
+  "source_note": "Synthetic Apache-2.0 plane z=(x-100)/10+2*(y-200)/10, with the upper-right cell absent. No observed terrain or physical readiness.",
+  "rows": 4,
+  "cols": 4,
+  "origin_x": 100,
+  "origin_y": 200,
+  "cell_size": 10
+}

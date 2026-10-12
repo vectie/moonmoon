@@ -3,8 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start:local": "node mission-run-host.js",
+    "test:run": "node --test mission-run.test.mjs",
     "test:storage": "node --experimental-vm-modules --test operator-storage.test.mjs",
-    "test:study": "node --test mission-study.test.mjs",
+    "test:study": "node --test mission-study.test.mjs mission-authoring.test.mjs mission-study-map.test.mjs mission-study-library.test.mjs mission-study-revision.test.mjs mission-study-archive.test.mjs mission-study-screen.test.mjs",
     "prepare:live-moonrobo": "node prepare-live-moonrobo-clip.mjs",
     "prepare:e1-asm": "node prepare-e1-asm-assets.mjs",
     "prepare:lola-terrain": "node prepare-lola-terrain-asset.mjs",

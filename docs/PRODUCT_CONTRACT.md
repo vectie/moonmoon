@@ -31,6 +31,7 @@ acceptance authority.
 | Terrain, slope, roughness and hazard models | available |
 | Route/corridor and energy assessment | available |
 | Deterministic robot-mission simulation | available |
+| Reviewer-defined alternative screening | local dossier UI; explicit criteria and portable report; no approval |
 | Rabbita 3D inspection | available locally |
 | External lunar datasets | conditional on source availability and license |
 | Physical-world validation | excluded from current claims |
@@ -67,3 +68,9 @@ described in `docs/README.md`.
 - Prove restart/replay of mission sessions.
 - Stabilize the MoonRobo simulation-result contract.
 - Package and sign the Rabbita/Lepusa operator application.
+
+The study panel supports [alternative review screening](ALTERNATIVE_REVIEW_SCREENING.md):
+compare retained observations against explicit numeric and coverage requirements,
+preserve every native blocker, and reopen a report only against its exact original
+dossier. Matching criteria does not select a mission, change its named review,
+verify source declarations, or confer physical authority.

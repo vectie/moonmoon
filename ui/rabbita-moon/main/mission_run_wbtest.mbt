@@ -1,0 +1,23 @@
+///|
+#warnings("-alert_unstable")
+test "mission run controls retain comparison Book and honest native progress" {
+  let page = @rabbita.static_cell(mission_study_panel())
+  let html = @rabbita.render_to_string(page)
+  assert_true(html.contains("Run digital mission"))
+  assert_true(html.contains("Cancel native run"))
+  assert_true(html.contains("Reconnect to retained run"))
+  assert_true(html.contains("Reconcile interrupted output"))
+  assert_true(html.contains("no percentage is estimated"))
+  assert_true(html.contains("Save study and digital review"))
+  assert_true(html.contains("study-sensitivity-matrix"))
+  assert_true(html.contains("study-route-map"))
+  assert_true(html.contains("study-draft-variant"))
+  assert_true(html.contains("study-draft-variant-id"))
+  assert_true(html.contains("study-draft-variant-name"))
+  assert_true(html.contains("study-draft-variant-add"))
+  assert_true(html.contains("study-draft-variant-duplicate"))
+  assert_true(html.contains("study-draft-variant-remove"))
+  assert_true(html.contains("Export one frozen batch"))
+  assert_true(html.contains("Export outcome and retained sources for Book"))
+  assert_false(html.contains("No direct Run-in-UI host endpoint"))
+}

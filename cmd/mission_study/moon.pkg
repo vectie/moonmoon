@@ -3,6 +3,7 @@ import {
   "moonbitlang/core/env",
   "moonbitlang/core/json",
   "moonbitlang/x/fs" @fsx,
+  "moonbitlang/x/sys",
 }
 
 supported_targets = "native"

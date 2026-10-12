@@ -7,7 +7,7 @@ const targetPath = fileURLToPath(new URL('./.generated/live-moonrobo-noetix-clip
 const moonBin = process.env.MOON_BIN ?? 'moon'
 
 function runMoonroboJson(command) {
-  const result = spawnSync(moonBin, ['run', command, '--target', 'native'], {
+  const result = spawnSync(moonBin, ['run', command, '--frozen', '--target', 'native', '--strip', '-j', '1'], {
     cwd: moonroboRoot,
     encoding: 'utf8',
   })

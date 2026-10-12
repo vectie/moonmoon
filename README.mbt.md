@@ -6,6 +6,25 @@
 
 MoonMoon is a MoonBit-native lunar terrain and mission model.
 
+The study UI supports [frozen mission authoring](docs/MISSION_AUTHORING.md):
+fork and edit inputs, run the exported proposal with the native simulator, and
+reimport compatible comparison results. The native command step is currently
+required; browser execution and physical authority are not provided.
+
+The cockpit also supports [local terrain raster exploration](docs/LOCAL_TERRAIN_IMPORT.md):
+import an Esri ASCII clip, inspect cell-center coordinates and NODATA coverage,
+then export sparse terrain CSV and a reopenable source bundle.
+The native [OBJ export workflow](docs/TERRAIN_OBJ_EXPORT.md) creates source-bound
+metre/Z-up reference meshes for 3D tools, retaining NODATA holes and vertex/face
+mappings with a replayable JSON sidecar. The same MoonBit
+parser is available through `cmd/terrain_import`; importing does not change a
+frozen mission study.
+
+The native [terrain revision workflow](docs/LOCAL_TERRAIN_REVISIONS.md) exports
+editable cell sheets and applies declared elevations or unknown masks as new
+reopenable sources. It preserves original inputs and edit reasons while existing
+analysis and routes use the revised coverage.
+
 The project is intentionally small: source data lives under `data/`, domain
 logic lives under `src/`, and the root package is only a facade. Generated
 Markdown, JSON, HTML, screenshots, and future build products should not be
@@ -172,3 +191,81 @@ suite products, but those adapters should be explicit boundary packages or
 separate tools. The core repository should stay MoonBit-first and should not
 grow around Python check scripts, committed `output/` trees, generated browser
 asset bundles, or compatibility launch paths.
+
+## Local metric terrain analysis
+
+[XYZ CSV terrain intake](docs/LOCAL_XYZ_TERRAIN_IMPORT.md) imports grid-aligned
+point observations with an explicit extent, original CSV/declaration digests,
+and unknown missing cells. Use the native `terrain_import xyz` command before
+the same metric analysis and routing commands; no manual ASCII conversion is needed.
+
+Imported metre grids support editable row/column transects, local 3×3
+least-squares slope and RMS roughness estimates, explicit missing coverage, and
+source-bound CSV/report exports. See [the workflow and scientific
+limits](docs/LOCAL_TERRAIN_ANALYSIS.md). No mission inputs or physical authority
+are changed.
+
+## Source-bound terrain study clips
+
+Use `terrain_import crop` to select an exact rectangular row/column window from
+an imported, revised or mosaic terrain source. Export reusable ASCII and a normal
+terrain import while retaining the parent, provenance and cell mapping in a
+replayable crop receipt. Existing analysis and routing use the new clip indices;
+new boundaries can lose neighborhood coverage. See [study clips](docs/TERRAIN_STUDY_CLIPS.md).
+
+## Candidate routes on imported terrain
+
+Find a least-cost path between two known metric DEM cells with an editable
+adjacent-grade cap and uphill preference. The native workflow produces a route
+map, ordered row/column cells, elevation/grade CSV, and a source-bound report.
+Try the [synthetic ridge routing example](docs/LOCAL_TERRAIN_ROUTING.md) to compare
+a short climb with a longer flat detour. This is exploratory grid routing;
+existing mission studies and energy semantics are unchanged.
+
+Supply a `row,col` CSV to [route through ordered terrain waypoints](docs/ORDERED_TERRAIN_WAYPOINTS.md),
+including repeated stops and return trips. Per-leg outcomes stay inspectable;
+an impossible middle leg leaves an explicitly incomplete connected prefix.
+
+## Coordinate terrain waypoints
+
+The native `terrain_import waypoints-xy` command connects ordered x/y cell
+centers in an imported source's declared metre frame, retains a coordinate
+mapping and exports reusable row/column stops. See
+[coordinate terrain waypoints](docs/COORDINATE_TERRAIN_WAYPOINTS.md).
+
+## Exact imported-terrain path assessment
+
+Assess an existing cell path, including exported `path-cells.txt`, without
+optimizing or filling gaps. The native `assess-path` command preserves submitted
+order, reports grade exceedances and unknown segments, and supports reassessment
+on a revised source. See [the practical guide](docs/EXACT_TERRAIN_PATH_ASSESSMENT.md).
+
+### Compare terrain revisions on an unchanged path
+
+The native `terrain_import compare-path` command aligns an exact submitted path
+across two compatible terrain sources and exports elevation changes, coverage
+gains/losses and incident grade-status transitions. See
+[terrain path comparison](docs/TERRAIN_PATH_COMPARISON.md) for the CLI and limits.
+
+### Screen terrain around an exact path
+
+Use `terrain_import assess-corridor` to inspect a configurable band of cells
+around a submitted route, with local slope/roughness thresholds, missing-coverage
+counts, per-stop summaries and a review map. See [imported terrain corridors](docs/IMPORTED_TERRAIN_CORRIDORS.md)
+for the synthetic off-path bump workflow and limits.
+
+### Explore imported-terrain visibility
+
+Use `terrain_import visibility` to assess an elevated straight line between two
+cell-center sites. Inspect exact cell clearances and an exported profile, then
+vary the observer/target heights without changing the source. Known obstruction,
+grazing and missing coverage remain distinct. See [terrain line-of-sight studies](docs/IMPORTED_TERRAIN_VISIBILITY.md)
+for the synthetic ridge example and the explicit local flat-cell assumptions.
+
+## Whole-area terrain revision inspection
+
+Compare two aligned imported terrain bundles with `terrain_import compare-area`
+to inspect all-cell elevation changes, gained/lost coverage, a standalone map
+and declared square-cell observed volume differences. See
+[the workflow guide](docs/WHOLE_AREA_TERRAIN_CHANGE.md). Unknown differences and
+whole-grid totals stay null when coverage is incomplete.

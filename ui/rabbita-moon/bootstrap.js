@@ -8,6 +8,7 @@ import '/styles.css'
 import '/terrain-canvas.js'
 import '/scene-shell.js'
 import '/operator-ui.js'
+import '/terrain-import.js'
 
 const app = document.getElementById('app')
 

@@ -517,6 +517,7 @@ fn operator_scene(model : Model) -> Html {
             ),
           ]),
           mission_path(model),
+          terrain_import_panel(),
           mission_study_panel(),
           decision_overview(view),
           section(
@@ -763,6 +764,9 @@ fn start_renderer(model : Model) -> @rabbita.Cmd {
       render_terrain_canvas(model.model_json)
       render_3d_scene(model.model_json)
       bind_operator_ui(model.model_json, model.bookkeeper_json)
+      bind_terrain_import(
+        @terrain_import.import_json, @terrain_import.reopen_json, @terrain_import.analysis_json,
+      )
     },
     kind=@cmd.after_render,
   )

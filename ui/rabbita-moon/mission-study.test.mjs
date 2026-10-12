@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 import { readFile } from 'node:fs/promises'
 import { webcrypto } from 'node:crypto'
-import { readStudy, sha256, StudyStore, bindMissionStudy } from './mission-study.js'
+import { readStudy, sha256, StudyStore, bindMissionStudy, sensitivityRows } from './mission-study.js'
 
 if (!globalThis.crypto) globalThis.crypto = webcrypto
 const fixtureText = await readFile(new URL('./fixtures/mission-study-local.json', import.meta.url), 'utf8')
@@ -153,14 +153,16 @@ test('rehashed refused or physical integration receipt and misleading bridge are
 })
 
 class Element {
-  constructor() { this.dataset = {}; this.value = ''; this.textContent = ''; this.events = new Map(); this.files = [] }
+  constructor() { this.dataset = {}; this.value = ''; this.textContent = ''; this.events = new Map(); this.files = []; this.children = [] }
+  replaceChildren(...children) { this.children = children }
+  appendChild(child) { this.children.push(child) }
   addEventListener(name, fn) { this.events.set(name, fn) }
   async fire(name) { return this.events.get(name)?.({ preventDefault() {} }) }
 }
 function ui(storage = new Storage()) {
-  const ids = new Map(['mission-study-panel', ...['file','status','comparison','id','revision','reviewer','choice','rationale','reopen','discard','save','reconcile','export','export-session'].map(id => 'study-' + id)].map(id => [id, new Element()]))
+  const ids = new Map(['mission-study-panel', ...['file','status','comparison','sensitivity-matrix','id','revision','reviewer','choice','rationale','reopen','discard','save','reconcile','export','export-session'].map(id => 'study-' + id)].map(id => [id, new Element()]))
   const downloads = []
-  const document = { getElementById: id => ids.get(id), createElement: () => ({ click() { downloads.push(this) } }) }
+  const document = { getElementById: id => ids.get(id), createElement: tag => Object.assign(new Element(), { tag, click() { downloads.push(this) } }) }
   bindMissionStudy(document, () => storage)
   const get = id => ids.get('study-' + id)
   const importText = async text => { get('file').files = [{ size: Buffer.byteLength(text), text: async () => text }]; await get('file').fire('change') }
@@ -184,6 +186,29 @@ test('actual control handlers import, save, reopen, review and export without ph
   await restarted.get('export').fire('click')
   assert.equal(restarted.downloads.length, 1)
   assert.match(restarted.get('status').textContent, /acknowledgement remain pending/)
+})
+
+test('sensitivity matrix renders actual native values deltas assumptions blockers and accessible headers', async () => {
+  const f = ui(); await f.importText(fixtureText)
+  const rows = sensitivityRows(fixture), reference = fixture.alternatives[0].result
+  assert.equal(rows[0].name, 'Reference')
+  assert.equal(rows[0].delta.energy_margin_wh, 0)
+  assert.equal(rows[1].delta.energy_margin_wh, fixture.alternatives[1].result.energy.margin_wh - reference.energy.margin_wh)
+  assert.equal(rows[1].delta.duration_s, fixture.alternatives[1].result.duration_s - reference.duration_s)
+  const table = f.get('sensitivity-matrix').children[0]
+  assert.equal(table.tag, 'table'); assert.match(table.children[0].textContent, /Native sensitivity results/)
+  assert.equal(table.children[1].children[0].children.length, 8)
+  assert.ok(table.children[1].children[0].children.every(cell => cell.scope === 'col'))
+  assert.equal(table.children[2].children.length, 2)
+  assert.equal(table.children[2].children[0].children[0].scope, 'row')
+  assert.match(table.children[2].children[1].children[5].textContent, /Δ/)
+  assert.match(table.children[2].children[1].children[7].textContent, /absent from terrain source/)
+  const authored = await readStudy(await readFile(new URL('./fixtures/mission-authored-local.json', import.meta.url), 'utf8'))
+  authored.dossier.limitations.push('Authored variant: ' + JSON.stringify({ variant_id: 'alternative', name: '<script>Low energy</script>', assumption_note: 'Bounded available energy assumption' }))
+  const named = sensitivityRows(authored)[1]
+  assert.equal(named.name, '<script>Low energy</script>')
+  assert.equal(named.assumption, 'Bounded available energy assumption')
+  assert.equal(named.result, authored.alternatives[1].result)
 })
 
 test('unsaved review survives failed import, reopen and storage denial', async () => {

@@ -3,10 +3,9 @@ import {
   "moonbit-community/rabbita/cmd",
   "moonbit-community/rabbita/html",
   "vectie/moonmoon/src/ui",
+  "vectie/moonmoon/src/terrain_import",
 }
 
 supported_targets = "js"
 
-options(
-  "is-main": true,
-)
+pkgtype(kind: "executable")

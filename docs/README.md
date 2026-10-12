@@ -46,6 +46,12 @@ be explicit boundary packages or exported records.
 11. [qualification/UI_TO_UI_USE_CASES.md](qualification/UI_TO_UI_USE_CASES.md):
     repeatable Operator/Moonbook UI qualification, governed negative cases, and
     the honest boundary excluding MoonMoon from the current creative flow.
+12. [STUDY_ROUTE_MAP.md](STUDY_ROUTE_MAP.md): read-only exact frozen terrain and
+    route overlays, keyboard inspection, unknown coverage, and bounded support.
+
+13. [REVIEWED_STUDY_ARCHIVES.md](REVIEWED_STUDY_ARCHIVES.md): move a saved dossier,
+    digital review and review history into a fresh browser through an inspected
+    local archive, without overwriting an existing identity.
 
 ## Implementation Guidance
 
@@ -83,3 +89,9 @@ changes, verify the CLI JSON/HTML paths and the Rabbita terrain app separately.
 - Keep mission route clearance tied to explicit terrain and source evidence.
 - Add stronger UI smoke coverage for desktop and mobile inspection.
 - Promote cross-product exports only when their consumer boundary is clear.
+
+- [Imported-terrain path energy budgets](IMPORTED_TERRAIN_PATH_ENERGY.md): explicit rate assumptions, segment use and reserve margins
+
+- [Alternative review screening](ALTERNATIVE_REVIEW_SCREENING.md): combine
+  reviewer-defined numeric and coverage criteria, explain every alternative, and
+  retain/reopen source-bound screening reports.

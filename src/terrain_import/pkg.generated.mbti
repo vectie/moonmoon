@@ -1,0 +1,79 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "vectie/moonmoon/src/terrain_import"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn analysis_json(String, String, Int, Double) -> String
+
+pub fn analyze_bundle(String, String, Int, Double) -> Json raise ImportError
+
+pub fn assess_corridor_bundle(String, String, Int, Double, Double) -> Json raise ImportError
+
+pub fn assess_path_bundle(String, String, Double, Double) -> Json raise ImportError
+
+pub fn compare_area_bundle(String, String, Double) -> Json raise ImportError
+
+pub fn compare_path_bundle(String, String, String, Double, Double) -> Json raise ImportError
+
+pub fn crop_bundle(String, Int, Int, Int, Int, String, String) -> Json raise ImportError
+
+pub fn export_mesh_bundle(String) -> Json raise ImportError
+
+pub fn import_bundle(String, String, String, String, String) -> Json raise ImportError
+
+pub fn import_json(String, String, String, String, String) -> String
+
+pub fn import_xyz_bundle(String, String) -> Json raise ImportError
+
+pub fn mosaic_bundle(String, String, String, String) -> Json raise ImportError
+
+pub fn parse_ascii_grid(String) -> AsciiGrid raise ImportError
+
+pub fn path_energy_bundle(String, String, String) -> Json raise ImportError
+
+pub fn reopen_bundle(String) -> Json raise ImportError
+
+pub fn reopen_crop_bundle(String) -> Json raise ImportError
+
+pub fn reopen_json(String) -> String
+
+pub fn reopen_mesh_bundle(String) -> Json raise ImportError
+
+pub fn revise_bundle(String, String, String) -> Json raise ImportError
+
+pub fn revision_template(String) -> String raise ImportError
+
+pub fn route_bundle(String, Int, Int, Int, Int, Double, Double) -> Json raise ImportError
+
+pub fn route_coordinate_waypoints_bundle(String, String, Double, Double) -> Json raise ImportError
+
+pub fn route_waypoints_bundle(String, String, Double, Double) -> Json raise ImportError
+
+pub fn visibility_bundle(String, Int, Int, Int, Int, Double, Double) -> Json raise ImportError
+
+// Errors
+pub(all) suberror ImportError {
+  InvalidRaster(String)
+} derive(@debug.Debug)
+
+// Types and methods
+pub struct AsciiGrid {
+  rows : Int
+  cols : Int
+  origin_x : Double
+  origin_y : Double
+  origin_kind : String
+  cell_size : Double
+  nodata_value : Double
+  nodata_declared : Bool
+  values : Array[Double?]
+} derive(@debug.Debug)
+pub fn AsciiGrid::cell_center(Self, Int, Int) -> (Double, Double) raise ImportError
+pub fn AsciiGrid::terrain_csv(Self, String) -> String raise ImportError
+
+// Type aliases
+
+// Traits

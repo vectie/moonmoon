@@ -1,0 +1,11 @@
+{
+  "contract_id": "moonmoon.path-energy-assumptions.v1",
+  "assumption_note": "Synthetic arithmetic example. Rates are uncalibrated; no actual robot battery use is predicted.",
+  "drive_wh_per_m": 1,
+  "ascent_wh_per_m": 2,
+  "cruise_speed_mps": 1,
+  "auxiliary_power_w": 360,
+  "initial_energy_wh": 50,
+  "reserve_wh": 10,
+  "max_grade_deg": 45
+}

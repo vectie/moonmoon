@@ -121,22 +121,26 @@ async function fixture(mode, stored = null) {
   ids.get('moonmoon-globe-3d').getContext = () => gl
   const modules = new Map()
   const lucideNames = ['createIcons', 'Crosshair', 'Database', 'MapPinned', 'Pause', 'Play', 'RotateCcw', 'Route', 'SearchCheck', 'ShieldCheck', 'Undo2']
-  const load = async url => {
+  const load = url => {
     if (modules.has(url)) return modules.get(url)
-    const module = url === 'lucide'
+    // Cache construction before the first read resolves. The VM links the graph
+    // recursively itself, including the existing study/authoring cycle.
+    const pending = (async () => url === 'lucide'
       ? new vm.SyntheticModule(lucideNames, function () {
         for (const name of lucideNames) this.setExport(name, () => {})
       }, { context })
       : new vm.SourceTextModule(await readFile(new URL(url), 'utf8'), {
         context, identifier: url,
         initializeImportMeta: meta => { meta.url = url },
-      })
-    modules.set(url, module)
-    await module.link((specifier, parent) => load(specifier === 'lucide' ? 'lucide' : new URL(specifier, parent.identifier).href))
-    return module
+      }))()
+    modules.set(url, pending)
+    return pending
   }
-  await (await load(new URL('scene-shell.js', base).href)).evaluate()
-  await (await load(new URL('operator-ui.js', base).href)).evaluate()
+  for (const entry of ['scene-shell.js', 'operator-ui.js']) {
+    const module = await load(new URL(entry, base).href)
+    if (module.status === 'unlinked') await module.link((specifier, parent) => load(specifier === 'lucide' ? 'lucide' : new URL(specifier, parent.identifier).href))
+    await module.evaluate()
+  }
   const view = {
     selected_route_id: 'mission-route', selected_cell_id: 'cell-a',
     routes: ['mission-route', 'candidate-route'].map(route_id => ({ route_id, label: route_id, decision: 'blocked' })),
