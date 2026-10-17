@@ -1,0 +1,308 @@
+///|
+// Native end-to-end destination exploration. All outputs are in a new directory.
+import {
+  "moonbitlang/async@0.19.4",
+  "moonbitlang/async@0.19.4/fs",
+  "moonbitlang/async@0.19.4/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x@0.4.50/crypto",
+}
+
+///|
+struct Journey {
+  exe : String
+  root : String
+  records : Array[Json]
+}
+
+///|
+fn field(value : Json, name : String) -> Json raise {
+  guard value is Object(fields) && fields.get(name) is Some(result) else {
+    fail("Missing " + name)
+  }
+  result
+}
+
+///|
+async fn read_json(path : String) -> Json {
+  @json.parse(@fs.read_file(path).text())
+}
+
+///|
+async fn hash(path : String) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(@fs.read_file(path).binary()))
+}
+
+///|
+async fn Journey::run(
+  self : Journey,
+  args : Array[String],
+  success? : Bool = true,
+) -> Unit {
+  let completed = @async.with_timeout_opt(180000, () => {
+    @process.collect_output(self.exe, args[:])
+  })
+  guard completed is Some((code, output, error)) else { fail("CLI timed out") }
+  let n = self.records.length().to_string()
+  @fs.write_file(
+    self.root + "/command-" + n + ".stdout",
+    output.text(),
+    create_mode=CreateNew,
+  )
+  @fs.write_file(
+    self.root + "/command-" + n + ".stderr",
+    error.text(),
+    create_mode=CreateNew,
+  )
+  self.records.push({
+    "argv": ([self.exe] + args).to_json(),
+    "exit_code": code,
+    "expected_success": success,
+  })
+  @fs.write_file(
+    self.root + "/commands.json",
+    self.records.to_json().stringify(indent=2) + "\n",
+    create_mode=if n == "0" { CreateNew } else { TruncateExisting },
+  )
+  assert_eq(
+    code == 0,
+    success,
+    msg=args.to_json().stringify() + "\n" + output.text() + error.text(),
+  )
+}
+
+///|
+async fn main {
+  let args = @env.args()
+  assert_eq(
+    args.length(),
+    4,
+    msg="verify_terrain_destinations.mbtx ABSOLUTE_EXECUTABLE ABSOLUTE_SOURCE NEW_ABSOLUTE_OUTPUT",
+  )
+  let exe = args[1]
+  let source = args[2]
+  let root = args[3]
+  assert_true(
+    exe.has_prefix("/") && source.has_prefix("/") && root.has_prefix("/"),
+  )
+  @fs.mkdir(root)
+  let journey : Journey = { exe, root, records: [], }
+  let raster = source + "/data/terrain_import/synthetic-reachability.asc"
+  let raster_hash = hash(raster)
+  journey.run([
+    "convert",
+    raster,
+    root + "/import",
+    "destination-demo",
+    "Synthetic local Cartesian frame",
+    "m",
+    "Bundled synthetic fixture, Apache-2.0; not measured lunar terrain",
+  ])
+  let terrain = root + "/import/terrain-import.json"
+  let terrain_hash = hash(terrain)
+  journey.run(["reach", terrain, root + "/explore", "2", "0", "20", "2", "70"])
+  let study = root + "/explore/terrain-reachability.json"
+  let study_hash = hash(study)
+  let original = read_json(study)
+  guard field(original, "cells") is Array(cells) else { fail("Missing cells") }
+  assert_eq(field(cells[4 * 9 + 5], "minimum_cost_m_equivalent"), 70)
+  assert_eq(field(cells[5], "minimum_cost_m_equivalent"), 110)
+  assert_eq(field(cells[2 * 9 + 7], "status"), "not-connected-in-model")
+  assert_eq(field(cells[2 * 9 + 6], "status"), "unknown")
+  journey.run(["reach-path", study, root + "/selected", "4", "5"])
+  let selection = read_json(root + "/selected/terrain-reachable-path.json")
+  assert_eq(field(selection, "minimum_cost_m_equivalent"), 70)
+  assert_eq(
+    field(selection, "reachability_digest"),
+    field(original, "reachability_digest"),
+  )
+  let selected_terrain = root + "/selected/terrain-import.json"
+  let selected_path = root + "/selected/path-cells.txt"
+  journey.run([
+    "assess-path",
+    selected_terrain,
+    selected_path,
+    root + "/exact-path",
+    "20",
+    "2",
+  ])
+  journey.run([
+    "assess-corridor",
+    selected_terrain,
+    selected_path,
+    root + "/corridor",
+    "1",
+    "30",
+    "5",
+  ])
+  journey.run([
+    "energy-path",
+    selected_terrain,
+    selected_path,
+    source + "/data/terrain_import/synthetic-energy-assumptions.json",
+    root + "/energy",
+  ])
+  assert_eq(
+    field(read_json(root + "/energy/terrain-path-energy.json"), "status"),
+    "insufficient-energy",
+  )
+  // Selection fit never overwrites an independent energy blocker.
+  assert_eq(field(selection, "physical_readiness"), false)
+  for
+    (name, row, col) in [
+      ("over-budget", "0", "5"),
+      ("unknown", "2", "6"),
+      ("not-connected", "2", "7"),
+      ("out-of-bounds", "7", "0"),
+    ] {
+    let output = root + "/refused-" + name
+    journey.run(["reach-path", study, output, row, col], success=false)
+    assert_false(@fs.exists(output))
+  }
+  journey.run(["reach", terrain, root + "/larger", "2", "0", "20", "2", "110"])
+  journey.run([
+    "reach-path",
+    root + "/larger/terrain-reachability.json",
+    root + "/farther",
+    "0",
+    "5",
+  ])
+  assert_eq(
+    field(
+      read_json(root + "/farther/terrain-reachable-path.json"),
+      "minimum_cost_m_equivalent",
+    ),
+    110,
+  )
+  journey.run([
+    "revise",
+    terrain,
+    source + "/data/terrain_import/synthetic-reachability-edit.csv",
+    root + "/revised",
+    "Synthetic what-if: extend ridge; not a new measurement",
+  ])
+  let revised_terrain = root + "/revised/terrain-import.json"
+  journey.run([
+    "reach",
+    revised_terrain,
+    root + "/revised-explore",
+    "2",
+    "0",
+    "20",
+    "2",
+    "70",
+  ])
+  let revised_study = root + "/revised-explore/terrain-reachability.json"
+  let revised = read_json(revised_study)
+  guard field(revised, "cells") is Array(revised_cells) else {
+    fail("Missing revised cells")
+  }
+  assert_eq(field(revised_cells[4 * 9 + 5], "status"), "over-budget")
+  assert_eq(field(revised_cells[4 * 9 + 5], "minimum_cost_m_equivalent"), 90)
+  assert_true(
+    field(revised, "reachability_digest") !=
+    field(original, "reachability_digest"),
+  )
+  journey.run(
+    ["reach-path", revised_study, root + "/refused-revised", "4", "5"],
+    success=false,
+  )
+  assert_false(@fs.exists(root + "/refused-revised"))
+  journey.run([
+    "reach",
+    revised_terrain,
+    root + "/revised-larger",
+    "2",
+    "0",
+    "20",
+    "2",
+    "90",
+  ])
+  journey.run([
+    "reach-path",
+    root + "/revised-larger/terrain-reachability.json",
+    root + "/revised-selected",
+    "4",
+    "5",
+  ])
+  assert_eq(
+    field(
+      read_json(root + "/revised-selected/terrain-reachable-path.json"),
+      "minimum_cost_m_equivalent",
+    ),
+    90,
+  )
+  // Original retained evidence remains usable after a terrain revision.
+  journey.run(["reach-path", study, root + "/original-reopened", "4", "5"])
+  assert_eq(
+    read_json(root + "/original-reopened/terrain-route.json"),
+    read_json(root + "/selected/terrain-route.json"),
+  )
+  let selected_hash = hash(selected_path)
+  journey.run(
+    ["reach", terrain, root + "/explore", "2", "0", "20", "2", "110"],
+    success=false,
+  )
+  journey.run(
+    ["reach-path", study, root + "/selected", "4", "5"],
+    success=false,
+  )
+  let altered = @fs.read_file(study)
+    .text()
+    .replace(
+      old="\"budget_m_equivalent\": 70",
+      new="\"budget_m_equivalent\": 110",
+    )
+  assert_true(altered != @fs.read_file(study).text())
+  @fs.write_file(root + "/changed-study.json", altered, create_mode=CreateNew)
+  journey.run(
+    [
+      "reach-path",
+      root + "/changed-study.json",
+      root + "/refused-changed",
+      "0",
+      "5",
+    ],
+    success=false,
+  )
+  assert_false(@fs.exists(root + "/refused-changed"))
+  journey.run(
+    ["reach", terrain, root + "/refused-budget", "2", "0", "20", "2", "-1"],
+    success=false,
+  )
+  assert_false(@fs.exists(root + "/refused-budget"))
+  assert_eq(hash(raster), raster_hash)
+  assert_eq(hash(terrain), terrain_hash)
+  assert_eq(hash(study), study_hash)
+  assert_eq(hash(selected_path), selected_hash)
+  let result : Json = {
+    "status": "passed",
+    "commands": journey.records.length(),
+    "original_candidate_cost_m_equivalent": 70,
+    "revised_candidate_cost_m_equivalent": 90,
+    "larger_budget_destination_cost_m_equivalent": 110,
+    "independent_energy_status": "insufficient-energy",
+    "preserved_input_sha256": {
+      "raster": raster_hash,
+      "terrain": terrain_hash,
+      "exploration": study_hash,
+      "selected_path": selected_hash,
+    },
+    "checks": [
+      "import, all-destination map and exact in-budget selection", "corridor and energy consumers",
+      "larger budget and source-edit detour", "original study remains usable", "unknown, disconnected, over-budget and malformed selections refused",
+      "existing output and all input hashes preserved",
+    ],
+    "limits": [
+      "synthetic local data only", "no browser or installed lifecycle qualification",
+      "no physical traversability or mission authority",
+    ],
+  }
+  @fs.write_file(
+    root + "/RESULT.json",
+    result.stringify(indent=2) + "\n",
+    create_mode=CreateNew,
+  )
+  println(result.stringify(indent=2))
+}

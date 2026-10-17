@@ -4,7 +4,8 @@ extern "js" fn bind_terrain_import(
   convert : (String, String, String, String, String) -> String,
   reopen : (String) -> String,
   analyze : (String, String, Int, Double) -> String,
-) -> Unit = "(convert, reopen, analyze) => globalThis.__moonmoonBindTerrainImport?.(convert, reopen, analyze)"
+  route : (String, Int, Int, Int, Int, Double, Double) -> String,
+) -> Unit = "(convert, reopen, analyze, route) => globalThis.__moonmoonBindTerrainImport?.(convert, reopen, analyze, route)"
 
 ///|
 fn terrain_import_panel() -> Html {

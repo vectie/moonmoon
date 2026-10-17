@@ -1,0 +1,347 @@
+///|
+// Generate exact synthetic binary examples or run the file-level import/edit/export journey.
+import {
+  "moonbitlang/async@0.19.4",
+  "moonbitlang/async@0.19.4/fs",
+  "moonbitlang/async@0.19.4/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x@0.4.50/crypto",
+}
+
+///|
+fn fixture_bytes(little : Bool) -> Bytes {
+  let values = [-4, 0, 4, 8, 12, -32768, 20, 24, 28, 32, 36, 40]
+  Bytes::makei(values.length() * 2, i => {
+    let v = values[i / 2] & 65535
+    (if (i % 2 == 0) != little { v >> 8 } else { v & 255 }).to_byte()
+  })
+}
+
+///|
+struct Journey {
+  exe : String
+  root : String
+  records : Array[Json]
+}
+
+///|
+fn field(value : Json, name : String) -> Json raise {
+  guard value is Object(fields) && fields.get(name) is Some(result) else {
+    fail("Missing " + name)
+  }
+  result
+}
+
+///|
+async fn read_json(path : String) -> Json {
+  @json.parse(@fs.read_file(path).text())
+}
+
+///|
+async fn hash(path : String) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(@fs.read_file(path).binary()))
+}
+
+///|
+async fn Journey::run(
+  self : Journey,
+  args : Array[String],
+  success? : Bool = true,
+) -> Unit {
+  let completed = @async.with_timeout_opt(180000, () => {
+    @process.collect_output(self.exe, args[:])
+  })
+  guard completed is Some((code, output, error)) else { fail("CLI timed out") }
+  let n = self.records.length().to_string()
+  @fs.write_file(
+    self.root + "/command-" + n + ".stdout",
+    output.text(),
+    create_mode=CreateNew,
+  )
+  @fs.write_file(
+    self.root + "/command-" + n + ".stderr",
+    error.text(),
+    create_mode=CreateNew,
+  )
+  self.records.push({
+    "argv": ([self.exe] + args).to_json(),
+    "exit_code": code,
+    "expected_success": success,
+  })
+  @fs.write_file(
+    self.root + "/commands.json",
+    self.records.to_json().stringify(indent=2) + "\n",
+    create_mode=if n == "0" { CreateNew } else { TruncateExisting },
+  )
+  assert_eq(
+    code == 0,
+    success,
+    msg=args.to_json().stringify() + "\n" + output.text() + error.text(),
+  )
+}
+
+///|
+async fn main {
+  let args = @env.args()
+  match args[1:] {
+    ["fixtures", root] => {
+      assert_true(root.has_prefix("/"))
+      @fs.write_file(
+        root + "/DEMO.IMG",
+        fixture_bytes(false),
+        create_mode=CreateNew,
+      )
+      @fs.write_file(
+        root + "/DEMO_LE.IMG",
+        fixture_bytes(true),
+        create_mode=CreateNew,
+      )
+      println("Two 24-byte synthetic IMG examples written without overwrite")
+    }
+    ["journey", exe, source, root] => {
+      assert_true(
+        exe.has_prefix("/") && source.has_prefix("/") && root.has_prefix("/"),
+      )
+      @fs.mkdir(root)
+      let journey : Journey = { exe, root, records: [], }
+      let fixtures = source + "/data/terrain_import"
+      let inputs = [
+        "DEMO.LBL", "DEMO.IMG", "DEMO_LE.LBL", "DEMO_LE.IMG", "pds3-grid.json", "pds3-edit.csv",
+      ]
+      let hashes : Array[String] = []
+      for path in inputs {
+        hashes.push(hash(fixtures + "/" + path))
+      }
+      assert_eq(
+        @fs.read_file(fixtures + "/DEMO.IMG").binary(),
+        fixture_bytes(false),
+      )
+      assert_eq(
+        @fs.read_file(fixtures + "/DEMO_LE.IMG").binary(),
+        fixture_bytes(true),
+      )
+      journey.run([
+        "pds3",
+        fixtures + "/DEMO.LBL",
+        fixtures + "/DEMO.IMG",
+        fixtures + "/pds3-grid.json",
+        root + "/import",
+      ])
+      let original_path = root + "/import/terrain-import.json"
+      let original = read_json(original_path)
+      let original_hash = hash(original_path)
+      assert_eq(field(original, "sample_count"), 11)
+      assert_eq(field(original, "nodata_count"), 1)
+      assert_eq(field(original, "minimum_elevation_m"), 98)
+      assert_eq(field(original, "maximum_elevation_m"), 120)
+      assert_eq(field(original, "physical_readiness"), false)
+      assert_eq(hash(root + "/import/SOURCE.LBL"), hashes[0])
+      assert_eq(hash(root + "/import/DEMO.IMG"), hashes[1])
+      assert_eq(hash(root + "/import/grid.json"), hashes[4])
+      journey.run(["reopen", original_path])
+      journey.run([
+        "pds3",
+        fixtures + "/DEMO_LE.LBL",
+        fixtures + "/DEMO_LE.IMG",
+        fixtures + "/pds3-grid.json",
+        root + "/little-endian",
+      ])
+      let little = read_json(root + "/little-endian/terrain-import.json")
+      assert_eq(field(little, "samples"), field(original, "samples"))
+      assert_true(
+        field(little, "source_digest") != field(original, "source_digest"),
+      )
+      journey.run(["edit-template", original_path, root + "/edit-template.csv"])
+      assert_true(
+        @fs.read_file(root + "/edit-template.csv")
+        .text()
+        .contains("1,1,unknown,unknown"),
+      )
+      journey.run([
+        "analyze",
+        original_path,
+        root + "/original-analysis",
+        "row",
+        "1",
+        "30",
+      ])
+      let original_analysis = read_json(
+        root + "/original-analysis/terrain-analysis.json",
+      )
+      assert_eq(
+        field(field(original_analysis, "profile_summary"), "unknown_segments"),
+        2,
+      )
+      journey.run(["export-mesh", original_path, root + "/original-mesh"])
+      journey.run([
+        "revise",
+        original_path,
+        fixtures + "/pds3-edit.csv",
+        root + "/revision",
+        "Synthetic declared gap replacement, not a measured value",
+      ])
+      let revision_path = root + "/revision/terrain-import.json"
+      let revised = read_json(revision_path)
+      assert_eq(field(revised, "base_source_bundle"), original)
+      assert_eq(field(revised, "sample_count"), 12)
+      journey.run(["reopen", revision_path])
+      journey.run([
+        "analyze",
+        revision_path,
+        root + "/revised-analysis",
+        "row",
+        "1",
+        "30",
+      ])
+      let revised_analysis = read_json(
+        root + "/revised-analysis/terrain-analysis.json",
+      )
+      assert_eq(
+        field(field(revised_analysis, "profile_summary"), "unknown_segments"),
+        0,
+      )
+      journey.run([
+        "contours",
+        revision_path,
+        root + "/contours",
+        "100",
+        "105",
+        "110",
+        "115",
+      ])
+      journey.run(["export-mesh", revision_path, root + "/revised-mesh"])
+      journey.run(["reopen-mesh", root + "/revised-mesh/terrain-mesh.json"])
+      journey.run([
+        "crop",
+        revision_path,
+        root + "/exchange",
+        "0",
+        "0",
+        "3",
+        "4",
+        "pds-exchange",
+        "Full-grid portable ASCII export; retain PDS3 parent receipt",
+      ])
+      journey.run([
+        "convert",
+        root + "/exchange/source.asc",
+        root + "/reimport",
+        "pds-exchange",
+        "Synthetic local Cartesian frame: X east, Y north",
+        "m",
+        "Reimported synthetic ASCII; retain full PDS3 receipt",
+      ])
+      assert_eq(
+        field(read_json(root + "/reimport/terrain-import.json"), "samples"),
+        field(revised, "samples"),
+      )
+      journey.run(
+        [
+          "pds3",
+          fixtures + "/DEMO.LBL",
+          fixtures + "/DEMO.IMG",
+          fixtures + "/pds3-grid.json",
+          root + "/import",
+        ],
+        success=false,
+      )
+      @fs.mkdir(root + "/truncated")
+      @fs.write_file(
+        root + "/truncated/DEMO.IMG",
+        b"\x00",
+        create_mode=CreateNew,
+      )
+      journey.run(
+        [
+          "pds3",
+          fixtures + "/DEMO.LBL",
+          root + "/truncated/DEMO.IMG",
+          fixtures + "/pds3-grid.json",
+          root + "/bad-truncated",
+        ],
+        success=false,
+      )
+      let grid = @fs.read_file(fixtures + "/pds3-grid.json").text()
+      @fs.write_file(
+        root + "/radius-grid.json",
+        grid.replace(old="\"elevation\"", new="\"radius\""),
+        create_mode=CreateNew,
+      )
+      journey.run(
+        [
+          "pds3",
+          fixtures + "/DEMO.LBL",
+          fixtures + "/DEMO.IMG",
+          root + "/radius-grid.json",
+          root + "/bad-radius",
+        ],
+        success=false,
+      )
+      let label = @fs.read_file(fixtures + "/DEMO.LBL").text()
+      @fs.write_file(
+        root + "/padded.LBL",
+        label.replace(old="RECORD_BYTES = 8", new="RECORD_BYTES = 10"),
+        create_mode=CreateNew,
+      )
+      journey.run(
+        [
+          "pds3",
+          root + "/padded.LBL",
+          fixtures + "/DEMO.IMG",
+          fixtures + "/pds3-grid.json",
+          root + "/bad-padding",
+        ],
+        success=false,
+      )
+      journey.run(
+        [
+          "pds3",
+          fixtures + "/DEMO.LBL",
+          fixtures + "/DEMO_LE.IMG",
+          fixtures + "/pds3-grid.json",
+          root + "/bad-pointer",
+        ],
+        success=false,
+      )
+      let tampered = read_json(original_path)
+      guard tampered is Object(fields) else { fail("bundle") }
+      fields["image_hex"] = "fffz".to_json()
+      @fs.write_file(
+        root + "/tampered.json",
+        tampered.stringify(),
+        create_mode=CreateNew,
+      )
+      journey.run(["reopen", root + "/tampered.json"], success=false)
+      for name in ["bad-truncated", "bad-radius", "bad-padding", "bad-pointer"] {
+        assert_true(!@fs.exists(root + "/" + name))
+      }
+      for i, path in inputs {
+        assert_eq(hash(fixtures + "/" + path), hashes[i])
+      }
+      assert_eq(hash(original_path), original_hash)
+      let result : Json = {
+        "status": "passed",
+        "commands": journey.records.length(),
+        "original_samples": 11,
+        "revised_samples": 12,
+        "endian_equivalence": true,
+        "source_bytes_preserved": true,
+        "input_hashes": hashes,
+        "source_import_hash": original_hash,
+        "unsupported_inputs_create_no_output": true,
+        "scope": "Synthetic bounded development journey only; no external lunar dataset or physical qualification",
+      }
+      @fs.write_file(
+        root + "/RESULT.json",
+        result.stringify(indent=2) + "\n",
+        create_mode=CreateNew,
+      )
+      println(result.stringify(indent=2))
+    }
+    _ =>
+      fail(
+        "Usage: fixtures ABSOLUTE_DATA_DIRECTORY | journey ABSOLUTE_EXECUTABLE ABSOLUTE_SOURCE NEW_ABSOLUTE_OUTPUT",
+      )
+  }
+}

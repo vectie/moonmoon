@@ -1,0 +1,264 @@
+///|
+import {
+  "moonbitlang/async@0.19.4",
+  "moonbitlang/async@0.19.4/fs",
+  "moonbitlang/async@0.19.4/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/core/encoding/utf8",
+  "moonbitlang/x@0.4.50/crypto",
+}
+
+///|
+fn replace_byte(source : Bytes, index : Int, replacement : Bytes) -> Bytes {
+  Bytes::makei(source.length() - 1 + replacement.length(), i => {
+    if i < index {
+      source[i]
+    } else if i < index + replacement.length() {
+      replacement[i - index]
+    } else {
+      source[i - replacement.length() + 1]
+    }
+  })
+}
+
+///|
+async fn main {
+  let args = @env.args()
+  guard args.length() == 4 else {
+    fail("verify_pds3_edge_inputs EXE FIXTURES NEW_OUTPUT")
+  }
+  let exe = args[1]
+  let fixtures = args[2]
+  let root = args[3]
+  assert_true(
+    exe.has_prefix("/") && fixtures.has_prefix("/") && root.has_prefix("/"),
+  )
+  @fs.mkdir(root)
+  let label = @fs.read_file(fixtures + "/DEMO.LBL").text()
+  let grid = @fs.read_file(fixtures + "/pds3-grid.json").text()
+  let records : Array[Json] = []
+  async fn run(
+    name : String,
+    label_bytes : Bytes,
+    grid_bytes : Bytes,
+    accepted : Bool,
+  ) -> Unit {
+    @fs.write_file(
+      root + "/" + name + ".LBL",
+      label_bytes,
+      create_mode=CreateNew,
+    )
+    @fs.write_file(
+      root + "/" + name + ".json",
+      grid_bytes,
+      create_mode=CreateNew,
+    )
+    let output = root + "/" + name + "-output"
+    let argv = [
+      "60",
+      exe,
+      "pds3",
+      root + "/" + name + ".LBL",
+      fixtures + "/DEMO.IMG",
+      root + "/" + name + ".json",
+      output,
+    ]
+    // timeout preserves signal termination as a nonzero ordinary exit code.
+    let (code, stdout, stderr) = @process.collect_output(
+      "/usr/bin/timeout",
+      argv[:],
+    )
+    @fs.write_file(
+      root + "/" + name + ".stdout",
+      stdout.text(),
+      create_mode=CreateNew,
+    )
+    @fs.write_file(
+      root + "/" + name + ".stderr",
+      stderr.text(),
+      create_mode=CreateNew,
+    )
+    let exists = @fs.exists(output)
+    records.push({
+      "case": name,
+      "argv": argv.to_json(),
+      "exit_code": code,
+      "output_exists": exists,
+      "expected_accepted": accepted,
+      "label_sha256": @crypto.bytes_to_hex_string(@crypto.sha256(label_bytes)),
+      "declaration_sha256": @crypto.bytes_to_hex_string(
+        @crypto.sha256(grid_bytes),
+      ),
+    })
+    @fs.write_file(
+      root + "/commands.json",
+      records.to_json().stringify(indent=2),
+      create_mode=if records.length() == 1 {
+        CreateNew
+      } else {
+        TruncateExisting
+      },
+    )
+    assert_eq(
+      code,
+      if accepted {
+        0
+      } else {
+        2
+      },
+      msg=name + "\n" + stdout.text() + stderr.text(),
+    )
+    assert_eq(exists, accepted, msg=name)
+    if accepted {
+      assert_eq(@fs.read_file(output + "/SOURCE.LBL").binary(), label_bytes)
+      assert_eq(@fs.read_file(output + "/grid.json").binary(), grid_bytes)
+    }
+  }
+  for
+    (name, changed_label, changed_grid) in [
+      (
+        "fractional-record-bytes",
+        label.replace(
+          old="RECORD_BYTES = 8",
+          new="RECORD_BYTES = 8.0000000000000001",
+        ),
+        grid,
+      ),
+      (
+        "fractional-file-records",
+        label.replace(
+          old="FILE_RECORDS = 3",
+          new="FILE_RECORDS = 2.99999999999999999",
+        ),
+        grid,
+      ),
+      (
+        "fractional-rows",
+        label,
+        grid.replace(old="\"rows\": 3", new="\"rows\": 3.0000000000000001"),
+      ),
+      (
+        "fractional-cols",
+        label,
+        grid.replace(old="\"cols\": 4", new="\"cols\": 3.99999999999999999"),
+      ),
+      (
+        "fractional-exponent-records",
+        label.replace(
+          old="FILE_RECORDS = 3",
+          new="FILE_RECORDS = 30000000000000001e-16",
+        ),
+        grid,
+      ),
+      (
+        "fractional-exponent-cols",
+        label,
+        grid.replace(old="\"cols\": 4", new="\"cols\": 399999999999999999e-17"),
+      ),
+      (
+        "duplicate-rows",
+        label,
+        grid.replace(old="\"rows\": 3", new="\"rows\": 4, \"rows\": 3"),
+      ),
+      (
+        "duplicate-quantity",
+        label,
+        grid.replace(
+          old="\"vertical_quantity\": \"elevation\"",
+          new="\"vertical_quantity\": \"radius\", \"vertical_quantity\": \"elevation\"",
+        ),
+      ),
+      (
+        "escaped-duplicate-rows",
+        label,
+        grid.replace(old="\"rows\": 3", new="\"r\\u006fws\": 4, \"rows\": 3"),
+      ),
+      (
+        "escaped-duplicate-quantity",
+        label,
+        grid.replace(
+          old="\"vertical_quantity\": \"elevation\"",
+          new="\"vertical_qu\\u0061ntity\": \"radius\", \"vertical_quantity\": \"elevation\"",
+        ),
+      ),
+    ] {
+    assert_true(changed_label != label || changed_grid != grid, msg=name)
+    run(name, @utf8.encode(changed_label), @utf8.encode(changed_grid), false)
+  }
+  run(
+    "integral-decimal-exponent",
+    @utf8.encode(
+      label
+      .replace(
+        old="RECORD_BYTES = 8",
+        new="RECORD_BYTES = 800000000000000000000e-20",
+      )
+      .replace(old="FILE_RECORDS = 3", new="FILE_RECORDS = 3.0000"),
+    ),
+    @utf8.encode(
+      grid
+      .replace(old="\"rows\": 3", new="\"rows\": 0.03e2")
+      .replace(old="\"cols\": 4", new="\"cols\": 400e-2"),
+    ),
+    true,
+  )
+  for key in ["origin_x", "origin_y"] {
+    let old = if key == "origin_x" { "100" } else { "200" }
+    let collapsed = grid
+      .replace(
+        old="\"" + key + "\": " + old,
+        new="\"" + key + "\": 10000000000000000",
+      )
+      .replace(old="\"cell_size\": 5", new="\"cell_size\": 1.1")
+    run("collapsed-" + key, @utf8.encode(label), @utf8.encode(collapsed), false)
+  }
+  let unicode_grid = grid.replace(
+    old="Bundled",
+    new="Δ elevation 声明 🌕; Bundled",
+  )
+  run(
+    "valid-unicode-crlf",
+    @utf8.encode(label.replace(old="\n", new="\r\n")),
+    @utf8.encode(unicode_grid),
+    true,
+  )
+  guard grid.find("Bundled") is Some(index) else { fail("fixture marker") }
+  let label_bytes = @utf8.encode(label)
+  let grid_bytes = @utf8.encode(grid)
+  let invalid_bytes : Array[(String, Bytes)] = [
+    ("overlong", [0xc1, 0x82]),
+    ("ff", [0xff]),
+    ("isolated-continuation", [0x80]),
+    ("encoded-surrogate", [0xed, 0xa0, 0x80]),
+    ("out-of-range", [0xf4, 0x90, 0x80, 0x80]),
+    ("bad-continuation", [0xc2, 0x41]),
+  ]
+  for (name, bad) in invalid_bytes {
+    run("label-" + name, replace_byte(label_bytes, 0, bad), grid_bytes, false)
+    run(
+      "grid-" + name,
+      label_bytes,
+      replace_byte(grid_bytes, index, bad),
+      false,
+    )
+  }
+  run("truncated-label-utf8", label_bytes + b"\xc2", grid_bytes, false)
+  run("truncated-grid-utf8", label_bytes, grid_bytes + b"\xc2", false)
+  run("label-bom", b"\xef\xbb\xbf" + label_bytes, grid_bytes, false)
+  run("grid-bom", label_bytes, b"\xef\xbb\xbf" + grid_bytes, false)
+  let result : Json = {
+    "status": "passed",
+    "commands": records.length(),
+    "accepted_integral_and_unicode_cases": 2,
+    "refused_cases": records.length() - 2,
+    "exact_valid_input_bytes_retained": true,
+    "refusals_exit_2_without_output": true,
+  }
+  @fs.write_file(
+    root + "/RESULT.json",
+    result.stringify(indent=2),
+    create_mode=CreateNew,
+  )
+  println(result.stringify(indent=2))
+}

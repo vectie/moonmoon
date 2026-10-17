@@ -1,6 +1,8 @@
-// Draft-only authoring. No results, inferred slopes, interpolation or execution.
+// Draft-only authoring, including optional sampled edge constraints. No native results, interpolation or execution.
 import { terrainSamples, projectStudyCell } from './mission-study-map.js'
 import { bindRouteCSV } from './mission-route-csv.js'
+import { bindRouteDetour } from './mission-route-detour.js'
+import { bindRouteReturn } from './mission-route-return.js'
 
 export function parseDraftCells(text) {
   const cells = text.trim().split('\n').map(line => line.split(',').map(part => {
@@ -47,7 +49,7 @@ export function bindDraftRouteMap(document, { readText, writeText }) {
     }
     const commit = cells => { writeText(cells.map(cell => cell.join(',')).join('\n')) }
     host.appendChild(element('h3', 'Draft route on frozen terrain'))
-    host.appendChild(element('p', 'Unsaved selected variant only. Lines show authored order, not validated segments. No slopes, coverage, acceptance or physical readiness are calculated. Export or Run digital mission remains a separate explicit action.'))
+    host.appendChild(element('p', 'Unsaved selected variant only. Lines show authored order, not validated segments. The optional detour grade limit uses frozen sample differences and declared cell size only. No terrain-between-samples, mission acceptance or physical readiness is established. Export or Run digital mission remains a separate explicit action.'))
     button('undo', 'Undo last route edit', () => {
       const previous = history.pop(); lastText = previous; writeText(previous)
     }, history.length === 0)
@@ -64,6 +66,8 @@ export function bindDraftRouteMap(document, { readText, writeText }) {
       const copy = cells.map(c => [...c]); [copy[n], copy[next]] = [copy[next], copy[n]]; commit(copy)
     })
     const model = draftTerrain(context.dossier, context.design)
+    bindRouteReturn(document, host, { cells, cellSize: context.design?.environment?.cell_size_m, live, commit })
+    bindRouteDetour(document, host, { cells, terrain: model, live, commit })
     if (!model.available) { host.appendChild(element('p', 'Terrain map unavailable: ' + model.reason + '. Route textarea, occurrence controls and exact export remain available.')); return }
     host.appendChild(element('p', `Frozen source ${model.source.artifact_ref} · ${model.source.digest}. Row increases down, column right; ${model.cellSize} m/index. Gaps are unknown; no interpolation. ${context.dossier.site?.uncertainty || ''}`))
     const samples = element('select'); samples.id = 'study-draft-map-sample'; samples.setAttribute('aria-label', 'Exact frozen sample to append')

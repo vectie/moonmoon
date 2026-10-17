@@ -766,6 +766,7 @@ fn start_renderer(model : Model) -> @rabbita.Cmd {
       bind_operator_ui(model.model_json, model.bookkeeper_json)
       bind_terrain_import(
         @terrain_import.import_json, @terrain_import.reopen_json, @terrain_import.analysis_json,
+        @terrain_import.route_json,
       )
     },
     kind=@cmd.after_render,

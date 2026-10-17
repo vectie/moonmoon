@@ -1,0 +1,10 @@
+import {
+  "vectie/moonmoon/src/terrain_import" @raster,
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/core/string",
+}
+
+supported_targets = "js"
+
+pkgtype(kind: "executable")

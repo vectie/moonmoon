@@ -90,8 +90,9 @@ fn revision_parts(source : Json) -> (Json, Array[Json]) raise ImportError {
   need(
     contract == "moonmoon.terrain-import.v1" ||
     contract == "moonmoon.terrain-xyz-import.v1" ||
+    contract == "moonmoon.terrain-pds3-import.v1" ||
     contract == "moonmoon.terrain-mosaic.v1",
-    "Revision base must be an original ASCII, XYZ or mosaic source bundle",
+    "Revision base must be an original ASCII, XYZ, PDS3 or mosaic source bundle",
   )
   need(
     revisions.length() >= 1 && revisions.length() <= 32,

@@ -11,6 +11,62 @@ import { MissionRunClient } from './mission-run.js'
 
 const parentText = await readFile(new URL('./fixtures/mission-study-local.json', import.meta.url), 'utf8')
 const parent = await readStudy(parentText)
+
+test('out-and-back alternative uses production duplicate, preview, cancel, apply, undo, export and reopen handlers', async () => {
+  const calls = [], f = screen({ async start(text) { calls.push(text); throw new Error('Injected host unavailable') }, async get() {} }); await f.start()
+  const original = f.get('draft-cells').value, saved = f.storage.getItem('moonmoon.study.v1/local-study/r1')
+  await f.get('draft-variant-duplicate').fire('click')
+  assert.equal(f.get('draft-variant').value, '2')
+  f.get('draft-variant-name').value = 'Out and back'; await f.get('draft-variant-name').fire('input')
+  const outbound = '0,0\n0,0\n1,0\n1,1', expected = outbound + '\n1,0\n0,0\n0,0'
+  f.get('draft-cells').value = outbound; await f.get('draft-cells').fire('input')
+  await f.get('draft-map-return-plan').fire('click')
+  assert.equal(f.get('draft-cells').value, outbound)
+  assert.match(f.get('draft-map-return-status').textContent, /Authored straight-segment estimated distance/)
+  assert.equal(f.get('draft-map-return-preview').textContent, '5. 1,0\n6. 0,0\n7. 0,0')
+  await f.get('draft-map-return-cancel').fire('click'); assert.equal(f.get('draft-map-return-apply').disabled, true)
+  await f.get('draft-map-return-plan').fire('click'); const stale = f.get('draft-map-return-apply')
+  await stale.fire('click'); assert.equal(f.get('draft-cells').value, expected)
+  await stale.fire('click'); assert.equal(f.get('draft-cells').value, expected)
+  await f.get('draft-map-undo').fire('click'); assert.equal(f.get('draft-cells').value, outbound)
+  await f.get('draft-map-return-plan').fire('click'); await f.get('draft-map-return-apply').fire('click')
+  assert.deepEqual(calls, [])
+  const create = URL.createObjectURL, revoke = URL.revokeObjectURL; let blob
+  URL.createObjectURL = value => { blob = value; return 'blob:return' }; URL.revokeObjectURL = () => {}
+  try {
+    await f.get('draft-export').fire('click'); const bytes = await blob.text(), loaded = await readDraft(bytes)
+    assert.deepEqual(loaded.draft.variants[2].edits.path_cells, parseDraftCells(expected))
+    assert.equal(loaded.draft.variants[2].name, 'Out and back')
+    for (const v of loaded.draft.variants.slice(0, 2)) assert.deepEqual(v.edits.path_cells, parseDraftCells(original))
+    await f.get('draft-discard').fire('click'); f.get('draft-file').files = [{ size: bytes.length, text: async () => bytes }]; await f.get('draft-file').fire('change')
+    f.get('draft-variant').value = '2'; await f.get('draft-variant').fire('change')
+    assert.equal(f.get('draft-cells').value, expected)
+    await f.get('draft-export').fire('click'); assert.equal(await blob.text(), bytes)
+    assert.equal(f.storage.getItem('moonmoon.study.v1/local-study/r1'), saved)
+    await f.get('run-start').fire('click'); assert.equal(calls.length, 1)
+    assert.deepEqual((await readDraft(calls[0])).draft.variants[2].edits.path_cells, parseDraftCells(expected))
+    assert.match(f.get('run-status').textContent, /Injected host unavailable/)
+  } finally { URL.createObjectURL = create; URL.revokeObjectURL = revoke }
+})
+
+test('return preview refuses stale variant, text, source and discard callbacks and oversized routes', async () => {
+  const f = screen(); await f.start(); const original = f.get('draft-cells').value
+  await f.get('draft-map-return-plan').fire('click'); const variant = f.get('draft-map-return-apply')
+  f.get('draft-variant').value = '1'; await f.get('draft-variant').fire('change'); await variant.fire('click')
+  assert.equal(f.get('draft-cells').value, original)
+  await f.get('draft-map-return-plan').fire('click'); const edit = f.get('draft-map-return-apply')
+  f.get('draft-cells').value = 'unfinished'; await edit.fire('click'); assert.equal(f.get('draft-cells').value, 'unfinished')
+  await f.get('draft-cells').fire('input'); await edit.fire('click'); assert.equal(f.get('draft-cells').value, 'unfinished')
+  f.get('draft-cells').value = Array(129).fill('0,0').join('\n'); await f.get('draft-cells').fire('input')
+  await f.get('draft-map-return-plan').fire('click'); assert.equal(f.get('draft-map-return-apply').disabled, true)
+  assert.match(f.get('draft-map-return-status').textContent, /256-occurrence/)
+  let text = '999,999\n1000,1000', render
+  render = bindDraftRouteMap(f.document, { readText: () => text, writeText: value => { text = value } })
+  const context = { identity: {}, dossier: { sources: [] }, design: { environment: {} } }; render(context)
+  await f.get('draft-map-return-plan').fire('click'); assert.match(f.get('draft-map-return-status').textContent, /distance unavailable/)
+  const old = f.get('draft-map-return-apply'); render({ ...context, identity: {} }); await old.fire('click'); assert.equal(text, '999,999\n1000,1000')
+  await f.get('draft-map-return-plan').fire('click'); const discarded = f.get('draft-map-return-apply'); render(null); await discarded.fire('click'); assert.equal(text, '999,999\n1000,1000')
+})
 class Element {
   constructor(tag = '') { this.tagName = tag; this.dataset = {}; this.value = ''; this.children = []; this.events = new Map(); this.files = []; this.attributes = {}; this.textContent = ''; this.isConnected = true }
   setAttribute(k, v) { this.attributes[k] = String(v) }
@@ -253,4 +309,163 @@ test('route CSV works with v1 drafts and stages unknown coverage without manufac
   f.get('draft-map-csv-file').files = [{ size: csv.length, text: async () => csv }]; await f.get('draft-map-csv-file').fire('change')
   assert.match(f.get('draft-map-csv-status').textContent, /coverage unknown/)
   await f.get('draft-map-csv-apply').fire('click'); assert.equal(text, '1000000,0\n0,1000000')
+})
+
+test('detour stages, cancels, applies, undoes and exports through the real mission authoring controls', async () => {
+  const f = screen(); await f.start()
+  const original = f.get('draft-cells').value, saved = f.storage.getItem('moonmoon.study.v1/local-study/r1')
+  f.get('draft-map-detour-avoid').value = '1,3'
+  await f.get('draft-map-detour-plan').fire('click')
+  assert.equal(f.get('draft-cells').value, original)
+  assert.match(f.get('draft-map-detour-preview').textContent, /0,2/)
+  assert.match(f.get('draft-map-detour-status').textContent, /unvalidated geometric/)
+  await f.get('draft-map-detour-cancel').fire('click')
+  assert.equal(f.get('draft-map-detour-apply').disabled, true); assert.equal(f.get('draft-cells').value, original)
+  await f.get('draft-map-detour-plan').fire('click')
+  const oldApply = f.get('draft-map-detour-apply')
+  await oldApply.fire('click'); const detour = f.get('draft-cells').value
+  assert.notEqual(detour, original); assert.ok(!detour.split('\n').includes('1,3'))
+  await oldApply.fire('click'); assert.equal(f.get('draft-cells').value, detour)
+  await f.get('draft-map-undo').fire('click'); assert.equal(f.get('draft-cells').value, original)
+  f.get('draft-map-detour-avoid').value = '1,3'; await f.get('draft-map-detour-plan').fire('click'); await f.get('draft-map-detour-apply').fire('click')
+  const create = URL.createObjectURL, revoke = URL.revokeObjectURL; let blob
+  URL.createObjectURL = value => { blob = value; return 'blob:detour' }; URL.revokeObjectURL = () => {}
+  try {
+    await f.get('draft-export').fire('click'); const bytes = await blob.text(), loaded = await readDraft(bytes)
+    assert.deepEqual(loaded.draft.variants[0].edits.path_cells, parseDraftCells(detour))
+    assert.deepEqual(loaded.draft.variants[1].edits.path_cells, parseDraftCells(original))
+    assert.equal(loaded.draft.physical_execution_allowed, false); assert.equal(loaded.draft.review_required, true)
+    await f.get('draft-discard').fire('click'); f.get('draft-file').files = [{ size: bytes.length, text: async () => bytes }]; await f.get('draft-file').fire('change')
+    assert.equal(f.get('draft-cells').value, detour)
+    assert.equal(f.storage.getItem('moonmoon.study.v1/local-study/r1'), saved)
+  } finally { URL.createObjectURL = create; URL.revokeObjectURL = revoke }
+})
+
+test('detour refuses stale previews after inputs, variant, route and source context change', async () => {
+  const f = screen(); await f.start(); const original = f.get('draft-cells').value
+  const stage = async () => { f.get('draft-map-detour-avoid').value = '1,3'; await f.get('draft-map-detour-plan').fire('click') }
+  await stage(); f.get('draft-map-detour-avoid').value = '2,3'; await f.get('draft-map-detour-apply').fire('click')
+  assert.equal(f.get('draft-cells').value, original); assert.match(f.get('draft-map-detour-status').textContent, /preview again/)
+  await stage(); f.get('draft-map-detour-from').value = '2'; await f.get('draft-map-detour-from').fire('change')
+  assert.equal(f.get('draft-map-detour-apply').disabled, true)
+  f.get('draft-map-detour-from').value = '0'; await stage(); const staleVariant = f.get('draft-map-detour-apply')
+  f.get('draft-variant').value = '1'; await f.get('draft-variant').fire('change'); await staleVariant.fire('click'); assert.equal(f.get('draft-cells').value, original)
+  await stage(); const staleRoute = f.get('draft-map-detour-apply')
+  f.get('draft-cells').value = '0,0\n0,1'; await f.get('draft-cells').fire('input'); await staleRoute.fire('click'); assert.equal(f.get('draft-cells').value, '0,0\n0,1')
+  await f.get('draft-map-detour-plan').fire('click'); assert.equal(f.get('draft-map-detour-apply').disabled, true)
+  let text = original, render
+  render = bindDraftRouteMap(f.document, { readText: () => text, writeText: value => { text = value } })
+  const context = { dossier: parent.dossier, design: parent.alternatives[0].design, identity: {} }; render(context)
+  await stage(); const oldSource = f.get('draft-map-detour-apply')
+  render({ ...context, dossier: { ...parent.dossier, sources: [] }, identity: {} })
+  await oldSource.fire('click'); assert.equal(text, original); assert.equal(f.get('draft-map-detour-plan').disabled, true)
+  assert.match(f.get('draft-map-detour-status').textContent, /unavailable/)
+})
+
+test('detour error states leave original route untouched and clear older successful previews', async () => {
+  const f = screen(); await f.start(); const original = f.get('draft-cells').value
+  f.get('draft-map-detour-avoid').value = '1,3'; await f.get('draft-map-detour-plan').fire('click')
+  assert.equal(f.get('draft-map-detour-apply').disabled, false)
+  f.get('draft-map-detour-avoid').value = '1,0\n1,1\n1,2\n1,3'; await f.get('draft-map-detour-plan').fire('click')
+  assert.equal(f.get('draft-map-detour-apply').disabled, true); assert.equal(f.get('draft-map-detour-preview').textContent, '')
+  assert.match(f.get('draft-map-detour-status').textContent, /No four-neighbor/)
+  for (const cells of ['0,3\n0,3', '0,3\n999,999']) {
+    f.get('draft-cells').value = cells; await f.get('draft-cells').fire('input'); await f.get('draft-map-detour-plan').fire('click')
+    assert.equal(f.get('draft-map-detour-apply').disabled, true); assert.equal(f.get('draft-cells').value, cells)
+  }
+  f.get('draft-cells').value = original; await f.get('draft-cells').fire('input')
+  f.get('draft-map-detour-avoid').value = '-1,0'; await f.get('draft-map-detour-plan').fire('click')
+  assert.equal(f.get('draft-map-detour-apply').disabled, true); assert.equal(f.get('draft-cells').value, original)
+})
+
+test('legacy v1 drafts can adopt detours without schema promotion or inherited results', async () => {
+  const f = screen(); await f.start(); await f.get('draft-discard').fire('click')
+  const draft = forkMission(parent, 'q11-a', { version: 1 }); draft.edits.assumption_note = 'Known-cell detour, pending native assessment'
+  const bytes = await exportDraft(draft)
+  f.get('draft-file').files = [{ size: bytes.length, text: async () => bytes }]; await f.get('draft-file').fire('change')
+  f.get('draft-map-detour-avoid').value = '1,3'; await f.get('draft-map-detour-plan').fire('click'); await f.get('draft-map-detour-apply').fire('click')
+  const route = parseDraftCells(f.get('draft-cells').value)
+  const create = URL.createObjectURL, revoke = URL.revokeObjectURL; let blob
+  URL.createObjectURL = value => { blob = value; return 'blob:v1-detour' }; URL.revokeObjectURL = () => {}
+  try {
+    await f.get('draft-export').fire('click'); const loaded = await readDraft(await blob.text())
+    assert.equal(loaded.draft.contract_id, 'moonmoon.mission-draft.v1'); assert.deepEqual(loaded.draft.edits.path_cells, route)
+    assert.equal(loaded.draft.parent_digest, parent.envelope.dossier_digest); assert.equal(loaded.draft.physical_execution_allowed, false)
+  } finally { URL.createObjectURL = create; URL.revokeObjectURL = revoke }
+})
+
+test('explicit grade-limited preview applies, undoes, exports and reopens an exact route without results', async () => {
+  const f = screen(); await f.start()
+  const original = f.get('draft-cells').value, saved = f.storage.getItem('moonmoon.study.v1/local-study/r1')
+  const stage = async () => {
+    assert.equal(f.get('draft-map-detour-mode').value, 'unrestricted')
+    f.get('draft-map-detour-mode').value = 'grade-limited'; await f.get('draft-map-detour-mode').fire('change')
+    assert.equal(f.get('draft-map-detour-grade').disabled, false)
+    f.get('draft-map-detour-grade').value = '0.5'; f.get('draft-map-detour-avoid').value = '1,3'
+    await f.get('draft-map-detour-plan').fire('click')
+  }
+  await stage()
+  assert.equal(f.get('draft-cells').value, original)
+  assert.match(f.get('draft-map-detour-status').textContent, /maximum absolute sampled edge grade ≤ 0.5 m\/m/)
+  assert.match(f.get('draft-map-detour-status').textContent, /frozen cell size 20 m/)
+  assert.match(f.get('draft-map-detour-status').textContent, /Replacement span only/)
+  assert.equal(f.get('draft-map-detour-apply').disabled, false)
+  await f.get('draft-map-detour-apply').fire('click'); const applied = f.get('draft-cells').value
+  assert.notEqual(applied, original)
+  await f.get('draft-map-undo').fire('click'); assert.equal(f.get('draft-cells').value, original)
+  await stage(); await f.get('draft-map-detour-apply').fire('click')
+  const create = URL.createObjectURL, revoke = URL.revokeObjectURL; let blob
+  URL.createObjectURL = value => { blob = value; return 'blob:grade-detour' }; URL.revokeObjectURL = () => {}
+  try {
+    await f.get('draft-export').fire('click'); const bytes = await blob.text(), loaded = await readDraft(bytes)
+    assert.deepEqual(loaded.draft.variants[0].edits.path_cells, parseDraftCells(applied))
+    assert.deepEqual(loaded.draft.variants[1].edits.path_cells, parseDraftCells(original))
+    assert.equal(loaded.draft.physical_execution_allowed, false); assert.equal(loaded.draft.review_required, true)
+    await f.get('draft-discard').fire('click'); f.get('draft-file').files = [{size:bytes.length,text:async()=>bytes}]; await f.get('draft-file').fire('change')
+    assert.equal(f.get('draft-cells').value, applied); assert.equal(f.get('draft-map-detour-mode').value, 'unrestricted')
+    await f.get('draft-export').fire('click'); assert.equal(await blob.text(), bytes)
+    assert.equal(f.storage.getItem('moonmoon.study.v1/local-study/r1'), saved)
+  } finally { URL.createObjectURL = create; URL.revokeObjectURL = revoke }
+})
+
+test('grade controls require a bound, clear invalid previews, and guard cancel, mode and value staleness', async () => {
+  const f = screen(); await f.start(); const original = f.get('draft-cells').value
+  const stage = async () => {
+    f.get('draft-map-detour-mode').value = 'grade-limited'; f.get('draft-map-detour-grade').value = '0.5'; f.get('draft-map-detour-avoid').value = '1,3'
+    await f.get('draft-map-detour-plan').fire('click'); assert.equal(f.get('draft-map-detour-apply').disabled, false)
+  }
+  await stage(); f.get('draft-map-detour-grade').value = '0.6'; await f.get('draft-map-detour-apply').fire('click')
+  assert.match(f.get('draft-map-detour-status').textContent, /preview again/)
+  await stage(); f.get('draft-map-detour-mode').value = 'unrestricted'; await f.get('draft-map-detour-apply').fire('click')
+  assert.match(f.get('draft-map-detour-status').textContent, /preview again/)
+  await stage(); await f.get('draft-map-detour-grade').fire('input'); assert.equal(f.get('draft-map-detour-apply').disabled, true)
+  await stage(); await f.get('draft-map-detour-cancel').fire('click'); await f.get('draft-map-detour-apply').fire('click'); assert.equal(f.get('draft-map-detour-preview').textContent, '')
+  for (const bound of ['', ' ', '-1', 'Infinity', 'NaN', '1e309', '0x10', '0']) {
+    await stage(); f.get('draft-map-detour-grade').value = bound; await f.get('draft-map-detour-plan').fire('click')
+    assert.equal(f.get('draft-map-detour-apply').disabled, true); assert.equal(f.get('draft-map-detour-preview').textContent, '')
+    assert.match(f.get('draft-map-detour-status').textContent, /No detour staged/)
+  }
+  assert.equal(f.get('draft-cells').value, original)
+  f.get('draft-map-detour-mode').value = 'unrestricted'; await f.get('draft-map-detour-mode').fire('change')
+  assert.equal(f.get('draft-map-detour-grade').disabled, true)
+  await f.get('draft-map-detour-plan').fire('click'); assert.equal(f.get('draft-map-detour-apply').disabled, false)
+  assert.match(f.get('draft-map-detour-status').textContent, /Unrestricted sampled edge grade/)
+  await stage(); const stale = f.get('draft-map-detour-apply')
+  f.get('draft-variant').value = '1'; await f.get('draft-variant').fire('change'); await stale.fire('click'); assert.equal(f.get('draft-cells').value, original)
+})
+
+test('grade-limited authoring calls the injected host seam only on explicit Run and preserves its failure', async () => {
+  const submitted = [], receipt = { state: 'failed', message: 'Injected test host refused; no native assessment performed', run_id: 'run-' + 'a'.repeat(64), study_id: 'local-study', revision: 'r619-seam', draft_digest: 'test-only' }
+  const f = screen({ async start(text) { submitted.push(text); return receipt }, async get() { return receipt } }); await f.start()
+  f.get('draft-map-detour-mode').value = 'grade-limited'; f.get('draft-map-detour-grade').value = '0.5'; f.get('draft-map-detour-avoid').value = '1,3'
+  await f.get('draft-map-detour-plan').fire('click'); await f.get('draft-map-detour-apply').fire('click')
+  const route = parseDraftCells(f.get('draft-cells').value)
+  assert.deepEqual(submitted, [])
+  await f.get('run-start').fire('click'); assert.equal(submitted.length, 1)
+  const draft = (await readDraft(submitted[0])).draft
+  assert.deepEqual(draft.variants[0].edits.path_cells, route)
+  assert.equal(draft.physical_execution_allowed, false); assert.equal(draft.review_required, true)
+  assert.equal(draft.result, undefined)
+  assert.match(f.get('run-status').textContent, /Injected test host refused/)
+  assert.equal(f.get('run-open').disabled, true)
 })

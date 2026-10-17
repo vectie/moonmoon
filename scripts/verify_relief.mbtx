@@ -1,0 +1,264 @@
+///|
+// Exercise the user-facing imported-raster relief workflow without overwriting inputs.
+import {
+  "moonbitlang/async@0.19.4",
+  "moonbitlang/async@0.19.4/fs",
+  "moonbitlang/async@0.19.4/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x@0.4.50/crypto",
+}
+
+///|
+struct Journey {
+  exe : String
+  root : String
+  records : Array[Json]
+}
+
+///|
+fn field(value : Json, key : String) -> Json raise {
+  guard value is Object(fields) && fields.get(key) is Some(result) else {
+    fail("Missing " + key)
+  }
+  result
+}
+
+///|
+async fn read_json(path : String) -> Json {
+  @json.parse(@fs.read_file(path).text())
+}
+
+///|
+async fn hash(path : String) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(@fs.read_file(path).binary()))
+}
+
+///|
+async fn Journey::run(
+  self : Journey,
+  args : Array[String],
+  expected? : Int = 0,
+) -> Unit {
+  let completed = @async.with_timeout_opt(180000, () => {
+    @process.collect_output(self.exe, args[:])
+  })
+  guard completed is Some((code, stdout, stderr)) else { fail("CLI timed out") }
+  let n = self.records.length().to_string()
+  @fs.write_file(
+    self.root + "/command-" + n + ".stdout",
+    stdout.text(),
+    create_mode=CreateNew,
+  )
+  @fs.write_file(
+    self.root + "/command-" + n + ".stderr",
+    stderr.text(),
+    create_mode=CreateNew,
+  )
+  self.records.push({
+    "argv": ([self.exe] + args).to_json(),
+    "exit_code": code,
+    "expected_exit_code": expected,
+  })
+  @fs.write_file(
+    self.root + "/commands.json",
+    self.records.to_json().stringify(indent=2) + "\n",
+    create_mode=if n == "0" { CreateNew } else { TruncateExisting },
+  )
+  assert_eq(
+    code,
+    expected,
+    msg=args.to_json().stringify() + "\n" + stdout.text() + stderr.text(),
+  )
+}
+
+///|
+async fn main {
+  guard @env.args()[1:] is [exe, source, root] else {
+    fail("Usage: ABSOLUTE_EXECUTABLE ABSOLUTE_SOURCE NEW_ABSOLUTE_OUTPUT")
+  }
+  assert_true(
+    exe.has_prefix("/") && source.has_prefix("/") && root.has_prefix("/"),
+  )
+  @fs.mkdir(root)
+  let journey : Journey = { exe, root, records: [], }
+  let fixtures = source + "/data/terrain_import"
+  let input_hash = hash(fixtures + "/relief-hill.asc")
+  let edits_hash = hash(fixtures + "/relief-edit.csv")
+  journey.run([
+    "convert",
+    fixtures + "/relief-hill.asc",
+    root + "/import",
+    "relief-hill",
+    "Synthetic local XY grid, unverified",
+    "m",
+    "Newly authored synthetic Apache-2.0 example; not lunar observations",
+  ])
+  let original_path = root + "/import/terrain-import.json"
+  let original_hash = hash(original_path)
+  for
+    (name, azimuth, elevation, scale) in [
+      ("northwest", "315", "35", "1"),
+      ("southeast", "135", "35", "1"),
+      ("exaggerated", "315", "35", "3"),
+      ("flat", "315", "35", "0"),
+      ("overhead", "315", "90", "1"),
+    ] {
+    journey.run([
+      "relief",
+      original_path,
+      root + "/" + name,
+      azimuth,
+      elevation,
+      scale,
+    ])
+    journey.run(["reopen-relief", root + "/" + name + "/terrain-relief.json"])
+  }
+  let first = read_json(root + "/northwest/terrain-relief.json")
+  let overhead_svg = @fs.read_file(root + "/overhead/relief.svg").text()
+  assert_true(overhead_svg.contains("Overhead: no XY direction"))
+  assert_true(!overhead_svg.contains("marker-end=\"url(#arrow)\""))
+  let opposite = read_json(root + "/southeast/terrain-relief.json")
+  let exaggerated = read_json(root + "/exaggerated/terrain-relief.json")
+  assert_eq(field(first, "triangle_count"), 64)
+  assert_eq(field(first, "unknown_quads"), 4)
+  assert_eq(field(first, "status"), "partial-surface")
+  assert_eq(field(first, "physical_readiness"), false)
+  assert_eq(field(first, "source_bundle"), field(opposite, "source_bundle"))
+  assert_eq(field(first, "source_bundle"), field(exaggerated, "source_bundle"))
+  assert_true(field(first, "faces") != field(opposite, "faces"))
+  assert_true(field(first, "faces") != field(exaggerated, "faces"))
+  assert_true(field(first, "relief_digest") != field(opposite, "relief_digest"))
+  assert_eq(
+    @fs.read_file(root + "/northwest/relief.svg").text().to_json(),
+    field(first, "relief_svg"),
+  )
+  assert_eq(
+    @fs.read_file(root + "/northwest/relief-faces.csv").text().to_json(),
+    field(first, "faces_csv"),
+  )
+  assert_eq(
+    @fs.read_file(root + "/northwest/relief-report.md").text().to_json(),
+    field(first, "report_markdown"),
+  )
+  journey.run([
+    "revise",
+    original_path,
+    fixtures + "/relief-edit.csv",
+    root + "/revision",
+    "Synthetic declaration fills the unknown sample and raises the peak; not observations",
+  ])
+  journey.run([
+    "relief",
+    root + "/revision/terrain-import.json",
+    root + "/revised",
+    "315",
+    "35",
+    "1",
+  ])
+  journey.run(["reopen-relief", root + "/revised/terrain-relief.json"])
+  let revised = read_json(root + "/revised/terrain-relief.json")
+  assert_eq(field(revised, "triangle_count"), 72)
+  assert_eq(field(revised, "unknown_quads"), 0)
+  assert_true(
+    field(first, "source_bundle_digest") !=
+    field(revised, "source_bundle_digest"),
+  )
+  // The same entry point consumes detached PDS3 imports without a new format adapter.
+  journey.run([
+    "pds3",
+    fixtures + "/DEMO.LBL",
+    fixtures + "/DEMO.IMG",
+    fixtures + "/pds3-grid.json",
+    root + "/pds3",
+  ])
+  journey.run([
+    "relief",
+    root + "/pds3/terrain-import.json",
+    root + "/pds3-relief",
+    "270",
+    "45",
+    "1",
+  ])
+  journey.run(["reopen-relief", root + "/pds3-relief/terrain-relief.json"])
+  assert_eq(
+    field(
+      read_json(root + "/pds3-relief/terrain-relief.json"),
+      "triangle_count",
+    ),
+    4,
+  )
+  // Repetition must not replace an existing study.
+  let first_hash = hash(root + "/northwest/terrain-relief.json")
+  journey.run(
+    ["relief", original_path, root + "/northwest", "135", "35", "3"],
+    expected=2,
+  )
+  assert_eq(hash(root + "/northwest/terrain-relief.json"), first_hash)
+  for
+    (name, azimuth, elevation, scale) in [
+      ("bad-azimuth", "360", "35", "1"),
+      ("bad-elevation", "315", "91", "1"),
+      ("bad-scale", "315", "35", "-1"),
+      ("bad-nan", "NaN", "35", "1"),
+    ] {
+    journey.run(
+      ["relief", original_path, root + "/" + name, azimuth, elevation, scale],
+      expected=2,
+    )
+    assert_true(!@fs.exists(root + "/" + name))
+  }
+  let tampered = read_json(root + "/northwest/terrain-relief.json")
+  guard tampered is Object(fields) else { fail("relief object") }
+  fields["relief_svg"] = "changed output".to_json()
+  @fs.write_file(
+    root + "/tampered.json",
+    tampered.stringify(),
+    create_mode=CreateNew,
+  )
+  journey.run(["reopen-relief", root + "/tampered.json"], expected=2)
+  assert_eq(hash(original_path), original_hash)
+  assert_eq(hash(fixtures + "/relief-hill.asc"), input_hash)
+  assert_eq(hash(fixtures + "/relief-edit.csv"), edits_hash)
+  let hashes : Array[Json] = []
+  for
+    name in [
+      "northwest", "southeast", "exaggerated", "flat", "overhead", "revised", "pds3-relief",
+    ] {
+    for
+      file in [
+        "terrain-relief.json", "relief.svg", "relief-faces.csv", "relief-report.md",
+      ] {
+      let path = name + "/" + file
+      hashes.push({ "path": path, "sha256": hash(root + "/" + path) })
+    }
+  }
+  @fs.write_file(
+    root + "/output-hashes.json",
+    hashes.to_json().stringify(indent=2) + "\n",
+    create_mode=CreateNew,
+  )
+  let result : Json = {
+    "status": "passed",
+    "commands": journey.records.length(),
+    "expected_refusals": 6,
+    "original_triangles": 64,
+    "revised_triangles": 72,
+    "pds3_triangles": 4,
+    "original_unknown_quads": 4,
+    "revised_unknown_quads": 0,
+    "source_inputs_preserved": true,
+    "changed_light_and_relief_change_faces": true,
+    "invalid_parameters_create_no_output": true,
+    "original_import_sha256": original_hash,
+    "input_sha256": input_hash,
+    "edits_sha256": edits_hash,
+    "scope": "Synthetic imported-raster display workflow; no external lunar data, actual illumination, cast shadows or physical qualification",
+  }
+  @fs.write_file(
+    root + "/RESULT.json",
+    result.stringify(indent=2) + "\n",
+    create_mode=CreateNew,
+  )
+  println(result.stringify(indent=2))
+}

@@ -54,12 +54,52 @@ fn route_path(
   max_grade_deg : Double,
   uphill_weight : Double,
 ) -> Array[Int] raise ImportError {
+  let search = route_search(
+    grid,
+    start,
+    Some(goal),
+    max_grade_deg,
+    uphill_weight,
+  )
+  search.path(start, goal)
+}
+
+///|
+priv struct RouteSearch {
+  costs : Array[Double?]
+  previous : Array[Int]
+}
+
+///|
+fn RouteSearch::path(self : RouteSearch, start : Int, goal : Int) -> Array[Int] {
+  let reversed : Array[Int] = []
+  if self.costs[goal] is Some(_) {
+    let mut at = goal
+    while at != start {
+      reversed.push(at)
+      at = self.previous[at]
+    }
+    reversed.push(start)
+  }
+  Array::makei(reversed.length(), i => reversed[reversed.length() - i - 1])
+}
+
+///|
+// A single search supports both an endpoint route and all-destination exploration.
+// None searches the whole known-cell graph; Some stops at the settled goal.
+fn route_search(
+  grid : AsciiGrid,
+  start : Int,
+  goal : Int?,
+  max_grade_deg : Double,
+  uphill_weight : Double,
+  reverse_edges? : Bool = false,
+) -> RouteSearch raise ImportError {
   let count = grid.values.length()
   let costs : Array[Double?] = Array::make(count, None)
   let previous = Array::make(count, -1)
   let visited = Array::make(count, false)
   costs[start] = Some(0.0)
-  let mut reached = false
   // Bounded to 4096 cells by the importer. A dense Dijkstra selection avoids
   // introducing a dependency and gives explicit, stable tie behavior.
   for _ in 0..<count {
@@ -77,8 +117,7 @@ fn route_path(
       break
     }
     visited[selected] = true
-    if selected == goal {
-      reached = true
+    if goal == Some(selected) {
       break
     }
     let row = selected / grid.cols
@@ -105,7 +144,10 @@ fn route_path(
       if grade > max_grade_deg {
         continue
       }
-      let candidate = best + grid.cell_size + uphill_weight * rise.max(0.0)
+      let directed_rise = if reverse_edges { -rise } else { rise }
+      let candidate = best +
+        grid.cell_size +
+        uphill_weight * directed_rise.max(0.0)
       need(
         finite(candidate),
         "Route cost overflows; reduce the uphill weight or rescale the source",
@@ -116,14 +158,5 @@ fn route_path(
       }
     }
   }
-  let reversed : Array[Int] = []
-  if reached {
-    let mut at = goal
-    while at != start {
-      reversed.push(at)
-      at = previous[at]
-    }
-    reversed.push(start)
-  }
-  Array::makei(reversed.length(), i => reversed[reversed.length() - i - 1])
+  { costs, previous, }
 }

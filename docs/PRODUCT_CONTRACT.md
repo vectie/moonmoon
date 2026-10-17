@@ -74,3 +74,8 @@ compare retained observations against explicit numeric and coverage requirements
 preserve every native blocker, and reopen a report only against its exact original
 dossier. Matching criteria does not select a mission, change its named review,
 verify source declarations, or confer physical authority.
+
+Draft authors can [preview and apply a known-cell detour](DRAFT_ROUTE_DETOURS.md)
+inside the existing route editor. The deterministic geometric proposal preserves
+unselected route occurrences and has explicit undo; it does not assess hazards,
+energy or physical readiness. Native simulation and review remain separate.

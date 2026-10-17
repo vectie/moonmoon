@@ -7,12 +7,27 @@ import { execFileSync } from 'node:child_process'
 import { webcrypto } from 'node:crypto'
 import { readStudy, sha256, StudyStore, bindMissionStudy } from './mission-study.js'
 import { forkMission, exportDraft, readDraft, readRobotInput } from './mission-authoring.js'
+import { planRouteReturn } from './mission-route-return.js'
 
 if (!globalThis.crypto) globalThis.crypto = webcrypto
 const parentText = await readFile(new URL('./fixtures/mission-study-local.json', import.meta.url), 'utf8')
 const robotText = await readFile(new URL('./fixtures/moonrobo-simulation-input.json', import.meta.url), 'utf8')
 const parent = await readStudy(parentText)
 const valid = () => { const draft = forkMission(parent, 'q11-a', { version: 1 }); draft.edits.assumption_note = 'Inert source fixture: lower assumed energy'; return draft }
+
+test('retraced alternatives roundtrip in both portable draft versions with exact frozen parent and no result', async () => {
+  for (const version of [1, 2]) {
+    const draft = forkMission(parent, 'q11-a', { version }), variants = draft.variants || [{ edits: draft.edits }]
+    const outbound = structuredClone(variants[0].edits.path_cells)
+    variants[0].edits.assumption_note = 'Authored retrace; energy and feasibility unassessed'
+    variants[0].edits.path_cells = planRouteReturn(outbound, 20).route
+    const text = await exportDraft(draft), reopened = await readDraft(text)
+    assert.deepEqual(reopened.draft, draft); assert.equal(await exportDraft(reopened.draft), text)
+    if (version === 2) assert.deepEqual(reopened.draft.variants[1].edits.path_cells, outbound)
+    assert.equal(reopened.parent.text, parentText); assert.equal(draft.result, undefined)
+    assert.equal(draft.physical_execution_allowed, false); assert.equal(draft.review_required, true)
+  }
+})
 
 test('mission fork preserves frozen parent and review boundary and roundtrips runnable inputs', async () => {
   const before = JSON.stringify(parent)
