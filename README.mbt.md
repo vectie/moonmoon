@@ -6,6 +6,30 @@
 
 MoonMoon is a MoonBit-native lunar terrain and mission model.
 
+[Imported-raster relief shading](docs/TERRAIN_RELIEF.md) makes source-bound SVG
+maps with adjustable grid-relative light direction and display relief scale.
+Compare light or terrain revisions with replayable JSON and per-face CSVs;
+unknown neighborhoods remain hatched. This is not real lunar illumination.
+
+[Detached PDS3 elevation intake](docs/PDS3_IMPORT.md) decodes local signed-16-bit
+IMG clips with explicit grid, datum and uncertainty declarations. Inspect raw
+codes and scaled elevations, preserve unknown cells, then edit and export through
+the terrain tools. No projection, radius conversion or dataset qualification.
+
+[Coarse terrain overviews](docs/TERRAIN_COARSENING.md) turn aligned blocks into
+portable lower-resolution grids, with side-by-side maps and per-block observed
+extrema and coverage. Missing fine cells withhold the whole block mean; reduced
+relief can hide hazards and supplies no navigation authority.
+
+[Terrain destination exploration](docs/TERRAIN_DESTINATION_EXPLORATION.md)
+maps every known-cell destination under a declared one-way travel-cost budget.
+Choose a candidate, carry its exact path into corridor and energy assessment,
+then edit terrain or assumptions and compare the new exploration.
+
+[Terrain contour exploration](docs/TERRAIN_CONTOURS.md) exports source-bound
+SVG maps, segment CSVs and retained-source JSON from imported terrain at chosen
+elevations. Inspect crater or saddle terrain without filling missing coverage.
+
 The study UI supports [frozen mission authoring](docs/MISSION_AUTHORING.md):
 fork and edit inputs, run the exported proposal with the native simulator, and
 reimport compatible comparison results. The native command step is currently

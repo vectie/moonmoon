@@ -132,7 +132,7 @@ export function bindMissionAuthoring(document, getActive, runOptions) {
         try { draftVariants(draft)[selected].edits.path_cells = parseDraftCells(byId('cells').value) } catch { /* Preserve unfinished authoritative text. */ }
         renderRoute()
       }
-      status('Unsaved input draft. Run this digital mission using the local host, or export frozen inputs')
+      status('Unsaved input draft. Duplicate a variant before adding a retraced return if you want to preserve the outbound alternative. Run this digital mission using the local host, or export frozen inputs')
     }
   }
   const valuesFor = e => ({ route: e.route_id, cells: e.path_cells.map(cell => cell.join(',')).join('\n'), energy: e.terrain_available_energy_wh, speed: e.commanded_speed_mps, seed: e.seed, faults: e.injected_faults.join('\n'), note: e.assumption_note })

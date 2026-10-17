@@ -1,6 +1,256 @@
 ///|
+fn read_pds3_text(path : String) -> (String, Bytes) raise {
+  let bytes = @fsx.read_file_to_bytes(path)
+  let text = @utf8.decode(bytes[:], ignore_bom=false) catch {
+    _ => fail("PDS3 label and declaration require valid UTF-8 bytes")
+  }
+  if @utf8.encode(text) != bytes {
+    fail("PDS3 text decoding must preserve the exact source bytes")
+  }
+  (text, bytes)
+}
+
+///|
 fn run() -> Unit raise {
   match @env.args()[1:] {
+    ["relief", path, output, azimuth, elevation, scale] => {
+      let result = @raster.relief_bundle(
+        @fsx.read_file_to_string(path),
+        @string.parse_double(azimuth),
+        @string.parse_double(elevation),
+        @string.parse_double(scale),
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard result is Object(fields) else { fail("Invalid relief result") }
+      @fsx.create_dir(output)
+      for
+        (name, key) in [
+          ("relief.svg", "relief_svg"),
+          ("relief-faces.csv", "faces_csv"),
+          ("relief-report.md", "report_markdown"),
+        ] {
+        guard fields.get(key) is Some(String(text)) else {
+          fail("Missing relief output " + key)
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-relief.json",
+        result.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-relief.json")
+      println(
+        "Open relief.svg. Light is relative to declared grid axes; display-only relief, no lunar illumination or physical readiness.",
+      )
+    }
+    ["reopen-relief", path] =>
+      println(
+        @raster.reopen_relief_bundle(@fsx.read_file_to_string(path)).stringify(
+          indent=2,
+        ),
+      )
+    ["pds3", label_path, image_path, specification_path, output] => {
+      let (label, label_bytes) = read_pds3_text(label_path)
+      let image = @fsx.read_file_to_bytes(image_path)
+      let (specification, specification_bytes) = read_pds3_text(
+        specification_path,
+      )
+      let parts = image_path.split("/").collect()
+      let image_name = parts[parts.length() - 1].to_owned()
+      let bundle = @raster.import_pds3_bundle(
+        label, image, image_name, specification,
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard bundle is Object(fields) else {
+        fail("Invalid PDS3 terrain bundle")
+      }
+      @fsx.create_dir(output)
+      @fsx.write_bytes_to_file(output + "/SOURCE.LBL", label_bytes)
+      @fsx.write_bytes_to_file(output + "/" + image_name, image)
+      @fsx.write_bytes_to_file(output + "/grid.json", specification_bytes)
+      for
+        (name, key) in [
+          ("terrain.csv", "terrain_csv"),
+          ("decoded-samples.csv", "decoded_samples_csv"),
+          ("import-report.md", "import_report_markdown"),
+        ] {
+        guard fields.get(key) is Some(String(text)) else {
+          fail("Missing PDS3 export " + key)
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-import.json",
+        bundle.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-import.json")
+      println(
+        "PDS3 signed-16-bit elevation imported. Inspect decoded-samples.csv and import-report.md. Grid and vertical datum are caller declarations; no projection or physical readiness.",
+      )
+    }
+    ["coarsen", path, output, factor, tile_id, reason] => {
+      let result = @raster.coarsen_bundle(
+        @fsx.read_file_to_string(path),
+        @string.parse_int(factor),
+        tile_id,
+        reason,
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard result is Object(fields) &&
+        fields.get("terrain_bundle") is Some(terrain) else {
+        fail("Invalid coarse terrain")
+      }
+      @fsx.create_dir(output)
+      for
+        (name, field) in [
+          ("source.asc", "ascii_grid_text"),
+          ("coarse-cells.csv", "cells_csv"),
+          ("overview.svg", "overview_svg"),
+          ("coarsening-report.md", "report_markdown"),
+        ] {
+        guard fields.get(field) is Some(String(text)) else {
+          fail("Missing coarsening output " + field)
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-import.json",
+        terrain.stringify(indent=2) + "\n",
+      )
+      @fsx.write_string_to_file(
+        output + "/terrain-coarsening.json",
+        result.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-coarsening.json")
+      println(
+        "Open overview.svg and coarse-cells.csv. Fine-scale hazards can disappear; no navigation authority or physical readiness.",
+      )
+    }
+    ["reopen-coarsening", path] =>
+      println(
+        @raster.reopen_coarsen_bundle(@fsx.read_file_to_string(path)).stringify(
+          indent=2,
+        ),
+      )
+    ["reach", path, output, start_row, start_col, grade, uphill, budget] => {
+      let result = @raster.reachability_bundle(
+        @fsx.read_file_to_string(path),
+        @string.parse_int(start_row),
+        @string.parse_int(start_col),
+        @string.parse_double(grade),
+        @string.parse_double(uphill),
+        @string.parse_double(budget),
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard result is Object(fields) else {
+        fail("Invalid reachability result")
+      }
+      @fsx.create_dir(output)
+      for
+        (name, field) in [
+          ("reachability.svg", "reachability_svg"),
+          ("reachability-cells.csv", "cells_csv"),
+          ("reachability-report.md", "report_markdown"),
+        ] {
+        guard fields.get(field) is Some(String(text)) else {
+          fail("Missing reachability output")
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-reachability.json",
+        result.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-reachability.json")
+      println(
+        "Open reachability.svg and choose a within-budget row/column with reach-path. One-way objective cost, not energy or physical traversability.",
+      )
+    }
+    ["reach-path", path, output, goal_row, goal_col] => {
+      let result = @raster.reachability_path_bundle(
+        @fsx.read_file_to_string(path),
+        @string.parse_int(goal_row),
+        @string.parse_int(goal_col),
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard result is Object(fields) &&
+        fields.get("route") is Some(route_json) &&
+        route_json is Object(route) else {
+        fail("Invalid selected route")
+      }
+      @fsx.create_dir(output)
+      for
+        (name, field) in [
+          ("path-cells.txt", "path_cells_text"),
+          ("route.csv", "route_csv"),
+          ("route.svg", "route_svg"),
+          ("route-report.md", "report_markdown"),
+        ] {
+        guard route.get(field) is Some(String(text)) else {
+          fail("Missing selected route output")
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      guard route.get("source_bundle") is Some(source) else {
+        fail("Missing selected terrain")
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-import.json",
+        source.stringify(indent=2) + "\n",
+      )
+      @fsx.write_string_to_file(
+        output + "/terrain-route.json",
+        route_json.stringify(indent=2) + "\n",
+      )
+      @fsx.write_string_to_file(
+        output + "/terrain-reachable-path.json",
+        result.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-reachable-path.json")
+      println(
+        "Within-budget candidate selected from the exact saved exploration. Use terrain-import.json and path-cells.txt for corridor or energy assessment; no physical readiness.",
+      )
+    }
+    ["contours", path, output, .. elevations] => {
+      let levels = elevations.map(value => @string.parse_double(value))
+      let result = @raster.contour_bundle(
+        @fsx.read_file_to_string(path),
+        levels,
+      )
+      if @fsx.path_exists(output) {
+        fail("Output already exists; choose a new directory")
+      }
+      guard result is Object(fields) else { fail("Invalid contour export") }
+      @fsx.create_dir(output)
+      for
+        (name, field) in [
+          ("contours.svg", "contour_svg"),
+          ("contour-segments.csv", "segments_csv"),
+        ] {
+        guard fields.get(field) is Some(String(text)) else {
+          fail("Missing contour output")
+        }
+        @fsx.write_string_to_file(output + "/" + name, text)
+      }
+      @fsx.write_string_to_file(
+        output + "/terrain-contours.json",
+        result.stringify(indent=2) + "\n",
+      )
+      println(output + "/terrain-contours.json")
+      println(
+        "Open contours.svg and inspect per-level coordinates in contour-segments.csv. Grey neighborhoods are unknown; digital reference only.",
+      )
+    }
     ["crop", path, output, row, col, rows, cols, tile_id, reason] => {
       let result = @raster.crop_bundle(
         @fsx.read_file_to_string(path),
@@ -632,6 +882,10 @@ fn run() -> Unit raise {
     }
     _ =>
       fail(
+        "Relief shading: terrain_import relief <terrain-import.json> <new-output-directory> <azimuth-deg-from-grid-positive-y> <elevation-deg> <display-relief-scale>\nRelief replay: terrain_import reopen-relief <terrain-relief.json>\n" +
+        "PDS3 intake: terrain_import pds3 <source.LBL> <SOURCE.IMG> <grid.json> <new-output-directory>\n" +
+        "Coarse overview: terrain_import coarsen <terrain-import.json> <new-output-directory> <integer-factor> <tile-id> <purpose-and-limitations>\nCoarsening replay: terrain_import reopen-coarsening <terrain-coarsening.json>\n" +
+        "Destination exploration: terrain_import reach <terrain-import.json> <new-output-directory> <start-row> <start-col> <max-grade-degrees> <uphill-weight> <one-way-budget-m-equivalent>\nSelect destination: terrain_import reach-path <terrain-reachability.json> <new-output-directory> <goal-row> <goal-col>\n" +
         "Study clip: terrain_import crop <terrain-import.json> <new-output-directory> <start-row> <start-col> <rows> <cols> <tile-id> <purpose-and-limitations>\nClip verification: terrain_import reopen-crop <terrain-crop.json>\nMesh export: terrain_import export-mesh <terrain-import.json> <new-output-directory>\nMesh verification: terrain_import reopen-mesh <terrain-mesh.json>\nCompare area: terrain_import compare-area <reference.json> <candidate.json> <new-output-directory> <change-threshold-m>\nEnergy: terrain_import energy-path <terrain-import.json> <path-cells.txt> <assumptions.json> <new-output-directory>\nVisibility: terrain_import visibility <terrain-import.json> <new-output-directory> <observer-row> <observer-col> <target-row> <target-col> <observer-height-m> <target-height-m>\nMosaic: terrain_import mosaic <left.json> <right.json> <new-output-directory> <tile-id> <source/license note>\nCorridor: terrain_import assess-corridor <terrain-import.json> <path-cells.txt> <new-output-directory> <radius-cells> <slope-limit-degrees> <roughness-limit-m>\nCompare path: terrain_import compare-path <reference.json> <candidate.json> <path-cells.txt> <new-output-directory> <max-grade-degrees> <uphill-weight>\nExact path: terrain_import assess-path <terrain-import.json> <path-cells.txt> <new-output-directory> <max-grade-degrees> <uphill-weight>\nPath input: 1–4096 row,col cells with optional header; consecutive cells must repeat or be cardinal neighbors. No rerouting.\nTerrain editing: terrain_import edit-template <terrain-import.json> <new-edits.csv>\n       terrain_import revise <terrain-import.json> <edits.csv> <new-output-directory> <revision-source-and-reason>\nXYZ intake: terrain_import xyz <points.csv> <grid.json> <new-output-directory>\n" +
         "Usage: terrain_import inspect <source.asc> <tile-id> <coordinate-frame> <m|degrees> <source/license note>\n       terrain_import convert <source.asc> <new-output-directory> <tile-id> <coordinate-frame> <m|degrees> <source/license note>\n       terrain_import reopen <terrain-import.json>\n       terrain_import analyze <terrain-import.json> <new-output-directory> <row|column> <zero-based-index> <slope-threshold-degrees>\n       terrain_import route <terrain-import.json> <new-output-directory> <start-row> <start-col> <goal-row> <goal-col> <max-grade-degrees> <uphill-weight>\n       terrain_import waypoints <terrain-import.json> <waypoints.csv> <new-output-directory> <max-grade-degrees> <uphill-weight>\n       terrain_import waypoints-xy <terrain-import.json> <coordinates.csv> <new-output-directory> <max-grade-degrees> <uphill-weight>\nCoordinate waypoint CSV: x,y header in the source metre frame, cell centers within 1e-7 cell units; no reprojection.\nWaypoint CSV: row,col header, then 2–32 ordered zero-based stops. Elevation values must already be metres. Up to 4096 cells. Analysis and routing require metre cells. No reprojection.",
       )

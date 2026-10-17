@@ -1,0 +1,310 @@
+///|
+// Source-bound import/edit/overview/exchange journey. Never modifies inputs.
+import {
+  "moonbitlang/async@0.19.4",
+  "moonbitlang/async@0.19.4/fs",
+  "moonbitlang/async@0.19.4/process",
+  "moonbitlang/core/env",
+  "moonbitlang/core/json",
+  "moonbitlang/x@0.4.50/crypto",
+}
+
+///|
+struct Journey {
+  exe : String
+  root : String
+  records : Array[Json]
+}
+
+///|
+fn field(value : Json, name : String) -> Json raise {
+  guard value is Object(fields) && fields.get(name) is Some(result) else {
+    fail("Missing " + name)
+  }
+  result
+}
+
+///|
+async fn read_json(path : String) -> Json {
+  @json.parse(@fs.read_file(path).text())
+}
+
+///|
+async fn hash(path : String) -> String {
+  @crypto.bytes_to_hex_string(@crypto.sha256(@fs.read_file(path).binary()))
+}
+
+///|
+async fn Journey::run(
+  self : Journey,
+  args : Array[String],
+  success? : Bool = true,
+) -> Unit {
+  let completed = @async.with_timeout_opt(180000, () => {
+    @process.collect_output(self.exe, args[:])
+  })
+  guard completed is Some((code, output, error)) else { fail("CLI timed out") }
+  let n = self.records.length().to_string()
+  @fs.write_file(
+    self.root + "/command-" + n + ".stdout",
+    output.text(),
+    create_mode=CreateNew,
+  )
+  @fs.write_file(
+    self.root + "/command-" + n + ".stderr",
+    error.text(),
+    create_mode=CreateNew,
+  )
+  self.records.push({
+    "argv": ([self.exe] + args).to_json(),
+    "exit_code": code,
+    "expected_success": success,
+  })
+  @fs.write_file(
+    self.root + "/commands.json",
+    self.records.to_json().stringify(indent=2) + "\n",
+    create_mode=if n == "0" { CreateNew } else { TruncateExisting },
+  )
+  assert_eq(
+    code == 0,
+    success,
+    msg=args.to_json().stringify() + "\n" + output.text() + error.text(),
+  )
+}
+
+///|
+async fn main {
+  let args = @env.args()
+  assert_eq(
+    args.length(),
+    4,
+    msg="verify_terrain_coarsening.mbtx ABSOLUTE_EXECUTABLE ABSOLUTE_SOURCE NEW_ABSOLUTE_OUTPUT",
+  )
+  let exe = args[1]
+  let source = args[2]
+  let root = args[3]
+  assert_true(
+    exe.has_prefix("/") && source.has_prefix("/") && root.has_prefix("/"),
+  )
+  @fs.mkdir(root)
+  let journey : Journey = { exe, root, records: [], }
+  let raster = source + "/data/terrain_import/synthetic-coarsening.asc"
+  let edits = source + "/data/terrain_import/synthetic-coarsening-edit.csv"
+  let raster_hash = hash(raster)
+  let edits_hash = hash(edits)
+  journey.run([
+    "convert",
+    raster,
+    root + "/import",
+    "fine-demo",
+    "Synthetic local Cartesian frame",
+    "m",
+    "Bundled synthetic fixture, Apache-2.0; not measured lunar terrain",
+  ])
+  let terrain = root + "/import/terrain-import.json"
+  let terrain_hash = hash(terrain)
+  journey.run([
+    "coarsen",
+    terrain,
+    root + "/coarse",
+    "2",
+    "overview-demo",
+    "Compare scale and missing coverage; synthetic overview only",
+  ])
+  let receipt = root + "/coarse/terrain-coarsening.json"
+  let receipt_hash = hash(receipt)
+  let coarse_path = root + "/coarse/terrain-import.json"
+  let coarse = read_json(coarse_path)
+  let original = read_json(terrain)
+  let result = read_json(receipt)
+  assert_eq(field(coarse, "rows"), 3)
+  assert_eq(field(coarse, "cols"), 4)
+  assert_eq(field(coarse, "origin_x"), 100)
+  assert_eq(field(coarse, "origin_y"), -20)
+  assert_eq(field(coarse, "cell_size"), 4)
+  assert_eq(field(coarse, "maximum_elevation_m"), 10)
+  assert_eq(field(original, "maximum_elevation_m"), 32)
+  assert_eq(field(result, "known_coarse_cells"), 11)
+  assert_eq(field(result, "unknown_coarse_cells"), 1)
+  assert_eq(field(result, "navigation_authority"), false)
+  guard field(result, "cells") is Array(cells) else {
+    fail("Missing cell statistics")
+  }
+  assert_eq(field(cells[0], "mean_elevation_m"), 8)
+  assert_eq(field(cells[0], "observed_max_m"), 32)
+  assert_eq(field(cells[6], "known_count"), 3)
+  assert_eq(field(cells[6], "mean_elevation_m"), Json::null())
+  journey.run(["reopen", coarse_path])
+  journey.run(["reopen-coarsening", receipt])
+  journey.run(["contours", coarse_path, root + "/contours", "3", "5", "7", "9"])
+  journey.run(["export-mesh", coarse_path, root + "/mesh"])
+  journey.run([
+    "coarsen",
+    terrain,
+    root + "/identity",
+    "1",
+    "same-resolution",
+    "Sample and coordinate identity",
+  ])
+  let identity = read_json(root + "/identity/terrain-import.json")
+  assert_eq(field(identity, "samples"), field(original, "samples"))
+  assert_eq(field(identity, "cell_size"), field(original, "cell_size"))
+  journey.run([
+    "convert",
+    root + "/coarse/source.asc",
+    root + "/exchange",
+    "exchanged",
+    "Synthetic local Cartesian frame",
+    "m",
+    "Reimported generated overview; retain original coarsening receipt",
+  ])
+  assert_eq(
+    field(read_json(root + "/exchange/terrain-import.json"), "samples"),
+    field(coarse, "samples"),
+  )
+  journey.run([
+    "revise",
+    terrain,
+    edits,
+    root + "/revision",
+    "Synthetic declared replacement; not acquired terrain",
+  ])
+  journey.run([
+    "coarsen",
+    root + "/revision/terrain-import.json",
+    root + "/revised-coarse",
+    "2",
+    "revised-overview",
+    "Recompute after declared source edit",
+  ])
+  let revised = read_json(root + "/revised-coarse/terrain-coarsening.json")
+  assert_eq(field(revised, "unknown_coarse_cells"), 0)
+  assert_true(
+    field(revised, "source_bundle_digest") !=
+    field(result, "source_bundle_digest"),
+  )
+  journey.run([
+    "export-mesh",
+    root + "/revised-coarse/terrain-import.json",
+    root + "/revised-mesh",
+  ])
+  journey.run(
+    ["coarsen", terrain, root + "/bad-factor", "3", "bad", "No implicit crop"],
+    success=false,
+  )
+  journey.run(
+    ["coarsen", terrain, root + "/coarse", "2", "duplicate", "No overwrite"],
+    success=false,
+  )
+  journey.run(
+    [
+      "coarsen",
+      terrain,
+      root + "/bad-token",
+      "2.5",
+      "bad",
+      "Integer factor only",
+    ],
+    success=false,
+  )
+  journey.run([
+    "crop",
+    terrain,
+    root + "/clip",
+    "0",
+    "0",
+    "4",
+    "8",
+    "explicit-clip",
+    "Explicit window before factor four",
+  ])
+  journey.run([
+    "coarsen",
+    root + "/clip/terrain-import.json",
+    root + "/clip-coarse",
+    "4",
+    "clip-overview",
+    "Deliberately clipped footprint",
+  ])
+  journey.run(["reopen-coarsening", receipt])
+  assert_eq(hash(raster), raster_hash)
+  assert_eq(hash(edits), edits_hash)
+  assert_eq(hash(terrain), terrain_hash)
+  assert_eq(hash(receipt), receipt_hash)
+  for
+    (name, values, success) in [
+      ("tiny-constant", "1e-323 1e-323 1e-323 1e-323", true),
+      ("cancellation", "1e308 8 -1e308 8", true),
+      ("sum-overflow", "1e308 1e308 -1e308 -1e308", false),
+      ("mean-underflow", "5e-324 0 0 0", false),
+    ] {
+    let input = root + "/" + name + ".asc"
+    @fs.write_file(
+      input,
+      "ncols 2 nrows 2 xllcenter 0 yllcenter 0 cellsize 1 " + values + "\n",
+      create_mode=CreateNew,
+    )
+    let imported = root + "/" + name + "-import"
+    let output = root + "/" + name + "-coarse"
+    journey.run([
+      "convert", input, imported, name, "Synthetic local frame", "m", "Synthetic numerical edge fixture",
+    ])
+    journey.run(
+      [
+        "coarsen",
+        imported + "/terrain-import.json",
+        output,
+        "2",
+        name,
+        "Numerical range test",
+      ],
+      success~,
+    )
+    if success {
+      let numeric = read_json(output + "/terrain-coarsening.json")
+      guard field(numeric, "cells") is Array(numeric_cells) else {
+        fail("Missing numerical result")
+      }
+      if name == "tiny-constant" {
+        assert_eq(
+          field(numeric_cells[0], "mean_elevation_m"),
+          field(numeric_cells[0], "observed_min_m"),
+        )
+        assert_true(field(numeric_cells[0], "mean_elevation_m") != 0)
+      } else {
+        assert_eq(field(numeric_cells[0], "mean_elevation_m"), 4)
+      }
+    } else {
+      assert_true(
+        !@fs.exists(output),
+        msg="Refused numerical input must not create an output directory",
+      )
+    }
+  }
+  let summary : Json = {
+    "status": "passed",
+    "commands": journey.records.length(),
+    "checks": [
+      "original source is immutable", "complete block means, observed extrema and missing coverage",
+      "corner origin and spacing", "factor-one sample/coordinate identity", "portable ASCII reimport",
+      "contour and mesh consumers", "declared source revision and independent recomputation",
+      "explicit crop before nondivisible factor", "existing output and invalid factors refused",
+      "subnormal constant and mixed-sign cancellation retain representable means",
+      "unsupported overflow and zero-underflow create no output directory",
+    ],
+    "source_sha256": raster_hash,
+    "original_import_sha256": terrain_hash,
+    "original_receipt_sha256": receipt_hash,
+    "limits": [
+      "synthetic local fixtures only", "fine peak 32m becomes an 8m mean; detail loss is visible",
+      "no browser, external dataset, installed application or release qualification",
+      "no navigation or physical authority",
+    ],
+  }
+  @fs.write_file(
+    root + "/RESULT.json",
+    summary.stringify(indent=2) + "\n",
+    create_mode=CreateNew,
+  )
+  println(summary.stringify(indent=2))
+}

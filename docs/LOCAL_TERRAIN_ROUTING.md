@@ -110,3 +110,11 @@ No new cockpit controls are included. Tests cover detours, grade-cap equality,
 uphill weighting, signed grades, deterministic repeat, directional costs,
 same-cell endpoints, unknown barriers, diagonal exclusion, rejected inputs and
 overflow. The compiled native sample workflow writes the actual reusable files.
+
+## Explore destinations first
+
+If you know a start and a travel-cost budget but have not chosen an endpoint,
+use [terrain destination exploration](TERRAIN_DESTINATION_EXPLORATION.md).
+It maps minimum objective costs across the known-cell graph, distinguishes
+over-budget, disconnected and unknown cells, and lets you select one candidate
+for the existing corridor and energy assessment workflows.

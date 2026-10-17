@@ -14,9 +14,13 @@ pub fn assess_corridor_bundle(String, String, Int, Double, Double) -> Json raise
 
 pub fn assess_path_bundle(String, String, Double, Double) -> Json raise ImportError
 
+pub fn coarsen_bundle(String, Int, String, String) -> Json raise ImportError
+
 pub fn compare_area_bundle(String, String, Double) -> Json raise ImportError
 
 pub fn compare_path_bundle(String, String, String, Double, Double) -> Json raise ImportError
+
+pub fn contour_bundle(String, Array[Double]) -> Json raise ImportError
 
 pub fn crop_bundle(String, Int, Int, Int, Int, String, String) -> Json raise ImportError
 
@@ -26,6 +30,8 @@ pub fn import_bundle(String, String, String, String, String) -> Json raise Impor
 
 pub fn import_json(String, String, String, String, String) -> String
 
+pub fn import_pds3_bundle(String, Bytes, String, String) -> Json raise ImportError
+
 pub fn import_xyz_bundle(String, String) -> Json raise ImportError
 
 pub fn mosaic_bundle(String, String, String, String) -> Json raise ImportError
@@ -34,7 +40,15 @@ pub fn parse_ascii_grid(String) -> AsciiGrid raise ImportError
 
 pub fn path_energy_bundle(String, String, String) -> Json raise ImportError
 
+pub fn reachability_bundle(String, Int, Int, Double, Double, Double) -> Json raise ImportError
+
+pub fn reachability_path_bundle(String, Int, Int) -> Json raise ImportError
+
+pub fn relief_bundle(String, Double, Double, Double) -> Json raise ImportError
+
 pub fn reopen_bundle(String) -> Json raise ImportError
+
+pub fn reopen_coarsen_bundle(String) -> Json raise ImportError
 
 pub fn reopen_crop_bundle(String) -> Json raise ImportError
 
@@ -42,13 +56,21 @@ pub fn reopen_json(String) -> String
 
 pub fn reopen_mesh_bundle(String) -> Json raise ImportError
 
+pub fn reopen_relief_bundle(String) -> Json raise ImportError
+
 pub fn revise_bundle(String, String, String) -> Json raise ImportError
 
 pub fn revision_template(String) -> String raise ImportError
 
+pub fn roundtrip_bundle(String, Int, Int, Double, Double, Double) -> Json raise ImportError
+
+pub fn roundtrip_path_bundle(String, Int, Int) -> Json raise ImportError
+
 pub fn route_bundle(String, Int, Int, Int, Int, Double, Double) -> Json raise ImportError
 
 pub fn route_coordinate_waypoints_bundle(String, String, Double, Double) -> Json raise ImportError
+
+pub fn route_json(String, Int, Int, Int, Int, Double, Double) -> String
 
 pub fn route_waypoints_bundle(String, String, Double, Double) -> Json raise ImportError
 

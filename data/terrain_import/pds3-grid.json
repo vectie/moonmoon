@@ -1,0 +1,17 @@
+{
+  "contract_id": "moonmoon.pds3-grid.v1",
+  "tile_id": "pds-demo",
+  "coordinate_frame": "Synthetic local Cartesian frame: X east, Y north",
+  "horizontal_unit": "m",
+  "source_note": "Bundled synthetic Apache-2.0 fixture; not acquired lunar terrain. Linear sample conversion example only.",
+  "rows": 3,
+  "cols": 4,
+  "origin_x": 100,
+  "origin_y": 200,
+  "cell_size": 5,
+  "vertical_quantity": "elevation",
+  "vertical_datum": "Synthetic zero-height plane, no lunar datum",
+  "uncertainty_note": "Synthetic exact integer codes; no measured terrain accuracy. Scale and offset use ordinary floating-point arithmetic.",
+  "row_order": "top-to-bottom",
+  "column_order": "left-to-right"
+}

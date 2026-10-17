@@ -222,6 +222,21 @@ fn bundle_grid(source : Json) -> AsciiGrid raise ImportError {
       json_text(source, "source_text"),
       xyz_specification(json_text(source, "grid_specification_text")),
     )
+  } else if json_text(source, "contract_id") ==
+    "moonmoon.terrain-pds3-import.v1" {
+    let label = pds3_label(
+      json_text(source, "source_text"),
+      json_text(source, "image_name"),
+    )
+    let declaration = pds3_declaration(
+      json_text(source, "grid_specification_text"),
+    )
+    let (grid, _) = pds3_grid(
+      pds3_image_from_hex(json_text(source, "image_hex")),
+      label,
+      declaration,
+    )
+    grid
   } else {
     parse_ascii_grid(json_text(source, "source_text"))
   }

@@ -152,6 +152,13 @@ pub fn reopen_bundle(text : String) -> Json raise ImportError {
       )
     "moonmoon.terrain-xyz-import.v1" =>
       import_xyz_bundle(field("source_text"), field("grid_specification_text"))
+    "moonmoon.terrain-pds3-import.v1" =>
+      import_pds3_bundle(
+        field("source_text"),
+        pds3_image_from_hex(field("image_hex")),
+        field("image_name"),
+        field("grid_specification_text"),
+      )
     "moonmoon.terrain-revision.v1" => reopen_revision(saved)
     "moonmoon.terrain-mosaic.v1" => reopen_mosaic(saved)
     _ => raise InvalidRaster("Unsupported terrain source bundle")

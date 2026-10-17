@@ -1,15 +1,17 @@
+import { elevationBandState, renderElevationBand } from './terrain-elevation-band.js'
+import { terrainRouteState, renderTerrainRoute } from './terrain-route.js'
 // File/DOM adapter only. Raster parsing, coordinates, CSV and digests come from
 // the compiled MoonBit terrain_import package, shared with the native CLI.
 import { analysisState, exampleAnalysisAscii, renderTerrainAnalysis } from './terrain-analysis.js'
 export const exampleAscii = 'ncols 4\nnrows 3\nxllcorner 100\nyllcorner -50\ncellsize 20\nNODATA_value -9999\n11 12 -9999 14\n10 11 12 13\n9 10 11 -9999\n'
 const need = (value, message) => { if (!value) throw new Error(message) }
 
-export function bindTerrainImport(document, convert, reopen, analyze) {
+export function bindTerrainImport(document, convert, reopen, analyze, route) {
   const get = name => document.getElementById('terrain-import-' + name)
   if (!get('open') || get('open').dataset.bound) return
   get('open').dataset.bound = 'true'
   let bundle = null, selected = 0, generation = 0, displayGeneration = 0, busy = false
-  let analysis = analysisState()
+  let analysis = analysisState(), band = elevationBandState(), routeState = terrainRouteState()
   const status = text => { get('status').textContent = text }
   const element = (tag, text, attrs = {}) => {
     const node = document.createElement(tag)
@@ -60,9 +62,11 @@ export function bindTerrainImport(document, convert, reopen, analyze) {
     svg.setAttribute('viewBox', `0 0 ${bundle.cols} ${bundle.rows}`)
     svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', 'Imported raster elevation preview. Gray cells are NODATA; use the cell selector for exact values.')
     svg.setAttribute('class', 'terrain-import-map')
+    const mapCells = []
     const range = bundle.maximum_elevation_m - bundle.minimum_elevation_m
     bundle.samples.forEach((cell, index) => {
       const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      mapCells.push(rect)
       rect.setAttribute('x', String(cell.col)); rect.setAttribute('y', String(cell.row))
       rect.setAttribute('width', '1'); rect.setAttribute('height', '1')
       const level = range ? (cell.elevation_m - bundle.minimum_elevation_m) / range : 0.5
@@ -101,9 +105,11 @@ export function bindTerrainImport(document, convert, reopen, analyze) {
       output.appendChild(button)
     }
     output.appendChild(element('p', 'CSV preserves source row/column indices and omits missing cells. Keep its companion bundle for coordinates, units, raw source and digests. Degree grids require a separate reviewed reprojection before use as metric mission terrain.'))
+    renderElevationBand({ document, output, bundle, state: band, active: () => current === displayGeneration && bundle === active, selectCell: select, selected, mapCells })
+    renderTerrainRoute({ document, output, bundle, state: routeState, route, active: () => current === displayGeneration && bundle === active, selectCell: select, selected, map: svg })
     renderTerrainAnalysis({ document, output, bundle, analyze, state: analysis, download, active: () => current === displayGeneration && bundle === active, selectCell: select, selected })
   }
-  const adopt = next => { bundle = next; selected = 0; analysis = analysisState(); render(); status(`Imported ${bundle.sample_count} values and ${bundle.nodata_count} unknown cells. Ready to inspect and export; no mission inputs changed.`) }
+  const adopt = next => { bundle = next; selected = 0; analysis = analysisState(); band = elevationBandState(); routeState = terrainRouteState(); render(); status(`Imported ${bundle.sample_count} values and ${bundle.nodata_count} unknown cells. Ready to inspect and export; no mission inputs changed.`) }
   const run = action => async () => {
     if (busy) return
     busy = true
@@ -136,4 +142,4 @@ export function bindTerrainImport(document, convert, reopen, analyze) {
   get('clear').addEventListener('click', () => { generation++; bundle = null; selected = 0; render(); status('Imported terrain cleared. The existing mission study is unchanged.') })
 }
 
-globalThis.__moonmoonBindTerrainImport = (convert, reopen, analyze) => bindTerrainImport(document, convert, reopen, analyze)
+globalThis.__moonmoonBindTerrainImport = (convert, reopen, analyze, route) => bindTerrainImport(document, convert, reopen, analyze, route)
