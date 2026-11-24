@@ -2,1446 +2,479 @@
 package "vectie/moonmoon/src/moonphys"
 
 import {
-  "moonbitlang/core/debug",
-  "moonbitlang/core/json",
+  "vectie/moonnum/geometry",
 }
 
 // Values
-pub fn angular_acceleration(RigidBodyInertia, Vec3) -> Vec3
+pub fn angular_acceleration(@vectie/moonphys.RigidBodyInertia, @geometry.Vec3) -> @geometry.Vec3
 
-pub fn angular_momentum(RigidBodyInertia, RigidBodyAngularState) -> Vec3
+pub fn angular_momentum(@vectie/moonphys.RigidBodyInertia, @vectie/moonphys.RigidBodyAngularState) -> @geometry.Vec3
 
-pub fn articulated_joint_position(String, Double) -> ArticulatedJointPosition
+pub fn articulated_joint_position(String, Double) -> @vectie/moonphys.ArticulatedJointPosition
 
-pub fn articulated_link_spec(String, String, String, Vec3, Vec3) -> ArticulatedLinkSpec
+pub fn articulated_link_spec(String, String, String, @geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.ArticulatedLinkSpec
 
-pub fn articulated_pose_tree(Transform3, Array[ArticulatedLinkSpec], Array[ArticulatedJointPosition]) -> ArticulatedPoseTree
+pub fn articulated_pose_tree(@geometry.Transform3, Array[@vectie/moonphys.ArticulatedLinkSpec], Array[@vectie/moonphys.ArticulatedJointPosition]) -> @vectie/moonphys.ArticulatedPoseTree
 
-pub fn axis_angle_basis3(Vec3, Double) -> Basis3
+pub fn axis_angle_basis3(@geometry.Vec3, Double) -> @geometry.Basis3
 
-pub fn box_diagonal_inertia(String, Double, Vec3) -> RigidBodyInertia
+pub fn box_diagonal_inertia(String, Double, @geometry.Vec3) -> @vectie/moonphys.RigidBodyInertia
 
-pub fn capsule_diagonal_inertia(String, Double, Double, Double) -> RigidBodyInertia
+pub fn capsule_diagonal_inertia(String, Double, Double, Double) -> @vectie/moonphys.RigidBodyInertia
 
-pub fn capture_point_assessment(PhysicsEnvironment, Vec3, Vec3, Array[SupportFootprint], nominal_com_height_m? : Double) -> CapturePointAssessment
+pub fn capture_point_assessment(@vectie/moonphys.PhysicsEnvironment, @geometry.Vec3, @geometry.Vec3, Array[@vectie/moonphys.SupportFootprint], nominal_com_height_m? : Double) -> @vectie/moonphys.CapturePointAssessment
 
-pub fn collision_bounding_radius(CollisionShape) -> Double
+pub fn collision_bounding_radius(@vectie/moonphys.CollisionShape) -> Double
 
-pub fn collision_box(String, Vec3) -> CollisionShape
+pub fn collision_box(String, @geometry.Vec3) -> @vectie/moonphys.CollisionShape
 
-pub fn collision_capsule(String, Double, Double) -> CollisionShape
+pub fn collision_capsule(String, Double, Double) -> @vectie/moonphys.CollisionShape
 
-pub fn collision_contact_manifold(String, Array[CollisionContact]) -> CollisionContactManifold
+pub fn collision_contact_manifold(String, Array[@vectie/moonphys.CollisionContact]) -> @vectie/moonphys.CollisionContactManifold
 
-pub fn collision_pair_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
+pub fn collision_pair_contact(@vectie/moonphys.CollisionShape, @geometry.Transform3, @vectie/moonphys.CollisionShape, @geometry.Transform3) -> @vectie/moonphys.CollisionContact
 
-pub fn collision_pair_probe(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionPairProbe
+pub fn collision_pair_probe(@vectie/moonphys.CollisionShape, @geometry.Transform3, @vectie/moonphys.CollisionShape, @geometry.Transform3) -> @vectie/moonphys.CollisionPairProbe
 
-pub fn collision_shape_diagonal_inertia(String, Double, CollisionShape) -> RigidBodyInertia
+pub fn collision_shape_diagonal_inertia(String, Double, @vectie/moonphys.CollisionShape) -> @vectie/moonphys.RigidBodyInertia
 
-pub fn collision_shape_kind_label(CollisionShapeKind) -> String
+pub fn collision_shape_kind_label(@vectie/moonphys.CollisionShapeKind) -> String
 
-pub fn collision_shape_mass_element(String, Double, CollisionShape, Vec3) -> MassPropertyElement
+pub fn collision_shape_mass_element(String, Double, @vectie/moonphys.CollisionShape, @geometry.Vec3) -> @vectie/moonphys.MassPropertyElement
 
-pub fn collision_shape_volume(CollisionShape) -> Double
+pub fn collision_shape_volume(@vectie/moonphys.CollisionShape) -> Double
 
-pub fn collision_sphere(String, Double) -> CollisionShape
+pub fn collision_sphere(String, Double) -> @vectie/moonphys.CollisionShape
 
-pub fn collision_world_bounds(CollisionShape, Transform3) -> CollisionBounds
+pub fn collision_world_bounds(@vectie/moonphys.CollisionShape, @geometry.Transform3) -> @vectie/moonphys.CollisionBounds
 
-pub fn composite_mass_properties(String, Array[MassPropertyElement]) -> CompositeMassProperties
+pub fn composite_mass_properties(String, Array[@vectie/moonphys.MassPropertyElement]) -> @vectie/moonphys.CompositeMassProperties
 
-pub fn contact_patch_load_assessment(HeightfieldContactPatch, Double) -> ContactPatchLoadAssessment
+pub fn contact_patch_load_assessment(@vectie/moonphys.HeightfieldContactPatch, Double) -> @vectie/moonphys.ContactPatchLoadAssessment
 
-pub fn contact_patch_wrench_assessment(ContactPatchLoadAssessment, Vec3, Vec3) -> ContactPatchWrenchAssessment
+pub fn contact_patch_wrench_assessment(@vectie/moonphys.ContactPatchLoadAssessment, @geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.ContactPatchWrenchAssessment
 
-pub fn contact_torque(Vec3, Vec3, Vec3) -> Vec3
+pub fn contact_torque(@geometry.Vec3, @geometry.Vec3, @geometry.Vec3) -> @geometry.Vec3
 
-pub fn heightfield(String, Int, Int, Double, Array[Double]) -> Heightfield
+pub fn heightfield(String, Int, Int, Double, Array[Double]) -> @vectie/moonphys.Heightfield
 
-pub fn heightfield_collision(Heightfield, RigidBodyState) -> HeightfieldCollision
+pub fn heightfield_collision(@vectie/moonphys.Heightfield, @vectie/moonphys.RigidBodyState) -> @vectie/moonphys.HeightfieldCollision
 
-pub fn heightfield_contact_patch(Heightfield, String, Vec3, Double, Double, contact_tolerance_m? : Double) -> HeightfieldContactPatch
+pub fn heightfield_contact_patch(@vectie/moonphys.Heightfield, String, @geometry.Vec3, Double, Double, contact_tolerance_m? : Double) -> @vectie/moonphys.HeightfieldContactPatch
 
-pub fn heightfield_contact_probe(Heightfield, String, Vec3, contact_tolerance_m? : Double) -> ContactProbe
+pub fn heightfield_contact_probe(@vectie/moonphys.Heightfield, String, @geometry.Vec3, contact_tolerance_m? : Double) -> @vectie/moonphys.ContactProbe
 
-pub fn heightfield_oriented_contact_patch(Heightfield, String, Vec3, Vec3, Vec3, Double, Double, contact_tolerance_m? : Double) -> HeightfieldContactPatch
+pub fn heightfield_oriented_contact_patch(@vectie/moonphys.Heightfield, String, @geometry.Vec3, @geometry.Vec3, @geometry.Vec3, Double, Double, contact_tolerance_m? : Double) -> @vectie/moonphys.HeightfieldContactPatch
 
-pub fn identity_basis3() -> Basis3
+pub fn identity_basis3() -> @geometry.Basis3
 
-pub fn integrate_angular_rigid_body(RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularStep) -> RigidBodyAngularState
+pub fn integrate_angular_rigid_body(@vectie/moonphys.RigidBodyAngularState, @vectie/moonphys.RigidBodyInertia, @vectie/moonphys.RigidBodyAngularStep) -> @vectie/moonphys.RigidBodyAngularState
 
-pub fn integrate_joint_motor(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit, Double, Double) -> JointMotorStep
+pub fn integrate_joint_motor(@vectie/moonphys.JointMotorState, @vectie/moonphys.JointMotorCommand, @vectie/moonphys.JointServoConfig, @vectie/moonphys.JointLimit, Double, Double) -> @vectie/moonphys.JointMotorStep
 
-pub fn integrate_joint_motor_frame(String, Array[JointMotorState], Array[JointMotorCommand], Array[JointServoConfig], Array[JointLimit], Array[Double], Double) -> JointMotorFrame
+pub fn integrate_joint_motor_frame(String, Array[@vectie/moonphys.JointMotorState], Array[@vectie/moonphys.JointMotorCommand], Array[@vectie/moonphys.JointServoConfig], Array[@vectie/moonphys.JointLimit], Array[Double], Double) -> @vectie/moonphys.JointMotorFrame
 
-pub fn integrate_kinematic(KinematicBodyState, KinematicStep) -> KinematicBodyState
+pub fn integrate_kinematic(@vectie/moonphys.KinematicBodyState, @vectie/moonphys.KinematicStep) -> @vectie/moonphys.KinematicBodyState
 
-pub fn integrate_rigid_body(RigidBodyState, Double, Vec3) -> RigidBodyState
+pub fn integrate_rigid_body(@vectie/moonphys.RigidBodyState, Double, @geometry.Vec3) -> @vectie/moonphys.RigidBodyState
 
-pub fn integrate_rigid_body_gravity(RigidBodyState, PhysicsEnvironment, Double) -> RigidBodyState
+pub fn integrate_rigid_body_gravity(@vectie/moonphys.RigidBodyState, @vectie/moonphys.PhysicsEnvironment, Double) -> @vectie/moonphys.RigidBodyState
 
-pub fn integrate_rigid_body_wrench(RigidBodyMotionState, RigidBodyInertia, RigidBodyWrench, Double) -> RigidBodyWrenchStep
+pub fn integrate_rigid_body_wrench(@vectie/moonphys.RigidBodyMotionState, @vectie/moonphys.RigidBodyInertia, @vectie/moonphys.RigidBodyWrench, Double) -> @vectie/moonphys.RigidBodyWrenchStep
 
-pub fn joint_limit(String, Double, Double, Double, Double) -> JointLimit
+pub fn joint_limit(String, Double, Double, Double, Double) -> @vectie/moonphys.JointLimit
 
-pub fn joint_motor_command(String, Double, Double, Double) -> JointMotorCommand
+pub fn joint_motor_command(String, Double, Double, Double) -> @vectie/moonphys.JointMotorCommand
 
-pub fn joint_motor_state(String, Double, Double) -> JointMotorState
+pub fn joint_motor_state(String, Double, Double) -> @vectie/moonphys.JointMotorState
 
-pub fn joint_servo_config(String, Double, Double) -> JointServoConfig
+pub fn joint_servo_config(String, Double, Double) -> @vectie/moonphys.JointServoConfig
 
-pub fn joint_servo_output(JointMotorState, JointMotorCommand, JointServoConfig, JointLimit) -> JointServoOutput
+pub fn joint_servo_output(@vectie/moonphys.JointMotorState, @vectie/moonphys.JointMotorCommand, @vectie/moonphys.JointServoConfig, @vectie/moonphys.JointLimit) -> @vectie/moonphys.JointServoOutput
 
-pub fn joint_velocity_limited_command(JointMotorState, Double, Double, Double, JointLimit, Double) -> JointVelocityLimitedCommand
+pub fn joint_velocity_limited_command(@vectie/moonphys.JointMotorState, Double, Double, Double, @vectie/moonphys.JointLimit, Double) -> @vectie/moonphys.JointVelocityLimitedCommand
 
-pub fn kinematic_body_state(String, Vec3, Vec3) -> KinematicBodyState
+pub fn kinematic_body_state(String, @geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.KinematicBodyState
 
-pub fn lunar_environment() -> PhysicsEnvironment
+pub fn lunar_environment() -> @vectie/moonphys.PhysicsEnvironment
 
-pub fn lunar_gravity_acceleration() -> Vec3
+pub fn lunar_gravity_acceleration() -> @geometry.Vec3
 
-pub fn lunar_regolith_contact_model() -> MaterialContactModel
+pub fn lunar_regolith_contact_model() -> @vectie/moonphys.MaterialContactModel
 
-pub fn mass_property_element(String, Double, Vec3, RigidBodyInertia) -> MassPropertyElement
+pub fn mass_property_element(String, Double, @geometry.Vec3, @vectie/moonphys.RigidBodyInertia) -> @vectie/moonphys.MassPropertyElement
 
-pub fn material_contact_model(String, Double, Double) -> MaterialContactModel
+pub fn material_contact_model(String, Double, Double) -> @vectie/moonphys.MaterialContactModel
 
-pub fn motion_contact_evidence(String, SupportFootprint, HeightfieldContactPatch, Vec3) -> MotionContactEvidence
+pub fn motion_contact_evidence(String, @vectie/moonphys.SupportFootprint, @vectie/moonphys.HeightfieldContactPatch, @geometry.Vec3) -> @vectie/moonphys.MotionContactEvidence
 
-pub fn motion_frame_review(String, PhysicsEnvironment, MaterialContactModel, Vec3, Vec3, Array[MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double, allow_dynamic_support? : Bool) -> MotionFrameReview
+pub fn motion_frame_review(String, @vectie/moonphys.PhysicsEnvironment, @vectie/moonphys.MaterialContactModel, @geometry.Vec3, @geometry.Vec3, Array[@vectie/moonphys.MotionContactEvidence], total_normal_force_n? : Double, nominal_com_height_m? : Double, allow_dynamic_support? : Bool) -> @vectie/moonphys.MotionFrameReview
 
-pub fn motion_frame_trace_review(String, Array[MotionFrameReview]) -> MotionFrameTraceReview
+pub fn motion_frame_trace_review(String, Array[@vectie/moonphys.MotionFrameReview]) -> @vectie/moonphys.MotionFrameTraceReview
 
-pub fn motion_hinge_replay_review(String, MotionFrameTraceReview, RigidBodyHeightfieldWorldHingeMotorTrace) -> MotionHingeReplayReview
+pub fn motion_hinge_replay_review(String, @vectie/moonphys.MotionFrameTraceReview, @vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace) -> @vectie/moonphys.MotionHingeReplayReview
 
-pub fn motion_hinge_replay_review_with_replay(String, MotionFrameTraceReview, RigidBodyHeightfieldWorldHingeMotorTrace, RigidBodyWorldReplayReview) -> MotionHingeReplayReview
+pub fn motion_hinge_replay_review_with_replay(String, @vectie/moonphys.MotionFrameTraceReview, @vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, @vectie/moonphys.RigidBodyWorldReplayReview) -> @vectie/moonphys.MotionHingeReplayReview
 
-pub fn resolve_collision_manifold(RigidBodyState, CollisionContactManifold, MaterialContactModel) -> CollisionManifoldResolution
+pub fn resolve_collision_manifold(@vectie/moonphys.RigidBodyState, @vectie/moonphys.CollisionContactManifold, @vectie/moonphys.MaterialContactModel) -> @vectie/moonphys.CollisionManifoldResolution
 
-pub fn resolve_heightfield_contact(Heightfield, RigidBodyState, MaterialContactModel) -> ContactResolution
+pub fn resolve_heightfield_contact(@vectie/moonphys.Heightfield, @vectie/moonphys.RigidBodyState, @vectie/moonphys.MaterialContactModel) -> @vectie/moonphys.ContactResolution
 
-pub fn rigid_body_angular_state(String, Basis3, Vec3) -> RigidBodyAngularState
+pub fn rigid_body_angular_state(String, @geometry.Basis3, @geometry.Vec3) -> @vectie/moonphys.RigidBodyAngularState
 
-pub fn rigid_body_heightfield_frame(Int, Double, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Vec3) -> RigidBodyHeightfieldFrame
+pub fn rigid_body_heightfield_frame(Int, Double, @vectie/moonphys.Heightfield, @vectie/moonphys.MaterialContactModel, @vectie/moonphys.PhysicsEnvironment, @vectie/moonphys.RigidBodyState, Double, @geometry.Vec3) -> @vectie/moonphys.RigidBodyHeightfieldFrame
 
-pub fn rigid_body_heightfield_trace(String, Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyState, Double, Int, Vec3, String) -> RigidBodyHeightfieldTrace
+pub fn rigid_body_heightfield_trace(String, @vectie/moonphys.Heightfield, @vectie/moonphys.MaterialContactModel, @vectie/moonphys.PhysicsEnvironment, @vectie/moonphys.RigidBodyState, Double, Int, @geometry.Vec3, String) -> @vectie/moonphys.RigidBodyHeightfieldTrace
 
-pub fn rigid_body_heightfield_world(String, Heightfield, MaterialContactModel, PhysicsEnvironment, Array[RigidBodyWorldBody], constraints? : Array[RigidBodyWorldDistanceConstraint], motion_bodies? : Array[RigidBodyJointFrameBody], hinge_constraints? : Array[RigidBodyHingeJointConstraint]) -> RigidBodyHeightfieldWorld
+pub fn rigid_body_heightfield_world(String, @vectie/moonphys.Heightfield, @vectie/moonphys.MaterialContactModel, @vectie/moonphys.PhysicsEnvironment, Array[@vectie/moonphys.RigidBodyWorldBody], constraints? : Array[@vectie/moonphys.RigidBodyWorldDistanceConstraint], motion_bodies? : Array[@vectie/moonphys.RigidBodyJointFrameBody], hinge_constraints? : Array[@vectie/moonphys.RigidBodyHingeJointConstraint]) -> @vectie/moonphys.RigidBodyHeightfieldWorld
 
-pub fn rigid_body_heightfield_world_body_frame(Heightfield, MaterialContactModel, PhysicsEnvironment, RigidBodyWorldBody, Double) -> RigidBodyWorldBodyFrame
+pub fn rigid_body_heightfield_world_body_frame(@vectie/moonphys.Heightfield, @vectie/moonphys.MaterialContactModel, @vectie/moonphys.PhysicsEnvironment, @vectie/moonphys.RigidBodyWorldBody, Double) -> @vectie/moonphys.RigidBodyWorldBodyFrame
 
-pub fn rigid_body_heightfield_world_dynamic_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_dynamic_support_trace(@vectie/moonphys.RigidBodyHeightfieldWorldTrace) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_dynamic_support_trace_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_dynamic_support_trace_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_dynamic_support_trace_with_targets(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_dynamic_support_trace_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_targets(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldDynamicSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_dynamic_support_trace_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldDynamicSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_replay_review(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_hinge_motor_replay_review_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_hinge_motor_step(RigidBodyHeightfieldWorld, Heightfield, JointMotorFrame, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldHingeMotorStep
+pub fn rigid_body_heightfield_world_hinge_motor_step(@vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.Heightfield, @vectie/moonphys.JointMotorFrame, frame_index? : Int, time_s? : Double) -> @vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorStep
 
-pub fn rigid_body_heightfield_world_hinge_motor_support_trace(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_targets(RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_hinge_motor_support_trace_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
+pub fn rigid_body_heightfield_world_hinge_motor_trace(String, @vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.Heightfield, Array[@vectie/moonphys.JointMotorFrame], note? : String) -> @vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace
 
-pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(RigidBodyHeightfieldWorldHingeMotorTrace) -> RigidBodyWorldTraceEnvelope
+pub fn rigid_body_heightfield_world_hinge_motor_trace_envelope(@vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace) -> @vectie/moonphys.RigidBodyWorldTraceEnvelope
 
-pub fn rigid_body_heightfield_world_replay_review(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_replay_review(@vectie/moonphys.RigidBodyHeightfieldWorldTrace) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_replay_review_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_replay_review_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_replay_review_with_targets(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldReplayReview
+pub fn rigid_body_heightfield_world_replay_review_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_heightfield_world_step(RigidBodyHeightfieldWorld, Heightfield, Double, frame_index? : Int, time_s? : Double) -> RigidBodyHeightfieldWorldStep
+pub fn rigid_body_heightfield_world_step(@vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.Heightfield, Double, frame_index? : Int, time_s? : Double) -> @vectie/moonphys.RigidBodyHeightfieldWorldStep
 
-pub fn rigid_body_heightfield_world_support_trace(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_support_trace(@vectie/moonphys.RigidBodyHeightfieldWorldTrace) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_support_trace_with_footprints(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]]) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_support_trace_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]]) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_support_trace_with_targets(RigidBodyHeightfieldWorldTrace, Array[Array[SupportFootprint]], Array[RigidBodyWorldCenterOfMassTarget]) -> RigidBodyWorldSupportTrace
+pub fn rigid_body_heightfield_world_support_trace_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldTrace, Array[Array[@vectie/moonphys.SupportFootprint]], Array[@vectie/moonphys.RigidBodyWorldCenterOfMassTarget]) -> @vectie/moonphys.RigidBodyWorldSupportTrace
 
-pub fn rigid_body_heightfield_world_targeted_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Heightfield, Array[JointMotorFrame], Array[Array[RigidBodyWorldBodyTarget]], note? : String) -> RigidBodyHeightfieldWorldHingeMotorTrace
+pub fn rigid_body_heightfield_world_targeted_hinge_motor_trace(String, @vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.Heightfield, Array[@vectie/moonphys.JointMotorFrame], Array[Array[@vectie/moonphys.RigidBodyWorldBodyTarget]], note? : String) -> @vectie/moonphys.RigidBodyHeightfieldWorldHingeMotorTrace
 
-pub fn rigid_body_heightfield_world_trace(String, RigidBodyHeightfieldWorld, Heightfield, Double, Int, String) -> RigidBodyHeightfieldWorldTrace
+pub fn rigid_body_heightfield_world_trace(String, @vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.Heightfield, Double, Int, String) -> @vectie/moonphys.RigidBodyHeightfieldWorldTrace
 
-pub fn rigid_body_heightfield_world_trace_envelope(RigidBodyHeightfieldWorldTrace) -> RigidBodyWorldTraceEnvelope
+pub fn rigid_body_heightfield_world_trace_envelope(@vectie/moonphys.RigidBodyHeightfieldWorldTrace) -> @vectie/moonphys.RigidBodyWorldTraceEnvelope
 
-pub fn rigid_body_hinge_axis_assessment(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyAngularState) -> RigidBodyHingeAxisAssessment
+pub fn rigid_body_hinge_axis_assessment(@vectie/moonphys.RigidBodyHingeAxisConstraint, @vectie/moonphys.RigidBodyAngularState, @vectie/moonphys.RigidBodyAngularState) -> @vectie/moonphys.RigidBodyHingeAxisAssessment
 
-pub fn rigid_body_hinge_axis_constraint(String, String, String, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeAxisConstraint
+pub fn rigid_body_hinge_axis_constraint(String, String, String, local_axis_a? : @geometry.Vec3, local_axis_b? : @geometry.Vec3, stiffness? : Double) -> @vectie/moonphys.RigidBodyHingeAxisConstraint
 
-pub fn rigid_body_hinge_axis_correction(RigidBodyHingeAxisConstraint, RigidBodyAngularState, RigidBodyInertia, RigidBodyAngularState, RigidBodyInertia) -> RigidBodyHingeAxisCorrection
+pub fn rigid_body_hinge_axis_correction(@vectie/moonphys.RigidBodyHingeAxisConstraint, @vectie/moonphys.RigidBodyAngularState, @vectie/moonphys.RigidBodyInertia, @vectie/moonphys.RigidBodyAngularState, @vectie/moonphys.RigidBodyInertia) -> @vectie/moonphys.RigidBodyHingeAxisCorrection
 
-pub fn rigid_body_hinge_joint_assessment(RigidBodyHingeJointConstraint, RigidBodyMotionState, RigidBodyInertia, RigidBodyMotionState, RigidBodyInertia) -> RigidBodyHingeJointAssessment
+pub fn rigid_body_hinge_joint_assessment(@vectie/moonphys.RigidBodyHingeJointConstraint, @vectie/moonphys.RigidBodyMotionState, @vectie/moonphys.RigidBodyInertia, @vectie/moonphys.RigidBodyMotionState, @vectie/moonphys.RigidBodyInertia) -> @vectie/moonphys.RigidBodyHingeJointAssessment
 
-pub fn rigid_body_hinge_joint_constraint(String, String, String, anchor_a_m? : Vec3, anchor_b_m? : Vec3, local_axis_a? : Vec3, local_axis_b? : Vec3, stiffness? : Double) -> RigidBodyHingeJointConstraint
+pub fn rigid_body_hinge_joint_constraint(String, String, String, anchor_a_m? : @geometry.Vec3, anchor_b_m? : @geometry.Vec3, local_axis_a? : @geometry.Vec3, local_axis_b? : @geometry.Vec3, stiffness? : Double) -> @vectie/moonphys.RigidBodyHingeJointConstraint
 
-pub fn rigid_body_hinge_joint_frame_assessment(String, Array[RigidBodyJointFrameBody], Array[RigidBodyHingeJointConstraint]) -> RigidBodyHingeJointFrameAssessment
+pub fn rigid_body_hinge_joint_frame_assessment(String, Array[@vectie/moonphys.RigidBodyJointFrameBody], Array[@vectie/moonphys.RigidBodyHingeJointConstraint]) -> @vectie/moonphys.RigidBodyHingeJointFrameAssessment
 
-pub fn rigid_body_inertia(String, Vec3) -> RigidBodyInertia
+pub fn rigid_body_inertia(String, @geometry.Vec3) -> @vectie/moonphys.RigidBodyInertia
 
-pub fn rigid_body_joint_frame_body(RigidBodyMotionState, RigidBodyInertia) -> RigidBodyJointFrameBody
+pub fn rigid_body_joint_frame_body(@vectie/moonphys.RigidBodyMotionState, @vectie/moonphys.RigidBodyInertia) -> @vectie/moonphys.RigidBodyJointFrameBody
 
-pub fn rigid_body_linear_kinetic_energy(RigidBodyState) -> Double
+pub fn rigid_body_linear_kinetic_energy(@vectie/moonphys.RigidBodyState) -> Double
 
-pub fn rigid_body_linear_momentum(RigidBodyState) -> Vec3
+pub fn rigid_body_linear_momentum(@vectie/moonphys.RigidBodyState) -> @geometry.Vec3
 
-pub fn rigid_body_motion_state(String, Double, Double, Vec3, Vec3, Basis3, Vec3) -> RigidBodyMotionState
+pub fn rigid_body_motion_state(String, Double, Double, @geometry.Vec3, @geometry.Vec3, @geometry.Basis3, @geometry.Vec3) -> @vectie/moonphys.RigidBodyMotionState
 
-pub fn rigid_body_state(String, Double, Double, Vec3, Vec3) -> RigidBodyState
+pub fn rigid_body_state(String, Double, Double, @geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.RigidBodyState
 
-pub fn rigid_body_world_apply_body_targets(RigidBodyHeightfieldWorld, Array[RigidBodyWorldBodyTarget]) -> RigidBodyWorldBodyTargetFrame
+pub fn rigid_body_world_apply_body_targets(@vectie/moonphys.RigidBodyHeightfieldWorld, Array[@vectie/moonphys.RigidBodyWorldBodyTarget]) -> @vectie/moonphys.RigidBodyWorldBodyTargetFrame
 
-pub fn rigid_body_world_body(RigidBodyState, collision_shape? : CollisionShape, external_force_n? : Vec3) -> RigidBodyWorldBody
+pub fn rigid_body_world_body(@vectie/moonphys.RigidBodyState, collision_shape? : @vectie/moonphys.CollisionShape, external_force_n? : @geometry.Vec3) -> @vectie/moonphys.RigidBodyWorldBody
 
-pub fn rigid_body_world_body_target(String, Vec3, Vec3, max_correction_m? : Double) -> RigidBodyWorldBodyTarget
+pub fn rigid_body_world_body_target(String, @geometry.Vec3, @geometry.Vec3, max_correction_m? : Double) -> @vectie/moonphys.RigidBodyWorldBodyTarget
 
-pub fn rigid_body_world_center_of_mass(RigidBodyHeightfieldWorld) -> Vec3
+pub fn rigid_body_world_center_of_mass(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @geometry.Vec3
 
-pub fn rigid_body_world_center_of_mass_target(Vec3, Vec3, total_mass_kg? : Double, nominal_com_height_m? : Double) -> RigidBodyWorldCenterOfMassTarget
+pub fn rigid_body_world_center_of_mass_target(@geometry.Vec3, @geometry.Vec3, total_mass_kg? : Double, nominal_com_height_m? : Double) -> @vectie/moonphys.RigidBodyWorldCenterOfMassTarget
 
-pub fn rigid_body_world_center_of_mass_velocity(RigidBodyHeightfieldWorld) -> Vec3
+pub fn rigid_body_world_center_of_mass_velocity(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @geometry.Vec3
 
-pub fn rigid_body_world_contact_schedule(RigidBodyHeightfieldWorld) -> RigidBodyWorldContactSchedule
+pub fn rigid_body_world_contact_schedule(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @vectie/moonphys.RigidBodyWorldContactSchedule
 
-pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : Vec3, anchor_b_m? : Vec3, stiffness? : Double) -> RigidBodyWorldDistanceConstraint
+pub fn rigid_body_world_distance_constraint(String, String, String, Double, anchor_a_m? : @geometry.Vec3, anchor_b_m? : @geometry.Vec3, stiffness? : Double) -> @vectie/moonphys.RigidBodyWorldDistanceConstraint
 
-pub fn rigid_body_world_distance_constraint_assessment(RigidBodyWorldDistanceConstraint, RigidBodyState, RigidBodyState) -> RigidBodyWorldConstraintResolution
+pub fn rigid_body_world_distance_constraint_assessment(@vectie/moonphys.RigidBodyWorldDistanceConstraint, @vectie/moonphys.RigidBodyState, @vectie/moonphys.RigidBodyState) -> @vectie/moonphys.RigidBodyWorldConstraintResolution
 
-pub fn rigid_body_world_dynamic_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldDynamicSupportFrame
+pub fn rigid_body_world_dynamic_support_frame(@vectie/moonphys.RigidBodyHeightfieldWorldStep) -> @vectie/moonphys.RigidBodyWorldDynamicSupportFrame
 
-pub fn rigid_body_world_dynamic_support_frame_with_footprints(RigidBodyHeightfieldWorldStep, Array[SupportFootprint]) -> RigidBodyWorldDynamicSupportFrame
+pub fn rigid_body_world_dynamic_support_frame_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldStep, Array[@vectie/moonphys.SupportFootprint]) -> @vectie/moonphys.RigidBodyWorldDynamicSupportFrame
 
-pub fn rigid_body_world_dynamic_support_frame_with_targets(RigidBodyHeightfieldWorldStep, Array[SupportFootprint], RigidBodyWorldCenterOfMassTarget?) -> RigidBodyWorldDynamicSupportFrame
+pub fn rigid_body_world_dynamic_support_frame_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldStep, Array[@vectie/moonphys.SupportFootprint], @vectie/moonphys.RigidBodyWorldCenterOfMassTarget?) -> @vectie/moonphys.RigidBodyWorldDynamicSupportFrame
 
-pub fn rigid_body_world_integrate_hinge_motor_trace(String, RigidBodyHeightfieldWorld, Array[JointMotorFrame], note? : String) -> RigidBodyWorldHingeMotorTrace
+pub fn rigid_body_world_integrate_hinge_motor_trace(String, @vectie/moonphys.RigidBodyHeightfieldWorld, Array[@vectie/moonphys.JointMotorFrame], note? : String) -> @vectie/moonphys.RigidBodyWorldHingeMotorTrace
 
-pub fn rigid_body_world_integrate_hinge_motors(RigidBodyHeightfieldWorld, JointMotorFrame) -> RigidBodyWorldHingeMotorFrame
+pub fn rigid_body_world_integrate_hinge_motors(@vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.JointMotorFrame) -> @vectie/moonphys.RigidBodyWorldHingeMotorFrame
 
-pub fn rigid_body_world_linear_momentum(RigidBodyHeightfieldWorld) -> Vec3
+pub fn rigid_body_world_linear_momentum(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @geometry.Vec3
 
-pub fn rigid_body_world_replay_review(RigidBodyWorldTraceEnvelope, RigidBodyWorldSupportTrace, RigidBodyWorldDynamicSupportTrace) -> RigidBodyWorldReplayReview
+pub fn rigid_body_world_replay_review(@vectie/moonphys.RigidBodyWorldTraceEnvelope, @vectie/moonphys.RigidBodyWorldSupportTrace, @vectie/moonphys.RigidBodyWorldDynamicSupportTrace) -> @vectie/moonphys.RigidBodyWorldReplayReview
 
-pub fn rigid_body_world_resolve_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldConstraintFrame
+pub fn rigid_body_world_resolve_constraints(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @vectie/moonphys.RigidBodyWorldConstraintFrame
 
-pub fn rigid_body_world_resolve_contacts(RigidBodyHeightfieldWorld, RigidBodyWorldContactSchedule) -> RigidBodyWorldContactResolution
+pub fn rigid_body_world_resolve_contacts(@vectie/moonphys.RigidBodyHeightfieldWorld, @vectie/moonphys.RigidBodyWorldContactSchedule) -> @vectie/moonphys.RigidBodyWorldContactResolution
 
-pub fn rigid_body_world_resolve_hinge_constraints(RigidBodyHeightfieldWorld) -> RigidBodyWorldHingeConstraintFrame
+pub fn rigid_body_world_resolve_hinge_constraints(@vectie/moonphys.RigidBodyHeightfieldWorld) -> @vectie/moonphys.RigidBodyWorldHingeConstraintFrame
 
-pub fn rigid_body_world_support_frame(RigidBodyHeightfieldWorldStep) -> RigidBodyWorldSupportFrame
+pub fn rigid_body_world_support_frame(@vectie/moonphys.RigidBodyHeightfieldWorldStep) -> @vectie/moonphys.RigidBodyWorldSupportFrame
 
-pub fn rigid_body_world_support_frame_with_footprints(RigidBodyHeightfieldWorldStep, Array[SupportFootprint]) -> RigidBodyWorldSupportFrame
+pub fn rigid_body_world_support_frame_with_footprints(@vectie/moonphys.RigidBodyHeightfieldWorldStep, Array[@vectie/moonphys.SupportFootprint]) -> @vectie/moonphys.RigidBodyWorldSupportFrame
 
-pub fn rigid_body_world_support_frame_with_targets(RigidBodyHeightfieldWorldStep, Array[SupportFootprint], RigidBodyWorldCenterOfMassTarget?) -> RigidBodyWorldSupportFrame
+pub fn rigid_body_world_support_frame_with_targets(@vectie/moonphys.RigidBodyHeightfieldWorldStep, Array[@vectie/moonphys.SupportFootprint], @vectie/moonphys.RigidBodyWorldCenterOfMassTarget?) -> @vectie/moonphys.RigidBodyWorldSupportFrame
 
-pub fn rigid_body_world_total_mass(RigidBodyHeightfieldWorld) -> Double
+pub fn rigid_body_world_total_mass(@vectie/moonphys.RigidBodyHeightfieldWorld) -> Double
 
-pub fn rigid_body_wrench(Vec3, Vec3) -> RigidBodyWrench
+pub fn rigid_body_wrench(@geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.RigidBodyWrench
 
-pub fn sample_heightfield(Heightfield, Double, Double) -> HeightfieldSample
+pub fn sample_heightfield(@vectie/moonphys.Heightfield, Double, Double) -> @vectie/moonphys.HeightfieldSample
 
-pub fn sphere_diagonal_inertia(String, Double, Double) -> RigidBodyInertia
+pub fn sphere_diagonal_inertia(String, Double, Double) -> @vectie/moonphys.RigidBodyInertia
 
-pub fn sphere_sphere_contact(CollisionShape, Transform3, CollisionShape, Transform3) -> CollisionContact
+pub fn sphere_sphere_contact(@vectie/moonphys.CollisionShape, @geometry.Transform3, @vectie/moonphys.CollisionShape, @geometry.Transform3) -> @vectie/moonphys.CollisionContact
 
-pub fn support_assessment(Vec3, Array[SupportFootprint]) -> SupportAssessment
+pub fn support_assessment(@geometry.Vec3, Array[@vectie/moonphys.SupportFootprint]) -> @vectie/moonphys.SupportAssessment
 
-pub fn support_footprint(String, Vec3, Double, Double, active? : Bool) -> SupportFootprint
+pub fn support_footprint(String, @geometry.Vec3, Double, Double, active? : Bool) -> @vectie/moonphys.SupportFootprint
 
-pub fn support_load_assessment(Vec3, Array[SupportFootprint], Double) -> SupportLoadAssessment
+pub fn support_load_assessment(@geometry.Vec3, Array[@vectie/moonphys.SupportFootprint], Double) -> @vectie/moonphys.SupportLoadAssessment
 
-pub fn support_recovery_correction(Vec3, Array[SupportFootprint], inward_margin_m? : Double) -> SupportRecoveryCorrection
+pub fn support_recovery_correction(@geometry.Vec3, Array[@vectie/moonphys.SupportFootprint], inward_margin_m? : Double) -> @vectie/moonphys.SupportRecoveryCorrection
 
-pub fn surface_traction_assessment(String, MaterialContactModel, Vec3, Vec3) -> TractionAssessment
+pub fn surface_traction_assessment(String, @vectie/moonphys.MaterialContactModel, @geometry.Vec3, @geometry.Vec3) -> @vectie/moonphys.TractionAssessment
 
-pub fn traction_assessment(String, MaterialContactModel, Double, Double) -> TractionAssessment
+pub fn traction_assessment(String, @vectie/moonphys.MaterialContactModel, Double, Double) -> @vectie/moonphys.TractionAssessment
 
-pub fn transform3(Basis3, Vec3) -> Transform3
+pub fn transform3(@geometry.Basis3, @geometry.Vec3) -> @geometry.Transform3
 
-pub fn vec3(Double, Double, Double) -> Vec3
+pub fn vec3(Double, Double, Double) -> @geometry.Vec3
 
-pub fn yaw_basis3(Double) -> Basis3
+pub fn yaw_basis3(Double) -> @geometry.Basis3
 
 // Errors
 
 // Types and methods
-pub(all) struct ArticulatedJointPosition {
-  joint_id : String
-  position_rad : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ArticulatedLinkPose {
-  link_id : String
-  parent_link_id : String
-  joint_id : String
-  joint_position_rad : Double
-  local_transform : Transform3
-  world_transform : Transform3
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ArticulatedLinkSpec {
-  link_id : String
-  parent_link_id : String
-  joint_id : String
-  parent_offset_m : Vec3
-  joint_axis : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ArticulatedPoseTree {
-  root_transform : Transform3
-  link_count : Int
-  missing_parent_count : Int
-  links : Array[ArticulatedLinkPose]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-pub fn ArticulatedPoseTree::link_transform(Self, String) -> Transform3
-
-pub(all) struct Basis3 {
-  xx : Double
-  xy : Double
-  xz : Double
-  yx : Double
-  yy : Double
-  yz : Double
-  zx : Double
-  zy : Double
-  zz : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-pub fn Basis3::mul_basis3(Self, Self) -> Self
-pub fn Basis3::mul_vec3(Self, Vec3) -> Vec3
-
-pub(all) struct CapturePointAssessment {
-  com_position : Vec3
-  com_velocity : Vec3
-  capture_point : Vec3
-  nominal_com_height_m : Double
-  omega_rad_s : Double
-  support_assessment : SupportAssessment
-  capture_margin_m : Double
-  stable : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionBounds {
-  shape_id : String
-  kind : CollisionShapeKind
-  center : Vec3
-  bounding_radius_m : Double
-  min : Vec3
-  max : Vec3
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionContact {
-  shape_a_id : String
-  shape_b_id : String
-  point : Vec3
-  normal : Vec3
-  separation_m : Double
-  penetration_depth_m : Double
-  in_contact : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionContactManifold {
-  manifold_id : String
-  contacts : Array[CollisionContact]
-  contact_count : Int
-  max_penetration_m : Double
-  average_normal : Vec3
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionManifoldResolution {
-  before : RigidBodyState
-  after : RigidBodyState
-  manifold_id : String
-  contact_count : Int
-  max_penetration_m : Double
-  material : MaterialContactModel
-  average_normal : Vec3
-  correction : Vec3
-  velocity_delta : Vec3
-  normal_speed_mps : Double
-  tangent_speed_mps : Double
-  normal_impulse_ns : Double
-  friction_impulse_ns : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionPairProbe {
-  shape_a_id : String
-  shape_b_id : String
-  center_distance_m : Double
-  separation_m : Double
-  overlapping : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CollisionShape {
-  shape_id : String
-  kind : CollisionShapeKind
-  radius_m : Double
-  half_height_m : Double
-  half_extents_m : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) enum CollisionShapeKind {
-  SphereShape
-  CapsuleShape
-  BoxShape
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct CompositeMassProperties {
-  body_id : String
-  element_count : Int
-  total_mass_kg : Double
-  center_of_mass : Vec3
-  inertia_about_center : RigidBodyInertia
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ContactPatchLoadAssessment {
-  patch_id : String
-  sample_count : Int
-  contact_count : Int
-  loaded_sample_count : Int
-  total_normal_force_n : Double
-  contact_area_m2 : Double
-  sample_area_m2 : Double
-  center_of_pressure : Vec3
-  max_pressure_pa : Double
-  average_pressure_pa : Double
-  samples : Array[ContactPatchLoadSample]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ContactPatchLoadSample {
-  probe_id : String
-  position : Vec3
-  clearance_m : Double
-  in_contact : Bool
-  load_fraction : Double
-  normal_force_n : Double
-  pressure_pa : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ContactPatchWrenchAssessment {
-  patch_id : String
-  reference_point : Vec3
-  surface_normal : Vec3
-  center_of_pressure : Vec3
-  total_force_n : Vec3
-  total_torque_nm : Vec3
-  normal_force_n : Double
-  loaded_sample_count : Int
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ContactProbe {
-  probe_id : String
-  position : Vec3
-  surface_elevation_m : Double
-  surface_normal : Vec3
-  clearance_m : Double
-  in_contact : Bool
-  local_grade : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct ContactResolution {
-  before : RigidBodyState
-  after : RigidBodyState
-  collision : HeightfieldCollision
-  material : MaterialContactModel
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct Heightfield {
-  field_id : String
-  rows : Int
-  cols : Int
-  cell_size_m : Double
-  elevations_m : Array[Double]
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct HeightfieldCollision {
-  body_id : String
-  sample : HeightfieldSample
-  contact_point : Vec3
-  surface_normal : Vec3
-  clearance_m : Double
-  penetration_depth_m : Double
-  normal_velocity_mps : Double
-  tangent_speed_mps : Double
-  in_contact : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct HeightfieldContactPatch {
-  patch_id : String
-  center : Vec3
-  half_length_m : Double
-  half_width_m : Double
-  sample_count : Int
-  contact_count : Int
-  min_clearance_m : Double
-  max_clearance_m : Double
-  average_surface_elevation_m : Double
-  average_surface_normal : Vec3
-  samples : Array[ContactProbe]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct HeightfieldSample {
-  field_id : String
-  row : Int
-  col : Int
-  x_m : Double
-  y_m : Double
-  elevation_m : Double
-  local_grade_x : Double
-  local_grade_y : Double
-  surface_normal : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointLimit {
-  joint_id : String
-  min_position_rad : Double
-  max_position_rad : Double
-  max_velocity_rad_s : Double
-  max_torque_nm : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointMotorCommand {
-  joint_id : String
-  target_position_rad : Double
-  target_velocity_rad_s : Double
-  feedforward_torque_nm : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointMotorFrame {
-  frame_id : String
-  dt_s : Double
-  joint_count : Int
-  saturated_joint_count : Int
-  limit_review_count : Int
-  max_abs_position_error_rad : Double
-  max_abs_velocity_rad_s : Double
-  max_abs_commanded_torque_nm : Double
-  max_abs_mechanical_power_w : Double
-  net_work_j : Double
-  total_absolute_work_j : Double
-  steps : Array[JointMotorFrameStep]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointMotorFrameStep {
-  command : JointMotorCommand
-  motor_step : JointMotorStep
-  position_within_limits : Bool
-  velocity_within_limits : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointMotorState {
-  joint_id : String
-  position_rad : Double
-  velocity_rad_s : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointMotorStep {
-  before : JointMotorState
-  after : JointMotorState
-  servo : JointServoOutput
-  limit : JointLimit
-  dt_s : Double
-  inertia_kg_m2 : Double
-  average_mechanical_power_w : Double
-  work_j : Double
-  absolute_work_j : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointServoConfig {
-  joint_id : String
-  stiffness_nm_per_rad : Double
-  damping_nm_s_per_rad : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointServoOutput {
-  joint_id : String
-  position_error_rad : Double
-  velocity_error_rad_s : Double
-  commanded_torque_nm : Double
-  saturated : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct JointVelocityLimitedCommand {
-  command : JointMotorCommand
-  desired_position_rad : Double
-  desired_velocity_rad_s : Double
-  desired_delta_rad : Double
-  applied_delta_rad : Double
-  velocity_limited : Bool
-  position_limited : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct KinematicBodyState {
-  body_id : String
-  position : Vec3
-  velocity : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct KinematicStep {
-  dt_s : Double
-  acceleration : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MassPropertyElement {
-  element_id : String
-  mass_kg : Double
-  center_of_mass : Vec3
-  inertia_about_center : RigidBodyInertia
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MaterialContactModel {
-  material_id : String
-  friction_coefficient : Double
-  restitution_coefficient : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MotionContactEvidence {
-  contact_id : String
-  footprint : SupportFootprint
-  patch : HeightfieldContactPatch
-  applied_force_n : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MotionContactReview {
-  contact_id : String
-  footprint_id : String
-  patch_status : String
-  load_status : String
-  wrench_status : String
-  traction_status : String
-  normal_force_n : Double
-  tangential_force_n : Double
-  friction_utilization : Double
-  max_pressure_pa : Double
-  center_of_pressure : Vec3
-  patch_load : ContactPatchLoadAssessment
-  patch_wrench : ContactPatchWrenchAssessment
-  traction : TractionAssessment
-  ready : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MotionFrameReview {
-  review_id : String
-  contact_count : Int
-  active_footprint_count : Int
-  total_normal_force_n : Double
-  patch_review_count : Int
-  load_review_count : Int
-  wrench_review_count : Int
-  traction_review_count : Int
-  support_status : String
-  support_load_status : String
-  capture_status : String
-  min_support_margin_m : Double
-  center_of_pressure_error_m : Double
-  capture_margin_m : Double
-  estimated_mass_kg : Double
-  center_of_mass_speed_mps : Double
-  linear_momentum_kg_mps : Double
-  linear_kinetic_energy_j : Double
-  contact_reviews : Array[MotionContactReview]
-  support : SupportAssessment
-  support_load : SupportLoadAssessment
-  capture : CapturePointAssessment
-  blocker_count : Int
-  blockers : Array[String]
-  ready : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MotionFrameTraceReview {
-  trace_id : String
-  frame_count : Int
-  ready_frame_count : Int
-  blocked_frame_count : Int
-  contact_count : Int
-  contact_review_count : Int
-  patch_review_count : Int
-  load_review_count : Int
-  wrench_review_count : Int
-  traction_review_count : Int
-  max_total_normal_force_n : Double
-  max_contact_normal_force_n : Double
-  max_contact_tangential_force_n : Double
-  max_contact_force_n : Double
-  max_contact_torque_nm : Double
-  max_friction_utilization : Double
-  max_pressure_pa : Double
-  max_estimated_mass_kg : Double
-  max_center_of_mass_speed_mps : Double
-  max_linear_momentum_kg_mps : Double
-  max_linear_kinetic_energy_j : Double
-  min_support_margin_m : Double
-  worst_capture_margin_m : Double
-  max_center_of_pressure_error_m : Double
-  blocker_count : Int
-  blockers : Array[String]
-  ready : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct MotionHingeReplayReview {
-  review_id : String
-  motion_trace_id : String
-  hinge_trace_id : String
-  replay_trace_id : String
-  motion_frame_count : Int
-  hinge_frame_count : Int
-  frame_count_delta : Int
-  motion_contact_count : Int
-  hinge_contact_count : Int
-  driven_joint_count : Int
-  resolved_hinge_constraint_count : Int
-  motion_blocked_frame_count : Int
-  hinge_review_count : Int
-  replay_review_count : Int
-  max_motion_total_normal_force_n : Double
-  max_motion_contact_torque_nm : Double
-  max_motion_pressure_pa : Double
-  max_motion_linear_momentum_kg_mps : Double
-  max_motion_linear_kinetic_energy_j : Double
-  max_replay_speed_mps : Double
-  max_replay_kinetic_energy_j : Double
-  max_replay_world_linear_momentum_kg_mps : Double
-  motion_trace_status : String
-  hinge_trace_status : String
-  replay_status : String
-  blocker_count : Int
-  blockers : Array[String]
-  ready : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct PhysicsEnvironment {
-  environment_id : String
-  gravity_mps2 : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct PhysicsFrame {
-  frame_index : Int
-  time_s : Double
-  body : KinematicBodyState
-  contacts : Array[ContactProbe]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct PhysicsTrace {
-  trace_id : String
-  environment : PhysicsEnvironment
-  frames : Array[PhysicsFrame]
-  note : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyAngularState {
-  body_id : String
-  orientation : Basis3
-  angular_velocity_rad_s : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyAngularStep {
-  dt_s : Double
-  torque_nm : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldFrame {
-  frame_index : Int
-  time_s : Double
-  before : RigidBodyState
-  integrated : RigidBodyState
-  resolution : ContactResolution
-  after : RigidBodyState
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldTrace {
-  trace_id : String
-  environment : PhysicsEnvironment
-  material : MaterialContactModel
-  heightfield_id : String
-  dt_s : Double
-  frame_count : Int
-  frames : Array[RigidBodyHeightfieldFrame]
-  final_state : RigidBodyState
-  status : String
-  note : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldWorld {
-  world_id : String
-  environment : PhysicsEnvironment
-  material : MaterialContactModel
-  heightfield_id : String
-  bodies : Array[RigidBodyWorldBody]
-  constraints : Array[RigidBodyWorldDistanceConstraint]
-  motion_bodies : Array[RigidBodyJointFrameBody]
-  hinge_constraints : Array[RigidBodyHingeJointConstraint]
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldWorldHingeMotorStep {
-  frame_index : Int
-  time_s : Double
-  dt_s : Double
-  before : RigidBodyHeightfieldWorld
-  motor_frame : JointMotorFrame
-  motor_drive : RigidBodyWorldHingeMotorFrame
-  world_step : RigidBodyHeightfieldWorldStep
-  after : RigidBodyHeightfieldWorld
-  driven_joint_count : Int
-  contact_count : Int
-  resolved_hinge_constraint_count : Int
-  review_count : Int
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldWorldHingeMotorTrace {
-  trace_id : String
-  heightfield_id : String
-  frame_count : Int
-  motor_frame_count : Int
-  driven_joint_count : Int
-  contact_count : Int
-  resolved_hinge_constraint_count : Int
-  review_count : Int
-  initial_world : RigidBodyHeightfieldWorld
-  frames : Array[RigidBodyHeightfieldWorldHingeMotorStep]
-  final_world : RigidBodyHeightfieldWorld
-  status : String
-  note : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldWorldStep {
-  frame_index : Int
-  time_s : Double
-  dt_s : Double
-  before : RigidBodyHeightfieldWorld
-  body_frames : Array[RigidBodyWorldBodyFrame]
-  after : RigidBodyHeightfieldWorld
-  body_count : Int
-  contact_count : Int
-  body_pair_count : Int
-  body_pair_overlap_count : Int
-  body_pair_contact_count : Int
-  body_contact_schedule : RigidBodyWorldContactSchedule
-  body_contact_resolution : RigidBodyWorldContactResolution
-  constraint_count : Int
-  resolved_constraint_count : Int
-  constraint_resolution : RigidBodyWorldConstraintFrame
-  hinge_constraint_count : Int
-  resolved_hinge_constraint_count : Int
-  hinge_constraint_resolution : RigidBodyWorldHingeConstraintFrame
-  review_count : Int
-  kinetic_energy_before_j : Double
-  kinetic_energy_after_j : Double
-  kinetic_energy_delta_j : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHeightfieldWorldTrace {
-  trace_id : String
-  heightfield_id : String
-  dt_s : Double
-  frame_count : Int
-  initial_world : RigidBodyHeightfieldWorld
-  frames : Array[RigidBodyHeightfieldWorldStep]
-  final_world : RigidBodyHeightfieldWorld
-  status : String
-  note : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeAxisAssessment {
-  constraint_id : String
-  body_a_id : String
-  body_b_id : String
-  local_axis_a : Vec3
-  local_axis_b : Vec3
-  world_axis_a : Vec3
-  world_axis_b : Vec3
-  alignment_dot : Double
-  angular_error_rad : Double
-  relative_axis_velocity_rad_s : Double
-  correction_axis : Vec3
-  correction_angle_rad : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeAxisConstraint {
-  constraint_id : String
-  body_a_id : String
-  body_b_id : String
-  local_axis_a : Vec3
-  local_axis_b : Vec3
-  stiffness : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeAxisCorrection {
-  assessment : RigidBodyHingeAxisAssessment
-  inertia_a : RigidBodyInertia
-  inertia_b : RigidBodyInertia
-  inverse_inertia_a : Double
-  inverse_inertia_b : Double
-  correction_a_rad : Vec3
-  correction_b_rad : Vec3
-  velocity_delta_a_rad_s : Vec3
-  velocity_delta_b_rad_s : Vec3
-  angular_impulse_nms : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeJointAssessment {
-  joint_id : String
-  position : RigidBodyWorldConstraintResolution
-  axis : RigidBodyHingeAxisCorrection
-  position_error_m : Double
-  angular_error_rad : Double
-  linear_impulse_ns : Double
-  angular_impulse_nms : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeJointConstraint {
-  joint_id : String
-  position : RigidBodyWorldDistanceConstraint
-  axis : RigidBodyHingeAxisConstraint
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyHingeJointFrameAssessment {
-  frame_id : String
-  body_count : Int
-  joint_count : Int
-  assessed_joint_count : Int
-  review_count : Int
-  max_position_error_m : Double
-  max_angular_error_rad : Double
-  linear_impulse_ns : Double
-  angular_impulse_nms : Double
-  joints : Array[RigidBodyHingeJointAssessment]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyInertia {
-  body_id : String
-  diagonal_kg_m2 : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyJointFrameBody {
-  body_id : String
-  state : RigidBodyMotionState
-  inertia : RigidBodyInertia
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyMotionState {
-  body_id : String
-  linear : RigidBodyState
-  angular : RigidBodyAngularState
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyState {
-  body_id : String
-  mass_kg : Double
-  collision_radius_m : Double
-  position : Vec3
-  velocity : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBody {
-  state : RigidBodyState
-  collision_shape : CollisionShape
-  external_force_n : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBodyEnvelope {
-  body_id : String
-  sample_count : Int
-  min_position : Vec3
-  max_position : Vec3
-  max_speed_mps : Double
-  max_kinetic_energy_j : Double
-  max_linear_momentum_kg_mps : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBodyFrame {
-  body_id : String
-  before : RigidBodyState
-  external_force_n : Vec3
-  acceleration_mps2 : Vec3
-  integrated : RigidBodyState
-  resolution : ContactResolution
-  after : RigidBodyState
-  kinetic_energy_before_j : Double
-  kinetic_energy_after_j : Double
-  kinetic_energy_delta_j : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBodyTarget {
-  body_id : String
-  target_position : Vec3
-  target_velocity : Vec3
-  max_correction_m : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBodyTargetFrame {
-  world_id : String
-  target_count : Int
-  applied_count : Int
-  review_count : Int
-  max_correction_m : Double
-  steps : Array[RigidBodyWorldBodyTargetStep]
-  before : RigidBodyHeightfieldWorld
-  after : RigidBodyHeightfieldWorld
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldBodyTargetStep {
-  body_id : String
-  before : RigidBodyState
-  after : RigidBodyState
-  target_position : Vec3
-  target_velocity : Vec3
-  correction_m : Double
-  max_correction_m : Double
-  matched : Bool
-  within_limit : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldCenterOfMassTarget {
-  center_of_mass : Vec3
-  center_of_mass_velocity : Vec3
-  total_mass_kg : Double
-  nominal_com_height_m : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldConstraintFrame {
-  world_id : String
-  constraint_count : Int
-  resolved_constraint_count : Int
-  max_error_m : Double
-  impulse_ns : Double
-  resolutions : Array[RigidBodyWorldConstraintResolution]
-  before : RigidBodyHeightfieldWorld
-  after : RigidBodyHeightfieldWorld
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldConstraintResolution {
-  constraint_id : String
-  body_a_id : String
-  body_b_id : String
-  anchor_a_m : Vec3
-  anchor_b_m : Vec3
-  world_anchor_a : Vec3
-  world_anchor_b : Vec3
-  rest_length_m : Double
-  current_length_m : Double
-  error_m : Double
-  before_a : RigidBodyState
-  before_b : RigidBodyState
-  after_a : RigidBodyState
-  after_b : RigidBodyState
-  correction_a : Vec3
-  correction_b : Vec3
-  velocity_delta_a : Vec3
-  velocity_delta_b : Vec3
-  impulse_ns : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldContactResolution {
-  world_id : String
-  schedule : RigidBodyWorldContactSchedule
-  resolutions : Array[RigidBodyWorldPairResolution]
-  resolved_contact_count : Int
-  normal_impulse_ns : Double
-  friction_impulse_ns : Double
-  before : RigidBodyHeightfieldWorld
-  after : RigidBodyHeightfieldWorld
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldContactSchedule {
-  world_id : String
-  pair_count : Int
-  broadphase_overlap_count : Int
-  contact_count : Int
-  pairs : Array[RigidBodyWorldPairContact]
-  manifold : CollisionContactManifold
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldDistanceConstraint {
-  constraint_id : String
-  body_a_id : String
-  body_b_id : String
-  anchor_a_m : Vec3
-  anchor_b_m : Vec3
-  rest_length_m : Double
-  stiffness : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldDynamicSupportFrame {
-  frame_index : Int
-  time_s : Double
-  body_count : Int
-  contact_count : Int
-  center_of_mass : Vec3
-  center_of_mass_velocity : Vec3
-  capture_point_assessment : CapturePointAssessment
-  capture_support_recovery : SupportRecoveryCorrection
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldDynamicSupportTrace {
-  trace_id : String
-  frame_count : Int
-  body_count : Int
-  contact_count : Int
-  capture_stable_frame_count : Int
-  review_frame_count : Int
-  worst_capture_margin_m : Double
-  max_capture_recovery_shift_m : Double
-  frames : Array[RigidBodyWorldDynamicSupportFrame]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldHingeConstraintFrame {
-  world_id : String
-  hinge_constraint_count : Int
-  resolved_hinge_constraint_count : Int
-  review_count : Int
-  max_position_error_m : Double
-  max_angular_error_rad : Double
-  linear_impulse_ns : Double
-  angular_impulse_nms : Double
-  resolutions : Array[RigidBodyWorldHingeJointResolution]
-  before : RigidBodyHeightfieldWorld
-  after : RigidBodyHeightfieldWorld
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldHingeJointResolution {
-  joint_id : String
-  before_a : RigidBodyMotionState
-  before_b : RigidBodyMotionState
-  assessment : RigidBodyHingeJointAssessment
-  after_a : RigidBodyMotionState
-  after_b : RigidBodyMotionState
-  correction_a_rad : Vec3
-  correction_b_rad : Vec3
-  velocity_delta_a_rad_s : Vec3
-  velocity_delta_b_rad_s : Vec3
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldHingeMotorFrame {
-  world_id : String
-  motor_frame : JointMotorFrame
-  driven_joint_count : Int
-  review_count : Int
-  max_abs_angle_delta_rad : Double
-  max_abs_velocity_delta_rad_s : Double
-  steps : Array[RigidBodyWorldHingeMotorStep]
-  before : RigidBodyHeightfieldWorld
-  driven : RigidBodyHeightfieldWorld
-  hinge_constraint_resolution : RigidBodyWorldHingeConstraintFrame
-  after : RigidBodyHeightfieldWorld
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldHingeMotorStep {
-  joint_id : String
-  motor_step : JointMotorFrameStep
-  axis : Vec3
-  angle_delta_rad : Double
-  velocity_delta_rad_s : Double
-  before_a : RigidBodyMotionState
-  before_b : RigidBodyMotionState
-  after_a : RigidBodyMotionState
-  after_b : RigidBodyMotionState
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldHingeMotorTrace {
-  trace_id : String
-  frame_count : Int
-  driven_joint_count : Int
-  review_count : Int
-  max_abs_angle_delta_rad : Double
-  max_abs_velocity_delta_rad_s : Double
-  initial_world : RigidBodyHeightfieldWorld
-  frames : Array[RigidBodyWorldHingeMotorFrame]
-  final_world : RigidBodyHeightfieldWorld
-  status : String
-  note : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldPairContact {
-  body_a_id : String
-  body_b_id : String
-  broadphase : CollisionPairProbe
-  contact : CollisionContact
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldPairResolution {
-  body_a_id : String
-  body_b_id : String
-  contact : CollisionContact
-  before_a : RigidBodyState
-  before_b : RigidBodyState
-  after_a : RigidBodyState
-  after_b : RigidBodyState
-  correction_a : Vec3
-  correction_b : Vec3
-  velocity_delta_a : Vec3
-  velocity_delta_b : Vec3
-  normal_impulse_ns : Double
-  friction_impulse_ns : Double
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldReplayReview {
-  trace_id : String
-  frame_count : Int
-  body_count : Int
-  contact_count : Int
-  review_count : Int
-  envelope_status : String
-  support_status : String
-  dynamic_support_status : String
-  body_sample_count : Int
-  resolved_hinge_constraint_count : Int
-  min_position : Vec3
-  max_position : Vec3
-  max_speed_mps : Double
-  max_kinetic_energy_j : Double
-  max_body_linear_momentum_kg_mps : Double
-  max_world_linear_momentum_kg_mps : Double
-  max_frame_kinetic_energy_delta_j : Double
-  total_mass_kg : Double
-  initial_center_of_mass : Vec3
-  final_center_of_mass : Vec3
-  min_center_of_mass : Vec3
-  max_center_of_mass : Vec3
-  max_center_of_mass_speed_mps : Double
-  support_contact_count : Int
-  stable_support_frame_count : Int
-  support_review_frame_count : Int
-  min_support_margin_m : Double
-  max_support_recovery_shift_m : Double
-  max_center_of_pressure_error_m : Double
-  capture_stable_frame_count : Int
-  capture_review_frame_count : Int
-  worst_capture_margin_m : Double
-  max_capture_recovery_shift_m : Double
-  ready : Bool
-  blocker_count : Int
-  blockers : Array[String]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldSupportFrame {
-  frame_index : Int
-  time_s : Double
-  body_count : Int
-  contact_count : Int
-  total_mass_kg : Double
-  center_of_mass : Vec3
-  footprints : Array[SupportFootprint]
-  support : SupportAssessment
-  recovery : SupportRecoveryCorrection
-  load : SupportLoadAssessment
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldSupportTrace {
-  trace_id : String
-  frame_count : Int
-  body_count : Int
-  support_frame_count : Int
-  contact_count : Int
-  stable_frame_count : Int
-  review_frame_count : Int
-  min_planar_margin_m : Double
-  max_support_recovery_shift_m : Double
-  max_center_of_pressure_error_m : Double
-  frames : Array[RigidBodyWorldSupportFrame]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWorldTraceEnvelope {
-  trace_id : String
-  frame_count : Int
-  body_count : Int
-  body_sample_count : Int
-  contact_count : Int
-  resolved_hinge_constraint_count : Int
-  review_count : Int
-  min_position : Vec3
-  max_position : Vec3
-  max_speed_mps : Double
-  max_kinetic_energy_j : Double
-  total_mass_kg : Double
-  initial_center_of_mass : Vec3
-  final_center_of_mass : Vec3
-  min_center_of_mass : Vec3
-  max_center_of_mass : Vec3
-  max_center_of_mass_speed_mps : Double
-  max_body_linear_momentum_kg_mps : Double
-  max_world_linear_momentum_kg_mps : Double
-  max_frame_kinetic_energy_delta_j : Double
-  body_envelopes : Array[RigidBodyWorldBodyEnvelope]
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWrench {
-  force_n : Vec3
-  torque_nm : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct RigidBodyWrenchStep {
-  before : RigidBodyMotionState
-  wrench : RigidBodyWrench
-  dt_s : Double
-  linear_acceleration_mps2 : Vec3
-  angular_acceleration_rad_s2 : Vec3
-  linear_impulse_ns : Vec3
-  angular_impulse_nms : Vec3
-  kinetic_energy_before_j : Double
-  kinetic_energy_after_j : Double
-  kinetic_energy_delta_j : Double
-  after : RigidBodyMotionState
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SupportAssessment {
-  support_count : Int
-  com_projection : Vec3
-  min_x_m : Double
-  max_x_m : Double
-  min_y_m : Double
-  max_y_m : Double
-  margin_x_m : Double
-  margin_y_m : Double
-  planar_margin_m : Double
-  support_polygon_vertices : Array[Vec3]
-  support_polygon_vertex_count : Int
-  stable : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SupportFootprint {
-  footprint_id : String
-  center : Vec3
-  half_length_m : Double
-  half_width_m : Double
-  active : Bool
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SupportLoad {
-  footprint_id : String
-  contact_point : Vec3
-  load_fraction : Double
-  normal_force_n : Double
-  contact_torque_nm : Vec3
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SupportLoadAssessment {
-  load_count : Int
-  center_of_mass : Vec3
-  center_of_pressure : Vec3
-  center_of_pressure_error_m : Double
-  total_normal_force_n : Double
-  min_load_fraction : Double
-  max_load_fraction : Double
-  loads : Array[SupportLoad]
-  balanced : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct SupportRecoveryCorrection {
-  support_count : Int
-  source_point : Vec3
-  target_point : Vec3
-  required_shift : Vec3
-  required_shift_m : Double
-  recovered_margin_m : Double
-  stable_without_shift : Bool
-  recoverable : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct TractionAssessment {
-  contact_id : String
-  material : MaterialContactModel
-  normal_force_n : Double
-  tangential_force_n : Double
-  friction_limit_n : Double
-  utilization : Double
-  margin_n : Double
-  slipping : Bool
-  status : String
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-
-pub(all) struct Transform3 {
-  basis : Basis3
-  translation : Vec3
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-pub fn Transform3::compose(Self, Self) -> Self
-pub fn Transform3::transform_point(Self, Vec3) -> Vec3
-
-pub(all) struct Vec3 {
-  x : Double
-  y : Double
-  z : Double
-} derive(Eq, ToJson, @debug.Debug, @json.FromJson)
-pub fn Vec3::add(Self, Self) -> Self
-pub fn Vec3::cross(Self, Self) -> Self
-pub fn Vec3::dot(Self, Self) -> Double
-pub fn Vec3::length(Self) -> Double
-pub fn Vec3::length_squared(Self) -> Double
-pub fn Vec3::scale(Self, Double) -> Self
-pub fn Vec3::sub(Self, Self) -> Self
 
 // Type aliases
+pub using @vectie/moonphys {type ArticulatedJointPosition}
+
+pub using @vectie/moonphys {type ArticulatedLinkPose}
+
+pub using @vectie/moonphys {type ArticulatedLinkSpec}
+
+pub using @vectie/moonphys {type ArticulatedPoseTree}
+
+pub using @geometry {type Basis3}
+
+pub using @vectie/moonphys {type CapturePointAssessment}
+
+pub using @vectie/moonphys {type CollisionBounds}
+
+pub using @vectie/moonphys {type CollisionContact}
+
+pub using @vectie/moonphys {type CollisionContactManifold}
+
+pub using @vectie/moonphys {type CollisionManifoldResolution}
+
+pub using @vectie/moonphys {type CollisionPairProbe}
+
+pub using @vectie/moonphys {type CollisionShape}
+
+pub using @vectie/moonphys {type CollisionShapeKind}
+
+pub using @vectie/moonphys {type CompositeMassProperties}
+
+pub using @vectie/moonphys {type ContactPatchLoadAssessment}
+
+pub using @vectie/moonphys {type ContactPatchLoadSample}
+
+pub using @vectie/moonphys {type ContactPatchWrenchAssessment}
+
+pub using @vectie/moonphys {type ContactProbe}
+
+pub using @vectie/moonphys {type ContactResolution}
+
+pub using @vectie/moonphys {type Heightfield}
+
+pub using @vectie/moonphys {type HeightfieldCollision}
+
+pub using @vectie/moonphys {type HeightfieldContactPatch}
+
+pub using @vectie/moonphys {type HeightfieldSample}
+
+pub using @vectie/moonphys {type JointLimit}
+
+pub using @vectie/moonphys {type JointMotorCommand}
+
+pub using @vectie/moonphys {type JointMotorFrame}
+
+pub using @vectie/moonphys {type JointMotorFrameStep}
+
+pub using @vectie/moonphys {type JointMotorState}
+
+pub using @vectie/moonphys {type JointMotorStep}
+
+pub using @vectie/moonphys {type JointServoConfig}
+
+pub using @vectie/moonphys {type JointServoOutput}
+
+pub using @vectie/moonphys {type JointVelocityLimitedCommand}
+
+pub using @vectie/moonphys {type KinematicBodyState}
+
+pub using @vectie/moonphys {type KinematicStep}
+
+pub using @vectie/moonphys {type MassPropertyElement}
+
+pub using @vectie/moonphys {type MaterialContactModel}
+
+pub using @vectie/moonphys {type MotionContactEvidence}
+
+pub using @vectie/moonphys {type MotionContactReview}
+
+pub using @vectie/moonphys {type MotionFrameReview}
+
+pub using @vectie/moonphys {type MotionFrameTraceReview}
+
+pub using @vectie/moonphys {type MotionHingeReplayReview}
+
+pub using @vectie/moonphys {type PhysicsEnvironment}
+
+pub using @vectie/moonphys {type PhysicsFrame}
+
+pub using @vectie/moonphys {type PhysicsTrace}
+
+pub using @vectie/moonphys {type RigidBodyAngularState}
+
+pub using @vectie/moonphys {type RigidBodyAngularStep}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldFrame}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldTrace}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldWorld}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldWorldHingeMotorStep}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldWorldHingeMotorTrace}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldWorldStep}
+
+pub using @vectie/moonphys {type RigidBodyHeightfieldWorldTrace}
+
+pub using @vectie/moonphys {type RigidBodyHingeAxisAssessment}
+
+pub using @vectie/moonphys {type RigidBodyHingeAxisConstraint}
+
+pub using @vectie/moonphys {type RigidBodyHingeAxisCorrection}
+
+pub using @vectie/moonphys {type RigidBodyHingeJointAssessment}
+
+pub using @vectie/moonphys {type RigidBodyHingeJointConstraint}
+
+pub using @vectie/moonphys {type RigidBodyHingeJointFrameAssessment}
+
+pub using @vectie/moonphys {type RigidBodyInertia}
+
+pub using @vectie/moonphys {type RigidBodyJointFrameBody}
+
+pub using @vectie/moonphys {type RigidBodyMotionState}
+
+pub using @vectie/moonphys {type RigidBodyState}
+
+pub using @vectie/moonphys {type RigidBodyWorldBody}
+
+pub using @vectie/moonphys {type RigidBodyWorldBodyEnvelope}
+
+pub using @vectie/moonphys {type RigidBodyWorldBodyFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldBodyTarget}
+
+pub using @vectie/moonphys {type RigidBodyWorldBodyTargetFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldBodyTargetStep}
+
+pub using @vectie/moonphys {type RigidBodyWorldCenterOfMassTarget}
+
+pub using @vectie/moonphys {type RigidBodyWorldConstraintFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldConstraintResolution}
+
+pub using @vectie/moonphys {type RigidBodyWorldContactResolution}
+
+pub using @vectie/moonphys {type RigidBodyWorldContactSchedule}
+
+pub using @vectie/moonphys {type RigidBodyWorldDistanceConstraint}
+
+pub using @vectie/moonphys {type RigidBodyWorldDynamicSupportFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldDynamicSupportTrace}
+
+pub using @vectie/moonphys {type RigidBodyWorldHingeConstraintFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldHingeJointResolution}
+
+pub using @vectie/moonphys {type RigidBodyWorldHingeMotorFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldHingeMotorStep}
+
+pub using @vectie/moonphys {type RigidBodyWorldHingeMotorTrace}
+
+pub using @vectie/moonphys {type RigidBodyWorldPairContact}
+
+pub using @vectie/moonphys {type RigidBodyWorldPairResolution}
+
+pub using @vectie/moonphys {type RigidBodyWorldReplayReview}
+
+pub using @vectie/moonphys {type RigidBodyWorldSupportFrame}
+
+pub using @vectie/moonphys {type RigidBodyWorldSupportTrace}
+
+pub using @vectie/moonphys {type RigidBodyWorldTraceEnvelope}
+
+pub using @vectie/moonphys {type RigidBodyWrench}
+
+pub using @vectie/moonphys {type RigidBodyWrenchStep}
+
+pub using @vectie/moonphys {type SupportAssessment}
+
+pub using @vectie/moonphys {type SupportFootprint}
+
+pub using @vectie/moonphys {type SupportLoad}
+
+pub using @vectie/moonphys {type SupportLoadAssessment}
+
+pub using @vectie/moonphys {type SupportRecoveryCorrection}
+
+pub using @vectie/moonphys {type TractionAssessment}
+
+pub using @geometry {type Transform3}
+
+pub using @geometry {type Vec3}
 
 // Traits
-

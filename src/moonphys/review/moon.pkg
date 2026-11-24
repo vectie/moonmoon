@@ -1,3 +1,7 @@
 import {
-  "moonbitlang/core/json",
+  "vectie/moonphys/review" @physical_review,
 }
+
+import {
+  "vectie/moonphys/review" @canonical_review,
+} for "test"

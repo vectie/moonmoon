@@ -1,4 +1,9 @@
 import {
-  "moonbitlang/core/json",
-  "moonbitlang/core/math",
+  "vectie/moonphys" @physics,
 }
+
+import {
+  "vectie/moonphys" @canonical,
+  "vectie/moonnum/geometry",
+  "moonbitlang/core/json",
+} for "test"
